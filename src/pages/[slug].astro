@@ -1,0 +1,32 @@
+---
+import Layout from '@layouts/layout.astro';
+import type { Anime } from '../types';
+import { baseUrl } from '@utils';
+const anime_data : Anime = await fetch(`${baseUrl}/api/getAnime?slug=${Astro.params.slug}`)
+    .then(res => res.json())
+    .then(data => data.anime)
+
+const { mal_id, title , image_url ,aired_to , duration , rating , score , scored_by , synopsis , genres , studios , trailer_url ,  image_webp , image_small_jpg , image_small_webp , image_large_jpg , image_large_webp , created_at , relevance_score } = anime_data;
+---
+
+<Layout>
+  <section class="flex flex-row gap-8 justify-between p-4">
+    <picture class="p-5" >
+        <img src={image_large_webp} alt={title} class="w-full h-full max-w-72 rounded-lg object-cover aspect-[225/330] transition-all ease-in-out"  transition:name={`image-transition-${mal_id}`} />
+    </picture>
+
+
+    {
+        trailer_url ? (
+
+            <youtube-video class=" h-96 aspect-video rounded-lg m-5" controls src={trailer_url}></youtube-video>
+
+        )
+        :
+        (
+            <div class="w-full h-full aspect-video rounded-sm"></div>
+        )
+    }
+  </section>
+
+</Layout>
