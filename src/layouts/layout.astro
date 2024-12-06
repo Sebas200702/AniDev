@@ -1,44 +1,45 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
-import NavBar from '@components/nav-bar.astro';
-import Footer from '@components/footer.astro';
+import { ViewTransitions } from 'astro:transitions'
+import NavBar from '@components/nav-bar.astro'
+import Footer from '@components/footer.astro'
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Animeflix</title>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/youtube-video-element@1"></script>
-        <ViewTransitions fallback='none' />
-	</head>
-	<body>
-        <div id="app">
-            <header class="[grid-area:header]">
-                <NavBar />
-            </header>
-            <main class="[grid-area:main]">
-                <slot/>
-            </main>
-            <footer class="[grid-area:footer]" >
-                <Footer/>
-            </footer>
-        </div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Animeflix</title>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/youtube-video-element@1"></script>
+    <ViewTransitions fallback="none" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="[grid-area:header]">
+        <NavBar />
+      </header>
+      <main class="[grid-area:main]">
+        <slot />
+      </main>
+      <footer class="[grid-area:footer]">
+        <Footer />
+      </footer>
+    </div>
+  </body>
 </html>
 
 <style is:global>
-    #app {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        grid-template-areas:
-            "header"
-            "main"
-            "footer";
-        height: 100vh;
-    }
-
+  #app {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
+    height: 100vh;
+  }
 </style>
