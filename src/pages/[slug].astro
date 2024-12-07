@@ -40,7 +40,7 @@ const smallSynopsis = reduceSynopsis(synopsis)
 <Layout>
   <section class="flex flex-col gap-8 p-4">
     <div
-      class="absolute top-0 -z-10 inset-0 left-0 h-96 w-full overflow-hidden"
+      class="absolute top-0 -z-10 inset-0 left-0 h-[calc(100vh-200px)] w-full overflow-hidden"
     >
       <img
         src={image_webp}
@@ -88,7 +88,7 @@ const smallSynopsis = reduceSynopsis(synopsis)
           src={trailer_url}
         />
       ) : (
-        <div class="w-full h-full aspect-video rounded-sm"></div>
+        <div class="w-full h-full aspect-video rounded-sm" />
       )
     }
   </section>
