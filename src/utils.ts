@@ -3,15 +3,10 @@ export const baseUrl =
     ? 'https://animeflix.vercel.app'
     : 'http://localhost:4321'
 
-export const debounce = (
-  callback: (...args: any[]) => void,
-  waitTime: number
-): ((...args: any[]) => void) => {
-  let timer: NodeJS.Timeout
-  return (...args: any[]): void => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      callback(...args)
-    }, waitTime)
-  }
+export const getAnimeType = (type: string) => {
+  if (type === 'tv') return 'Anime'
+  else if (type === 'movie') return 'Movie'
+  else if (type === 'ova') return 'OVA'
+  else if (type === 'special') return 'Special'
+  else return 'Anime'
 }
