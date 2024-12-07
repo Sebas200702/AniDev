@@ -20,10 +20,9 @@ const PlayButton = () => {
 }
 export const SearchComponent = () => {
   const [query, setQuery] = useState('')
-  const [filters, setFilters] = useState<object | null>(null)
   const debouncedQuery = useDebounce(query, 300)
   const url = debouncedQuery
-    ? `${baseUrl}/api/animes?search_query=${debouncedQuery}&limit_count=5`
+    ? `${baseUrl}/api/animes?search_query=${debouncedQuery}&limit_count=5&type_filter=tv`
     : ''
   const {
     data: animes,
@@ -52,6 +51,13 @@ export const SearchComponent = () => {
       </search>
 
       <ul className="flex flex-row flex-wrap gap-4 max-w-6xl mx-auto">
+        {animes?.length === 0 && (
+          <div className="flex flex-col items-center justify-center mt-9 w-full h-full">
+            <h1 className="text-2xl font-bold text-gray-900">
+              No results found
+            </h1>
+          </div>
+        )}
         {animes?.map(({ title, image_webp, mal_id }) => (
           <article
             key={mal_id}
