@@ -27,7 +27,6 @@ export const GET: APIRoute = async ({ url }) => {
   const { data, error } = await supabase.rpc('get_animes', filters)
 
   if (error) {
-    console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: {
