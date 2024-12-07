@@ -1,34 +1,39 @@
 ---
 import PlayIcon from '@icons/play-icon.astro'
+import AnimeTag from '@components/anime-tag.astro'
+import { getAnimeType } from '@utils'
 import type { Anime } from 'types'
 interface Props {
   anime: Anime
 }
 const { anime } = Astro.props
-const { title, image_url, mal_id } = anime
+const { title, image_webp, mal_id, type } = anime
+
+const animeType = getAnimeType(type)
 ---
 
-<article class='relative group transition-transform duration-200 ease-in-out'>
+<article class="relative group transition-transform duration-200 ease-in-out">
   <a
     href={`/${title}`}
-    class='flex flex-col items-center w-52 h-auto rounded-lg shadow-md group-hover:shadow-xl p-4 transition-shadow duration-200 ease-in-out'
+    class="flex flex-col items-center w-52 h-auto rounded-lg shadow-md group-hover:shadow-xl p-4 transition-shadow duration-200 ease-in-out"
   >
     <img
-      src={image_url}
+      src={image_webp}
       alt={title}
-      class='aspect-[225/330] group-hover:scale-105 w-full rounded-lg transition-all ease-in-out'
+      class="aspect-[225/330] group-hover:scale-105 w-full rounded-lg transition-all ease-in-out"
       transition:name=`image-transition-${mal_id}`
     />
     <h3
-      class='text-sm max-w-32 group-hover:opacity-0 transition-opacity duration-200 ease-in-out truncate font-semibold mt-2 text-gray-900'
+      class="text-sm max-w-32 group-hover:opacity-0 transition-opacity duration-200 ease-in-out truncate font-semibold mt-2 text-gray-900"
     >
       {title}
     </h3>
     <a
       href={`/play/${title}?ep=1`}
-      class='absolute flex text-blue-500 z-10 bottom-2 right-0 left-0 w-full justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
+      class="absolute flex text-blue-500 z-10 bottom-2 right-0 left-0 w-full justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
     >
       <PlayIcon />
     </a>
+    <AnimeTag tag={animeType} location="anime-card" />
   </a>
 </article>
