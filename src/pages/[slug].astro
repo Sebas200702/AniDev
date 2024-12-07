@@ -1,7 +1,9 @@
 ---
 import Layout from '@layouts/layout.astro'
+import AnimeTag from '@components/anime-tag.astro'
 import type { Anime } from '../types'
 import { baseUrl } from '@utils'
+import { slide } from 'astro:transitions'
 const anime_data: Anime = await fetch(
   `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`
 )
@@ -29,29 +31,64 @@ const {
   created_at,
   relevance_score,
 } = anime_data
-console.log(mal_id)
+const reduceSynopsis = (synopsis: string) => {
+  return synopsis.slice(0, 450) + '...'
+}
+const smallSynopsis = reduceSynopsis(synopsis)
 ---
 
 <Layout>
-  <section class="flex flex-row gap-8 justify-between p-4">
-    <picture class="p-5">
+  <section class="flex flex-col gap-8 p-4">
+    <div
+      class="absolute top-0 -z-10 inset-0 left-0 h-96 w-full overflow-hidden"
+    >
       <img
-        src={image_large_webp}
-        alt={title}
-        class="w-full h-full max-w-80 rounded-lg object-cover aspect-[225/330] transition-all ease-in-out"
-        transition:name={`image-transition-${mal_id}`}
+        src={image_webp}
+        alt={`${title}-banner`}
+        loading="lazy"
+        class="w-full -my-96 opacity-85 aspect-[225/330]"
       />
-    </picture>
+      <div
+        class="absolute inset-0 bg-[rgba(96,120,255,0.25)] backdrop-blur-[6px]"
+      >
+        <div
+          id="more-container"
+          class="w-full h-1/2 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-[#fff]/100"
+        >
+        </div>
+      </div>
+    </div>
+    <article class="flex flex-row gap-20 w-full mt-24">
+      <img
+        src={image_webp}
+        alt={title}
+        class="w-full h-full max-w-56 rounded-lg aspect-[225/330] transition-all ease-in-out"
+        transition:name={`image-transition-${mal_id}`}
+        loading="lazy"
+      />
+      <div
+        class="flex flex-col gap-4 w-full mt-14"
+        transition:animate={slide({ duration: '0.4s' })}
+      >
+        <h2 class="text-3xl font-bold text-gray-900">{title}</h2>
+        <p class="text-sm text-gray-800">
+          {smallSynopsis}
+        </p>
+        <footer class="flex flex-row gap-4 mt-10">
+          {genres.map((tag: string) => <AnimeTag tag={tag} />)}
+        </footer>
+      </div>
+    </article>
 
     {
       trailer_url ? (
         <youtube-video
-          class=" h-96 aspect-video rounded-lg m-5"
+          class=" max-w-4xl w-full mx-auto aspect-video rounded-lg mt-14"
           controls
           src={trailer_url}
         />
       ) : (
-        <div class="w-full h-full aspect-video rounded-sm" />
+        <div class="w-full h-full aspect-video rounded-sm"></div>
       )
     }
   </section>
