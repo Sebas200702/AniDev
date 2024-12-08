@@ -10,6 +10,8 @@ export const GET: APIRoute = async ({ url }) => {
     score_filter = 'score_filter',
     status_filter = 'status_filter',
     search_query = 'search_query',
+    rating_filter = 'rating_filter',
+    year_filter = 'year_filter',
   }
   const GetFilters = (
     filtersEnum: typeof Filters
