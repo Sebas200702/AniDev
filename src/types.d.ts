@@ -8,6 +8,7 @@ export type Anime = {
   readonly episodes: number | null
   readonly status: string
   readonly aired_from: string
+  readonly year: string
   readonly aired_to?: string | null
   readonly duration: string
   readonly rating: string
