@@ -1,47 +1,144 @@
-# Astro Starter Kit: Minimal
+````markdown
+# 🌸 Animeflix
 
-```sh
-npm create astro@latest -- --template minimal
+Animeflix es una plataforma moderna de streaming y exploración de animes, diseñada con AstroJS y potenciada por Supabase. Ofrece una experiencia dinámica para descubrir, buscar y disfrutar de los mejores animes, con un diseño responsivo y transiciones suaves.
+
+## 🚀 Características principales
+
+- 🎨 **Diseño moderno** con transiciones fluidas usando `astro:transitions`.
+- 🧩 **Componentes reutilizables**: NavBar, Footer, AnimeCard, AnimeTag, entre otros.
+- 🔍 **Búsqueda dinámica** con `useDebounce` para optimizar consultas.
+- 📦 **Backend eficiente**: Integrado con Supabase y funciones RPC para filtrar animes.
+- 📽️ **Reproducción de trailers** con el componente `<youtube-video>`.
+- 🌟 **Filtrado avanzado**: Géneros, estudios, puntajes, y más.
+
+---
+
+## 📂 Estructura del proyecto
+
+```plaintext
+├── 📁 components/       # Componentes reutilizables (NavBar, Footer, AnimeCard, AnimeTag)
+├── 📁 layouts/          # Layouts base para la aplicación
+├── 📁 hooks/            # Hooks personalizados: useDebounce, useFetch
+├── 📁 pages/            # Páginas principales (Home, Search, Anime Details)
+├── 📁 utils/            # Utilidades (helpers y configuraciones)
+├── 📁 public/           # Archivos estáticos (favicon, imágenes)
+├── 📁 libs/             # Configuración de Supabase
+└── 📁 types/            # Definición de tipos TypeScript
+```
+````
+
+---
+
+## 📄 Uso de Hooks
+
+### 🔄 `useFetch`
+
+Este hook permite realizar peticiones asíncronas de forma sencilla.
+
+```typescript
+import { useFetch } from '@hooks/useFetch'
+
+const { data, error, loading } = useFetch<Anime[]>({
+  url: 'https://api.animeflix.com/animes?type=tv',
+})
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+### 🕒 `useDebounce`
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Optimiza el rendimiento al retrasar la ejecución de una función.
 
-## 🚀 Project Structure
+```typescript
+import { useDebounce } from '@hooks/useDebounce'
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+const [search, setSearch] = useState('')
+const debouncedSearch = useDebounce(search, 300)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🛠️ Configuración del entorno
 
-Any static assets, like images, can be placed in the `public/` directory.
+Asegúrate de tener configuradas las siguientes variables de entorno:
 
-## 🧞 Commands
+```plaintext
+SUPABASE_URL=tu_url_de_supabase
+SUPABASE_ANON_KEY=tu_clave_de_supabase
+```
 
-All commands are run from the root of the project, from a terminal:
+Crea un archivo `.env` en la raíz del proyecto y agrega las claves correspondientes.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## 🧑‍💻 Instalación y ejecución
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### 1️⃣ Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/animeflix.git
+cd animeflix
+```
+
+### 2️⃣ Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3️⃣ Iniciar el servidor
+
+```bash
+npm run dev
+```
+
+---
+
+## 🌐 Rutas principales
+
+- `/` - Página de inicio con los animes más relevantes.
+- `/search` - Búsqueda de animes por géneros, estudios, y más.
+- `/anime/:slug` - Detalle de un anime con trailer y géneros.
+
+---
+
+## 🖼️ Capturas de pantalla
+
+### 🌟 Página principal
+
+![Página Principal](https://via.placeholder.com/800x400?text=Página+Principal)
+
+### 🔍 Búsqueda de animes
+
+![Búsqueda de Animes](https://via.placeholder.com/800x400?text=Búsqueda+de+Animes)
+
+---
+
+## 💻 Tecnologías utilizadas
+
+- [AstroJS](https://astro.build/) 🌟
+- [Supabase](https://supabase.com/) 🐘
+- [YouTube Video Element](https://github.com/justinribeiro/youtube-video-element) 🎥
+- [TypeScript](https://www.typescriptlang.org/) 🛡️
+- [CSS Modules](https://github.com/css-modules/css-modules) 🎨
+
+---
+
+## 🤝 Contribuciones
+
+¡Las contribuciones son bienvenidas! Si tienes ideas, problemas o mejoras, no dudes en abrir un [issue](https://github.com/tu-usuario/animeflix/issues) o enviar un [pull request](https://github.com/tu-usuario/animeflix/pulls).
+
+---
+
+## 📜 Licencia
+
+Este proyecto está bajo la licencia [MIT](LICENSE).
+
+---
+
+## 🙌 Agradecimientos
+
+Gracias a todas las herramientas y librerías que hicieron este proyecto posible. 💖
+
+```
+
+```
