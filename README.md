@@ -1,4 +1,3 @@
-````markdown
 # 🌸 Animeflix
 
 Animeflix es una plataforma moderna de streaming y exploración de animes, diseñada con AstroJS y potenciada por Supabase. Ofrece una experiencia dinámica para descubrir, buscar y disfrutar de los mejores animes, con un diseño responsivo y transiciones suaves.
@@ -26,7 +25,6 @@ Animeflix es una plataforma moderna de streaming y exploración de animes, dise�
 ├── 📁 libs/             # Configuración de Supabase
 └── 📁 types/            # Definición de tipos TypeScript
 ```
-````
 
 ---
 
