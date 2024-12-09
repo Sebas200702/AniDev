@@ -10,20 +10,21 @@ Animeflix es una plataforma moderna de streaming y exploración de animes, dise�
 - 📦 **Backend eficiente**: Integrado con Supabase y funciones RPC para filtrar animes.
 - 📽️ **Reproducción de trailers** con el componente `<youtube-video>`.
 - 🌟 **Filtrado avanzado**: Géneros, estudios, puntajes, y más.
+- 📄 **Pruebas unitarias** con Vitest.
 
 ---
 
 ## 📂 Estructura del proyecto
 
 ```plaintext
-├── 📁 components/       # Componentes reutilizables (NavBar, Footer, AnimeCard, AnimeTag)
+├── 📁 components/       # Componentes reutilizables (NavBar, Footer, AnimeCard, AnimeTag, SearchResults, etc.)
 ├── 📁 layouts/          # Layouts base para la aplicación
 ├── 📁 hooks/            # Hooks personalizados: useDebounce, useFetch
-├── 📁 pages/            # Páginas principales (Home, Search, Anime Details)
+├── 📁 pages/            # Páginas principales (Home, Search, Anime Details , 404)
 ├── 📁 utils/            # Utilidades (helpers y configuraciones)
 ├── 📁 public/           # Archivos estáticos (favicon, imágenes)
 ├── 📁 libs/             # Configuración de Supabase
-└── 📁 types/            # Definición de tipos TypeScript
+└── 📁 test/             # Pruebas unitarias
 ```
 
 ---
@@ -32,7 +33,7 @@ Animeflix es una plataforma moderna de streaming y exploración de animes, dise�
 
 ### 🔄 `useFetch`
 
-Este hook permite realizar peticiones asíncronas de forma sencilla.
+Este hook permite realizar peticiones asíncronas de forma sencilla. También se puede utilizar para realizar peticiones a una API externa.
 
 ```typescript
 import { useFetch } from '@hooks/useFetch'
@@ -95,7 +96,7 @@ npm run dev
 
 - `/` - Página de inicio con los animes más relevantes.
 - `/search` - Búsqueda de animes por géneros, estudios, y más.
-- `/anime/:slug` - Detalle de un anime con trailer y géneros.
+- `/:slug` - Detalle de un anime con trailer y géneros.
 
 ---
 
