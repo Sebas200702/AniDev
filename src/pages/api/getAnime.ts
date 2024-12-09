@@ -2,11 +2,22 @@ import { supabase } from '@libs/supabase'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
-  const slug = url.searchParams.get('slug')
-  const { data, error } = await supabase
-    .from('anime')
-    .select('*')
-    .eq('title', slug)
+  const title_query = url.searchParams.get('slug')
+
+  if (!title_query) {
+    return new Response(JSON.stringify({ error: 'No title query' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+  const [, id] = title_query.split('_')
+
+  const { data, error } = await supabase.rpc('get_anime_by_id', {
+    id,
+  })
+
   if (error) {
     console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {
