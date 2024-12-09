@@ -4,11 +4,23 @@ import AnimeTag from '@components/anime-tag.astro'
 import type { Anime } from '../types'
 import { baseUrl } from '@utils'
 import { slide } from 'astro:transitions'
-const anime_data: Anime = await fetch(
-  `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`
+
+const response = await fetch(
+  `${baseUrl}/api/getAnime?slug=${Astro.params.slug} `
 )
-  .then((res) => res.json())
-  .then((data) => data.anime)
+
+if (!response.ok) {
+  throw new Error(`Error fetching data: ${response.statusText}`)
+}
+
+const data = await response.json()
+
+const anime_data: Anime | undefined = data.anime
+
+if (!anime_data) {
+  throw new Error('Anime data not found')
+}
+
 
 const {
   mal_id,
@@ -32,6 +44,7 @@ const {
   created_at,
   relevance_score,
 } = anime_data
+
 const reduceSynopsis = (synopsis: string) => {
   return synopsis.slice(0, 450) + '...'
 }
@@ -61,7 +74,7 @@ const smallSynopsis = reduceSynopsis(synopsis)
     </div>
     <article class="flex flex-row gap-20 w-full mt-24">
       <img
-        src={image_webp}
+        src={image_large_webp}
         alt={title}
         class="w-full h-full max-w-56 rounded-lg aspect-[225/330] transition-all ease-in-out"
         transition:name={`image-transition-${mal_id}`}
