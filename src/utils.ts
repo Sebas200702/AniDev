@@ -10,3 +10,6 @@ export const getAnimeType = (type: string) => {
   else if (type === 'special') return 'Special'
   else return 'Anime'
 }
+export const normalizeString = (str: string) => {
+  return str.replace(/[?¡.:,;¿!]/g, '')
+}

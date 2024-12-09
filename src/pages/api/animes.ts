@@ -1,5 +1,6 @@
 import { supabase } from '@libs/supabase'
 import type { APIRoute } from 'astro'
+import { normalizeString } from '@utils'
 
 export const GET: APIRoute = async ({ url }) => {
   enum Filters {
@@ -19,7 +20,7 @@ export const GET: APIRoute = async ({ url }) => {
     const filters: Record<string, string | number | null> = {}
     Object.values(filtersEnum).forEach((filter) => {
       const value = url.searchParams.get(filter)
-      filters[filter] = value
+      filters[filter] = value ? normalizeString(value) : null
     })
     return filters
   }
