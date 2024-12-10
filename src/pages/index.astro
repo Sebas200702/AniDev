@@ -5,7 +5,7 @@ import { baseUrl } from '@utils'
 import type { Anime } from '../types'
 
 const animes: Anime[] | null = await fetch(
-  `${baseUrl}/api/animes?limit_count=10&type=tv`
+  `${baseUrl}/api/animes?limit_count=12`
 )
   .then((res) => res.json())
   .then((data) => data.anime)
