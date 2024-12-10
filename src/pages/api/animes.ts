@@ -11,15 +11,19 @@ export const GET: APIRoute = async ({ url }) => {
     score_filter = 'score_filter',
     status_filter = 'status_filter',
     search_query = 'search_query',
-    rating_filter = 'rating_filter',
+    parental_control = 'parental_control',
     year_filter = 'year_filter',
+    rating_filter = 'rating_filter',
   }
   const GetFilters = (
     filtersEnum: typeof Filters
-  ): Record<string, string | number | null> => {
-    const filters: Record<string, string | number | null> = {}
+  ): Record<string, string | number | boolean | null> => {
+    const filters: Record<string, string | number | boolean | null> = {}
     Object.values(filtersEnum).forEach((filter) => {
       const value = url.searchParams.get(filter)
+      if (filter === Filters.parental_control) {
+        filters[filter] = !value
+      }
       filters[filter] = value ? normalizeString(value) : null
     })
     return filters
