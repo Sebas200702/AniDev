@@ -1,4 +1,4 @@
-import { getAnimeType, normalizeString } from '@utils'
+import { getAnimeType, normalizeString, getTagColor } from '@utils'
 
 interface Props {
   mal_id: number
@@ -24,13 +24,14 @@ const PlayButton = () => {
 }
 interface TagProps {
   tag: string
-  isOnAnimeCard?: boolean
 }
-const Tag = ({ tag, isOnAnimeCard }: TagProps) => {
+
+const Tag = ({ tag }: TagProps) => {
+  const tagColor = getTagColor(tag)
   return (
     <a
       href="/"
-      className={`${isOnAnimeCard ? ' bg-blue-400 hover:bg-blue-500 ' : ' flex items-center justify-center  hover:bg-gray-400 w-min bg-gray-300 '} text-xs font-medium text-gray-800 px-2 py-1 transition-all duration-200 ease-in-out rounded-2xl`}
+      className={`${tagColor} w-min text-xs font-medium text-gray-800 px-2 py-1 transition-all duration-200 ease-in-out rounded-2xl`}
     >
       {tag}
     </a>
