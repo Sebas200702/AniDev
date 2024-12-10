@@ -19,7 +19,6 @@ export const GET: APIRoute = async ({ url }) => {
   })
 
   if (error) {
-    console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: {
