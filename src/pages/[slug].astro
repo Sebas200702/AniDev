@@ -2,7 +2,7 @@
 import Layout from '@layouts/base.astro'
 import AnimeTag from '@components/anime-tag.astro'
 import type { Anime } from '../types'
-import { baseUrl } from '@utils'
+import { baseUrl, getAnimeType } from '@utils'
 import { slide } from 'astro:transitions'
 
 const response = await fetch(
@@ -21,7 +21,6 @@ if (!anime_data) {
   throw new Error('Anime data not found')
 }
 
-
 const {
   mal_id,
   title,
@@ -33,6 +32,7 @@ const {
   score,
   scored_by,
   synopsis,
+  type,
   genres,
   studios,
   trailer_url,
@@ -45,7 +45,8 @@ const {
   relevance_score,
 } = anime_data
 
-const reduceSynopsis = (synopsis: string) => {
+const reduceSynopsis = (synopsis?: string) => {
+  if (!synopsis) return 'No synopsis'
   return synopsis.slice(0, 450) + '...'
 }
 const smallSynopsis = reduceSynopsis(synopsis)
@@ -84,12 +85,16 @@ const smallSynopsis = reduceSynopsis(synopsis)
         class="flex flex-col gap-4 w-full mt-14"
         transition:animate={slide({ duration: '0.4s' })}
       >
-        <h2 class="text-3xl font-bold text-gray-900">{title}</h2>
+        <header class="flex flex-col gap-4 max-w-2xl">
+          <h2 class="text-3xl text-pretty font-bold text-gray-900">{title}</h2>
+          <AnimeTag tag={getAnimeType(type)} type={getAnimeType(type)} />
+        </header>
+
         <p class="text-sm text-gray-800">
           {smallSynopsis}
         </p>
         <footer class="flex flex-row gap-4 mt-10">
-          {genres.map((tag: string) => <AnimeTag tag={tag} />)}
+          {genres.map((tag: string) => <AnimeTag tag={tag} type={getAnimeType(tag)} />)}
         </footer>
       </div>
     </article>
