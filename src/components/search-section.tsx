@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { useFetch, useDebounce } from '@hooks/index'
+import { useDebounce } from '@hooks/useDebounce'
+import { useFetch } from '@hooks/useFetch'
 import type { Anime } from 'types'
 import { baseUrl } from '@utils'
 import { SearchResults } from '@components/search-results'
