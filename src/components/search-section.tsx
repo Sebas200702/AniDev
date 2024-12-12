@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { useFetch, useDebounce } from '@hooks/index'
 import type { Anime } from 'types'
 import { baseUrl } from '@utils'
 import { SearchResults } from '@components/search-results'
+import { useSearchStoreResults } from '@store/search-results-store'
 
 export const SearchComponent = () => {
-  const [query, setQuery] = useState('')
-  const debouncedQuery = useDebounce(query, 300)
+  const { query, setQuery } = useSearchStoreResults()
+  const debouncedQuery = useDebounce(query, 500)
   const url = debouncedQuery
     ? `${baseUrl}/api/animes?search_query=${debouncedQuery}&limit_count=6&type_filter=tv`
     : ''
@@ -17,6 +18,9 @@ export const SearchComponent = () => {
   } = useFetch<Anime[]>({
     url,
   })
+  useEffect(() => {
+    useSearchStoreResults.setState({ results: animes, loading, error, query })
+  }, [animes, loading, error, query])
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
@@ -35,7 +39,7 @@ export const SearchComponent = () => {
           />
         </form>
       </search>
-      <SearchResults animes={animes} />
+      <SearchResults />
     </section>
   )
 }

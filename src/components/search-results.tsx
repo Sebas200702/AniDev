@@ -1,11 +1,8 @@
-import type { Anime } from 'types'
 import { AnimeResult } from '@components/anime-result'
+import { useSearchStoreResults } from '@store/search-results-store'
 
-interface Props {
-  animes: Anime[] | null
-}
-
-export const SearchResults = ({ animes }: Props) => {
+export const SearchResults = () => {
+  const { results: animes } = useSearchStoreResults()
   return (
     <ul className="grid grid-cols-3 gap-4  w-full">
       {animes?.length === 0 && (

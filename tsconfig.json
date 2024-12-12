@@ -12,7 +12,8 @@
       "@libs/*": ["libs/*"],
       "@hooks/*": ["hooks/*"],
       "@test_utils": ["test/utils"],
-      "@icons/*": ["components/icons/*"]
+      "@icons/*": ["components/icons/*"],
+      "@store/*": ["store/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
