@@ -10,7 +10,7 @@ export const SearchComponent = () => {
   const { query, setQuery } = useSearchStoreResults()
   const debouncedQuery = useDebounce(query, 500)
   const url = debouncedQuery
-    ? `${baseUrl}/api/animes?search_query=${debouncedQuery}&limit_count=6&type_filter=tv`
+    ? `${baseUrl}/api/animes?search_query=${debouncedQuery}&limit_count=6&`
     : ''
   const {
     data: animes,
