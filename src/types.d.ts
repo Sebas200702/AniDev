@@ -24,6 +24,7 @@ export type Anime = {
   readonly image_small_webp: string
   readonly image_large_jpg: string
   readonly image_large_webp: string
+  readonly banner_image: string
   readonly created_at: string
   readonly relevance_score: number
 }
