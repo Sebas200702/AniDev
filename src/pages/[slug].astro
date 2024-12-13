@@ -2,7 +2,7 @@
 import Layout from '@layouts/base.astro'
 import AnimeTag from '@components/anime-tag.astro'
 import type { Anime } from '../types'
-import { baseUrl, getAnimeType } from '@utils'
+import { baseUrl, getAnimeType, reduceSynopsis } from '@utils'
 import { slide } from 'astro:transitions'
 
 const response = await fetch(
@@ -43,12 +43,9 @@ const {
   image_large_webp,
   created_at,
   relevance_score,
+  banner_image,
 } = anime_data
 
-const reduceSynopsis = (synopsis?: string) => {
-  if (!synopsis) return 'No synopsis'
-  return synopsis.slice(0, 450) + '...'
-}
 const smallSynopsis = reduceSynopsis(synopsis)
 ---
 
@@ -96,7 +93,7 @@ const smallSynopsis = reduceSynopsis(synopsis)
         <footer class="flex flex-row gap-4 mt-10">
           {
             genres.map((tag: string) => (
-              <AnimeTag tag={tag} type={getAnimeType(tag)} />
+              <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
             ))
           }
         </footer>
