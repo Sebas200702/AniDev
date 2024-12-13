@@ -3,6 +3,10 @@ export const baseUrl =
     ? 'https://animeflix.vercel.app'
     : 'http://localhost:4321'
 
+export const reduceSynopsis = (synopsis?: string , size = 450) => {
+  if (!synopsis) return 'No synopsis'
+  return synopsis.slice(0, size) + '...'
+}
 export const getAnimeType = (type?: string) => {
   if (!type) return 'Unknown'
   const typeNormalized = type.toLowerCase()
@@ -75,7 +79,7 @@ export const getTagColor = (type: string) => {
     'CM' = 'bg-indigo-600 hover:bg-indigo-500 text-white',
   }
 
-  const tagColor = AnimeTags[type as keyof typeof AnimeTags]
+  const tagColor = AnimeTags[type as keyof typeof AnimeTags] || 'bg-gray-300 hover:bg-gray-400 text-gray-900'
 
   return tagColor
 }
