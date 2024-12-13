@@ -1,18 +1,20 @@
 ---
 import Layout from '@layouts/base.astro'
 import AnimeCard from '@components/anime-card.astro'
+import { Carousel } from '@components/carousel'
 import { baseUrl } from '@utils'
 import type { Anime } from '../types'
-
 const animes: Anime[] | null = await fetch(
-  `${baseUrl}/api/animes?limit_count=12`
+  `${baseUrl}/api/animes?limit_count=10&seach_query=onepiece`
 )
   .then((res) => res.json())
   .then((data) => data.anime)
+
 ---
 
 <Layout>
-  <section class="flex flex-row flex-wrap p-4 gap-4 mx-auto w-full my-20">
+  <Carousel client:load />
+  <!-- <section class="flex flex-row flex-wrap p-4 gap-4 mx-auto w-full my-20">
     {animes?.map((anime: Anime) => <AnimeCard anime={anime} />)}
-  </section>
+  </section> -->
 </Layout>
