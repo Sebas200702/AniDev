@@ -24,14 +24,15 @@ const PlayButton = () => {
 }
 interface TagProps {
   tag: string
+  style?: string
 }
 
-const Tag = ({ tag }: TagProps) => {
+export const Tag = ({ tag  , style }: TagProps) => {
   const tagColor = getTagColor(tag)
   return (
     <a
       href="/"
-      className={`${tagColor} w-min text-xs font-medium text-gray-800 px-2 py-1 transition-all duration-200 ease-in-out rounded-2xl`}
+      className={`${tagColor} ${style ? style : 'w-min'}   text-xs font-medium text-gray-800 px-2 py-1 transition-all duration-200 ease-in-out rounded-2xl`}
     >
       {tag}
     </a>
