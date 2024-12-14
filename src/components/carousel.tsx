@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
-import {  reduceSynopsis } from '@utils'
-import { Tag } from './anime-result'
-import { useIndexStore } from '@store/index-store'
+import { normalizeString, reduceSynopsis } from '@utils'
+import { Tag } from '@components/anime-result'
+import { useFetch } from '@hooks/useFetch'
+import type { Anime } from 'types'
 
 export const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const { banners } = useIndexStore()
+  const {
+    data: banners,
+    loading,
+    error,
+  } = useFetch<Anime[]>({
+    url: '/api/animes?limit_count=10&type_filter=tv&status_filter=CurrentlyAiring',
+  })
 
   const handlePrev = () => {
     if (!banners) return
@@ -37,7 +44,7 @@ export const Carousel = () => {
 
   return (
     <div
-      className="relative w-screen left-0 right-0 h-[500px]"
+      className="relative left-0 right-0 h-[500px] w-screen"
       data-carousel="slide"
       style={{ position: 'absolute' }}
     >
@@ -51,36 +58,39 @@ export const Carousel = () => {
           {banners.map((anime, index) => (
             <div
               key={anime.mal_id}
-              className={`relative flex-shrink-0 w-full h-full flex items-center px-8 ${
+              className={`relative flex h-full w-full flex-shrink-0 items-center px-8 ${
                 index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
               }`}
             >
               <div
-                className="absolute inset-0 w-full h-full -z-10 bg-cover bg-center"
+                className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
                   backgroundImage: `url(${anime.banner_image ? anime.banner_image : anime.image_large_webp})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
-              <div className="w-1/3 h-full flex items-center justify-center z-10">
+              <a
+                href={`${normalizeString(anime.title)}_${anime.mal_id}`}
+                className="z-10 flex h-full w-1/3 items-center justify-center"
+              >
                 <img
                   src={anime.image_large_webp}
                   className="h-[90%] w-auto rounded-lg object-contain shadow-lg"
                   alt={anime.title}
                 />
-              </div>
+              </a>
               <div
-                className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} text-white z-10`}
+                className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} z-10 text-white`}
               >
-                <h2 className="text-3xl font-bold mb-4 text-white drop-shadow-md">
+                <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-md">
                   {anime.title}
                 </h2>
-                <p className="text-base mb-4 text-white drop-shadow">
+                <p className="mb-4 text-base text-white drop-shadow">
                   {reduceSynopsis(anime.synopsis, 300)}
                 </p>
-                <footer className="flex flex-row gap-2 mt-4">
+                <footer className="mt-4 flex flex-row gap-2">
                   {anime.genres.map((tag: string) => (
-                    <Tag tag={tag} style="w-auto" />
+                    <Tag key={tag} tag={tag} style="w-auto" />
                   ))}
                 </footer>
               </div>
@@ -88,12 +98,12 @@ export const Carousel = () => {
           ))}
         </div>
       </div>
-      <div className="absolute z-30 flex -translate-x-1/2 bottom-6 left-1/2 space-x-3">
-        {banners.map((_, index) => (
+      <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 space-x-3">
+        {banners.map((anime, index) => (
           <button
-            key={index}
+            key={anime.mal_id}
             type="button"
-            className={`w-3 h-3 rounded-full transition-colors ${
+            className={`h-3 w-3 rounded-full transition-colors ${
               currentIndex === index ? 'bg-blue-500' : 'bg-white/50'
             }`}
             aria-current={currentIndex === index ? 'true' : 'false'}
@@ -106,12 +116,12 @@ export const Carousel = () => {
       {/* Controls */}
       <button
         type="button"
-        className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        className="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
         onClick={handlePrev}
       >
-        <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
           <svg
-            className="w-3 h-3 text-white"
+            className="h-3 w-3 text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -131,12 +141,12 @@ export const Carousel = () => {
 
       <button
         type="button"
-        className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        className="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
         onClick={handleNext}
       >
-        <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
           <svg
-            className="w-3 h-3 text-white"
+            className="h-3 w-3 text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
