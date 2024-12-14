@@ -5,5 +5,5 @@ module.exports = {
   tabWidth: 2,
   printWidth: 80,
   arrowParens: 'always',
-  plugins: ['prettier-plugin-astro'], // Plugin para Astro
+  plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
 }
