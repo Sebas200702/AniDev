@@ -4,9 +4,9 @@ import { useSearchStoreResults } from '@store/search-results-store'
 export const SearchResults = () => {
   const { results: animes } = useSearchStoreResults()
   return (
-    <ul className="grid grid-cols-3 gap-4  w-full">
+    <ul className="grid w-full grid-cols-3 gap-4">
       {animes?.length === 0 && (
-        <div className="flex flex-col items-center justify-center mt-9 w-full h-full">
+        <div className="mt-9 flex h-full w-full flex-col items-center justify-center">
           <h1 className="text-2xl font-bold text-gray-900">No results found</h1>
         </div>
       )}

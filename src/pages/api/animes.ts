@@ -33,7 +33,6 @@ export const GET: APIRoute = async ({ url }) => {
   const filters = GetFilters(Filters)
 
   const { data, error } = await supabase.rpc('get_animes', filters)
-  console.log(data)
   if (error) {
     console.error(error)
     return new Response(JSON.stringify({ error: error.message }), {

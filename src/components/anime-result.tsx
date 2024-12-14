@@ -27,12 +27,12 @@ interface TagProps {
   style?: string
 }
 
-export const Tag = ({ tag  , style }: TagProps) => {
+export const Tag = ({ tag, style }: TagProps) => {
   const tagColor = getTagColor(tag)
   return (
     <a
       href="/"
-      className={`${tagColor} ${style ? style : 'w-min'}   text-xs font-medium text-gray-800 px-2 py-1 transition-all duration-200 ease-in-out rounded-2xl`}
+      className={`${tagColor} ${style ? style : 'w-min'} rounded-2xl px-2 py-1 text-xs font-medium text-gray-800 transition-all duration-200 ease-in-out`}
     >
       {tag}
     </a>
@@ -43,20 +43,20 @@ export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => {
   return (
     <article
       key={mal_id}
-      className="relative group transition-transform duration-200 ease-in-out"
+      className="group relative transition-transform duration-200 ease-in-out"
     >
       <a
         href={`/${normalizeString(title)}_${mal_id}`}
-        className=" flex flex-row w-full h-28 gap-5 items-center  rounded-lg shadow-md group-hover:shadow-xl p-3 transition-shadow duration-200 ease-in-out"
+        className="flex h-28 w-full flex-row items-center gap-5 rounded-lg p-3 shadow-md transition-shadow duration-200 ease-in-out group-hover:shadow-xl"
       >
         <img
           src={image_webp}
           alt={title}
           loading="lazy"
-          className=" aspect-[225/330] group-hover:scale-105 h-full rounded-lg transition-all ease-in-out"
+          className="aspect-[225/330] h-full rounded-lg transition-all ease-in-out group-hover:scale-105"
         />
-        <div className="flex flex-col gap-2 w-full">
-          <h3 className="text-sm max-w-40  transition-opacity duration-200 ease-in-out truncate font-semibold mt-2 text-gray-900 ">
+        <div className="flex w-full flex-col gap-2">
+          <h3 className="mt-2 max-w-40 truncate text-sm font-semibold text-gray-900 transition-opacity duration-200 ease-in-out">
             {title}
           </h3>
           <Tag tag={getAnimeType(type)} />

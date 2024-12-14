@@ -52,45 +52,45 @@ const smallSynopsis = reduceSynopsis(synopsis)
 <Layout>
   <section class="flex flex-col gap-8 p-4">
     <div
-      class="absolute top-0 -z-10 inset-0 left-0 h-[calc(100vh-200px)] w-full overflow-hidden"
+      class="absolute inset-0 left-0 top-0 -z-10 h-[calc(100vh-200px)] w-full overflow-hidden"
     >
       <img
         src={image_webp}
         alt={`${title}-banner`}
         loading="lazy"
-        class="w-full -my-96 opacity-85 aspect-[225/330]"
+        class="-my-96 aspect-[225/330] w-full opacity-85"
       />
       <div
         class="absolute inset-0 bg-[rgba(96,120,255,0.25)] backdrop-blur-[6px]"
       >
         <div
           id="more-container"
-          class="w-full h-1/2 absolute bottom-0 left-0 bg-gradient-to-b from-transparent to-[#fff]/100"
+          class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#fff]/100"
         >
         </div>
       </div>
     </div>
-    <article class="flex flex-row gap-20 w-full mt-24">
+    <article class="mt-24 flex w-full flex-row gap-20">
       <img
         src={image_large_webp}
         alt={title}
-        class="w-full h-full max-w-56 rounded-lg aspect-[225/330] transition-all ease-in-out"
+        class="aspect-[225/330] h-full w-full max-w-56 rounded-lg transition-all ease-in-out"
         transition:name={`image-transition-${mal_id}`}
         loading="lazy"
       />
       <div
-        class="flex flex-col gap-4 w-full mt-14"
+        class="mt-14 flex w-full flex-col gap-4"
         transition:animate={slide({ duration: '0.4s' })}
       >
-        <header class="flex flex-col gap-4 max-w-2xl">
-          <h2 class="text-3xl text-pretty font-bold text-gray-900">{title}</h2>
+        <header class="flex max-w-2xl flex-col gap-4">
+          <h2 class="text-pretty text-3xl font-bold text-gray-900">{title}</h2>
           <AnimeTag tag={getAnimeType(type)} type={getAnimeType(type)} />
         </header>
 
         <p class="text-sm text-gray-800">
           {smallSynopsis}
         </p>
-        <footer class="flex flex-row gap-4 mt-10">
+        <footer class="mt-10 flex flex-row gap-4">
           {
             genres.map((tag: string) => (
               <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
@@ -103,12 +103,12 @@ const smallSynopsis = reduceSynopsis(synopsis)
     {
       trailer_url ? (
         <youtube-video
-          class=" max-w-4xl w-full mx-auto aspect-video rounded-lg mt-14"
+          class="mx-auto mt-14 aspect-video w-full max-w-4xl rounded-lg"
           controls
           src={trailer_url}
         />
       ) : (
-        <div class="w-full h-full aspect-video rounded-sm" />
+        <div class="aspect-video h-full w-full rounded-sm" />
       )
     }
   </section>

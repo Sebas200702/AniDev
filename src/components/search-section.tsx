@@ -23,17 +23,27 @@ export const SearchComponent = () => {
     useSearchStoreResults.setState({ results: animes, loading, error, query })
   }, [animes, loading, error, query])
 
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const $input = document.getElementById('default-search') as HTMLInputElement
+    const query = url.searchParams.get('q')
+    if (query) {
+      $input.value = query
+      setQuery(query)
+    }
+  }, [])
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
+    window.history.pushState({}, '', `/search?q=${e.target.value}`)
   }
   return (
     <section className="flex flex-col gap-4">
       <search className="w-full">
-        <form className="w-full max-w-3xl mx-auto">
+        <form className="mx-auto w-full max-w-3xl">
           <input
             type="search"
             id="default-search"
-            className="w-full  p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  "
+            className="w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             placeholder="Search Animes..."
             required
             onInput={handleInput}
