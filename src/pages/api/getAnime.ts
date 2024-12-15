@@ -5,31 +5,61 @@ export const GET: APIRoute = async ({ url }) => {
   const title_query = url.searchParams.get('slug')
 
   if (!title_query) {
-    return new Response(JSON.stringify({ error: 'No title query' }), {
-      status: 500,
+    return new Response(JSON.stringify({ error: 'No title query provided' }), {
+      status: 400,
       headers: {
         'Content-Type': 'application/json',
       },
     })
   }
+
   const [, id] = title_query.split('_')
 
-  const { data, error } = await supabase.rpc('get_anime_by_id', {
-    id,
-  })
+  if (!id) {
+    return new Response(JSON.stringify({ error: 'Invalid slug format' }), {
+      status: 400,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
 
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+  try {
+    const { data, error } = await supabase.rpc('get_anime_by_id', { id })
+
+    if (error) {
+      console.error('Supabase Error:', error.message)
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    }
+
+    if (!data || data.length === 0) {
+      return new Response(JSON.stringify({ error: 'Anime not found' }), {
+        status: 404,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    }
+
+    return new Response(JSON.stringify({ anime: data[0] }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600', // 1 hora de caché
+      },
+    })
+  } catch (err) {
+    console.error('Unhandled Error:', err)
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
       },
     })
   }
-  return new Response(JSON.stringify({ anime: data[0] }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
 }
