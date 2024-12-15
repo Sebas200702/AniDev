@@ -1,0 +1,143 @@
+---
+import AnimeCard from '@components/anime-card.astro'
+import type { Anime } from 'types'
+
+interface Props {
+  animes: Anime[]
+  title: string
+}
+
+const { animes, title } = Astro.props
+---
+
+<section class="relative -mr-20 mt-6 w-full" id={`anime-slider-${title}`}>
+  <h2 class="text-2xl font-bold text-gray-900">{title}</h2>
+
+  <div class="relative overflow-hidden">
+    <button
+      class="prev-button group absolute bottom-0 left-0 z-30 flex h-[90%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
+      aria-label="Scroll to previous"
+    >
+      <svg
+        class="rotate-180 transform opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        fill="none"
+        stroke="#000"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+      >
+        <path d="M7 7l5 5-5 5M13 7l5 5-5 5"></path>
+      </svg>
+    </button>
+
+    <ul
+      class="no-scrollbar anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth"
+    >
+      {
+        animes?.map((anime: Anime) => (
+          <AnimeCard anime={anime} context={title} />
+        ))
+      }
+      <a
+        href="/"
+        class="group m-[10px] flex h-auto w-full min-w-[160px] flex-col items-center rounded-lg p-2 shadow-md transition-shadow duration-200 ease-in-out hover:shadow-xl"
+      >
+        <div
+          class="flex h-full w-full flex-col items-center justify-center gap-4 p-4"
+        >
+          <h3
+            class="mx-auto w-[80%] text-balance text-xl font-bold text-gray-900 transition-all duration-200 ease-in-out group-hover:text-blue-500"
+          >
+            More Animes
+          </h3>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="mx-auto transition-all duration-200 ease-in-out group-hover:text-blue-500"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+    </ul>
+
+    <button
+      class="next-button group absolute bottom-0 right-0 z-30 flex h-[90%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
+      aria-label="Scroll to next"
+    >
+      <svg
+        class="opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        fill="none"
+        stroke="#000"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+      >
+        <path d="M7 7l5 5-5 5M13 7l5 5-5 5"></path>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script>
+  function init() {
+    const $$ = <T extends NodeListOf<HTMLElement>>(
+      selector: string,
+      parent?: HTMLElement
+    ) => {
+      const el = parent
+        ? parent.querySelectorAll(selector)
+        : document.querySelectorAll(selector)
+      return el ? (el as T) : null
+    }
+
+    const $nextButtons = $$<NodeListOf<HTMLButtonElement>>('.next-button')
+    const $prevButtons = $$<NodeListOf<HTMLButtonElement>>('.prev-button')
+    const $animeLists = $$<NodeListOf<HTMLElement>>('.anime-list')
+
+    if ($nextButtons && $animeLists && $prevButtons) {
+      $nextButtons.forEach((button, index) => {
+        button.addEventListener('click', (e) => handleScroll(e, 'next', index))
+      })
+      $prevButtons.forEach((button, index) => {
+        button.addEventListener('click', (e) => handleScroll(e, 'prev', index))
+      })
+    }
+
+    function handleScroll(e: Event, direction: 'next' | 'prev', index: number) {
+      if (!$animeLists) return
+      const $animeList = $animeLists[index]
+      if (!$animeList) return
+
+      const scrollAmount = $animeList.clientWidth - 108
+      const scrollDistance = direction === 'next' ? scrollAmount : -scrollAmount
+
+      $animeList.scrollBy({
+        left: scrollDistance,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init)
+  document.addEventListener('astro:after-swap', init)
+</script>
