@@ -1,52 +1,83 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, memo } from 'react'
 import { normalizeString, reduceSynopsis } from '@utils'
-import { Tag } from '@components/anime-result'
 import { useFetch } from '@hooks/useFetch'
 import type { Anime } from 'types'
+import { Tag } from '@components/anime-result'
+
+
+
+const Indicator = memo(({ index, currentIndex, onClick }: { index: number, currentIndex: number, onClick: (index: number) => void }) => {
+  return (
+    <button
+      onClick={() => onClick(index)}
+      className={`h-3 w-3 rounded-full transition-colors ${
+        currentIndex === index ? 'bg-blue-500' : 'bg-white/50'
+      }`}
+      aria-current={currentIndex === index ? 'true' : 'false'}
+      aria-label={`Slide ${index + 1}`}
+    />
+  )
+})
+
+const LoadingCarousel = () => (
+  <div className="relative -mx-[103px] h-[500px] animate-pulse bg-gray-200">
+    <div className="relative flex h-full w-full flex-shrink-0 items-center gap-20 px-8">
+      <div className="z-10 animate-pulse ml-12 flex h-[90%] w-1/4 items-center justify-center rounded-lg bg-gray-400"></div>
+      <div className="z-10 mr-8 flex-1 p-6 text-white">
+        <div className="mb-4 mt-4 h-8 w-[60%] animate-pulse rounded-lg bg-gray-400"></div>
+        <div className="mb-6 h-20 w-full animate-pulse rounded-lg bg-gray-400"></div>
+        <div className="h-8 w-[40%] animate-pulse rounded-lg bg-gray-400"></div>
+      </div>
+    </div>
+    <div className="absolute bottom-6 left-1/2 z-30 flex h-6 w-[20%] -translate-x-1/2 animate-pulse rounded-lg bg-gray-400"></div>
+  </div>
+)
 
 export const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const {
-    data: banners,
-    loading,
-    error,
-  } = useFetch<Anime[]>({
+  const [fadeIn, setFadeIn] = useState(false)
+  const { data: banners, loading } = useFetch<Anime[]>({
     url: '/api/animes?limit_count=10&type_filter=tv&status_filter=CurrentlyAiring',
   })
 
-  const handlePrev = () => {
+
+
+  const handlePrev = useCallback(() => {
     if (!banners) return
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? banners.length - 1 : prevIndex - 1
     )
-  }
+  }, [banners])
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!banners) return
     setCurrentIndex((prevIndex) =>
       prevIndex === banners.length - 1 ? 0 : prevIndex + 1
     )
-  }
+  }, [banners])
 
-  const handleIndicatorClick = (index: number) => {
+  const handleIndicatorClick = useCallback((index: number) => {
     setCurrentIndex(index)
-  }
+  }, [])
+
   useEffect(() => {
+    if (!banners || banners.length === 0) return
+    setTimeout(() => setFadeIn(true), 100)
     const interval = setInterval(() => {
       handleNext()
     }, 4000)
     return () => clearInterval(interval)
-  }, [currentIndex])
+  }, [banners, handleNext])
 
-  if (!banners || banners.length === 0) {
-    return null
+  if (loading || !banners || banners.length === 0) {
+    return <LoadingCarousel />
   }
 
   return (
     <div
-      className="relative left-0 right-0 h-[500px] w-screen"
+      className={`realtive left-0 right-0 -mx-[103px] h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-500' : 'opacity-0'} overflow-x-hidden`}
       data-carousel="slide"
-      style={{ position: 'absolute' }}
+      style={{ position: 'sticky' }}
     >
       <div className="relative h-full overflow-hidden">
         <div
@@ -58,9 +89,7 @@ export const Carousel = () => {
           {banners.map((anime, index) => (
             <div
               key={anime.mal_id}
-              className={`relative flex h-full w-full flex-shrink-0 items-center px-8 ${
-                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
-              }`}
+              className={`relative flex h-full w-full flex-shrink-0 items-center px-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
             >
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
@@ -77,11 +106,10 @@ export const Carousel = () => {
                   src={anime.image_large_webp}
                   className="h-[90%] w-auto rounded-lg object-contain shadow-lg"
                   alt={anime.title}
+                  loading="lazy"
                 />
               </a>
-              <div
-                className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} z-10 text-white`}
-              >
+              <div className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} z-10 text-white`}>
                 <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-md">
                   {anime.title}
                 </h2>
@@ -100,15 +128,11 @@ export const Carousel = () => {
       </div>
       <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 space-x-3">
         {banners.map((anime, index) => (
-          <button
+          <Indicator
             key={anime.mal_id}
-            type="button"
-            className={`h-3 w-3 rounded-full transition-colors ${
-              currentIndex === index ? 'bg-blue-500' : 'bg-white/50'
-            }`}
-            aria-current={currentIndex === index ? 'true' : 'false'}
-            aria-label={`Slide ${index + 1}`}
-            onClick={() => handleIndicatorClick(index)}
+            index={index}
+            currentIndex={currentIndex}
+            onClick={handleIndicatorClick}
           />
         ))}
       </div>
