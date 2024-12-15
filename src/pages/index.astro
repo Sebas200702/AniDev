@@ -1,19 +1,38 @@
 ---
 import Layout from '@layouts/base.astro'
-import AnimeCard from '@components/anime-card.astro'
+import AnimeSliderList from '@components/anime-slider-list.astro'
 import { Carousel } from '@components/carousel'
 import { baseUrl } from '@utils'
-import type { Anime } from '../types'
-const animes: Anime[] | null = await fetch(
-  `${baseUrl}/api/animes?limit_count=10&seach_query=onepiece`
+
+const animeData = await Promise.all([
+  fetch(
+    `${baseUrl}/api/animes?year_filter=2021&type_filter=tv&limit_count=17`
+  ).then((res) => res.json()),
+  fetch(` ${baseUrl}/api/animes?genre_filter=action&limit_count=17`).then(
+    (res) => res.json()
+  ),
+  fetch(`${baseUrl}/api/animes?genre_filter=adventure&limit_count=17`).then(
+    (res) => res.json()
+  ),
+  fetch(`${baseUrl}/api/animes?type_filter=movie&limit_count=17`).then((res) =>
+    res.json()
+  ),
+  fetch(`${baseUrl}/api/animes?studio_filter=mappa&limit_count=17`).then(
+    (res) => res.json()
+  ),
+])
+
+const [top2021, action, adventure, movies, mappa] = animeData.map(
+  ({ anime }) => anime
 )
-  .then((res) => res.json())
-  .then((data) => data.anime)
 ---
 
 <Layout>
   <Carousel client:load />
-  <!-- <section class="flex flex-row flex-wrap p-4 gap-4 mx-auto w-full my-20">
-    {animes?.map((anime: Anime) => <AnimeCard anime={anime} />)}
-  </section> -->
+
+  <AnimeSliderList animes={top2021} title="Top Animes 2021" />
+  <AnimeSliderList animes={action} title="Action" />
+  <AnimeSliderList animes={adventure} title="Time To Adventure" />
+  <AnimeSliderList animes={movies} title="Top Movies" />
+  <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
 </Layout>
