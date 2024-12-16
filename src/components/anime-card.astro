@@ -1,8 +1,8 @@
 ---
-import PlayIcon from '@icons/play-icon.astro'
 import AnimeTag from '@components/anime-tag.astro'
-import { getAnimeType } from '@utils'
-import { normalizeString } from '@utils'
+import PlayIcon from '@icons/play-icon.astro'
+import { getAnimeType, normalizeString } from '@utils'
+import { Image } from 'astro:assets'
 import type { Anime } from 'types'
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { anime, context } = Astro.props
-const { title, image_large_webp, mal_id, type } = anime
+const { title, image_webp, mal_id, type , image_large_webp , image_small_webp } = anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
@@ -23,14 +23,15 @@ const animeType = getAnimeType(type)
     class="m-[10px] flex h-auto w-[160px] flex-col items-center rounded-lg p-2 shadow-md transition-shadow duration-200 ease-in-out group-hover:shadow-xl"
     aria-label={`View details for ${title}`}
   >
-    <img
-      src={image_large_webp}
+    <Image
+      src={image_webp ?? image_large_webp ?? image_small_webp}
       alt={title}
       class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105"
       loading="lazy"
-      width="225"
-      height="330"
-      transition:name={`${slug}_${mal_id}_${context}`}
+      width={225}
+      height={330}
+      transition:name={`${normalizeString(title)}_${mal_id}_${context}`}
+      quality={10}
     />
     <h3
       class="mt-2 max-w-32 truncate text-sm font-semibold text-gray-900 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
