@@ -1,0 +1,20 @@
+---
+import AnimeCard from '@components/anime-card.astro'
+import Layout from '@layouts/base.astro'
+import { baseUrl } from '@utils'
+import type { Anime } from 'types'
+
+const animes: Anime[] = await fetch(
+  `${baseUrl}/api/animes?limit_count=60&genre_filter=sci-fi_action`
+).then((res) => res.json()).then((data) => data.anime)
+---
+
+<Layout>
+  <section class="flex flex-row flex-wrap  p-4">
+    {
+      animes.map((anime: Anime) => (
+        <AnimeCard anime={anime} context="directory" />
+      ))
+    }
+  </section>
+</Layout>
