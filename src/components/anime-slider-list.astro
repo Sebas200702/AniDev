@@ -15,7 +15,7 @@ const { animes, title } = Astro.props
 
   <div class="relative overflow-hidden">
     <button
-      class="prev-button group absolute bottom-0 left-0 z-30 flex h-[90%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
+      class="prev-button group absolute bottom-0 left-0 z-10 flex h-[90%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
       aria-label="Scroll to previous"
     >
       <svg
@@ -72,7 +72,7 @@ const { animes, title } = Astro.props
     </ul>
 
     <button
-      class="next-button group absolute bottom-0 right-0 z-30 flex h-[90%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
+      class="next-button group absolute bottom-0 right-0 z-10 flex h-[90%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
       aria-label="Scroll to next"
     >
       <svg
@@ -100,14 +100,11 @@ const { animes, title } = Astro.props
 
 <script is:inline>
   function init() {
-    const $$ = (
-      selector,
-      parent
-    ) => {
+    const $$ = (selector, parent) => {
       const el = parent
         ? parent.querySelectorAll(selector)
         : document.querySelectorAll(selector)
-      return el ? el  : null
+      return el ? el : null
     }
 
     const $nextButtons = $$('.next-button')
@@ -120,6 +117,15 @@ const { animes, title } = Astro.props
       })
       $prevButtons.forEach((button, index) => {
         button.addEventListener('click', (e) => handleScroll(e, 'prev', index))
+      })
+      $animeLists.forEach((animeList, index) => {
+        updateButtonState(animeList, $prevButtons[index], $nextButtons[index])
+      })
+
+      $animeLists.forEach((animeList, index) => {
+        animeList.addEventListener('scroll', () => {
+          updateButtonState(animeList, $prevButtons[index], $nextButtons[index])
+        })
       })
     }
 
@@ -135,6 +141,27 @@ const { animes, title } = Astro.props
         left: scrollDistance,
         behavior: 'smooth',
       })
+    }
+
+    function updateButtonState(animeList, prevButton, nextButton) {
+      if (animeList.scrollLeft <= 0) {
+        prevButton.disabled = true
+        prevButton.classList.replace('flex', 'hidden')
+      } else {
+        prevButton.disabled = false
+        prevButton.classList.replace('hidden', 'flex')
+      }
+
+      if (
+        animeList.scrollLeft + animeList.clientWidth >=
+        animeList.scrollWidth
+      ) {
+        nextButton.disabled = true
+        nextButton.classList.replace('flex', 'hidden')
+      } else {
+        nextButton.disabled = false
+        nextButton.classList.replace('hidden', 'flex')
+      }
     }
   }
 
