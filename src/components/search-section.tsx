@@ -1,10 +1,10 @@
-import { useEffect, useCallback, useMemo } from 'react'
+import { SearchResults } from '@components/search-results'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
-import type { Anime } from 'types'
-import { baseUrl } from '@utils'
-import { SearchResults } from '@components/search-results'
 import { useSearchStoreResults } from '@store/search-results-store'
+import { baseUrl } from '@utils'
+import { useCallback, useEffect, useMemo } from 'react'
+import type { Anime } from 'types'
 
 export const SearchComponent = () => {
   const { query, setQuery, setResults } = useSearchStoreResults()
