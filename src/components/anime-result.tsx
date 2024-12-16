@@ -1,4 +1,4 @@
-import { getAnimeType, normalizeString, getTagColor } from '@utils'
+import { getAnimeType, getTagColor, normalizeString } from '@utils'
 
 interface Props {
   mal_id: number
