@@ -16,7 +16,7 @@ export const GET: APIRoute = async ({ url }) => {
     rating_filter = 'rating_filter',
   }
 
-  const GetFilters = (
+  const getFilters = (
     filtersEnum: typeof Filters
   ): Record<
     string,
@@ -46,7 +46,7 @@ export const GET: APIRoute = async ({ url }) => {
     return filters
   }
 
-  const filters = GetFilters(Filters)
+  const filters = getFilters(Filters)
 
   const { data, error } = await supabase.rpc('get_animes', filters)
 
