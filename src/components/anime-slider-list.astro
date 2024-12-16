@@ -98,21 +98,21 @@ const { animes, title } = Astro.props
   }
 </style>
 
-<script>
+<script is:inline>
   function init() {
-    const $$ = <T extends NodeListOf<HTMLElement>>(
-      selector: string,
-      parent?: HTMLElement
+    const $$ = (
+      selector,
+      parent
     ) => {
       const el = parent
         ? parent.querySelectorAll(selector)
         : document.querySelectorAll(selector)
-      return el ? (el as T) : null
+      return el ? el  : null
     }
 
-    const $nextButtons = $$<NodeListOf<HTMLButtonElement>>('.next-button')
-    const $prevButtons = $$<NodeListOf<HTMLButtonElement>>('.prev-button')
-    const $animeLists = $$<NodeListOf<HTMLElement>>('.anime-list')
+    const $nextButtons = $$('.next-button')
+    const $prevButtons = $$('.prev-button')
+    const $animeLists = $$('.anime-list')
 
     if ($nextButtons && $animeLists && $prevButtons) {
       $nextButtons.forEach((button, index) => {
@@ -123,7 +123,7 @@ const { animes, title } = Astro.props
       })
     }
 
-    function handleScroll(e: Event, direction: 'next' | 'prev', index: number) {
+    function handleScroll(e, direction, index) {
       if (!$animeLists) return
       const $animeList = $animeLists[index]
       if (!$animeList) return
