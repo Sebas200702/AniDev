@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback, memo } from 'react'
-import { normalizeString, reduceSynopsis } from '@utils'
-import { useFetch } from '@hooks/useFetch'
-import type { Anime } from 'types'
 import { Tag } from '@components/anime-result'
+import { useFetch } from '@hooks/useFetch'
+import { normalizeString, reduceSynopsis } from '@utils'
+import { memo, useCallback, useEffect, useState } from 'react'
+import type { Anime } from 'types'
 
 
 
