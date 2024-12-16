@@ -1,6 +1,5 @@
 import { supabase } from '@libs/supabase'
 import type { APIRoute } from 'astro'
-import { normalizeString } from '@utils'
 
 export const GET: APIRoute = async ({ url }) => {
   enum Filters {
@@ -16,16 +15,33 @@ export const GET: APIRoute = async ({ url }) => {
     year_filter = 'year_filter',
     rating_filter = 'rating_filter',
   }
+
   const GetFilters = (
     filtersEnum: typeof Filters
-  ): Record<string, string | number | boolean | null> => {
-    const filters: Record<string, string | number | boolean | null> = {}
+  ): Record<
+    string,
+    string | number | boolean | string[] | null | undefined
+  > => {
+    const filters: Record<
+      string,
+      string | number | boolean | string[] | null | undefined
+    > = {}
+
     Object.values(filtersEnum).forEach((filter) => {
       const value = url.searchParams.get(filter)
       if (filter === Filters.parental_control) {
-        filters[filter] = !value
+        filters[filter] = value !== 'false'
+        return
       }
-      filters[filter] = value ? normalizeString(value) : null
+      if (filter === Filters.search_query || filter === Filters.page_number || filter === Filters.limit_count ) {
+        filters[filter] = value ?? null
+        return
+      }
+      if (value) {
+        filters[filter] = value.split('_')
+      } else {
+        filters[filter] = null
+      }
     })
     return filters
   }
@@ -33,6 +49,7 @@ export const GET: APIRoute = async ({ url }) => {
   const filters = GetFilters(Filters)
 
   const { data, error } = await supabase.rpc('get_animes', filters)
+
   if (error) {
     console.error(error)
     return new Response(JSON.stringify({ error: error.message }), {
@@ -42,6 +59,7 @@ export const GET: APIRoute = async ({ url }) => {
       },
     })
   }
+
   return new Response(JSON.stringify({ anime: data }), {
     status: 200,
     headers: {
