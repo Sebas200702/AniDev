@@ -1,9 +1,10 @@
 ---
-import Layout from '@layouts/base.astro'
 import AnimeTag from '@components/anime-tag.astro'
-import type { Anime } from '../types'
+import Layout from '@layouts/base.astro'
 import { baseUrl, getAnimeType, normalizeString, reduceSynopsis } from '@utils'
+import { Image } from 'astro:assets'
 import { slide } from 'astro:transitions'
+import type { Anime } from '../types'
 
 const response = await fetch(
   `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
@@ -48,8 +49,7 @@ const {
 } = anime_data
 
 const smallSynopsis = reduceSynopsis(synopsis)
-const context =
-  new URLSearchParams(Astro.url.search).get('context') ?? 'default'
+const context = new URLSearchParams(Astro.url.search).get('context') ?? 'default'
 ---
 
 <Layout>
@@ -58,14 +58,15 @@ const context =
       class="absolute inset-0 left-0 top-0 -z-10 h-[calc(100vh-200px)] w-full overflow-hidden"
     >
       {
-        image_webp && (
-          <img
-            src={image_small_webp}
-            alt={`${title}-banner`}
-            loading="lazy"
-            class="-my-96 aspect-[225/330] w-full opacity-85"
-          />
-        )
+        <Image
+          src={image_small_webp ?? image_large_webp ?? image_webp}
+          alt={`${title}-banner`}
+          loading="lazy"
+          class="-my-96 aspect-[225/330] w-full opacity-85"
+          width={225}
+          height={330}
+          quality={10}
+        />
       }
       <div
         class="absolute inset-0 bg-[rgba(96,120,255,0.25)] backdrop-blur-[6px]"
@@ -73,23 +74,23 @@ const context =
         <div
           id="more-container"
           class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#fff]/100"
-        >
-        </div>
+        />
       </div>
     </div>
 
     <article class="mt-24 flex w-full flex-row gap-20">
-      {
-        image_large_webp && (
-          <img
-            src={image_large_webp}
-            alt={title}
-            class="aspect-[225/330] h-full w-full max-w-56 rounded-lg transition-all ease-in-out"
-            transition:name={`${normalizeString(title)}_${mal_id}_${context}`}
-            loading="lazy"
-          />
-        )
-      }
+      {image_large_webp && (
+        <Image
+          src={image_large_webp ?? image_webp ?? image_small_webp}
+          alt={title}
+          class="aspect-[225/330] h-full w-full max-w-56 rounded-lg transition-all ease-in-out"
+          transition:name={`${normalizeString(title)}_${mal_id}_${context}`}
+          loading="lazy"
+          width={225}
+          height={330}
+          quality={10}
+        />
+      )}
       <div
         class="mt-14 flex w-full flex-col gap-4"
         transition:animate={slide({ duration: '0.4s' })}
@@ -104,25 +105,20 @@ const context =
         </p>
 
         <footer class="mt-10 flex flex-row gap-4">
-          {
-            genres.length > 0 &&
-              genres.map((tag: string) => (
-                <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
-              ))
-          }
+          {genres.length > 0 && genres.map((tag: string) => (
+            <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
+          ))}
         </footer>
       </div>
     </article>
 
-    {
-      trailer_url ? (
-        <div class="mt-10 flex w-full flex-col gap-4">
-          <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
-          <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
-        </div>
-      ) : (
-        <div class="aspect-video h-full w-full rounded-sm" />
-      )
-    }
+    {trailer_url ? (
+      <div class="mt-10 flex w-full flex-col gap-4">
+        <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
+        <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
+      </div>
+    ) : (
+      <div class="aspect-video h-full w-full rounded-sm" />
+    )}
   </section>
 </Layout>
