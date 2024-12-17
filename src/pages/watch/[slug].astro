@@ -10,33 +10,35 @@ const [response] = await fetch(
   .then((res) => res.json())
   .then((res) => res.episode)
 
-const { video_urls } = response
+const { video_url } = response
 
-console.log(video_urls)
 ---
 
 <Layout>
-  <lite-iframe
-    id="lite-iframe"
-    src="https://gogoanime.org.es/streaming.php?slug=one-piece-episode-1122"
-    frameborder="no"
-    allowtransparency="true"
-    allowfullscreen="true"
-    marginwidth="0"
-    marginheight="0"
-    scrolling="no"
-    sandbox="allow-scripts "
-  >
-    <script is:inline>
-      //   window.open = function () {
-      //     console.warn('Intento de abrir una nueva ventana bloqueado.')
-      //     return null
-      //   }
+  <div class="relative mx-auto h-auto w-[80%]">
+    <lite-iframe
+      class="rounded-lg"
+      id="lite-iframe"
+      src={video_url}
+      frameborder="no"
+      allowtransparency="true"
+      allowfullscreen="true"
+      marginwidth="0"
+      marginheight="0"
+      scrolling="no"
+      sandbox="allow-scripts "
+    >
+      <script is:inline>
+        //   window.open = function () {
+        //     console.warn('Intento de abrir una nueva ventana bloqueado.')
+        //     return null
+        //   }
 
-      //   // Opcional: bloquear redirecciones automáticas
-      //   window.onbeforeunload = function () {
-      //     return 'Se intentó abrir una pestaña o redirección.'
-      //   }
-    </script>
-  </lite-iframe>
+        //   // Opcional: bloquear redirecciones automáticas
+        //   window.onbeforeunload = function () {
+        //     return 'Se intentó abrir una pestaña o redirección.'
+        //   }
+      </script>
+    </lite-iframe>
+  </div>
 </Layout>

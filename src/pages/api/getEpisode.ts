@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ url }) => {
   const [, id] = slug.split('_')
 
   const { data, error } = await supabase
-    .from('anime_chapters')
+    .from('anime_episodes')
     .select('*')
     .eq('anime_mal_id', id)
     .eq('episode_id', ep)
