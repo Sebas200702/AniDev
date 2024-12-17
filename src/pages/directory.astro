@@ -1,22 +1,10 @@
 ---
-import AnimeCard from '@components/anime-card.astro'
 import { FilterSection } from '@components/filter-section'
 import Layout from '@layouts/base.astro'
-import { baseUrl } from '@utils'
-import type { Anime } from 'types'
-
-const animes: Anime[] = await fetch(`${baseUrl}/api/animes?limit_count=60`)
-  .then((res) => res.json())
-  .then((data) => data.anime)
 ---
 
 <Layout>
   <section class="flex flex-row flex-wrap p-4">
     <FilterSection client:visible />
-    {
-      animes.map((anime: Anime) => (
-        <AnimeCard anime={anime} context="directory" />
-      ))
-    }
   </section>
 </Layout>
