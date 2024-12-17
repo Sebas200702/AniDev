@@ -11,7 +11,8 @@ interface Props {
 }
 
 const { anime, context } = Astro.props
-const { title, image_webp, mal_id, type , image_large_webp , image_small_webp } = anime
+const { title, image_webp, mal_id, type, image_large_webp, image_small_webp } =
+  anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
