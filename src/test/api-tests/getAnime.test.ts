@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { baseUrl } from '../../utils'
+import { describe, expect, it } from 'vitest'
 import type { Anime } from '../../types'
+import { baseUrl } from '../../utils'
 
 describe('Endpoint test get anime with slug', () => {
   it('should return a anime', async () => {
