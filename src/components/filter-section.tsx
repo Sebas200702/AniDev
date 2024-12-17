@@ -22,15 +22,15 @@ const ArrowIcon = () => {
     </svg>
   )
 }
-const FilterButton = ({ children }: { children: React.ReactNode }) => {
+const FilterItem = ({ children }: { children: React.ReactNode }) => {
   return (
-    <button
-      className="flew-row flex items-center gap-2 rounded-lg bg-slate-50 px-4 py-2 shadow-lg"
-      onClick={() => console.log(children)}
-    >
+    <li className="relative flex w-min flex-row gap-2 rounded-lg bg-slate-50 px-4 py-2 shadow-lg">
       {children}
-      <ArrowIcon />
-    </button>
+      <input type="text" className="" />
+      <button>
+        <ArrowIcon />
+      </button>
+    </li>
   )
 }
 
@@ -38,7 +38,7 @@ const Filter = ({ filter }: { filter: string }) => {
   const filterToShow = filter.replace(/\b\w/g, (l) => l.toUpperCase())
   return (
     <div className="flex w-min flex-col gap-2">
-      <FilterButton>{filterToShow}</FilterButton>
+      <FilterItem>{filterToShow}</FilterItem>
       <ul className="z-10 flex max-w-72 flex-row flex-wrap gap-2 opacity-100 transition-opacity duration-300 ease-in-out"></ul>
     </div>
   )
