@@ -30,5 +30,5 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
     if (storedResults) {
       set({ results: JSON.parse(storedResults), error: null, loading: false })
     }
-  }
+  },
 }))
