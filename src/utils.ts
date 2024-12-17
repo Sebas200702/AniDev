@@ -1,3 +1,48 @@
+export enum AnimeTypes {
+  CM = 'CM',
+  MOVIE = 'Movie',
+  MUSIC = 'Music',
+  ONA = 'ONA',
+  OVA = 'OVA',
+  PV = 'PV',
+  SPECIAL = 'Special',
+  TV = 'TV',
+  TV_SPECIAL = 'TV SPECIAL',
+}
+export enum AnimeGenres {
+  ACTION = 'Action',
+  ADVENTURE = 'Adventure',
+  AVANT_GARDE = 'Avant Garde',
+  AWARD_WINNING = 'Award Winning',
+  BOYS_LOVE = 'Boys Love',
+  COMEDY = 'Comedy',
+  DRAMA = 'Drama',
+  ECCHI = 'Ecchi',
+  EROTICA = 'Erotica',
+  FANTASY = 'Fantasy',
+  GIRLS_LOVE = 'Girls Love',
+  GOURMET = 'Gourmet',
+  HENTAI = 'Hentai',
+  HORROR = 'Horror',
+  MYSTERY = 'Mystery',
+  ROMANCE = 'Romance',
+  SCI_FI = 'Sci-Fi',
+  SLICE_OF_LIFE = 'Slice of Life',
+  SPORTS = 'Sports',
+  SUPERNATURAL = 'Supernatural',
+  SUSPENSE = 'Suspense',
+}
+
+export enum AnimeFilters {
+  Genre = 'genre',
+  Type = 'type',
+  Studio = 'studio',
+  Score = 'score',
+  Status = 'status',
+  Year = 'year',
+  Rating = 'rating',
+}
+
 export const baseUrl =
   process.env.NODE_ENV === 'production'
     ? 'https://animeflix.vercel.app'
@@ -10,26 +55,16 @@ export const reduceSynopsis = (synopsis?: string, size = 450) => {
 export const getAnimeType = (type?: string) => {
   if (!type) return 'Unknown'
   const typeNormalized = type.toLowerCase()
-  enum AnimeType {
-    CM = 'CM',
-    MOVIE = 'Movie',
-    MUSIC = 'Music',
-    ONA = 'ONA',
-    OVA = 'OVA',
-    PV = 'PV',
-    SPECIAL = 'Special',
-    TV = 'TV',
-    TV_SPECIAL = 'TV SPECIAL',
-  }
-  if (typeNormalized === AnimeType.TV.toLowerCase()) return 'Anime'
-  if (typeNormalized === AnimeType.OVA.toLowerCase()) return 'OVA'
-  if (typeNormalized === AnimeType.MOVIE.toLowerCase()) return 'Movie'
-  if (typeNormalized === AnimeType.SPECIAL.toLowerCase()) return 'Special'
-  if (typeNormalized === AnimeType.ONA.toLowerCase()) return 'ONA'
-  if (typeNormalized === AnimeType.TV_SPECIAL.toLowerCase()) return 'Special'
-  if (typeNormalized === AnimeType.MUSIC.toLowerCase()) return 'Music'
-  if (typeNormalized === AnimeType.PV.toLowerCase()) return 'PV'
-  if (typeNormalized === AnimeType.CM.toLowerCase()) return 'CM'
+
+  if (typeNormalized === AnimeTypes.TV.toLowerCase()) return 'Anime'
+  if (typeNormalized === AnimeTypes.OVA.toLowerCase()) return 'OVA'
+  if (typeNormalized === AnimeTypes.MOVIE.toLowerCase()) return 'Movie'
+  if (typeNormalized === AnimeTypes.SPECIAL.toLowerCase()) return 'Special'
+  if (typeNormalized === AnimeTypes.ONA.toLowerCase()) return 'ONA'
+  if (typeNormalized === AnimeTypes.TV_SPECIAL.toLowerCase()) return 'Special'
+  if (typeNormalized === AnimeTypes.MUSIC.toLowerCase()) return 'Music'
+  if (typeNormalized === AnimeTypes.PV.toLowerCase()) return 'PV'
+  if (typeNormalized === AnimeTypes.CM.toLowerCase()) return 'CM'
   return 'Unknown'
 }
 export const normalizeString = (str: string) => {
@@ -38,32 +73,6 @@ export const normalizeString = (str: string) => {
 
 export const createHrefToTag = (tag: string) => {
   return `/directory?tag=${tag}`
-}
-
-export const detectTypeOfFilterOfTag = (tag: string) => {
-  enum AnimeGenres {
-    ACTION = 'Action',
-    ADVENTURE = 'Adventure',
-    AVANT_GARDE = 'Avant Garde',
-    AWARD_WINNING = 'Award Winning',
-    BOYS_LOVE = 'Boys Love',
-    COMEDY = 'Comedy',
-    DRAMA = 'Drama',
-    ECCHI = 'Ecchi',
-    EROTICA = 'Erotica',
-    FANTASY = 'Fantasy',
-    GIRLS_LOVE = 'Girls Love',
-    GOURMET = 'Gourmet',
-    HENTAI = 'Hentai',
-    HORROR = 'Horror',
-    MYSTERY = 'Mystery',
-    ROMANCE = 'Romance',
-    SCI_FI = 'Sci-Fi',
-    SLICE_OF_LIFE = 'Slice of Life',
-    SPORTS = 'Sports',
-    SUPERNATURAL = 'Supernatural',
-    SUSPENSE = 'Suspense',
-  }
 }
 
 export const getTagColor = (type: string) => {
