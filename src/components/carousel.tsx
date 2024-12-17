@@ -4,25 +4,33 @@ import { normalizeString, reduceSynopsis } from '@utils'
 import { memo, useCallback, useEffect, useState } from 'react'
 import type { Anime } from 'types'
 
-
-
-const Indicator = memo(({ index, currentIndex, onClick }: { index: number, currentIndex: number, onClick: (index: number) => void }) => {
-  return (
-    <button
-      onClick={() => onClick(index)}
-      className={`h-3 w-3 rounded-full transition-colors ${
-        currentIndex === index ? 'bg-blue-500' : 'bg-white/50'
-      }`}
-      aria-current={currentIndex === index ? 'true' : 'false'}
-      aria-label={`Slide ${index + 1}`}
-    />
-  )
-})
+const Indicator = memo(
+  ({
+    index,
+    currentIndex,
+    onClick,
+  }: {
+    index: number
+    currentIndex: number
+    onClick: (index: number) => void
+  }) => {
+    return (
+      <button
+        onClick={() => onClick(index)}
+        className={`h-3 w-3 rounded-full transition-colors ${
+          currentIndex === index ? 'bg-blue-500' : 'bg-white/50'
+        }`}
+        aria-current={currentIndex === index ? 'true' : 'false'}
+        aria-label={`Slide ${index + 1}`}
+      />
+    )
+  }
+)
 
 const LoadingCarousel = () => (
   <div className="relative -mx-[103px] h-[500px] animate-pulse bg-gray-200">
     <div className="relative flex h-full w-full flex-shrink-0 items-center gap-20 px-8">
-      <div className="z-10 animate-pulse ml-12 flex h-[90%] w-1/4 items-center justify-center rounded-lg bg-gray-400"></div>
+      <div className="z-10 ml-12 flex h-[90%] w-1/4 animate-pulse items-center justify-center rounded-lg bg-gray-400"></div>
       <div className="z-10 mr-8 flex-1 p-6 text-white">
         <div className="mb-4 mt-4 h-8 w-[60%] animate-pulse rounded-lg bg-gray-400"></div>
         <div className="mb-6 h-20 w-full animate-pulse rounded-lg bg-gray-400"></div>
@@ -39,8 +47,6 @@ export const Carousel = () => {
   const { data: banners, loading } = useFetch<Anime[]>({
     url: '/api/animes?limit_count=10&type_filter=tv&status_filter=CurrentlyAiring',
   })
-
-
 
   const handlePrev = useCallback(() => {
     if (!banners) return
@@ -109,7 +115,9 @@ export const Carousel = () => {
                   loading="lazy"
                 />
               </a>
-              <div className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} z-10 text-white`}>
+              <div
+                className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} z-10 text-white`}
+              >
                 <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-md">
                   {anime.title}
                 </h2>
