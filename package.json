@@ -49,5 +49,8 @@
       "plugin:astro/jsx-a11y-recommended",
       "plugin:@typescript-eslint/recommended"
     ]
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
