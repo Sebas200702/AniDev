@@ -33,7 +33,11 @@ export const GET: APIRoute = async ({ url }) => {
         filters[filter] = value !== 'false'
         return
       }
-      if (filter === Filters.search_query || filter === Filters.page_number || filter === Filters.limit_count ) {
+      if (
+        filter === Filters.search_query ||
+        filter === Filters.page_number ||
+        filter === Filters.limit_count
+      ) {
         filters[filter] = value ?? null
         return
       }
