@@ -5,21 +5,65 @@ import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils'
 
 const animeData = await Promise.all([
-  fetch(
-    `${baseUrl}/api/animes?year_filter=2021&type_filter=tv&limit_count=17`
-  ).then((res) => res.json()),
-  fetch(` ${baseUrl}/api/animes?genre_filter=action&limit_count=17`).then(
-    (res) => res.json()
-  ),
-  fetch(`${baseUrl}/api/animes?genre_filter=adventure&limit_count=17`).then(
-    (res) => res.json()
-  ),
-  fetch(`${baseUrl}/api/animes?type_filter=movie&limit_count=17`).then((res) =>
-    res.json()
-  ),
-  fetch(`${baseUrl}/api/animes?studio_filter=mappa&limit_count=17`).then(
-    (res) => res.json()
-  ),
+  fetch(`${baseUrl}/api/animes?year_filter=2021&type_filter=tv&limit_count=17`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch year 2021 animes: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      console.error(err)
+      return { anime: [] } // Fallback to an empty array
+    }),
+
+  fetch(`${baseUrl}/api/animes?genre_filter=action&limit_count=17`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch action animes: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      console.error(err)
+      return { anime: [] }
+    }),
+
+  fetch(`${baseUrl}/api/animes?genre_filter=adventure&limit_count=17`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch adventure animes: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      console.error(err)
+      return { anime: [] }
+    }),
+
+  fetch(`${baseUrl}/api/animes?type_filter=movie&limit_count=17`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch movie animes: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      console.error(err)
+      return { anime: [] }
+    }),
+
+  fetch(`${baseUrl}/api/animes?studio_filter=mappa&limit_count=17`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch Mappa animes: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      console.error(err)
+      return { anime: [] }
+    }),
 ])
 
 const [top2021, action, adventure, movies, mappa] = animeData.map(
