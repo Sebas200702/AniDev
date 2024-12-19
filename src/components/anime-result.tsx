@@ -1,4 +1,10 @@
-import { getAnimeType, getTagColor, normalizeString } from '@utils'
+import {
+  getAnimeType,
+  getTagColor,
+  normalizeString,
+  createImageUrlProxy,
+  baseUrl,
+} from '@utils'
 
 interface Props {
   mal_id: number
@@ -45,7 +51,7 @@ export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => (
       className="flex h-28 w-full flex-row items-center gap-5 rounded-lg p-3 shadow-md transition-shadow duration-200 ease-in-out group-hover:shadow-xl"
     >
       <img
-        src={image_webp}
+        src={createImageUrlProxy(baseUrl, image_webp)}
         alt={title}
         loading="lazy"
         className="aspect-[225/330] h-full rounded-lg transition-all ease-in-out group-hover:scale-105"
