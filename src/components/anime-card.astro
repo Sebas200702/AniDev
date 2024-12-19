@@ -20,6 +20,7 @@ const { title, image_webp, mal_id, type } = anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
+const imageUrl = createImageUrlProxy(image_webp)
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
@@ -29,7 +30,7 @@ const animeType = getAnimeType(type)
     aria-label={`View details for ${title}`}
   >
     <Image
-      src={createImageUrlProxy(baseUrl, image_webp)}
+      src={imageUrl}
       alt={title}
       class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105"
       loading="lazy"
