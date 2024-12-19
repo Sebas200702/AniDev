@@ -94,3 +94,7 @@ export const getTagColor = (type: string) => {
 
   return tagColor
 }
+
+export const createImageUrlProxy = (baseUrl: string, imageUrl: string) => {
+  return `${baseUrl}/api/proxy-images?url=${imageUrl}`
+}
