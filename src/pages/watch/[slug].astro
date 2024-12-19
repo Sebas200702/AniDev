@@ -4,41 +4,44 @@ import { baseUrl } from '@utils'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
 
-const [response] = await fetch(
-  `${baseUrl}/api/getEpisode?slug=${Astro.params.slug}&ep=${episode}`
-)
-  .then((res) => res.json())
-  .then((res) => res.episode)
-
-const { video_url } = response
-
+// Fetch y parseo de datos con pre-rendering para mejorar el rendimiento
+let video_url = ''
+try {
+  const response = await fetch(
+    `${baseUrl}/api/getEpisode?slug=${Astro.params.slug}&ep=${episode}`
+  )
+  const data = await response.json()
+  video_url = data.episode[0].video_url
+} catch (error) {
+  console.error('Error al obtener el video:', error)
+}
 ---
 
 <Layout>
-  <div class="relative mx-auto h-auto w-[80%]">
-    <lite-iframe
-      class="rounded-lg"
-      id="lite-iframe"
-      src={video_url}
-      frameborder="no"
-      allowtransparency="true"
-      allowfullscreen="true"
-      marginwidth="0"
-      marginheight="0"
-      scrolling="no"
-      sandbox="allow-scripts "
-    >
-      <script is:inline>
-        //   window.open = function () {
-        //     console.warn('Intento de abrir una nueva ventana bloqueado.')
-        //     return null
-        //   }
+  <!-- Preload del recurso del video -->
+  {video_url && (
+    <link rel="preload" href={video_url} as="fetch" type="video/mp4" />
+  )}
 
-        //   // Opcional: bloquear redirecciones automáticas
-        //   window.onbeforeunload = function () {
-        //     return 'Se intentó abrir una pestaña o redirección.'
-        //   }
-      </script>
-    </lite-iframe>
+  <div class="relative mx-auto h-auto w-[80%]">
+    {video_url ? (
+      <lite-iframe
+        class="rounded-lg"
+        id="lite-iframe"
+        src={video_url}
+        frameborder="0"
+        allowtransparency="true"
+        allowfullscreen="true"
+        marginwidth="0"
+        marginheight="0"
+        scrolling="no"
+        sandbox="allow-scripts"
+        loading="lazy" <!-- Lazy loading del iframe -->
+      >
+        <script is:inline></script>
+      </lite-iframe>
+    ) : (
+      <p class="text-center text-gray-500">El video no está disponible.</p>
+    )}
   </div>
 </Layout>
