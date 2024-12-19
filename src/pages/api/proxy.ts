@@ -1,54 +1,54 @@
-import type { APIRoute } from 'astro';
-import sharp from 'sharp';
+import type { APIRoute } from 'astro'
+import sharp from 'sharp'
 
 export const GET: APIRoute = async ({ url }) => {
-  const imageUrl = url.searchParams.get('url');
-  const width = parseInt(url.searchParams.get('w') ?? '0', 10);
-  const quality = parseInt(url.searchParams.get('q') ?? '75', 10);
-  const format = url.searchParams.get('format') ?? 'webp';
+  const imageUrl = url.searchParams.get('url')
+  const width = parseInt(url.searchParams.get('w') ?? '0', 10)
+  const quality = parseInt(url.searchParams.get('q') ?? '85', 10)
+  const format = url.searchParams.get('format') ?? 'webp'
 
   if (!imageUrl) {
-    return new Response('Missing url', { status: 400 });
+    return new Response('Missing url', { status: 400 })
   }
 
   try {
     // Descarga la imagen original
-    const response = await fetch(imageUrl);
+    const response = await fetch(imageUrl)
 
     if (!response.ok) {
-      return new Response('Failed to fetch image', { status: 500 });
+      return new Response('Failed to fetch image', { status: 500 })
     }
 
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const arrayBuffer = await response.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
 
     // Optimiza la imagen usando Sharp
-    let image = sharp(buffer);
+    let image = sharp(buffer)
 
     if (width > 0) {
-      image = image.resize({ width });
+      image = image.resize({ width })
     }
 
     // Aplica el formato adecuado (WebP por defecto, AVIF si se solicita)
     if (format === 'avif') {
-      image = image.avif({ quality });
+      image = image.avif({ quality })
     } else {
-      image = image.webp({ quality });
+      image = image.webp({ quality })
     }
 
-    const optimizedBuffer = await image.toBuffer();
+    const optimizedBuffer = await image.toBuffer()
 
     // Determina el tipo MIME según el formato
-    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp';
+    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Cache-Control': 'public, max-age=31536000',
       },
-    });
+    })
   } catch (error) {
-    console.error('Error processing image:', error);
-    return new Response('Error processing image', { status: 500 });
+    console.error('Error processing image:', error)
+    return new Response('Error processing image', { status: 500 })
   }
-};
+}
