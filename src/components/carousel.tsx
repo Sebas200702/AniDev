@@ -1,6 +1,11 @@
 import { Tag } from '@components/anime-result'
 import { useFetch } from '@hooks/useFetch'
-import { normalizeString, reduceSynopsis } from '@utils'
+import {
+  normalizeString,
+  reduceSynopsis,
+  baseUrl,
+  createImageUrlProxy,
+} from '@utils'
 import { memo, useCallback, useEffect, useState } from 'react'
 import type { Anime } from 'types'
 
@@ -100,7 +105,7 @@ export const Carousel = () => {
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${anime.banner_image ? anime.banner_image : anime.image_large_webp})`,
+                  backgroundImage: `url(${createImageUrlProxy(baseUrl, anime.banner_image ? anime.banner_image : anime.image_large_webp)})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
@@ -109,7 +114,7 @@ export const Carousel = () => {
                 className="z-10 flex h-full w-1/3 items-center justify-center"
               >
                 <img
-                  src={anime.image_large_webp}
+                  src={createImageUrlProxy(baseUrl, anime.image_large_webp)}
                   className="h-[90%] w-auto rounded-lg object-contain shadow-lg"
                   alt={anime.title}
                   loading="lazy"
