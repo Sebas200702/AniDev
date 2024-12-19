@@ -1,7 +1,13 @@
 ---
 import AnimeTag from '@components/anime-tag.astro'
 import Layout from '@layouts/base.astro'
-import { baseUrl, getAnimeType, normalizeString, reduceSynopsis } from '@utils'
+import {
+  baseUrl,
+  getAnimeType,
+  normalizeString,
+  reduceSynopsis,
+  createImageUrlProxy,
+} from '@utils'
 import { Image } from 'astro:assets'
 import { slide } from 'astro:transitions'
 import type { Anime } from '../types'
@@ -52,6 +58,8 @@ const smallSynopsis = reduceSynopsis(synopsis)
 const slug = normalizeString(title)
 const context =
   new URLSearchParams(Astro.url.search).get('context') ?? 'default'
+const imageUrl = createImageUrlProxy(baseUrl, image_webp)
+const imageLargeUrl = createImageUrlProxy(baseUrl, image_large_webp)
 ---
 
 <Layout>
@@ -62,7 +70,7 @@ const context =
       {
         (
           <Image
-            src={image_small_webp ?? image_large_webp ?? image_webp}
+            src={imageUrl}
             alt={`${title}-banner`}
             loading="lazy"
             class="-my-96 aspect-[225/330] w-full opacity-85"
@@ -87,7 +95,7 @@ const context =
       {
         image_large_webp && (
           <Image
-            src={image_large_webp ?? image_webp ?? image_small_webp}
+            src={imageLargeUrl}
             alt={title}
             class="aspect-[225/330] h-full w-full max-w-56 rounded-lg transition-all ease-in-out"
             transition:name={`${slug}_${mal_id}_${context}`}
@@ -123,7 +131,7 @@ const context =
     </article>
     {
       trailer_url ? (
-        <div class="mt-10 flex w-[70%] flex-col gap-4 mx-auto">
+        <div class="mx-auto mt-10 flex w-[70%] flex-col gap-4">
           <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
           <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
         </div>
