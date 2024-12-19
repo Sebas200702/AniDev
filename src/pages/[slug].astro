@@ -58,8 +58,6 @@ const smallSynopsis = reduceSynopsis(synopsis)
 const slug = normalizeString(title)
 const context =
   new URLSearchParams(Astro.url.search).get('context') ?? 'default'
-const imageUrl = createImageUrlProxy(baseUrl, image_webp)
-const imageLargeUrl = createImageUrlProxy(baseUrl, image_large_webp)
 ---
 
 <Layout>
@@ -70,7 +68,7 @@ const imageLargeUrl = createImageUrlProxy(baseUrl, image_large_webp)
       {
         (
           <Image
-            src={imageUrl}
+            src={createImageUrlProxy(baseUrl, image_webp)}
             alt={`${title}-banner`}
             loading="lazy"
             class="-my-96 aspect-[225/330] w-full opacity-85"
@@ -95,7 +93,7 @@ const imageLargeUrl = createImageUrlProxy(baseUrl, image_large_webp)
       {
         image_large_webp && (
           <Image
-            src={imageLargeUrl}
+            src={createImageUrlProxy(baseUrl, image_large_webp)}
             alt={title}
             class="aspect-[225/330] h-full w-full max-w-56 rounded-lg transition-all ease-in-out"
             transition:name={`${slug}_${mal_id}_${context}`}
