@@ -4,7 +4,7 @@ import sharp from 'sharp'
 export const GET: APIRoute = async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
-  const quality = parseInt(url.searchParams.get('q') ?? '85', 10)
+  const quality = parseInt(url.searchParams.get('q') ?? '70', 10)
   const format = url.searchParams.get('format') ?? 'webp'
 
   if (!imageUrl) {
