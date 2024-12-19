@@ -20,7 +20,7 @@ const { title, image_webp, mal_id, type } = anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
-const imageUrl = createImageUrlProxy(image_webp)
+const imageUrl = createImageUrlProxy(image_webp , '225', '90', 'webp')
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
