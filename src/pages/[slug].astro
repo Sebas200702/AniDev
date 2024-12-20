@@ -58,8 +58,8 @@ const smallSynopsis = reduceSynopsis(synopsis)
 const slug = normalizeString(title)
 const context =
   new URLSearchParams(Astro.url.search).get('context') ?? 'default'
-const imageUrl = createImageUrlProxy(image_webp)
-const imageLargeUrl = createImageUrlProxy(image_large_webp)
+const imageUrl = createImageUrlProxy(image_webp , '0', '50', 'webp')
+const imageLargeUrl = createImageUrlProxy(image_large_webp , '0', '50', 'webp')
 ---
 
 <Layout>
