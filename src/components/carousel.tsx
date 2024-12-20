@@ -105,7 +105,7 @@ export const Carousel = () => {
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp , '0', '50', 'webp')})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp , '720', '50', 'webp')})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
