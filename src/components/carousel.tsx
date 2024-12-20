@@ -105,7 +105,7 @@ export const Carousel = () => {
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy( anime.banner_image ? anime.banner_image : anime.image_large_webp)})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp , '0', '50', 'webp')})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
@@ -114,7 +114,7 @@ export const Carousel = () => {
                 className="z-10 flex h-full w-1/3 items-center justify-center"
               >
                 <img
-                  src={createImageUrlProxy( anime.image_large_webp)}
+                  src={createImageUrlProxy(anime.image_large_webp , '0', '50', 'webp')}
                   className="h-[90%] w-auto rounded-lg object-contain shadow-lg"
                   alt={anime.title}
                   loading="lazy"
