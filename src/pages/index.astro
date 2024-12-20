@@ -4,22 +4,17 @@ import { Carousel } from '@components/carousel'
 import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils'
 
-const animeData = await Promise.all([
-  fetch(
-    `${baseUrl}/api/animes?year_filter=2021&type_filter=tv&limit_count=17`
-  ).then((res) => res.json()),
-  fetch(` ${baseUrl}/api/animes?genre_filter=action&limit_count=17`).then(
-    (res) => res.json()
-  ),
-  fetch(`${baseUrl}/api/animes?genre_filter=adventure&limit_count=17`).then(
-    (res) => res.json()
-  ),
-  fetch(`${baseUrl}/api/animes?type_filter=movie&limit_count=17`).then((res) =>
+const fetchAnimeData = (query: string) =>
+  fetch(`${baseUrl}/api/animes?${query}&limit_count=17`).then((res) =>
     res.json()
-  ),
-  fetch(`${baseUrl}/api/animes?studio_filter=mappa&limit_count=17`).then(
-    (res) => res.json()
-  ),
+  )
+
+const animeData = await Promise.all([
+  fetchAnimeData('year_filter=2021&type_filter=tv'),
+  fetchAnimeData('genre_filter=action'),
+  fetchAnimeData('genre_filter=adventure'),
+  fetchAnimeData('type_filter=movie'),
+  fetchAnimeData('studio_filter=mappa'),
 ])
 
 const [top2021, action, adventure, movies, mappa] = animeData.map(
@@ -28,11 +23,23 @@ const [top2021, action, adventure, movies, mappa] = animeData.map(
 ---
 
 <Layout>
-  <Carousel client:load />
+  <Carousel client:idle />
 
-  <AnimeSliderList animes={top2021} title="Top Animes 2021" />
-  <AnimeSliderList animes={action} title="Action" />
-  <AnimeSliderList animes={adventure} title="Time To Adventure" />
-  <AnimeSliderList animes={movies} title="Top Movies" />
-  <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
+  {
+    top2021?.length && (
+      <AnimeSliderList animes={top2021} title="Top Animes 2021" />
+    )
+  }
+  {action?.length && <AnimeSliderList animes={action} title="Action" />}
+  {
+    adventure?.length && (
+      <AnimeSliderList animes={adventure} title="Time To Adventure" />
+    )
+  }
+  {movies?.length && <AnimeSliderList animes={movies} title="Top Movies" />}
+  {
+    mappa?.length && (
+      <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
+    )
+  }
 </Layout>
