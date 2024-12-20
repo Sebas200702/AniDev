@@ -20,7 +20,7 @@ const { title, image_webp, mal_id, type } = anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
-const imageUrl = createImageUrlProxy(image_webp , '225', '90', 'webp')
+const imageUrl = createImageUrlProxy(image_webp , '0', '50', 'webp')
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
@@ -46,7 +46,7 @@ const imageUrl = createImageUrlProxy(image_webp , '225', '90', 'webp')
       {title}
     </h3>
     <a
-      href={`/play/${slug}?ep=1`}
+      href={`/watch/${slug}_${mal_id}?ep=1`}
       class="absolute bottom-3 left-0 right-0 z-10 flex w-full items-center justify-center text-blue-500 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
       aria-label={`Play first episode of ${title}`}
     >
