@@ -3,8 +3,6 @@ import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
-
-// Fetch y parseo de datos con pre-rendering para mejorar el rendimiento
 let video_url = ''
 try {
   const response = await fetch(
