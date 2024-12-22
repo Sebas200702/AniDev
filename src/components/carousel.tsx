@@ -33,16 +33,18 @@ const Indicator = memo(
 )
 
 const LoadingCarousel = () => (
-  <div className="relative -mx-[103px] h-[500px] animate-pulse bg-gray-200">
-    <div className="relative flex h-full w-full flex-shrink-0 items-center gap-20 px-8">
-      <div className="z-10 ml-12 flex h-[90%] w-1/4 animate-pulse items-center justify-center rounded-lg bg-gray-400"></div>
-      <div className="z-10 mr-8 flex-1 p-6 text-white">
-        <div className="mb-4 mt-4 h-8 w-[60%] animate-pulse rounded-lg bg-gray-400"></div>
-        <div className="mb-6 h-20 w-full animate-pulse rounded-lg bg-gray-400"></div>
+  <div className="relative h-[500px] animate-pulse bg-gray-200">
+    <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 md:flex-row py-4">
+      <div className="z-10 ml-5 flex h-auto max-h-[60%] w-full items-center justify-center p-4 md:h-full md:max-h-full md:w-1/3">
+        <div className="mx-auto aspect-[225/330] md:h-full h-auto md:max-h-[90%] w-full md:max-w-full md:w-auto animate-pulse rounded-lg  bg-gray-400 max-w-52"></div>
+      </div>
+      <div className="z-10 mx-auto  flex w-full flex-col items-center p-6 text-white md:ml-8 md:mr-16 md:items-start">
+        <div className="z-30 mb-4 mt-4 h-8 w-full max-w-[70%] animate-pulse rounded-lg bg-gray-400 md:w-[60%]"></div>
+        <div className="mb-6 hidden h-20 w-full animate-pulse rounded-lg bg-gray-400 md:flex"></div>
         <div className="h-8 w-[40%] animate-pulse rounded-lg bg-gray-400"></div>
       </div>
     </div>
-    <div className="absolute bottom-6 left-1/2 z-30 flex h-6 w-[20%] -translate-x-1/2 animate-pulse rounded-lg bg-gray-400"></div>
+    <div className="absolute bottom-6 left-1/2 z-30 flex h-6 w-60 -translate-x-1/2 animate-pulse rounded-lg bg-gray-400"></div>
   </div>
 )
 
@@ -80,13 +82,11 @@ export const Carousel = () => {
     return () => clearInterval(interval)
   }, [banners, handleNext])
 
-  if (loading || !banners || banners.length === 0) {
-    return <LoadingCarousel />
-  }
+  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
 
   return (
     <div
-      className={`realtive left-0 right-0 -mx-[103px] h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-500' : 'opacity-0'} overflow-x-hidden`}
+      className={`realtive left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-500' : 'opacity-0'} overflow-x-hidden`}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -100,36 +100,41 @@ export const Carousel = () => {
           {banners.map((anime, index) => (
             <div
               key={anime.mal_id}
-              className={`relative flex h-full w-full flex-shrink-0 items-center px-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+              className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center px-8 md:justify-normal ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
             >
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp , '720', '50', 'webp')})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp, '0', '20', 'webp')})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
               <a
                 href={`${normalizeString(anime.title)}_${anime.mal_id}`}
-                className="z-10 flex h-full w-1/3 items-center justify-center"
+                className="z-10 flex h-auto max-h-[60%] w-full items-center justify-center p-4 md:h-full md:max-h-[90%] md:w-1/4"
               >
                 <img
-                  src={createImageUrlProxy(anime.image_large_webp , '0', '50', 'webp')}
-                  className="h-[90%] w-auto rounded-lg object-contain shadow-lg"
+                  src={createImageUrlProxy(
+                    anime.image_large_webp,
+                    '0',
+                    '50',
+                    'webp'
+                  )}
+                  className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg shadow-lg md:max-h-[90%]"
                   alt={anime.title}
                   loading="lazy"
                 />
               </a>
               <div
-                className={`flex-1 p-6 ${index % 2 === 0 ? 'ml-8' : 'mr-8'} z-10 text-white`}
+                className={`flex-1 p-6 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 text-white`}
               >
-                <h2 className="mb-4 text-3xl font-bold text-white drop-shadow-md">
+                <h2 className="text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-3xl">
                   {anime.title}
                 </h2>
-                <p className="mb-4 text-base text-white drop-shadow">
+                <p className="mb-4 hidden text-base text-white drop-shadow md:flex">
                   {reduceSynopsis(anime.synopsis, 300)}
                 </p>
-                <footer className="mt-4 flex flex-row gap-2">
+                <footer className="mx-auto mt-4 flex w-full flex-row justify-center gap-2 md:justify-normal">
                   {anime.genres.map((tag: string) => (
                     <Tag key={tag} tag={tag} style="w-auto" />
                   ))}
