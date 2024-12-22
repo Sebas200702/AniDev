@@ -1,7 +1,7 @@
 ---
 import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 ---
 
 <html lang="en">
@@ -18,7 +18,7 @@ import { ViewTransitions } from 'astro:transitions'
     <script
       src="https://unpkg.com/lite-iframe@0.3.0/dist/lite-iframe.esm.js"
       type="module"></script>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <div
@@ -28,7 +28,9 @@ import { ViewTransitions } from 'astro:transitions'
       <header class="[grid-area:header]">
         <NavBar />
       </header>
-      <main class="mx-auto mt-16 w-full max-w-6xl [grid-area:main]">
+      <main
+        class="mx-auto mt-16 w-full max-w-[calc(100dvw-8px)] [grid-area:main]"
+      >
         <slot />
       </main>
       <footer class="[grid-area:footer]">
