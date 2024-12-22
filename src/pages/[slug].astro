@@ -54,26 +54,30 @@ const {
   banner_image,
 } = anime_data
 
-const smallSynopsis = reduceSynopsis(synopsis)
+const smallSynopsis = reduceSynopsis(synopsis, 600)
 const slug = normalizeString(title)
 const context =
   new URLSearchParams(Astro.url.search).get('context') ?? 'default'
-const imageUrl = createImageUrlProxy(image_webp , '0', '50', 'webp')
-const imageLargeUrl = createImageUrlProxy(image_large_webp , '0', '50', 'webp')
+const bannerUrl = createImageUrlProxy(
+  banner_image ?? image_large_webp,
+  '0',
+  '50',
+  'webp'
+)
+
+const imageLargeUrl = createImageUrlProxy(image_large_webp, '0', '50', 'webp')
 ---
 
 <Layout>
-  <section class="flex flex-col gap-8 p-4">
-    <div
-      class="absolute inset-0 left-0 top-0 -z-10 h-[calc(100vh-200px)] w-full overflow-hidden"
-    >
+  <section class="flex flex-col gap-8 p-4 md:mx-20 xl:mx-40">
+    <div class="absolute inset-0 left-0 top-0 -z-10 w-full overflow-hidden max-h-[calc(100dvh-300px)]">
       {
         (
           <Image
-            src={imageUrl}
+            src={bannerUrl}
             alt={`${title}-banner`}
             loading="lazy"
-            class="-my-96 aspect-[225/330] w-full opacity-85"
+            class={`${banner_image ? 'h-auto w-full' : '-my-96 aspect-[225/330] w-full opacity-85'}`}
             width={225}
             height={330}
             quality={10}
@@ -81,23 +85,24 @@ const imageLargeUrl = createImageUrlProxy(image_large_webp , '0', '50', 'webp')
         )
       }
       <div
-        class="absolute inset-0 bg-[rgba(96,120,255,0.25)] backdrop-blur-[6px]"
+        class="absolute inset-0 bg-[rgba(216,222,255,0.25)] backdrop-blur-[8px]"
       >
         <div
-          id="more-container"
           class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#fff]/100"
         >
         </div>
       </div>
     </div>
 
-    <article class="mt-24 flex w-full flex-row gap-20">
+    <article
+      class="flex w-full flex-col items-center md:gap-20 gap-4 md:mt-24 md:flex-row"
+    >
       {
         image_large_webp && (
           <Image
             src={imageLargeUrl}
             alt={title}
-            class="aspect-[225/330] h-full w-full max-w-56 rounded-lg transition-all ease-in-out"
+            class="aspect-[225/330] h-full w-full max-w-full rounded-lg transition-all ease-in-out md:max-w-80"
             transition:name={`${slug}_${mal_id}_${context}`}
             loading="lazy"
             width={225}
@@ -107,15 +112,19 @@ const imageLargeUrl = createImageUrlProxy(image_large_webp , '0', '50', 'webp')
         )
       }
       <div
-        class="mt-14 flex w-full flex-col gap-4"
+        class="flex w-full flex-col justify-center gap-4"
         transition:animate={slide({ duration: '0.4s' })}
       >
-        <header class="flex max-w-2xl flex-col gap-4">
-          <h2 class="text-pretty text-3xl font-bold text-gray-900">{title}</h2>
+        <header class="flex w-full flex-col gap-4">
+          <h2
+            class="w-full text-3xl text-pretty font-bold text-gray-900 md:mb-12 md:text-wrap md:text-4xl xl:text-5xl"
+          >
+            {title}
+          </h2>
           <AnimeTag tag={getAnimeType(type)} type={getAnimeType(type)} />
         </header>
 
-        <p class="text-sm text-gray-800">
+        <p class="text-sm text-gray-800 md:text-base">
           {smallSynopsis}
         </p>
 
@@ -131,7 +140,7 @@ const imageLargeUrl = createImageUrlProxy(image_large_webp , '0', '50', 'webp')
     </article>
     {
       trailer_url ? (
-        <div class="mx-auto mt-10 flex w-[70%] flex-col gap-4">
+        <div class="mx-auto mt-10 flex w-full flex-col gap-4 p-2 md:w-[70%]">
           <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
           <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
         </div>
