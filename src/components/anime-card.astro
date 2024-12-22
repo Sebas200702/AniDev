@@ -1,6 +1,7 @@
 ---
 import AnimeTag from '@components/anime-tag.astro'
 import PlayIcon from '@icons/play-icon.astro'
+import AddToListIcon from '@icons/add-to-list-icon.astro'
 import {
   getAnimeType,
   normalizeString,
@@ -16,46 +17,72 @@ interface Props {
 }
 
 const { anime, context } = Astro.props
-const { title, image_webp, mal_id, type } = anime
+const { title, image_large_webp, mal_id, type } = anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
-const imageUrl = createImageUrlProxy(image_webp , '0', '50', 'webp')
+const imageUrl = createImageUrlProxy(image_large_webp, '0', '50', 'webp')
+const actions = [
+  {
+    name: 'Play',
+    icon: PlayIcon,
+    href: `/watch/${slug}_${mal_id}?ep=1`,
+  },
+  {
+    name: 'Add to list',
+    icon: AddToListIcon,
+    href: `/add-to-list/${slug}_${mal_id}`,
+  },
+]
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
   <a
     href={`/${slug}_${mal_id}?context=${context}`}
-    class="m-[10px] flex h-auto w-[160px] flex-col items-center rounded-lg p-2 shadow-md transition-shadow duration-200 ease-in-out group-hover:shadow-xl"
+    class="flex h-auto w-[calc((100dvw-8px)/2.4)] flex-col items-center rounded-lg p-4 md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]"
     aria-label={`View details for ${title}`}
   >
-    <Image
-      src={imageUrl}
-      alt={title}
-      class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105"
-      loading="lazy"
-      width={225}
-      height={330}
-      transition:name={`${normalizeString(title)}_${mal_id}_${context}`}
-      quality={10}
-    />
+    <picture class="relative">
+      <Image
+        src={imageUrl}
+        alt={title}
+        class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105"
+        loading="lazy"
+        width={225}
+        height={330}
+        transition:name={`${normalizeString(title)}_${mal_id}_${context}`}
+        quality={10}
+      />
+      <div
+        class="absolute bottom-0 left-0 h-full w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out group-hover:scale-105 group-hover:opacity-100"
+      >
+      </div>
+    </picture>
+
     <h3
-      class="mt-2 max-w-32 truncate text-sm font-semibold text-gray-900 transition-opacity duration-200 ease-in-out group-hover:opacity-0"
+      class="mt-4 w-full max-w-[90%] truncate text-base font-semibold text-gray-900 transition-opacity duration-200 ease-in-out"
       aria-hidden="true"
     >
       {title}
     </h3>
-    <a
-      href={`/watch/${slug}_${mal_id}?ep=1`}
-      class="absolute bottom-3 left-0 right-0 z-10 flex w-full items-center justify-center text-blue-500 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100"
-      aria-label={`Play first episode of ${title}`}
-    >
-      <PlayIcon />
-    </a>
-    <AnimeTag
-      tag={animeType}
-      type={animeType}
-      style="absolute bottom-14 left-5"
-    />
   </a>
+  <div
+    class="absolute bottom-16 left-0 right-0 flex h-auto w-full flex-row items-center justify-between px-5 text-blue-500 group-hover:opacity-100"
+  >
+    <AnimeTag tag={animeType} type={animeType} />
+    <div
+      class="flex w-auto flex-row items-center  opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100"
+    >
+      {
+        actions.map((action) => (
+          <a
+            href={action?.href}
+            class={`flex h-12 w-12 flex-row items-center justify-center  opacity-70 transition-opacity duration-200 ease-in-out hover:opacity-100 hover:saturate-200`}
+          >
+            <action.icon class="h-12 w-12" />
+          </a>
+        ))
+      }
+    </div>
+  </div>
 </article>
