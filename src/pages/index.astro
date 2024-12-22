@@ -5,7 +5,7 @@ import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils'
 
 const fetchAnimeData = (query: string) =>
-  fetch(`${baseUrl}/api/animes?${query}&limit_count=17`).then((res) =>
+  fetch(`${baseUrl}/api/animes?${query}&limit_count=24`).then((res) =>
     res.json()
   )
 
