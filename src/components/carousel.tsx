@@ -117,7 +117,7 @@ export const Carousel = () => {
                   src={createImageUrlProxy(
                     anime.image_large_webp,
                     '0',
-                    '50',
+                    '20',
                     'webp'
                   )}
                   className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg shadow-lg md:max-h-[90%]"
