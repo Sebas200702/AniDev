@@ -4,23 +4,12 @@ import { useEffect, useState } from 'react'
 
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)
-  const {
-    results: animes,
-    query,
-    loading,
-    loadSearchResultsFromStorage,
-  } = useSearchStoreResults()
-
-  useEffect(() => {
-    loadSearchResultsFromStorage()
-  }, [loadSearchResultsFromStorage])
+  const { results: animes, query, loading } = useSearchStoreResults()
 
   useEffect(() => {
     if (!animes) return
     setTimeout(() => setFadeIn(true), 300)
   }, [animes, setFadeIn, query])
-
-  if (!query) return null
 
   if (!animes || loading) {
     return (
