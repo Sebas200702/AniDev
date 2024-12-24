@@ -32,3 +32,16 @@ export type Anime = {
 export type Animes = {
   animes: Anime[]
 }
+
+export interface FilterOption {
+  value: string
+  label: string
+}
+export interface AnimeEpisode {
+    episode_number: number
+    video_url: string
+    image_url: string
+}
+export interface AppliedFilters {
+  [category: string]: string[]
+}
