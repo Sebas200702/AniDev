@@ -34,6 +34,7 @@ const actions = [
     href: `/add-to-list/${slug}_${mal_id}`,
   },
 ]
+const placeholderImageUrl = `${baseUrl}/placeholder.webp`
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
@@ -42,7 +43,14 @@ const actions = [
     class="flex h-auto w-[calc((100dvw-8px)/2.4)] flex-col items-center rounded-lg p-4 md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]"
     aria-label={`View details for ${title}`}
   >
-    <picture class="relative h-full w-full">
+    <picture
+      class="relative h-full w-full"
+      style={{
+        backgroundImage: `url(${placeholderImageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <Image
         src={imageUrl}
         alt={title}
