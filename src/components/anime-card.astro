@@ -42,7 +42,7 @@ const actions = [
     class="flex h-auto w-[calc((100dvw-8px)/2.4)] flex-col items-center rounded-lg p-4 md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]"
     aria-label={`View details for ${title}`}
   >
-    <picture class="relative">
+    <picture class="relative h-full w-full">
       <Image
         src={imageUrl}
         alt={title}
@@ -71,13 +71,13 @@ const actions = [
   >
     <AnimeTag tag={animeType} type={animeType} />
     <div
-      class="flex w-auto flex-row items-center  opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100"
+      class="flex w-auto flex-row items-center opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100"
     >
       {
         actions.map((action) => (
           <a
             href={action?.href}
-            class={`flex h-12 w-12 flex-row items-center justify-center  opacity-70 transition-opacity duration-200 ease-in-out hover:opacity-100 hover:saturate-200`}
+            class={`flex h-12 w-12 flex-row items-center justify-center opacity-70 transition-opacity duration-200 ease-in-out hover:opacity-100 hover:saturate-200`}
           >
             <action.icon class="h-12 w-12" />
           </a>
