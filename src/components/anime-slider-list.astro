@@ -79,6 +79,7 @@ const { animes, title } = Astro.props
 
 <script is:inline>
   function init() {
+    const width = window.innerWidth
     const $$ = (selector, parent) => {
       const el = parent
         ? parent.querySelectorAll(selector)
@@ -91,11 +92,31 @@ const { animes, title } = Astro.props
     const $animeLists = $$('.anime-list')
 
     if ($nextButtons && $animeLists && $prevButtons) {
+      if (width < 768) {
+        $nextButtons.forEach((button) => {
+          button.classList.replace('flex', 'hidden')
+          button.disabled = true
+        })
+        $prevButtons.forEach((button) => {
+          button.classList.replace('flex', 'hidden')
+          button.disabled = true
+        })
+        return
+      }
+
       $nextButtons.forEach((button, index) => {
-        button.addEventListener('click', (e) => handleScroll(e, 'next', index))
+        button.disabled = false
+        button.classList.replace('hidden', 'flex')
+        button.addEventListener('click', (e) =>
+          handleScroll(e, 'next', index, width)
+        )
       })
       $prevButtons.forEach((button, index) => {
-        button.addEventListener('click', (e) => handleScroll(e, 'prev', index))
+        button.disabled = false
+        button.classList.replace('hidden', 'flex')
+        button.addEventListener('click', (e) =>
+          handleScroll(e, 'prev', index, width)
+        )
       })
       $animeLists.forEach((animeList, index) => {
         updateButtonState(animeList, $prevButtons[index], $nextButtons[index])
@@ -108,12 +129,10 @@ const { animes, title } = Astro.props
       })
     }
 
-    function handleScroll(e, direction, index) {
+    function handleScroll(e, direction, index, width) {
       if (!$animeLists) return
       const $animeList = $animeLists[index]
       if (!$animeList) return
-
-      const width = window.innerWidth
 
       const scrollAmount =
         width >= 1280
