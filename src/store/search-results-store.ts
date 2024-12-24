@@ -1,4 +1,4 @@
-import type { Anime } from 'types'
+import type { Anime, FilterOption, AppliedFilters } from 'types'
 import { create } from 'zustand'
 
 interface SearchStoreResults {
@@ -6,9 +6,11 @@ interface SearchStoreResults {
   error: string | null
   loading: boolean
   results: Anime[] | null
+  appliedFilters: AppliedFilters
   setQuery: (query: string) => void
   setResults: (results: Anime[], loading: boolean, error: string | null) => void
-  loadSearchResultsFromStorage: () => void
+  setAppliedFilters: (appliedFilters: AppliedFilters) => void
+  resetFilters: () => void
 }
 
 export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
@@ -16,19 +18,15 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   error: null,
   loading: false,
   results: [],
+  appliedFilters: {},
+
   setQuery: (query) => set({ query }),
 
   setResults: (results, loading, error) => {
-    if (results) {
-      localStorage.setItem('searchResults', JSON.stringify(results))
-    }
     set({ results, loading, error })
   },
 
-  loadSearchResultsFromStorage: () => {
-    const storedResults = localStorage.getItem('searchResults')
-    if (storedResults) {
-      set({ results: JSON.parse(storedResults), error: null, loading: false })
-    }
-  },
+  setAppliedFilters: (appliedFilters) => set({ appliedFilters }),
+
+  resetFilters: () => set({ appliedFilters: {} }),
 }))
