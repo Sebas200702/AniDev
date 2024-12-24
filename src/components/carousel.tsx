@@ -3,7 +3,7 @@ import { useFetch } from '@hooks/useFetch'
 import {
   normalizeString,
   reduceSynopsis,
-  baseUrl,
+  createDynamicBannersUrl,
   createImageUrlProxy,
 } from '@utils'
 import { memo, useCallback, useEffect, useState } from 'react'
@@ -34,11 +34,11 @@ const Indicator = memo(
 
 const LoadingCarousel = () => (
   <div className="relative h-[500px] animate-pulse bg-gray-200">
-    <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 md:flex-row py-4">
+    <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
       <div className="z-10 ml-5 flex h-auto max-h-[60%] w-full items-center justify-center p-4 md:h-full md:max-h-full md:w-1/3">
-        <div className="mx-auto aspect-[225/330] md:h-full h-auto md:max-h-[90%] w-full md:max-w-full md:w-auto animate-pulse rounded-lg  bg-gray-400 max-w-52"></div>
+        <div className="mx-auto aspect-[225/330] h-auto w-full max-w-52 animate-pulse rounded-lg bg-gray-400 md:h-full md:max-h-[90%] md:w-auto md:max-w-full"></div>
       </div>
-      <div className="z-10 mx-auto  flex w-full flex-col items-center p-6 text-white md:ml-8 md:mr-16 md:items-start">
+      <div className="z-10 mx-auto flex w-full flex-col items-center p-6 text-white md:ml-8 md:mr-16 md:items-start">
         <div className="z-30 mb-4 mt-4 h-8 w-full max-w-[70%] animate-pulse rounded-lg bg-gray-400 md:w-[60%]"></div>
         <div className="mb-6 hidden h-20 w-full animate-pulse rounded-lg bg-gray-400 md:flex"></div>
         <div className="h-8 w-[40%] animate-pulse rounded-lg bg-gray-400"></div>
@@ -51,8 +51,11 @@ const LoadingCarousel = () => (
 export const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [fadeIn, setFadeIn] = useState(false)
+  const [areImagesLoaded, setAreImagesLoaded] = useState(false)
+  const [url] = useState(() => createDynamicBannersUrl())
+
   const { data: banners, loading } = useFetch<Anime[]>({
-    url: '/api/animes?limit_count=10&type_filter=tv&status_filter=CurrentlyAiring',
+    url: url,
   })
 
   const handlePrev = useCallback(() => {
@@ -75,14 +78,51 @@ export const Carousel = () => {
 
   useEffect(() => {
     if (!banners || banners.length === 0) return
-    setTimeout(() => setFadeIn(true), 100)
-    const interval = setInterval(() => {
-      handleNext()
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [banners, handleNext])
+    preloadImages()
+  }, [banners, areImagesLoaded])
 
-  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
+  useEffect(() => {
+    if (areImagesLoaded) {
+      setFadeIn(true)
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) =>
+          banners && banners.length
+            ? (prevIndex + 1) % banners.length
+            : prevIndex
+        )
+      }, 4000)
+      return () => clearInterval(interval)
+    }
+  }, [areImagesLoaded, banners])
+
+  const preloadImages = useCallback(() => {
+    if (!banners || banners.length === 0) return
+    const promises = banners.map((anime) => {
+      return new Promise<void>((resolve) => {
+        const image = new Image()
+        const banner = new Image()
+
+        banner.src = createImageUrlProxy(
+          anime.banner_image ? anime.banner_image : anime.image_large_webp,
+          '0',
+          '20',
+          'webp'
+        )
+        image.src = createImageUrlProxy(
+          anime.image_large_webp,
+          '0',
+          '20',
+          'webp'
+        )
+
+        banner.onload = image.onload = () => resolve()
+      })
+    })
+    Promise.all(promises).then(() => setAreImagesLoaded(true))
+  }, [banners])
+
+  if (loading || !banners || !areImagesLoaded || banners.length === 0)
+    return <LoadingCarousel />
 
   return (
     <div
