@@ -49,18 +49,30 @@ export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => (
       href={`/${normalizeString(title)}_${mal_id}`}
       className="flex h-28 w-full flex-row items-center gap-5 rounded-lg p-3 shadow-md transition-shadow duration-200 ease-in-out group-hover:shadow-xl"
     >
-      <img
-        src={createImageUrlProxy(image_webp, '0', '50', 'webp')}
-        alt={title}
-        loading="lazy"
-        className="aspect-[225/330] h-full rounded-lg transition-all ease-in-out group-hover:scale-105"
-      />
-      <div className="flex w-full flex-col gap-2">
+      <picture
+        className="h-full rounded-lg"
+        style={{
+          backgroundImage: `url(/placeholder.webp)`,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+        }}
+      >
+        <img
+          src={createImageUrlProxy(image_webp, '0', '50', 'webp')}
+          alt={title}
+          loading="lazy"
+          className="aspect-[225/330] h-full rounded-lg transition-all ease-in-out group-hover:scale-105"
+        />
+      </picture>
+
+      <div className="-mt-4 flex w-full flex-col gap-2">
         <h3 className="mt-2 max-w-40 truncate text-sm font-semibold text-gray-900 transition-opacity duration-200 ease-in-out">
           {title}
         </h3>
-        <Tag tag={getAnimeType(type)} />
       </div>
     </a>
+    <div className="absolute bottom-2 left-0 right-0 flex h-min w-full flex-col gap-2 p-3">
+      <Tag tag={getAnimeType(type)} style="w-min ml-20" />
+    </div>
   </article>
 )
