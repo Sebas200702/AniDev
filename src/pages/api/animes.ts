@@ -30,12 +30,11 @@ export const GET: APIRoute = async ({ url }) => {
 
     Object.values(filtersEnum).forEach((filter) => {
       const value = url.searchParams.get(filter)
-      if (filter === Filters.parental_control) {
-        filters[filter] = value !== 'false'
-        return
-      }
-      if (filter === Filters.banners_filter) {
-        filters[filter] = value !== 'false'
+      if (
+        filter === Filters.parental_control ||
+        filter === Filters.banners_filter
+      ) {
+        filters[filter] = value !== 'false' 
         return
       }
       if (

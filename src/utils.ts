@@ -173,7 +173,7 @@ export const createDynamicBannersUrl = (): string => {
       )
       .join('&')
 
-    return `/api/animes?limit_count=10&${queryParams}`
+    return `/api/animes?limit_count=10&${queryParams}&banners_filter=true`
   }
 
   const appliedFilters = getRandomFilters(getRandomNumber(1, 2))
