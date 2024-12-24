@@ -44,7 +44,7 @@ const placeholderImageUrl = `${baseUrl}/placeholder.webp`
     aria-label={`View details for ${title}`}
   >
     <picture
-      class="relative h-full w-full"
+      class="relative h-full w-full rounded-lg"
       style={{
         backgroundImage: `url(${placeholderImageUrl})`,
         backgroundSize: 'cover',
@@ -54,7 +54,7 @@ const placeholderImageUrl = `${baseUrl}/placeholder.webp`
       <Image
         src={imageUrl}
         alt={title}
-        class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105"
+        class="aspect-[225/330] w-full transition-all ease-in-out group-hover:scale-105"
         loading="lazy"
         width={225}
         height={330}
