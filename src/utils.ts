@@ -1,3 +1,4 @@
+import type { FilterOption } from 'types'
 export enum AnimeTypes {
   CM = 'CM',
   MOVIE = 'Movie',
@@ -179,3 +180,38 @@ export const createDynamicBannersUrl = (): string => {
   const appliedFilters = getRandomFilters(getRandomNumber(1, 2))
   return generateUrl(appliedFilters)
 }
+
+export const genreOptions: FilterOption[] = [
+  { value: 'action', label: 'Action' },
+  { value: 'adventure', label: 'Adventure' },
+  { value: 'comedy', label: 'Comedy' },
+  { value: 'drama', label: 'Drama' },
+  { value: 'fantasy', label: 'Fantasy' },
+  { value: 'horror', label: 'Horror' },
+  { value: 'mystery', label: 'Mystery' },
+  { value: 'romance', label: 'Romance' },
+  { value: 'sci-fi', label: 'Sci-Fi' },
+  { value: 'thriller', label: 'Thriller' },
+]
+
+export const yearOptions: FilterOption[] = Array.from(
+  { length: 24 },
+  (_, i) => {
+    const year = 2024 - i
+    return { value: year.toString(), label: year.toString() }
+  }
+)
+
+export const statusOptions: FilterOption[] = [
+  { value: 'Currently Airing', label: 'Airing' },
+  { value: 'Finished Airing', label: 'Finished' },
+]
+
+export const formatOptions: FilterOption[] = [
+  { value: 'tv', label: 'TV Series' },
+  { value: 'movie', label: 'Movie' },
+  { value: 'ova', label: 'OVA' },
+  { value: 'special', label: 'Special' },
+  { value: 'ona', label: 'ONA' },
+  { value: 'music', label: 'Music' },
+]
