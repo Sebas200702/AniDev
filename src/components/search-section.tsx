@@ -22,7 +22,7 @@ export const SearchComponent = () => {
   }, [appliedFilters])
 
   const url = useMemo(() => {
-    const baseQuery = `${baseUrl}/api/animes?limit_count=6`
+    const baseQuery = `${baseUrl}/api/animes?limit_count=24`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return debouncedQuery
@@ -55,9 +55,6 @@ export const SearchComponent = () => {
     }
   }, [setQuery])
 
-  useEffect(() => {
-    console.log('URL de búsqueda:', url)
-  }, [url])
 
   return (
     <section className="mt-10 flex flex-col gap-4">
