@@ -34,7 +34,7 @@ export const GET: APIRoute = async ({ url }) => {
         filter === Filters.parental_control ||
         filter === Filters.banners_filter
       ) {
-        filters[filter] = value !== 'false' 
+        filters[filter] = value !== 'false'
         return
       }
       if (
