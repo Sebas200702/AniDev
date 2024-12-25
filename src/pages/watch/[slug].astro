@@ -1,8 +1,16 @@
 ---
 import Layout from '@layouts/base.astro'
-import { baseUrl } from '@utils'
+import AnimeEpisodes from '@components/anime-episodes.astro'
+import { baseUrl, createImageUrlProxy } from '@utils'
+import type { AnimeEpisode } from 'types'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
+const [title, mal_id] = Astro.params.slug?.split('_') ?? ['', '']
+
+const responseEpisodes = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
+  cache: 'force-cache',
+}).then((response) => response.json())
+const episodes: AnimeEpisode[] = responseEpisodes.episodes
 let video_url = ''
 try {
   const response = await fetch(
@@ -16,30 +24,39 @@ try {
 ---
 
 <Layout>
-  <!-- Preload del recurso del video -->
-  {video_url && (
-    <link rel="preload" href={video_url} as="fetch" type="video/mp4" />
-  )}
+  <section
+    class="xl:max-w-7x mx-auto flex h-min w-full flex-col justify-center gap-4 overflow-y-hidden xl:max-h-[calc(100dvw/2.6)] xl:flex-row"
+  >
+    <div
+      class="aspect-video w-full p-2 md:max-w-full xl:max-h-[calc(100dvw/2.6)] xl:max-w-[68%]"
+    >
+      {
+        video_url ? (
+          <lite-iframe
+            class="rounded-lg"
+            id="lite-iframe"
+            src={video_url}
+            frameborder="0"
+            allowtransparency="true"
+            allowfullscreen="true"
+            marginwidth="0"
+            marginheight="0"
+            scrolling="no"
+            sandbox="allow-scripts"
+          />
+        ) : (
+          <p class="text-center text-gray-500">El video no está disponible.</p>
+        )
+      }
+    </div>
 
-  <div class="relative mx-auto h-auto w-[80%]">
-    {video_url ? (
-      <lite-iframe
-        class="rounded-lg"
-        id="lite-iframe"
-        src={video_url}
-        frameborder="0"
-        allowtransparency="true"
-        allowfullscreen="true"
-        marginwidth="0"
-        marginheight="0"
-        scrolling="no"
-        sandbox="allow-scripts"
-        loading="lazy" <!-- Lazy loading del iframe -->
-      >
-        <script is:inline></script>
-      </lite-iframe>
-    ) : (
-      <p class="text-center text-gray-500">El video no está disponible.</p>
-    )}
-  </div>
+    <AnimeEpisodes
+      episodes={episodes}
+      slug={title}
+      image_webp={`${baseUrl}/placeholder.webp`}
+    
+      context="watch"
+      currentEpisode={parseInt(episode)}
+    />
+  </section>
 </Layout>
