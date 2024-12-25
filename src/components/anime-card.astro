@@ -34,7 +34,12 @@ const actions = [
     href: `/add-to-list/${slug}_${mal_id}`,
   },
 ]
-const placeholderImageUrl = `${baseUrl}/placeholder.webp`
+const placeholderImageUrl = createImageUrlProxy(
+  image_large_webp,
+  '25',
+  '1',
+  'webp'
+)
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
@@ -47,14 +52,15 @@ const placeholderImageUrl = `${baseUrl}/placeholder.webp`
       class="relative h-full w-full rounded-lg"
       style={{
         backgroundImage: `url(${placeholderImageUrl})`,
-        backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Image
         src={imageUrl}
         alt={title}
-        class="aspect-[225/330] w-full transition-all ease-in-out group-hover:scale-105 rounded-lg"
+        class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105 object-cover"
         loading="lazy"
         width={225}
         height={330}
