@@ -51,7 +51,7 @@ const LoadingCarousel = () => (
 export const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [fadeIn, setFadeIn] = useState(false)
-  const [areImagesLoaded, setAreImagesLoaded] = useState(false)
+
   const [url] = useState(() => createDynamicBannersUrl())
 
   const { data: banners, loading } = useFetch<Anime[]>({
@@ -78,51 +78,16 @@ export const Carousel = () => {
 
   useEffect(() => {
     if (!banners || banners.length === 0) return
-    preloadImages()
-  }, [banners, areImagesLoaded])
-
-  useEffect(() => {
-    if (areImagesLoaded) {
-      setFadeIn(true)
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) =>
-          banners
-            ? (prevIndex + 1) % banners.length
-            : prevIndex
-        )
-      }, 4000)
-      return () => clearInterval(interval)
-    }
-  }, [areImagesLoaded, banners])
-
-  const preloadImages = useCallback(() => {
-    if (!banners || banners.length === 0) return
-    const promises = banners.map((anime) => {
-      return new Promise<void>((resolve) => {
-        const image = new Image()
-        const banner = new Image()
-
-        banner.src = createImageUrlProxy(
-          anime.banner_image ? anime.banner_image : anime.image_large_webp,
-          '1080',
-          '20',
-          'webp'
-        )
-        image.src = createImageUrlProxy(
-          anime.image_large_webp,
-          '0',
-          '20',
-          'webp'
-        )
-
-        banner.onload = image.onload = () => resolve()
-      })
-    })
-    Promise.all(promises).then(() => setAreImagesLoaded(true))
+    setFadeIn(true)
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        banners ? (prevIndex + 1) % banners.length : prevIndex
+      )
+    }, 4000)
+    return () => clearInterval(interval)
   }, [banners])
 
-  if (loading || !banners || !areImagesLoaded || banners.length === 0)
-    return <LoadingCarousel />
+  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
 
   return (
     <div
@@ -156,11 +121,11 @@ export const Carousel = () => {
                 <img
                   src={createImageUrlProxy(
                     anime.image_large_webp,
-                    '0',
+                    '400',
                     '20',
                     'webp'
                   )}
-                  className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg shadow-lg md:max-h-[90%]"
+                  className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg shadow-lg md:max-h-[90%] object-cover object-center"
                   alt={anime.title}
                   loading="lazy"
                 />
