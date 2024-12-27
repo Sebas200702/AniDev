@@ -13,7 +13,8 @@
       "@hooks/*": ["hooks/*"],
       "@test_utils": ["test/utils"],
       "@icons/*": ["components/icons/*"],
-      "@store/*": ["store/*"]
+      "@store/*": ["store/*"],
+      "@data/*": ["data/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
