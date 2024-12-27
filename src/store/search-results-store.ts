@@ -1,4 +1,4 @@
-import type { Anime, FilterOption, AppliedFilters } from 'types'
+import type { Anime, AppliedFilters } from 'types'
 import { create } from 'zustand'
 
 interface SearchStoreResults {
