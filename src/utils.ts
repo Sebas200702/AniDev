@@ -1,4 +1,5 @@
 import type { FilterOption } from 'types'
+import { studios } from '@data/studios'
 export enum AnimeTypes {
   CM = 'CM',
   MOVIE = 'Movie',
@@ -110,7 +111,7 @@ export const createImageUrlProxy = (
 const getRandomNumber = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
-export const createDynamicBannersUrl = (): string => {
+export const createDynamicBannersUrl = (limit = 10): string => {
   const filters = Object.values(AnimeFilters) // Usamos los valores de la enum AnimeFilters.
   const types = Object.values(AnimeTypes)
   const genres = Object.values(AnimeGenres)
@@ -174,7 +175,7 @@ export const createDynamicBannersUrl = (): string => {
       )
       .join('&')
 
-    return `/api/animes?limit_count=10&${queryParams}&banners_filter=true`
+    return `/api/animes?limit_count=${limit}&${queryParams}&banners_filter=true`
   }
 
   const appliedFilters = getRandomFilters(getRandomNumber(1, 2))
@@ -215,3 +216,11 @@ export const formatOptions: FilterOption[] = [
   { value: 'ona', label: 'ONA' },
   { value: 'music', label: 'Music' },
 ]
+
+/* */
+//los de arriba son los estudios de anime tranformarllos en {value: studio, label: studio}
+
+export const studioOptions: FilterOption[] = studios.map((studio) => ({
+  value: studio.toLowerCase(),
+  label: studio,
+}))
