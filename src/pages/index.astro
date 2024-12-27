@@ -1,8 +1,11 @@
 ---
 import AnimeSliderList from '@components/anime-slider-list.astro'
 import { Carousel } from '@components/carousel'
+import AnimeBanner from '@components/anime-banner.astro'
 import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils'
+export let animeBanners: number[] = []
+animeBanners = []
 
 const fetchAnimeData = (query: string) =>
   fetch(`${baseUrl}/api/animes?${query}&limit_count=24`).then((res) =>
@@ -10,36 +13,46 @@ const fetchAnimeData = (query: string) =>
   )
 
 const animeData = await Promise.all([
-  fetchAnimeData('year_filter=2021&type_filter=tv'),
+  fetchAnimeData('year_filter=2024&type_filter=tv'),
   fetchAnimeData('genre_filter=action'),
   fetchAnimeData('genre_filter=adventure'),
   fetchAnimeData('type_filter=movie'),
   fetchAnimeData('studio_filter=mappa'),
+  fetchAnimeData('genre_filter=comedy'),
+  fetchAnimeData('genre_filter=sci-fi'),
+  fetchAnimeData('genre_filter=romace'),
+  fetchAnimeData('genre_filter=girlslove'),
 ])
 
-const [top2021, action, adventure, movies, mappa] = animeData.map(
-  ({ anime }) => anime
-)
+const [
+  top2024,
+  action,
+  adventure,
+  movies,
+  mappa,
+  comedy,
+  scifi,
+  romance,
+  girls,
+] = animeData.map(({ anime }) => anime)
 ---
 
 <Layout>
   <Carousel client:idle />
 
-  {
-    top2021?.length && (
-      <AnimeSliderList animes={top2021} title="Top Animes 2021" />
-    )
-  }
-  {action?.length && <AnimeSliderList animes={action} title="Action" />}
-  {
-    adventure?.length && (
-      <AnimeSliderList animes={adventure} title="Time To Adventure" />
-    )
-  }
-  {movies?.length && <AnimeSliderList animes={movies} title="Top Movies" />}
-  {
-    mappa?.length && (
-      <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
-    )
-  }
+  <AnimeSliderList animes={top2024} title="Top Animes 2024" />
+  <AnimeBanner />
+  <AnimeSliderList animes={action} title="Action" />
+  <AnimeBanner />
+  <AnimeSliderList animes={adventure} title="Time To Adventure" />
+  <AnimeSliderList animes={movies} title="Top Movies" />}
+  <AnimeBanner />
+  <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
+  <AnimeBanner />
+  <AnimeSliderList animes={comedy} title="Top Comedy" />
+  <AnimeBanner />
+  <AnimeSliderList animes={scifi} title="Top Sci-Fi" />
+  <AnimeSliderList animes={romance} title="Top Romance" />
+  <AnimeBanner />
+  <AnimeSliderList animes={girls} title="Top Girls Love" />
 </Layout>
