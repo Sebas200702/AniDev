@@ -4,12 +4,17 @@ import { useEffect, useState } from 'react'
 
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)
-  const { results: animes, query, loading } = useSearchStoreResults()
+  const {
+    results: animes,
+    query,
+    loading,
+    appliedFilters,
+  } = useSearchStoreResults()
 
   useEffect(() => {
     if (!animes) return
     setTimeout(() => setFadeIn(true), 300)
-  }, [animes, setFadeIn, query])
+  }, [animes, setFadeIn, query, appliedFilters, loading])
 
   if (!animes || loading) {
     return (
@@ -29,7 +34,10 @@ export const SearchResults = () => {
     )
   }
 
-  if (animes.length === 0) {
+  if (
+    animes.length === 0 &&
+    (query || Object.keys(appliedFilters).length > 0)
+  ) {
     return (
       <div className="mt-9 flex h-full w-full flex-col items-center justify-center">
         <h1 className="text-2xl font-bold text-gray-900">No results found</h1>
@@ -53,4 +61,3 @@ export const SearchResults = () => {
     </ul>
   )
 }
-
