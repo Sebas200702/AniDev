@@ -1,7 +1,13 @@
 import React, { useCallback } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterDropdown } from '@components/filter-dropdown'
-import { genreOptions, yearOptions, statusOptions, formatOptions } from '@utils'
+import {
+  genreOptions,
+  yearOptions,
+  statusOptions,
+  formatOptions,
+  studioOptions,
+} from '@utils'
 import type { AppliedFilters } from 'types'
 
 export const FilterSection: React.FC = () => {
@@ -14,6 +20,7 @@ export const FilterSection: React.FC = () => {
       year_filter: [],
       status_filter: [],
       type_filter: [],
+      studio_filter: [],
     })
   }
 
@@ -38,8 +45,8 @@ export const FilterSection: React.FC = () => {
   )
 
   return (
-    <div className="relative mx-auto w-full max-w-6xl space-y-4 p-4 md:max-w-5xl h-52">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
+    <div className="md: relative mx-auto h-52 w-full max-w-6xl space-y-4 p-4 xl:max-w-7xl">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-6 xl:grid-cols-7">
         <div className="relative">
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Search
@@ -85,6 +92,14 @@ export const FilterSection: React.FC = () => {
           onClear={() => updateFilter('type_filter', [])}
           placeholder="Any Format"
           options={formatOptions}
+        />
+        <FilterDropdown
+          label="Studio"
+          values={appliedFilters.studio_filter ?? []}
+          onChange={(values) => updateFilter('studio_filter', values)}
+          onClear={() => updateFilter('studio_filter', [])}
+          placeholder="Any Studio"
+          options={studioOptions}
         />
         <div>
           <label className="mb-1 block text-sm font-medium text-gray-700">
