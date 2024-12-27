@@ -4,7 +4,7 @@ import { useFetch } from '@hooks/useFetch'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterSection } from './filter-section'
 import { baseUrl, normalizeString } from '@utils'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { Anime } from 'types'
 
 export const SearchComponent = () => {
@@ -16,7 +16,7 @@ export const SearchComponent = () => {
     return Object.entries(appliedFilters)
       .filter(([_, values]) => values && values.length > 0)
       .map(([category, values]) => {
-        return `${category}=${values!.map((value) => normalizeString(value)).join('_')}`
+        return `${category}=${values.map((value) => normalizeString(value)).join('_')}`
       })
       .join('&')
   }, [appliedFilters])
@@ -36,14 +36,11 @@ export const SearchComponent = () => {
     error: fetchError,
   } = useFetch<Anime[]>({
     url,
-    skip: !url,
+    skip: !url || (!filtersToApply && !debouncedQuery),
   })
-
   useEffect(() => {
-    if (animes) {
-      setResults(animes, isLoading, fetchError)
-    }
-  }, [animes, isLoading, fetchError, setResults, appliedFilters])
+    setResults(animes ?? [], isLoading, fetchError)
+  }, [animes, isLoading, fetchError, setResults, appliedFilters, query])
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -54,7 +51,6 @@ export const SearchComponent = () => {
       setQuery(query)
     }
   }, [setQuery])
-
 
   return (
     <section className="mt-10 flex flex-col gap-4">
