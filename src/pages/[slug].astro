@@ -59,7 +59,6 @@ const responseEpisodes = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
   cache: 'force-cache',
 }).then((response) => response.json())
 const episodes: AnimeEpisode[] = responseEpisodes.episodes
-console.log(episodes)
 const smallSynopsis = reduceSynopsis(synopsis, 600)
 const slug = normalizeString(title)
 const context =
