@@ -81,7 +81,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
               key={value}
               className="mb-1 flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800"
             >
-              {options.find((opt) => opt.value === value)?.label || value}
+              {options.find((opt) => opt.value === value)?.label ?? value}
               <button
                 onClick={() => removeValue(value)}
                 className="ml-1 text-blue-600 hover:text-blue-800 focus:outline-none"
