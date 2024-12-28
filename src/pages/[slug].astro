@@ -1,5 +1,5 @@
 ---
-import AnimeTag from '@components/anime-tag.astro'
+import { AnimeTag } from '@components/anime-tag'
 import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils/base-url'
 import AnimeEpisodes from '@components/anime-episodes.astro'
@@ -27,10 +27,10 @@ if (!animeData) {
   throw new Error('Anime data not found')
 }
 
-// Desestructuración de datos
 const {
   mal_id,
   title,
+  image_webp,
   image_large_webp,
   banner_image,
   synopsis,
@@ -39,7 +39,6 @@ const {
   type,
 } = animeData
 
-
 const episodesResponse = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
   cache: 'force-cache',
 })
@@ -47,12 +46,6 @@ const episodes: AnimeEpisode[] = (await episodesResponse.json()).episodes
 
 const smallSynopsis = reduceSynopsis(synopsis, 600)
 const slug = normalizeString(title)
-const bannerUrl = createImageUrlProxy(
-  banner_image ?? image_large_webp,
-  '720',
-  '20',
-  'webp'
-)
 
 const context =
   new URLSearchParams(Astro.url.search).get('context') ?? 'default'
@@ -64,7 +57,12 @@ const context =
       class="absolute inset-0 -z-10 max-h-[calc(100dvh-300px)] w-full overflow-hidden"
     >
       <Image
-        src={bannerUrl}
+        src={createImageUrlProxy(
+          banner_image ?? image_large_webp,
+          '0',
+          '10',
+          'webp'
+        )}
         alt={`${title} banner`}
         loading="lazy"
         class={`${
@@ -92,7 +90,7 @@ const context =
       {
         image_large_webp && (
           <Image
-            src={image_large_webp}
+            src={image_webp}
             alt={title}
             class="aspect-[225/330] h-full w-full max-w-80 rounded-lg transition-all ease-in-out"
             transition:name={`${slug}_${mal_id}_${context}`}
@@ -144,7 +142,7 @@ const context =
     <AnimeEpisodes
       episodes={episodes}
       slug={slug}
-      image_webp={image_large_webp}
+      image_webp={image_webp}
       synopsis={synopsis}
       context="anime-info"
     />
