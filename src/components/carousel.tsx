@@ -4,7 +4,8 @@ import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { normalizeString } from '@utils/normalize-string'
 import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
-import { memo, useCallback, useEffect, useState } from 'react'
+import { useCarouselStore } from '@store/carousel-store'
+import { memo, useCallback, useEffect } from 'react'
 import type { Anime } from 'types'
 
 const Indicator = memo(
@@ -47,73 +48,86 @@ const LoadingCarousel = () => (
 )
 
 export const Carousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [fadeIn, setFadeIn] = useState(false)
+  const {
+    url,
+    setUrl,
+    banners,
+    setBanners,
+    loading,
+    setLoading,
+    currentIndex,
+    setCurrentIndex,
+    fadeIn,
+    setFadeIn,
+  } = useCarouselStore()
 
-  const [url] = useState(() => createDynamicBannersUrl())
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const url = sessionStorage.getItem('banners-url') ?? ''
+    const banners = JSON.parse(sessionStorage.getItem('banners') ?? '[]')
+    setUrl(url)
+    setBanners(banners)
+    if (url || banners.length > 0) return
+    const newUrl = createDynamicBannersUrl()
+    setUrl(newUrl)
+    sessionStorage.setItem('banners-url', newUrl)
+    setLoading(true)
+    setBanners([])
+  }, [setUrl, banners.length, url, setLoading, setBanners])
 
-  const { data: banners, loading } = useFetch<Anime[]>({
+  const { data: bannersData, loading: bannersLoading } = useFetch<Anime[]>({
     url: url,
   })
 
+  useEffect(() => {
+    if (!bannersData || bannersLoading) return
+    setBanners(bannersData)
+    sessionStorage.setItem('banners', JSON.stringify(bannersData))
+    setLoading(false)
+    preloadImages()
+  }, [bannersData, bannersLoading, setBanners, setLoading])
+
   const handlePrev = useCallback(() => {
-    if (!banners) return
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? banners.length - 1 : prevIndex - 1
-    )
+    if (!banners || banners.length === 0) return
+    const prevIndex = currentIndex === 0 ? banners.length - 1 : currentIndex - 1
+    setCurrentIndex(prevIndex)
+  }, [banners, currentIndex, setCurrentIndex])
+  const preloadImages = useCallback(() => {
+    if (!banners || banners.length === 0) return
+    banners.slice(0, 2).forEach((anime) => {
+      const image = new Image()
+      image.src = createImageUrlProxy(anime.image_webp, '0', '10', 'webp')
+    })
   }, [banners])
 
   const handleNext = useCallback(() => {
-    if (!banners) return
-    setCurrentIndex((prevIndex) =>
-      prevIndex === banners.length - 1 ? 0 : prevIndex + 1
-    )
-  }, [banners])
+    if (!banners || banners.length === 0) return
+    const nextIndex = currentIndex === banners.length - 1 ? 0 : currentIndex + 1
+    setCurrentIndex(nextIndex)
+  }, [banners, currentIndex, setCurrentIndex])
 
-  const handleIndicatorClick = useCallback((index: number) => {
-    setCurrentIndex(index)
-  }, [])
+  const handleIndicatorClick = useCallback(
+    (index: number) => {
+      setCurrentIndex(index)
+    },
+    [setCurrentIndex]
+  )
 
   useEffect(() => {
     if (!banners || banners.length === 0) return
     setFadeIn(true)
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        banners ? (prevIndex + 1) % banners.length : prevIndex
-      )
-    }, 4000)
+      const nextIndex = (currentIndex + 1) % banners.length
+      setCurrentIndex(nextIndex)
+    }, 5000)
     return () => clearInterval(interval)
-  }, [banners])
-
-  useEffect(() => {
-    if (!banners || banners.length === 0) return
-    const preloadImages = banners.slice(0, 2).map((anime) => {
-      const img = new Image() as HTMLImageElement | null
-      if (!img) return null
-      img.src = createImageUrlProxy(
-        anime.banner_image ? anime.banner_image : anime.image_large_webp,
-        '0',
-        '20',
-        'webp'
-      )
-      img.onload = () => {
-      }
-      return img
-    })
-
-    return () => {
-      preloadImages.forEach((img) => {
-        if (!img) return
-        img.onload = null
-      })
-    }
-  }, [banners])
+  }, [banners, currentIndex, setCurrentIndex, setFadeIn])
 
   if (loading || !banners || banners.length === 0) return <LoadingCarousel />
 
   return (
     <div
-      className={`relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-500' : 'opacity-0'} overflow-x-hidden`}
+      className={`relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} overflow-x-hidden`}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -129,14 +143,12 @@ export const Carousel = () => {
               key={anime.mal_id}
               className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center px-8 md:justify-normal ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
             >
-              {/* Optimized Background Image */}
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp, '0', '20', 'webp')})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '0', '10', 'webp')})`,
                 }}
               />
-              {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
               <a
                 href={`${normalizeString(anime.title)}_${anime.mal_id}`}
@@ -146,7 +158,7 @@ export const Carousel = () => {
                   src={anime.image_webp}
                   className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg object-cover object-center shadow-lg md:max-h-[90%]"
                   alt={anime.title}
-                  loading="lazy" // Lazy loading for images
+                  loading="lazy"
                 />
               </a>
               <div
@@ -178,8 +190,6 @@ export const Carousel = () => {
           />
         ))}
       </div>
-
-      {/* Controls */}
       <button
         type="button"
         className="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
