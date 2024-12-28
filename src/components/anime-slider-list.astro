@@ -158,4 +158,5 @@ const { animes, title } = Astro.props
 
   document.addEventListener('DOMContentLoaded', init)
   window.addEventListener('resize', init)
+  document.addEventListener('astro:after-swap', init)
 </script>
