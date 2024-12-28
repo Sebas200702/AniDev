@@ -3,7 +3,8 @@ import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterSection } from './filter-section'
-import { baseUrl, normalizeString } from '@utils'
+import { baseUrl } from '@utils/base-url'
+import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useMemo } from 'react'
 import type { Anime } from 'types'
 
@@ -12,6 +13,7 @@ export const SearchComponent = () => {
     useSearchStoreResults()
   const debouncedQuery = useDebounce(query, 500)
 
+  // Filtra los filtros aplicados para obtener los parámetros adecuados
   const filtersToApply = useMemo(() => {
     return Object.entries(appliedFilters)
       .filter(([_, values]) => values && values.length > 0)
@@ -25,9 +27,7 @@ export const SearchComponent = () => {
     const baseQuery = `${baseUrl}/api/animes?limit_count=24`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
-    return debouncedQuery
-      ? `${baseQuery}${searchQuery}${filterQuery}`
-      : `${baseQuery}&${filterQuery}`
+    return `${baseQuery}${searchQuery}${filterQuery}`
   }, [debouncedQuery, filtersToApply])
 
   const {
@@ -44,11 +44,9 @@ export const SearchComponent = () => {
 
   useEffect(() => {
     const url = new URL(window.location.href)
-    const $input = document.getElementById('default-search') as HTMLInputElement
-    const query = url.searchParams.get('q')
-    if (query) {
-      $input.value = query
-      setQuery(query)
+    const queryParam = url.searchParams.get('q')
+    if (queryParam) {
+      setQuery(queryParam)
     }
   }, [setQuery])
 

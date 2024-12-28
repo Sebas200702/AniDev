@@ -2,12 +2,8 @@
 import AnimeTag from '@components/anime-tag.astro'
 import PlayIcon from '@icons/play-icon.astro'
 import AddToListIcon from '@icons/add-to-list-icon.astro'
-import {
-  getAnimeType,
-  normalizeString,
-  createImageUrlProxy,
-  baseUrl,
-} from '@utils'
+import { getAnimeType } from '@utils/getanime-type'
+import { normalizeString } from '@utils/normalize-string'
 import { Image } from 'astro:assets'
 import type { Anime } from 'types'
 
@@ -17,11 +13,11 @@ interface Props {
 }
 
 const { anime, context } = Astro.props
-const { title, image_large_webp, mal_id, type } = anime
+const { title, image_webp, mal_id, type } = anime
 
 const slug = normalizeString(title)
 const animeType = getAnimeType(type)
-const imageUrl = createImageUrlProxy(image_large_webp, '0', '20', 'webp')
+
 const actions = [
   {
     name: 'Play',
@@ -34,12 +30,6 @@ const actions = [
     href: `/add-to-list/${slug}_${mal_id}`,
   },
 ]
-const placeholderImageUrl = createImageUrlProxy(
-  image_large_webp,
-  '25',
-  '1',
-  'webp'
-)
 ---
 
 <article class="group relative transition-transform duration-200 ease-in-out">
@@ -48,19 +38,11 @@ const placeholderImageUrl = createImageUrlProxy(
     class="flex h-auto w-[calc((100dvw-8px)/2.4)] flex-col items-center rounded-lg p-4 md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]"
     aria-label={`View details for ${title}`}
   >
-    <picture
-      class="relative h-full w-full rounded-lg"
-      style={{
-        backgroundImage: `url(${placeholderImageUrl})`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <picture class="relative h-full w-full rounded-lg">
       <Image
-        src={imageUrl}
+        src={image_webp}
         alt={title}
-        class="aspect-[225/330] w-full rounded-lg transition-all ease-in-out group-hover:scale-105 object-cover"
+        class="aspect-[225/330] w-full rounded-lg object-cover transition-all ease-in-out group-hover:scale-105"
         loading="lazy"
         width={225}
         height={330}

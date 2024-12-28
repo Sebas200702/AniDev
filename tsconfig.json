@@ -8,13 +8,14 @@
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
       "@scripts/*": ["scripts/*"],
-      "@utils": ["utils"],
       "@libs/*": ["libs/*"],
       "@hooks/*": ["hooks/*"],
       "@test_utils": ["test/utils"],
       "@icons/*": ["components/icons/*"],
       "@store/*": ["store/*"],
-      "@data/*": ["data/*"]
+      "@data/*": ["data/*"],
+      "@utils/*": ["utils/*"],
+      "types": ["types.d.ts"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"

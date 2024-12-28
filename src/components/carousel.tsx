@@ -1,11 +1,9 @@
 import { Tag } from '@components/anime-result'
 import { useFetch } from '@hooks/useFetch'
-import {
-  normalizeString,
-  reduceSynopsis,
-  createDynamicBannersUrl,
-  createImageUrlProxy,
-} from '@utils'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { reduceSynopsis } from '@utils/reduce-synopsis'
+import { normalizeString } from '@utils/normalize-string'
+import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
 import { memo, useCallback, useEffect, useState } from 'react'
 import type { Anime } from 'types'
 
@@ -87,11 +85,35 @@ export const Carousel = () => {
     return () => clearInterval(interval)
   }, [banners])
 
+  useEffect(() => {
+    if (!banners || banners.length === 0) return
+    const preloadImages = banners.slice(0, 2).map((anime) => {
+      const img = new Image() as HTMLImageElement | null
+      if (!img) return null
+      img.src = createImageUrlProxy(
+        anime.banner_image ? anime.banner_image : anime.image_large_webp,
+        '0',
+        '20',
+        'webp'
+      )
+      img.onload = () => {
+      }
+      return img
+    })
+
+    return () => {
+      preloadImages.forEach((img) => {
+        if (!img) return
+        img.onload = null
+      })
+    }
+  }, [banners])
+
   if (loading || !banners || banners.length === 0) return <LoadingCarousel />
 
   return (
     <div
-      className={`realtive left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-500' : 'opacity-0'} overflow-x-hidden`}
+      className={`relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-500' : 'opacity-0'} overflow-x-hidden`}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -107,27 +129,24 @@ export const Carousel = () => {
               key={anime.mal_id}
               className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center px-8 md:justify-normal ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
             >
+              {/* Optimized Background Image */}
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp, '1080', '20', 'webp')})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image ? anime.banner_image : anime.image_large_webp, '0', '20', 'webp')})`,
                 }}
               />
+              {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
               <a
                 href={`${normalizeString(anime.title)}_${anime.mal_id}`}
                 className="z-10 flex h-auto max-h-[60%] w-full items-center justify-center p-4 md:h-full md:max-h-[90%] md:w-1/4"
               >
                 <img
-                  src={createImageUrlProxy(
-                    anime.image_large_webp,
-                    '400',
-                    '20',
-                    'webp'
-                  )}
-                  className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg shadow-lg md:max-h-[90%] object-cover object-center"
+                  src={anime.image_webp}
+                  className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg object-cover object-center shadow-lg md:max-h-[90%]"
                   alt={anime.title}
-                  loading="lazy"
+                  loading="lazy" // Lazy loading for images
                 />
               </a>
               <div

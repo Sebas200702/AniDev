@@ -1,13 +1,8 @@
 import React, { useCallback } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterDropdown } from '@components/filter-dropdown'
-import {
-  genreOptions,
-  yearOptions,
-  statusOptions,
-  formatOptions,
-  studioOptions,
-} from '@utils'
+import { genreOptions, statusOptions, yearOptions, formatOptions } from 'types'
+import { studioOptions } from '@utils/create-studios-options'
 import type { AppliedFilters } from 'types'
 
 export const FilterSection: React.FC = () => {

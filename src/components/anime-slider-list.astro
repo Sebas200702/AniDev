@@ -24,6 +24,7 @@ const { animes, title } = Astro.props
     <button
       class="prev-button group absolute bottom-0 left-0 z-10 flex h-[92%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
       aria-label="Scroll to previous"
+      aria-disabled="true"
     >
       <svg
         class="rotate-180 transform opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
@@ -54,6 +55,7 @@ const { animes, title } = Astro.props
   <button
     class="next-button group absolute bottom-0 right-0 z-10 flex h-[92%] w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none"
     aria-label="Scroll to next"
+    aria-disabled="true"
   >
     <svg
       class="opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
@@ -80,57 +82,63 @@ const { animes, title } = Astro.props
 <script is:inline>
   function init() {
     const width = window.innerWidth
-    const $$ = (selector, parent) => {
-      const el = parent
-        ? parent.querySelectorAll(selector)
-        : document.querySelectorAll(selector)
-      return el ? el : null
+    const $nextButtons = document.querySelectorAll('.next-button')
+    const $prevButtons = document.querySelectorAll('.prev-button')
+    const $animeLists = document.querySelectorAll('.anime-list')
+
+    // Condiciones de visibilidad y optimización de tamaño
+    const updateButtonsVisibility = (animeList, prevButton, nextButton) => {
+      const isAtStart = animeList.scrollLeft <= 0
+      const isAtEnd =
+        animeList.scrollLeft + animeList.clientWidth >= animeList.scrollWidth
+
+      prevButton.disabled = isAtStart
+      nextButton.disabled = isAtEnd
+
+      prevButton.classList.toggle('hidden', isAtStart)
+      nextButton.classList.toggle('hidden', isAtEnd)
     }
 
-    const $nextButtons = $$('.next-button')
-    const $prevButtons = $$('.prev-button')
-    const $animeLists = $$('.anime-list')
-
-    if ($nextButtons && $animeLists && $prevButtons) {
+    if ($nextButtons.length && $animeLists.length && $prevButtons.length) {
       if (width < 768) {
-        $nextButtons.forEach((button) => {
-          button.classList.replace('flex', 'hidden')
-          button.disabled = true
-        })
-        $prevButtons.forEach((button) => {
-          button.classList.replace('flex', 'hidden')
-          button.disabled = true
-        })
+        $nextButtons.forEach((button) => button.classList.add('hidden'))
+        $prevButtons.forEach((button) => button.classList.add('hidden'))
         return
       }
 
       $nextButtons.forEach((button, index) => {
+        button.classList.remove('hidden')
         button.disabled = false
-        button.classList.replace('hidden', 'flex')
-        button.addEventListener('click', (e) =>
-          handleScroll(e, 'next', index, width)
+        button.addEventListener('click', () =>
+          handleScroll(index, 'next', width)
         )
       })
+
       $prevButtons.forEach((button, index) => {
+        button.classList.remove('hidden')
         button.disabled = false
-        button.classList.replace('hidden', 'flex')
-        button.addEventListener('click', (e) =>
-          handleScroll(e, 'prev', index, width)
+        button.addEventListener('click', () =>
+          handleScroll(index, 'prev', width)
         )
-      })
-      $animeLists.forEach((animeList, index) => {
-        updateButtonState(animeList, $prevButtons[index], $nextButtons[index])
       })
 
       $animeLists.forEach((animeList, index) => {
-        animeList.addEventListener('scroll', () => {
-          updateButtonState(animeList, $prevButtons[index], $nextButtons[index])
-        })
+        animeList.addEventListener('scroll', () =>
+          updateButtonsVisibility(
+            animeList,
+            $prevButtons[index],
+            $nextButtons[index]
+          )
+        )
+        updateButtonsVisibility(
+          animeList,
+          $prevButtons[index],
+          $nextButtons[index]
+        )
       })
     }
 
-    function handleScroll(e, direction, index, width) {
-      if (!$animeLists) return
+    function handleScroll(index, direction, width) {
       const $animeList = $animeLists[index]
       if (!$animeList) return
 
@@ -138,6 +146,7 @@ const { animes, title } = Astro.props
         width >= 1280
           ? 6 * ((width - 8) / 6.4) + 1
           : 4 * ((width - 8) / 4.4) + 1
+
       const scrollDistance = direction === 'next' ? scrollAmount : -scrollAmount
 
       $animeList.scrollBy({
@@ -145,29 +154,8 @@ const { animes, title } = Astro.props
         behavior: 'smooth',
       })
     }
-
-    function updateButtonState(animeList, prevButton, nextButton) {
-      if (animeList.scrollLeft <= 0) {
-        prevButton.disabled = true
-        prevButton.classList.replace('flex', 'hidden')
-      } else {
-        prevButton.disabled = false
-        prevButton.classList.replace('hidden', 'flex')
-      }
-
-      if (
-        animeList.scrollLeft + animeList.clientWidth >=
-        animeList.scrollWidth
-      ) {
-        nextButton.disabled = true
-        nextButton.classList.replace('flex', 'hidden')
-      } else {
-        nextButton.disabled = false
-        nextButton.classList.replace('hidden', 'flex')
-      }
-    }
   }
 
   document.addEventListener('DOMContentLoaded', init)
-  document.addEventListener('astro:after-swap', init)
+  window.addEventListener('resize', init)
 </script>

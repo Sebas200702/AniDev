@@ -19,39 +19,32 @@ export const GET: APIRoute = async ({ url }) => {
 
   const getFilters = (
     filtersEnum: typeof Filters
-  ): Record<
-    string,
-    string | number | boolean | string[] | null | undefined
-  > => {
-    const filters: Record<
+  ): Record<string, string | number | boolean | string[] | null> => {
+    const filters = new Map<
       string,
-      string | number | boolean | string[] | null | undefined
-    > = {}
+      string | number | boolean | string[] | null
+    >()
 
-    Object.values(filtersEnum).forEach((filter) => {
+    for (const filter of Object.values(filtersEnum)) {
       const value = url.searchParams.get(filter)
+
       if (
         filter === Filters.parental_control ||
         filter === Filters.banners_filter
       ) {
-        filters[filter] = value !== 'false'
-        return
-      }
-      if (
+        filters.set(filter, value !== 'false')
+      } else if (
         filter === Filters.search_query ||
         filter === Filters.page_number ||
         filter === Filters.limit_count
       ) {
-        filters[filter] = value ?? null
-        return
-      }
-      if (value) {
-        filters[filter] = value.split('_')
+        filters.set(filter, value ?? null)
       } else {
-        filters[filter] = null
+        filters.set(filter, value ? value.split('_') : null)
       }
-    })
-    return filters
+    }
+
+    return Object.fromEntries(filters)
   }
 
   const filters = getFilters(Filters)
@@ -59,19 +52,25 @@ export const GET: APIRoute = async ({ url }) => {
   const { data, error } = await supabase.rpc('get_animes', filters)
 
   if (error) {
-    console.error(error)
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    if (import.meta.env.MODE === 'development') {
+      console.error('Error al ejecutar RPC get_animes:', error)
+    }
+    return new Response(
+      JSON.stringify({ error: 'Ocurrió un error al obtener los animes.' }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
   }
 
   return new Response(JSON.stringify({ anime: data }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
+      'Cache-Control': 'max-age=3000, public',
     },
   })
 }

@@ -1,76 +1,61 @@
 ---
 import AnimeTag from '@components/anime-tag.astro'
 import Layout from '@layouts/base.astro'
-import {
-  baseUrl,
-  getAnimeType,
-  normalizeString,
-  reduceSynopsis,
-  createImageUrlProxy,
-} from '@utils'
+import { baseUrl } from '@utils/base-url'
 import AnimeEpisodes from '@components/anime-episodes.astro'
 import { Image } from 'astro:assets'
 import { slide } from 'astro:transitions'
 import type { Anime, AnimeEpisode } from '../types'
+import { reduceSynopsis } from '@utils/reduce-synopsis'
+import { normalizeString } from '@utils/normalize-string'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { getAnimeType } from '@utils/getanime-type'
 
-const response = await fetch(
+// Fetch principal para los datos del anime
+const animeDataResponse = await fetch(
   `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
   { cache: 'force-cache' }
 )
 
-if (!response.ok) {
-  throw new Error(`Error fetching data: ${response.statusText}`)
+if (!animeDataResponse.ok) {
+  throw new Error(`Error fetching anime data: ${animeDataResponse.statusText}`)
 }
 
-const data = await response.json()
+const animeData: Anime | undefined = (await animeDataResponse.json()).anime
 
-const anime_data: Anime | undefined = data.anime
-
-if (!anime_data) {
+if (!animeData) {
   throw new Error('Anime data not found')
 }
 
+// Desestructuración de datos
 const {
   mal_id,
   title,
-  image_url,
-  aired_to,
-  aired_from,
-  duration,
-  rating,
-  score,
-  scored_by,
-  status,
-  synopsis,
-  type,
-  genres,
-  studios,
-  trailer_url,
-  image_webp,
-  image_small_jpg,
-  image_small_webp,
-  image_large_jpg,
   image_large_webp,
-  created_at,
-  relevance_score,
   banner_image,
-} = anime_data
-const responseEpisodes = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
+  synopsis,
+  genres,
+  trailer_url,
+  type,
+} = animeData
+
+
+const episodesResponse = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
   cache: 'force-cache',
-}).then((response) => response.json())
-const episodes: AnimeEpisode[] = responseEpisodes.episodes
+})
+const episodes: AnimeEpisode[] = (await episodesResponse.json()).episodes
+
 const smallSynopsis = reduceSynopsis(synopsis, 600)
 const slug = normalizeString(title)
-const context =
-  new URLSearchParams(Astro.url.search).get('context') ?? 'default'
 const bannerUrl = createImageUrlProxy(
   banner_image ?? image_large_webp,
-  '0',
+  '720',
   '20',
   'webp'
 )
 
-const imageLargeUrl = createImageUrlProxy(image_large_webp, '0', '20', 'webp')
+const context =
+  new URLSearchParams(Astro.url.search).get('context') ?? 'default'
 ---
 
 <Layout>
@@ -78,26 +63,26 @@ const imageLargeUrl = createImageUrlProxy(image_large_webp, '0', '20', 'webp')
     <div
       class="absolute inset-0 -z-10 max-h-[calc(100dvh-300px)] w-full overflow-hidden"
     >
-      {
-        (
-          <Image
-            src={bannerUrl}
-            alt={`${title}-banner`}
-            loading="lazy"
-            class={`${banner_image ? 'xl:h-auto w-full h-full object-cover object-center ' : '-my-96 aspect-[225/330] w-full opacity-85'}`}
-            width={225}
-            height={330}
-            quality={10}
-          />
-        )
-      }
+      <Image
+        src={bannerUrl}
+        alt={`${title} banner`}
+        loading="lazy"
+        class={`${
+          banner_image
+            ? 'xl:h-auto w-full h-full object-cover object-center'
+            : '-my-96 aspect-[225/330] w-full opacity-85'
+        }`}
+        width={225}
+        height={330}
+        quality={10}
+      />
       <div
         class="absolute inset-0 bg-[rgba(216,222,255,0.25)] backdrop-blur-[8px]"
       >
-        <div
-          class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#fff]/100"
-        >
-        </div>
+      </div>
+      <div
+        class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#fff]/100"
+      >
       </div>
     </div>
 
@@ -107,9 +92,9 @@ const imageLargeUrl = createImageUrlProxy(image_large_webp, '0', '20', 'webp')
       {
         image_large_webp && (
           <Image
-            src={imageLargeUrl}
+            src={image_large_webp}
             alt={title}
-            class="aspect-[225/330] h-full w-full  rounded-lg transition-all ease-in-out max-w-80"
+            class="aspect-[225/330] h-full w-full max-w-80 rounded-lg transition-all ease-in-out"
             transition:name={`${slug}_${mal_id}_${context}`}
             loading="lazy"
             width={225}
@@ -124,39 +109,44 @@ const imageLargeUrl = createImageUrlProxy(image_large_webp, '0', '20', 'webp')
       >
         <header class="flex w-full flex-col gap-4">
           <h2
-            class="w-full text-pretty text-3xl font-bold text-gray-900 mb-2 md:text-wrap md:text-4xl xl:text-5xl"
+            class="text-pretty text-3xl font-bold text-gray-900 md:text-wrap md:text-4xl xl:text-5xl"
           >
             {title}
           </h2>
-            <AnimeTag tag={getAnimeType(type)} type={getAnimeType(type)} />
+          <AnimeTag tag={getAnimeType(type)} type={getAnimeType(type)} />
         </header>
 
-        <p class="text-sm text-gray-800 md:text-base">
-          {smallSynopsis}
-        </p>
+        <p class="text-sm text-gray-800 md:text-base">{smallSynopsis}</p>
 
-        <footer class="mt-10 flex flex-row gap-4">
+        <footer class="mt-10 flex flex-wrap gap-4">
           {
-            genres.length > 0 &&
-              genres.map((tag: string) => (
-                <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
-              ))
+            genres.map((tag) => (
+              <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
+            ))
           }
         </footer>
       </div>
     </article>
+
     {
       trailer_url ? (
-      <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
-        <div class="mx-auto mt-10 flex w-full flex-col gap-4 p-2 md:w-[70%]">
-
-          <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
-        </div>
+        <>
+          <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
+          <div class="mx-auto mt-10 flex w-full flex-col gap-4 p-2 md:w-[70%]">
+            <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
+          </div>
+        </>
       ) : (
         <div class="aspect-video h-full w-full rounded-sm" />
       )
     }
-    <AnimeEpisodes episodes={episodes} slug={slug} image_webp={image_webp} synopsis={synopsis}  context='anime-info'/>
 
+    <AnimeEpisodes
+      episodes={episodes}
+      slug={slug}
+      image_webp={image_large_webp}
+      synopsis={synopsis}
+      context="anime-info"
+    />
   </section>
 </Layout>

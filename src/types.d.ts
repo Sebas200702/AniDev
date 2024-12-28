@@ -51,3 +51,83 @@ export interface AnimeEpisode {
 export interface AppliedFilters {
   [category: string]: string[]
 }
+
+export enum AnimeTypes {
+  CM = 'CM',
+  MOVIE = 'Movie',
+  MUSIC = 'Music',
+  ONA = 'ONA',
+  OVA = 'OVA',
+  PV = 'PV',
+  SPECIAL = 'Special',
+  TV = 'TV',
+  TV_SPECIAL = 'TV SPECIAL',
+}
+export enum AnimeGenres {
+  ACTION = 'Action',
+  ADVENTURE = 'Adventure',
+  AVANT_GARDE = 'Avant Garde',
+  AWARD_WINNING = 'Award Winning',
+  BOYS_LOVE = 'Boys Love',
+  COMEDY = 'Comedy',
+  DRAMA = 'Drama',
+  ECCHI = 'Ecchi',
+  EROTICA = 'Erotica',
+  FANTASY = 'Fantasy',
+  GIRLS_LOVE = 'Girls Love',
+  GOURMET = 'Gourmet',
+  HENTAI = 'Hentai',
+  HORROR = 'Horror',
+  MYSTERY = 'Mystery',
+  ROMANCE = 'Romance',
+  SCI_FI = 'Sci-Fi',
+  SLICE_OF_LIFE = 'Slice of Life',
+  SPORTS = 'Sports',
+  SUPERNATURAL = 'Supernatural',
+  SUSPENSE = 'Suspense',
+}
+
+export enum AnimeFilters {
+  Genre = 'genre',
+  Type = 'type',
+  Studio = 'studio',
+  Score = 'score',
+  Status = 'status',
+  Year = 'year',
+  Rating = 'rating',
+}
+
+export const genreOptions: FilterOption[] = [
+  { value: 'action', label: 'Action' },
+  { value: 'adventure', label: 'Adventure' },
+  { value: 'comedy', label: 'Comedy' },
+  { value: 'drama', label: 'Drama' },
+  { value: 'fantasy', label: 'Fantasy' },
+  { value: 'horror', label: 'Horror' },
+  { value: 'mystery', label: 'Mystery' },
+  { value: 'romance', label: 'Romance' },
+  { value: 'sci-fi', label: 'Sci-Fi' },
+  { value: 'thriller', label: 'Thriller' },
+]
+
+export const yearOptions: FilterOption[] = Array.from(
+  { length: 24 },
+  (_, i) => {
+    const year = 2024 - i
+    return { value: year.toString(), label: year.toString() }
+  }
+)
+
+export const statusOptions: FilterOption[] = [
+  { value: 'Currently Airing', label: 'Airing' },
+  { value: 'Finished Airing', label: 'Finished' },
+]
+
+export const formatOptions: FilterOption[] = [
+  { value: 'tv', label: 'TV Series' },
+  { value: 'movie', label: 'Movie' },
+  { value: 'ova', label: 'OVA' },
+  { value: 'special', label: 'Special' },
+  { value: 'ona', label: 'ONA' },
+  { value: 'music', label: 'Music' },
+]

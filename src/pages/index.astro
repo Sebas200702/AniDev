@@ -3,26 +3,33 @@ import AnimeSliderList from '@components/anime-slider-list.astro'
 import { Carousel } from '@components/carousel'
 import AnimeBanner from '@components/anime-banner.astro'
 import Layout from '@layouts/base.astro'
-import { baseUrl } from '@utils'
+import { baseUrl } from '@utils/base-url'
+import type { Anime } from 'types'
 export let animeBanners: number[] = []
 animeBanners = []
 
-const fetchAnimeData = (query: string) =>
-  fetch(`${baseUrl}/api/animes?${query}&limit_count=24`).then((res) =>
-    res.json()
+const fetchAnimeData = async (query: string): Promise<Anime[]> => {
+  const response = await fetch(
+    `${baseUrl}/api/animes?${query}&limit_count=24`,
+    {
+      cache: 'force-cache',
+    }
   )
+  const data: { anime: Anime[] } = await response.json()
+  return data.anime
+}
 
-const animeData = await Promise.all([
-  fetchAnimeData('year_filter=2024&type_filter=tv'),
-  fetchAnimeData('genre_filter=action'),
-  fetchAnimeData('genre_filter=adventure'),
-  fetchAnimeData('type_filter=movie'),
-  fetchAnimeData('studio_filter=mappa'),
-  fetchAnimeData('genre_filter=comedy'),
-  fetchAnimeData('genre_filter=sci-fi'),
-  fetchAnimeData('genre_filter=romace'),
-  fetchAnimeData('genre_filter=girlslove'),
-])
+const queries = [
+  'year_filter=2024&type_filter=tv',
+  'genre_filter=action',
+  'genre_filter=adventure',
+  'type_filter=movie',
+  'studio_filter=mappa',
+  'genre_filter=comedy',
+  'genre_filter=sci-fi',
+  'genre_filter=romance',
+  'genre_filter=girlslove',
+]
 
 const [
   top2024,
@@ -34,18 +41,18 @@ const [
   scifi,
   romance,
   girls,
-] = animeData.map(({ anime }) => anime)
+] = await Promise.all(queries.map(fetchAnimeData))
 ---
 
 <Layout>
-  <Carousel client:idle />
+  <Carousel client:load />
 
   <AnimeSliderList animes={top2024} title="Top Animes 2024" />
   <AnimeBanner />
   <AnimeSliderList animes={action} title="Action" />
   <AnimeBanner />
   <AnimeSliderList animes={adventure} title="Time To Adventure" />
-  <AnimeSliderList animes={movies} title="Top Movies" />}
+  <AnimeSliderList animes={movies} title="Top Movies" />
   <AnimeBanner />
   <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
   <AnimeBanner />

@@ -1,5 +1,5 @@
 ---
-import { createImageUrlProxy, reduceSynopsis } from '@utils'
+import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { Image } from 'astro:assets'
 import type { AnimeEpisode } from 'types'
 interface Props {
@@ -15,9 +15,7 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
 ---
 
 <section
-  class={context === 'anime-info'
-    ? 'mx-auto mt-20'
-    : 'overflow-y-auto  overflow-x-hidden'}
+  class={context === 'anime-info' ? 'mx-auto mt-20' : '  overflow-x-hidden'}
 >
   {
     context === 'anime-info' && (
@@ -30,7 +28,7 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
   <ul
     class={context === 'anime-info'
       ? 'grid w-full grid-cols-1 gap-6 p-2 xl:grid-cols-2 max-h-96 overflow-y-auto'
-      : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 grid-cols-1 '}
+      : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 grid-cols-1 overflow-y-auto max-h-64 md:max-h-full '}
   >
     {
       episodes.map(
@@ -39,14 +37,9 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
             href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
             class={`group flex w-full flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'hover:bg-gray-300'}`}
           >
-            <picture class="aspect-[16/9] w-60">
+            <picture class="aspect-[16/9] w-20 md:w-60">
               <Image
-                src={createImageUrlProxy(
-                  image_url ?? image_webp,
-                  '0',
-                  '30',
-                  'webp'
-                )}
+                src={image_url ?? image_webp}
                 alt={title ?? `Episodio ${episode_id}`}
                 loading="lazy"
                 width={225}

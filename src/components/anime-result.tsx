@@ -1,9 +1,6 @@
-import {
-  getAnimeType,
-  getTagColor,
-  normalizeString,
-  createImageUrlProxy,
-} from '@utils'
+import { getTagColor } from '@utils/get-tag-color'
+import { getAnimeType } from '@utils/getanime-type'
+import { normalizeString } from '@utils/normalize-string' 
 
 interface Props {
   mal_id: number
@@ -49,16 +46,9 @@ export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => (
       href={`/${normalizeString(title)}_${mal_id}`}
       className="flex h-auto w-full flex-col rounded-lg p-2 duration-200 ease-in-out"
     >
-      <picture
-        className="aspect-[225/330] h-full rounded-lg"
-        style={{
-          backgroundImage: `url(${createImageUrlProxy(image_webp, '100', '1', 'webp')})`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-        }}
-      >
+      <picture className="aspect-[225/330] h-full rounded-lg">
         <img
-          src={createImageUrlProxy(image_webp, '0', '50', 'webp')}
+          src={image_webp}
           alt={title}
           loading="lazy"
           className="aspect-[225/330] h-full rounded-lg object-cover transition-all ease-in-out group-hover:scale-105"
