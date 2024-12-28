@@ -18,7 +18,7 @@ try {
     `${baseUrl}/api/getEpisode?slug=${Astro.params.slug}&ep=${episode}`
   )
   const data = await response.json()
-  video_url = data.episode[0].video_url
+  video_url = data.episode.video_url
 } catch (error) {
   console.error('Error al obtener el video:', error)
 }
@@ -43,7 +43,7 @@ try {
             marginwidth="0"
             marginheight="0"
             scrolling="no"
-            sandbox="allow-scripts"
+
           />
         ) : (
           <p class="text-center text-gray-500">El video no está disponible.</p>
