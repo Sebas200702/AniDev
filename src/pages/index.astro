@@ -1,65 +1,46 @@
 ---
-import AnimeSliderList from '@components/anime-slider-list.astro'
+import { AnimeSlider } from '@components/anime-slider-list'
 import { Carousel } from '@components/carousel'
-import AnimeBanner from '@components/anime-banner.astro'
+import { AnimeBanner } from '@components/anime-banner.tsx'
 import Layout from '@layouts/base.astro'
-import { baseUrl } from '@utils/base-url'
-import type { Anime } from 'types'
-export let animeBanners: number[] = []
-animeBanners = []
-
-const fetchAnimeData = async (query: string): Promise<Anime[]> => {
-  const response = await fetch(
-    `${baseUrl}/api/animes?${query}&limit_count=24`,
-    {
-      cache: 'force-cache',
-    }
-  )
-  const data: { anime: Anime[] } = await response.json()
-  return data.anime
-}
-
-const queries = [
-  'year_filter=2024&type_filter=tv',
-  'genre_filter=action',
-  'genre_filter=adventure',
-  'type_filter=movie',
-  'studio_filter=mappa',
-  'genre_filter=comedy',
-  'genre_filter=sci-fi',
-  'genre_filter=romance',
-  'genre_filter=girlslove',
-]
-
-const [
-  top2024,
-  action,
-  adventure,
-  movies,
-  mappa,
-  comedy,
-  scifi,
-  romance,
-  girls,
-] = await Promise.all(queries.map(fetchAnimeData))
 ---
 
 <Layout>
   <Carousel client:load />
-
-  <AnimeSliderList animes={top2024} title="Top Animes 2024" />
-  <AnimeBanner />
-  <AnimeSliderList animes={action} title="Action" />
-  <AnimeBanner />
-  <AnimeSliderList animes={adventure} title="Time To Adventure" />
-  <AnimeSliderList animes={movies} title="Top Movies" />
-  <AnimeBanner />
-  <AnimeSliderList animes={mappa} title="Top Animes from Mappa" />
-  <AnimeBanner />
-  <AnimeSliderList animes={comedy} title="Top Comedy" />
-  <AnimeBanner />
-  <AnimeSliderList animes={scifi} title="Top Sci-Fi" />
-  <AnimeSliderList animes={romance} title="Top Romance" />
-  <AnimeBanner />
-  <AnimeSliderList animes={girls} title="Top Girls Love" />
+  <AnimeSlider
+    client:visible
+    query="year_filter=2024&type_filter=tv"
+    title="Top 2024"
+  />
+  <AnimeBanner client:visible />
+  <AnimeSlider client:visible query="genre_filter=action" title="Action" />
+  <AnimeSlider
+    client:visible
+    query="genre_filter=adventure"
+    title="Time Travel"
+  />
+  <AnimeBanner client:visible />
+  <AnimeSlider client:visible query="genre_filter=comedy" title="Comedy" />
+  <AnimeSlider client:visible query="genre_filter=drama" title="Drama" />
+  <AnimeSlider
+    client:visible
+    query="genre_filter=girlslove"
+    title="Girls Love"
+  />
+  <AnimeBanner client:visible />
+  <AnimeSlider client:visible query="genre_filter=horror" title="Horror" />
+  <AnimeSlider client:visible query="genre_filter=mystery" title="Mystery" />
+  <AnimeBanner client:visible />
+  <AnimeSlider client:visible query="genre_filter=romance" title="Romance" />
+  <AnimeSlider
+    client:visible
+    query="genre_filter=sliceoflife"
+    title="Slice of Life"
+  />
+  <AnimeBanner client:visible />
+  <AnimeSlider
+    client:visible
+    query="genre_filter=supernatural"
+    title="Supernatural"
+  />
 </Layout>
