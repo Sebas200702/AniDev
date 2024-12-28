@@ -1,5 +1,6 @@
 import { supabase } from '@libs/supabase'
 import type { APIRoute } from 'astro'
+import { redis } from '@libs/redis'
 
 export const GET: APIRoute = async ({ url }) => {
   const id = url.searchParams.get('id')
@@ -23,6 +24,16 @@ export const GET: APIRoute = async ({ url }) => {
       }
     )
   }
+  if (!redis.isOpen) {
+    await redis.connect()
+  }
+  const cachedData = await redis.get(url.toString())
+  if (cachedData) {
+    return new Response(JSON.stringify(JSON.parse(cachedData)), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
 
   try {
     const { data, error } = await supabase
@@ -42,6 +53,7 @@ export const GET: APIRoute = async ({ url }) => {
         }
       )
     }
+    await redis.set(url.toString(), JSON.stringify(data), { EX: 3600 })
     return new Response(JSON.stringify({ episodes: data }), {
       status: 200,
       headers: {

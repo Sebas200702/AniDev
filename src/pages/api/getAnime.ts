@@ -1,5 +1,6 @@
 import { supabase } from '@libs/supabase'
 import type { APIRoute } from 'astro'
+import { redis } from '@libs/redis'
 
 export const GET: APIRoute = async ({ url }) => {
   const title_query = url.searchParams.get('slug')
@@ -14,6 +15,17 @@ export const GET: APIRoute = async ({ url }) => {
   if (!id) {
     return new Response(JSON.stringify({ error: 'Invalid slug format' }), {
       status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+  if (!redis.isOpen) {
+    await redis.connect()
+  }
+  const cachedData = await redis.get(id)
+
+  if (cachedData) {
+    return new Response(JSON.stringify(JSON.parse(cachedData)), {
+      status: 200,
       headers: { 'Content-Type': 'application/json' },
     })
   }
@@ -40,6 +52,8 @@ export const GET: APIRoute = async ({ url }) => {
         headers: { 'Content-Type': 'application/json' },
       })
     }
+
+    await redis.set(id, JSON.stringify(data), { EX: 3600 })
 
     return new Response(JSON.stringify({ anime: data[0] }), {
       status: 200,

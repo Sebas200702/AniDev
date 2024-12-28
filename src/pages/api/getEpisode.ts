@@ -5,7 +5,6 @@ export const GET: APIRoute = async ({ url }) => {
   const slug = url.searchParams.get('slug')
   const ep = url.searchParams.get('ep')
 
-  // Validación de parámetros obligatorios
   if (!slug) {
     return new Response(JSON.stringify({ error: 'Missing slug parameter' }), {
       status: 400,
@@ -35,7 +34,7 @@ export const GET: APIRoute = async ({ url }) => {
   try {
     const { data, error } = await supabase
       .from('anime_episodes')
-      .select('episode_id, title, description, video_url')
+      .select('*')
       .eq('anime_mal_id', id)
       .eq('episode_id', ep)
 
