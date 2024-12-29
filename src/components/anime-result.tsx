@@ -46,7 +46,7 @@ export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => (
     <AnimeTag
       tag={getAnimeType(type)}
       type={type}
-      style="w-min  absolute xl:bottom-12 md:bottom-10  xl:ml-4 md:ml-2"
+      style="w-min  absolute bottom-12   xl:ml-4 md:ml-2 ml-3"
     />
   </article>
 )
