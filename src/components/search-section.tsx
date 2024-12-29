@@ -1,28 +1,21 @@
+import React, { useMemo, useEffect, useCallback } from 'react'
 import { SearchResults } from '@components/search-results'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterSection } from './filter-section'
 import { baseUrl } from '@utils/base-url'
-import { normalizeString } from '@utils/normalize-string'
-import { useEffect, useMemo } from 'react'
+import { createFiltersToApply } from '@utils/filters-to-apply'
 import type { Anime } from 'types'
+import { useUrlSync } from '@hooks/useUrlSync'
 
-export const SearchComponent = () => {
-  const { query, setQuery, setResults, appliedFilters } =
-    useSearchStoreResults()
+export const SearchComponent: React.FC = () => {
+  const { query, setResults, appliedFilters } = useSearchStoreResults()
   const debouncedQuery = useDebounce(query, 500)
-
-  // Filtra los filtros aplicados para obtener los parámetros adecuados
-  const filtersToApply = useMemo(() => {
-    return Object.entries(appliedFilters)
-      .filter(([_, values]) => values && values.length > 0)
-      .map(([category, values]) => {
-        return `${category}=${values.map((value) => normalizeString(value)).join('_')}`
-      })
-      .join('&')
-  }, [appliedFilters])
-
+  const filtersToApply = useMemo(
+    () => createFiltersToApply(appliedFilters),
+    [appliedFilters]
+  )
   const url = useMemo(() => {
     const baseQuery = `${baseUrl}/api/animes?limit_count=24`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
@@ -38,17 +31,32 @@ export const SearchComponent = () => {
     url,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
-  useEffect(() => {
-    setResults(animes ?? [], isLoading, fetchError)
-  }, [animes, isLoading, fetchError, setResults, appliedFilters, query])
+
+  useUrlSync()
+
+  const updateResults = useCallback(
+    (
+      newAnimes: Anime[] | null,
+      newLoading: boolean,
+      newError: string | null
+    ) => {
+      console.log('SearchComponent: Updating results', {
+        animes: newAnimes,
+        isLoading: newLoading,
+        fetchError: newError,
+      })
+      setResults(newAnimes ?? [], newLoading, newError)
+    },
+    [setResults]
+  )
 
   useEffect(() => {
-    const url = new URL(window.location.href)
-    const queryParam = url.searchParams.get('q')
-    if (queryParam) {
-      setQuery(queryParam)
-    }
-  }, [setQuery])
+    updateResults(animes, isLoading, fetchError)
+  }, [animes, isLoading, fetchError, updateResults])
+
+  useEffect(() => {
+    console.log('SearchComponent: Current state', { query, appliedFilters })
+  }, [query, appliedFilters])
 
   return (
     <section className="mt-10 flex flex-col gap-4">
