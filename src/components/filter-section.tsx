@@ -61,8 +61,8 @@ export const FilterSection: React.FC = () => {
   )
 
   return (
-    <div className="md: relative mx-auto h-52 w-full max-w-6xl space-y-4 p-4 xl:max-w-7xl">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-6 xl:grid-cols-7">
+    <div className="md: relative mx-auto md:h-52  w-full max-w-6xl space-y-4 p-4 xl:max-w-7xl h-min">
+      <div className="grid  gap-4 md:grid-cols-6 xl:grid-cols-7 grid-cols-2">
         <div className="relative">
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Search
@@ -139,8 +139,8 @@ export const FilterSection: React.FC = () => {
         </div>
       </div>
 
-      {appliedFiltersEntries.length > 0 && (
-        <div className="absolute bottom-0 left-0 right-0 h-24 rounded-md bg-gray-50 p-4">
+      { (
+        <div className="md:absolute bottom-0 left-0 right-0 h-24 rounded-md bg-gray-50 p-4">
           <h3 className="mb-2 text-sm font-semibold text-gray-700">
             Applied Filters:
           </h3>
