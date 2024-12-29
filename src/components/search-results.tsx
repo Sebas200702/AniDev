@@ -18,7 +18,7 @@ export const SearchResults = () => {
 
   if (!animes || loading) {
     return (
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-6 gap-4">
+      <div className="mx-auto grid w-full max-w-7xl md:grid-cols-6 grid-cols-3 gap-4">
         {Array(30)
           .fill(0)
           .map((_, i) => (
@@ -47,7 +47,7 @@ export const SearchResults = () => {
 
   return (
     <ul
-      className={`mx-auto grid w-full max-w-7xl grid-cols-6 gap-4 transition-opacity duration-500 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+      className={`mx-auto grid w-full max-w-7xl  md:grid-cols-6 grid-cols-3 gap-4 transition-opacity duration-500 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
     >
       {animes.map(({ title, image_webp, mal_id, type }) => (
         <AnimeResult
