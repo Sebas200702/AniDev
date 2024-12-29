@@ -1,6 +1,6 @@
-import { getTagColor } from '@utils/get-tag-color'
+import { AnimeTag } from '@components/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
-import { normalizeString } from '@utils/normalize-string' 
+import { normalizeString } from '@utils/normalize-string'
 
 interface Props {
   mal_id: number
@@ -23,23 +23,6 @@ const PlayButton = () => (
   </svg>
 )
 
-interface TagProps {
-  tag: string
-  style?: string
-}
-
-export const Tag = ({ tag, style }: TagProps) => {
-  const tagColor = getTagColor(tag)
-  return (
-    <a
-      href="/"
-      className={`${tagColor} ${style ?? 'w-min'} rounded-2xl px-2 py-1 text-xs font-medium text-gray-800 transition-all duration-200 ease-in-out`}
-    >
-      {tag}
-    </a>
-  )
-}
-
 export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => (
   <article className="group relative transition-transform duration-200 ease-in-out">
     <a
@@ -60,8 +43,9 @@ export const AnimeResult = ({ mal_id, title, image_webp, type }: Props) => (
       </h3>
     </a>
 
-    <Tag
+    <AnimeTag
       tag={getAnimeType(type)}
+      type={type}
       style="w-min  absolute xl:bottom-12 md:bottom-10  xl:ml-4 md:ml-2"
     />
   </article>
