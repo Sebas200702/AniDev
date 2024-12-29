@@ -43,7 +43,9 @@ export const AnimeBanner = () => {
         setBannerData(data)
         setAnimeBanners([...animeBanners, data.mal_id])
       }
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false)
+      }, 400)
     }
 
     fetchBannerData()
@@ -66,7 +68,7 @@ export const AnimeBanner = () => {
         aria-label={`View details for ${title}`}
       >
         <img
-          src={createImageUrlProxy(imageUrl, '0', '20', 'webp')}
+          src={createImageUrlProxy(imageUrl, '0', '50', 'webp')}
           alt="Anime Banner"
           loading="lazy"
           className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
