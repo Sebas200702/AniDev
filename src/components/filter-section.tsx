@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterDropdown } from '@components/filter-dropdown'
 import { genreOptions, statusOptions, yearOptions, formatOptions } from 'types'
@@ -9,34 +9,55 @@ export const FilterSection: React.FC = () => {
   const { appliedFilters, setAppliedFilters, query, setQuery } =
     useSearchStoreResults()
 
-  const handleReset = () => {
-    setAppliedFilters({
-      genre_filter: [],
-      year_filter: [],
-      status_filter: [],
-      type_filter: [],
-      studio_filter: [],
-    })
-  }
+  const handleReset = useCallback(() => {
+    console.log('FilterSection: Resetting filters and query')
+    setAppliedFilters({})
+    setQuery('')
+  }, [setAppliedFilters, setQuery])
 
-  const removeFilter = (category: keyof AppliedFilters, value: string) => {
-    const currentValues = appliedFilters[category] ?? []
-    const newValues = currentValues.filter((item) => item !== value)
-    updateFilter(category, newValues)
-  }
+  const removeFilter = useCallback(
+    (category: keyof AppliedFilters, value: string) => {
+      console.log('FilterSection: Removing filter', { category, value })
+      setAppliedFilters((prev) => {
+        const newFilters = { ...prev }
+        newFilters[category] =
+          newFilters[category]?.filter((v) => v !== value) ?? []
+        if (newFilters[category].length === 0) {
+          delete newFilters[category]
+        }
+        return newFilters
+      })
+    },
+    [setAppliedFilters]
+  )
 
-  const updateFilter = (category: keyof AppliedFilters, values: string[]) => {
-    setAppliedFilters({
-      ...appliedFilters,
-      [category]: values.length > 0 ? values : [],
-    })
-  }
+  const updateFilter = useCallback(
+    (category: keyof AppliedFilters, values: string[]) => {
+      console.log('FilterSection: Updating filter', { category, values })
+      setAppliedFilters((prev) => {
+        const newFilters = { ...prev }
+        if (values.length > 0) {
+          newFilters[category] = values
+        } else {
+          delete newFilters[category]
+        }
+        return newFilters
+      })
+    },
+    [setAppliedFilters]
+  )
+
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('FilterSection: Updating query', e.target.value)
       setQuery(e.target.value)
-      window.history.pushState({}, '', `/search?q=${e.target.value}`)
     },
     [setQuery]
+  )
+
+  const appliedFiltersEntries = useMemo(
+    () => Object.entries(appliedFilters),
+    [appliedFilters]
   )
 
   return (
@@ -52,7 +73,7 @@ export const FilterSection: React.FC = () => {
             className="flex max-h-[80px] w-full flex-wrap items-start gap-1 overflow-y-auto rounded border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600 focus-within:border-gray-400 focus-within:ring-1 focus-within:ring-gray-400 focus:outline-none"
             placeholder="Search Animes..."
             value={query || ''}
-            onInput={handleInput}
+            onChange={handleInput}
           />
         </div>
 
@@ -118,13 +139,13 @@ export const FilterSection: React.FC = () => {
         </div>
       </div>
 
-      {
+      {appliedFiltersEntries.length > 0 && (
         <div className="absolute bottom-0 left-0 right-0 h-24 rounded-md bg-gray-50 p-4">
           <h3 className="mb-2 text-sm font-semibold text-gray-700">
             Applied Filters:
           </h3>
           <div className="flex flex-wrap gap-2">
-            {Object.entries(appliedFilters).map(([category, values]) =>
+            {appliedFiltersEntries.map(([category, values]) =>
               values?.map((value) => (
                 <span
                   key={`${category}-${value}`}
@@ -156,7 +177,7 @@ export const FilterSection: React.FC = () => {
             )}
           </div>
         </div>
-      }
+      )}
     </div>
   )
 }
