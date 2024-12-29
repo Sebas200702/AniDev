@@ -63,15 +63,15 @@ export const AnimeCard = ({ anime, context }: Props) => {
         </h3>
       </a>
       <div className="absolute bottom-16 left-0 right-0 flex h-auto w-full flex-row items-center justify-between px-5 text-blue-500 group-hover:opacity-100">
-        <AnimeTag tag={animeType} type={animeType} />
+        <AnimeTag tag={animeType} type={type} style="w-auto" />
         <div className="flex w-auto flex-row items-center opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100">
           {actions.map((action) => (
             <a
               key={action.name}
               href={action.href}
-              className="flex h-12 w-12 flex-row items-center justify-center opacity-70 transition-opacity duration-200 ease-in-out hover:opacity-100 hover:saturate-200"
+              className="flex flex-row items-center justify-center opacity-70 transition-opacity duration-200 ease-in-out hover:opacity-100 hover:saturate-200 md:h-12 md:w-12"
             >
-              <action.icon class="h-12 w-12" />
+              <action.icon class="mt-2 h-8 w-8 md:h-10 md:w-10" />
             </a>
           ))}
         </div>
