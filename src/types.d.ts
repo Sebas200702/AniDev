@@ -88,13 +88,13 @@ export enum AnimeGenres {
 }
 
 export enum AnimeFilters {
-  Genre = 'genre',
-  Type = 'type',
-  Studio = 'studio',
-  Score = 'score',
-  Status = 'status',
-  Year = 'year',
-  Rating = 'rating',
+  Genre = 'genre_filter',
+  Type = 'type_filter',
+  Studio = 'studio_filter',
+  Score = 'score_filter',
+  Status = 'status_filter',
+  Year = 'year_filter',
+  Rating = 'rating_filter',
 }
 
 export const genreOptions: FilterOption[] = [
