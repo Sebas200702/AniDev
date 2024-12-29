@@ -18,11 +18,12 @@ export const AnimeSlider = ({ query, title }: Props) => {
   const [isAtStart, setIsAtStart] = useState(true)
   const [isAtEnd, setIsAtEnd] = useState(false)
   const [windowWidth, setWindowWidth] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
 
-    setWindowWidth(window.innerWidth) 
+    setWindowWidth(window.innerWidth)
     window.addEventListener('resize', handleResize)
 
     return () => {
@@ -50,6 +51,11 @@ export const AnimeSlider = ({ query, title }: Props) => {
       slider?.removeEventListener('scroll', updateButtonsVisibility)
     }
   }, [animes])
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 400)
+  })
 
   const handleScroll = (direction: 'next' | 'prev') => {
     if (!sliderRef.current || windowWidth === null) return
@@ -66,6 +72,28 @@ export const AnimeSlider = ({ query, title }: Props) => {
       behavior: 'smooth',
     })
   }
+
+  if (loading)
+    return (
+      <div className="relative mx-auto mt-6 w-[calc(100dvw-8px)]">
+        <span className="inline-flex h-8 w-32 animate-pulse items-center justify-center bg-gray-200 px-[calc(((100dvw-8px)/6.4)*0.2)]"></span>
+        <div className="relative overflow-hidden ">
+          <div className="anime-list mt-4 flex w-full flex-row overflow-x-auto md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
+            {Array(24)
+              .fill(0)
+              .map((_, i) => (
+                <div
+                  key={i + 1}
+                  className="animate-puls flex h-auto w-full min-w-[calc((100dvw-8px)/2.4)] flex-col items-center gap-1 bg-gray-200 p-3 duration-200 md:min-w-[calc((100dvw-8px)/4.4)] xl:min-w-[calc((100dvw-8px)/6.4)]"
+                >
+                  <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-gray-400 md:aspect-[225/330]"></div>
+                  <div className="flex h-6 w-full animate-pulse rounded-lg bg-gray-400 transition-all duration-200 ease-in-out"></div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    )
 
   if (windowWidth !== null && windowWidth < 768) {
     return (
