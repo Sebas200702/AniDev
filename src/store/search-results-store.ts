@@ -1,5 +1,5 @@
-import type { Anime, AppliedFilters } from 'types'
 import { create } from 'zustand'
+import type { Anime, AppliedFilters } from 'types'
 
 interface SearchStoreResults {
   query: string
@@ -9,24 +9,45 @@ interface SearchStoreResults {
   appliedFilters: AppliedFilters
   setQuery: (query: string) => void
   setResults: (results: Anime[], loading: boolean, error: string | null) => void
-  setAppliedFilters: (appliedFilters: AppliedFilters) => void
+  setAppliedFilters: (
+    appliedFilters: AppliedFilters | ((prev: AppliedFilters) => AppliedFilters)
+  ) => void
   resetFilters: () => void
 }
 
-export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
+export const useSearchStoreResults = create<SearchStoreResults>((set, get) => ({
   query: '',
   error: null,
   loading: false,
   results: [],
   appliedFilters: {},
 
-  setQuery: (query) => set({ query }),
+  setQuery: (query) => {
+    console.log('Setting query:', query)
+    set({ query })
+  },
 
   setResults: (results, loading, error) => {
+    console.log('Setting results:', {
+      resultsCount: results.length,
+      loading,
+      error,
+    })
     set({ results, loading, error })
   },
 
-  setAppliedFilters: (appliedFilters) => set({ appliedFilters }),
+  setAppliedFilters: (appliedFilters) => {
+    console.log('Setting applied filters:', appliedFilters)
+    set((state) => ({
+      appliedFilters:
+        typeof appliedFilters === 'function'
+          ? appliedFilters(state.appliedFilters)
+          : appliedFilters,
+    }))
+  },
 
-  resetFilters: () => set({ appliedFilters: {} }),
+  resetFilters: () => {
+    console.log('Resetting filters')
+    set({ appliedFilters: {} })
+  },
 }))
