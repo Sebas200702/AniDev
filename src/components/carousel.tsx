@@ -94,9 +94,9 @@ export const Carousel = () => {
   }, [banners, currentIndex, setCurrentIndex])
   const preloadImages = useCallback(() => {
     if (!banners || banners.length === 0) return
-    banners.slice(0, 2).forEach((anime) => {
+    banners.forEach((anime) => {
       const image = new Image()
-      image.src = createImageUrlProxy(anime.image_webp, '0', '10', 'webp')
+      image.src = createImageUrlProxy(anime.image_webp, '0', '50', 'webp')
     })
   }, [banners])
 
@@ -146,7 +146,7 @@ export const Carousel = () => {
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '0', '10', 'webp')})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '1920', '10', 'webp')})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
