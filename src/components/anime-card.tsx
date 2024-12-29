@@ -47,7 +47,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <img
             src={image_webp}
             alt={title}
-            className="aspect-[225/330] w-full rounded-lg object-cover transition-all ease-in-out group-hover:scale-105"
+            className="aspect-[225/330] w-full rounded-lg  transition-all ease-in-out group-hover:scale-105"
             loading="lazy"
             width={225}
             height={330}
