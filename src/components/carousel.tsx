@@ -1,4 +1,4 @@
-import { Tag } from '@components/anime-result'
+import { AnimeTag } from '@components/anime-tag'
 import { useFetch } from '@hooks/useFetch'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { reduceSynopsis } from '@utils/reduce-synopsis'
@@ -172,7 +172,7 @@ export const Carousel = () => {
                 </p>
                 <footer className="mx-auto mt-4 flex w-full flex-row justify-center gap-2 md:justify-normal">
                   {anime.genres.map((tag: string) => (
-                    <Tag key={tag} tag={tag} style="w-auto" />
+                    <AnimeTag key={tag} tag={tag} type={tag} style="w-auto" />
                   ))}
                 </footer>
               </div>
