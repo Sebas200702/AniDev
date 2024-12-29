@@ -111,7 +111,7 @@ const context =
           >
             {title}
           </h2>
-          <AnimeTag tag={getAnimeType(type)} type={getAnimeType(type)} />
+          <AnimeTag tag={getAnimeType(type)} type={type} />
         </header>
 
         <p class="text-sm text-gray-800 md:text-base">{smallSynopsis}</p>
@@ -119,7 +119,7 @@ const context =
         <footer class="mt-10 flex flex-wrap gap-4">
           {
             genres.map((tag) => (
-              <AnimeTag tag={tag} type={getAnimeType(tag)} style="w-auto" />
+              <AnimeTag tag={tag} type={tag} style="w-auto" />
             ))
           }
         </footer>
