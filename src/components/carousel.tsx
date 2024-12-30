@@ -5,7 +5,8 @@ import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { normalizeString } from '@utils/normalize-string'
 import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
 import { useCarouselStore } from '@store/carousel-store'
-import { memo, useCallback, useEffect, useRef } from 'react'
+import { memo, useCallback, useEffect } from 'react'
+import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import type { Anime } from 'types'
 import '@styles/anime-slider.css'
 
@@ -61,50 +62,18 @@ export const Carousel = () => {
     fadeIn,
     setFadeIn,
   } = useCarouselStore()
-  const bannerContainerRef = useRef<HTMLDivElement | null>(null)
-  const touchStartX = useRef<number | null>(null)
-  const touchEndX = useRef<number | null>(null)
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX
-  }
-
-  const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) return
-    const deltaX = touchStartX.current - touchEndX.current
-
-    // Determinar la dirección del deslizamiento
-    if (deltaX > 50) {
-      handleNext() // Deslizar hacia la izquierda
-    } else if (deltaX < -50) {
-      handlePrev() // Deslizar hacia la derecha
-    }
-
-    // Reiniciar referencias
-    touchStartX.current = null
-    touchEndX.current = null
-  }
-
-  // Manejar desplazamiento con rueda del ratón
-  const handleWheel = (e: React.WheelEvent) => {
-    if (e.deltaY > 0) {
-      handleNext() // Desplazamiento hacia abajo
-    } else if (e.deltaY < 0) {
-      handlePrev() // Desplazamiento hacia arriba
-    }
-  }
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      handleNext()
-    } else if (e.key === 'ArrowLeft') {
-      handlePrev()
-    }
-  }
+  const {
+    bannerContainerRef,
+    intervalRef,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    handlePrev,
+    handleNext,
+    handleScroll,
+    resetInterval,
+    handleKeyDown,
+  } = useCarouselScroll(banners, currentIndex, setCurrentIndex)
 
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
@@ -113,16 +82,35 @@ export const Carousel = () => {
     setUrl(url)
     setBanners(banners)
     if (url || banners.length > 0) return
+
     const newUrl = createDynamicBannersUrl()
     setUrl(newUrl)
     sessionStorage.setItem('banners-url', newUrl)
     setLoading(true)
     setBanners([])
-  }, [setUrl, banners.length, url, setLoading, setBanners, setBanners])
+  }, [setUrl, setBanners, setLoading])
+
+  const preloadImages = useCallback(() => {
+    if (!banners || banners.length === 0) return
+    banners.forEach((anime) => {
+      const image = new Image()
+      image.src = anime.image_large_webp
+      image.src = createImageUrlProxy(anime.banner_image, '1920', '10', 'webp')
+    })
+  }, [banners])
+
+  const handleIndicatorClick = useCallback(
+    (index: number) => {
+      setCurrentIndex(index)
+      handleScroll(index)
+      resetInterval()
+    },
+    [setCurrentIndex, handleScroll, resetInterval]
+  )
 
   useEffect(() => {
     fetchBannerData()
-  }, [setUrl, banners.length, url, setLoading, setBanners])
+  }, [fetchBannerData])
 
   const { data: bannersData, loading: bannersLoading } = useFetch<Anime[]>({
     url: url,
@@ -137,62 +125,22 @@ export const Carousel = () => {
     sessionStorage.setItem('banners', JSON.stringify(bannersData))
     setLoading(false)
     preloadImages()
-  }, [bannersData, bannersLoading, setBanners, setLoading, fetchBannerData])
+  }, [bannersData, bannersLoading, preloadImages, fetchBannerData])
 
-  const handlePrev = useCallback(() => {
-    if (!banners || banners.length === 0) return
-    const prevIndex = currentIndex === 0 ? banners.length - 1 : currentIndex - 1
-    setCurrentIndex(prevIndex)
-    handleScroll(prevIndex)
-  }, [banners, currentIndex, setCurrentIndex])
-  const preloadImages = useCallback(() => {
-    if (!banners || banners.length === 0) return
-    banners.forEach((anime) => {
-      const image = new Image()
-      image.src = anime.image_large_webp
-      image.src = createImageUrlProxy(anime.banner_image, '1920', '10', 'webp')
-    })
-  }, [banners])
-
-  const handleNext = useCallback(() => {
-    if (!banners || banners.length === 0) return
-    const nextIndex = currentIndex === banners.length - 1 ? 0 : currentIndex + 1
-    setCurrentIndex(nextIndex)
-    handleScroll(nextIndex)
-  }, [banners, currentIndex, setCurrentIndex])
-  const handleIndicatorClick = useCallback(
-    (index: number) => {
-      setCurrentIndex(index)
-      handleScroll(index)
-    },
-    [setCurrentIndex]
-  )
-  const handleScroll = (currentIndex: number) => {
-    if (!banners || banners.length === 0) return
-    const bannerContainer = document.getElementById(
-      'banner-container'
-    ) as HTMLDivElement | null
-    if (!bannerContainer) return
-    const scrollAmount = bannerContainer.clientWidth * currentIndex
-    bannerContainer.scrollTo({
-      left: scrollAmount,
-      behavior: 'smooth',
-    })
-  }
+  useEffect(() => {
+    resetInterval()
+  }, [resetInterval])
 
   useEffect(() => {
     if (!banners || banners.length === 0) return
-    setTimeout(() => {
-      setFadeIn(true)
-    }, 100)
-    const interval = setInterval(() => {
-      const nextIndex = (currentIndex + 1) % banners.length
-      setCurrentIndex(nextIndex)
-      handleScroll(nextIndex)
-    }, 5000)
-    window.addEventListener('keydown', (e) => handleKeyDown(e))
-    return () => clearInterval(interval)
-  }, [banners, currentIndex, setCurrentIndex, setFadeIn])
+    setFadeIn(true)
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      clearInterval(intervalRef.current!)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [banners, handleNext, handlePrev, resetInterval])
 
   if (loading || !banners || banners.length === 0) return <LoadingCarousel />
 
@@ -203,13 +151,12 @@ export const Carousel = () => {
       style={{ position: 'sticky' }}
     >
       <div
-        className="relative h-full overflow-x-auto anime-list"
+        className="anime-list relative h-full overflow-x-auto"
         ref={bannerContainerRef}
         id="banner-container"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onWheel={handleWheel}
       >
         <div className="flex h-full transition-transform duration-700 ease-in-out">
           {banners.map((anime, index) => (
