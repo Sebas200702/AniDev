@@ -8,37 +8,36 @@ interface SearchStoreResults {
   results: Anime[] | null
   appliedFilters: AppliedFilters
   setQuery: (query: string) => void
-  setResults: (results: Anime[], loading: boolean, error: string | null) => void
+  setResults: (
+    results: Anime[] | null,
+    loading: boolean,
+    error: string | null
+  ) => void
   setAppliedFilters: (
     appliedFilters: AppliedFilters | ((prev: AppliedFilters) => AppliedFilters)
   ) => void
   resetFilters: () => void
+  setLoading: (loading: boolean) => void
 }
 
-export const useSearchStoreResults = create<SearchStoreResults>((set, get) => ({
+export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   query: '',
   error: null,
   loading: false,
-  results: [],
+  results: null,
   appliedFilters: {},
 
   setQuery: (query) => {
-    console.log('Setting query:', query)
-    set({ query })
+    set((state) => ({ ...state, query }))
   },
 
   setResults: (results, loading, error) => {
-    console.log('Setting results:', {
-      resultsCount: results.length,
-      loading,
-      error,
-    })
-    set({ results, loading, error })
+    set((state) => ({ ...state, results, loading, error }))
   },
 
   setAppliedFilters: (appliedFilters) => {
-    console.log('Setting applied filters:', appliedFilters)
     set((state) => ({
+      ...state,
       appliedFilters:
         typeof appliedFilters === 'function'
           ? appliedFilters(state.appliedFilters)
@@ -47,7 +46,10 @@ export const useSearchStoreResults = create<SearchStoreResults>((set, get) => ({
   },
 
   resetFilters: () => {
-    console.log('Resetting filters')
-    set({ appliedFilters: {} })
+    set((state) => ({ ...state, appliedFilters: {} }))
+  },
+
+  setLoading: (loading) => {
+    set((state) => ({ ...state, loading }))
   },
 }))
