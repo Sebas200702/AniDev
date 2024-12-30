@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnimeCard } from '@components/anime-card'
 import { useFetch } from '@hooks/useFetch'
 import type { Anime } from 'types'
@@ -13,10 +13,6 @@ export const AnimeSlider = ({ query, title }: Props) => {
   const { data: animes } = useFetch<Anime[]>({
     url: `/api/animes?limit_count=24&${query}`,
   })
-
-  const sliderRef = useRef<HTMLUListElement | null>(null)
-  const [isAtStart, setIsAtStart] = useState(true)
-  const [isAtEnd, setIsAtEnd] = useState(false)
   const [windowWidth, setWindowWidth] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -27,51 +23,66 @@ export const AnimeSlider = ({ query, title }: Props) => {
     window.addEventListener('resize', handleResize)
 
     return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', handleResize)
-      }
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
   useEffect(() => {
-    const updateButtonsVisibility = () => {
-      if (!sliderRef.current) return
-      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current
-      setIsAtStart(scrollLeft <= 0)
-      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth)
-    }
+    const sliders = document.querySelectorAll('.anime-slider')
 
-    const slider = sliderRef.current
-    if (slider) {
-      slider.addEventListener('scroll', updateButtonsVisibility)
+    sliders.forEach((slider) => {
+      const sliderList = slider.querySelector('.anime-list') as HTMLUListElement
+      const prevButton = slider.querySelector(
+        '.prev-button'
+      ) as HTMLButtonElement
+      const nextButton = slider.querySelector(
+        '.next-button'
+      ) as HTMLButtonElement
+
+      const updateButtonsVisibility = () => {
+        if (!sliderList) return
+        const { scrollLeft, scrollWidth, clientWidth } = sliderList
+        prevButton.style.display = scrollLeft <= 0 ? 'none' : 'flex'
+        nextButton.style.display =
+          scrollLeft + clientWidth >= scrollWidth ? 'none' : 'flex'
+      }
+
+      const handleScroll = (direction: 'next' | 'prev') => {
+        if (!sliderList || windowWidth === null) return
+
+        const scrollAmount =
+          windowWidth >= 1280
+            ? 6 * ((windowWidth - 8) / 6.4) + 1
+            : 4 * ((windowWidth - 8) / 4.4) + 1
+
+        const scrollDistance =
+          direction === 'next' ? scrollAmount : -scrollAmount
+
+        sliderList.scrollBy({
+          left: scrollDistance,
+          behavior: 'smooth',
+        })
+      }
+
+      sliderList.addEventListener('scroll', updateButtonsVisibility)
+      prevButton.addEventListener('click', () => handleScroll('prev'))
+      nextButton.addEventListener('click', () => handleScroll('next'))
+
       updateButtonsVisibility()
-    }
 
-    return () => {
-      slider?.removeEventListener('scroll', updateButtonsVisibility)
-    }
-  }, [animes])
+      return () => {
+        sliderList.removeEventListener('scroll', updateButtonsVisibility)
+        prevButton.removeEventListener('click', () => handleScroll('prev'))
+        nextButton.removeEventListener('click', () => handleScroll('next'))
+      }
+    })
+  }, [animes, windowWidth, loading])
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
-    }, 400)
-  })
-
-  const handleScroll = (direction: 'next' | 'prev') => {
-    if (!sliderRef.current || windowWidth === null) return
-
-    const scrollAmount =
-      windowWidth >= 1280
-        ? 6 * ((windowWidth - 8) / 6.4) + 1
-        : 4 * ((windowWidth - 8) / 4.4) + 1
-
-    const scrollDistance = direction === 'next' ? scrollAmount : -scrollAmount
-
-    sliderRef.current.scrollBy({
-      left: scrollDistance,
-      behavior: 'smooth',
-    })
-  }
+    }, 500)
+  }, [])
 
   if (loading)
     return (
@@ -101,10 +112,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
         <h2 className="px-[calc(((100dvw-8px)/6.4)*0.2)] text-2xl font-bold text-gray-900">
           {title}
         </h2>
-        <ul
-          ref={sliderRef}
-          className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth"
-        >
+        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth">
           {animes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={query} />
           ))}
@@ -114,17 +122,12 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }
 
   return (
-    <section className="relative mx-auto mt-6 w-[calc(100dvw-8px)]">
+    <section className="anime-slider relative mx-auto mt-6 w-[calc(100dvw-8px)]">
       <h2 className="px-[calc(((100dvw-8px)/6.4)*0.2)] text-2xl font-bold text-gray-900">
         {title}
       </h2>
       <div className="relative overflow-hidden">
-        <button
-          className={`prev-button group absolute bottom-0 left-0 z-10 my-auto flex h-full w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none ${
-            isAtStart ? 'hidden' : ''
-          }`}
-          onClick={() => handleScroll('prev')}
-        >
+        <button className="prev-button group absolute bottom-0 left-0 z-10 my-auto hidden h-full w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none">
           <svg
             className="rotate-180 transform opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
             xmlns="http://www.w3.org/2000/svg"
@@ -140,21 +143,13 @@ export const AnimeSlider = ({ query, title }: Props) => {
           </svg>
         </button>
 
-        <ul
-          ref={sliderRef}
-          className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]"
-        >
+        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
           {animes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={query} />
           ))}
         </ul>
 
-        <button
-          className={`next-button group absolute bottom-0 right-0 z-10 my-auto flex h-full w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none ${
-            isAtEnd ? 'hidden' : ''
-          }`}
-          onClick={() => handleScroll('next')}
-        >
+        <button className="next-button group absolute bottom-0 right-0 z-10 my-auto hidden h-full w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none">
           <svg
             className="opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
             xmlns="http://www.w3.org/2000/svg"
