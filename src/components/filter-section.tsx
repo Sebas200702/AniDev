@@ -6,18 +6,11 @@ import { studioOptions } from '@utils/create-studios-options'
 import type { AppliedFilters } from 'types'
 
 export const FilterSection: React.FC = () => {
-  const { appliedFilters, setAppliedFilters, query, setQuery } =
+  const { appliedFilters, setAppliedFilters, query, setQuery, resetFilters } =
     useSearchStoreResults()
-
-  const handleReset = useCallback(() => {
-    console.log('FilterSection: Resetting filters and query')
-    setAppliedFilters({})
-    setQuery('')
-  }, [setAppliedFilters, setQuery])
 
   const removeFilter = useCallback(
     (category: keyof AppliedFilters, value: string) => {
-      console.log('FilterSection: Removing filter', { category, value })
       setAppliedFilters((prev) => {
         const newFilters = { ...prev }
         newFilters[category] =
@@ -33,7 +26,6 @@ export const FilterSection: React.FC = () => {
 
   const updateFilter = useCallback(
     (category: keyof AppliedFilters, values: string[]) => {
-      console.log('FilterSection: Updating filter', { category, values })
       setAppliedFilters((prev) => {
         const newFilters = { ...prev }
         if (values.length > 0) {
@@ -49,7 +41,6 @@ export const FilterSection: React.FC = () => {
 
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log('FilterSection: Updating query', e.target.value)
       setQuery(e.target.value)
     },
     [setQuery]
@@ -61,8 +52,8 @@ export const FilterSection: React.FC = () => {
   )
 
   return (
-    <div className="md: relative mx-auto md:h-52  w-full max-w-6xl space-y-4 p-4 xl:max-w-7xl h-min">
-      <div className="grid  gap-4 md:grid-cols-6 xl:grid-cols-7 grid-cols-2">
+    <div className="md: relative mx-auto h-min w-full max-w-6xl space-y-4 p-4 md:h-52 xl:max-w-7xl">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-6 xl:grid-cols-7">
         <div className="relative">
           <label className="mb-1 block text-sm font-medium text-gray-700">
             Search
@@ -72,7 +63,7 @@ export const FilterSection: React.FC = () => {
             id="default-search"
             className="flex max-h-[80px] w-full flex-wrap items-start gap-1 overflow-y-auto rounded border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600 focus-within:border-gray-400 focus-within:ring-1 focus-within:ring-gray-400 focus:outline-none"
             placeholder="Search Animes..."
-            value={query || ''}
+            value={query}
             onChange={handleInput}
           />
         </div>
@@ -122,7 +113,8 @@ export const FilterSection: React.FC = () => {
             Reset
           </label>
           <button
-            onClick={handleReset}
+            type="button"
+            onClick={resetFilters}
             className="inline-flex items-center rounded border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
           >
             <svg
@@ -140,7 +132,7 @@ export const FilterSection: React.FC = () => {
       </div>
 
       { (
-        <div className="md:absolute bottom-0 left-0 right-0 h-24 rounded-md bg-gray-50 p-4">
+        <div className="bottom-0 left-0 right-0 h-24 rounded-md bg-gray-50 p-4 md:absolute">
           <h3 className="mb-2 text-sm font-semibold text-gray-700">
             Applied Filters:
           </h3>
@@ -153,6 +145,7 @@ export const FilterSection: React.FC = () => {
                 >
                   {value}
                   <button
+                    type="button"
                     onClick={() =>
                       removeFilter(category as keyof AppliedFilters, value)
                     }
