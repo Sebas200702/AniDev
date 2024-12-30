@@ -2,6 +2,7 @@
 import Layout from '@layouts/base.astro'
 import AnimeEpisodes from '@components/anime-episodes.astro'
 import { baseUrl } from '@utils/base-url'
+import { NextPrevEpisodeBtn } from '@components/next-prev-episode-btn'
 
 import type { Anime, AnimeEpisode } from 'types'
 
@@ -34,10 +35,10 @@ try {
 
 <Layout>
   <section
-    class="xl:max-w-7x mx-auto flex h-min w-full flex-col justify-center gap-4 overflow-y-hidden xl:max-h-[calc(100dvw/2.6)] xl:flex-row"
+    class="xl:max-w-7x mx-auto flex h-min w-full flex-col justify-center gap-4 overflow-y-hidden xl:max-h-[calc(100dvw/2.4)] xl:flex-row"
   >
     <div
-      class="aspect-video w-full p-2 md:relative md:max-w-full xl:max-h-[calc(100dvw/2.6)] xl:max-w-[68%]"
+      class="flex aspect-video w-full flex-col gap-6 p-2 md:relative md:max-w-full xl:max-h-[calc(100dvw/2.7)] xl:max-w-[68%]"
     >
       {
         video_url ? (
@@ -57,6 +58,24 @@ try {
           <p class="text-center text-gray-500">El video no está disponible.</p>
         )
       }
+      <div
+        class={`flex justify-between ${episode === '1' ? 'flex-row-reverse' : 'flex-row '}`}
+      >
+        <NextPrevEpisodeBtn
+          client:visible
+          episodesLength={episodes.length}
+          currentEpisode={parseInt(episode)}
+          action="Prev"
+          slug={Astro.params.slug ?? ''}
+        />
+        <NextPrevEpisodeBtn
+          client:visible
+          episodesLength={episodes.length}
+          currentEpisode={parseInt(episode)}
+          action="Next"
+          slug={Astro.params.slug ?? ''}
+        />
+      </div>
     </div>
 
     <AnimeEpisodes
