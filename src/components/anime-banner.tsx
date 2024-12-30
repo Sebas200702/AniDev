@@ -64,7 +64,7 @@ export const AnimeBanner = () => {
     <section className="relative mx-auto flex flex-row items-center">
       <a
         href={`/${slug}_${mal_id}`}
-        className="group h-full w-full transition-all duration-200 ease-in-out hover:opacity-95"
+        className="group h-full w-full transition-all duration-200 ease-in-out md:hover:opacity-95"
         aria-label={`View details for ${title}`}
       >
         <img
@@ -76,10 +76,13 @@ export const AnimeBanner = () => {
           height={300}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
       </a>
       <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
-        <a href={`/${slug}_${mal_id}`}>
+        <a
+          href={`/${slug}_${mal_id}`}
+          className="transition-all duration-200 ease-in-out md:hover:opacity-95"
+        >
           <h2 className="text-center text-xl font-bold text-white md:text-2xl">
             {title}
           </h2>
@@ -90,7 +93,7 @@ export const AnimeBanner = () => {
         </p>
         <a
           href={`/watch/${slug}_${mal_id}`}
-          className="flex w-full items-center justify-center rounded-lg bg-blue-400 px-4 py-2 text-sm text-white hover:bg-blue-500 md:text-base"
+          className="flex w-full items-center justify-center rounded-lg bg-blue-400 px-4 py-2 text-sm text-white md:text-base md:hover:bg-blue-500"
         >
           View Now
         </a>
