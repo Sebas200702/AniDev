@@ -35,10 +35,6 @@ export const SearchComponent: React.FC = () => {
 
   useUrlSync()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }
-
   useEffect(() => {
     setLoading(isLoading)
     if (!isLoading) {
@@ -49,12 +45,7 @@ export const SearchComponent: React.FC = () => {
   return (
     <section className="mt-10 flex h-[100dvh] flex-col gap-4 overflow-y-auto overflow-x-hidden">
       <div className="w-full">
-        <form
-          onSubmit={handleSubmit}
-          className="mx-auto flex w-full max-w-[calc(100dvw-8px)] gap-4"
-        >
-          <FilterSection />
-        </form>
+        <FilterSection />
       </div>
       <SearchResults />
     </section>
