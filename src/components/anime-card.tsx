@@ -32,7 +32,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
     <article className="group relative transition-transform duration-200 ease-in-out">
       <a
         href={`/${slug}_${mal_id}?context=${context}`}
-        className="flex h-auto w-[calc((100dvw-8px)/2.4)] flex-col items-center rounded-lg p-4 md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]"
+        className={` ${context === 'search' ? '' : 'flex h-auto w-[calc((100dvw-8px)/2.4)] flex-col items-center rounded-lg p-4 md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]'}`}
         aria-label={`View details for ${title}`}
       >
         <picture
@@ -47,12 +47,12 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <img
             src={image_large_webp}
             alt={title}
-            className="aspect-[225/330] w-full rounded-lg  transition-all ease-in-out group-hover:scale-105"
+            className="aspect-[225/330] w-full rounded-lg transition-all ease-in-out md:group-hover:scale-105"
             loading="lazy"
             width={225}
             height={330}
           />
-          <div className="absolute bottom-0 left-0 h-full w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out group-hover:scale-105 group-hover:opacity-100" />
+          <div className="absolute bottom-0 left-0 h-full w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out md:group-hover:scale-105 md:group-hover:opacity-100" />
         </picture>
 
         <h3
@@ -62,9 +62,11 @@ export const AnimeCard = ({ anime, context }: Props) => {
           {title}
         </h3>
       </a>
-      <div className="absolute bottom-16 left-0 right-0 flex h-auto w-full flex-row items-center justify-between px-5 text-blue-500 group-hover:opacity-100">
+      <div
+        className={` ${context === 'search' ? 'bottom-10 px-2' : 'bottom-16 px-5'} absolute left-0 right-0 flex h-auto w-full flex-row items-center justify-between text-blue-500 md:group-hover:opacity-100`}
+      >
         <AnimeTag tag={animeType} type={type} style="w-auto" />
-        <div className="flex w-auto flex-row items-center opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100">
+        <div className="flex w-auto flex-row items-center opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100">
           {actions.map((action) => (
             <a
               key={action.name}
