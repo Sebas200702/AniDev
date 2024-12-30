@@ -78,7 +78,7 @@ export const AnimeBanner = () => {
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out group-hover:opacity-100" />
       </a>
-      <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 rounded-lg bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80">
+      <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
         <a href={`/${slug}_${mal_id}`}>
           <h2 className="text-center text-xl font-bold text-white md:text-2xl">
             {title}

@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const AnimeCard = ({ anime, context }: Props) => {
-  const { title, image_webp, mal_id, type, image_small_webp } = anime
+  const { title, image_large_webp, mal_id, type, image_small_webp } = anime
   const slug = normalizeString(title)
   const animeType = getAnimeType(type)
 
@@ -45,7 +45,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
           }}
         >
           <img
-            src={image_webp}
+            src={image_large_webp}
             alt={title}
             className="aspect-[225/330] w-full rounded-lg  transition-all ease-in-out group-hover:scale-105"
             loading="lazy"

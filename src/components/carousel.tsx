@@ -60,8 +60,7 @@ export const Carousel = () => {
     fadeIn,
     setFadeIn,
   } = useCarouselStore()
-
-  useEffect(() => {
+  const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
     const url = sessionStorage.getItem('banners-url') ?? ''
     const banners = JSON.parse(sessionStorage.getItem('banners') ?? '[]')
@@ -73,6 +72,10 @@ export const Carousel = () => {
     sessionStorage.setItem('banners-url', newUrl)
     setLoading(true)
     setBanners([])
+  }, [setUrl, banners.length, url, setLoading, setBanners, setBanners])
+
+  useEffect(() => {
+    fetchBannerData()
   }, [setUrl, banners.length, url, setLoading, setBanners])
 
   const { data: bannersData, loading: bannersLoading } = useFetch<Anime[]>({
@@ -80,12 +83,15 @@ export const Carousel = () => {
   })
 
   useEffect(() => {
-    if (!bannersData || bannersLoading) return
+    if (!bannersData || bannersLoading) {
+      fetchBannerData()
+      return
+    }
     setBanners(bannersData)
     sessionStorage.setItem('banners', JSON.stringify(bannersData))
     setLoading(false)
     preloadImages()
-  }, [bannersData, bannersLoading, setBanners, setLoading])
+  }, [bannersData, bannersLoading, setBanners, setLoading, fetchBannerData])
 
   const handlePrev = useCallback(() => {
     if (!banners || banners.length === 0) return
@@ -96,7 +102,8 @@ export const Carousel = () => {
     if (!banners || banners.length === 0) return
     banners.forEach((anime) => {
       const image = new Image()
-      image.src = createImageUrlProxy(anime.image_webp, '0', '50', 'webp')
+      image.src = anime.image_large_webp
+      image.src = createImageUrlProxy(anime.banner_image, '1920', '10', 'webp')
     })
   }, [banners])
 
@@ -171,7 +178,7 @@ export const Carousel = () => {
                   {reduceSynopsis(anime.synopsis, 300)}
                 </p>
                 <footer className="mx-auto mt-4 flex w-full flex-row justify-center gap-2 md:justify-normal">
-                  {anime.genres.map((tag: string) => (
+                  {anime.genres.slice(0, 3).map((tag: string) => (
                     <AnimeTag key={tag} tag={tag} type={tag} style="w-auto" />
                   ))}
                 </footer>

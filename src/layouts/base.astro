@@ -2,6 +2,13 @@
 import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
 import { ClientRouter } from 'astro:transitions'
+const [title] = Astro.params.slug?.split('_') ?? ['', '']
+const episode = new URLSearchParams(Astro.url.search).get('ep')
+const seoTitle = (title: string | null, episode: string | null) => {
+  if (!episode && !title) return 'Animeflix '
+  if (!episode) return `${title} - Animeflix `
+  return `${title} - Episodio ${episode} - Animeflix `
+}
 ---
 
 <html lang="en">
@@ -10,7 +17,7 @@ import { ClientRouter } from 'astro:transitions'
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Animeflix</title>
+    <title>{seoTitle(title, episode)}</title>
     <script
       type="module"
       src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"

@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro'
 import sharp from 'sharp'
+import { redis } from '@libs/redis'
 
 export const GET: APIRoute = async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
@@ -18,6 +19,23 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
+    const cacheKey = `${imageUrl}-w${width}-q${quality}-f${format}`
+
+    const cachedImage = await redis.get(cacheKey)
+    if (cachedImage) {
+      console.log('Cache hit:', cacheKey)
+      const buffer = Buffer.from(cachedImage, 'base64')
+      const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
+      return new Response(buffer, {
+        headers: {
+          'Content-Type': mimeType,
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Content-Length': buffer.length.toString(),
+        },
+      })
+    }
+
+    console.log('Cache miss:', cacheKey)
     const response = await fetch(imageUrl)
     if (!response.ok) {
       console.error(`Failed to fetch image from URL: ${imageUrl}`)
@@ -39,8 +57,11 @@ export const GET: APIRoute = async ({ url }) => {
 
     const optimizedBuffer = await image.toBuffer()
 
-    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
+    await redis.set(cacheKey, optimizedBuffer.toString('base64'), {
+      EX: 60 * 60 * 24 * 7,
+    })
 
+    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,

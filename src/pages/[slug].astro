@@ -87,20 +87,29 @@ const context =
     <article
       class="flex w-full flex-col items-center gap-4 md:mt-24 md:flex-row md:gap-20"
     >
-      {
-        image_large_webp && (
-          <Image
-            src={image_webp}
-            alt={title}
-            class="aspect-[225/330] h-full w-full max-w-80 rounded-lg transition-all ease-in-out"
-            transition:name={`${slug}_${mal_id}_${context}`}
-            loading="lazy"
-            width={225}
-            height={330}
-            quality={10}
-          />
-        )
-      }
+      <picture class=" rounded-lg"
+        style={{
+          backgroundImage: `url(${createImageUrlProxy(image_large_webp, '100', '1', 'webp')})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        {
+          image_large_webp && (
+            <Image
+              src={image_large_webp}
+              alt={title}
+              class="aspect-[225/330] h-full w-full max-w-80 rounded-lg transition-all ease-in-out"
+              transition:name={`${slug}_${mal_id}_${context}`}
+              loading="lazy"
+              width={225}
+              height={330}
+              quality={10}
+            />
+          )
+        }
+      </picture>
       <div
         class="flex w-full flex-col justify-center gap-4"
         transition:animate={slide({ duration: '0.4s' })}
