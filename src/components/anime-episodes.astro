@@ -15,7 +15,7 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
 ---
 
 <section
-  class={context === 'anime-info' ? 'mx-auto mt-20' : '  overflow-x-hidden'}
+  class={context === 'anime-info' ? 'mx-auto mt-20' : '  overflow-hidden'}
 >
   {
     context === 'anime-info' && (
@@ -26,9 +26,9 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
   }
 
   <ul
-    class={context === 'anime-info'
+    class={`scroll-smooth [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2 ${context === 'anime-info'
       ? 'grid w-full grid-cols-1 gap-6 p-2 xl:grid-cols-2 max-h-96 overflow-y-auto'
-      : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 md:mt-12 grid-cols-1 max-h-64 md:max-h-full '}
+      : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 md:mt-12 overflow-y-auto grid-cols-1 max-h-64 md:max-h-full '}`}
   >
     {
       episodes.map(
