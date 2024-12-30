@@ -5,8 +5,9 @@ import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { normalizeString } from '@utils/normalize-string'
 import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
 import { useCarouselStore } from '@store/carousel-store'
-import { memo, useCallback, useEffect } from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
 import type { Anime } from 'types'
+import '@styles/anime-slider.css'
 
 const Indicator = memo(
   ({
@@ -60,6 +61,51 @@ export const Carousel = () => {
     fadeIn,
     setFadeIn,
   } = useCarouselStore()
+  const bannerContainerRef = useRef<HTMLDivElement | null>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchEndX = useRef<number | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return
+    const deltaX = touchStartX.current - touchEndX.current
+
+    // Determinar la dirección del deslizamiento
+    if (deltaX > 50) {
+      handleNext() // Deslizar hacia la izquierda
+    } else if (deltaX < -50) {
+      handlePrev() // Deslizar hacia la derecha
+    }
+
+    // Reiniciar referencias
+    touchStartX.current = null
+    touchEndX.current = null
+  }
+
+  // Manejar desplazamiento con rueda del ratón
+  const handleWheel = (e: React.WheelEvent) => {
+    if (e.deltaY > 0) {
+      handleNext() // Desplazamiento hacia abajo
+    } else if (e.deltaY < 0) {
+      handlePrev() // Desplazamiento hacia arriba
+    }
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      handleNext()
+    } else if (e.key === 'ArrowLeft') {
+      handlePrev()
+    }
+  }
+
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
     const url = sessionStorage.getItem('banners-url') ?? ''
@@ -97,6 +143,7 @@ export const Carousel = () => {
     if (!banners || banners.length === 0) return
     const prevIndex = currentIndex === 0 ? banners.length - 1 : currentIndex - 1
     setCurrentIndex(prevIndex)
+    handleScroll(prevIndex)
   }, [banners, currentIndex, setCurrentIndex])
   const preloadImages = useCallback(() => {
     if (!banners || banners.length === 0) return
@@ -111,22 +158,39 @@ export const Carousel = () => {
     if (!banners || banners.length === 0) return
     const nextIndex = currentIndex === banners.length - 1 ? 0 : currentIndex + 1
     setCurrentIndex(nextIndex)
+    handleScroll(nextIndex)
   }, [banners, currentIndex, setCurrentIndex])
-
   const handleIndicatorClick = useCallback(
     (index: number) => {
       setCurrentIndex(index)
+      handleScroll(index)
     },
     [setCurrentIndex]
   )
+  const handleScroll = (currentIndex: number) => {
+    if (!banners || banners.length === 0) return
+    const bannerContainer = document.getElementById(
+      'banner-container'
+    ) as HTMLDivElement | null
+    if (!bannerContainer) return
+    const scrollAmount = bannerContainer.clientWidth * currentIndex
+    bannerContainer.scrollTo({
+      left: scrollAmount,
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     if (!banners || banners.length === 0) return
-    setFadeIn(true)
+    setTimeout(() => {
+      setFadeIn(true)
+    }, 100)
     const interval = setInterval(() => {
       const nextIndex = (currentIndex + 1) % banners.length
       setCurrentIndex(nextIndex)
+      handleScroll(nextIndex)
     }, 5000)
+    window.addEventListener('keydown', (e) => handleKeyDown(e))
     return () => clearInterval(interval)
   }, [banners, currentIndex, setCurrentIndex, setFadeIn])
 
@@ -134,17 +198,20 @@ export const Carousel = () => {
 
   return (
     <div
-      className={`relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} overflow-x-hidden`}
+      className={`relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
-      <div className="relative h-full overflow-hidden">
-        <div
-          className="flex h-full transition-transform duration-700 ease-in-out"
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-          }}
-        >
+      <div
+        className="relative h-full overflow-x-auto anime-list"
+        ref={bannerContainerRef}
+        id="banner-container"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onWheel={handleWheel}
+      >
+        <div className="flex h-full transition-transform duration-700 ease-in-out">
           {banners.map((anime, index) => (
             <div
               key={anime.mal_id}
@@ -171,12 +238,14 @@ export const Carousel = () => {
               <div
                 className={`flex-1 p-6 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 text-white`}
               >
-                <h2 className="text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-3xl">
-                  {anime.title}
-                </h2>
-                <p className="mb-4 hidden text-base text-white drop-shadow md:flex">
-                  {reduceSynopsis(anime.synopsis, 300)}
-                </p>
+                <a href={`${normalizeString(anime.title)}_${anime.mal_id}`}>
+                  <h2 className="text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-3xl">
+                    {anime.title}
+                  </h2>
+                  <p className="mb-4 hidden text-base text-white drop-shadow md:flex">
+                    {reduceSynopsis(anime.synopsis, 300)}
+                  </p>
+                </a>
                 <footer className="mx-auto mt-4 flex w-full flex-row justify-center gap-2 md:justify-normal">
                   {anime.genres.slice(0, 3).map((tag: string) => (
                     <AnimeTag key={tag} tag={tag} type={tag} style="w-auto" />
