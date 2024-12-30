@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useCallback } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { SearchResults } from '@components/search-results'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
@@ -10,7 +10,8 @@ import type { Anime } from 'types'
 import { useUrlSync } from '@hooks/useUrlSync'
 
 export const SearchComponent: React.FC = () => {
-  const { query, setResults, appliedFilters } = useSearchStoreResults()
+  const { query, setResults, appliedFilters, setLoading } =
+    useSearchStoreResults()
   const debouncedQuery = useDebounce(query, 500)
   const filtersToApply = useMemo(
     () => createFiltersToApply(appliedFilters),
@@ -34,34 +35,24 @@ export const SearchComponent: React.FC = () => {
 
   useUrlSync()
 
-  const updateResults = useCallback(
-    (
-      newAnimes: Anime[] | null,
-      newLoading: boolean,
-      newError: string | null
-    ) => {
-      console.log('SearchComponent: Updating results', {
-        animes: newAnimes,
-        isLoading: newLoading,
-        fetchError: newError,
-      })
-      setResults(newAnimes ?? [], newLoading, newError)
-    },
-    [setResults]
-  )
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  }
 
   useEffect(() => {
-    updateResults(animes, isLoading, fetchError)
-  }, [animes, isLoading, fetchError, updateResults])
-
-  useEffect(() => {
-    console.log('SearchComponent: Current state', { query, appliedFilters })
-  }, [query, appliedFilters])
+    setLoading(isLoading)
+    if (!isLoading) {
+      setResults(animes ?? [], false, fetchError)
+    }
+  }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
-    <section className="mt-10 flex flex-col gap-4">
+    <section className="mt-10 flex h-[100dvh] flex-col gap-4 overflow-y-auto overflow-x-hidden">
       <div className="w-full">
-        <form className="mx-auto flex w-full max-w-[calc(100dvw-8px)] gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto flex w-full max-w-[calc(100dvw-8px)] gap-4"
+        >
           <FilterSection />
         </form>
       </div>
