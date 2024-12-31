@@ -2,6 +2,7 @@ import { AnimeTag } from '@components/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeString } from '@utils/normalize-string'
 import { AddToListIcon } from '@icons/add-to-list-icon'
+import { genreToColor } from '@utils/genre-to-color'
 import { PlayIcon } from '@icons/play-icon'
 import type { Anime } from 'types'
 
@@ -11,7 +12,15 @@ interface Props {
 }
 
 export const AnimeCard = ({ anime, context }: Props) => {
-  const { title, image_large_webp, mal_id, type, image_small_webp } = anime
+  const {
+    title,
+    image_large_webp,
+    mal_id,
+    type,
+    image_small_webp,
+    status,
+    genres,
+  } = anime
   const slug = normalizeString(title)
   const animeType = getAnimeType(type)
 
@@ -54,13 +63,18 @@ export const AnimeCard = ({ anime, context }: Props) => {
           />
           <div className="absolute bottom-0 left-0 h-full w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out md:group-hover:scale-105 md:group-hover:opacity-100" />
         </picture>
-
-        <h3
-          className="mt-4 w-full max-w-[90%] truncate text-base font-semibold text-gray-900 transition-opacity duration-200 ease-in-out"
-          aria-hidden="true"
-        >
-          {title}
-        </h3>
+        <footer className="mt-4 flex w-full flex-row items-center justify-center gap-2">
+          <div
+            title={status}
+            className={`my-auto h-3 w-3 rounded-full ${status === 'Currently Airing' ? 'bg-green-400 md:group-hover:bg-green-500' : 'bg-blue-400 md:group-hover:bg-blue-500'}`}
+          />
+          <h3
+            className={`w-full max-w-[90%] ${genreToColor(genres[0])} truncate text-base font-semibold text-gray-900 transition-opacity duration-200 ease-in-out`}
+            aria-hidden="true"
+          >
+            {title}
+          </h3>
+        </footer>
       </a>
       <div
         className={` ${context === 'search' ? 'bottom-10 px-2' : 'bottom-16 px-5'} absolute left-0 right-0 flex h-auto w-full flex-row items-center justify-between text-blue-500 md:group-hover:opacity-100`}
