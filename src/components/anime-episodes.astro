@@ -26,9 +26,11 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
   }
 
   <ul
-    class={`scroll-smooth [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2 ${context === 'anime-info'
-      ? 'grid w-full grid-cols-1 gap-6 p-2 xl:grid-cols-2 max-h-96 overflow-y-auto'
-      : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 md:mt-12 overflow-y-auto grid-cols-1 max-h-64 md:max-h-full '}`}
+    class={`scroll-smooth anime-list [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2 ${
+      context === 'anime-info'
+        ? 'grid w-full grid-cols-1 gap-6 p-2 xl:grid-cols-2 max-h-96 overflow-y-auto'
+        : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 md:mt-12 overflow-y-auto grid-cols-1 max-h-64 md:max-h-full '
+    }`}
   >
     {
       episodes.map(
@@ -62,3 +64,28 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
     }
   </ul>
 </section>
+<script is:inline>
+  const init = () => {
+    if (!window.location.pathname.includes('watch')) return
+
+    const episode = new URLSearchParams(window.location.search).get('ep')
+    if (!episode) return
+
+    const currentEpisode = parseInt(episode)
+    const episodesList = document.querySelector('.anime-list')
+    const targetEpisode = document.querySelector(
+      `.anime-list a[href*="ep=${currentEpisode}"]`
+    )
+
+    if (episodesList && targetEpisode) {
+      const offsetTop = targetEpisode.offsetTop
+      episodesList.scrollTo({
+        top: offsetTop - episodesList.clientHeight / 2,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init)
+  document.addEventListener('astro:after-swap', init)
+</script>
