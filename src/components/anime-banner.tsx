@@ -88,7 +88,7 @@ export const AnimeBanner = () => {
           </h2>
         </a>
 
-        <p className="text-center  text-white md:text-start text-sm">
+        <p className="text-center text-sm text-white md:text-start">
           {reduceSynopsis(synopsis, 100)}
         </p>
         <a

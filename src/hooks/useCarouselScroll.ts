@@ -89,6 +89,6 @@ export const useCarouselScroll = (
     resetInterval,
     intervalRef,
     handleScroll,
-    handleKeyDown
+    handleKeyDown,
   }
 }

@@ -131,7 +131,7 @@ export const FilterSection: React.FC = () => {
         </div>
       </div>
 
-      { (
+      {
         <div className="bottom-0 left-0 right-0 h-24 rounded-md bg-gray-50 p-4 md:absolute">
           <h3 className="mb-2 text-sm font-semibold text-gray-700">
             Applied Filters:
@@ -170,7 +170,7 @@ export const FilterSection: React.FC = () => {
             )}
           </div>
         </div>
-      )}
+      }
     </div>
   )
 }
