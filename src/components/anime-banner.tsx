@@ -45,7 +45,7 @@ export const AnimeBanner = () => {
       }
       setTimeout(() => {
         setLoading(false)
-      }, 400)
+      }, 700)
     }
 
     fetchBannerData()

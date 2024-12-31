@@ -10,11 +10,10 @@ interface Props {
 }
 
 export const AnimeSlider = ({ query, title }: Props) => {
-  const { data: animes } = useFetch<Anime[]>({
+  const { data: animes, loading } = useFetch<Anime[]>({
     url: `/api/animes?limit_count=24&${query}`,
   })
   const [windowWidth, setWindowWidth] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -77,12 +76,6 @@ export const AnimeSlider = ({ query, title }: Props) => {
       }
     })
   }, [animes, windowWidth, loading])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
-  }, [])
 
   if (loading)
     return (
