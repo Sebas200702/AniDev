@@ -114,7 +114,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
         </h2>
         <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth">
           {animes?.map((anime: Anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} context={query} />
+            <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
       </section>
@@ -145,7 +145,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
         <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
           {animes?.map((anime: Anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} context={query} />
+            <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
 
