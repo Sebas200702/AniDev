@@ -14,11 +14,7 @@ import Layout from '@layouts/base.astro'
   />
   <AnimeBanner client:visible />
   <AnimeSlider client:visible query="genre_filter=action" title="Action" />
-  <AnimeSlider
-    client:visible
-    query="genre_filter=adventure"
-    title="Time Travel"
-  />
+  <AnimeSlider client:visible query="type_filter=movie" title="Top Movies" />
   <AnimeBanner client:visible />
   <AnimeSlider client:visible query="genre_filter=comedy" title="Comedy" />
   <AnimeSlider client:visible query="genre_filter=drama" title="Drama" />
@@ -43,4 +39,9 @@ import Layout from '@layouts/base.astro'
     query="genre_filter=supernatural"
     title="Supernatural"
   />
+  <AnimeBanner client:visible />
+  <AnimeSlider client:visible query="genre_filter=sports" title="Sports" />
+  <AnimeSlider client:visible query="genre_filter=fantasy" title="Fantasy" />
+  <AnimeBanner client:visible />
+  <AnimeSlider client:visible query="genre_filter=scifi" title="Sci-Fi" />
 </Layout>
