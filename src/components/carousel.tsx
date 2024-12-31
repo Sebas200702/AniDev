@@ -117,10 +117,7 @@ export const Carousel = () => {
   })
 
   useEffect(() => {
-    if (!bannersData || bannersLoading) {
-      fetchBannerData()
-      return
-    }
+    if (!bannersData || bannersLoading) return
     setBanners(bannersData)
     sessionStorage.setItem('banners', JSON.stringify(bannersData))
     setLoading(false)
@@ -175,12 +172,14 @@ export const Carousel = () => {
                 href={`${normalizeString(anime.title)}_${anime.mal_id}`}
                 className="z-10 flex h-auto max-h-[60%] w-full items-center justify-center p-4 md:h-full md:max-h-[90%] md:w-1/4"
               >
-                <img
-                  src={anime.image_webp}
-                  className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg object-cover object-center shadow-lg md:max-h-[90%]"
-                  alt={anime.title}
-                  loading="lazy"
-                />
+                <picture className="flex aspect-[225/330] h-auto max-h-72 w-full items-center justify-center rounded-lg object-cover object-center shadow-lg md:max-h-[90%]">
+                  <img
+                    src={anime.image_large_webp}
+                    className="aspect-[225/330] h-auto max-h-72 w-auto rounded-lg object-cover object-center shadow-lg md:max-h-[90%]"
+                    alt={anime.title}
+                    loading="lazy"
+                  />
+                </picture>
               </a>
               <div
                 className={`flex-1 p-6 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 text-white`}
