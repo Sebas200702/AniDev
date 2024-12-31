@@ -26,10 +26,10 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
   }
 
   <ul
-    class={`scroll-smooth anime-list [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2 ${
+    class={`scroll-smooth anime-list relative [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2 ${
       context === 'anime-info'
         ? 'grid w-full grid-cols-1 gap-6 p-2 xl:grid-cols-2 max-h-96 overflow-y-auto'
-        : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 md:mt-12 overflow-y-auto grid-cols-1 max-h-64 md:max-h-full '
+        : ' grid gap-4 p-2 md:grid-cols-2 xl:grid-cols-1 md:mt-12 xl:mt-0 overflow-y-auto md:overflow-y-auto grid-cols-1 max-h-64 md:max-h-64 xl:max-h-full'
     }`}
   >
     {
@@ -66,6 +66,7 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
 </section>
 <script is:inline>
   const init = () => {
+    const witdh = window.innerWidth
     if (!window.location.pathname.includes('watch')) return
 
     const episode = new URLSearchParams(window.location.search).get('ep')
@@ -77,13 +78,12 @@ const { episodes, slug, image_webp, synopsis, context, currentEpisode } =
       `.anime-list a[href*="ep=${currentEpisode}"]`
     )
 
-    if (episodesList && targetEpisode) {
-      const offsetTop = targetEpisode.offsetTop
-      episodesList.scrollTo({
-        top: offsetTop - episodesList.clientHeight / 2,
-        behavior: 'smooth',
-      })
-    }
+    if (!episodesList || !targetEpisode) return
+    const offsetTop = targetEpisode.offsetTop
+    episodesList.scrollTo({
+      top: offsetTop - episodesList.clientHeight / 2,
+      behavior: 'smooth',
+    })
   }
 
   document.addEventListener('DOMContentLoaded', init)
