@@ -81,7 +81,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
-    }, 500)
+    }, 700)
   }, [])
 
   if (loading)
