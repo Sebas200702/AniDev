@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/base.astro'
-import AnimeEpisodes from '@components/anime-episodes.astro'
+import { AnimeEpisodes } from '@components/anime-episodes'
 import { baseUrl } from '@utils/base-url'
 import { NextPrevEpisodeBtn } from '@components/next-prev-episode-btn'
 
@@ -20,7 +20,7 @@ const animeInfo: Anime = await fetch(
 
 const { image_webp, synopsis } = animeInfo
 
-const episodes: AnimeEpisode[] = responseEpisodes.episodes
+const episodes: AnimeEpisode[] = responseEpisodes.data
 let video_url = ''
 try {
   const response = await fetch(
@@ -38,7 +38,7 @@ try {
     class="xl:max-w-7x mx-auto flex h-min w-full flex-col justify-center gap-4 overflow-y-hidden xl:max-h-[calc(100dvw/2.4)] xl:flex-row"
   >
     <div
-      class="flex aspect-video w-full flex-col gap-3 p-2 md:relative md:max-w-full xl:max-h-[calc(100dvw/2.7)] xl:max-w-[68%]"
+      class="flex aspect-video w-full flex-col gap-3 p-2 mb-10 md:relative md:max-w-full xl:max-h-[calc(100dvw/2.7)] xl:max-w-[68%]"
     >
       {
         video_url ? (
@@ -79,7 +79,9 @@ try {
     </div>
 
     <AnimeEpisodes
-      episodes={episodes}
+      client:load
+      mal_id={animeInfo.mal_id}
+      totalEpisodes={animeInfo.episodes}
       slug={title}
       image_webp={image_webp}
       synopsis={synopsis}
