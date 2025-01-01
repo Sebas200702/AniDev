@@ -11,6 +11,26 @@ interface Props {
   context?: string
 }
 
+interface StatusPoinProps {
+  class: string
+  status?: string
+}
+
+const StatusPoin = ({ class: className, status }: StatusPoinProps) => {
+  return (
+    <div title={status}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        className={className}
+      >
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 7a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7z" />
+      </svg>
+    </div>
+  )
+}
 export const AnimeCard = ({ anime, context }: Props) => {
   const {
     title,
@@ -64,9 +84,9 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <div className="absolute bottom-0 left-0 h-full w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out md:group-hover:scale-105 md:group-hover:opacity-100" />
         </picture>
         <footer className="mt-4 flex w-full flex-row items-center justify-center gap-2">
-          <div
-            title={status}
-            className={`my-auto h-3 w-3 rounded-full ${status === 'Currently Airing' ? 'bg-green-400 md:group-hover:bg-green-500' : 'bg-blue-400 md:group-hover:bg-blue-500'}`}
+          <StatusPoin
+            class={`h-6 w-6 ${status === 'Currently Airing' ? 'text-green-400 md:group-hover:text-green-500' : 'text-blue-400 md:group-hover:text-blue-500'}`}
+            status={status}
           />
           <h3
             className={`w-full max-w-[90%] ${genreToColor(genres[0])} truncate text-base font-semibold text-gray-900 transition-opacity duration-200 ease-in-out`}
