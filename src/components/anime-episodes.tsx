@@ -24,6 +24,7 @@ export const AnimeEpisodes = ({
   const [page, setPage] = useState<number>(1)
   const totalPages = totalEpisodes ? Math.ceil(totalEpisodes / 100) : 1
   useEffect(() => {
+    if(!currentEpisode) return
     const searchParams = new URLSearchParams(window.location.search)
     const currentPage = searchParams.get('page')
     const calcPage = (totalPages: number, currentEpisode: number) => {
