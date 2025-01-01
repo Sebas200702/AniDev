@@ -42,7 +42,7 @@ export const GET: APIRoute = async ({ url }) => {
         }
       )
     }
-    return new Response(JSON.stringify({ episodes: data }), {
+    return new Response(JSON.stringify({ data }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
