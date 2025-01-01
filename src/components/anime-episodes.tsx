@@ -2,7 +2,6 @@ import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { useEffect, useState } from 'react'
 import { useFetch } from '@hooks/useFetch'
 import type { AnimeEpisode } from 'types'
-import { baseUrl } from '@utils/base-url'
 interface Props {
   mal_id: number
   slug: string
@@ -45,7 +44,7 @@ export const AnimeEpisodes = ({
     error,
     loading,
   } = useFetch<AnimeEpisode[]>({
-    url: `${baseUrl}/api/episodes?id=${mal_id}&page=${page}`,
+    url: `/api/episodes?id=${mal_id}&page=${page}`,
   })
 
   const scrollToEpisode = () => {
@@ -100,13 +99,13 @@ export const AnimeEpisodes = ({
           ))}
         </div>
         <div
-          className={`anime-list relative grid w-auto grid-cols-1 flex-col overflow-y-auto scroll-smooth p-2 ${context === 'anime-info' ? 'max-h-96 w-full gap-6 xl:grid-cols-2' : 'max-h-64 gap-2 md:grid-cols-2 xl:max-h-[90%] xl:grid-cols-1'} [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2`}
+          className={`anime-list relative grid w-auto grid-cols-1 flex-col overflow-y-auto scroll-smooth p-2 ${context === 'anime-info' ? 'max-h-96 w-full gap-6 xl:grid-cols-2' : 'max-h-64 gap-4 md:grid-cols-2 xl:max-h-[90%] xl:grid-cols-1'} [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2`}
         >
           {Array(100)
             .fill(0)
             .map((_, i) => (
               <div
-                className="flex h-full max-h-[109px] md:min-w-[500px] max-w-[500px] animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out"
+                className="flex h-full max-h-[109px] md:min-w-[500px] md:max-w-[500px] max-w-full min-w-full  animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out"
                 key={i + 1}
               >
                 <div className="aspect-[16/9] h-full w-[33%] animate-pulse rounded-md bg-gray-400 object-cover transition-all duration-200 ease-in-out"></div>
@@ -153,7 +152,7 @@ export const AnimeEpisodes = ({
           ({ episode_id, title, description, image_url, anime_mal_id }) => (
             <a
               href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
-              className={`group flex w-full md:max-w-[500px] flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
+              className={`group flex w-full md:max-w-[500px]  flex-row gap-4 max-h-[109px] h-full rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
               key={episode_id}
             >
               
