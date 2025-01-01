@@ -26,7 +26,7 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
           throw new Error(errorMessage)
         }
 
-        const json: T = await response.json().then((data) => data.anime)
+        const json: T = await response.json().then((data) => data.data)
         setData(json)
       } catch (error: any) {
         const errorMessage =
