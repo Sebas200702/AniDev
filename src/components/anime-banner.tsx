@@ -4,7 +4,6 @@ import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
 import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { useIndexStore } from '@store/index-store'
 import { normalizeString } from '@utils/normalize-string'
-import { baseUrl } from '@utils/base-url'
 
 export const AnimeBanner = () => {
   const [bannerData, setBannerData] = useState<{
@@ -19,7 +18,7 @@ export const AnimeBanner = () => {
 
   const getBannerUrl = async () => {
     const bannerUrl = createDynamicBannersUrl(1)
-    const response = await fetch(`${baseUrl}${bannerUrl}`).then((res) =>
+    const response = await fetch(`${bannerUrl}`).then((res) =>
       res.json()
     )
     const anime = response.data[0]
