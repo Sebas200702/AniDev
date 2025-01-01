@@ -66,7 +66,7 @@ export const GET: APIRoute = async ({ url }) => {
     )
   }
 
-  return new Response(JSON.stringify({ anime: data }), {
+  return new Response(JSON.stringify({ data }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
