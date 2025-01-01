@@ -22,7 +22,7 @@ export const AnimeBanner = () => {
     const response = await fetch(`${baseUrl}${bannerUrl}`).then((res) =>
       res.json()
     )
-    const anime = response.anime[0]
+    const anime = response.data[0]
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
       return await getBannerUrl()
