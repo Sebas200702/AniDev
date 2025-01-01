@@ -10,7 +10,7 @@ interface Props {
   synopsis?: string
   context: string
   totalEpisodes: number | null
-  currentEpisode: number
+  currentEpisode?: number
 }
 export const AnimeEpisodes = ({
   slug,
