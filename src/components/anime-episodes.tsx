@@ -39,7 +39,7 @@ export const AnimeEpisodes = ({
     setPage(
       parseInt(currentPage ?? calcPage(totalPages, currentEpisode).toString())
     )
-  }, [setPage, page])
+  }, [setPage, page , currentEpisode])
   const {
     data: episodes,
     error,
