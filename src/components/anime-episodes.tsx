@@ -161,7 +161,7 @@ export const AnimeEpisodes = ({
                   src={image_url ?? image_webp}
                   alt={title ?? `Episodio ${episode_id}`}
                   loading="lazy"
-                  className="aspect-[16/9] h-full w-full rounded-md object-cover"
+                  className="aspect-[16/9] h-full w-[33%] rounded-md object-cover"
                 />
               </picture>
               <div className="flex w-full flex-col gap-2">
