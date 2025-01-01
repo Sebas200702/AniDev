@@ -5,7 +5,7 @@ export type Anime = {
   readonly title_synonyms: string[]
   readonly type: string
   readonly source: string
-  readonly episodes: number | null
+  readonly episodes: number
   readonly status: string
   readonly aired_from: string
   readonly year: string
