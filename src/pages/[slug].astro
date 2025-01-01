@@ -2,16 +2,15 @@
 import { AnimeTag } from '@components/anime-tag'
 import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils/base-url'
-import AnimeEpisodes from '@components/anime-episodes.astro'
+import { AnimeEpisodes } from '@components/anime-episodes'
 import { Image } from 'astro:assets'
 import { slide } from 'astro:transitions'
-import type { Anime, AnimeEpisode } from '../types'
+import type { Anime } from '../types'
 import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { normalizeString } from '@utils/normalize-string'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { getAnimeType } from '@utils/getanime-type'
 
-// Fetch principal para los datos del anime
 const animeDataResponse = await fetch(
   `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
   { cache: 'force-cache' }
@@ -36,13 +35,10 @@ const {
   synopsis,
   genres,
   trailer_url,
+  episodes,
   type,
-} = animeData
 
-const episodesResponse = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
-  cache: 'force-cache',
-})
-const episodes: AnimeEpisode[] = (await episodesResponse.json()).episodes
+} = animeData
 
 const smallSynopsis = reduceSynopsis(synopsis, 600)
 const slug = normalizeString(title)
@@ -150,8 +146,10 @@ const context =
     }
 
     <AnimeEpisodes
-      episodes={episodes}
+      client:load
+      mal_id={mal_id}
       slug={slug}
+      totalEpisodes={episodes}
       image_webp={image_webp}
       synopsis={synopsis}
       context="anime-info"
