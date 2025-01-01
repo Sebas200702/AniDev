@@ -38,7 +38,7 @@ export const AnimeEpisodes = ({
     setPage(
       parseInt(currentPage ?? calcPage(totalPages, currentEpisode).toString())
     )
-  }, [setPage, page , currentEpisode])
+  }, [setPage, page , currentEpisode ])
   const {
     data: episodes,
     error,
@@ -85,11 +85,11 @@ export const AnimeEpisodes = ({
             Episodes
           </h2>
         )}
-        <div className="flex max-h-[10%] w-full flex-row items-center gap-4">
+        <div className="flex max-h-[10%] w-full flex-row items-center gap-2">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i + 1}
-              className={`h-8 w-8 rounded-full bg-gray-200 transition-all duration-300 ease-in-out ${
+              className={`min-h-8 min-w-8 rounded-full bg-gray-200 transition-all duration-300 ease-in-out ${
                 page === i + 1 ? 'bg-blue-500' : 'bg-gray-200'
               }`}
               onClick={() => setPage(i + 1)}
@@ -121,18 +121,18 @@ export const AnimeEpisodes = ({
     )
   return (
     <section
-      className={` ${context === 'anime-info' ? 'mx-auto mt-10' : 'overflow-hidden'} p-2 xl:mt-0`}
+      className={` ${context === 'anime-info' ? 'mx-auto mt-10 w-full ' : 'overflow-hidden'}  p-2 xl:mt-0`}
     >
       {context === 'anime-info' && (
         <h2 className="mb-20 text-pretty text-2xl font-bold text-gray-900">
           Episodes
         </h2>
       )}
-      <div className="flex max-h-[10%] w-full flex-row items-center gap-4">
+      <div className="flex max-h-[10%] w-full flex-row items-center gap-2">
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
-            className={`h-8 w-8 rounded-full transition-all duration-300 ease-in-out ${
+            className={`min-h-8 min-w-8 rounded-full transition-all duration-300 ease-in-out ${
               page === i + 1 ? 'bg-blue-400 text-white' : 'bg-gray-200'
             }`}
             onClick={() => handleClick(i + 1)}
