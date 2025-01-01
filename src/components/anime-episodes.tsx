@@ -156,14 +156,14 @@ export const AnimeEpisodes = ({
               className={`group flex w-full md:max-w-[500px] flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
               key={episode_id}
             >
-              <picture className="aspect-[16/9] w-auto h-full">
+              
                 <img
                   src={image_url ?? image_webp}
                   alt={title ?? `Episodio ${episode_id}`}
                   loading="lazy"
                   className="aspect-[16/9] h-full w-[33%] rounded-md object-cover"
                 />
-              </picture>
+              
               <div className="flex w-full flex-col gap-2">
                 <h3 className="text-pretty text-xl font-bold text-gray-900 transition-all duration-300 ease-in-out md:group-hover:text-zinc-100">
                   {title ?? `Episodio ${episode_id}`}
