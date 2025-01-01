@@ -156,7 +156,7 @@ export const AnimeEpisodes = ({
               className={`group flex w-full md:max-w-[500px] flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
               key={episode_id}
             >
-              <picture className="aspect-[16/9] W-[33%]">
+              <picture className="aspect-[16/9] w-auto h-full">
                 <img
                   src={image_url ?? image_webp}
                   alt={title ?? `Episodio ${episode_id}`}
