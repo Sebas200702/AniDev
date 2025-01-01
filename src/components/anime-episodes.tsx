@@ -106,7 +106,7 @@ export const AnimeEpisodes = ({
             .fill(0)
             .map((_, i) => (
               <div
-                className="flex h-full max-h-[109px] min-w-[500px] max-w-[500px] animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out"
+                className="flex h-full max-h-[109px] md:min-w-[500px] max-w-[500px] animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out"
                 key={i + 1}
               >
                 <div className="aspect-[16/9] h-full w-[33%] animate-pulse rounded-md bg-gray-400 object-cover transition-all duration-200 ease-in-out"></div>
@@ -153,7 +153,7 @@ export const AnimeEpisodes = ({
           ({ episode_id, title, description, image_url, anime_mal_id }) => (
             <a
               href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
-              className={`group flex w-full max-w-[500px] flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
+              className={`group flex w-full md:max-w-[500px] flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
               key={episode_id}
             >
               <picture className="aspect-[16/9]">
