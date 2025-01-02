@@ -8,6 +8,7 @@ interface Props {
   image_webp?: string
   synopsis?: string
   context: string
+  totalEpisodes: number
   currentEpisode?: number
 }
 export const AnimeEpisodes = ({
@@ -16,7 +17,7 @@ export const AnimeEpisodes = ({
   image_webp,
   synopsis,
   context,
-
+  totalEpisodes,
   currentEpisode,
 }: Props) => {
   const [page, setPage] = useState<number>(1)
@@ -27,8 +28,7 @@ export const AnimeEpisodes = ({
   } = useFetch<AnimeEpisode[]>({
     url: `/api/episodes?id=${mal_id}&page=${page}`,
   })
-  const totalEpisodes = episodes?.length ?? 0
-  const totalPages = totalEpisodes ? Math.ceil(totalEpisodes / 100) : 1
+  const totalPages = Math.ceil(totalEpisodes / 100)
 
   useEffect(() => {
     if (!currentEpisode) return

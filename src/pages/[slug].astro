@@ -35,6 +35,7 @@ const {
   synopsis,
   genres,
   trailer_url,
+  episodes,
   type,
 } = animeData
 
@@ -157,6 +158,7 @@ const imageUrl = createImageUrlProxy(image_large_webp, '100', '1', 'webp')
     }
 
     <AnimeEpisodes
+      totalEpisodes={episodes}
       client:visible
       mal_id={mal_id}
       slug={slug}

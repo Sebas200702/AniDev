@@ -3,8 +3,7 @@ import Layout from '@layouts/base.astro'
 import { AnimeEpisodes } from '@components/anime-episodes'
 import { baseUrl } from '@utils/base-url'
 import { NextPrevEpisodeBtn } from '@components/next-prev-episode-btn'
-
-import type { Anime, AnimeEpisode } from 'types'
+import type { AnimeEpisode } from 'types'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
 const [title, mal_id] = Astro.params.slug?.split('_') ?? ['', '']
@@ -86,6 +85,7 @@ try {
     </div>
 
     <AnimeEpisodes
+      totalEpisodes={animeInfo.episodes}
       client:load
       mal_id={animeInfo.mal_id}
       slug={title}
