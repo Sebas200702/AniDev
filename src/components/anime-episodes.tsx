@@ -8,7 +8,6 @@ interface Props {
   image_webp?: string
   synopsis?: string
   context: string
-  totalEpisodes: number | null
   currentEpisode?: number
 }
 export const AnimeEpisodes = ({
@@ -17,13 +16,22 @@ export const AnimeEpisodes = ({
   image_webp,
   synopsis,
   context,
-  totalEpisodes,
+
   currentEpisode,
 }: Props) => {
   const [page, setPage] = useState<number>(1)
+  const {
+    data: episodes,
+    error,
+    loading,
+  } = useFetch<AnimeEpisode[]>({
+    url: `/api/episodes?id=${mal_id}&page=${page}`,
+  })
+  const totalEpisodes = episodes?.length ?? 0
   const totalPages = totalEpisodes ? Math.ceil(totalEpisodes / 100) : 1
+
   useEffect(() => {
-    if(!currentEpisode) return
+    if (!currentEpisode) return
     const searchParams = new URLSearchParams(window.location.search)
     const currentPage = searchParams.get('page')
     const calcPage = (totalPages: number, currentEpisode: number) => {
@@ -38,14 +46,7 @@ export const AnimeEpisodes = ({
     setPage(
       parseInt(currentPage ?? calcPage(totalPages, currentEpisode).toString())
     )
-  }, [setPage, page , currentEpisode ])
-  const {
-    data: episodes,
-    error,
-    loading,
-  } = useFetch<AnimeEpisode[]>({
-    url: `/api/episodes?id=${mal_id}&page=${page}`,
-  })
+  }, [setPage, page, currentEpisode])
 
   const scrollToEpisode = () => {
     const episodesList = document.querySelector('.anime-list')
@@ -78,7 +79,7 @@ export const AnimeEpisodes = ({
   if (loading || !episodes)
     return (
       <div
-        className={`${context === 'anime-info' ? 'mx-auto mt-10' : 'flex flex-col'} overflow-hidden p-2 xl:mt-0`}
+        className={`${context === 'anime-info' ? 'mt-10 w-full md:mx-20' : 'flex flex-col'} overflow-hidden p-2 xl:mt-0`}
       >
         {context === 'anime-info' && (
           <h2 className="mb-20 text-pretty text-2xl font-bold text-gray-900">
@@ -105,7 +106,7 @@ export const AnimeEpisodes = ({
             .fill(0)
             .map((_, i) => (
               <div
-                className="flex h-full max-h-[109px] md:min-w-[500px] md:max-w-[500px] max-w-full min-w-full  animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out"
+                className="flex h-full max-h-[109px] min-w-full max-w-full animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out md:min-w-[500px] md:max-w-[500px]"
                 key={i + 1}
               >
                 <div className="aspect-[16/9] h-full w-[33%] animate-pulse rounded-md bg-gray-400 object-cover transition-all duration-200 ease-in-out"></div>
@@ -121,7 +122,7 @@ export const AnimeEpisodes = ({
     )
   return (
     <section
-      className={` ${context === 'anime-info' ? 'mx-auto mt-10 w-full ' : 'overflow-hidden'}  p-2 xl:mt-0`}
+      className={` ${context === 'anime-info' ? 'mt-10 w-full md:mx-20' : 'overflow-hidden'} p-2 xl:mt-0`}
     >
       {context === 'anime-info' && (
         <h2 className="mb-20 text-pretty text-2xl font-bold text-gray-900">
@@ -152,17 +153,16 @@ export const AnimeEpisodes = ({
           ({ episode_id, title, description, image_url, anime_mal_id }) => (
             <a
               href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
-              className={`group flex w-full md:max-w-[500px]  flex-row gap-4 max-h-[109px] h-full rounded-lg p-2 transition-all duration-300 ease-in-out md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
+              className={`group flex h-full max-h-[109px] w-full flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:max-w-[500px] md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
               key={episode_id}
             >
-              
-                <img
-                  src={image_url ?? image_webp}
-                  alt={title ?? `Episodio ${episode_id}`}
-                  loading="lazy"
-                  className="aspect-[16/9] h-full w-[33%] rounded-md object-cover"
-                />
-              
+              <img
+                src={image_url ?? image_webp}
+                alt={title ?? `Episodio ${episode_id}`}
+                loading="lazy"
+                className="aspect-[16/9] h-full w-[33%] rounded-md object-cover"
+              />
+
               <div className="flex w-full flex-col gap-2">
                 <h3 className="text-pretty text-xl font-bold text-gray-900 transition-all duration-300 ease-in-out md:group-hover:text-zinc-100">
                   {title ?? `Episodio ${episode_id}`}
