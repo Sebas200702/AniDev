@@ -4,14 +4,16 @@ import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
 import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { useIndexStore } from '@store/index-store'
 import { normalizeString } from '@utils/normalize-string'
+import '@styles/anime-banner.css'
 
-export const AnimeBanner = () => {
+export const AnimeBanner = ({id} : {id: number}) => {
   const [bannerData, setBannerData] = useState<{
     imageUrl: string
     title: string
     synopsis: string
     mal_id: number
   } | null>(null)
+  const animationNumber = id % 2 === 0 ? 1 : 2
   const { setAnimeBanners, animeBanners } = useIndexStore()
 
   const [loading, setLoading] = useState(true)
@@ -45,6 +47,7 @@ export const AnimeBanner = () => {
       setTimeout(() => {
         setLoading(false)
       }, 700)
+      
     }
 
     fetchBannerData()
@@ -52,7 +55,7 @@ export const AnimeBanner = () => {
 
   if (loading || !bannerData) {
     return (
-      <div className="flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-gray-400 transition-all duration-200 ease-in-out md:aspect-[1080/300]"></div>
+      <div className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-gray-400 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}></div>
     )
   }
 
@@ -60,14 +63,14 @@ export const AnimeBanner = () => {
   const slug = normalizeString(title)
 
   return (
-    <section className="relative mx-auto flex flex-row items-center">
+    <section className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center`}>
       <a
         href={`/${slug}_${mal_id}`}
         className="group h-full w-full transition-all duration-200 ease-in-out md:hover:opacity-95"
         aria-label={`View details for ${title}`}
       >
         <img
-          src={createImageUrlProxy(imageUrl, '0', '50', 'webp')}
+          src={createImageUrlProxy(imageUrl, '1920', '20', 'webp')}
           alt="Anime Banner"
           loading="lazy"
           className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
