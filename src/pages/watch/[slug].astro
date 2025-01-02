@@ -9,18 +9,18 @@ import type { Anime, AnimeEpisode } from 'types'
 const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
 const [title, mal_id] = Astro.params.slug?.split('_') ?? ['', '']
 
-const responseEpisodes = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
-  cache: 'force-cache',
-}).then((response) => response.json())
-const animeInfo: Anime = await fetch(
-  `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`
-)
-  .then((response) => response.json())
-  .then((data) => data.anime)
+const [responseEpisodes, animeInfo] = await Promise.all([
+  fetch(`${baseUrl}/api/episodes?id=${mal_id}`, { cache: 'force-cache' }).then(
+    (res) => res.json()
+  ),
+  fetch(`${baseUrl}/api/getAnime?slug=${Astro.params.slug}`)
+    .then((res) => res.json())
+    .then((data) => data.anime),
+])
 
 const { image_webp, synopsis } = animeInfo
-
 const episodes: AnimeEpisode[] = responseEpisodes.data
+
 let video_url = ''
 try {
   const response = await fetch(
@@ -35,31 +35,38 @@ try {
 
 <Layout>
   <section
-    class="xl:max-w-7x mx-auto flex h-min w-full flex-col justify-center gap-4 overflow-y-hidden xl:max-h-[calc(100dvw/2.4)] xl:flex-row"
+    class="xl:max-w-7x mx-auto flex h-min w-full flex-col justify-center gap-4 overflow-hidden xl:max-h-[calc(100dvw/2.4)] xl:flex-row"
+    aria-label="Reproductor de episodios y lista de episodios"
   >
     <div
-      class="flex aspect-video w-full flex-col gap-3 p-2 mb-10 md:relative md:max-w-full xl:max-h-[calc(100dvw/2.7)] xl:max-w-[68%]"
+      class="mb-10 flex aspect-video w-full flex-col gap-3 p-2 md:relative md:max-w-full xl:max-h-[calc(100dvw/2.7)] xl:max-w-[68%]"
     >
       {
         video_url ? (
-          <lite-iframe
-            class="rounded-lg"
-            id="lite-iframe"
-            src={video_url}
-            frameborder="0"
-            allowtransparency="true"
-            allowfullscreen="true"
-            marginwidth="0"
-            marginheight="0"
-            scrolling="no"
-            sambox="allow-scripts block-all"
-          />
+          <div class="relative aspect-video w-full">
+            <lite-iframe
+              class="rounded-lg"
+              id="lite-iframe"
+              src={video_url}
+              frameborder="0"
+              allowtransparency="true"
+              allowfullscreen="true"
+              marginwidth="0"
+              marginheight="0"
+              scrolling="no"
+              sambox="allow-scripts block-all"
+              aria-label={`Video del episodio ${episode} de ${title}`}
+              title={`Video del episodio ${episode} de ${title}`}
+            />
+          </div>
         ) : (
           <p class="text-center text-gray-500">El video no está disponible.</p>
         )
       }
       <div
-        class={`flex justify-between ${episode === '1' ? 'flex-row-reverse' : 'flex-row '}`}
+        class={`flex justify-between ${
+          episode === '1' ? 'flex-row-reverse' : 'flex-row'
+        }`}
       >
         <NextPrevEpisodeBtn
           client:visible
@@ -81,7 +88,6 @@ try {
     <AnimeEpisodes
       client:load
       mal_id={animeInfo.mal_id}
-      totalEpisodes={animeInfo.episodes}
       slug={title}
       image_webp={image_webp}
       synopsis={synopsis}
