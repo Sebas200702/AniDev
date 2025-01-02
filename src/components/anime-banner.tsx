@@ -6,7 +6,7 @@ import { useIndexStore } from '@store/index-store'
 import { normalizeString } from '@utils/normalize-string'
 import '@styles/anime-banner.css'
 
-export const AnimeBanner = ({id} : {id: number}) => {
+export const AnimeBanner = ({ id }: { id: number }) => {
   const [bannerData, setBannerData] = useState<{
     imageUrl: string
     title: string
@@ -20,9 +20,7 @@ export const AnimeBanner = ({id} : {id: number}) => {
 
   const getBannerUrl = async () => {
     const bannerUrl = createDynamicBannersUrl(1)
-    const response = await fetch(`${bannerUrl}`).then((res) =>
-      res.json()
-    )
+    const response = await fetch(`${bannerUrl}`).then((res) => res.json())
     const anime = response.data[0]
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
@@ -47,7 +45,6 @@ export const AnimeBanner = ({id} : {id: number}) => {
       setTimeout(() => {
         setLoading(false)
       }, 700)
-      
     }
 
     fetchBannerData()
@@ -55,7 +52,9 @@ export const AnimeBanner = ({id} : {id: number}) => {
 
   if (loading || !bannerData) {
     return (
-      <div className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-gray-400 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}></div>
+      <div
+        className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-gray-400 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
+      ></div>
     )
   }
 
@@ -63,14 +62,16 @@ export const AnimeBanner = ({id} : {id: number}) => {
   const slug = normalizeString(title)
 
   return (
-    <section className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center`}>
+    <section
+      className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center`}
+    >
       <a
         href={`/${slug}_${mal_id}`}
         className="group h-full w-full transition-all duration-200 ease-in-out md:hover:opacity-95"
         aria-label={`View details for ${title}`}
       >
         <img
-          src={createImageUrlProxy(imageUrl, '1920', '20', 'webp')}
+          src={createImageUrlProxy(imageUrl, '0', '20', 'webp')}
           alt="Anime Banner"
           loading="lazy"
           className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
