@@ -22,10 +22,10 @@
 .anime-banner-1 {
   animation: anime-banner-animation 1s ease-in-out;
   animation-timeline: view();
-  animation-range: entry;
+  animation-range: entry -30% ;
 }
 .anime-banner-2 {
   animation: anime-banner-animation2 1s ease-in-out;
   animation-timeline: view();
-  animation-range: entry;
+  animation-range: entry -30% ;
 }
