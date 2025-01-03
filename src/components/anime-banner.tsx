@@ -86,7 +86,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           href={`/${slug}_${mal_id}`}
           className="transition-all duration-200 ease-in-out md:hover:opacity-95"
         >
-          <h2 className="text-center text-xl font-bold text-white md:text-2xl">
+          <h2 className="text-center text-xl font-bold text-white md:text-2xl max-h-16 overflow-hidden">
             {title}
           </h2>
         </a>
