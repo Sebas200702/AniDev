@@ -5,7 +5,7 @@ import { genreOptions, statusOptions, yearOptions, formatOptions } from 'types'
 import { studioOptions } from '@utils/create-studios-options'
 import type { AppliedFilters } from 'types'
 
-export const FilterSection: React.FC = () => {
+export const FilterSection = () => {
   const { appliedFilters, setAppliedFilters, query, setQuery, resetFilters } =
     useSearchStoreResults()
 
