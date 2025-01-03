@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FilterOption } from 'types'
 
 interface FilterDropdownProps {
@@ -10,14 +10,14 @@ interface FilterDropdownProps {
   options: FilterOption[]
 }
 
-export const FilterDropdown: React.FC<FilterDropdownProps> = ({
+export const FilterDropdown = ({
   label,
   values,
   onChange,
   onClear,
   placeholder,
   options,
-}) => {
+}: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
