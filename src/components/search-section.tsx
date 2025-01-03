@@ -9,7 +9,7 @@ import { createFiltersToApply } from '@utils/filters-to-apply'
 import type { Anime } from 'types'
 import { useUrlSync } from '@hooks/useUrlSync'
 
-export const SearchComponent: React.FC = () => {
+export const SearchComponent = () => {
   const { query, setResults, appliedFilters, setLoading } =
     useSearchStoreResults()
   const debouncedQuery = useDebounce(query, 500)
