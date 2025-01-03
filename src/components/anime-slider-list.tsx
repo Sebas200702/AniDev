@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AnimeCard } from '@components/anime-card'
 import { useFetch } from '@hooks/useFetch'
 import type { Anime } from 'types'
-import '@styles/anime-slider.css'
+import '@styles/no-scrolbar.css'
 
 interface Props {
   query: string
