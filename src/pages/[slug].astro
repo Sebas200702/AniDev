@@ -10,6 +10,7 @@ import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { normalizeString } from '@utils/normalize-string'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { getAnimeType } from '@utils/getanime-type'
+import '@styles/fade-out.css'
 
 const animeDataResponse = await fetch(
   `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
@@ -55,10 +56,9 @@ const imageUrl = createImageUrlProxy(image_large_webp, '100', '1', 'webp')
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image" content={image_large_webp} } />
     <meta property="og:type" content="website" />
   </head>
-
   <section class="flex flex-col gap-8 p-4 md:mx-20 xl:mx-40">
     <div
       class="absolute inset-0 -z-10 max-h-[calc(100dvh-300px)] w-full overflow-hidden"
@@ -93,7 +93,7 @@ const imageUrl = createImageUrlProxy(image_large_webp, '100', '1', 'webp')
     </div>
 
     <article
-      class="flex w-full flex-col items-center gap-4 md:mt-24 md:flex-row md:gap-20"
+      class="anime-info-container flex w-full flex-col items-center gap-4 md:mt-24 md:flex-row md:gap-20"
     >
       <picture class="aspect-[225/330] h-full w-full max-w-80 rounded-lg">
         <source
