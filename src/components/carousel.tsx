@@ -8,7 +8,8 @@ import { useCarouselStore } from '@store/carousel-store'
 import { memo, useCallback, useEffect } from 'react'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import type { Anime } from 'types'
-import '@styles/anime-slider.css'
+import '@styles/no-scrolbar.css'
+import '@styles/fade-out.css'
 
 const Indicator = memo(
   ({
@@ -34,7 +35,7 @@ const Indicator = memo(
 )
 
 const LoadingCarousel = () => (
-  <div className="relative h-[500px] animate-pulse bg-gray-200">
+  <div className="carousel-anime-banner relative h-[500px] animate-pulse bg-gray-200">
     <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
       <div className="z-10 ml-5 flex h-auto max-h-[60%] w-full items-center justify-center p-4 md:h-full md:max-h-full md:w-1/3">
         <div className="mx-auto aspect-[225/330] h-auto w-full max-w-52 animate-pulse rounded-lg bg-gray-400 md:h-full md:max-h-[90%] md:w-auto md:max-w-full"></div>
@@ -143,7 +144,7 @@ export const Carousel = () => {
 
   return (
     <div
-      className={`relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`carousel-anime-banner relative left-0 right-0 h-[500px] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -164,7 +165,7 @@ export const Carousel = () => {
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
                 style={{
-                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '0', '10', 'webp')})`,
+                  backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '0', '20', 'webp')})`,
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90" />
@@ -185,7 +186,7 @@ export const Carousel = () => {
                 className={`flex-1 p-6 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 text-white`}
               >
                 <a href={`${normalizeString(anime.title)}_${anime.mal_id}`}>
-                  <h2 className="text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-3xl">
+                  <h2 className="max-h-16 overflow-hidden text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-3xl">
                     {anime.title}
                   </h2>
                   <p className="mb-4 hidden text-base text-white drop-shadow md:flex">
