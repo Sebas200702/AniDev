@@ -2,6 +2,7 @@ import { reduceSynopsis } from '@utils/reduce-synopsis'
 import { useEffect, useState } from 'react'
 import { useFetch } from '@hooks/useFetch'
 import type { AnimeEpisode } from 'types'
+import '@styles/custom-scrollbar.css'
 interface Props {
   mal_id: number
   slug: string
@@ -100,7 +101,7 @@ export const AnimeEpisodes = ({
           ))}
         </div>
         <div
-          className={`anime-list relative grid w-auto grid-cols-1 flex-col overflow-y-auto scroll-smooth p-2 ${context === 'anime-info' ? 'max-h-96 w-full gap-6 xl:grid-cols-2' : 'max-h-64 gap-4 md:grid-cols-2 xl:max-h-[90%] xl:grid-cols-1'} [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2`}
+          className={`anime-list relative grid w-auto grid-cols-1 flex-col overflow-y-auto scroll-smooth p-2 ${context === 'anime-info' ? 'max-h-96 w-full gap-6 xl:grid-cols-2' : 'max-h-64 gap-4 md:grid-cols-2 xl:max-h-[90%] xl:grid-cols-1'} custom-scrollbar`}
         >
           {Array(100)
             .fill(0)
