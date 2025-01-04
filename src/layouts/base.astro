@@ -2,6 +2,7 @@
 import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
 import { ClientRouter } from 'astro:transitions'
+import '@styles/custom-scrollbar.css'
 const [title] = Astro.params.slug?.split('_') ?? ['', '']
 const episode = new URLSearchParams(Astro.url.search).get('ep')
 const seoTitle = (title: string | null, episode: string | null) => {
@@ -9,6 +10,11 @@ const seoTitle = (title: string | null, episode: string | null) => {
   if (!episode) return `${title} - Animeflix`
   return `${title} - Episodio ${episode} - Animeflix`
 }
+interface Props {
+  description?: string
+  image?: string
+}
+const { description, image } = Astro.props
 ---
 
 <html lang="en">
@@ -19,21 +25,29 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="Mira los mejores animes en Animeflix. Episodios actualizados diariamente."
+      content={description ??
+        'Mira los mejores animes en Animeflix. Episodios actualizados diariamente.'}
+    />
+    <meta
+      property="og:image"
+      name="og:image"
+      content={image ?? 'https://animeflix.vercel.app/og-image.jpg'}
     />
     <meta property="og:title" content={seoTitle(title, episode)} />
     <meta
       property="og:description"
-      content="Mira episodios de anime gratuitos en Animeflix."
+      content={description ?? 'Mira episodios de anime gratuitos en Animeflix.'}
     />
-    <meta property="og:image" content="/path/to/og-image.jpg" />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={seoTitle(title, episode)} />
+    <meta
+      name="twitter:card"
+      content={image ? 'summary_large_image' : 'summary'}
+    />
     <meta
       name="twitter:description"
-      content="Mira episodios de anime gratuitos en Animeflix."
+      content={description ?? 'Mira episodios de anime gratuitos en Animeflix.'}
     />
+    <meta name="twitter:title" content={seoTitle(title, episode)} />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="preconnect" href="https://unpkg.com" />
     <title>{seoTitle(title, episode)}</title>
@@ -48,10 +62,7 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <ClientRouter />
   </head>
   <body>
-    <div
-      id="app"
-      class="overflow-y-auto overflow-x-hidden scroll-smooth [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2"
-    >
+    <div id="app" class="custom-scrollbar">
       <header class="[grid-area:header]">
         <NavBar />
       </header>
