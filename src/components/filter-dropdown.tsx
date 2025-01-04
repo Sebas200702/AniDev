@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FilterOption } from 'types'
+import '@styles/custom-scrollbar.css'
 
 interface FilterDropdownProps {
   label: string
@@ -73,7 +74,7 @@ export const FilterDropdown = ({
       </label>
       <div className="relative">
         <div
-          className="flex max-h-[60px] w-full flex-wrap items-start gap-1 overflow-y-auto rounded border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600 focus-within:border-gray-400 focus-within:ring-1 focus-within:ring-gray-400"
+          className="custom-scrollbar flex max-h-[60px] w-full flex-wrap items-start gap-1 overflow-y-auto rounded border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600 focus-within:border-gray-400 focus-within:ring-1 focus-within:ring-gray-400"
           onClick={handleInputClick}
         >
           {values.map((value) => (
@@ -133,7 +134,7 @@ export const FilterDropdown = ({
         </div>
       </div>
       {isOpen && (
-        <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-200 bg-white shadow-lg">
+        <div className="overflow-auto-auto custom-scrollbar absolute z-10 mt-1 max-h-60 w-full rounded-md border border-gray-200 bg-white shadow-lg">
           {filteredOptions.map((option) => (
             <button
               key={option.value}
