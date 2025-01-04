@@ -111,7 +111,7 @@ export const genreOptions: FilterOption[] = [
 ]
 
 export const yearOptions: FilterOption[] = Array.from(
-  { length: 24 },
+  { length: 70 },
   (_, i) => {
     const year = 2024 - i
     return { value: year.toString(), label: year.toString() }
