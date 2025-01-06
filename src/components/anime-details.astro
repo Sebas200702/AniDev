@@ -1,0 +1,61 @@
+---
+import type { Anime } from 'types'
+interface Props {
+  animeData: Anime
+}
+const { animeData } = Astro.props
+const {
+  status,
+  type,
+  studios,
+  themes,
+  producers,
+  season,
+  aired_day,
+  episodes,
+  scored_by,
+  aired_to,
+  aired_from,
+  title_japanese,
+  title_synonyms,
+  mal_id,
+  source,
+} = animeData
+
+const animeDetails = [
+  { name: 'Status', value: status },
+  { name: 'Type', value: type },
+  { name: 'Studios', value: studios.join(', ') },
+  { name: 'Themes', value: themes?.join(', ') },
+  { name: 'Producers', value: producers?.slice(0, 3).join(', ') },
+  { name: 'Season', value: season },
+  { name: 'Aired Day', value: aired_day },
+  { name: 'Episodes', value: episodes },
+  { name: 'Scored By', value: scored_by },
+  { name: 'Aired To', value: aired_to },
+  { name: 'Aired From', value: aired_from },
+  { name: 'Title Japanese', value: title_japanese },
+  { name: 'Title Synonyms', value: title_synonyms.slice(0, 3).join(', ') },
+  { name: 'Mal ID', value: mal_id },
+  { name: 'Source', value: source },
+]
+---
+
+<section
+  class="mx-auto w-full md:max-w-72 rounded-md border-t-4 border-blue-500 bg-black/30 p-4 backdrop-blur-sm md:mx-0"
+>
+  <header class="mt-2 flex w-full flex-row items-center space-x-2">
+    <h2 class="text-pretty text-2xl font-semibold">Details</h2>
+    <div class="mt-2 flex-1 border-t border-white/30"></div>
+  </header>
+  <ul class="mt-4 flex w-full flex-col gap-4">
+    {
+      animeDetails.map((detail) => (
+        <li class="flex w-full flex-row gap-1">
+          <span class="text-gray-50/70">{detail.name}: </span>
+          {!detail.value ? 'Unknown' : detail.value}
+        </li>
+      ))
+    }
+  </ul>
+</section>
