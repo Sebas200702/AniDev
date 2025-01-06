@@ -1,4 +1,4 @@
-import { reduceSynopsis } from '@utils/reduce-synopsis'
+import { reduceString } from '@utils/reduce-string'
 import { useEffect, useState } from 'react'
 import { useFetch } from '@hooks/useFetch'
 import type { AnimeEpisode } from 'types'
@@ -7,8 +7,6 @@ interface Props {
   mal_id: number
   slug: string
   image_webp?: string
-  synopsis?: string
-  context: string
   totalEpisodes: number
   currentEpisode?: number
 }
@@ -16,8 +14,6 @@ export const AnimeEpisodes = ({
   slug,
   mal_id,
   image_webp,
-  synopsis,
-  context,
   totalEpisodes,
   currentEpisode,
 }: Props) => {
@@ -79,15 +75,10 @@ export const AnimeEpisodes = ({
   )
   if (loading || !episodes)
     return (
-      <div
-        className={`${context === 'anime-info' ? 'mt-10 w-full md:mx-20' : 'flex flex-col'} overflow-hidden p-2 xl:mt-0`}
-      >
-        {context === 'anime-info' && (
-          <h2 className="mb-20 text-pretty text-2xl font-bold text-gray-900">
-            Episodes
-          </h2>
-        )}
-        <div className="flex max-h-[10%] w-full flex-row items-center gap-2">
+      <div className="z-10 w-full p-2 xl:mt-0">
+        <div
+          className={`flex max-h-[10%] w-full flex-row items-center gap-2 ${totalPages > 1 ? '' : 'hidden'}`}
+        >
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i + 1}
@@ -100,37 +91,27 @@ export const AnimeEpisodes = ({
             </button>
           ))}
         </div>
-        <div
-          className={`anime-list relative grid w-auto grid-cols-1 flex-col overflow-y-auto scroll-smooth p-2 ${context === 'anime-info' ? 'max-h-96 w-full gap-6 xl:grid-cols-2' : 'max-h-64 gap-4 md:grid-cols-2 xl:max-h-[90%] xl:grid-cols-1'} custom-scrollbar`}
-        >
+        <div className="anime-list custom-scrollbar relative grid max-h-[500px] w-full grid-cols-1 gap-4 overflow-y-auto p-2 md:max-h-96 md:grid-cols-3 md:overflow-y-auto xl:mt-0 xl:max-h-[95%] xl:grid-cols-1 xl:overflow-y-auto">
           {Array(100)
             .fill(0)
             .map((_, i) => (
               <div
-                className="flex h-full max-h-[109px] min-w-full max-w-full animate-pulse flex-row rounded-lg bg-gray-200 p-2 transition-all duration-300 ease-in-out md:min-w-[500px] md:max-w-[500px]"
+                className="flex h-full w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-600 p-2 transition-all duration-300 ease-in-out md:max-w-[400px]"
                 key={i + 1}
               >
-                <div className="aspect-[16/9] h-full w-[33%] animate-pulse rounded-md bg-gray-400 object-cover transition-all duration-200 ease-in-out"></div>
+                <div className="aspect-[16/9] h-full w-full animate-pulse rounded-md bg-zinc-800 object-cover transition-all duration-200 ease-in-out"></div>
 
-                <div className="flex h-full w-full animate-pulse flex-col items-start gap-2 p-2 transition-all duration-200 ease-in-out">
-                  <div className="h-8 w-[70%] animate-pulse rounded-md bg-gray-400 transition-all duration-200 ease-in-out"></div>
-                  <div className="h-20 w-[90%] animate-pulse rounded-md bg-gray-400 transition-all duration-200 ease-in-out"></div>
-                </div>
+                <div className="h-8 w-full animate-pulse rounded-md bg-zinc-800 transition-all duration-200 ease-in-out"></div>
               </div>
             ))}
         </div>
       </div>
     )
   return (
-    <section
-      className={` ${context === 'anime-info' ? 'mt-10 w-full md:mx-20' : 'overflow-hidden'} p-2 xl:mt-0`}
-    >
-      {context === 'anime-info' && (
-        <h2 className="mb-20 text-pretty text-2xl font-bold text-gray-900">
-          Episodes
-        </h2>
-      )}
-      <div className="flex max-h-[10%] w-full flex-row items-center gap-2">
+    <section className="z-10 w-full p-2">
+      <div
+        className={`flex max-h-[10%] w-full flex-row items-center gap-2 ${totalPages > 1 ? '' : 'hidden'}`}
+      >
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
@@ -143,38 +124,27 @@ export const AnimeEpisodes = ({
           </button>
         ))}
       </div>
-      <ul
-        className={`anime-list relative scroll-smooth [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar]:w-2 ${
-          context === 'anime-info'
-            ? 'grid max-h-96 w-full grid-cols-1 gap-6 overflow-y-auto p-2 xl:grid-cols-2'
-            : 'grid max-h-64 grid-cols-1 gap-4 overflow-y-auto p-2 md:max-h-64 md:grid-cols-2 md:overflow-y-auto xl:mt-0 xl:max-h-[90%] xl:grid-cols-1'
-        }`}
-      >
-        {episodes.map(
-          ({ episode_id, title, description, image_url, anime_mal_id }) => (
-            <a
-              href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
-              className={`group flex h-full max-h-[109px] w-full flex-row gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:max-w-[500px] md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-300 hover:bg-blue-400' : 'md:hover:bg-gray-300'}`}
-              key={episode_id}
-            >
-              <img
-                src={image_url ?? image_webp}
-                alt={title ?? `Episodio ${episode_id}`}
-                loading="lazy"
-                className="aspect-[16/9] h-full w-[33%] rounded-md object-cover"
-              />
-
-              <div className="flex w-full flex-col gap-2">
-                <h3 className="text-pretty text-xl font-bold text-gray-900 transition-all duration-300 ease-in-out md:group-hover:text-zinc-100">
-                  {title ?? `Episodio ${episode_id}`}
-                </h3>
-                <p className="w-full text-sm text-gray-800">
-                  {description ?? reduceSynopsis(synopsis, 50)}
-                </p>
-              </div>
-            </a>
-          )
-        )}
+      <ul className="anime-list custom-scrollbar relative grid max-h-[500px] w-full grid-cols-1 gap-4 overflow-y-auto p-2 md:grid-cols-3 md:overflow-y-auto xl:mt-0 xl:max-h-[95%] xl:grid-cols-1 xl:overflow-y-auto">
+        {episodes.map(({ episode_id, title, image_url, anime_mal_id }) => (
+          <a
+            href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
+            className={`group relative flex h-auto w-full flex-col gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:max-w-[400px] md:hover:scale-[1.01] ${currentEpisode === episode_id ? 'bg-blue-500 hover:bg-blue-400' : 'md:hover:bg-zinc-500'}`}
+            key={episode_id}
+          >
+            <img
+              src={image_url ?? image_webp}
+              alt={title ?? `Episodio ${episode_id}`}
+              loading="lazy"
+              className="aspect-[16/9] h-full w-full rounded-md object-cover"
+            />
+            <h3 className="text-pretty text-xl font-bold text-white transition-all duration-300 ease-in-out">
+              {title ?? `${slug} Episodio ${episode_id}`}
+            </h3>
+            <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-lg font-bold text-white">
+              {episode_id}
+            </span>
+          </a>
+        ))}
       </ul>
     </section>
   )
