@@ -48,11 +48,11 @@ try {
     aria-label="Reproductor de episodios y lista de episodios"
   >
     <div
-      class="mb-10 flex aspect-video w-full flex-col gap-3 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)] xl:max-w-[60%]"
+      class="mb-10 flex aspect-video w-full flex-col gap-3 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)] xl:max-w-[60%] p-4"
     >
       {
         video_url ? (
-          <div id="video-iframe" class="relative aspect-video w-full p-4">
+          <div id="video-iframe" class="relative aspect-video w-full ">
             <lite-iframe
               class="rounded-lg"
               marginwidth="0"
@@ -67,7 +67,7 @@ try {
             />
             <picture
               id="chapter-image"
-              class="group absolute inset-0 z-0 flex h-full w-full cursor-pointer items-center justify-center rounded-lg transition-all duration-300 hover:saturate-[1.2]"
+              class="group absolute inset-0 z-0 flex h-full w-full cursor-pointer items-center justify-center rounded-lg transition-all duration-300 hover:saturate-[1.2] "
               style={{
                 backgroundImage: `url(${createImageUrlProxy(chapterImage ?? image_large_webp, '1080', '80', 'webp')})`,
                 backgroundSize: 'cover',

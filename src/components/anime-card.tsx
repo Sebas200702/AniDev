@@ -66,7 +66,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
           />
           <div className="absolute bottom-0 left-0 h-1/3 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all duration-200 ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
         </picture>
-        <footer className="absolute bottom-4 left-3 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2">
+        <footer className="absolute bottom-4 md:left-3 left-1 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2">
           <StatusPoin
             class={`h-6 w-6 ${status === 'Currently Airing' ? 'text-green-400 md:group-hover:text-green-500' : 'text-blue-400 md:group-hover:text-blue-500'}`}
             status={status}
