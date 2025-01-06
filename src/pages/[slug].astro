@@ -6,11 +6,18 @@ import { AnimeEpisodes } from '@components/anime-episodes'
 import { Image } from 'astro:assets'
 import { slide } from 'astro:transitions'
 import type { Anime } from '../types'
-import { reduceSynopsis } from '@utils/reduce-synopsis'
+import { reduceString } from '@utils/reduce-string'
 import { normalizeString } from '@utils/normalize-string'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { getAnimeType } from '@utils/getanime-type'
+import { splitTextOnP } from '@utils/split-text-on-p'
+import { normalizeRating } from '@utils/normalize-rating'
+import AnimeDetails from '@components/anime-details.astro'
+import StarIcon from '@components/icons/star-icon.astro'
 import '@styles/fade-out.css'
+import CalendarIcon from '@components/icons/calendar-icon.astro'
+import ClockIcon from '@components/icons/clock-icon.astro'
+import { AnimeActions } from '@components/anime-actions'
 
 const animeDataResponse = await fetch(
   `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
@@ -30,29 +37,31 @@ if (!animeData) {
 const {
   mal_id,
   title,
-  image_webp,
   image_large_webp,
   banner_image,
   synopsis,
-  genres,
+  year,
   trailer_url,
-  episodes,
+  rating,
+  score,
   type,
+  genres,
+  duration,
 } = animeData
 
-const smallSynopsis = reduceSynopsis(synopsis, 500)
 const slug = normalizeString(title)
 
 const context =
   new URLSearchParams(Astro.url.search).get('context') ?? 'default'
 
-const description = reduceSynopsis(synopsis, 200) || 'No description available'
+const description = reduceString(synopsis, 200) || 'No description available'
+const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
 ---
 
 <Layout description={description} image={image_large_webp}>
-  <section class="flex flex-col gap-8 p-4 md:mx-20 xl:mx-40">
+  <section class="mt-24 flex flex-col gap-8 p-4 text-white md:mx-20 xl:mx-40">
     <div
-      class="absolute inset-0 -z-10 max-h-[calc(100dvh-300px)] w-full overflow-hidden"
+      class="absolute inset-0 max-h-[calc(100dvh-300px)] w-full max-w-[calc(100dvw-8px)] overflow-hidden"
     >
       <Image
         src={createImageUrlProxy(
@@ -73,89 +82,134 @@ const description = reduceSynopsis(synopsis, 200) || 'No description available'
         height={330}
         quality={10}
       />
+      <div class="absolute inset-0 bg-black/40 backdrop-blur-[8px]"></div>
       <div
-        class="absolute inset-0 bg-[rgba(216,222,255,0.25)] backdrop-blur-[8px]"
-      >
-      </div>
-      <div
-        class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#fff]/100"
+        class="absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent to-[#121212]/100"
       >
       </div>
     </div>
 
-    <article
-      class="anime-info-container flex w-full flex-col items-center gap-4 md:mt-24 md:flex-row md:gap-20"
-    >
-      <picture class="aspect-[225/330] h-full w-full max-w-80 rounded-lg">
-        <source
-          srcset={createImageUrlProxy(image_large_webp, '600', '20', 'webp')}
-          media="(max-width: 767px)"
-          type="image/webp"
-        />
-        <source
-          srcset={createImageUrlProxy(image_large_webp, '600', '20', 'webp')}
-          media="(min-width: 768px)"
-          type="image/webp"
-        />
-        <Image
-          src={image_large_webp}
-          alt={title}
-          class="aspect-[225/330] h-full w-full max-w-80 rounded-lg transition-all ease-in-out"
-          fetchpriority="high"
-          transition:name={`${slug}_${mal_id}_${context}`}
-          loading="lazy"
-          width={225}
-          height={330}
-          quality={10}
-        />
-      </picture>
-
+    <article class="anime-info-container flex w-full flex-col gap-4 md:gap-20">
       <div
-        class="flex w-full flex-col justify-center gap-4"
+        class="flex w-full flex-col-reverse justify-between gap-10 text-white md:flex-row"
         transition:animate={slide({ duration: '0.4s' })}
       >
-        <header class="flex w-full flex-col gap-4">
-          <h2
-            class="text-pretty text-3xl font-bold text-gray-900 md:text-wrap md:text-4xl xl:text-5xl"
+        <div class="flex w-full flex-col gap-4">
+          <header class="flex w-full flex-col gap-4">
+            <h2
+              class="text-pretty text-3xl font-bold md:text-wrap md:text-4xl xl:text-5xl"
+            >
+              {title}
+            </h2>
+            <footer class="flex flex-row flex-wrap gap-3">
+              <AnimeTag tag={getAnimeType(type)} type={type} />
+              {
+                genres.map((genre) => (
+                  <AnimeTag tag={genre} type={genre} style="w-auto" />
+                ))
+              }
+              <AnimeTag tag={normalizeRating(rating)} type={rating} />
+            </footer>
+          </header>
+
+          <div class="mt-4 flex w-full flex-row flex-wrap gap-6">
+            <h3
+              class="flex flex-row items-center gap-2 text-pretty text-xl font-semibold md:text-wrap md:text-3xl xl:text-4xl"
+            >
+              <StarIcon class="h-8 w-8 text-yellow-300" />{score?.toFixed(1) ?? '0'}
+            </h3>
+            <h3
+              class="flex flex-row items-center gap-2 text-pretty text-xl font-semibold md:text-wrap md:text-3xl xl:text-4xl"
+            >
+              <CalendarIcon class="h-8 w-8 text-yellow-300" />{year}
+            </h3>
+            <h3
+              class="flex flex-row items-center gap-2 text-pretty text-xl font-semibold md:text-wrap md:text-3xl xl:text-4xl"
+            >
+              <ClockIcon class="h-8 w-8 text-yellow-300" />{
+                duration.replace(/\s*per\s*ep/i, '')
+              }
+            </h3>
+          </div>
+
+          <p class="max-w-5xl text-gray-50/90">{splitTextOnP(synopsis)[0]}</p>
+          <p class="max-w-5xl text-gray-50/90">
+            {splitTextOnP(synopsis)[1]}
+          </p>
+        </div>
+        <div class="flex w-full max-w-72 flex-col gap-4">
+          <picture
+            class="mx-auto aspect-[225/330] h-auto w-full rounded-lg md:mx-0"
           >
-            {title}
-          </h2>
-          <AnimeTag tag={getAnimeType(type)} type={type} />
-        </header>
+            <source
+              srcset={createImageUrlProxy(
+                image_large_webp,
+                '600',
+                '20',
+                'webp'
+              )}
+              media="(max-width: 767px)"
+              type="image/webp"
+            />
+            <source
+              srcset={createImageUrlProxy(
+                image_large_webp,
+                '600',
+                '20',
+                'webp'
+              )}
+              media="(min-width: 768px)"
+              type="image/webp"
+            />
+            <Image
+              src={image_large_webp}
+              alt={title}
+              class="aspect-[225/330] h-auto w-full rounded-lg transition-all ease-in-out"
+              fetchpriority="high"
+              transition:name={`${slug}_${mal_id}_${context}`}
+              loading="lazy"
+              width={225}
+              height={330}
+              quality={10}
+            />
+          </picture>
+          <AnimeActions actions={actions} />
+        </div>
+      </div>
 
-        <p class="text-sm text-gray-800 md:text-base">{smallSynopsis}</p>
+      <div
+        class="mx-auto flex w-full flex-col justify-between gap-10 md:flex-row"
+      >
+        {
+          trailer_url ? (
+            <div class="flex w-full flex-col md:max-w-5xl">
+              <lite-youtube
+                class="rounded-lg"
+                videoid={trailer_url.split('v=')[1]}
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <div class="flex w-full flex-col rounded-md md:max-w-5xl">
+              <picture class="aspect-video h-full w-full rounded-sm">
+                <Image
+                  src={banner_image ?? image_large_webp}
+                  alt={title}
+                  class="aspect-video h-full w-full rounded-sm transition-all ease-in-out"
+                  fetchpriority="high"
+                  transition:name={`${slug}_${mal_id}_${context}`}
+                  loading="lazy"
+                  width={225}
+                  height={330}
+                  quality={10}
+                />
+              </picture>
+            </div>
+          )
+        }
 
-        <footer class="mt-10 flex flex-wrap gap-4">
-          {
-            genres.map((tag) => (
-              <AnimeTag tag={tag} type={tag} style="w-auto" />
-            ))
-          }
-        </footer>
+        <AnimeDetails animeData={animeData} />
       </div>
     </article>
-
-    {
-      trailer_url ? (
-        <>
-          <h2 class="text-pretty text-2xl font-bold text-gray-900">Trailer</h2>
-          <div class="mx-auto mt-10 flex w-full flex-col gap-4 p-2 md:w-[70%]">
-            <lite-youtube videoid={trailer_url.split('v=')[1]} loading="lazy" />
-          </div>
-        </>
-      ) : (
-        <div class="aspect-video h-full w-full rounded-sm" />
-      )
-    }
-
-    <AnimeEpisodes
-      totalEpisodes={episodes}
-      client:visible
-      mal_id={mal_id}
-      slug={slug}
-      image_webp={image_webp}
-      synopsis={synopsis}
-      context="anime-info"
-    />
   </section>
 </Layout>
