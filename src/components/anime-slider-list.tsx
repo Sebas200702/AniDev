@@ -11,7 +11,7 @@ interface Props {
 
 export const AnimeSlider = ({ query, title }: Props) => {
   const { data: animes, loading } = useFetch<Anime[]>({
-    url: `/api/animes?limit_count=24&${query}`,
+    url: `/api/animes?limit_count=24&${query}&banners_filter=false`,
   })
   const [windowWidth, setWindowWidth] = useState<number | null>(null)
 
@@ -79,8 +79,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   if (loading)
     return (
-      <div className="relative mx-auto mt-6 w-[calc(100dvw-8px)]">
-        <span className="ml-[calc(((100dvw-8px)/6.4)*0.2)] inline-flex h-8 w-32 animate-pulse items-center justify-center rounded-lg bg-gray-400"></span>
+      <div className="relative mx-auto mb-6 mt-6 w-[calc(100dvw-8px)]">
+        <span className="ml-[calc(((100dvw-8px)/6.4)*0.2)] inline-flex h-8 w-32 animate-pulse items-center justify-center rounded-lg bg-zinc-700"></span>
         <div className="relative overflow-hidden">
           <div className="anime-list mt-4 flex w-full flex-row overflow-x-auto md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
             {Array(24)
@@ -90,8 +90,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
                   key={i + 1}
                   className="flex h-auto w-full min-w-[calc((100dvw-8px)/2.4)] flex-col items-center gap-1 p-3 duration-200 md:min-w-[calc((100dvw-8px)/4.4)] xl:min-w-[calc((100dvw-8px)/6.4)]"
                 >
-                  <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-gray-400 md:aspect-[225/330]"></div>
-                  <div className="flex h-6 w-full animate-pulse rounded-lg bg-gray-400 transition-all duration-200 ease-in-out"></div>
+                  <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-700 md:aspect-[225/330]"></div>
                 </div>
               ))}
           </div>
@@ -102,10 +101,10 @@ export const AnimeSlider = ({ query, title }: Props) => {
   if (windowWidth !== null && windowWidth < 768) {
     return (
       <section className="relative mx-auto mt-6 w-[calc(100dvw-8px)]">
-        <h2 className="px-[calc(((100dvw-8px)/6.4)*0.2)] text-2xl font-bold text-gray-900">
+        <h2 className="px-[calc(((100dvw-8px)/6.4)*0.2)] text-2xl font-bold text-white">
           {title}
         </h2>
-        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth">
+        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth py-2">
           {animes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
@@ -115,19 +114,20 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }
 
   return (
-    <section className="anime-slider relative mx-auto mt-6 w-[calc(100dvw-8px)]">
-      <h2 className="px-[calc(((100dvw-8px)/6.4)*0.2)] text-2xl font-bold text-gray-900">
-        {title}
-      </h2>
+    <section className="anime-slider relative mx-auto mb-6 mt-6 w-[calc(100dvw-8px)]">
+      <header className="flex items-center space-x-4 px-[calc(((100dvw-8px)/6.4)*0.2)] text-white">
+        <h2 className="text-3xl font-bold">{title}</h2>
+        <div className="mt-2 flex-1 border-t border-white/50"></div>
+      </header>
+
       <div className="relative overflow-hidden">
-        <button className="prev-button group absolute bottom-0 left-0 z-10 my-auto hidden h-full w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none">
+        <button className="prev-button group absolute inset-0 z-10 my-auto hidden h-16 w-10 rounded-lg bg-blue-500 transition-all duration-300 ease-in-out focus:outline-none">
           <svg
-            className="rotate-180 transform opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+            className="mx-auto my-auto h-6 w-6 rotate-180"
             xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
             fill="none"
-            stroke="#000"
+            viewBox="0 0 24 24"
+            stroke="#fff"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
@@ -136,20 +136,20 @@ export const AnimeSlider = ({ query, title }: Props) => {
           </svg>
         </button>
 
-        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
+        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth py-2 md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
           {animes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
 
-        <button className="next-button group absolute bottom-0 right-0 z-10 my-auto hidden h-full w-10 items-center justify-center rounded-lg bg-black/0 transition-all duration-300 ease-in-out hover:bg-gray-200/40 focus:outline-none">
+        <button className="next-button group absolute bottom-0 right-0 top-0 z-10 my-auto hidden max-h-16 w-10 items-center justify-center rounded-lg bg-blue-500 transition-all duration-300 ease-in-out focus:outline-none">
           <svg
-            className="opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+            className="mx-auto my-auto h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"
             width="32"
             height="32"
             fill="none"
-            stroke="#000"
+            stroke="#fff"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
