@@ -26,6 +26,11 @@ export type Anime = {
   readonly image_large_webp: string
   readonly banner_image: string
   readonly created_at: string
+  readonly aired: boolean | null
+  readonly themes: string[] | null
+  readonly producers: string[] | null
+  readonly season: string | null
+  readonly aired_day: string | null
   readonly relevance_score: number
 }
 
@@ -76,7 +81,6 @@ export enum AnimeGenres {
   FANTASY = 'Fantasy',
   GIRLS_LOVE = 'Girls Love',
   GOURMET = 'Gourmet',
-  HENTAI = 'Hentai',
   HORROR = 'Horror',
   MYSTERY = 'Mystery',
   ROMANCE = 'Romance',
@@ -97,23 +101,14 @@ export enum AnimeFilters {
   Rating = 'rating_filter',
 }
 
-export const genreOptions: FilterOption[] = [
-  { value: 'action', label: 'Action' },
-  { value: 'adventure', label: 'Adventure' },
-  { value: 'comedy', label: 'Comedy' },
-  { value: 'drama', label: 'Drama' },
-  { value: 'fantasy', label: 'Fantasy' },
-  { value: 'horror', label: 'Horror' },
-  { value: 'mystery', label: 'Mystery' },
-  { value: 'romance', label: 'Romance' },
-  { value: 'sci-fi', label: 'Sci-Fi' },
-  { value: 'thriller', label: 'Thriller' },
-]
+export const genreOptions: FilterOption[] = Object.values(AnimeGenres).map(
+  (genre) => ({ value: genre.toLowerCase(), label: genre })
+)
 
 export const yearOptions: FilterOption[] = Array.from(
-  { length: 70 },
+  { length: 71 },
   (_, i) => {
-    const year = 2024 - i
+    const year = 2025 - i
     return { value: year.toString(), label: year.toString() }
   }
 )
@@ -121,6 +116,12 @@ export const yearOptions: FilterOption[] = Array.from(
 export const statusOptions: FilterOption[] = [
   { value: 'Currently Airing', label: 'Airing' },
   { value: 'Finished Airing', label: 'Finished' },
+]
+export const seasonOptions: FilterOption[] = [
+  { value: 'Winter', label: 'Winter' },
+  { value: 'Spring', label: 'Spring' },
+  { value: 'Summer', label: 'Summer' },
+  { value: 'Fall', label: 'Fall' },
 ]
 
 export const formatOptions: FilterOption[] = [
