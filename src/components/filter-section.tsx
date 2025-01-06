@@ -12,23 +12,10 @@ import { studioOptions } from '@utils/create-studios-options'
 import type { AppliedFilters } from 'types'
 
 export const FilterSection = () => {
-  const { appliedFilters, setAppliedFilters, query, setQuery, resetFilters } =
+  const { appliedFilters, setAppliedFilters,  resetFilters } =
     useSearchStoreResults()
 
-  const removeFilter = useCallback(
-    (category: keyof AppliedFilters, value: string) => {
-      setAppliedFilters((prev) => {
-        const newFilters = { ...prev }
-        newFilters[category] =
-          newFilters[category]?.filter((v) => v !== value) ?? []
-        if (newFilters[category].length === 0) {
-          delete newFilters[category]
-        }
-        return newFilters
-      })
-    },
-    [setAppliedFilters]
-  )
+
 
   const updateFilter = useCallback(
     (category: keyof AppliedFilters, values: string[]) => {
@@ -45,14 +32,10 @@ export const FilterSection = () => {
     [setAppliedFilters]
   )
 
-  const appliedFiltersEntries = useMemo(
-    () => Object.entries(appliedFilters),
-    [appliedFilters]
-  )
 
   return (
     <div className="relative h-full w-full space-y-4 border-r border-gray-100/10 p-4 text-white">
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid md:grid-cols-1 gap-8  grid-cols-2">
         <FilterDropdown
           label="Genres"
           values={appliedFilters.genre_filter ?? []}
@@ -99,7 +82,7 @@ export const FilterSection = () => {
           <button
             type="button"
             onClick={resetFilters}
-            className="bg-secondary border-secondary mx-auto flex w-full max-w-32 items-center justify-center rounded border px-4 py-2 text-sm transition-all hover:border-white hover:bg-base hover:opacity-90"
+            className="bg-secondary border-secondary mx-auto flex w-full md:max-w-32 max-w-60 items-center justify-center rounded border px-4 py-2 text-sm transition-all hover:border-white hover:bg-base hover:opacity-90"
           >
             <svg
               className="mr-2 h-4 w-4"
