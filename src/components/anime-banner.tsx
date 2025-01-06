@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
-import { reduceSynopsis } from '@utils/reduce-synopsis'
+import { reduceString } from '@utils/reduce-string'
 import { useIndexStore } from '@store/index-store'
 import { normalizeString } from '@utils/normalize-string'
 import '@styles/anime-banner.css'
+import '@styles/buttons.css'
 
 export const AnimeBanner = ({ id }: { id: number }) => {
   const [bannerData, setBannerData] = useState<{
@@ -53,7 +54,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   if (loading || !bannerData) {
     return (
       <div
-        className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-gray-400 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
+        className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-700 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
       ></div>
     )
   }
@@ -71,7 +72,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         aria-label={`View details for ${title}`}
       >
         <img
-          src={createImageUrlProxy(imageUrl, '0', '20', 'webp')}
+          src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
           alt="Anime Banner"
           loading="lazy"
           className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
@@ -79,26 +80,23 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           height={300}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
       </a>
       <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
         <a
           href={`/${slug}_${mal_id}`}
           className="transition-all duration-200 ease-in-out md:hover:opacity-95"
         >
-          <h2 className="text-center text-xl font-bold text-white md:text-2xl max-h-16 overflow-hidden">
+          <h2 className="max-h-16 overflow-hidden text-center text-xl font-bold text-white md:text-2xl">
             {title}
           </h2>
         </a>
 
-        <p className="text-center text-sm text-white md:text-start">
-          {reduceSynopsis(synopsis, 100)}
+        <p className="max-h-32 overflow-hidden text-center text-sm text-white md:text-start">
+          {reduceString(synopsis, 70)}
         </p>
-        <a
-          href={`/watch/${slug}_${mal_id}`}
-          className="flex w-full items-center justify-center rounded-lg bg-blue-400 px-4 py-2 text-sm text-white md:text-base md:hover:bg-blue-500"
-        >
-          View Now
+        <a href={`/watch/${slug}_${mal_id}`} className="button-primary">
+          Watch Now
         </a>
       </div>
     </section>
