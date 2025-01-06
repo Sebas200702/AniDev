@@ -1,7 +1,7 @@
 .button-primary {
-  @apply flex items-center justify-center rounded-lg border-2 border-blue-500 bg-blue-500 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-in-out hover:border-blue-500/50 hover:bg-transparent hover:text-blue-500 hover:shadow-md;
+  @apply flex items-center justify-center rounded-lg border-2 border-blue-500 bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition-all duration-200 ease-in-out md:text-sm md:hover:border-blue-500/50 md:hover:bg-transparent md:hover:text-blue-500 md:hover:shadow-md w-auto;
 }
 
 .button-secondary {
-  @apply rounded-lg border-2 bg-transparent px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-in-out hover:opacity-50 hover:shadow-md;
+  @apply rounded-lg border-2 bg-transparent px-4 py-2 text-xs font-semibold text-white transition-all duration-200 ease-in-out md:text-sm md:hover:opacity-50 md:hover:shadow-md;
 }

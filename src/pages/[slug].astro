@@ -2,7 +2,6 @@
 import { AnimeTag } from '@components/anime-tag'
 import Layout from '@layouts/base.astro'
 import { baseUrl } from '@utils/base-url'
-import { AnimeEpisodes } from '@components/anime-episodes'
 import { Image } from 'astro:assets'
 import { slide } from 'astro:transitions'
 import type { Anime } from '../types'
@@ -168,7 +167,6 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
               alt={title}
               class="aspect-[225/330] h-auto w-full rounded-lg transition-all ease-in-out"
               fetchpriority="high"
-              transition:name={`${slug}_${mal_id}_${context}`}
               loading="lazy"
               width={225}
               height={330}
@@ -199,7 +197,6 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
                   alt={title}
                   class="aspect-video h-full w-full rounded-sm transition-all ease-in-out"
                   fetchpriority="high"
-                  transition:name={`${slug}_${mal_id}_${context}`}
                   loading="lazy"
                   width={225}
                   height={330}

@@ -72,7 +72,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
             status={status}
           />
           <h3
-            className={`w-full ${genreToColor(genres[0])} truncate text-base font-semibold text-white transition-opacity duration-200 ease-in-out`}
+            className={`w-full ${genreToColor(genres[0])} truncate md:text-sm text-xs  font-semibold text-white transition-opacity duration-200 ease-in-out`}
             aria-hidden="true"
           >
             {title}
