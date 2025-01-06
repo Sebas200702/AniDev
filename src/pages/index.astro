@@ -7,42 +7,44 @@ import Layout from '@layouts/base.astro'
 
 <Layout>
   <Carousel client:load />
-  <AnimeSlider
-    client:visible
-    query="year_filter=2024&type_filter=tv"
-    title="Top 2024"
-  />
-  <AnimeBanner id={1} client:visible />
-  <AnimeSlider client:visible query="genre_filter=action" title="Action" />
-  <AnimeSlider client:visible query="type_filter=movie" title="Top Movies" />
-  <AnimeBanner id={2} client:visible />
-  <AnimeSlider client:visible query="genre_filter=comedy" title="Comedy" />
-  <AnimeSlider client:visible query="genre_filter=drama" title="Drama" />
-  <AnimeBanner id={3} client:visible />
-  <AnimeSlider
-    client:visible
-    query="genre_filter=girlslove"
-    title="Girls Love"
-  />
-  <AnimeBanner id={4} client:visible />
-  <AnimeSlider client:visible query="genre_filter=horror" title="Horror" />
-  <AnimeSlider client:visible query="genre_filter=mystery" title="Mystery" />
-  <AnimeBanner id={5} client:visible />
-  <AnimeSlider client:visible query="genre_filter=romance" title="Romance" />
-  <AnimeSlider
-    client:visible
-    query="genre_filter=sliceoflife"
-    title="Slice of Life"
-  />
-  <AnimeBanner id={6} client:visible />
-  <AnimeSlider
-    client:visible
-    query="genre_filter=supernatural"
-    title="Supernatural"
-  />
-  <AnimeBanner id={7} client:visible />
-  <AnimeSlider client:visible query="genre_filter=sports" title="Sports" />
-  <AnimeSlider client:visible query="genre_filter=fantasy" title="Fantasy" />
-  <AnimeBanner id={8} client:visible />
-  <AnimeSlider client:visible query="genre_filter=scifi" title="Sci-Fi" />
+  <section class="md:-mt-44 -mt-24">
+    <AnimeSlider
+      client:visible
+      query="year_filter=2024&type_filter=tv"
+      title="Top 2024"
+    />
+    <AnimeBanner id={1} client:visible />
+    <AnimeSlider client:visible query="genre_filter=action" title="Action" />
+    <AnimeSlider client:visible query="type_filter=movie" title="Top Movies" />
+    <AnimeBanner id={2} client:visible />
+    <AnimeSlider client:visible query="genre_filter=comedy" title="Comedy" />
+    <AnimeSlider client:visible query="genre_filter=drama" title="Drama" />
+    <AnimeBanner id={3} client:visible />
+    <AnimeSlider
+      client:visible
+      query="genre_filter=girlslove"
+      title="Girls Love"
+    />
+    <AnimeBanner id={4} client:visible />
+    <AnimeSlider client:visible query="genre_filter=horror" title="Horror" />
+    <AnimeSlider client:visible query="genre_filter=mystery" title="Mystery" />
+    <AnimeBanner id={5} client:visible />
+    <AnimeSlider client:visible query="genre_filter=romance" title="Romance" />
+    <AnimeSlider
+      client:visible
+      query="genre_filter=sliceoflife"
+      title="Slice of Life"
+    />
+    <AnimeBanner id={6} client:visible />
+    <AnimeSlider
+      client:visible
+      query="genre_filter=supernatural"
+      title="Supernatural"
+    />
+    <AnimeBanner id={7} client:visible />
+    <AnimeSlider client:visible query="genre_filter=sports" title="Sports" />
+    <AnimeSlider client:visible query="genre_filter=fantasy" title="Fantasy" />
+    <AnimeBanner id={8} client:visible />
+    <AnimeSlider client:visible query="genre_filter=scifi" title="Sci-Fi" />
+  </section>
 </Layout>
