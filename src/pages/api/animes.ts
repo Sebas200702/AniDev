@@ -15,6 +15,7 @@ export const GET: APIRoute = async ({ url }) => {
     year_filter = 'year_filter',
     rating_filter = 'rating_filter',
     banners_filter = 'banners_filter',
+    season_filter = 'season_filter',
   }
 
   const getFilters = (
