@@ -1,0 +1,17 @@
+#search-section {
+  display: grid;
+  grid-template-columns: 0.7fr 4fr;
+  grid-template-areas: 'aside results';
+  height: 100dvh;
+  width: 100dvw;
+}
+
+@media screen and (max-width: 767px) {
+  #search-section {
+    display: grid;
+    grid-template-areas:
+      'aside'
+      'results';
+    grid-template-columns: 1fr;
+  }
+}
