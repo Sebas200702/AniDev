@@ -1,22 +1,45 @@
+---
+const url = Astro.url.pathname
+import { SearchBar } from '@components/search-bar'
+import '@styles/buttons.css'
+const isSearch = url.includes('search')
+---
+
 <nav
-  class="fixed top-0 z-30 bg-white"
+  class="fixed top-0 z-30 flex h-16 w-full items-center gap-6 bg-black/10 backdrop-blur-sm"
   style={{ width: 'calc(100dvw - .5rem)' }}
 >
-  <ul class="flex w-full flex-row items-center justify-between gap-4 px-8 py-4">
-    <li>
-      <a
-        href="/"
-        class="text-2xl font-semibold text-gray-900 hover:text-blue-500"
-      >
+  <ul class="flex w-full flex-row items-center md:gap-6 px-8 py-4">
+    <li class="mx-6">
+      <a href="/" class="text-2xl font-semibold text-white hover:text-blue-500">
         Animeflix</a
       >
     </li>
+
     <li class="flex flex-row items-center gap-4">
       <a
         href="/search"
-        class="text-base font-medium text-gray-800 hover:text-gray-900"
-        >Search</a
+        class="text-base font-medium text-white hover:text-blue-500">Search</a
       >
+    </li>
+  </ul>
+  {isSearch && <SearchBar client:visible />}
+  <ul class="flex w-full flex-row items-center md:gap-6 px-8 py-4 justify-end">
+    <li class="">
+      <a
+        href="#"
+        class="button-secondary"
+      >
+        Login
+      </a>
+    </li>
+    <li class="">
+      <a
+        href="#"
+        class="button-primary"
+      >
+        Sign Up
+      </a>
     </li>
   </ul>
 </nav>
