@@ -36,12 +36,12 @@ const Indicator = memo(
 const LoadingCarousel = () => (
   <div className="carousel-anime-banner relative h-[80dvh] animate-pulse bg-zinc-800">
     <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
-      <div className="z-10 mx-auto flex w-full max-w-2xl flex-col gap-4 items-center p-6 text-white md:ml-8 md:mr-16 md:items-start">
-        <div className="z-30 mb-4 mt-4 h-20 w-full  animate-pulse rounded-lg bg-zinc-700 "></div>
-        <div className="z-30  h-6 w-full animate-pulse rounded-lg bg-zinc-700"></div>
+      <div className="z-10 mx-auto flex w-full max-w-2xl flex-col items-center gap-4 p-6 text-white md:ml-8 md:mr-16 md:items-start">
+        <div className="z-30 mb-4 mt-4 h-20 w-full animate-pulse rounded-lg bg-zinc-700"></div>
+        <div className="z-30 h-6 w-full animate-pulse rounded-lg bg-zinc-700"></div>
         <div className="z-30 mb-4 h-6 w-full animate-pulse rounded-lg bg-zinc-700"></div>
 
-        <div className="flex w-full flex-row items-center gap-4 mt-2">
+        <div className="mt-2 flex w-full flex-row items-center gap-4">
           <div className="hidden h-10 w-28 animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
           <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-700"></div>
         </div>

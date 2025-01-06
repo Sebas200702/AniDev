@@ -9,7 +9,7 @@ const isSearch = url.includes('search')
   class="fixed top-0 z-30 flex h-16 w-full items-center gap-6 bg-black/10 backdrop-blur-sm"
   style={{ width: 'calc(100dvw - .5rem)' }}
 >
-  <ul class="flex w-full flex-row items-center md:gap-6 px-8 py-4">
+  <ul class="flex w-full flex-row items-center px-8 py-4 md:gap-6">
     <li class="mx-6">
       <a href="/" class="text-2xl font-semibold text-white hover:text-blue-500">
         Animeflix</a
@@ -24,22 +24,12 @@ const isSearch = url.includes('search')
     </li>
   </ul>
   {isSearch && <SearchBar client:visible />}
-  <ul class="flex w-full flex-row items-center md:gap-6 px-8 py-4 justify-end">
+  <ul class="flex w-full flex-row items-center justify-end px-8 py-4 md:gap-6">
     <li class="">
-      <a
-        href="#"
-        class="button-secondary"
-      >
-        Login
-      </a>
+      <a href="#" class="button-secondary"> Login </a>
     </li>
     <li class="">
-      <a
-        href="#"
-        class="button-primary"
-      >
-        Sign Up
-      </a>
+      <a href="#" class="button-primary"> Sign Up </a>
     </li>
   </ul>
 </nav>

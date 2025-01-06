@@ -31,7 +31,7 @@ export const SearchBar = () => {
       <input
         type="search"
         id="default-search"
-        className="bg-secondary block w-full rounded-lg border border-gray-600 p-3 pl-10 text-sm text-gray-200 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-gray-500"
+        className="block w-full rounded-lg border border-gray-600 bg-secondary p-3 pl-10 text-sm text-gray-200 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-gray-500"
         placeholder="Search"
         value={query}
         onChange={handleInput}

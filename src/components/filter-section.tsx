@@ -12,10 +12,8 @@ import { studioOptions } from '@utils/create-studios-options'
 import type { AppliedFilters } from 'types'
 
 export const FilterSection = () => {
-  const { appliedFilters, setAppliedFilters,  resetFilters } =
+  const { appliedFilters, setAppliedFilters, resetFilters } =
     useSearchStoreResults()
-
-
 
   const updateFilter = useCallback(
     (category: keyof AppliedFilters, values: string[]) => {
@@ -32,10 +30,9 @@ export const FilterSection = () => {
     [setAppliedFilters]
   )
 
-
   return (
     <div className="relative h-full w-full space-y-4 border-r border-gray-100/10 p-4 text-white">
-      <div className="grid md:grid-cols-1 gap-8  grid-cols-2">
+      <div className="grid grid-cols-2 gap-8 md:grid-cols-1">
         <FilterDropdown
           label="Genres"
           values={appliedFilters.genre_filter ?? []}
@@ -82,7 +79,7 @@ export const FilterSection = () => {
           <button
             type="button"
             onClick={resetFilters}
-            className="bg-secondary border-secondary mx-auto flex w-full md:max-w-32 max-w-60 items-center justify-center rounded border px-4 py-2 text-sm transition-all hover:border-white hover:bg-base hover:opacity-90"
+            className="mx-auto flex w-full max-w-60 items-center justify-center rounded border border-secondary bg-secondary px-4 py-2 text-sm transition-all hover:border-white hover:bg-base hover:opacity-90 md:max-w-32"
           >
             <svg
               className="mr-2 h-4 w-4"

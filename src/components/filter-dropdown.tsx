@@ -63,7 +63,7 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className="relative mx-auto max-w-60 w-full border-b border-gray-100/10"
+      className="relative mx-auto w-full max-w-60 border-b border-gray-100/10"
       ref={dropdownRef}
     >
       <div className="relative text-white">
@@ -118,7 +118,7 @@ export const FilterDropdown = ({
           {filteredOptions.map((option) => (
             <label
               key={option.value}
-              className="hover:bg-secondary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm"
+              className="flex cursor-pointer items-center gap-3 px-4 py-2 text-sm hover:bg-secondary"
             >
               <input
                 type="checkbox"

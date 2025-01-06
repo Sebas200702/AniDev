@@ -116,7 +116,9 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
             <h3
               class="flex flex-row items-center gap-2 text-pretty text-xl font-semibold md:text-wrap md:text-3xl xl:text-4xl"
             >
-              <StarIcon class="h-8 w-8 text-yellow-300" />{score?.toFixed(1) ?? '0'}
+              <StarIcon class="h-8 w-8 text-yellow-300" />{
+                score?.toFixed(1) ?? '0'
+              }
             </h3>
             <h3
               class="flex flex-row items-center gap-2 text-pretty text-xl font-semibold md:text-wrap md:text-3xl xl:text-4xl"

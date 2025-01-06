@@ -61,13 +61,11 @@ const { description, image } = Astro.props
     <ClientRouter />
   </head>
   <body>
-    <div id="app" class="custom-scrollbar bg-base overflow-auto">
+    <div id="app" class="custom-scrollbar overflow-auto bg-base">
       <header class="[grid-area:header]">
         <NavBar />
       </header>
-      <main
-        class="mx-auto w-full max-w-[calc(100dvw-8px)] [grid-area:main]"
-      >
+      <main class="mx-auto w-full max-w-[calc(100dvw-8px)] [grid-area:main]">
         <slot />
       </main>
       <footer class="[grid-area:footer]">
