@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import { useMemo, useEffect } from 'react'
 import { SearchResults } from '@components/search-results'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
@@ -8,6 +8,8 @@ import { baseUrl } from '@utils/base-url'
 import { createFiltersToApply } from '@utils/filters-to-apply'
 import type { Anime } from 'types'
 import { useUrlSync } from '@hooks/useUrlSync'
+import '@styles/custom-scrollbar.css'
+import '@styles/search-section.css'
 
 export const SearchComponent = () => {
   const { query, setResults, appliedFilters, setLoading } =
@@ -18,7 +20,7 @@ export const SearchComponent = () => {
     [appliedFilters]
   )
   const url = useMemo(() => {
-    const baseQuery = `${baseUrl}/api/animes?limit_count=24`
+    const baseQuery = `${baseUrl}/api/animes?limit_count=60&banners_filter=false`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
@@ -43,11 +45,17 @@ export const SearchComponent = () => {
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
-    <section className="mt-10 flex h-[100dvh] flex-col gap-4 overflow-y-auto overflow-x-hidden">
-      <div className="w-full">
+    <section
+      className="custom-scrollbar mt-16 "
+      id="search-section"
+    >
+      <div className="[grid-area:aside]">
         <FilterSection />
       </div>
-      <SearchResults />
+
+      <div className="w-full [grid-area:results]">
+        <SearchResults />
+      </div>
     </section>
   )
 }
