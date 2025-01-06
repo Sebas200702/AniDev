@@ -35,13 +35,13 @@ const Indicator = memo(
 
 const LoadingCarousel = () => (
   <div className="carousel-anime-banner relative h-[50dvh] animate-pulse bg-zinc-800 md:h-[90dvh]">
-    <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center px-8 py-4 md:flex-row">
-      <div className="z-10 mx-auto -mt-10 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:ml-8 md:mr-16 md:items-start md:justify-normal">
-        <div className="z-30 md:mb-4 md:mt-4 h-20 w-full animate-pulse rounded-lg bg-zinc-700"></div>
+    <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
+      <div className="z-10 mx-auto -mt-10 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:ml-8 md:mr-16 md:h-auto md:items-start md:justify-normal">
+        <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-700 md:mb-4 md:mt-4"></div>
         <div className="z-30 hidden h-6 w-full animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
         <div className="z-30 mb-4 hidden h-6 w-full animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
 
-        <div className="md:mt-2 flex w-full flex-row items-center gap-4">
+        <div className="flex w-full flex-row items-center gap-4 md:mt-2">
           <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
           <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-700"></div>
         </div>

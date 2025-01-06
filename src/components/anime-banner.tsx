@@ -51,7 +51,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
     fetchBannerData()
   }, [])
 
-  if (!loading || !bannerData) {
+  if (loading || !bannerData) {
     return (
       <div
         className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-700 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
