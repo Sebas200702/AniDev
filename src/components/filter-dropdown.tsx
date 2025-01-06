@@ -63,7 +63,7 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className="relative mx-auto max-w-44 border-b border-gray-100/10"
+      className="relative mx-auto max-w-60 w-full border-b border-gray-100/10"
       ref={dropdownRef}
     >
       <div className="relative text-white">
