@@ -18,16 +18,15 @@ export const SearchResults = () => {
 
   if (!animes || loading) {
     return (
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6">
+      <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-3  md:grid-cols-4 xl:grid-cols-6">
         {Array(30)
           .fill(0)
           .map((_, i) => (
             <div
               key={i + 1}
-              className="flex h-auto w-full animate-pulse flex-col gap-2 rounded-lg bg-gray-200 p-2 duration-200"
+              className="flex h-auto w-full animate-pulse flex-col  rounded-lg duration-200 p-4"
             >
-              <div className="aspect-[225/330] h-[89%] w-full animate-pulse rounded-lg bg-gray-400 p-2 duration-200"></div>
-              <div className="flex h-6 w-full animate-pulse rounded-lg bg-gray-400 transition-all duration-200 ease-in-out"></div>
+              <div className="aspect-[225/330] h-full w-full animate-pulse rounded-lg bg-zinc-700 p-2 duration-200"></div>
             </div>
           ))}
       </div>
@@ -47,7 +46,7 @@ export const SearchResults = () => {
 
   return (
     <ul
-      className={`mx-auto grid h-min w-full max-w-7xl grid-cols-3 gap-4 p-4 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+      className={`mx-auto grid h-min w-full max-w-7xl grid-cols-3 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
     >
       {animes.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />
