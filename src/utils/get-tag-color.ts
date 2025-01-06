@@ -11,9 +11,7 @@ export const getTagColor = (type: string) => {
     'CM' = 'bg-indigo-600 md:hover:bg-indigo-500 text-white',
   }
 
-  const tagColor =
-    AnimeTags[type as keyof typeof AnimeTags] ||
-    'bg-gray-300 md:hover:bg-gray-400 text-gray-900'
+  const tagColor = AnimeTags[type as keyof typeof AnimeTags] ?? 'text-white bg-blue-500 md:hover:bg-blue-400'
 
   return tagColor
 }
