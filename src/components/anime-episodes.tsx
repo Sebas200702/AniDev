@@ -1,8 +1,9 @@
-import { reduceString } from '@utils/reduce-string'
+
 import { useEffect, useState } from 'react'
 import { useFetch } from '@hooks/useFetch'
 import type { AnimeEpisode } from 'types'
 import '@styles/custom-scrollbar.css'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy';
 interface Props {
   mal_id: number
   slug: string
@@ -132,7 +133,7 @@ export const AnimeEpisodes = ({
             key={episode_id}
           >
             <img
-              src={image_url ?? image_webp}
+              src={createImageUrlProxy(image_url ?? image_webp , '400' ,'80', 'webp')}
               alt={title ?? `Episodio ${episode_id}`}
               loading="lazy"
               className="aspect-[16/9] h-full w-full rounded-md object-cover"
