@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { AnimeCard } from '@components/anime-card'
+import { useWindowWidth } from '@store/window-width'
 import { useFetch } from '@hooks/useFetch'
 import type { Anime } from 'types'
 import '@styles/no-scrolbar.css'
@@ -13,11 +14,10 @@ export const AnimeSlider = ({ query, title }: Props) => {
   const { data: animes, loading } = useFetch<Anime[]>({
     url: `/api/animes?limit_count=24&${query}&banners_filter=false`,
   })
-  const [windowWidth, setWindowWidth] = useState<number | null>(null)
+  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
-
     setWindowWidth(window.innerWidth)
     window.addEventListener('resize', handleResize)
 
