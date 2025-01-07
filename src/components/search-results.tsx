@@ -38,8 +38,8 @@ export const SearchResults = () => {
     (query || Object.keys(appliedFilters).length > 0)
   ) {
     return (
-      <div className="mt-9 flex h-full w-full flex-col items-center justify-center">
-        <h1 className="text-2xl font-bold text-gray-900">No results found</h1>
+      <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-4 text-center">
+        <h1 className="text-2xl font-bold text-gray-100">No results found</h1>
       </div>
     )
   }
