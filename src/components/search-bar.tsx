@@ -1,41 +1,89 @@
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
-import { useCallback } from 'react'
+import { useWindowWidth } from '@store/window-width'
 
-export const SearchBar = () => {
+interface Props {
+  location: string
+}
+
+export const SearchBar = ({ location }: Props) => {
   const { query, setQuery } = useSearchStoreResults()
+  const [isExpanded, setIsExpanded] = useState(false)
+  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
-  const handleInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setQuery(e.target.value)
+  useEffect(() => {
+    const handleResize = () => {
+      const newWidth = window.innerWidth
+      setWindowWidth(newWidth)
+      if (newWidth >= 768) {
+        setIsExpanded(true)
+      } else {
+        setIsExpanded(false)
+      }
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      if (location.includes('search')) return
+      e.preventDefault()
+      window.location.href = `/search?q=${query}`
     },
-    [setQuery]
+    [query, location]
   )
 
+  const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+  }, [])
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded)
+  }
+
   return (
-    <div className="relative w-full max-w-md text-white">
-      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+    <form
+      className={`relative flex md:w-full ${!isExpanded ? 'mx-auto w-min' : ''} items-center justify-end text-white`}
+      onSubmit={handleSubmit}
+    >
+      <div
+        className={`flex items-center overflow-hidden rounded-lg bg-secondary/30 transition-all duration-300 ease-in-out ${isExpanded || (windowWidth && windowWidth >= 768) ? 'w-full' : 'h-10 w-10'} `}
+      >
+        <input
+          type="search"
+          id="default-search"
+          className={`w-full border-none bg-transparent py-2 text-sm text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-0 ${isExpanded || (windowWidth && windowWidth >= 768) ? 'px-3 opacity-100' : 'w-0 px-0 opacity-0'} `}
+          placeholder="Search"
+          value={query}
+          onChange={handleInput}
+        />
+        <button
+          type="button"
+          className={`flex items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${isExpanded || (windowWidth && windowWidth >= 768) ? 'h-10 w-10' : 'h-10 w-10'} ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-0' : ''} `}
+          onClick={toggleExpand}
         >
-          <path d="M0 0h24v24H0z" stroke="none" />
-          <path d="M3 10a7 7 0 1 0 14 0 7 7 0 1 0-14 0M21 21l-6-6" />
-        </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </button>
       </div>
-      <input
-        type="search"
-        id="default-search"
-        className="block w-full rounded-lg border border-gray-600 bg-secondary p-3 pl-10 text-sm text-gray-200 placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-gray-500"
-        placeholder="Search"
-        value={query}
-        onChange={handleInput}
-      />
-    </div>
+    </form>
   )
 }
