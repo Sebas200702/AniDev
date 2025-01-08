@@ -45,6 +45,7 @@ export const SearchBar = ({ location }: Props) => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded)
+    document.getElementById('default-search')?.focus()
   }
 
   return (
@@ -58,14 +59,20 @@ export const SearchBar = ({ location }: Props) => {
         <input
           type="search"
           id="default-search"
-          className={`w-full border-none bg-transparent py-2 text-sm text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-0 ${isExpanded || (windowWidth && windowWidth >= 768) ? 'px-3 opacity-100' : 'w-0 px-0 opacity-0'} `}
+          className={`w-full border-none bg-transparent py-2 text-sm text-white transition-all duration-300 ease-in-out autofill:!bg-transparent autofill:!shadow-transparent focus:outline-none focus:ring-0 ${
+            isExpanded || (windowWidth && windowWidth >= 768)
+              ? 'px-3 opacity-100'
+              : 'w-0 px-0 opacity-0'
+          }`}
           placeholder="Search"
           value={query}
+          autoComplete="off"
           onChange={handleInput}
         />
+
         <button
           type="button"
-          className={`flex items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${isExpanded || (windowWidth && windowWidth >= 768) ? 'h-10 w-10' : 'h-10 w-10'} ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-0' : ''} `}
+          className={`flex items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out h-10 w-10 ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-0' : ''} `}
           onClick={toggleExpand}
         >
           <svg

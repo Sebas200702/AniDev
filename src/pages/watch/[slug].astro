@@ -8,6 +8,7 @@ import { reduceString } from '@utils/reduce-string'
 import { PlayIcon } from '@components/icons/play-icon'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { slide } from 'astro:transitions'
+import { VideoPlayer } from '@components/player.jsx'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
 const [title, mal_id] = Astro.params.slug?.split('_') ?? ['', '']
@@ -29,6 +30,7 @@ let video_url = ''
 let chapterImage = ''
 let episodeTitle = ''
 let episodeDescription = ''
+let anime_video_1 = ''
 try {
   const response = await fetch(
     `${baseUrl}/api/getEpisode?slug=${Astro.params.slug}&ep=${episode}`
@@ -38,6 +40,7 @@ try {
   chapterImage = data.episode.image_url
   episodeTitle = data.episode.title
   episodeDescription = data.episode.description
+  anime_video_1 = data.episode.anime_video_1
 } catch (error) {
   console.error('Error al obtener el video:', error)
 }
@@ -51,11 +54,18 @@ try {
     <div
       class="mb-10 flex aspect-video w-full flex-col gap-3 p-4 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)] xl:max-w-[60%]"
     >
-    <div id="video-iframe" class="relative aspect-video w-full" transition:animate={slide({ duration: '0.4s' })}>
-      {
-        video_url ? (
+      <div
+        id="video-iframe"
+        class="relative aspect-video w-full"
+        transition:animate={slide({ duration: '0.4s' })}
+      >
 
-            <lite-iframe
+        {
+          anime_video_1 ? (
+          <VideoPlayer url={anime_video_1} client:load />
+
+          ) : video_url ? (
+<lite-iframe
               class="rounded-lg"
               marginwidth="0"
               marginheight="0"
@@ -82,10 +92,13 @@ try {
               </div>
             </picture>
 
-        ) : (
-          <p class="text-center text-gray-500">El video no está disponible.</p>
-        )
-      }
+
+          ): (
+          <p class="text-center text-gray-500">
+              El video no está disponible.
+            </p>
+          )
+        }
       </div>
       <h3 class="h-auto p-4 text-xl font-bold text-white">
         {episodeTitle ?? '(Untitled)'} - {title} - Episode {episode}
