@@ -7,7 +7,7 @@ export const useCarouselScroll = (
   setCurrentIndex: (index: number) => void
 ) => {
   const bannerContainerRef = useRef<HTMLDivElement | null>(null)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const intervalRef = useRef<number | null>(null)
   const touchStartX = useRef<number | null>(null)
   const touchEndX = useRef<number | null>(null)
 
@@ -61,10 +61,10 @@ export const useCarouselScroll = (
   }, [handleNext, handlePrev])
 
   const resetInterval = useCallback(() => {
-    if (intervalRef.current) {
+    if (intervalRef.current !== null) {
       clearInterval(intervalRef.current)
     }
-    intervalRef.current = setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       handleNext()
     }, 4000)
   }, [handleNext])
