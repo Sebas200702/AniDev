@@ -1,39 +1,39 @@
 # 🌸 Animeflix
 
-Animeflix es una plataforma moderna de streaming y exploración de animes, diseñada con AstroJS y potenciada por Supabase. Ofrece una experiencia dinámica para descubrir, buscar y disfrutar de los mejores animes, con un diseño responsivo y transiciones suaves.
+Animeflix is a modern anime streaming and exploration platform built with AstroJS and powered by Supabase. It offers dynamic experiences for discovering, searching, and enjoying top animes, all with smooth transitions and responsive design.
 
-## 🚀 Características principales
+## 🚀 Key Features
 
-- 🎨 **Diseño moderno** con transiciones fluidas usando `astro:transitions`.
-- 🧩 **Componentes reutilizables**: NavBar, Footer, AnimeCard, AnimeTag, entre otros.
-- 🔍 **Búsqueda dinámica** con `useDebounce` para optimizar consultas.
-- 📦 **Backend eficiente**: Integrado con Supabase y funciones RPC para filtrar animes.
-- 📽️ **Reproducción de trailers** con el componente `<youtube-video>`.
-- 🌟 **Filtrado avanzado**: Géneros, estudios, puntajes, y más.
-- 📄 **Pruebas unitarias** con Vitest.
+- 🎨 **Modern Design**: Responsive and smooth transitions using `astro:transitions`.
+- 🧬 **Reusable Components**: Includes NavBar, Footer, AnimeCard, AnimeTag, etc.
+- 🔍 **Dynamic Search**: Uses `useDebounce` for optimized queries and fast search.
+- 📦 **Efficient Backend**: Integrated with Supabase, with optimized RPC functions.
+- 🎥 **Trailer Playback**: Featuring trailers in the `<youtube-video>` component.
+- 🌟 **Advanced Filtering**: Search animes by genres, studios, ratings, etc.
+- 📄 **Unit Testing**: Uses Vitest for testing components and functions.
 
 ---
 
-## 📂 Estructura del proyecto
+## 📂 Project Structure
 
 ```plaintext
-├── 📁 components/       # Componentes reutilizables (NavBar, Footer, AnimeCard, AnimeTag, SearchResults, etc.)
-├── 📁 layouts/          # Layouts base para la aplicación
-├── 📁 hooks/            # Hooks personalizados: useDebounce, useFetch
-├── 📁 pages/            # Páginas principales (Home, Search, Anime Details , 404)
-├── 📁 utils/            # Utilidades (helpers y configuraciones)
-├── 📁 public/           # Archivos estáticos (favicon, imágenes)
-├── 📁 libs/             # Configuración de Supabase
-└── 📁 test/             # Pruebas unitarias
+├── 🗁 components/       # Reusable components (NavBar, Footer, AnimeCard, AnimeTag, etc.)
+├── 🗁 layouts/          # Base layouts for the application
+├── 🗁 hooks/            # Custom hooks: useDebounce, useFetch
+├── 🗁 pages/            # Main pages (Home, Search, Anime Details, 404)
+├── 🗁 utils/            # Utilities (helpers and configurations)
+├── 🗁 public/           # Static files (favicon, images)
+├── 🗁 libs/             # Supabase configuration and helpers
+└── 🗁 test/             # Unit tests and testing utilities
 ```
 
 ---
 
-## 📄 Uso de Hooks
+## 📄 Hooks Usage
 
 ### 🔄 `useFetch`
 
-Este hook permite realizar peticiones asíncronas de forma sencilla. También se puede utilizar para realizar peticiones a una API externa.
+This hook simplifies making asynchronous requests. It can also be used to fetch data from external APIs.
 
 ```typescript
 import { useFetch } from '@hooks/useFetch'
@@ -45,7 +45,7 @@ const { data, error, loading } = useFetch<Anime[]>({
 
 ### 🕒 `useDebounce`
 
-Optimiza el rendimiento al retrasar la ejecución de una función.
+Optimizes performance by delaying the execution of a function.
 
 ```typescript
 import { useDebounce } from '@hooks/useDebounce'
@@ -56,35 +56,35 @@ const debouncedSearch = useDebounce(search, 300)
 
 ---
 
-## 🛠️ Configuración del entorno
+## 🛠️ Environment Setup
 
-Asegúrate de tener configuradas las siguientes variables de entorno:
+Ensure the following environment variables are set up:
 
 ```plaintext
-SUPABASE_URL=tu_url_de_supabase
-SUPABASE_ANON_KEY=tu_clave_de_supabase
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_key
 ```
 
-Crea un archivo `.env` en la raíz del proyecto y agrega las claves correspondientes.
+Create a `.env` file at the root of the project and add the appropriate keys.
 
 ---
 
-## 🧑‍💻 Instalación y ejecución
+## 👨‍💻 Installation and Execution
 
-### 1️⃣ Clonar el repositorio
+### 1⃣ Clone the repository
 
 ```bash
-git clone https://github.com/tu-usuario/animeflix.git
+git clone https://github.com/your-username/animeflix.git
 cd animeflix
 ```
 
-### 2️⃣ Instalar dependencias
+### 2⃣ Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Iniciar el servidor
+### 3⃣ Start the server
 
 ```bash
 npm run dev
@@ -92,27 +92,27 @@ npm run dev
 
 ---
 
-## 🌐 Rutas principales
+## 🌐 Main Routes
 
-- `/` - Página de inicio con los animes más relevantes.
-- `/search` - Búsqueda de animes por géneros, estudios, y más.
-- `/:slug` - Detalle de un anime con trailer y géneros.
-
----
-
-## 🖼️ Capturas de pantalla
-
-### 🌟 Página principal
-
-![Página Principal](https://via.placeholder.com/800x400?text=Página+Principal)
-
-### 🔍 Búsqueda de animes
-
-![Búsqueda de Animes](https://via.placeholder.com/800x400?text=Búsqueda+de+Animes)
+- `/` - Homepage showcasing the most relevant animes.
+- `/search` - Search animes by genres, studios, and more.
+- `/:slug` - Anime details with trailer, genres, and ratings.
 
 ---
 
-## 💻 Tecnologías utilizadas
+## 🖼️ Screenshots
+
+### 🌟 Homepage
+
+![Homepage](https://via.placeholder.com/800x400?text=Homepage)
+
+### 🔍 Anime Search
+
+![Anime Search](https://via.placeholder.com/800x400?text=Anime+Search)
+
+---
+
+## 💻 Technologies Used
 
 - [AstroJS](https://astro.build/) 🌟
 - [Supabase](https://supabase.com/) 🐘
@@ -122,22 +122,18 @@ npm run dev
 
 ---
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
-¡Las contribuciones son bienvenidas! Si tienes ideas, problemas o mejoras, no dudes en abrir un [issue](https://github.com/tu-usuario/animeflix/issues) o enviar un [pull request](https://github.com/tu-usuario/animeflix/pulls).
-
----
-
-## 📜 Licencia
-
-Este proyecto está bajo la licencia [MIT](LICENSE).
+Contributions are welcome! If you have ideas, issues, or improvements, feel free to open an [issue](https://github.com/your-username/animeflix/issues) or submit a [pull request](https://github.com/your-username/animeflix/pulls).
 
 ---
 
-## 🙌 Agradecimientos
+## 📜 License
 
-Gracias a todas las herramientas y librerías que hicieron este proyecto posible. 💖
+This project is licensed under the [MIT License](LICENSE).
 
-```
+---
 
-```
+## 🙌 Acknowledgments
+
+Thanks to all the tools and libraries that made this project possible. 💖
