@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import  { useEffect, useRef } from 'react'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 
-export const VideoPlayer = ({ url }) => {
+export const VideoPlayer = ({ url, sutitles }) => {
   const videoRef = useRef(null)
   const playerRef = useRef(null)
 
@@ -15,24 +15,15 @@ export const VideoPlayer = ({ url }) => {
         preload: 'auto',
         responsive: true,
         fluid: true,
-        tracks: [
-          {
-            kind: 'subtitles',
-            src: '/spa-4.vtt',
-            srclang: 'es',
-            label: 'Español',
-            default: true,
-          },
-        ],
+        tracks: sutitles,
       })
 
-      // Configurar el recurso de video
       const videoResource = url
 
-      // Pasar el recurso a través del proxy
+
       const proxyUrl = `/api/videoProxy?url=${encodeURIComponent(videoResource)}`
 
-      // Configurar la fuente del video
+ 
       playerRef.current.src({
         src: proxyUrl,
         type: 'application/vnd.apple.mpegurl',
