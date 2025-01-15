@@ -1,7 +1,21 @@
 import type { APIRoute } from 'astro'
+import { redis } from '@libs/redis'
 import sharp from 'sharp'
 
 export const GET: APIRoute = async ({ url }) => {
+  if (!redis.isOpen) {
+    await redis.connect()
+  }
+  const cachedData = await redis.get(`image:${url.searchParams.get('url')}`)
+
+  if (cachedData) {
+    return new Response(cachedData, {
+      headers: {
+        'Content-Type': 'image/webp',
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
+  }
   const imageUrl = url.searchParams.get('url')
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
   const quality = Math.min(
