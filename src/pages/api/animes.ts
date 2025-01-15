@@ -1,7 +1,19 @@
 import { supabase } from '@libs/supabase'
+import { redis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
+  if (!redis.isOpen) {
+    await redis.connect()
+  }
+  const cachedData = await redis.get(`animes ${url.searchParams.toString()}`)
+
+  if (cachedData) {
+    return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    })
+  }
   enum Filters {
     limit_count = 'limit_count',
     page_number = 'page_number',
@@ -51,6 +63,8 @@ export const GET: APIRoute = async ({ url }) => {
   const filters = getFilters(Filters)
 
   const { data, error } = await supabase.rpc('get_animes', filters)
+
+  await redis.set(`animes ${url.searchParams.toString()}`, JSON.stringify(data))
 
   if (error) {
     if (import.meta.env.MODE === 'development') {
