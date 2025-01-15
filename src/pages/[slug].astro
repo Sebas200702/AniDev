@@ -35,7 +35,9 @@ const getAnimeData = async () => {
 
 const animeData = await getAnimeData()
 
-if (!animeData) return Astro.redirect('/404')
+if (!animeData) {
+  return Astro.redirect('/404', 301)
+}
 
 const {
   mal_id,
