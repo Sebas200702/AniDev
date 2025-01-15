@@ -8,6 +8,13 @@ export const getFilterOfTag = (tag: string) => {
   if (tag === 'ONA') return AnimeFilters.Type
   if (tag === 'Movie') return AnimeFilters.Type
   if (tag === 'Music') return AnimeFilters.Type
-  if (haveNumbers(tag)) return AnimeFilters.Year
+  if (haveNumbers(tag) && tag.length === 4) return AnimeFilters.Year
+  if (
+    tag.includes('+') ||
+    tag.includes('-') ||
+    tag.includes('R') ||
+    tag.includes('G')
+  )
+    return AnimeFilters.Rating
   return AnimeFilters.Genre
 }
