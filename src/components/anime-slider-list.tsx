@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimeCard } from '@components/anime-card'
 import { useWindowWidth } from '@store/window-width'
 import { useFetch } from '@hooks/useFetch'
@@ -11,10 +11,29 @@ interface Props {
 }
 
 export const AnimeSlider = ({ query, title }: Props) => {
+  const [cachedAnimes, setCachedAnimes] = useState<Anime[] | null>(null)
+  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
+
+  const storageKey = `animes_${query}`
+
   const { data: animes, loading } = useFetch<Anime[]>({
     url: `/api/animes?limit_count=24&${query}&banners_filter=false`,
+    skip: !!cachedAnimes,
   })
-  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
+
+  useEffect(() => {
+    const storedAnimes = sessionStorage.getItem(storageKey)
+    if (storedAnimes) {
+      setCachedAnimes(JSON.parse(storedAnimes))
+    }
+  }, [storageKey])
+
+  useEffect(() => {
+    if (animes && !cachedAnimes) {
+      sessionStorage.setItem(storageKey, JSON.stringify(animes))
+      setCachedAnimes(animes)
+    }
+  }, [animes, cachedAnimes, storageKey])
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -24,7 +43,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [setWindowWidth])
 
   useEffect(() => {
     const sliders = document.querySelectorAll('.anime-slider')
@@ -75,9 +94,11 @@ export const AnimeSlider = ({ query, title }: Props) => {
         nextButton.removeEventListener('click', () => handleScroll('next'))
       }
     })
-  }, [animes, windowWidth, loading])
+  }, [cachedAnimes, windowWidth, loading])
 
-  if (loading)
+  const displayAnimes = cachedAnimes || animes
+
+  if (loading && !cachedAnimes)
     return (
       <div className="relative mx-auto mb-6 mt-6 w-[calc(100dvw-8px)]">
         <span className="ml-[calc(((100dvw-8px)/6.4)*0.2)] inline-flex h-8 w-32 animate-pulse items-center justify-center rounded-lg bg-zinc-700"></span>
@@ -105,7 +126,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
           {title}
         </h2>
         <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth py-2">
-          {animes?.map((anime: Anime) => (
+          {displayAnimes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
@@ -137,7 +158,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
         </button>
 
         <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth py-2 md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
-          {animes?.map((anime: Anime) => (
+          {displayAnimes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
@@ -161,3 +182,4 @@ export const AnimeSlider = ({ query, title }: Props) => {
     </section>
   )
 }
+
