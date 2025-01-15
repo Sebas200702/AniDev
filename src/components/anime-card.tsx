@@ -43,7 +43,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
   return (
     <article className="group relative transition-all duration-200 ease-in-out md:hover:scale-[1.03]">
       <a
-        href={`/${slug}_${mal_id}?context=${context}`}
+        href={`/${slug}_${mal_id}`}
         className={`flex h-auto flex-col items-center rounded-lg p-4 ${context === 'search' ? ' ' : 'w-[calc((100dvw-8px)/2.4)] md:w-[calc((100dvw-8px)/4.4)] xl:w-[calc((100dvw-8px)/6.4)]'}`}
         aria-label={`View details for ${title}`}
       >
@@ -59,20 +59,18 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <img
             src={image_large_webp}
             alt={title}
-            className="aspect-[225/330] w-full rounded-lg transition-all ease-in-out object-cover object-center"
+            className="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
-            width={225}
-            height={330}
           />
           <div className="absolute bottom-0 left-0 h-1/3 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all duration-200 ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
         </picture>
-        <footer className="absolute bottom-4 md:left-3 left-1 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2">
+        <footer className="absolute bottom-4 left-1 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoin
             class={`h-6 w-6 ${status === 'Currently Airing' ? 'text-green-400 md:group-hover:text-green-500' : 'text-blue-400 md:group-hover:text-blue-500'}`}
             status={status}
           />
           <h3
-            className={`w-full ${genreToColor(genres[0])} truncate md:text-sm text-xs  font-semibold text-white transition-opacity duration-200 ease-in-out`}
+            className={`w-full ${genreToColor(genres[0])} truncate text-xs font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
             aria-hidden="true"
           >
             {title}
