@@ -47,13 +47,12 @@ const getEpisodeDetails = async (slug: string, episode: string) => {
       episodeTitle: episodeData.title,
       episodeDescription: episodeData.description,
       anime_video_1: episodeData.anime_video_1,
-      subtitles:
-        episodeData.subtitles?.map((subtitle: string) => ({
-          src: subtitle,
-          kind: 'subtitles',
-          srclang: 'en',
-          label: 'English',
-        })),
+      subtitles: episodeData.subtitles?.map((subtitle: string) => ({
+        src: subtitle,
+        kind: 'subtitles',
+        srclang: 'en',
+        label: 'English',
+      })),
     }
   } catch (error) {
     console.error('Error al obtener los detalles del episodio:', error)
@@ -70,7 +69,12 @@ const [animeData, episodes, episodeDetails] = await Promise.all([
 
 if (!animeData || !episodes || !episodeDetails) return Astro.redirect('/404')
 
-const { image_large_webp, synopsis , title , episodes : episodesLength } = animeData as Anime
+const {
+  image_large_webp,
+  synopsis,
+  title,
+  episodes: episodesLength,
+} = animeData as Anime
 const description = reduceString(synopsis, 200) || 'No description available'
 
 const {

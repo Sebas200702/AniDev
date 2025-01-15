@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 
@@ -20,10 +20,8 @@ export const VideoPlayer = ({ url, sutitles }) => {
 
       const videoResource = url
 
-
       const proxyUrl = `/api/videoProxy?url=${encodeURIComponent(videoResource)}`
 
- 
       playerRef.current.src({
         src: proxyUrl,
         type: 'application/vnd.apple.mpegurl',

@@ -1,4 +1,3 @@
-import { ESLint } from 'eslint'
 import eslintPluginTypescript from '@typescript-eslint/eslint-plugin'
 import eslintPluginPrettier from 'eslint-plugin-prettier'
 import eslintPluginAstro from 'eslint-plugin-astro'

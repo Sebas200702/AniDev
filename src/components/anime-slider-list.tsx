@@ -182,4 +182,3 @@ export const AnimeSlider = ({ query, title }: Props) => {
     </section>
   )
 }
-
