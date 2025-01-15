@@ -1,6 +1,6 @@
 module.exports = {
-  semi: false, // Deshabilita los puntos y comas
-  singleQuote: true, // Usa comillas simples
+  semi: false,
+  singleQuote: true,
   trailingComma: 'es5',
   tabWidth: 2,
   printWidth: 80,
