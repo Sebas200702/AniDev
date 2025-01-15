@@ -18,25 +18,31 @@ import CalendarIcon from '@components/icons/calendar-icon.astro'
 import ClockIcon from '@components/icons/clock-icon.astro'
 import { AnimeActions } from '@components/anime-actions'
 
-const animeDataResponse = await fetch(
-  `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
-  { cache: 'force-cache' }
-)
-
-if (!animeDataResponse.ok) {
-  throw new Error(`Error fetching anime data: ${animeDataResponse.statusText}`)
+const getAnimeData = async () => {
+  try {
+    const animeData = await fetch(
+      `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
+      { cache: 'force-cache' }
+    )
+      .then((res) => res.json())
+      .then((data) => data.anime)
+    return animeData
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }
 
-const animeData: Anime | undefined = (await animeDataResponse.json()).anime
+const animeData = await getAnimeData()
 
-if (!animeData) {
-  throw new Error('Anime data not found')
-}
+if (!animeData) return Astro.redirect('/404')
+
 
 const {
   mal_id,
   title,
   image_large_webp,
+  image_webp,
   banner_image,
   synopsis,
   year,
@@ -46,12 +52,9 @@ const {
   type,
   genres,
   duration,
-} = animeData
+} = animeData as Anime
 
 const slug = normalizeString(title)
-
-const context =
-  new URLSearchParams(Astro.url.search).get('context') ?? 'default'
 
 const description = reduceString(synopsis, 200) || 'No description available'
 const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
@@ -63,20 +66,15 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
       class="absolute inset-0 max-h-[calc(100dvh-300px)] w-full max-w-[calc(100dvw-8px)] overflow-hidden"
     >
       <Image
-        src={createImageUrlProxy(
-          banner_image ?? image_large_webp,
-          '0',
-          '20',
-          'webp'
-        )}
+        src={banner_image
+          ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
+          : image_webp}
         alt={`${title} banner`}
         loading="lazy"
         fetchpriority="high"
-        class={`${
-          banner_image
-            ? 'xl:h-auto w-full h-full object-cover object-center'
-            : '-my-96 aspect-[225/330] w-full opacity-85'
-        }`}
+        class={banner_image
+          ? 'xl:h-auto w-full h-full object-cover object-center'
+          : '-my-96 aspect-[225/330] w-full opacity-85'}
         width={225}
         height={330}
         quality={10}
@@ -107,7 +105,11 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
                   <AnimeTag tag={genre} type={genre} style="w-auto" />
                 ))
               }
-              <AnimeTag tag={normalizeRating(rating)} type={rating} />
+              {
+                rating && (
+                  <AnimeTag tag={normalizeRating(rating)} type={rating} />
+                )
+              }
             </footer>
           </header>
 
@@ -133,44 +135,23 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
             </h3>
           </div>
 
-          <p class="max-w-5xl text-gray-50/90">{splitTextOnP(synopsis)[0]}</p>
           <p class="max-w-5xl text-gray-50/90">
-            {splitTextOnP(synopsis)[1]}
+            {splitTextOnP(synopsis ?? '')[0]}
+          </p>
+          <p class="max-w-5xl text-gray-50/90">
+            {splitTextOnP(synopsis ?? '')[1]}
           </p>
         </div>
         <div class="mx-auto flex w-full max-w-72 flex-col gap-4">
           <picture
             class="mx-auto aspect-[225/330] h-auto w-full rounded-lg md:mx-0"
           >
-            <source
-              srcset={createImageUrlProxy(
-                image_large_webp,
-                '600',
-                '20',
-                'webp'
-              )}
-              media="(max-width: 767px)"
-              type="image/webp"
-            />
-            <source
-              srcset={createImageUrlProxy(
-                image_large_webp,
-                '600',
-                '20',
-                'webp'
-              )}
-              media="(min-width: 768px)"
-              type="image/webp"
-            />
-            <Image
+            <img
               src={image_large_webp}
               alt={title}
               class="aspect-[225/330] h-auto w-full rounded-lg transition-all ease-in-out"
               fetchpriority="high"
               loading="lazy"
-              width={225}
-              height={330}
-              quality={10}
             />
           </picture>
           <AnimeActions actions={actions} />
