@@ -1,5 +1,5 @@
 import { supabase } from '@libs/supabase'
-import { redis } from '@libs/redis'
+import { redis, closeRedis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
@@ -12,6 +12,7 @@ export const GET: APIRoute = async ({ url }) => {
     : 1
 
   if (!id) {
+    await closeRedis()
     return new Response(JSON.stringify({ error: 'Mal id not found' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
@@ -19,6 +20,7 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   if (page < 1) {
+    await closeRedis()
     return new Response(
       JSON.stringify({ error: 'Page number must be greater than 0' }),
       {
@@ -46,10 +48,11 @@ export const GET: APIRoute = async ({ url }) => {
       .order('episode_id', { ascending: true })
       .range((page - 1) * 100, page * 100 - 1)
 
-    await redis.set(`episodes:${id}`, JSON.stringify(data))
+    await redis.set(`episodes:${id}`, JSON.stringify(data)).then(() => closeRedis())
 
     if (error) {
       console.error('Error fetching episodes:', error.message)
+      await closeRedis()
       return new Response(
         JSON.stringify({ error: 'Failed to fetch episodes' }),
         {

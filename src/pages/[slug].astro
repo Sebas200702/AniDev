@@ -61,7 +61,7 @@ const description = reduceString(synopsis, 200) || 'No description available'
 const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
 ---
 
-<Layout description={description} image={image_large_webp}>
+<Layout description={description} image={image_large_webp} title={title}>
   <section class="mt-24 flex flex-col gap-8 p-4 text-white md:mx-20 xl:mx-40">
     <div
       class="absolute inset-0 max-h-[calc(100dvh-300px)] w-full max-w-[calc(100dvw-8px)] overflow-hidden"

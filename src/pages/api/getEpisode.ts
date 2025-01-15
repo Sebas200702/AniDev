@@ -1,5 +1,5 @@
 import { supabase } from '@libs/supabase'
-import { redis } from '@libs/redis'
+import { redis , closeRedis} from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
@@ -9,6 +9,7 @@ export const GET: APIRoute = async ({ url }) => {
   const cachedData = await redis.get(`episode:${url.searchParams.toString()}`)
 
   if (cachedData) {
+    await closeRedis()
     return new Response(JSON.stringify({ episode: JSON.parse(cachedData) }), {
       status: 200,
       headers: { 'content-type': 'application/json' },
@@ -54,7 +55,7 @@ export const GET: APIRoute = async ({ url }) => {
     await redis.set(
       `episode:${url.searchParams.toString()}`,
       JSON.stringify(data)
-    )
+    ).then(() => closeRedis())
 
     if (error) {
       if (import.meta.env.MODE === 'development') {

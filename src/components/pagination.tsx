@@ -29,7 +29,7 @@ export default function Pagination({
         onClick={() => handlePageChange(1)}
         className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
           currentPage === 1
-            ? 'bg-blue-500 text-white'
+            ? 'bg-enfasisColor text-white'
             : 'bg-transparent text-gray-300 hover:text-white'
         }`}
       >
@@ -61,7 +61,7 @@ export default function Pagination({
           onClick={() => handlePageChange(i)}
           className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
             currentPage === i
-              ? 'bg-blue-500 text-white'
+              ? 'bg-enfasisColor text-white'
               : 'bg-transparent text-gray-300 hover:text-white'
           }`}
         >
@@ -90,7 +90,7 @@ export default function Pagination({
           onClick={() => handlePageChange(totalPages)}
           className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
             currentPage === totalPages
-              ? 'bg-blue-500 text-white'
+              ? 'bg-enfasisColor text-white'
               : 'bg-transparent text-gray-300 hover:text-white'
           }`}
         >

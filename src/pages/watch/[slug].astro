@@ -86,7 +86,12 @@ const {
 } = episodeDetails
 ---
 
-<Layout description={description} image={chapterImage ?? image_large_webp}>
+<Layout
+  description={description}
+  image={chapterImage ?? image_large_webp}
+  title=`${title} - Episode: ${episode}`
+  }
+>
   <section
     class="xl:max-w-7x mx-auto mt-16 flex h-min w-full flex-col justify-center gap-8 overflow-hidden xl:max-h-[calc(100dvh-80px)] xl:flex-row"
     aria-label="Reproductor de episodios y lista de episodios"

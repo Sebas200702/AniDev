@@ -20,28 +20,20 @@ export const AnimeEpisodes = ({
   totalEpisodes,
   currentEpisode,
 }: Props) => {
-  const [page, setPage] = useState<number | null>(null) // Inicialmente nulo
+  const [page, setPage] = useState<number | null>(null)
   const [shouldScroll, setShouldScroll] = useState(false)
   const totalPages = Math.ceil(totalEpisodes / 100)
-
-  // Cargar episodios según la página
-  const {
-    data: episodes,
-    error,
-    loading,
-  } = useFetch<AnimeEpisode[]>({
+  const { data: episodes, loading } = useFetch<AnimeEpisode[]>({
     url: page ? `/api/episodes?id=${mal_id}&page=${page}` : '',
   })
 
-  // Calcular la página inicial con base en el episodio actual
   useEffect(() => {
     if (!currentEpisode) return
     const initialPage = Math.ceil(currentEpisode / 100)
-    setPage(initialPage) // Configura la página inicial
-    setShouldScroll(true) // Indicar que debe desplazarse al episodio actual
+    setPage(initialPage)
+    setShouldScroll(true)
   }, [currentEpisode])
 
-  // Desplazar al episodio actual cuando los episodios estén cargados
   useEffect(() => {
     if (!shouldScroll || loading || !episodes) return
 
@@ -57,13 +49,12 @@ export const AnimeEpisodes = ({
         top: offsetTop - episodesList.clientHeight / 2,
         behavior: 'smooth',
       })
-      setShouldScroll(false) // Desactivar el scroll automático
+      setShouldScroll(false)
     }
 
     scrollToEpisode()
   }, [episodes, currentEpisode, shouldScroll, loading])
 
-  // Cambiar página y actualizar la URL
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
     const searchParams = new URLSearchParams(window.location.search)
@@ -73,7 +64,7 @@ export const AnimeEpisodes = ({
       '',
       `${window.location.pathname}?${searchParams.toString()}`
     )
-    setShouldScroll(false) // Desactivar scroll automático en cambio manual de página
+    setShouldScroll(false)
   }
 
   if (loading || !episodes || page === null)
@@ -108,9 +99,9 @@ export const AnimeEpisodes = ({
         {episodes.map(({ episode_id, title, image_url, anime_mal_id }) => (
           <a
             href={`/watch/${slug}_${anime_mal_id}?ep=${episode_id}`}
-            className={`group relative flex h-auto w-full flex-col gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out md:max-w-[400px] md:hover:scale-[1.01] ${
+            className={`group relative flex h-auto w-full flex-col gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out hover:saturate-[.7] md:max-w-[400px] md:hover:scale-[1.01] ${
               currentEpisode === episode_id
-                ? 'bg-blue-500 hover:bg-blue-400'
+                ? 'bg-enfasisColor'
                 : 'md:hover:bg-zinc-500'
             }`}
             key={episode_id}

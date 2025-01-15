@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 import { supabase } from '@libs/supabase'
-import { redis } from '@libs/redis'
+import { redis , closeRedis } from '@libs/redis'
 
 export const GET: APIRoute = async () => {
   if (!redis.isOpen) {
@@ -22,7 +22,7 @@ export const GET: APIRoute = async () => {
     })
   }
 
-  await redis.set('studios', JSON.stringify(data), { EX: 3600 })
+  await redis.set('studios', JSON.stringify(data)).then(() => closeRedis())
 
   return new Response(JSON.stringify(data), {
     status: 200,

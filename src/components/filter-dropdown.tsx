@@ -88,7 +88,7 @@ export const FilterDropdown = ({
                 onClear()
                 setSearch('')
               }}
-              className="rounded p-1 hover:bg-blue-500"
+              className="rounded p-1 hover:bg-enfasisColor/80"
             >
               <svg
                 className="h-3 w-3 text-gray-300"
@@ -127,7 +127,7 @@ export const FilterDropdown = ({
                 className="peer hidden"
               />
 
-              <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 peer-checked:border-blue-500 peer-checked:bg-blue-500">
+              <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 peer-checked:border-enfasisColor peer-checked:bg-enfasisColor">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-3.5 w-3.5 text-black peer-checked:text-black"

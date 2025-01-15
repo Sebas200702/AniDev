@@ -142,7 +142,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
       </header>
 
       <div className="relative overflow-hidden">
-        <button className="prev-button group absolute inset-0 z-10 my-auto hidden h-16 w-10 rounded-lg bg-blue-500 transition-all duration-300 ease-in-out focus:outline-none">
+        <button className="prev-button group absolute inset-0 z-10 my-auto hidden h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
           <svg
             className="mx-auto my-auto h-6 w-6 rotate-180"
             xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
           ))}
         </ul>
 
-        <button className="next-button group absolute bottom-0 right-0 top-0 z-10 my-auto hidden max-h-16 w-10 items-center justify-center rounded-lg bg-blue-500 transition-all duration-300 ease-in-out focus:outline-none">
+        <button className="next-button group absolute bottom-0 right-0 top-0 z-10 my-auto hidden max-h-16 w-10 items-center justify-center rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
           <svg
             className="mx-auto my-auto h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"

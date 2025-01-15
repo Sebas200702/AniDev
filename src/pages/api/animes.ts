@@ -1,5 +1,5 @@
 import { supabase } from '@libs/supabase'
-import { redis } from '@libs/redis'
+import { redis, closeRedis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
@@ -9,6 +9,7 @@ export const GET: APIRoute = async ({ url }) => {
   const cachedData = await redis.get(`animes ${url.searchParams.toString()}`)
 
   if (cachedData) {
+    await closeRedis()
     return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
       status: 200,
       headers: { 'content-type': 'application/json' },
@@ -64,12 +65,13 @@ export const GET: APIRoute = async ({ url }) => {
 
   const { data, error } = await supabase.rpc('get_animes', filters)
 
-  await redis.set(`animes ${url.searchParams.toString()}`, JSON.stringify(data))
+  await redis.set(`animes ${url.searchParams.toString()}`, JSON.stringify(data)).then(() => closeRedis())
 
   if (error) {
     if (import.meta.env.MODE === 'development') {
       console.error('Error al ejecutar RPC get_animes:', error)
     }
+    await closeRedis()
     return new Response(
       JSON.stringify({ error: 'Ocurrió un error al obtener los animes.' }),
       {

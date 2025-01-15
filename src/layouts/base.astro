@@ -3,21 +3,24 @@ import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
 import { ClientRouter } from 'astro:transitions'
 import '@styles/custom-scrollbar.css'
-const [title] = Astro.params.slug?.split('_') ?? ['', '']
+
 const episode = new URLSearchParams(Astro.url.search).get('ep')
 const baseTitle = 'Animeflix - Watch anime online free'
+const { description, image, title } = Astro.props
+
+interface Props {
+  description?: string
+  image?: string
+  title: string
+}
+const SEO_DESCRIPTION =
+  'Animeflix is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
+
 const seoTitle = (title: string | null, episode: string | null) => {
   if (!episode && !title) return baseTitle
   if (!episode) return `${title} - ${baseTitle}`
   return `${title} - Episodio ${episode} - ${baseTitle}`
 }
-interface Props {
-  description?: string
-  image?: string
-}
-const SEO_DESCRIPTION =
-  'Animeflix is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
-const { description, image } = Astro.props
 ---
 
 <html lang="en">

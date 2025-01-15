@@ -24,7 +24,7 @@ const Indicator = memo(
       <button
         onClick={() => onClick(index)}
         className={`h-3 w-3 rounded-full transition-colors ${
-          currentIndex === index ? 'bg-blue-500' : 'bg-white/50'
+          currentIndex === index ? 'bg-enfasisColor' : 'bg-white/50'
         }`}
         aria-current={currentIndex === index ? 'true' : 'false'}
         aria-label={`Slide ${index + 1}`}
