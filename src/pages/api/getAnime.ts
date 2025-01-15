@@ -1,11 +1,27 @@
 import { supabase } from '@libs/supabase'
+import { redis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
+  if (!redis.isOpen) {
+    await redis.connect()
+  }
+  const cachedData = await redis.get(`anime:${url.searchParams.get('slug')}`)
+
+  if (cachedData) {
+    return new Response(JSON.stringify({ anime: JSON.parse(cachedData) }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+      },
+    })
+  }
+
   const title_query = url.searchParams.get('slug')
   if (!title_query) {
     return new Response(JSON.stringify({ error: 'No title query provided' }), {
-      status: 400,
+      status: 404,
       headers: { 'Content-Type': 'application/json' },
     })
   }
@@ -13,7 +29,7 @@ export const GET: APIRoute = async ({ url }) => {
   const [, id] = title_query.split('_')
   if (!id) {
     return new Response(JSON.stringify({ error: 'Invalid slug format' }), {
-      status: 400,
+      status: 404,
       headers: { 'Content-Type': 'application/json' },
     })
   }
@@ -40,6 +56,11 @@ export const GET: APIRoute = async ({ url }) => {
         headers: { 'Content-Type': 'application/json' },
       })
     }
+
+    await redis.set(
+      `anime:${url.searchParams.get('slug')}`,
+      JSON.stringify(data[0])
+    )
 
     return new Response(JSON.stringify({ anime: data[0] }), {
       status: 200,
