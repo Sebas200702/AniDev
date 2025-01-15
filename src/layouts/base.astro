@@ -15,6 +15,8 @@ interface Props {
   description?: string
   image?: string
 }
+const SEO_DESCRIPTION =
+  'Animeflix is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 const { description, image } = Astro.props
 ---
 
@@ -24,32 +26,20 @@ const { description, image } = Astro.props
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta
-      name="description"
-      content={description ??
-        'A friendly and simply way to enjoy a big variety of quality anime.'}
-    />
+    <meta name="description" content={description ?? SEO_DESCRIPTION} />
     <meta
       property="og:image"
       name="og:image"
       content={image ?? 'https://animeflix.vercel.app/og-image.jpg'}
     />
     <meta property="og:title" content={seoTitle(title, episode)} />
-    <meta
-      property="og:description"
-      content={description ??
-        'A friendly and simply way to enjoy a big variety of quality anime.'}
-    />
+    <meta property="og:description" content={description ?? SEO_DESCRIPTION} />
     <meta property="og:type" content="website" />
     <meta
       name="twitter:card"
       content={image ? 'summary_large_image' : 'summary'}
     />
-    <meta
-      name="twitter:description"
-      content={description ??
-        'A friendly and simply way to enjoy a big variety of quality anime.'}
-    />
+    <meta name="twitter:description" content={description ?? SEO_DESCRIPTION} />
     <meta name="twitter:title" content={seoTitle(title, episode)} />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="preconnect" href="https://unpkg.com" />
