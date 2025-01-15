@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterDropdown } from '@components/filter-dropdown'
 import {
@@ -7,6 +7,7 @@ import {
   yearOptions,
   formatOptions,
   seasonOptions,
+  ratingOptions,
 } from 'types'
 import { studioOptions } from '@utils/create-studios-options'
 import type { AppliedFilters } from 'types'
@@ -74,6 +75,13 @@ export const FilterSection = () => {
           onChange={(values) => updateFilter('season_filter', values)}
           onClear={() => updateFilter('season_filter', [])}
           options={seasonOptions}
+        />
+        <FilterDropdown
+          label="Rating"
+          values={appliedFilters.rating_filter ?? []}
+          onChange={(values) => updateFilter('rating_filter', values)}
+          onClear={() => updateFilter('rating_filter', [])}
+          options={ratingOptions}
         />
         <div>
           <button
