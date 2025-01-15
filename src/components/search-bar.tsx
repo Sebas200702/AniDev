@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const SearchBar = ({ location }: Props) => {
-  const { query, setQuery } = useSearchStoreResults()
+  const { query, setQuery, setLoading } = useSearchStoreResults()
   const [isExpanded, setIsExpanded] = useState(false)
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
@@ -41,6 +41,7 @@ export const SearchBar = ({ location }: Props) => {
 
   const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
+    setLoading(true)
   }, [])
 
   const toggleExpand = () => {
@@ -72,7 +73,7 @@ export const SearchBar = ({ location }: Props) => {
 
         <button
           type="button"
-          className={`flex items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out h-10 w-10 ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-0' : ''} `}
+          className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-0' : ''} `}
           onClick={toggleExpand}
         >
           <svg

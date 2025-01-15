@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)
+  const [completedSearch, setCompletedSearch] = useState(false)
   const {
     results: animes,
     query,
@@ -13,10 +14,16 @@ export const SearchResults = () => {
 
   useEffect(() => {
     if (!animes) return
-    setTimeout(() => setFadeIn(true), 300)
-  }, [animes, setFadeIn, query, appliedFilters, loading])
+    setTimeout(() => {
+      setFadeIn(true)
+      setCompletedSearch(true)
+    }, 500)
+  }, [animes, setFadeIn, query, appliedFilters, loading, setCompletedSearch])
 
-  if (!animes || loading) {
+  if (
+    (loading && (query || appliedFilters)) ||
+    (!completedSearch && (query || appliedFilters))
+  ) {
     return (
       <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-2 md:grid-cols-4 xl:grid-cols-6">
         {Array(30)
@@ -34,8 +41,9 @@ export const SearchResults = () => {
   }
 
   if (
-    animes.length === 0 &&
-    (query || Object.keys(appliedFilters).length > 0)
+    animes?.length === 0 &&
+    (query || Object.keys(appliedFilters).length > 0) &&
+    completedSearch
   ) {
     return (
       <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-4 text-center">
@@ -48,7 +56,7 @@ export const SearchResults = () => {
     <ul
       className={`mx-auto grid h-min w-full max-w-7xl grid-cols-2 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
     >
-      {animes.map((anime) => (
+      {animes?.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />
       ))}
     </ul>

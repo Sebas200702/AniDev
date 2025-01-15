@@ -42,7 +42,7 @@ export const SearchComponent = () => {
     if (!isLoading) {
       setResults(animes ?? [], false, fetchError)
     }
-  }, [animes, isLoading, fetchError, setResults, setLoading])
+  }, [animes, isLoading, fetchError, setResults, setLoading ])
 
   return (
     <section className="custom-scrollbar mt-16" id="search-section">
