@@ -3,47 +3,83 @@ import Layout from '@layouts/base.astro'
 import { AnimeEpisodes } from '@components/anime-episodes'
 import { baseUrl } from '@utils/base-url'
 import { NextPrevEpisodeBtn } from '@components/next-prev-episode-btn'
-import type { AnimeEpisode } from 'types'
+import type { Anime, AnimeEpisode } from 'types'
 import { reduceString } from '@utils/reduce-string'
-import { PlayIcon } from '@components/icons/play-icon'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { slide } from 'astro:transitions'
 import { VideoPlayer } from '@components/player.jsx'
 
-const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
-const [title, mal_id] = Astro.params.slug?.split('_') ?? ['', '']
+const getAnimeData = async (slug: string) => {
+  try {
+    const animeData = await fetch(`${baseUrl}/api/getAnime?slug=${slug}`, {
+      cache: 'force-cache',
+    })
+      .then((res) => res.json())
+      .then((data) => data.anime)
+    return animeData
+  } catch (error) {
+    console.error('Error al obtener los datos del anime:', error)
+    return null
+  }
+}
 
-const [responseEpisodes, animeInfo] = await Promise.all([
-  fetch(`${baseUrl}/api/episodes?id=${mal_id}`, { cache: 'force-cache' }).then(
-    (res) => res.json()
-  ),
-  fetch(`${baseUrl}/api/getAnime?slug=${Astro.params.slug}`)
-    .then((res) => res.json())
-    .then((data) => data.anime),
+const getEpisodesData = async (mal_id: string) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/episodes?id=${mal_id}`, {
+      cache: 'force-cache',
+    })
+    const episodesData = await response.json()
+    return episodesData.data as AnimeEpisode[]
+  } catch (error) {
+    console.error('Error al obtener los episodios:', error)
+    return null
+  }
+}
+
+const getEpisodeDetails = async (slug: string, episode: string) => {
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/getEpisode?slug=${slug}&ep=${episode}`
+    )
+    const data = await response.json()
+    const { episode: episodeData } = data
+    return {
+      chapterImage: episodeData.image_url,
+      episodeTitle: episodeData.title,
+      episodeDescription: episodeData.description,
+      anime_video_1: episodeData.anime_video_1,
+      subtitles:
+        episodeData.subtitles?.map((subtitle: string) => ({
+          src: subtitle,
+          kind: 'subtitles',
+          srclang: 'en',
+          label: 'English',
+        })),
+    }
+  } catch (error) {
+    console.error('Error al obtener los detalles del episodio:', error)
+    return null
+  }
+}
+const episode = new URLSearchParams(Astro.url.search).get('ep') ?? '1'
+const [slugTitle, mal_id] = Astro.params.slug?.split('_') ?? ['', '']
+const [animeData, episodes, episodeDetails] = await Promise.all([
+  getAnimeData(Astro.params.slug ?? ''),
+  getEpisodesData(mal_id),
+  getEpisodeDetails(Astro.params.slug ?? '', episode),
 ])
 
-const { image_large_webp, synopsis } = animeInfo
-const description = reduceString(synopsis, 200) || 'No description available'
-const episodes: AnimeEpisode[] = responseEpisodes.data
+if (!animeData || !episodes || !episodeDetails) return Astro.redirect('/404')
 
-let video_url = ''
-let chapterImage = ''
-let episodeTitle = ''
-let episodeDescription = ''
-let anime_video_1 = ''
-try {
-  const response = await fetch(
-    `${baseUrl}/api/getEpisode?slug=${Astro.params.slug}&ep=${episode}`
-  )
-  const data = await response.json()
-  video_url = data.episode.video_url
-  chapterImage = data.episode.image_url
-  episodeTitle = data.episode.title
-  episodeDescription = data.episode.description
-  anime_video_1 = data.episode.anime_video_1
-} catch (error) {
-  console.error('Error al obtener el video:', error)
-}
+const { image_large_webp, synopsis , title , episodes : episodesLength } = animeData as Anime
+const description = reduceString(synopsis, 200) || 'No description available'
+
+const {
+  chapterImage,
+  episodeTitle,
+  episodeDescription,
+  anime_video_1,
+  subtitles,
+} = episodeDetails
 ---
 
 <Layout description={description} image={chapterImage ?? image_large_webp}>
@@ -59,42 +95,11 @@ try {
         class="relative aspect-video w-full"
         transition:animate={slide({ duration: '0.4s' })}
       >
-
         {
           anime_video_1 ? (
-          <VideoPlayer url={anime_video_1} client:load />
-
-          ) : video_url ? (
-<lite-iframe
-              class="rounded-lg"
-              marginwidth="0"
-              marginheight="0"
-              src={video_url}
-              frameborder="0"
-              allow="fullscreen"
-              sandbox="allow-same-origin allow-scripts"
-              aria-label={`Video del episodio ${episode} de ${title}`}
-              title={`Video del episodio ${episode} de ${title}`}
-              tabindex="0"
-            />
-            <picture
-              id="chapter-image"
-              class="group absolute inset-0 z-0 flex h-full w-full cursor-pointer items-center justify-center rounded-lg transition-all duration-300 hover:saturate-[1.2]"
-              style={{
-                backgroundImage: `url(${createImageUrlProxy(chapterImage ?? image_large_webp, '1080', '80', 'webp')})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}
-            >
-              <div class="rounded-full bg-black/30 p-2 text-blue-500 transition-all duration-300 group-hover:scale-[1.1]">
-                <PlayIcon width="64" height="64" />
-              </div>
-            </picture>
-
-
-          ): (
-          <p class="text-center text-gray-500">
+            <VideoPlayer url={anime_video_1} sutitles={subtitles} client:load />
+          ) : (
+            <p class="text-center text-gray-500">
               El video no está disponible.
             </p>
           )
@@ -128,9 +133,9 @@ try {
       </div>
       <div class="relative mx-auto flex h-full xl:w-96">
         <AnimeEpisodes
-          totalEpisodes={animeInfo.episodes}
+          totalEpisodes={episodesLength}
           client:load
-          mal_id={animeInfo.mal_id}
+          mal_id={parseInt(mal_id)}
           slug={title}
           image_webp={image_large_webp}
           currentEpisode={parseInt(episode)}
