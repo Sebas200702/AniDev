@@ -112,16 +112,23 @@ export const yearOptions: FilterOption[] = Array.from(
     return { value: year.toString(), label: year.toString() }
   }
 )
+export const ratingOptions: FilterOption[] = [
+  { value: 'g - all ages', label: 'Everyone' },
+  { value: 'pg - children', label: 'Kids' },
+  { value: 'pg-13 - teens 13 or older', label: 'Teens' },
+  { value: 'r - 17+ (violence & profanity)', label: 'Adults' },
+  { value: 'r+ - mild nudity', label: 'Mild Nudity' },
+]
 
 export const statusOptions: FilterOption[] = [
-  { value: 'Currently Airing', label: 'Airing' },
-  { value: 'Finished Airing', label: 'Finished' },
+  { value: 'currently airing', label: 'Airing' },
+  { value: 'finished airing', label: 'Finished' },
 ]
 export const seasonOptions: FilterOption[] = [
-  { value: 'Winter', label: 'Winter' },
-  { value: 'Spring', label: 'Spring' },
-  { value: 'Summer', label: 'Summer' },
-  { value: 'Fall', label: 'Fall' },
+  { value: 'winter', label: 'Winter' },
+  { value: 'spring', label: 'Spring' },
+  { value: 'summer', label: 'Summer' },
+  { value: 'fall', label: 'Fall' },
 ]
 
 export const formatOptions: FilterOption[] = [
