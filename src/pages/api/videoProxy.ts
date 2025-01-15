@@ -11,7 +11,9 @@ export const GET: APIRoute = async ({ request, url }) => {
     const response = await fetch(resourceUrl)
 
     if (!response.ok) {
-      return new Response('Error fetching the resource', { status: response.status })
+      return new Response('Error fetching the resource', {
+        status: response.status,
+      })
     }
 
     // Si el recurso es un archivo .m3u8, hacer una modificación en el contenido
@@ -21,7 +23,8 @@ export const GET: APIRoute = async ({ request, url }) => {
       // Modificar las URLs dentro del archivo .m3u8, específicamente las de los archivos .ts
       const modifiedText = originalText.replace(
         /(^(?!https?:\/\/)[^\s#]+\.ts)/gm,
-        (match) => `${url.origin}/api/videoProxy?url=${encodeURIComponent(resourceUrl.replace(/[^/]+$/, '') + match)}`
+        (match) =>
+          `${url.origin}/api/videoProxy?url=${encodeURIComponent(resourceUrl.replace(/[^/]+$/, '') + match)}`
       )
 
       return new Response(modifiedText, {
@@ -33,7 +36,8 @@ export const GET: APIRoute = async ({ request, url }) => {
     }
 
     // Si no es un archivo .m3u8 (por ejemplo, segmentos .ts), simplemente retransmitir los datos
-    const contentType = response.headers.get('Content-Type') || 'application/octet-stream'
+    const contentType =
+      response.headers.get('Content-Type') || 'application/octet-stream'
     const readableStream = response.body
 
     if (readableStream) {
