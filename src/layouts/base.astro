@@ -24,7 +24,11 @@ const { description, image } = Astro.props
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description ?? ''} />
+    <meta
+      name="description"
+      content={description ??
+        'A friendly and simply way to enjoy a big variety of quality anime.'}
+    />
     <meta
       property="og:image"
       name="og:image"
