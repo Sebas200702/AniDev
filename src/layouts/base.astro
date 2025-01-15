@@ -5,8 +5,7 @@ import { ClientRouter } from 'astro:transitions'
 import '@styles/custom-scrollbar.css'
 const [title] = Astro.params.slug?.split('_') ?? ['', '']
 const episode = new URLSearchParams(Astro.url.search).get('ep')
-const baseTitle =
-  'Animeflix - A friendly and simply way to enjoy a big variety of quality anime.'
+const baseTitle = 'Animeflix - Watch anime online free'
 const seoTitle = (title: string | null, episode: string | null) => {
   if (!episode && !title) return baseTitle
   if (!episode) return `${title} - ${baseTitle}`
