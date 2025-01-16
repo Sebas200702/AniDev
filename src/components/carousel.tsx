@@ -6,7 +6,7 @@ import { useCarouselStore } from '@store/carousel-store'
 import { memo, useCallback, useEffect } from 'react'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import type { Anime } from 'types'
-import '@styles/no-scrolbar.css'
+import '@styles/no-scrollbar.css'
 import '@styles/fade-out.css'
 import '@styles/buttons.css'
 

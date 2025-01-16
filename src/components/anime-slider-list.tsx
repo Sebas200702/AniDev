@@ -3,7 +3,7 @@ import { AnimeCard } from '@components/anime-card'
 import { useWindowWidth } from '@store/window-width'
 import { useFetch } from '@hooks/useFetch'
 import type { Anime } from 'types'
-import '@styles/no-scrolbar.css'
+import '@styles/no-scrollbar.css'
 
 interface Props {
   query: string
