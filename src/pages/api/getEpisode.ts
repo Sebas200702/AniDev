@@ -1,50 +1,49 @@
 import { supabase } from '@libs/supabase'
-import { redis , closeRedis} from '@libs/redis'
+import { redis, closeRedis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
-  if (!redis.isOpen) {
-    await redis.connect()
-  }
-  const cachedData = await redis.get(`episode:${url.searchParams.toString()}`)
+  try {
+    if (!redis.isOpen) {
+      await redis.connect()
+    }
+    const cachedData = await redis.get(`episode:${url.searchParams.toString()}`)
 
-  if (cachedData) {
-    await closeRedis()
-    return new Response(JSON.stringify({ episode: JSON.parse(cachedData) }), {
-      status: 200,
-      headers: { 'content-type': 'application/json' },
-    })
-  }
-  const slug = url.searchParams.get('slug')
-  const ep = url.searchParams.get('ep')
+    if (cachedData) {
+      return new Response(JSON.stringify({ episode: JSON.parse(cachedData) }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
+    const slug = url.searchParams.get('slug')
+    const ep = url.searchParams.get('ep')
 
-  if (!slug) {
-    return new Response(JSON.stringify({ error: 'Missing slug parameter' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-
-  if (!ep) {
-    return new Response(
-      JSON.stringify({ error: 'Missing episode parameter' }),
-      {
+    if (!slug) {
+      return new Response(JSON.stringify({ error: 'Missing slug parameter' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
-      }
-    )
-  }
+      })
+    }
 
-  const [, id] = slug.split('_')
+    if (!ep) {
+      return new Response(
+        JSON.stringify({ error: 'Missing episode parameter' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
 
-  if (!id) {
-    return new Response(JSON.stringify({ error: 'Invalid slug format' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
+    const [, id] = slug.split('_')
 
-  try {
+    if (!id) {
+      return new Response(JSON.stringify({ error: 'Invalid slug format' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
     const { data, error } = await supabase
       .from('anime_episodes')
       .select('*')
@@ -55,7 +54,7 @@ export const GET: APIRoute = async ({ url }) => {
     await redis.set(
       `episode:${url.searchParams.toString()}`,
       JSON.stringify(data)
-    ).then(() => closeRedis())
+    )
 
     if (error) {
       if (import.meta.env.MODE === 'development') {
@@ -92,5 +91,9 @@ export const GET: APIRoute = async ({ url }) => {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
+  } finally {
+    if (redis.isOpen) {
+      await closeRedis()
+    }
   }
 }

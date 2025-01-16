@@ -16,11 +16,11 @@ export const GET: APIRoute = async ({ request, url }) => {
       })
     }
 
-    // Si el recurso es un archivo .m3u8, hacer una modificación en el contenido
+
     if (resourceUrl.endsWith('.m3u8')) {
       const originalText = await response.text()
 
-      // Modificar las URLs dentro del archivo .m3u8, específicamente las de los archivos .ts
+
       const modifiedText = originalText.replace(
         /(^(?!https?:\/\/)[^\s#]+\.ts)/gm,
         (match) =>
@@ -35,9 +35,9 @@ export const GET: APIRoute = async ({ request, url }) => {
       })
     }
 
-    // Si no es un archivo .m3u8 (por ejemplo, segmentos .ts), simplemente retransmitir los datos
+
     const contentType =
-      response.headers.get('Content-Type') || 'application/octet-stream'
+      response.headers.get('Content-Type') ?? 'application/octet-stream'
     const readableStream = response.body
 
     if (readableStream) {
