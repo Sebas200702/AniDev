@@ -38,6 +38,10 @@ export type Animes = {
   animes: Anime[]
 }
 
+interface Collection {
+  title: string
+  query: string
+}
 export interface FilterOption {
   value: string
   label: string
