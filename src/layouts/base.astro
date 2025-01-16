@@ -11,7 +11,7 @@ const { description, image, title } = Astro.props
 interface Props {
   description?: string
   image?: string
-  title: string
+  title?: string
 }
 const SEO_DESCRIPTION =
   'Animeflix is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
@@ -35,7 +35,7 @@ const seoTitle = (title: string | null, episode: string | null) => {
       name="og:image"
       content={image ?? 'https://animeflix.vercel.app/og-image.jpg'}
     />
-    <meta property="og:title" content={seoTitle(title, episode)} />
+    <meta property="og:title" content={seoTitle(title ?? '', episode)} />
     <meta property="og:description" content={description ?? SEO_DESCRIPTION} />
     <meta property="og:type" content="website" />
     <meta
@@ -43,10 +43,10 @@ const seoTitle = (title: string | null, episode: string | null) => {
       content={image ? 'summary_large_image' : 'summary'}
     />
     <meta name="twitter:description" content={description ?? SEO_DESCRIPTION} />
-    <meta name="twitter:title" content={seoTitle(title, episode)} />
+    <meta name="twitter:title" content={seoTitle(title ?? '', episode)} />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="canonical" href="https://animeflix.vercel.app/" />
-    <title>{seoTitle(title, episode)}</title>
+    <title>{seoTitle(title ?? '', episode)}</title>
     <script
       type="module"
       src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"
