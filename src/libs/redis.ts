@@ -21,12 +21,3 @@ export const connectRedis = async () => {
     console.error('Error al conectar con Redis:', err)
   }
 }
-
-export const closeRedis = async () => {
-  try {
-    await redis.disconnect()
-    console.log('Desconectado de Redis')
-  } catch (err) {
-    console.error('Error al desconectar de Redis:', err)
-  }
-}

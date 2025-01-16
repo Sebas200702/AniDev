@@ -63,7 +63,6 @@ export const GET: APIRoute = async ({ request, url }) => {
       })
     }
 
-    // Si no hay cuerpo (contenido vacío)
     return new Response('No content', { status: 204 })
   } catch (error) {
     console.error('Proxy error:', error)
