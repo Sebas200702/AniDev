@@ -2,7 +2,7 @@
 import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
 import { ClientRouter } from 'astro:transitions'
-import '@styles/custom-scrollbar.css'
+import '@styles/no-scrollbar.css'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep')
 const baseTitle = 'Animeflix - Watch anime online free'
@@ -54,11 +54,14 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <ClientRouter />
   </head>
   <body>
-    <div id="app" class="custom-scrollbar overflow-auto bg-base">
+    <div
+      id="app"
+      class="no-scrollbar overflow-y-auto overflow-x-hidden bg-base"
+    >
       <header class="[grid-area:header]">
         <NavBar />
       </header>
-      <main class="mx-auto w-full max-w-[calc(100dvw-8px)] [grid-area:main]">
+      <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
         <slot />
       </main>
       <footer class="[grid-area:footer]">
