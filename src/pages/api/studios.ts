@@ -9,6 +9,7 @@ export const GET: APIRoute = async () => {
   const cachedData = await redis.get('studios')
 
   if (cachedData) {
+    await closeRedis()
     return new Response(JSON.stringify(JSON.parse(cachedData)), {
       status: 200,
       headers: { 'content-type': 'application/json' },
@@ -22,7 +23,7 @@ export const GET: APIRoute = async () => {
     })
   }
 
-  await redis.set('studios', JSON.stringify(data)).then(() => closeRedis())
+  await redis.set('studios', JSON.stringify(data)).then(() => closeRedis()).then(() => closeRedis())
 
   return new Response(JSON.stringify(data), {
     status: 200,
