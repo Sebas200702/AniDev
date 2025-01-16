@@ -2,6 +2,6 @@
   display: none;
 }
 
-.no-scrollbar::-webkit-scrollbar  {
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -80,15 +80,12 @@ export const GET: APIRoute = async ({ url }) => {
     })
   } catch (error) {
     console.error('Error en el endpoint:', error)
-    return new Response(
-      JSON.stringify({ error: 'Ups something went wrong' }),
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    return new Response(JSON.stringify({ error: 'Ups something went wrong' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
   } finally {
     if (redis.isOpen) {
       await closeRedis()

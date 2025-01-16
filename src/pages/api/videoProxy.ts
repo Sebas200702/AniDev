@@ -16,10 +16,8 @@ export const GET: APIRoute = async ({ request, url }) => {
       })
     }
 
-
     if (resourceUrl.endsWith('.m3u8')) {
       const originalText = await response.text()
-
 
       const modifiedText = originalText.replace(
         /(^(?!https?:\/\/)[^\s#]+\.ts)/gm,
@@ -34,7 +32,6 @@ export const GET: APIRoute = async ({ request, url }) => {
         },
       })
     }
-
 
     const contentType =
       response.headers.get('Content-Type') ?? 'application/octet-stream'
