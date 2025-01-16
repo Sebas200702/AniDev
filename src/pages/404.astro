@@ -4,11 +4,7 @@ const pageTitle = 'Page Not Found'
 const description = 'The page you are looking for does not exist'
 ---
 
-<Layout>
-  <head>
-    <title>{pageTitle}</title>
-    <meta name="description" content={description} />
-  </head>
+<Layout title={pageTitle}>
   <section
     class="mt-16 flex h-full w-full flex-col items-center justify-center gap-4 p-4 text-white"
   >
