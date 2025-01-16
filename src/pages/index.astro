@@ -3,16 +3,35 @@ import { AnimeSlider } from '@components/anime-slider-list'
 import { Carousel } from '@components/carousel'
 import { AnimeBanner } from '@components/anime-banner.tsx'
 import Layout from '@layouts/base.astro'
+import { ColectionList } from '@components/colection-list'
+const collections = [
+  {
+    title: 'Top 20 of Girls Love',
+    query: 'genre_filter=girlslove',
+  },
+  {
+    title: 'Top 20 of Romance',
+    query: 'genre_filter=romance',
+  },
+  {
+    title: 'Top 20 of Slice of Life',
+    query: 'genre_filter=sliceoflife',
+  },
+]
 ---
 
 <Layout>
   <Carousel client:load />
+
   <section class="-mt-24 md:-mt-44">
     <AnimeSlider
       client:visible
       query="year_filter=2025&type_filter=tv"
       title="Top 2025"
     />
+
+    <ColectionList client:visible collections={collections} />
+
     <AnimeBanner id={1} client:visible />
     <AnimeSlider client:visible query="genre_filter=action" title="Action" />
     <AnimeSlider client:visible query="type_filter=movie" title="Top Movies" />
