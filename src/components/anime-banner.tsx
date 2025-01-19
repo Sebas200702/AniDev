@@ -16,20 +16,18 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   } | null>(null)
   const animationNumber = id % 2 === 0 ? 1 : 2
   const { setAnimeBanners, animeBanners } = useIndexStore()
-
   const [loading, setLoading] = useState(true)
 
-  const getBannerUrl = async () => {
-    const bannerUrl = createDynamicUrl(1)
-    const response = await fetch(
-      `/api/animes?${bannerUrl.url}&banners_filter=true`
-    ).then((res) => res.json())
+  const getBannerUrl = async (url: string) => {
+    const response = await fetch(`/api/animes?${url}&banners_filter=true`).then(
+      (res) => res.json()
+    )
     const anime = response.data[0]
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
-      return await getBannerUrl()
+      return null
     }
-    animeBanners.push(anime.mal_id)
+
     return {
       imageUrl: anime.banner_image,
       title: anime.title,
@@ -40,14 +38,25 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   useEffect(() => {
     const fetchBannerData = async () => {
-      const data = await getBannerUrl()
-      if (data) {
-        setBannerData(data)
-        setAnimeBanners([...animeBanners, data.mal_id])
+      const storedData = sessionStorage.getItem(`animeBanner_${id}`)
+      if (storedData) {
+        const parsedData = JSON.parse(storedData)
+        setBannerData(parsedData)
+        setTimeout(() => {
+          setLoading(false)
+        }, 100)
+        return
       }
+      const { url } = createDynamicUrl(1)
+      const data = await getBannerUrl(url)
+      if (!data) return
+      setBannerData(data)
+      setAnimeBanners([...animeBanners, data.mal_id])
+      sessionStorage.setItem(`animeBanner_${id}`, JSON.stringify(data))
+
       setTimeout(() => {
         setLoading(false)
-      }, 900)
+      }, 100)
     }
 
     fetchBannerData()
@@ -55,9 +64,9 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   if (loading || !bannerData) {
     return (
-      <div>
+      <div className="py-4">
         <div
-          className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-800 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
+          className={`py-4 anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-800 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
         ></div>
       </div>
     )
@@ -68,25 +77,31 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center `}
+      className={`anime-banner-${animationNumber} relative flex flex-row items-center py-4`}
     >
       <a
         href={`/${slug}_${mal_id}`}
         className="group h-full w-full transition-all duration-200 ease-in-out md:hover:opacity-95"
         aria-label={`View details for ${title}`}
       >
-        <img
-          src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
-          alt="Anime Banner"
-          loading="lazy"
+        <picture
           className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
-          width={720}
-          height={300}
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base  opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
+          style={{
+            backgroundImage: `url(${createImageUrlProxy(imageUrl, '100', '0', 'webp')})`,
+          }}
+        >
+          <img
+            src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
+            alt="Anime Banner"
+            loading="lazy"
+            className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
+            width={720}
+            height={300}
+          />
+        </picture>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base opacity-0 transition-all duration-500 ease-in-out md:group-hover:opacity-70" />
       </a>
-      <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
+      <div className="absolute bottom-8 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
         <a
           href={`/${slug}_${mal_id}`}
           className="transition-all duration-200 ease-in-out md:hover:opacity-95"
