@@ -4,33 +4,22 @@ import { Carousel } from '@components/carousel'
 import { AnimeBanner } from '@components/anime-banner.tsx'
 import Layout from '@layouts/base.astro'
 import { ColectionList } from '@components/colection-list'
-const collections = [
-  {
-    title: 'Top 20 of Girls Love',
-    query: 'genre_filter=girlslove',
-  },
-  {
-    title: 'Top 20 of Romance',
-    query: 'genre_filter=romance',
-  },
-  {
-    title: 'Top 20 of Slice of Life',
-    query: 'genre_filter=sliceoflife',
-  },
-]
+
+import { AnimeTop } from '@components/top-anime'
+
 ---
 
 <Layout>
   <Carousel client:load />
 
-  <section class="-mt-24 md:-mt-44">
+  <section class="-mt-24 flex flex-col gap-y-24 md:-mt-12">
     <AnimeSlider
       client:visible
       query="year_filter=2025&type_filter=tv"
       title="Top 2025"
     />
 
-    <ColectionList client:visible collections={collections} />
+    <ColectionList client:visible />
 
     <AnimeBanner id={1} client:visible />
     <AnimeSlider client:visible query="genre_filter=action" title="Action" />
@@ -38,6 +27,7 @@ const collections = [
     <AnimeBanner id={2} client:visible />
     <AnimeSlider client:visible query="genre_filter=comedy" title="Comedy" />
     <AnimeSlider client:visible query="genre_filter=drama" title="Drama" />
+    <ColectionList client:visible />
     <AnimeBanner id={3} client:visible />
     <AnimeSlider
       client:visible
@@ -45,8 +35,11 @@ const collections = [
       title="Girls Love"
     />
     <AnimeBanner id={4} client:visible />
+
     <AnimeSlider client:visible query="genre_filter=horror" title="Horror" />
+    <ColectionList client:visible />
     <AnimeSlider client:visible query="genre_filter=mystery" title="Mystery" />
+
     <AnimeBanner id={5} client:visible />
     <AnimeSlider client:visible query="genre_filter=romance" title="Romance" />
     <AnimeSlider
@@ -54,16 +47,6 @@ const collections = [
       query="genre_filter=sliceoflife"
       title="Slice of Life"
     />
-    <AnimeBanner id={6} client:visible />
-    <AnimeSlider
-      client:visible
-      query="genre_filter=supernatural"
-      title="Supernatural"
-    />
-    <AnimeBanner id={7} client:visible />
-    <AnimeSlider client:visible query="genre_filter=sports" title="Sports" />
-    <AnimeSlider client:visible query="genre_filter=fantasy" title="Fantasy" />
-    <AnimeBanner id={8} client:visible />
-    <AnimeSlider client:visible query="genre_filter=scifi" title="Sci-Fi" />
+    <AnimeTop client:visible />
   </section>
 </Layout>
