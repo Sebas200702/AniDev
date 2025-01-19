@@ -57,6 +57,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
         '.next-button'
       ) as HTMLButtonElement
 
+      if (windowWidth && windowWidth < 768) return
+
       const updateButtonsVisibility = () => {
         if (!sliderList) return
         const { scrollLeft, scrollWidth, clientWidth } = sliderList
@@ -70,8 +72,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
         const scrollAmount =
           windowWidth >= 1280
-            ? 6 * ((windowWidth - 8) / 6.4) + 1
-            : 4 * ((windowWidth - 8) / 4.4) + 1
+            ? 6 * (windowWidth / 6.4)
+            : 4 * (windowWidth / 4.4)
 
         const scrollDistance =
           direction === 'next' ? scrollAmount : -scrollAmount
@@ -98,20 +100,22 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   const displayAnimes = cachedAnimes || animes
 
-  if (loading && !cachedAnimes)
+  if (loading || !cachedAnimes)
     return (
-      <div className="relative mx-auto mb-6 mt-6 w-[calc(100dvw-8px)]">
-        <span className="ml-[calc(((100dvw-8px)/6.4)*0.2)] inline-flex h-8 w-32 animate-pulse items-center justify-center rounded-lg bg-zinc-700"></span>
+      <div className="relative mx-auto w-[100dvw]">
+        <div className="py-4">
+          <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex h-8 w-32 animate-pulse items-center justify-center rounded-lg bg-zinc-800 py-4"></span>
+        </div>
         <div className="relative overflow-hidden">
-          <div className="anime-list mt-4 flex w-full flex-row overflow-x-auto md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
+          <div className="anime-list flex w-full flex-row overflow-x-auto md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
             {Array(24)
               .fill(0)
               .map((_, i) => (
                 <div
                   key={i + 1}
-                  className="flex h-auto w-full min-w-[calc((100dvw-8px)/2.4)] flex-col items-center gap-1 p-3 duration-200 md:min-w-[calc((100dvw-8px)/4.4)] xl:min-w-[calc((100dvw-8px)/6.4)]"
+                  className="flex h-auto w-full min-w-[calc((100dvw)/2.4)] flex-col items-center gap-1 p-4 duration-200 md:min-w-[calc((100dvw)/4.4)] xl:min-w-[calc((100dvw)/6.4)]"
                 >
-                  <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-700 md:aspect-[225/330]"></div>
+                  <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-800 md:aspect-[225/330]"></div>
                 </div>
               ))}
           </div>
@@ -119,26 +123,11 @@ export const AnimeSlider = ({ query, title }: Props) => {
       </div>
     )
 
-  if (windowWidth !== null && windowWidth < 768) {
-    return (
-      <section className="relative mx-auto mt-6 w-[calc(100dvw-8px)]">
-        <h2 className="px-[calc(((100dvw-8px)/6.4)*0.2)] text-2xl font-bold text-white">
-          {title}
-        </h2>
-        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth py-2">
-          {displayAnimes?.map((anime: Anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} context={title} />
-          ))}
-        </ul>
-      </section>
-    )
-  }
-
   return (
-    <section className="anime-slider relative mx-auto mb-6 mt-6 w-[calc(100dvw-8px)]">
-      <header className="flex items-center space-x-4 px-[calc(((100dvw-8px)/6.4)*0.2)] text-white">
+    <section className="anime-slider relative mx-auto w-[100dvw]">
+      <header className="flex items-center space-x-4 px-[calc(((100dvw)/6.4)*0.2)] py-4 text-white">
         <h2 className="text-3xl font-bold">{title}</h2>
-        <div className="mt-2 flex-1 border-t border-white/50"></div>
+        <div className="mt-2 flex-1 border-t border-white/20"></div>
       </header>
 
       <div className="relative overflow-hidden">
@@ -157,7 +146,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
           </svg>
         </button>
 
-        <ul className="anime-list mx-auto mt-4 flex w-full flex-row overflow-x-auto scroll-smooth py-2 md:px-[calc(((100dvw-8px)/4.4)*0.2)] xl:px-[calc(((100dvw-8px)/6.4)*0.2)]">
+        <ul className="anime-list mx-auto flex w-full flex-row overflow-x-auto scroll-smooth md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
           {displayAnimes?.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
