@@ -11,6 +11,7 @@ interface Props {
   image_webp?: string
   totalEpisodes: number
   currentEpisode?: number
+  duration: string
 }
 
 export const AnimeEpisodes = ({
@@ -19,6 +20,7 @@ export const AnimeEpisodes = ({
   image_webp,
   totalEpisodes,
   currentEpisode,
+  duration,
 }: Props) => {
   const [page, setPage] = useState<number | null>(null)
   const [shouldScroll, setShouldScroll] = useState(false)
@@ -75,7 +77,7 @@ export const AnimeEpisodes = ({
             .fill(0)
             .map((_, i) => (
               <div
-                className="flex h-full w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-600 p-2 transition-all duration-300 ease-in-out md:max-w-[400px]"
+                className="flex h-full w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-700 p-2 transition-all duration-300 ease-in-out md:max-w-[400px]"
                 key={i + 1}
               >
                 <div className="aspect-[16/9] h-full w-full animate-pulse rounded-md bg-zinc-800 object-cover transition-all duration-200 ease-in-out"></div>
@@ -107,7 +109,7 @@ export const AnimeEpisodes = ({
             key={episode_id}
           >
             <picture
-              className="aspect-[16/9] h-full w-full rounded-md"
+              className="relative aspect-[16/9] h-full w-full rounded-md"
               style={{
                 backgroundImage: `url(${createImageUrlProxy(
                   image_url ?? image_webp,
@@ -131,6 +133,11 @@ export const AnimeEpisodes = ({
                 loading="lazy"
                 className="aspect-[16/9] h-full w-full rounded-md object-cover"
               />
+              <div className="absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-white/10 px-2 bg-blur-sm py-1">
+                <span className="text-sm text-white">{
+                duration.replace(/\s*per\s*ep/i, '')
+              }</span>
+              </div>
             </picture>
             <h3 className="text-pretty text-xl font-bold text-white transition-all duration-300 ease-in-out">
               {title ?? `${slug} Episodio ${episode_id}`}
