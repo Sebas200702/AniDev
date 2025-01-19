@@ -41,6 +41,7 @@ export type Animes = {
 interface Collection {
   title: string
   query: string
+  animes_ids: number[]
 }
 export interface FilterOption {
   value: string
@@ -142,4 +143,11 @@ export const formatOptions: FilterOption[] = [
   { value: 'special', label: 'Special' },
   { value: 'ona', label: 'ONA' },
   { value: 'music', label: 'Music' },
+]
+
+export const orderByOptions: FilterOption[] = [
+  { value: 'score_asc', label: 'Score' },
+  { value: 'score_desc', label: 'Score (Descending)' },
+  { value: 'az_asc', label: 'A-Z' },
+  { value: 'az_desc', label: 'A-Z (Descending)' },
 ]
