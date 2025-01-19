@@ -16,7 +16,6 @@ const getPopularGenres = (): AnimeGenres[] => {
   )
 }
 
-// Capitaliza correctamente las palabras en los títulos
 const capitalizeTitle = (text: string): string => {
   return text
     .split(' ')
@@ -35,7 +34,6 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
   const types = Object.values(AnimeTypes)
   const genres = getPopularGenres()
 
-  // Selecciona filtros aleatorios
   const getRandomFilters = (count: number): AnimeFilters[] => {
     const validFilters = [
       AnimeFilters.Status,
@@ -52,11 +50,10 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     return Array.from(selectedFilters)
   }
 
-  // Aumentar probabilidad de seleccionar películas
   const getRandomType = (): AnimeTypes => {
     const weightedTypes = [
-      { type: AnimeTypes.MOVIE, weight: 0.7 }, // 70% probabilidad de películas
-      { type: AnimeTypes.TV, weight: 0.3 }, // 30% probabilidad de series de TV
+      { type: AnimeTypes.MOVIE, weight: 0.7 },
+      { type: AnimeTypes.TV, weight: 0.3 },
     ]
     const random = Math.random()
     let accumulatedWeight = 0
@@ -64,10 +61,9 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
       accumulatedWeight += weight
       if (random < accumulatedWeight) return type
     }
-    return AnimeTypes.TV // Valor predeterminado
+    return AnimeTypes.TV
   }
 
-  // Variaciones de títulos
   const getRandomTitleTemplate = (): string => {
     const templates = [
       'Top {limit} {filters}',
@@ -85,7 +81,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     return templates[getRandomNumber(0, templates.length - 1)]
   }
 
-  // Genera el título y la URL basado en los filtros aplicados
+
   const generateUrlAndTitle = (
     appliedFilters: AnimeFilters[]
   ): FilterResult => {
@@ -95,7 +91,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     appliedFilters.forEach((filter) => {
       switch (filter) {
         case AnimeFilters.Type: {
-          const type = getRandomType() // Usar el método con mayor probabilidad para películas
+          const type = getRandomType()
           filterParams.push({ type_filter: type })
           titleParts.push(type === AnimeTypes.TV ? 'TV Shows' : 'Movies')
           break
@@ -109,7 +105,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
         case AnimeFilters.Year: {
           const currentYear = new Date().getFullYear()
           const minYear = currentYear - 40
-          const year = getRandomNumber(minYear, currentYear) // Rango ajustado a los últimos 40 años
+          const year = getRandomNumber(minYear, currentYear)
           filterParams.push({ year_filter: year.toString() })
           titleParts.push(`from ${year}`)
           break
@@ -120,12 +116,11 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
           const status =
             getRandomNumber(0, 1) === 0 ? 'Finished Airing' : 'Currently Airing'
           if (status === 'Currently Airing') {
-            // Evita años inconsistentes para "Currently Airing"
             const yearFilterIndex = filterParams.findIndex((param) =>
               param.hasOwnProperty('year_filter')
             )
             if (yearFilterIndex !== -1) {
-              filterParams.splice(yearFilterIndex, 1) // Elimina el filtro de año si es inconsistente
+              filterParams.splice(yearFilterIndex, 1)
               titleParts.splice(
                 titleParts.findIndex((part) => part.startsWith('from')),
                 1
@@ -133,7 +128,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
             }
             titleParts.push('Airing Now')
           } else {
-            // Si el anime es "Finished Airing", revisa si es "Classic"
+
             const yearFilter = filterParams.find((param) =>
               param.hasOwnProperty('year_filter')
             )
@@ -150,9 +145,9 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
       }
     })
 
-    // Aseguramos que el título siempre sea válido
+
     if (titleParts.length === 0) {
-      titleParts.push('Anime') // Si no hay filtros aplicados, usamos un título genérico
+      titleParts.push('Anime')
     }
 
     const queryParams = filterParams
@@ -163,7 +158,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
       )
       .join('&')
 
-    // Generar título usando una plantilla dinámica
+
     const template = getRandomTitleTemplate()
     const filtersText = titleParts.join(' ')
     const title = capitalizeTitle(
