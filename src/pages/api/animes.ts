@@ -18,6 +18,10 @@ export const GET: APIRoute = async ({ url }) => {
       })
     }
 
+    const [order_by, order_direction] = url.searchParams
+      .get('order_by')
+      ?.split('_') ?? ['relevance_score', 'desc']
+
     enum Filters {
       limit_count = 'limit_count',
       page_number = 'page_number',
@@ -34,39 +38,57 @@ export const GET: APIRoute = async ({ url }) => {
       season_filter = 'season_filter',
     }
 
-    const getFilters = (
-      filtersEnum: typeof Filters
-    ): Record<string, string | number | boolean | string[] | null> => {
-      const filters = new Map<
-        string,
-        string | number | boolean | string[] | null
-      >()
+    const getFilters = (filtersEnum: typeof Filters) => {
+      return Object.values(filtersEnum).reduce(
+        (filters, filter) => {
+          const value = url.searchParams.get(filter)
+          if (
+            filter === Filters.parental_control ||
+            filter === Filters.banners_filter
+          ) {
+            filters[filter] = value !== 'false'
+          } else if (
+            filter === Filters.search_query ||
+            filter === Filters.page_number ||
+            filter === Filters.limit_count
+          ) {
+            filters[filter] = value ?? null
+          } else {
+            filters[filter] = value ? value.split('_') : null
+          }
 
-      for (const filter of Object.values(filtersEnum)) {
-        const value = url.searchParams.get(filter)
+          return filters
+        },
+        {} as Record<string, string | number | boolean | string[] | null>
+      )
+    }
 
-        if (
-          filter === Filters.parental_control ||
-          filter === Filters.banners_filter
-        ) {
-          filters.set(filter, value !== 'false')
-        } else if (
-          filter === Filters.search_query ||
-          filter === Filters.page_number ||
-          filter === Filters.limit_count
-        ) {
-          filters.set(filter, value ?? null)
-        } else {
-          filters.set(filter, value ? value.split('_') : null)
-        }
+    enum OrderFunctions {
+      relevance_score = 'get_animes',
+      relevance_score_asc = 'get_animes_asc',
+      score = 'get_animes_order_by_score',
+      score_asc = 'get_animes_order_by_score_asc',
+    }
+
+    const getFunctionToExecute = (orderby: string, orderDirection: string) => {
+      if (orderby === 'relevance_score') {
+        return orderDirection === 'asc'
+          ? OrderFunctions.relevance_score_asc
+          : OrderFunctions.relevance_score
       }
-
-      return Object.fromEntries(filters)
+      if (orderby === 'score') {
+        return orderDirection === 'asc'
+          ? OrderFunctions.score_asc
+          : OrderFunctions.score
+      }
+      return OrderFunctions.relevance_score
     }
 
     const filters = getFilters(Filters)
-    const { data, error } = await supabase.rpc('get_animes', filters)
+    const orderFunction = getFunctionToExecute(order_by, order_direction)
+    const { data, error } = await supabase.rpc(orderFunction, filters)
     if (error) {
+      console.log(error)
       throw new Error('Ocurrió un error al obtener los animes.')
     }
     await redis.set(cacheKey, JSON.stringify(data))
@@ -75,7 +97,6 @@ export const GET: APIRoute = async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'max-age=3000, public',
       },
     })
   } catch (error) {
