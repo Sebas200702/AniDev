@@ -25,7 +25,7 @@ export const NextPrevEpisodeBtn = ({
 
   return (
     <a
-      className={`flex items-center justify-center rounded-sm px-4 py-2 text-sm font-medium text-white transition-colors hover:opacity-50 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 ${action === 'Previous' && isStart ? 'hidden' : ''} ${action === 'Next' && isEnd ? 'hidden' : ''}`}
+      className={`flex items-center justify-center rounded-sm px-4 py-2 text-sm font-medium text-white  transition-colors hover:opacity-50 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 ${action === 'Previous' && isStart ? 'hidden' : ''} ${action === 'Next' && isEnd ? 'hidden' : ''}`}
       href={getHref()}
     >
       {action}
