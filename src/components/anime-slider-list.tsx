@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import { AnimeCard } from '@components/anime-card'
-import { useWindowWidth } from '@store/window-width'
-import { useFetch } from '@hooks/useFetch'
-import type { Anime } from 'types'
-import '@styles/no-scrollbar.css'
+import { useEffect, useState, useCallback } from "react"
+import { AnimeCard } from "@components/anime-card"
+import { useWindowWidth } from "@store/window-width"
+import { useFetch } from "@hooks/useFetch"
+import type { Anime } from "types"
+import "@styles/no-scrollbar.css"
 
 interface Props {
   query: string
@@ -11,96 +11,91 @@ interface Props {
 }
 
 export const AnimeSlider = ({ query, title }: Props) => {
-  const [cachedAnimes, setCachedAnimes] = useState<Anime[] | null>(null)
+  const [cachedAnimes, setCachedAnimes] = useState<Anime[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
   const storageKey = `animes_${query}`
 
+  const getCachedAnimes = useCallback(() => {
+    const storedAnimes = sessionStorage.getItem(storageKey)
+    if (storedAnimes) {
+      const parsedAnimes = JSON.parse(storedAnimes)
+      setCachedAnimes(parsedAnimes)
+      return parsedAnimes
+    }
+    return null
+  }, [storageKey])
+
   const { data: animes, loading } = useFetch<Anime[]>({
     url: `/api/animes?limit_count=24&${query}&banners_filter=false`,
-    skip: !!cachedAnimes,
+    skip: cachedAnimes.length > 0,
   })
 
   useEffect(() => {
-    const storedAnimes = sessionStorage.getItem(storageKey)
-    if (storedAnimes) {
-      setCachedAnimes(JSON.parse(storedAnimes))
-    }
-  }, [storageKey])
-
-  useEffect(() => {
-    if (animes && !cachedAnimes) {
+    const storedAnimes = getCachedAnimes()
+    if (!storedAnimes && animes) {
       sessionStorage.setItem(storageKey, JSON.stringify(animes))
       setCachedAnimes(animes)
     }
-  }, [animes, cachedAnimes, storageKey])
+  }, [animes, storageKey, getCachedAnimes])
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
     setWindowWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      window.removeEventListener('resize', handleResize)
+      window.removeEventListener("resize", handleResize)
     }
   }, [setWindowWidth])
 
   useEffect(() => {
-    const sliders = document.querySelectorAll('.anime-slider')
+    const sliders = document.querySelectorAll(".anime-slider")
 
     sliders.forEach((slider) => {
-      const sliderList = slider.querySelector('.anime-list') as HTMLUListElement
-      const prevButton = slider.querySelector(
-        '.prev-button'
-      ) as HTMLButtonElement
-      const nextButton = slider.querySelector(
-        '.next-button'
-      ) as HTMLButtonElement
+      const sliderList = slider.querySelector(".anime-list") as HTMLUListElement
+      const prevButton = slider.querySelector(".prev-button") as HTMLButtonElement
+      const nextButton = slider.querySelector(".next-button") as HTMLButtonElement
 
       if (windowWidth && windowWidth < 768) return
 
       const updateButtonsVisibility = () => {
         if (!sliderList) return
         const { scrollLeft, scrollWidth, clientWidth } = sliderList
-        prevButton.style.display = scrollLeft <= 0 ? 'none' : 'flex'
-        nextButton.style.display =
-          scrollLeft + clientWidth >= scrollWidth ? 'none' : 'flex'
+        prevButton.style.display = scrollLeft <= 0 ? "none" : "flex"
+        nextButton.style.display = scrollLeft + clientWidth >= scrollWidth ? "none" : "flex"
       }
 
-      const handleScroll = (direction: 'next' | 'prev') => {
+      const handleScroll = (direction: "next" | "prev") => {
         if (!sliderList || windowWidth === null) return
 
-        const scrollAmount =
-          windowWidth >= 1280
-            ? 6 * (windowWidth / 6.4)
-            : 4 * (windowWidth / 4.4)
+        const scrollAmount = windowWidth >= 1280 ? 6 * (windowWidth / 6.4) : 4 * (windowWidth / 4.4)
 
-        const scrollDistance =
-          direction === 'next' ? scrollAmount : -scrollAmount
+        const scrollDistance = direction === "next" ? scrollAmount : -scrollAmount
 
         sliderList.scrollBy({
           left: scrollDistance,
-          behavior: 'smooth',
+          behavior: "smooth",
         })
       }
 
-      sliderList.addEventListener('scroll', updateButtonsVisibility)
-      prevButton.addEventListener('click', () => handleScroll('prev'))
-      nextButton.addEventListener('click', () => handleScroll('next'))
+      sliderList.addEventListener("scroll", updateButtonsVisibility)
+      prevButton.addEventListener("click", () => handleScroll("prev"))
+      nextButton.addEventListener("click", () => handleScroll("next"))
 
       updateButtonsVisibility()
 
       return () => {
-        sliderList.removeEventListener('scroll', updateButtonsVisibility)
-        prevButton.removeEventListener('click', () => handleScroll('prev'))
-        nextButton.removeEventListener('click', () => handleScroll('next'))
+        sliderList.removeEventListener("scroll", updateButtonsVisibility)
+        prevButton.removeEventListener("click", () => handleScroll("prev"))
+        nextButton.removeEventListener("click", () => handleScroll("next"))
       }
     })
   }, [cachedAnimes, windowWidth, loading, setWindowWidth])
 
-  const displayAnimes = cachedAnimes || animes
+  const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
 
-  if (loading || !cachedAnimes)
+  if (loading && cachedAnimes.length === 0)
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="py-4">
@@ -146,8 +141,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
           </svg>
         </button>
 
-        <ul className="anime-list mx-auto flex w-full flex-row overflow-x-auto scroll-smooth md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
-          {displayAnimes?.map((anime: Anime) => (
+        <ul className="anime-list mx-auto flex w-full flex-row overflow-x-auto overflow-y-hidden scroll-smooth md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
+          {displayAnimes.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
@@ -171,3 +166,4 @@ export const AnimeSlider = ({ query, title }: Props) => {
     </section>
   )
 }
+
