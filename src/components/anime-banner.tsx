@@ -84,7 +84,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           height={300}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base py-4 opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base  opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
       </a>
       <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
         <a
