@@ -55,7 +55,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   if (loading || !bannerData) {
     return (
-      <div className="py-4">
+      <div>
         <div
           className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-800 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
         ></div>
@@ -68,7 +68,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center py-4`}
+      className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center `}
     >
       <a
         href={`/${slug}_${mal_id}`}
