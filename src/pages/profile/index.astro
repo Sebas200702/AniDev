@@ -1,12 +1,43 @@
 ---
 import Layout from '@layouts/base.astro'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { Image } from 'astro:assets'
 ---
 
 <Layout title="Profile">
-  <section
-    class="mx-auto mt-16 flex w-full flex-col gap-8 p-4 text-white xl:max-w-7xl"
-  >
-    <div></div>
-    <h2 class="text-pretty text-3xl font-bold">Profile</h2>
+  <section class="mx-auto mt-16 flex w-full flex-col gap-8 p-4 text-white">
+    <picture class="absolute inset-0 h-80 w-full max-w-full overflow-hidden">
+      <Image
+        src={createImageUrlProxy(
+          'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
+          '1920',
+          '50',
+          'webp'
+        )}
+        alt="Profile backdrop-blur"
+        loading="lazy"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover object-center"
+        width={225}
+        height={330}
+        quality={10}
+      />
+    </picture>
+    <div
+      class="absolute left-0 top-0 h-80 w-full bg-gradient-to-l from-transparent to-[#121212]/100 xl:w-[70%]"
+    >
+    </div>
+    <article
+      class="z-10 mt-2 flex w-full flex-row items-center gap-4 p-4 text-white md:ml-14 md:gap-10"
+    >
+      <img
+        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+        alt="Profile Avatar"
+        class="h-24 w-24 rounded-full md:h-40 md:w-40"
+      />
+      <div class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold md:text-4xl">Guest</h2>
+      </div>
+    </article>
   </section>
 </Layout>
