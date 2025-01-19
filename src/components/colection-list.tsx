@@ -15,7 +15,7 @@ export const ColectionList = () => {
     }
   }, [setWindowWidth])
 
-  const colectionLength = windowWidth && windowWidth / 400
+  const colectionLength = windowWidth && windowWidth / 390
 
   return (
     <ul className="flex flex-row gap-8 p-4">
