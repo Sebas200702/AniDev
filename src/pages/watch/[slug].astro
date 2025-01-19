@@ -74,6 +74,7 @@ const {
   synopsis,
   title,
   episodes: episodesLength,
+  duration,
 } = animeData as Anime
 const description = reduceString(synopsis, 200) || 'No description available'
 
@@ -148,6 +149,7 @@ const {
           slug={title}
           image_webp={image_large_webp}
           currentEpisode={parseInt(episode)}
+          duration={duration}
         />
         <div
           class="absolute bottom-0 left-0 h-1/4 w-full rounded-lg bg-gradient-to-b from-transparent to-secondary"
