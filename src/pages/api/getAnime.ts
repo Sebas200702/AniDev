@@ -14,7 +14,6 @@ export const GET: APIRoute = async ({ url }) => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
         },
       })
     }
@@ -41,6 +40,8 @@ export const GET: APIRoute = async ({ url }) => {
     const { data, error } = await supabase.rpc('get_anime_by_id', { id })
 
     if (error) {
+      console.log(url)
+      console.log(error)
       throw new Error('Error retrieving anime data')
     }
 
@@ -51,13 +52,14 @@ export const GET: APIRoute = async ({ url }) => {
       })
     }
 
-    await redis
-      .set(`anime:${url.searchParams.get('slug')}`, JSON.stringify(data[0]))
+    await redis.set(
+      `anime:${url.searchParams.get('slug')}`,
+      JSON.stringify(data[0])
+    )
     return new Response(JSON.stringify({ anime: data[0] }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
     })
   } catch (err) {
