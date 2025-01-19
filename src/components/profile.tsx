@@ -24,7 +24,7 @@ export const Profile = () => {
       >
         <ul className="space-y-6 text-white">
           <a
-            href="profile/settings"
+            href="/profile/settings"
             className="flex items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
           >
             <div className="flex items-center gap-3">
