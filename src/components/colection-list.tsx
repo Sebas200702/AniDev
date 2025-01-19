@@ -1,13 +1,8 @@
 import { AnimeCollection } from '@components/anime-colection'
 import { useWindowWidth } from '@store/window-width'
 import { useEffect } from 'react'
-import type { Collection } from 'types'
 
-interface Props {
-  collections: Collection[]
-}
-
-export const ColectionList = ({ collections }: Props) => {
+export const ColectionList = () => {
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
   useEffect(() => {
@@ -20,18 +15,12 @@ export const ColectionList = ({ collections }: Props) => {
     }
   }, [setWindowWidth])
 
-
-
-  const colectionLength = windowWidth && windowWidth < 768 ? 1 : windowWidth && windowWidth < 1280 ? 2 : 3
+  const colectionLength = windowWidth && windowWidth / 400
 
   return (
-    <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 p-6">
-      {collections.slice(0, colectionLength).map((collection: Collection) => (
-        <AnimeCollection
-          key={collection.title}
-          title={collection.title}
-          query={collection.query}
-        />
+    <ul className="  flex flex-row gap-8 p-4">
+      {Array.from({ length: colectionLength ?? 1 }).map((_, index) => (
+        <AnimeCollection key={index +1} />
       ))}
     </ul>
   )
