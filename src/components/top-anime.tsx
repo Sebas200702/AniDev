@@ -24,7 +24,7 @@ export const AnimeTop = () => {
             .map((_, i) => (
               <div key={i + 1} className="flex flex-col items-center p-4">
                 <div className="aspect-[225/330] h-auto w-full max-w-32 animate-pulse rounded-lg bg-zinc-800 md:aspect-[225/330]"></div>
-                <div className='h-6 mt-2 w-32 bg-zinc-800 rounded-lg animate-pulse'></div>
+                <div className="mt-2 h-6 w-32 animate-pulse rounded-lg bg-zinc-800"></div>
               </div>
             ))}
         </div>

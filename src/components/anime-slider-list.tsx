@@ -96,7 +96,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
         nextButton.removeEventListener('click', () => handleScroll('next'))
       }
     })
-  }, [cachedAnimes, windowWidth, loading , setWindowWidth])
+  }, [cachedAnimes, windowWidth, loading, setWindowWidth])
 
   const displayAnimes = cachedAnimes || animes
 

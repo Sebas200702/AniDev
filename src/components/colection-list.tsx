@@ -18,9 +18,9 @@ export const ColectionList = () => {
   const colectionLength = windowWidth && windowWidth / 400
 
   return (
-    <ul className="  flex flex-row gap-8 p-4">
+    <ul className="flex flex-row gap-8 p-4">
       {Array.from({ length: colectionLength ?? 1 }).map((_, index) => (
-        <AnimeCollection key={index +1} />
+        <AnimeCollection key={index + 1} />
       ))}
     </ul>
   )

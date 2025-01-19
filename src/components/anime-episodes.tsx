@@ -133,10 +133,10 @@ export const AnimeEpisodes = ({
                 loading="lazy"
                 className="aspect-[16/9] h-full w-full rounded-md object-cover"
               />
-              <div className="absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-white/10 px-2 bg-blur-sm py-1">
-                <span className="text-sm text-white">{
-                duration.replace(/\s*per\s*ep/i, '')
-              }</span>
+              <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-white/10 px-2 py-1">
+                <span className="text-sm text-white">
+                  {duration.replace(/\s*per\s*ep/i, '')}
+                </span>
               </div>
             </picture>
             <h3 className="text-pretty text-xl font-bold text-white transition-all duration-300 ease-in-out">

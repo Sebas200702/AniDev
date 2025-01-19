@@ -173,7 +173,7 @@ export const Carousel = () => {
                 }}
               />
               <div
-                className={`absolute bottom-0 hidden md:block h-full w-full from-transparent ${index % 2 === 0 ? 'left-0 bg-gradient-to-l' : 'right-0 bg-gradient-to-r'} to-base/70`}
+                className={`absolute bottom-0 hidden h-full w-full from-transparent md:block ${index % 2 === 0 ? 'left-0 bg-gradient-to-l' : 'right-0 bg-gradient-to-r'} to-base/70`}
               />
               <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-b from-transparent to-base" />
               <div
