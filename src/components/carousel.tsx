@@ -1,7 +1,7 @@
 import { useFetch } from '@hooks/useFetch'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { reduceString } from '@utils/reduce-string'
-import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { useCarouselStore } from '@store/carousel-store'
 import { memo, useCallback, useEffect } from 'react'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
@@ -34,20 +34,20 @@ const Indicator = memo(
 )
 
 const LoadingCarousel = () => (
-  <div className="carousel-anime-banner relative h-[50dvh] animate-pulse bg-zinc-800 md:h-[90dvh]">
+  <div className="carousel-anime-banner relative h-[50dvh] animate-pulse bg-zinc-900 md:h-[90dvh]">
     <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
       <div className="z-10 mx-auto -mt-10 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:ml-8 md:mr-16 md:h-auto md:items-start md:justify-normal">
-        <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-700 md:mb-4 md:mt-4"></div>
-        <div className="z-30 hidden h-6 w-full animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
-        <div className="z-30 mb-4 hidden h-6 w-full animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
+        <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-800 md:mb-4 md:mt-4"></div>
+        <div className="z-30 hidden h-6 w-full animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
+        <div className="z-30 mb-4 hidden h-6 w-full animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
 
         <div className="flex w-full flex-row items-center gap-4 md:mt-2">
-          <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-700 md:flex"></div>
-          <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-700"></div>
+          <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
+          <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-800"></div>
         </div>
       </div>
     </div>
-    <div className="absolute bottom-[20%] left-1/2 z-30 flex h-6 w-52 -translate-x-1/2 animate-pulse rounded-lg bg-zinc-700"></div>
+    <div className="absolute bottom-[20%] left-1/2 z-30 flex h-6 w-52 -translate-x-1/2 animate-pulse rounded-lg bg-zinc-800 md:bottom-[5%]"></div>
   </div>
 )
 
@@ -85,9 +85,12 @@ export const Carousel = () => {
     setBanners(banners)
     if (url || banners.length > 0) return
 
-    const newUrl = createDynamicBannersUrl()
-    setUrl(newUrl)
-    sessionStorage.setItem('banners-url', newUrl)
+    const newUrl = createDynamicUrl()
+    setUrl(`/api/animes?${newUrl.url}&banners_filter=true`)
+    sessionStorage.setItem(
+      'banners-url',
+      `/api/animes?${newUrl.url}&banners_filter=true`
+    )
     setLoading(true)
     setBanners([])
   }, [setUrl, setBanners, setLoading])
@@ -169,11 +172,14 @@ export const Carousel = () => {
                   backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')})`,
                 }}
               />
-              <div className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-b from-transparent to-base" />
+              <div
+                className={`absolute bottom-0 hidden md:block h-full w-full from-transparent ${index % 2 === 0 ? 'left-0 bg-gradient-to-l' : 'right-0 bg-gradient-to-r'} to-base/70`}
+              />
+              <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-b from-transparent to-base" />
               <div
                 className={`mb-20 flex flex-col items-center gap-8 p-6 md:items-start md:justify-start md:gap-4 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 max-w-2xl text-white`}
               >
-                <h2 className="max-h-32 overflow-hidden text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-5xl">
+                <h2 className="max-h-44 text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-5xl">
                   {reduceString(anime.title, 40)}
                 </h2>
                 <p className="mb-4 hidden text-xl text-white drop-shadow md:flex">
@@ -198,7 +204,7 @@ export const Carousel = () => {
           ))}
         </div>
       </div>
-      <div className="absolute bottom-[20%] left-1/2 z-30 flex -translate-x-1/2 space-x-3">
+      <div className="absolute bottom-[20%] left-1/2 z-30 flex -translate-x-1/2 space-x-3 md:bottom-[5%]">
         {banners.map((anime, index) => (
           <Indicator
             key={anime.mal_id}
