@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import { createDynamicBannersUrl } from '@utils/create-dynamic-banners-url'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { reduceString } from '@utils/reduce-string'
 import { useIndexStore } from '@store/index-store'
 import { normalizeString } from '@utils/normalize-string'
@@ -20,8 +20,10 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const [loading, setLoading] = useState(true)
 
   const getBannerUrl = async () => {
-    const bannerUrl = createDynamicBannersUrl(1)
-    const response = await fetch(`${bannerUrl}`).then((res) => res.json())
+    const bannerUrl = createDynamicUrl(1)
+    const response = await fetch(
+      `/api/animes?${bannerUrl.url}&banners_filter=true`
+    ).then((res) => res.json())
     const anime = response.data[0]
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
@@ -53,9 +55,11 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   if (loading || !bannerData) {
     return (
-      <div
-        className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-700 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
-      ></div>
+      <div className="py-4">
+        <div
+          className={`anime-banner-${animationNumber} flex aspect-[1080/500] h-auto w-full animate-pulse items-center justify-center bg-zinc-800 transition-all duration-200 ease-in-out md:aspect-[1080/300]`}
+        ></div>
+      </div>
     )
   }
 
@@ -64,7 +68,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center`}
+      className={`anime-banner-${animationNumber} relative mx-auto flex flex-row items-center py-4`}
     >
       <a
         href={`/${slug}_${mal_id}`}
@@ -80,7 +84,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           height={300}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-base py-4 opacity-0 transition-all duration-200 ease-in-out md:group-hover:opacity-100" />
       </a>
       <div className="absolute bottom-0 right-0 z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 p-2 md:m-4 md:h-auto md:max-w-80 md:rounded-lg">
         <a
