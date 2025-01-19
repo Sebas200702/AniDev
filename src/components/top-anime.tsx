@@ -13,9 +13,8 @@ export const AnimeTop = () => {
       <div className="relative">
         <header className="flex w-full flex-row items-center justify-around gap-4 p-4">
           <div className="mt-2 flex-1 border-t border-white/20"></div>
-          <h2 className="text-center text-3xl font-bold text-white">
-            Top Animes
-          </h2>
+          <div className="bg-zinc-800 w-40 h-8 rounded-md"></div>
+
           <div className="mt-2 flex-1 border-t border-white/20"></div>
         </header>
         <div className="grid grid-cols-2 justify-between gap-8 p-8 md:grid-cols-5 xl:grid-cols-10">
