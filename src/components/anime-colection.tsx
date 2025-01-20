@@ -70,7 +70,8 @@ export const AnimeCollection = ({ id }: Props) => {
     const newAnimeIds = fetchedAnimes.map((anime) => anime.mal_id)
 
     if (!isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
-      return null
+      const { url:newUrl, title: generatedTitle } = createDynamicUrl(20)
+      return fetchAnimes(newUrl, generatedTitle)
     }
 
     return {
