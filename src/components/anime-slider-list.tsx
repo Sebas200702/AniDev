@@ -95,7 +95,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
 
-  if (loading && cachedAnimes.length === 0)
+  if (loading || !cachedAnimes|| !displayAnimes)
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="py-4">
