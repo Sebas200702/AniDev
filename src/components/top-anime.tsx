@@ -13,11 +13,11 @@ export const AnimeTop = () => {
       <div className="relative">
         <header className="flex w-full flex-row items-center justify-around gap-4 p-4">
           <div className="mt-2 flex-1 border-t border-white/20"></div>
-          <div className="bg-zinc-800 w-40 h-8 rounded-md"></div>
+          <div className="h-8 w-40 rounded-md bg-zinc-800"></div>
 
           <div className="mt-2 flex-1 border-t border-white/20"></div>
         </header>
-        <div className="grid grid-cols-2 justify-between gap-8 p-8 md:grid-cols-5 xl:grid-cols-10">
+        <div className="grid grid-cols-2 items-center justify-between md:grid-cols-5 xl:grid-cols-10">
           {Array(10)
             .fill(0)
             .map((_, i) => (
@@ -39,32 +39,37 @@ export const AnimeTop = () => {
         <div className="mt-2 flex-1 border-t border-white/20"></div>
       </header>
 
-      <ul className="mx-auto grid grid-cols-2 justify-around p-4 md:grid-cols-5 xl:grid-cols-10">
+      <ul className="mx-auto grid grid-cols-2 justify-around md:grid-cols-5 xl:grid-cols-10">
         {aninme?.map((anime, index) => (
           <div key={anime.mal_id} className="flex flex-col items-center p-4">
-            <li className="relative">
-              <a href={`/${normalizeString(anime.title)}_${anime.mal_id}`}>
-                <picture
-                  className="aspect-[225/330] h-auto rounded-md object-cover object-center"
-                  style={{
-                    backgroundImage: `url(${createImageUrlProxy(
-                      anime.image_small_webp,
-                      '40',
-                      '1'
-                    )})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                >
-                  <img
-                    src={anime.image_webp}
-                    alt={anime.title}
-                    className="aspect-[225/330] h-auto max-w-32 rounded-md object-cover object-center"
-                    fetchPriority="high"
-                  />
-                </picture>
-                <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all duration-200 ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
+            <li className="relative group">
+              <a
+
+                href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+              >
+                <div className="overflow-hidden rounded-md">
+                  <picture
+                    className="aspect-[225/330] h-auto  object-cover object-center"
+                    style={{
+                      backgroundImage: `url(${createImageUrlProxy(
+                        anime.image_small_webp,
+                        '40',
+                        '1'
+                      )})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  >
+                    <img
+                      src={anime.image_webp}
+                      alt={anime.title}
+                      className="aspect-[225/330] max-w-32 h-auto w-full rounded-md object-cover object-center transition-all duration-300 ease-in-out md:group-hover:scale-110"
+                      fetchPriority="high"
+                    />
+                  </picture>
+                </div>
+                <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-lg bg-gradient-to-b from-transparent to-black/80 opacity-100 transition-all duration-200 ease-in-out " />
                 <span className="absolute bottom-2 left-1 z-20 text-pretty text-5xl font-bold text-white">
                   {index + 1}
                 </span>
