@@ -16,7 +16,6 @@ import { AnimeTop } from '@components/top-anime'
       query="year_filter=2025&type_filter=tv"
       title="Top 2025"
     />
-
     <ColectionList client:visible id={1} />
 
     <AnimeBanner id={1} client:visible />
@@ -33,11 +32,9 @@ import { AnimeTop } from '@components/top-anime'
       title="Girls Love"
     />
     <AnimeBanner id={4} client:visible />
-
     <AnimeSlider client:visible query="genre_filter=horror" title="Horror" />
     <ColectionList client:visible id={3} />
     <AnimeSlider client:visible query="genre_filter=mystery" title="Mystery" />
-
     <AnimeBanner id={5} client:visible />
     <AnimeSlider client:visible query="genre_filter=romance" title="Romance" />
     <AnimeSlider
