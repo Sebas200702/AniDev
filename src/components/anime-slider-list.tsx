@@ -57,10 +57,14 @@ export const AnimeSlider = ({ query, title }: Props) => {
       const prevButton = slider.querySelector(".prev-button") as HTMLButtonElement
       const nextButton = slider.querySelector(".next-button") as HTMLButtonElement
 
-      if (windowWidth && windowWidth < 768) return
+
 
       const updateButtonsVisibility = () => {
-        if (!sliderList) return
+        if (windowWidth && windowWidth < 768){
+            prevButton.style.display = "none"
+            nextButton.style.display = "none"
+            return
+        }
         const { scrollLeft, scrollWidth, clientWidth } = sliderList
         prevButton.style.display = scrollLeft <= 0 ? "none" : "flex"
         nextButton.style.display = scrollLeft + clientWidth >= scrollWidth ? "none" : "flex"
@@ -95,7 +99,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
 
-  if (loading || cachedAnimes.length === 0|| !displayAnimes || ! animes)
+  if (loading && cachedAnimes.length === 0)
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="py-4">
@@ -166,4 +170,3 @@ export const AnimeSlider = ({ query, title }: Props) => {
     </section>
   )
 }
-
