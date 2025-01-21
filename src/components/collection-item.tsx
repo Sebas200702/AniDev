@@ -5,7 +5,6 @@ import '@styles/buttons.css'
 import { WatchAnimeButton } from '@components/watch-anime'
 import { ShareButton } from '@components/share-button'
 import { normalizeString } from '@utils/normalize-string'
-import { useEffect, useState } from 'react'
 
 const StarIcon = ({ style }: { style?: string }) => (
   <svg
@@ -36,7 +35,7 @@ export const CollectionItem = ({ anime }: Props) => {
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <a href={`/${anime.title}_${anime.mal_id}`}>
+        <a href={`/${normalizeString(anime.title)}_${anime.mal_id}`}>
           <img
             src={anime.image_large_webp}
             alt={anime.title}
