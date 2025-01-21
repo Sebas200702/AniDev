@@ -32,7 +32,7 @@ export const ShareButton = ({ title, url, text }: Props) => {
 
   return (
     <button onClick={handleClick} className="button-secondary" title="Share">
-      <ShareIcon style="text-white md:w-6 md:h-6 w-4 h-4" />
+      <ShareIcon style="text-white md:w-5 md:h-5 w-4 h-4" />
     </button>
   )
 }
