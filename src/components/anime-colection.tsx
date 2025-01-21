@@ -48,6 +48,7 @@ export const AnimeCollection = ({ id }: Props) => {
         query: url,
         animes_ids: data.animes_ids,
       }
+      collections.push(newCollection)
 
       setCollections([...collections, newCollection])
       sessionStorage.setItem(
