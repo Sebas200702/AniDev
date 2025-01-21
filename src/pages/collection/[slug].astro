@@ -1,11 +1,11 @@
 ---
 import Layout from '@layouts/base.astro'
 import { PageColectionList } from '@components/page-colection-list'
-const [title, id] = Astro.params.slug?.split('_') ?? []
+const [title, id] = Astro.params.slug?.split('_') ?? ['', '']
 ---
 
 <Layout>
-  <section>
-    <PageColectionList title={title} client:visible />
+  <section class="mt-16 p-4">
+    <PageColectionList title={title} id={id} client:visible />
   </section>
 </Layout>
