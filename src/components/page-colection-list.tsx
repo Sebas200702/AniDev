@@ -28,7 +28,7 @@ export const PageColectionList = ({ title, id }: Props) => {
   if (!animes)
     return (
       <div className="mx-auto flex flex-col gap-4">
-        <div className="md:mx-10 mb-6 md:h-10 h-20 md:w-96 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
+        <div className="mb-6 h-20 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:mx-10 md:h-10 md:w-96"></div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
           {Array(20)
             .fill(0)
@@ -47,7 +47,9 @@ export const PageColectionList = ({ title, id }: Props) => {
   return (
     <div className="mx-auto flex flex-col gap-4">
       <header className="flex flex-row justify-between">
-        <h2 className="mb-6 md:px-10 md:text-3xl text-xl md:h-auto h-20 overflow-hidden font-bold text-white">{title}</h2>
+        <h2 className="mb-6 h-20 overflow-hidden text-xl font-bold text-white md:h-auto md:px-10 md:text-3xl">
+          {title}
+        </h2>
       </header>
       <ul className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
         {animes.map((anime) => (

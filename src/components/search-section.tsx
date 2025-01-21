@@ -45,12 +45,12 @@ export const SearchComponent = () => {
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
-    <section className="custom-scrollbar " id="search-section">
-      <div className="[grid-area:aside] mt-16">
+    <section className="custom-scrollbar" id="search-section">
+      <div className="mt-16 [grid-area:aside]">
         <FilterSection />
       </div>
 
-      <div className="w-full [grid-area:results] mt-16">
+      <div className="mt-16 w-full [grid-area:results]">
         <SearchResults />
       </div>
     </section>

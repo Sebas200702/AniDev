@@ -5,7 +5,7 @@ export const WatchAnimeButton = ({ url }: { url: string }) => {
       href={url}
       className="button-primary w-full items-center justify-center gap-2"
     >
-      <PlayIcon className="h-4 w-4 " />
+      <PlayIcon className="h-4 w-4" />
       Watch Now
     </a>
   )
