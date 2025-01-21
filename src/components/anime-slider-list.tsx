@@ -109,7 +109,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
   if (loading || !cachedAnimes || !animes || !displayAnimes)
     return (
       <div className="relative mx-auto w-[100dvw]">
-        <div className="flex flex-row space-x-4 py-4 items-center justify-center">
+        <div className="flex mt-2 md:mt-0 flex-row space-x-4 py-4 items-center justify-center">
           <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex md:h-8 h-6 md:w-32 w-24 animate-pulse rounded-lg bg-zinc-800"></span>
       <div className="md:mt-2 flex-1 border-t border-white/20"></div>
         </div>
@@ -120,7 +120,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
               .map((_, i) => (
                 <div
                   key={i + 1}
-                  className="flex h-auto  w-full max-w-[calc((100dvw)/2.4)] flex-col items-center gap-1 p-4 duration-200 md:max-w-[calc((100dvw)/4.4)] xl:max-w-[calc((100dvw)/6.4)]"
+                  className="flex h-auto  w-full min-w-[calc((100dvw)/2.4)] flex-col items-center gap-1 p-4 duration-200 md:min-w-[calc((100dvw)/4.4)] xl:min-w-[calc((100dvw)/6.4)]"
                 >
                   <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-800 md:aspect-[225/330]"></div>
                 </div>
