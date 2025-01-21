@@ -1,6 +1,6 @@
 import { useIndexStore } from '@store/index-store'
 import { useEffect, useState } from 'react'
-import type { Anime } from 'types'
+import type { Anime, Collection } from 'types'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
 
@@ -39,7 +39,7 @@ export const AnimeCollection = ({ id }: Props) => {
       setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
-      if (!data) return
+      if (!data || isCollectionUnique(data.animes_ids)) return
       setAnimes(data.animes)
       setTitle(data.title)
 
@@ -49,6 +49,7 @@ export const AnimeCollection = ({ id }: Props) => {
         animes_ids: data.animes_ids,
       }
       collections.push(newCollection)
+      console.log(collections)
 
       setCollections([...collections, newCollection])
       sessionStorage.setItem(
@@ -61,6 +62,16 @@ export const AnimeCollection = ({ id }: Props) => {
 
     fetchData()
   }, [id])
+
+  useEffect(() => {
+    let currentCollections: Collection[] = []
+    Object.keys(sessionStorage).forEach((key) => {
+      if (key.startsWith('animeCollection_')) {
+        currentCollections.push(JSON.parse(sessionStorage.getItem(key)!))
+      }
+    })
+    setCollections(currentCollections)
+  }, [])
 
   const fetchAnimes = async (url: string, dynamicTitle: string) => {
     const response = await fetch(
