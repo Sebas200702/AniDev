@@ -111,6 +111,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
       <div className="relative mx-auto w-[100dvw]">
         <div className="py-4">
           <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex md:h-8 h-6 md:w-32 w-24 animate-pulse items-center justify-center rounded-lg bg-zinc-800 py-4"></span>
+      <div className="mt-2 flex-1 border-t border-white/20"></div>
         </div>
         <div className="relative overflow-hidden">
           <div className="anime-list flex w-full flex-row overflow-x-auto md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
