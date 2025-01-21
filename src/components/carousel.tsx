@@ -186,7 +186,7 @@ export const Carousel = () => {
                 <p className="mb-4 hidden text-xl text-white drop-shadow md:flex">
                   {reduceString(anime.synopsis, 100)}
                 </p>
-                <div className="flex flex-row items-center gap-4 w-80">
+                <div className="flex w-80 flex-row items-center gap-4">
                   <a
                     href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
                     className="button-secondary w-full"
