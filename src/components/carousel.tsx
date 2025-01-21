@@ -2,6 +2,7 @@ import { useFetch } from '@hooks/useFetch'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { reduceString } from '@utils/reduce-string'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { normalizeString } from '@utils/normalize-string'
 import { useCarouselStore } from '@store/carousel-store'
 import { memo, useCallback, useEffect } from 'react'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
@@ -9,6 +10,7 @@ import type { Anime } from 'types'
 import '@styles/no-scrollbar.css'
 import '@styles/fade-out.css'
 import '@styles/buttons.css'
+import { WatchAnimeButton } from '@components/watch-anime'
 
 const Indicator = memo(
   ({
@@ -184,19 +186,16 @@ export const Carousel = () => {
                 <p className="mb-4 hidden text-xl text-white drop-shadow md:flex">
                   {reduceString(anime.synopsis, 100)}
                 </p>
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center gap-4 w-80">
                   <a
-                    href={`/${anime.title}_${anime.mal_id}`}
-                    className="button-primary"
+                    href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+                    className="button-secondary w-full"
                   >
                     Learn More
                   </a>
-                  <a
-                    href={`/watch/${anime.title}_${anime.mal_id}`}
-                    className="button-secondary"
-                  >
-                    Watch Now
-                  </a>
+                  <WatchAnimeButton
+                    url={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
+                  />
                 </div>
               </div>
             </div>

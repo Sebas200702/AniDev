@@ -6,6 +6,7 @@ import { useIndexStore } from '@store/index-store'
 import { normalizeString } from '@utils/normalize-string'
 import '@styles/anime-banner.css'
 import '@styles/buttons.css'
+import { WatchAnimeButton } from '@components/watch-anime'
 
 export const AnimeBanner = ({ id }: { id: number }) => {
   const [bannerData, setBannerData] = useState<{
@@ -115,9 +116,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         <p className="max-h-32 overflow-hidden text-center text-sm text-white md:text-start">
           {reduceString(synopsis, 70)}
         </p>
-        <a href={`/watch/${slug}_${mal_id}`} className="button-primary">
-          Watch Now
-        </a>
+        <WatchAnimeButton url={`/watch/${slug}_${mal_id}`} />
       </div>
     </section>
   )
