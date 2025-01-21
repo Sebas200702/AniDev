@@ -46,7 +46,7 @@ export const CollectionItem = ({ anime }: Props) => {
         </a>
       </picture>
 
-      <div className="flex h-full w-[65%] flex-col justify-between px-2 py-1 xl:p-4">
+      <div className="flex h-full w-[65%] flex-col justify-between px-2  xl:p-4">
         <h3 className="overflow-hidden text-pretty font-bold text-white xl:text-xl">
           {reduceString(anime.title, 40)}
         </h3>
@@ -58,7 +58,7 @@ export const CollectionItem = ({ anime }: Props) => {
             <AnimeTag key={genre} tag={genre} type={genre} style="w-auto" />
           ))}
         </div>
-        <span className="flex items-center gap-2 py-2 text-xs text-gray-400 md:text-sm">
+        <span className="flex items-center gap-2 text-xs text-gray-400 md:text-sm">
           <StarIcon style="text-enfasisColor xl:h-4 xl:w-4 h-3 w-3" />
           {anime.score}/10
         </span>
