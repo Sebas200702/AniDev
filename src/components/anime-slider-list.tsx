@@ -138,42 +138,49 @@ export const AnimeSlider = ({ query, title }: Props) => {
       </header>
 
       <div className="relative overflow-hidden">
-        <button className="prev-button group absolute inset-0 z-10 my-auto hidden h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
-          <svg
-            className="mx-auto my-auto h-6 w-6 rotate-180"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="#fff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          >
-            <path d="M7 7l5 5-5 5M13 7l5 5-5 5"></path>
-          </svg>
-        </button>
+        <div className="prev-button absolute inset-0 z-20 hidden h-full w-20 md:flex py-4">
+          <div className="flex h-full w-full bg-gradient-to-l from-transparent to-black/90">
+            <button className="group z-10 my-auto h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
+              <svg
+                className="mx-auto my-auto h-6 w-6 rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#fff"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              >
+                <path d="M7 7l5 5-5 5M13 7l5 5-5 5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
 
         <ul className="anime-list mx-auto flex w-full flex-row overflow-x-auto overflow-y-hidden scroll-smooth md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
           {displayAnimes.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
-
-        <button className="next-button group absolute bottom-0 right-0 top-0 z-10 my-auto hidden max-h-16 w-10 items-center justify-center rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
-          <svg
-            className="mx-auto my-auto h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            fill="none"
-            stroke="#fff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          >
-            <path d="M7 7l5 5-5 5M13 7l5 5-5 5"></path>
-          </svg>
-        </button>
+        <div className="next-button absolute bottom-0 right-0 top-0 z-20 hidden h-full w-20  md:flex py-4 justify-end items-center">
+          <div className='bg-gradient-to-r flex from-transparent to-black/90 w-full h-full justify-end items-center'>
+            <button className="group z-10 my-auto h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
+              <svg
+                className="mx-auto my-auto h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                fill="none"
+                stroke="#fff"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              >
+                <path d="M7 7l5 5-5 5M13 7l5 5-5 5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   )
