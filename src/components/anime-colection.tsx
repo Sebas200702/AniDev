@@ -90,7 +90,7 @@ export const AnimeCollection = ({ id }: Props) => {
 
   if (loading || !animes.length)
     return (
-      <div className="flex h-60 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800 p-4"></div>
+      <div className="flex h-60 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800 px-4"></div>
     )
 
   return (
