@@ -46,11 +46,11 @@ export const CollectionItem = ({ anime }: Props) => {
         </a>
       </picture>
 
-      <div className="flex h-full w-[65%] flex-col justify-between p-1 xl:p-4">
+      <div className="flex h-full w-[65%] flex-col justify-between p-3 xl:p-4">
         <h3 className="overflow-hidden text-pretty font-bold text-white xl:text-xl">
           {reduceString(anime.title, 40)}
         </h3>
-        <p className="text-xs text-gray-500">
+        <p className="md:flex hidden text-xs text-gray-500">
           {reduceString(anime.synopsis, 60)}
         </p>
         <div className="mt-1 flex flex-row gap-2 text-xs text-gray-500 xl:mt-2 xl:text-base">
