@@ -28,7 +28,7 @@ export const PageColectionList = ({ title, id }: Props) => {
   if (!animes)
     return (
       <div className="mx-auto flex flex-col gap-4">
-        <div className="mx-10 mb-6 h-10 w-96 animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
+        <div className="md:mx-10 mb-6 h-10 w-96 animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
         <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
           {Array(20)
             .fill(0)
