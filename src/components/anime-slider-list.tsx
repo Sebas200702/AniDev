@@ -110,8 +110,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="flex flex-row space-x-4 py-4 items-center justify-center">
-          <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex md:h-8 h-6 md:w-32 w-24 animate-pulse rounded-lg bg-zinc-800"></span>
-      <div className="mt-2 flex-1 border-t border-white/20"></div>
+          <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex md:h-8 h-4 md:w-32 w-24 animate-pulse rounded-lg bg-zinc-800"></span>
+      <div className="md:mt-2 flex-1 border-t border-white/20"></div>
         </div>
         <div className="relative overflow-hidden">
           <div className="anime-list flex w-full flex-row overflow-x-auto md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
@@ -134,7 +134,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
     <section className="anime-slider relative mx-auto w-[100dvw]">
       <header className="flex items-center space-x-4 px-[calc(((100dvw)/6.4)*0.2)] py-4 text-white">
         <h2 className="md:text-3xl text-xl font-bold">{title}</h2>
-        <div className="mt-2 flex-1 border-t border-white/20"></div>
+        <div className="md:mt-2 flex-1 border-t border-white/20"></div>
       </header>
 
       <div className="relative overflow-hidden">
