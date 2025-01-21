@@ -16,7 +16,7 @@ export const AnimeCollection = ({ id }: Props) => {
   const [query, setQuery] = useState('')
 
   const isCollectionUnique = (newAnimeIds: number[]): boolean => {
-    return !collections.some(
+    return collections.some(
       (collection) => collection.animes_ids.join('-') === newAnimeIds.join('-')
     )
   }
@@ -39,7 +39,7 @@ export const AnimeCollection = ({ id }: Props) => {
       setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
-      if (!data || !isCollectionUnique(data.animes_ids)) return
+      if (!data || isCollectionUnique(data.animes_ids)) return
       setAnimes(data.animes)
       setTitle(data.title)
 
@@ -68,10 +68,9 @@ export const AnimeCollection = ({ id }: Props) => {
 
     const fetchedAnimes: Anime[] = response.data ?? []
     const newAnimeIds = fetchedAnimes.map((anime) => anime.mal_id)
-
-    if (!isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
-      const { url:newUrl, title: generatedTitle } = createDynamicUrl(20)
-      return fetchAnimes(newUrl, generatedTitle)
+    if (isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
+      const { url: newUrl, title: generatedTitle } = createDynamicUrl(20)
+      return await fetchAnimes(newUrl, generatedTitle)
     }
 
     return {
