@@ -109,7 +109,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
   if (loading || !cachedAnimes || !animes || !displayAnimes)
     return (
       <div className="relative mx-auto w-[100dvw]">
-        <div className="flex space-x4 py-4 items-center justify-center">
+        <div className="flex flex-row space-x-4 py-4 items-center justify-center">
           <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex md:h-8 h-6 md:w-32 w-24 animate-pulse rounded-lg bg-zinc-800"></span>
       <div className="mt-2 flex-1 border-t border-white/20"></div>
         </div>
