@@ -40,7 +40,7 @@ export const AnimeTop = () => {
       </header>
 
       <ul className="mx-auto grid grid-cols-2 justify-around md:grid-cols-5 xl:grid-cols-10">
-        {aninme?.map((anime, index) => (
+        {aninme.map((anime, index) => (
           <div key={anime.mal_id} className="flex flex-col items-center p-4">
             <li className="relative group">
               <a
