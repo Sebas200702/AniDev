@@ -120,7 +120,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
               .map((_, i) => (
                 <div
                   key={i + 1}
-                  className="flex md:h-auto h-[90%] w-full min-w-[calc((100dvw)/2.4)] flex-col items-center gap-1 p-4 duration-200 md:min-w-[calc((100dvw)/4.4)] xl:min-w-[calc((100dvw)/6.4)]"
+                  className="flex h-auto  w-full max-w-[calc((100dvw)/2.4)] flex-col items-center gap-1 p-4 duration-200 md:max-w-[calc((100dvw)/4.4)] xl:max-w-[calc((100dvw)/6.4)]"
                 >
                   <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-800 md:aspect-[225/330]"></div>
                 </div>
