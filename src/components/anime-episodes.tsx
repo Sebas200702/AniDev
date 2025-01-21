@@ -133,7 +133,7 @@ export const AnimeEpisodes = ({
                 loading="lazy"
                 className="aspect-[16/9] h-full w-full rounded-md object-cover"
               />
-              <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-white/10 px-2 py-1">
+              <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-black/30 px-2 py-1">
                 <span className="text-sm text-white">
                   {duration.replace(/\s*per\s*ep/i, '')}
                 </span>
