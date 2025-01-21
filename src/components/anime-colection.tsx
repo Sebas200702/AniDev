@@ -96,7 +96,7 @@ export const AnimeCollection = ({ id }: Props) => {
   return (
     <article className="mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg bg-secondary transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
       <a href={`/collection/${normalizeString(title)}_${id}`}>
-        <h2 className="mx-auto h-12 max-w-80 text-balance px-4 text-center text-xl font-bold text-white">
+        <h2 className="mx-auto h-12 max-w-80 text-balance p-4 text-center text-xl font-bold text-white">
           {title || 'Sin Título'}
         </h2>
 
