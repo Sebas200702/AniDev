@@ -25,9 +25,11 @@ export const CollectionItem = ({ anime }: Props) => {
     <li
       key={anime.mal_id}
       className="mx-auto flex aspect-[500/260] w-full max-w-[500px] flex-row rounded-lg bg-secondary"
+
     >
       <picture
         className="aspect-[225/330] h-full w-[35%] overflow-hidden rounded-l-lg"
+        title={anime.title}
         style={{
           backgroundImage: `url(${anime.image_small_webp})`,
           backgroundSize: 'cover',
@@ -46,7 +48,7 @@ export const CollectionItem = ({ anime }: Props) => {
       </picture>
 
       <div className="flex h-full w-[65%] flex-col justify-between p-3 xl:p-4">
-        <h3 className="overflow-hidden text-pretty font-bold text-white xl:text-xl">
+        <h3 title={anime.title} className="overflow-hidden text-pretty font-bold text-white xl:text-xl">
           {reduceString(anime.title, 40)}
         </h3>
         <p className="md:flex hidden text-xs text-gray-500">
