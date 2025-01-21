@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from "react"
-import { AnimeCard } from "@components/anime-card"
-import { useWindowWidth } from "@store/window-width"
-import { useFetch } from "@hooks/useFetch"
-import type { Anime } from "types"
-import "@styles/no-scrollbar.css"
+import { useEffect, useState, useCallback } from 'react'
+import { AnimeCard } from '@components/anime-card'
+import { useWindowWidth } from '@store/window-width'
+import { useFetch } from '@hooks/useFetch'
+import type { Anime } from 'types'
+import '@styles/no-scrollbar.css'
 
 interface Props {
   query: string
@@ -42,64 +42,71 @@ export const AnimeSlider = ({ query, title }: Props) => {
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
     setWindowWidth(window.innerWidth)
-    window.addEventListener("resize", handleResize)
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize)
+      window.removeEventListener('resize', handleResize)
     }
   }, [setWindowWidth])
 
   useEffect(() => {
-    const sliders = document.querySelectorAll(".anime-slider")
+    const sliders = document.querySelectorAll('.anime-slider')
 
     sliders.forEach((slider) => {
-      const sliderList = slider.querySelector(".anime-list") as HTMLUListElement
-      const prevButton = slider.querySelector(".prev-button") as HTMLButtonElement
-      const nextButton = slider.querySelector(".next-button") as HTMLButtonElement
-
-
+      const sliderList = slider.querySelector('.anime-list') as HTMLUListElement
+      const prevButton = slider.querySelector(
+        '.prev-button'
+      ) as HTMLButtonElement
+      const nextButton = slider.querySelector(
+        '.next-button'
+      ) as HTMLButtonElement
 
       const updateButtonsVisibility = () => {
-        if (windowWidth && windowWidth < 768){
-            prevButton.style.display = "none"
-            nextButton.style.display = "none"
-            return
+        if (windowWidth && windowWidth < 768) {
+          prevButton.style.display = 'none'
+          nextButton.style.display = 'none'
+          return
         }
         const { scrollLeft, scrollWidth, clientWidth } = sliderList
-        prevButton.style.display = scrollLeft <= 0 ? "none" : "flex"
-        nextButton.style.display = scrollLeft + clientWidth >= scrollWidth ? "none" : "flex"
+        prevButton.style.display = scrollLeft <= 0 ? 'none' : 'flex'
+        nextButton.style.display =
+          scrollLeft + clientWidth >= scrollWidth ? 'none' : 'flex'
       }
 
-      const handleScroll = (direction: "next" | "prev") => {
+      const handleScroll = (direction: 'next' | 'prev') => {
         if (!sliderList || windowWidth === null) return
 
-        const scrollAmount = windowWidth >= 1280 ? 6 * (windowWidth / 6.4) : 4 * (windowWidth / 4.4)
+        const scrollAmount =
+          windowWidth >= 1280
+            ? 6 * (windowWidth / 6.4)
+            : 4 * (windowWidth / 4.4)
 
-        const scrollDistance = direction === "next" ? scrollAmount : -scrollAmount
+        const scrollDistance =
+          direction === 'next' ? scrollAmount : -scrollAmount
 
         sliderList.scrollBy({
           left: scrollDistance,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
       }
 
-      sliderList.addEventListener("scroll", updateButtonsVisibility)
-      prevButton.addEventListener("click", () => handleScroll("prev"))
-      nextButton.addEventListener("click", () => handleScroll("next"))
+      sliderList.addEventListener('scroll', updateButtonsVisibility)
+      prevButton.addEventListener('click', () => handleScroll('prev'))
+      nextButton.addEventListener('click', () => handleScroll('next'))
 
       updateButtonsVisibility()
 
       return () => {
-        sliderList.removeEventListener("scroll", updateButtonsVisibility)
-        prevButton.removeEventListener("click", () => handleScroll("prev"))
-        nextButton.removeEventListener("click", () => handleScroll("next"))
+        sliderList.removeEventListener('scroll', updateButtonsVisibility)
+        prevButton.removeEventListener('click', () => handleScroll('prev'))
+        nextButton.removeEventListener('click', () => handleScroll('next'))
       }
     })
   }, [cachedAnimes, windowWidth, loading, setWindowWidth])
 
   const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
 
-  if (loading && cachedAnimes.length === 0)
+  if (loading || !cachedAnimes || !animes || !displayAnimes)
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="py-4">
