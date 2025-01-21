@@ -132,7 +132,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
   return (
     <section className="anime-slider relative mx-auto w-[100dvw]">
       <header className="flex items-center space-x-4 px-[calc(((100dvw)/6.4)*0.2)] py-4 text-white">
-        <h2 className="text-3xl font-bold">{title}</h2>
+        <h2 className="md:text-3xl text-xl font-bold">{title}</h2>
         <div className="mt-2 flex-1 border-t border-white/20"></div>
       </header>
 
