@@ -1,14 +1,12 @@
 interface Props {
-  width?: string
-  height?: string
+  className: string
 }
 
-export const PlayIcon = ({ width, height }: Props) => (
+export const PlayIcon = ({ className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    width={width}
-    height={height}
+    className={className}
     stroke="currentColor"
     strokeWidth="2"
     strokeLinecap="round"
