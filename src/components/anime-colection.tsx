@@ -39,7 +39,7 @@ export const AnimeCollection = ({ id }: Props) => {
       setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
-      if (!data || isCollectionUnique(data.animes_ids)) return
+      if (!data) return
       setAnimes(data.animes)
       setTitle(data.title)
 
