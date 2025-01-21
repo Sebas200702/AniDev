@@ -22,7 +22,6 @@ export default function Pagination({
   const renderPageNumbers = () => {
     const pages = []
 
-    // Always show the first page
     pages.push(
       <button
         key={1}
@@ -37,7 +36,6 @@ export default function Pagination({
       </button>
     )
 
-    // Show dots if necessary
     if (currentPage > 3) {
       pages.push(
         <span
@@ -49,7 +47,6 @@ export default function Pagination({
       )
     }
 
-    // Show current page and surrounding pages
     for (
       let i = Math.max(2, currentPage - 1);
       i <= Math.min(totalPages - 1, currentPage + 1);
@@ -70,7 +67,6 @@ export default function Pagination({
       )
     }
 
-    // Show dots if necessary
     if (currentPage < totalPages - 2) {
       pages.push(
         <span
@@ -82,7 +78,6 @@ export default function Pagination({
       )
     }
 
-    // Always show the last page
     if (totalPages > 1) {
       pages.push(
         <button
