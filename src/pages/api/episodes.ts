@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ url }) => {
       )
     }
 
-    const cached = await redis.get(`episodes:${id}`)
+    const cached = await redis.get(`episodes:${id}-${page}`)
 
     if (cached) {
       return new Response(JSON.stringify({ data: JSON.parse(cached) }), {
@@ -46,7 +46,7 @@ export const GET: APIRoute = async ({ url }) => {
       .order('episode_id', { ascending: true })
       .range((page - 1) * 100, page * 100 - 1)
 
-    await redis.set(`episodes:${id}`, JSON.stringify(data))
+    await redis.set(`episodes:${id}-${page}`, JSON.stringify(data))
 
     if (error) {
       throw new Error('Error fetching episodes')
