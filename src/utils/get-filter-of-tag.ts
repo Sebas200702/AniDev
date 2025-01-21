@@ -13,7 +13,8 @@ export const getFilterOfTag = (tag: string) => {
     tag.includes('+') ||
     tag.includes('-') ||
     tag.includes('R') ||
-    tag.includes('G')
+    tag.includes('G') ||
+    tag.includes('E')
   )
     return AnimeFilters.Rating
   return AnimeFilters.Genre
