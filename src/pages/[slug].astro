@@ -16,7 +16,8 @@ import StarIcon from '@components/icons/star-icon.astro'
 import '@styles/fade-out.css'
 import CalendarIcon from '@components/icons/calendar-icon.astro'
 import ClockIcon from '@components/icons/clock-icon.astro'
-import { AnimeActions } from '@components/anime-actions'
+import { ShareButton } from '@components/share-button'
+import { WatchAnimeButton } from '@components/watch-anime'
 
 const getAnimeData = async () => {
   try {
@@ -58,7 +59,9 @@ const {
 const slug = normalizeString(title)
 
 const description = reduceString(synopsis, 200) || 'No description available'
-const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
+const url = `${baseUrl}/${Astro.params.slug}`
+const watchNowUrl = `/watch/${slug}_${mal_id}`
+const shareText = `Watch ${title} on Animeflix`
 ---
 
 <Layout description={description} image={image_large_webp} title={title}>
@@ -93,26 +96,22 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
         transition:animate={slide({ duration: '0.4s' })}
       >
         <div class="flex w-full flex-col gap-4">
-          <header class="flex w-full flex-col gap-4">
+          <header class="flex w-full flex-row justify-between">
             <h2
               class="text-pretty text-3xl font-bold md:text-wrap md:text-4xl xl:text-5xl"
             >
               {title}
             </h2>
-            <footer class="flex flex-row flex-wrap gap-3">
-              <AnimeTag tag={getAnimeType(type)} type={type} />
-              {
-                genres.map((genre) => (
-                  <AnimeTag tag={genre} type={genre} style="w-auto" />
-                ))
-              }
-              {
-                rating && (
-                  <AnimeTag tag={normalizeRating(rating)} type={rating} />
-                )
-              }
-            </footer>
           </header>
+          <footer class="flex flex-row flex-wrap gap-3">
+            <AnimeTag tag={getAnimeType(type)} type={type} />
+            {
+              genres.map((genre) => (
+                <AnimeTag tag={genre} type={genre} style="w-auto" />
+              ))
+            }
+            {rating && <AnimeTag tag={normalizeRating(rating)} type={rating} />}
+          </footer>
 
           <div class="mt-4 flex w-full flex-row flex-wrap gap-6">
             <h3
@@ -155,7 +154,15 @@ const actions = [{ name: 'Watch Now', url: `/watch/${slug}_${mal_id}` }]
               loading="lazy"
             />
           </picture>
-          <AnimeActions actions={actions} />
+          <div class="flex flex-row gap-4 ">
+            <WatchAnimeButton client:visible url={watchNowUrl} />
+            <ShareButton
+              client:visible
+              title={title}
+              url={url}
+              text={shareText}
+            />
+          </div>
         </div>
       </div>
 
