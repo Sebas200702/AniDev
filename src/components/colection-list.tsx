@@ -3,7 +3,7 @@ import { useWindowWidth } from '@store/window-width'
 import { useEffect } from 'react'
 
 interface Props {
-    id: number
+  id: number
 }
 
 export const ColectionList = ({ id }: Props) => {

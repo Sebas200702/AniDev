@@ -81,7 +81,6 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     return templates[getRandomNumber(0, templates.length - 1)]
   }
 
-
   const generateUrlAndTitle = (
     appliedFilters: AnimeFilters[]
   ): FilterResult => {
@@ -128,7 +127,6 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
             }
             titleParts.push('Airing Now')
           } else {
-
             const yearFilter = filterParams.find((param) =>
               param.hasOwnProperty('year_filter')
             )
@@ -145,7 +143,6 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
       }
     })
 
-
     if (titleParts.length === 0) {
       titleParts.push('Anime')
     }
@@ -157,7 +154,6 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
           .join('&')
       )
       .join('&')
-
 
     const template = getRandomTitleTemplate()
     const filtersText = titleParts.join(' ')

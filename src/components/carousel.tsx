@@ -40,7 +40,6 @@ const LoadingCarousel = () => (
         <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-800 md:mb-4 md:mt-4"></div>
         <div className="z-30 hidden h-12 w-full animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
 
-
         <div className="flex w-full flex-row items-center gap-4 md:mt-2">
           <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
           <div className="h-10 w-28 animate-pulse rounded-lg bg-zinc-800"></div>
