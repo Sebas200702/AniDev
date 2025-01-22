@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FilterOption } from 'types'
+import { useWindowWidth } from '@store/window-width'
 import '@styles/custom-scrollbar.css'
 
 interface FilterDropdownProps {
@@ -17,6 +18,7 @@ export const FilterDropdown = ({
   onClear,
   options,
 }: FilterDropdownProps) => {
+  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
@@ -30,6 +32,28 @@ export const FilterDropdown = ({
       )
     )
   }, [search, options])
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [setWindowWidth])
+
+  useEffect(() => {
+    window.addEventListener('click', (e) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        windowWidth &&
+        windowWidth < 768
+      ) {
+        setIsOpen(false)
+      }
+    })
+  }, [])
 
   const toggleOption = (value: string) => {
     let newValues: string[]
@@ -54,7 +78,7 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className="relative mx-auto w-full max-w-60 border-b border-gray-100/10"
+      className="relative mx-auto w-full border-b border-gray-100/10"
       ref={dropdownRef}
     >
       <div className="relative text-white">
@@ -71,7 +95,7 @@ export const FilterDropdown = ({
             className="min-w-[50px] flex-grow bg-transparent focus:outline-none"
           />
         </div>
-        <div className="absolute right-6 top-1/2 flex -translate-y-1/2 items-center space-x-1">
+        <div className="absolute right-6 top-1/2 flex max-w-60 -translate-y-1/2 items-center space-x-1">
           {(values.length > 0 || search) && (
             <button
               onClick={(e) => {
@@ -93,7 +117,7 @@ export const FilterDropdown = ({
             </button>
           )}
           <svg
-            className={`h-4 w-4 text-gray-400 transition-transform hover:cursor-pointer ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ease-in-out hover:cursor-pointer ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             strokeWidth="2"
             onClick={() => setIsOpen(!isOpen)}
@@ -104,43 +128,44 @@ export const FilterDropdown = ({
           </svg>
         </div>
       </div>
-      {isOpen && (
-        <div className="custom-scrollbar mt-1 max-h-96 w-full overflow-auto rounded-md bg-base shadow-lg">
-          {filteredOptions.map((option) => (
-            <label
-              key={option.value}
-              className="flex cursor-pointer items-center gap-3 px-4 py-2 text-sm hover:bg-secondary"
-            >
-              <input
-                type="checkbox"
-                checked={values.includes(option.value)}
-                onChange={() => toggleOption(option.value)}
-                className="peer hidden"
-              />
 
-              <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 peer-checked:border-enfasisColor peer-checked:bg-enfasisColor">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3.5 w-3.5 text-black peer-checked:text-black"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </span>
-              <span className="text-gray-400 peer-checked:text-white">
-                {option.label}
-              </span>
-            </label>
-          ))}
-        </div>
-      )}
+      <div
+        className={`custom-scrollbar absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md bg-base shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
+      >
+        {filteredOptions.map((option) => (
+          <label
+            key={option.value}
+            className="flex cursor-pointer items-center gap-3 px-4 py-2 text-sm hover:bg-secondary"
+          >
+            <input
+              type="checkbox"
+              checked={values.includes(option.value)}
+              onChange={() => toggleOption(option.value)}
+              className="peer hidden"
+            />
+
+            <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 peer-checked:border-enfasisColor peer-checked:bg-enfasisColor">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5 text-black peer-checked:text-black"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+            <span className="text-gray-400 peer-checked:text-white">
+              {option.label}
+            </span>
+          </label>
+        ))}
+      </div>
     </div>
   )
 }

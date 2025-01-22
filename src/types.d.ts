@@ -127,7 +127,7 @@ export const ratingOptions: FilterOption[] = [
 export const statusOptions: FilterOption[] = [
   { value: 'currently airing', label: 'Airing' },
   { value: 'finished airing', label: 'Finished' },
-  { value: 'not yet aired', label: 'Not Yet Aired (Ascending)' },
+  { value: 'not yet aired', label: 'Not Yet Aired' },
 ]
 export const seasonOptions: FilterOption[] = [
   { value: 'winter', label: 'Winter' },
