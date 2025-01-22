@@ -31,27 +31,22 @@ export const FilterDropdown = ({
     )
   }, [search, options])
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false)
-      }
-    }
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
 
   const toggleOption = (value: string) => {
-    const newValues = values.includes(value)
-      ? values.filter((v) => v !== value)
-      : [...values, value]
-    onChange(newValues)
+    let newValues: string[];
+
+    if (label === 'Order By') {
+      // Si es "Order By", solo se permite una opción seleccionada
+      newValues = values.includes(value) ? [] : [value];
+    } else {
+      // Para otros filtros, se permite seleccionar múltiples opciones
+      newValues = values.includes(value)
+        ? values.filter((v) => v !== value)
+        : [...values, value];
+    }
+
+    onChange(newValues);
   }
 
   const handleInputClick = (e: React.MouseEvent) => {
