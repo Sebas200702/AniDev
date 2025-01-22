@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterDropdown } from '@components/filter-dropdown'
 import {
-    orderByOptions,
+  orderByOptions,
   genreOptions,
   statusOptions,
   yearOptions,

@@ -176,7 +176,7 @@ export const Carousel = () => {
               <div
                 className={`absolute bottom-0 h-full w-full from-transparent ${index % 2 === 0 ? 'left-0 md:bg-gradient-to-l' : 'right-0 md:bg-gradient-to-r'} to-base/70`}
               />
-              <div className="absolute bottom-0 left-0 right-0 md:h-1/2 h-full bg-gradient-to-b from-transparent to-base" />
+              <div className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-b from-transparent to-base md:h-1/2" />
               <div
                 className={`mb-20 flex flex-col items-center gap-8 p-6 md:items-start md:justify-start md:gap-4 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 max-w-2xl text-white`}
               >

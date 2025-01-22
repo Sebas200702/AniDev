@@ -83,8 +83,10 @@ export const GET: APIRoute = async ({ url }) => {
           ? OrderFunctions.score_asc
           : OrderFunctions.score
       }
-      if(orderby === 'title') {
-        return orderDirection === 'asc' ? OrderFunctions.title_asc : OrderFunctions.title
+      if (orderby === 'title') {
+        return orderDirection === 'asc'
+          ? OrderFunctions.title_asc
+          : OrderFunctions.title
       }
       return OrderFunctions.relevance_score
     }

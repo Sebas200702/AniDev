@@ -138,7 +138,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
       </header>
 
       <div className="relative overflow-hidden">
-        <div className="prev-button absolute inset-0 z-20 hidden h-full w-20 md:flex py-4">
+        <div className="prev-button absolute inset-0 z-20 hidden h-full w-20 py-4 md:flex">
           <div className="flex h-full w-full bg-gradient-to-l from-transparent to-black/90">
             <button className="group z-10 my-auto h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
               <svg
@@ -162,8 +162,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
-        <div className="next-button absolute bottom-0 right-0 top-0 z-20 hidden h-full w-20  md:flex py-4 justify-end items-center">
-          <div className='bg-gradient-to-r flex from-transparent to-black/90 w-full h-full justify-end items-center'>
+        <div className="next-button absolute bottom-0 right-0 top-0 z-20 hidden h-full w-20 items-center justify-end py-4 md:flex">
+          <div className="flex h-full w-full items-center justify-end bg-gradient-to-r from-transparent to-black/90">
             <button className="group z-10 my-auto h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
               <svg
                 className="mx-auto my-auto h-6 w-6"

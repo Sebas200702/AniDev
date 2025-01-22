@@ -31,22 +31,18 @@ export const FilterDropdown = ({
     )
   }, [search, options])
 
-
-
   const toggleOption = (value: string) => {
-    let newValues: string[];
+    let newValues: string[]
 
     if (label === 'Order By') {
-      // Si es "Order By", solo se permite una opción seleccionada
-      newValues = values.includes(value) ? [] : [value];
+      newValues = values.includes(value) ? [] : [value]
     } else {
-      // Para otros filtros, se permite seleccionar múltiples opciones
       newValues = values.includes(value)
         ? values.filter((v) => v !== value)
-        : [...values, value];
+        : [...values, value]
     }
 
-    onChange(newValues);
+    onChange(newValues)
   }
 
   const handleInputClick = (e: React.MouseEvent) => {
