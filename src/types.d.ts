@@ -122,12 +122,12 @@ export const ratingOptions: FilterOption[] = [
   { value: 'pg - children', label: 'Kids' },
   { value: 'pg-13 - teens 13 or older', label: 'Teens' },
   { value: 'r - 17+ (violence & profanity)', label: 'Adults' },
-  { value: 'r+ - mild nudity', label: 'Mild Nudity' },
 ]
 
 export const statusOptions: FilterOption[] = [
   { value: 'currently airing', label: 'Airing' },
   { value: 'finished airing', label: 'Finished' },
+  { value: 'not yet aired', label: 'Not Yet Aired (Ascending)' },
 ]
 export const seasonOptions: FilterOption[] = [
   { value: 'winter', label: 'Winter' },
@@ -146,8 +146,10 @@ export const formatOptions: FilterOption[] = [
 ]
 
 export const orderByOptions: FilterOption[] = [
-  { value: 'score_asc', label: 'Score' },
-  { value: 'score_desc', label: 'Score (Descending)' },
-  { value: 'az_asc', label: 'A-Z' },
-  { value: 'az_desc', label: 'A-Z (Descending)' },
+  { value: 'score asc', label: 'Lowest score' },
+  { value: 'score', label: 'Highest Score' },
+  { value: 'title asc', label: 'A-Z' },
+  { value: 'title', label: 'Z-A ' },
+  { value: 'relevance_score asc', label: ' The Least Relevant' },
+  { value: 'relevance_score', label: 'The Most Relevant' },
 ]
