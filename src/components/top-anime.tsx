@@ -5,7 +5,7 @@ import { normalizeString } from '@utils/normalize-string'
 
 export const AnimeTop = () => {
   const { data: aninme, loading } = useFetch<Anime[]>({
-    url: '/api/animes?order_by=score_desc&limit_count=10&type_filter=tv&banner_filter=false',
+    url: '/api/animes?order_by=score&limit_count=10&type_filter=tv&banner_filter=false',
   })
 
   if (loading || !aninme)
