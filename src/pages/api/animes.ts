@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ url }) => {
 
     const [order_by, order_direction] = url.searchParams
       .get('order_by')
-      ?.split('_') ?? ['relevance_score', 'desc']
+      ?.split(' ') ?? ['relevance_score', 'desc']
 
     enum Filters {
       limit_count = 'limit_count',
@@ -68,10 +68,12 @@ export const GET: APIRoute = async ({ url }) => {
       relevance_score_asc = 'get_animes_asc',
       score = 'get_animes_order_by_score',
       score_asc = 'get_animes_order_by_score_asc',
+      title = 'get_animes_order_by_title',
+      title_asc = 'get_animes_order_by_title_asc',
     }
 
     const getFunctionToExecute = (orderby: string, orderDirection: string) => {
-      if (orderby === 'relevance_score') {
+      if (orderby === 'relevancescore') {
         return orderDirection === 'asc'
           ? OrderFunctions.relevance_score_asc
           : OrderFunctions.relevance_score
@@ -80,6 +82,9 @@ export const GET: APIRoute = async ({ url }) => {
         return orderDirection === 'asc'
           ? OrderFunctions.score_asc
           : OrderFunctions.score
+      }
+      if(orderby === 'title') {
+        return orderDirection === 'asc' ? OrderFunctions.title_asc : OrderFunctions.title
       }
       return OrderFunctions.relevance_score
     }
