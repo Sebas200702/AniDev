@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { FilterDropdown } from '@components/filter-dropdown'
 import {
+    orderByOptions,
   genreOptions,
   statusOptions,
   yearOptions,
@@ -83,6 +84,14 @@ export const FilterSection = () => {
           onClear={() => updateFilter('rating_filter', [])}
           options={ratingOptions}
         />
+        <FilterDropdown
+          label="Order By"
+          values={appliedFilters.order_by ?? []}
+          onChange={(values) => updateFilter('order_by', values)}
+          onClear={() => updateFilter('order_by', [])}
+          options={orderByOptions}
+        />
+
         <div>
           <button
             type="button"
