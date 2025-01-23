@@ -2,6 +2,7 @@
 import Layout from '@layouts/base.astro'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { Image } from 'astro:assets'
+import { UserList } from '@components/user-list'
 ---
 
 <Layout title="Profile">
@@ -39,5 +40,6 @@ import { Image } from 'astro:assets'
         <h2 class="text-2xl font-bold md:text-4xl">Guest</h2>
       </div>
     </article>
+    <UserList client:visible />
   </section>
 </Layout>

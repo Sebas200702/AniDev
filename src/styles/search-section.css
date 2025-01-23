@@ -1,6 +1,6 @@
 #search-section {
   display: grid;
-  grid-template-columns: 0.7fr 4fr;
+  grid-template-columns: 1fr 5fr;
   grid-template-areas: 'aside results';
   height: 100dvh;
   width: 100dvw;

@@ -18,7 +18,7 @@ export const FilterDropdown = ({
   onClear,
   options,
 }: FilterDropdownProps) => {
-  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
+
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
@@ -32,24 +32,12 @@ export const FilterDropdown = ({
       )
     )
   }, [search, options])
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth)
-    setWindowWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [setWindowWidth])
+ 
 
   useEffect(() => {
     window.addEventListener('click', (e) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node) &&
-        windowWidth &&
-        windowWidth < 768
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node) && window.innerWidth< 768)
+       {
         setIsOpen(false)
       }
     })
@@ -144,10 +132,11 @@ export const FilterDropdown = ({
               className="peer hidden"
             />
 
-            <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 peer-checked:border-enfasisColor peer-checked:bg-enfasisColor">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out peer-checked:border-enfasisColor peer-checked:bg-enfasisColor">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-3.5 w-3.5 text-black peer-checked:text-black"
+                className="h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out"
+                style={{ opacity: values.includes(option.value) ? 1 : 0 }}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -160,6 +149,7 @@ export const FilterDropdown = ({
                 />
               </svg>
             </span>
+
             <span className="text-gray-400 peer-checked:text-white">
               {option.label}
             </span>

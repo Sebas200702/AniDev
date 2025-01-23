@@ -27,7 +27,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
       const { url: newUrl } = createDynamicUrl(1)
-      return getBannerUrl(newUrl)
+      return await getBannerUrl(newUrl)
     }
 
     return {

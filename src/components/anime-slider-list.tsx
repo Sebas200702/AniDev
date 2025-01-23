@@ -78,8 +78,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
         const scrollAmount =
           windowWidth >= 1280
-            ? 6 * (windowWidth / 6.4)
-            : 4 * (windowWidth / 4.4)
+            ? 6 * (windowWidth / 6.4) + 1
+            : 4 * (windowWidth / 4.4) + 1
 
         const scrollDistance =
           direction === 'next' ? scrollAmount : -scrollAmount
