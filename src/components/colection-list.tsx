@@ -21,12 +21,11 @@ export const ColectionList = ({ id }: Props) => {
 
   let colectionLength
   if (windowWidth && windowWidth >= 1280) colectionLength = 4
-  else if (windowWidth && windowWidth >= 768) colectionLength = 3
-  else if (windowWidth && windowWidth >= 480) colectionLength = 2
+  else if (windowWidth && windowWidth >= 768) colectionLength = 2
   else colectionLength = 1
 
   return (
-    <ul className="flex flex-row gap-8 p-4">
+    <ul className="flex flex-row gap-8 p-4 md:p-8">
       {Array.from({ length: colectionLength }).map((_, index) => (
         <AnimeCollection key={index + 1} id={`${id}-${index + 1}`} />
       ))}
