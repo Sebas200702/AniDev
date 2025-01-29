@@ -8,7 +8,6 @@ export const VideoPlayer = ({ url, sutitles }) => {
 
   useEffect(() => {
     if (videoRef.current && !playerRef.current) {
-      // Inicializar el reproductor con video.js
       playerRef.current = videojs(videoRef.current, {
         controls: true,
         autoplay: false,
@@ -37,7 +36,7 @@ export const VideoPlayer = ({ url, sutitles }) => {
   }, [])
 
   return (
-    <div className="video-container">
+    <div className="video-container aspect-[16/9] h-full ">
       <video ref={videoRef} className="video-js vjs-default-skin" />
     </div>
   )
