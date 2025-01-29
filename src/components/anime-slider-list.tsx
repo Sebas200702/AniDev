@@ -78,8 +78,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
         const scrollAmount =
           windowWidth >= 1280
-            ? 6 * (windowWidth / 6.4) + 1
-            : 4 * (windowWidth / 4.4) + 1
+            ? 6 * (windowWidth / 6.4)
+            : 4 * (windowWidth / 4.4)
 
         const scrollDistance =
           direction === 'next' ? scrollAmount : -scrollAmount
@@ -110,7 +110,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="mt-1 flex flex-row items-center justify-center space-x-4 py-4 md:mt-0">
-          <span className="ml-[calc(((100dvw)/6.4)*0.2)] inline-flex h-6 w-24 animate-pulse rounded-lg bg-zinc-800 md:h-8 md:w-32"></span>
+          <span className="ml-4 md:ml-8 inline-flex h-6 w-24 animate-pulse rounded-lg bg-zinc-800 md:h-8 md:w-32"></span>
           <div className="flex-1 border-t border-white/20 md:mt-2"></div>
         </div>
         <div className="relative overflow-hidden">
@@ -132,7 +132,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   return (
     <section className="anime-slider relative mx-auto w-[100dvw]">
-      <header className="flex items-center space-x-4 px-[calc(((100dvw)/6.4)*0.2)] py-4 text-white">
+      <header className="flex items-center space-x-4 px-4 md:px-8 py-4 text-white">
         <h2 className="text-xl font-bold md:text-3xl">{title}</h2>
         <div className="flex-1 border-t border-white/20 md:mt-2"></div>
       </header>
