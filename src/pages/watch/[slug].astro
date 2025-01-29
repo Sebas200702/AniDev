@@ -94,15 +94,15 @@ const {
   }
 >
   <section
-    class="xl:max-w-7x mx-auto mt-16 flex h-min w-full flex-col justify-center gap-8 overflow-hidden xl:max-h-[calc(100dvh-80px)] xl:flex-row"
+    class=" p-4 xl:max-w-7x mx-auto mt-16 flex h-min w-full flex-col justify-center gap-8 overflow-hidden xl:max-h-[calc(100dvh-80px)] xl:flex-row"
     aria-label="Reproductor de episodios y lista de episodios"
   >
     <div
-      class="mb-10 flex aspect-video w-full flex-col gap-3 p-4 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)] xl:max-w-[60%]"
+      class="mb-10 flex aspect-video w-full flex-col gap-3  md:relative md:mb-44  md:max-w-full xl:max-h-[calc(100dvh-80px)] xl:max-w-[60%]"
     >
       <div
         id="video-iframe"
-        class="relative aspect-video w-full"
+        class="relative aspect-[16/9] w-full"
         transition:animate={slide({ duration: '0.4s' })}
       >
         {
@@ -122,7 +122,7 @@ const {
         {episodeDescription ?? 'No description'}
       </p>
     </div>
-    <div class="rounded-lg border-2 border-[#121212] bg-[#1c1c1c] p-4 xl:mt-0">
+    <div class="rounded-lg  bg-[#1c1c1c] p-4 xl:mt-0">
       <div
         class={`flex justify-between ${
           episode === '1' ? 'flex-row-reverse' : 'flex-row'
