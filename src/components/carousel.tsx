@@ -25,8 +25,8 @@ const Indicator = memo(
     return (
       <button
         onClick={() => onClick(index)}
-        className={`h-3 w-3 rounded-full transition-colors ${
-          currentIndex === index ? 'bg-enfasisColor' : 'bg-white/50'
+        className={`h-3 rounded-full transition-all duration-300 ease-in-out ${
+          currentIndex === index ? 'w-8 bg-enfasisColor' : 'w-3 bg-white'
         }`}
         aria-current={currentIndex === index ? 'true' : 'false'}
         aria-label={`Slide ${index + 1}`}
@@ -189,7 +189,7 @@ export const Carousel = () => {
                 <div className="mx-auto flex w-[240px] flex-row items-center gap-4 md:mx-0 md:w-80">
                   <a
                     href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
-                    className="button-secondary w-full"
+                    className="button-secondary flex w-full"
                   >
                     Learn More
                   </a>
@@ -214,7 +214,7 @@ export const Carousel = () => {
       </div>
       <button
         type="button"
-        className="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+        className="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none md:px-8"
         onClick={handlePrev}
       >
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
@@ -239,7 +239,7 @@ export const Carousel = () => {
 
       <button
         type="button"
-        className="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
+        className="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none md:px-8"
         onClick={handleNext}
       >
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
