@@ -40,7 +40,7 @@ export const CollectionItem = ({ anime }: Props) => {
           <img
             src={anime.image_large_webp}
             alt={anime.title}
-            className="aspect-[225/330] h-full rounded-lg object-cover object-center transition-all ease-in-out md:hover:scale-110"
+            className="aspect-[225/330] h-full rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
             loading="lazy"
           />
         </a>
