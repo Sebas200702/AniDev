@@ -8,7 +8,7 @@ interface Props {
 
 export const SearchBar = ({ location }: Props) => {
   const { query, setQuery, setLoading } = useSearchStoreResults()
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
   useEffect(() => {
@@ -30,6 +30,15 @@ export const SearchBar = ({ location }: Props) => {
     }
   }, [])
 
+  useEffect(() => {
+    const $searchBar = document.getElementById('search-bar') as HTMLFormElement
+    window.addEventListener('click', (e) => {
+      if ($searchBar && !$searchBar.contains(e.target as Node)) {
+        setIsExpanded(false)
+      }
+    })
+  }, [])
+
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       if (location.includes('search')) return
@@ -45,17 +54,19 @@ export const SearchBar = ({ location }: Props) => {
   }, [])
 
   const toggleExpand = () => {
+    if (isExpanded) return
     setIsExpanded(!isExpanded)
     document.getElementById('default-search')?.focus()
   }
 
   return (
     <form
-      className={`relative flex md:w-full ${!isExpanded ? 'mx-auto w-min' : ''} items-center justify-end text-white`}
+      className={`flex transition-all inset-0 duration-300 md:relative md:w-full ${isExpanded && windowWidth && windowWidth < 768 ? 'absolute z-50 w-full translate-y-full bg-base/30 p-2' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
       onSubmit={handleSubmit}
+      id="search-bar"
     >
       <div
-        className={`flex items-center overflow-hidden rounded-lg bg-secondary/30 transition-all duration-300 ease-in-out ${isExpanded || (windowWidth && windowWidth >= 768) ? 'w-full' : 'h-10 w-10'} `}
+        className={`flex w-full items-center justify-center overflow-hidden rounded-lg bg-secondary/30 px-2 transition-all duration-300 ease-in-out`}
       >
         <input
           type="search"
@@ -72,8 +83,8 @@ export const SearchBar = ({ location }: Props) => {
         />
 
         <button
-          type="button"
-          className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-0' : ''} `}
+          type={'button'}
+          className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-2' : ''} `}
           onClick={toggleExpand}
         >
           <svg
