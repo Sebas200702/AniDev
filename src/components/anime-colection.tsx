@@ -94,11 +94,11 @@ export const AnimeCollection = ({ id }: Props) => {
   }
 
   const style1 =
-    'rotate-[-10deg] translate-x-8 translate-y-[35%] md:hover:translate-y-[20%] transition-transform duration-300 ease-in-out'
+    'rotate-[-10deg] translate-x-10 translate-y-[35%] md:hover:translate-y-[20%] transition-transform duration-300 ease-in-out'
   const style2 =
-    'z-10 -translate-x-1 translate-y-[40%] md:hover:translate-y-[25%] transition-transform duration-300 ease-in-out'
+    'z-10  translate-y-[40%] md:hover:translate-y-[25%] transition-transform duration-300 ease-in-out'
   const style3 =
-    'z-20 -translate-x-6 translate-y-1/2 rotate-[10deg] md:hover:translate-y-[35%] transition-transform duration-300 ease-in-out'
+    'z-20 -translate-x-10 translate-y-1/2 rotate-[10deg] md:hover:translate-y-[35%] transition-transform duration-300 ease-in-out'
 
   if (loading || !animes.length)
     return (
@@ -115,14 +115,18 @@ export const AnimeCollection = ({ id }: Props) => {
         <ul className="mx-auto -mt-4 flex h-full w-full flex-row justify-center">
           {animes.map((anime, i) => (
             <li key={anime.mal_id}>
-              <img
-                src={anime.image_webp}
-                alt={anime.title}
-                className={`aspect-[225/330] h-auto min-w-28 rounded-md object-cover object-center ${
+              <div
+                className={`aspect-[225/330] h-auto w-full max-w-44 rounded-md bg-secondary object-cover object-center ${
                   i === 0 ? style1 : i === 1 ? style2 : style3
                 }`}
-                fetchPriority="high"
-              />
+              >
+                <img
+                  src={anime.image_webp}
+                  alt={anime.title}
+                  fetchPriority="high"
+                  className="p-1.5 w-full rounded-xl"
+                />
+              </div>
             </li>
           ))}
         </ul>
