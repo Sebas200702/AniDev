@@ -153,3 +153,8 @@ export const orderByOptions: FilterOption[] = [
   { value: 'relevance_score asc', label: ' The Least Relevant' },
   { value: 'relevance_score', label: 'The Most Relevant' },
 ]
+export interface Section  {
+  label: string
+  icon: React.FC<{ className?: string }>
+  selected: boolean
+}
