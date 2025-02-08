@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 
 interface GlobalUserPreferences {
-  enfasisColor: string
-  setEnfasisColor: (color: string) => void
+  enfasis: string
+  setEnfasis: (color: string) => void
 }
 
 export const useGlobalUserPreferences = create<GlobalUserPreferences>(
   (set) => ({
-    enfasisColor: '#3b82f6',
-    setEnfasisColor: (color: string) => set({ enfasisColor: color }),
+    enfasis: '#3b82f6',
+    setEnfasis: (color: string) => set({ enfasis: color }),
   })
 )
