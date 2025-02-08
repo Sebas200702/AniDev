@@ -124,7 +124,7 @@ export const AnimeCollection = ({ id }: Props) => {
                   src={anime.image_webp}
                   alt={anime.title}
                   fetchPriority="high"
-                  className="p-1.5 w-full rounded-xl"
+                  className="aspect-[225/330] w-full rounded-xl p-1.5"
                 />
               </div>
             </li>
