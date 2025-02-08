@@ -3,6 +3,7 @@ import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
 import { ClientRouter } from 'astro:transitions'
 import '@styles/no-scrollbar.css'
+import '@styles/global.css'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep')
 const baseTitle = 'Animeflix - Watch anime online free'
@@ -56,7 +57,7 @@ const seoTitle = (title: string | null, episode: string | null) => {
   <body>
     <div
       id="app"
-      class="no-scrollbar overflow-y-auto overflow-x-hidden bg-base"
+      class="no-scrollbar bg-base overflow-x-hidden overflow-y-auto"
     >
       <header class="[grid-area:header]">
         <NavBar />

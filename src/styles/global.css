@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+/* Personalización del tema mediante variables CSS */
+@theme {
+  --color-base: #121212;
+  --color-secondary: #1c1c1c;
+  /* Para "enfasisColor" podrías definirlo aquí si tienes un valor fijo o, alternativamente,
+     gestionar su actualización mediante JavaScript en tiempo de ejecución */
+  --color-enfasisColor: var(--enfasis-dynamic);
+}
+
+.button-primary {
+  @apply border-enfasisColor bg-enfasisColor md:hover:border-enfasisColor/50 md:hover:text-enfasisColor items-center justify-center rounded-lg border-3 px-2 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out md:px-4 md:text-sm md:hover:bg-transparent md:hover:shadow-md;
+}
+.button-secondary {
+  @apply items-center justify-center rounded-lg border-3 bg-transparent px-2 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out md:px-4 md:text-sm md:hover:opacity-50 md:hover:shadow-md;
+}
