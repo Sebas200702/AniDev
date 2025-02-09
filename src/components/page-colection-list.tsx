@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import type { Anime } from 'types'
+
 import { CollectionItem } from '@components/collection-item'
 
+import type { Anime } from 'types'
 interface Props {
   title: string
   id: string
@@ -35,7 +36,7 @@ export const PageColectionList = ({ title, id }: Props) => {
             .map((_, i) => (
               <div
                 key={i + 1}
-                className="mx-auto flex aspect-[500/260] h-full w-full max-w-[500px] animate-pulse flex-row rounded-lg bg-secondary"
+                className="bg-secondary mx-auto flex aspect-[500/260] h-full w-full max-w-[500px] animate-pulse flex-row rounded-lg"
               >
                 <div className="aspect-[225/330] h-full animate-pulse rounded-l-lg bg-zinc-800 object-cover object-center transition-all ease-in-out"></div>
               </div>

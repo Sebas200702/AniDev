@@ -1,9 +1,10 @@
-import { useIndexStore } from '@store/index-store'
 import { useEffect, useState } from 'react'
-import type { Anime, Collection } from 'types'
+
+import { useIndexStore } from '@store/index-store'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
 
+import type { Anime, Collection } from 'types'
 interface Props {
   id: string
 }
@@ -106,9 +107,9 @@ export const AnimeCollection = ({ id }: Props) => {
     )
 
   return (
-    <article className="mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg bg-secondary transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
+    <article className="bg-secondary mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
       <a href={`/collection/${normalizeString(title)}_${id}`}>
-        <h2 className="mx-auto h-12 max-w-80 text-balance p-4 text-center text-xl font-bold text-white">
+        <h2 className="mx-auto h-12 max-w-80 p-4 text-center text-xl font-bold text-balance text-white">
           {title || 'Sin Título'}
         </h2>
 
@@ -116,7 +117,7 @@ export const AnimeCollection = ({ id }: Props) => {
           {animes.map((anime, i) => (
             <li key={anime.mal_id}>
               <div
-                className={`aspect-[225/330] h-auto w-full max-w-44 rounded-md bg-secondary object-cover object-center ${
+                className={`bg-secondary aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center ${
                   i === 0 ? style1 : i === 1 ? style2 : style3
                 }`}
               >

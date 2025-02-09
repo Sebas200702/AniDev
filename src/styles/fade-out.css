@@ -2,6 +2,9 @@
   0% {
     opacity: 1;
   }
+  80% {
+    opacity: 0;
+  }
   100% {
     opacity: 0;
   }

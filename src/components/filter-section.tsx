@@ -1,16 +1,18 @@
 import { useCallback } from 'react'
-import { useSearchStoreResults } from '@store/search-results-store'
-import { FilterDropdown } from '@components/filter-dropdown'
 import {
-  orderByOptions,
+  formatOptions,
   genreOptions,
+  orderByOptions,
+  ratingOptions,
+  seasonOptions,
   statusOptions,
   yearOptions,
-  formatOptions,
-  seasonOptions,
-  ratingOptions,
 } from 'types'
+
+import { FilterDropdown } from '@components/filter-dropdown'
+import { useSearchStoreResults } from '@store/search-results-store'
 import { studioOptions } from '@utils/create-studios-options'
+
 import type { AppliedFilters } from 'types'
 
 export const FilterSection = () => {
@@ -96,7 +98,7 @@ export const FilterSection = () => {
           <button
             type="button"
             onClick={resetFilters}
-            className="mx-auto flex w-full max-w-60 items-center justify-center rounded border border-secondary bg-secondary px-4 py-2 text-sm transition-all hover:border-white hover:bg-base hover:opacity-90 md:max-w-32"
+            className="border-secondary bg-secondary hover:bg-base mx-auto flex w-full max-w-60 items-center justify-center rounded border px-4 py-2 text-sm transition-all hover:border-white hover:opacity-90 md:max-w-32"
           >
             <svg
               className="mr-2 h-4 w-4"

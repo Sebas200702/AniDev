@@ -1,10 +1,9 @@
 import type { Anime } from 'types'
-import { reduceString } from '@utils/reduce-string'
 import { AnimeTag } from '@components/anime-tag'
-import '@styles/buttons.css'
-import { WatchAnimeButton } from '@components/watch-anime'
 import { ShareButton } from '@components/share-button'
+import { WatchAnimeButton } from '@components/watch-anime'
 import { normalizeString } from '@utils/normalize-string'
+import { reduceString } from '@utils/reduce-string'
 
 const StarIcon = ({ style }: { style?: string }) => (
   <svg
@@ -24,7 +23,7 @@ export const CollectionItem = ({ anime }: Props) => {
   return (
     <li
       key={anime.mal_id}
-      className="mx-auto flex aspect-[500/260] w-full max-w-[500px] flex-row rounded-lg bg-secondary"
+      className="bg-secondary mx-auto flex aspect-[500/260] w-full max-w-[500px] flex-row rounded-lg"
     >
       <picture
         className="aspect-[225/330] h-full w-[35%] overflow-hidden rounded-l-lg"
@@ -49,7 +48,7 @@ export const CollectionItem = ({ anime }: Props) => {
       <div className="flex h-full w-[65%] flex-col justify-between p-3 xl:p-4">
         <h3
           title={anime.title}
-          className="overflow-hidden text-pretty font-bold text-white xl:text-xl"
+          className="overflow-hidden font-bold text-pretty text-white xl:text-xl"
         >
           {reduceString(anime.title, 40)}
         </h3>

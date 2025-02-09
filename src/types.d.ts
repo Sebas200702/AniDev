@@ -153,8 +153,36 @@ export const orderByOptions: FilterOption[] = [
   { value: 'relevance_score asc', label: ' The Least Relevant' },
   { value: 'relevance_score', label: 'The Most Relevant' },
 ]
-export interface Section  {
+export interface Section {
   label: string
   icon: React.FC<{ className?: string }>
   selected: boolean
 }
+
+export interface Session {
+  name: string | null
+  avatar: string | null
+}
+export type HTMLInputTypeAttribute =
+  | 'button'
+  | 'checkbox'
+  | 'color'
+  | 'date'
+  | 'datetime-local'
+  | 'email'
+  | 'file'
+  | 'hidden'
+  | 'image'
+  | 'month'
+  | 'number'
+  | 'password'
+  | 'radio'
+  | 'range'
+  | 'reset'
+  | 'search'
+  | 'submit'
+  | 'tel'
+  | 'text'
+  | 'time'
+  | 'url'
+  | 'week'

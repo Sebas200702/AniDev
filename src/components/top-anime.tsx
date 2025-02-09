@@ -1,8 +1,8 @@
 import { useFetch } from '@hooks/useFetch'
-import type { Anime } from 'types'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 
+import type { Anime } from 'types'
 export const AnimeTop = () => {
   const { data: aninme, loading } = useFetch<Anime[]>({
     url: '/api/animes?order_by=score&limit_count=10&type_filter=tv&banner_filter=false',
@@ -39,7 +39,7 @@ export const AnimeTop = () => {
         <div className="mt-2 flex-1 border-t border-white/20"></div>
       </header>
 
-      <ul className="mx-auto grid grid-cols-2 justify-around md:grid-cols-5 xl:grid-cols-10 md:px-4">
+      <ul className="mx-auto grid grid-cols-2 justify-around md:grid-cols-5 md:px-4 xl:grid-cols-10">
         {aninme.map((anime, index) => (
           <div key={anime.mal_id} className="flex flex-col items-center p-4">
             <li className="group relative">
@@ -67,7 +67,7 @@ export const AnimeTop = () => {
                   </picture>
                 </div>
                 <div className="absolute bottom-0 left-0 z-10 h-1/2 w-full rounded-lg bg-gradient-to-b from-transparent to-black/80 opacity-100 transition-all duration-200 ease-in-out" />
-                <span className="absolute bottom-2 left-1 z-20 text-pretty text-5xl font-bold text-white">
+                <span className="absolute bottom-2 left-1 z-20 text-5xl font-bold text-pretty text-white">
                   {index + 1}
                 </span>
               </a>

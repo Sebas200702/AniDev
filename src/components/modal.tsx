@@ -14,7 +14,7 @@ export const Modal = ({ children }: Props) => {
   return (
     <div
       id="popup-modal"
-      className="fixed left-0 right-0 top-0 z-50 hidden h-screen w-screen items-center justify-center overflow-y-auto overflow-x-hidden bg-black/50 backdrop-blur-sm"
+      className="fixed top-0 right-0 left-0 z-50 hidden h-screen w-screen items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 backdrop-blur-sm"
       onClick={(e) => handleClose(e)}
     >
       {children}

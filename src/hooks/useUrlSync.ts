@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+
 import { useSearchStoreResults } from '@store/search-results-store'
 
 export const useUrlSync = () => {

@@ -1,17 +1,18 @@
-import { useFetch } from '@hooks/useFetch'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import { reduceString } from '@utils/reduce-string'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { normalizeString } from '@utils/normalize-string'
-import { useCarouselStore } from '@store/carousel-store'
-import { memo, useCallback, useEffect } from 'react'
-import { useCarouselScroll } from '@hooks/useCarouselScroll'
-import type { Anime } from 'types'
 import '@styles/no-scrollbar.css'
 import '@styles/fade-out.css'
-import '@styles/buttons.css'
-import { WatchAnimeButton } from '@components/watch-anime'
 
+import { memo, useCallback, useEffect } from 'react'
+
+import { WatchAnimeButton } from '@components/watch-anime'
+import { useCarouselScroll } from '@hooks/useCarouselScroll'
+import { useFetch } from '@hooks/useFetch'
+import { useCarouselStore } from '@store/carousel-store'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { normalizeString } from '@utils/normalize-string'
+import { reduceString } from '@utils/reduce-string'
+
+import type { Anime } from 'types'
 const Indicator = memo(
   ({
     index,
@@ -26,7 +27,7 @@ const Indicator = memo(
       <button
         onClick={() => onClick(index)}
         className={`h-3 rounded-full transition-all duration-300 ease-in-out ${
-          currentIndex === index ? 'w-8 bg-enfasisColor' : 'w-3 bg-white'
+          currentIndex === index ? 'bg-enfasisColor w-8' : 'w-3 bg-white'
         }`}
         aria-current={currentIndex === index ? 'true' : 'false'}
         aria-label={`Slide ${index + 1}`}
@@ -38,8 +39,8 @@ const Indicator = memo(
 const LoadingCarousel = () => (
   <div className="carousel-anime-banner relative h-[50dvh] animate-pulse bg-zinc-900 md:h-[90dvh]">
     <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
-      <div className="z-10 mx-auto -mt-14 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:ml-8 md:mr-16 md:h-auto md:items-start md:justify-normal">
-        <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-800 md:mb-4 md:mt-4"></div>
+      <div className="z-10 mx-auto -mt-14 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:mr-16 md:ml-8 md:h-auto md:items-start md:justify-normal">
+        <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-800 md:mt-4 md:mb-4"></div>
         <div className="z-30 hidden h-12 w-full animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
 
         <div className="flex w-full flex-row items-center gap-4 md:mt-2">
@@ -149,7 +150,7 @@ export const Carousel = () => {
 
   return (
     <div
-      className={`carousel-anime-banner relative left-0 right-0 h-[50dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`carousel-anime-banner relative right-0 left-0 h-[50dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -176,9 +177,9 @@ export const Carousel = () => {
               <div
                 className={`absolute bottom-0 h-full w-full from-transparent ${index % 2 === 0 ? 'left-0 md:bg-gradient-to-l' : 'right-0 md:bg-gradient-to-r'} to-base/70`}
               />
-              <div className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-b from-transparent to-base md:h-1/2" />
+              <div className="to-base absolute right-0 bottom-0 left-0 h-full bg-gradient-to-b from-transparent md:h-1/2" />
               <div
-                className={`mb-20 flex flex-col items-center gap-8 p-6 md:items-start md:justify-start md:gap-4 ${index % 2 === 0 ? 'md:ml-8 md:mr-16' : 'md:ml-16 md:mr-8'} z-10 max-w-2xl text-white`}
+                className={`mb-20 flex flex-col items-center gap-8 p-6 md:items-start md:justify-start md:gap-4 ${index % 2 === 0 ? 'md:mr-16 md:ml-8' : 'md:mr-8 md:ml-16'} z-10 max-w-2xl text-white`}
               >
                 <h2 className="max-h-44 text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-5xl">
                   {reduceString(anime.title, 40)}

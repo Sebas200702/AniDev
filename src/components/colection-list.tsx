@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
+
 import { AnimeCollection } from '@components/anime-colection'
 import { useWindowWidth } from '@store/window-width'
-import { useEffect } from 'react'
 
 interface Props {
   id: number

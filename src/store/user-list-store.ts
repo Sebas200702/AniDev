@@ -1,10 +1,11 @@
 import { create } from 'zustand'
-import type { Section } from 'types'
+
 import { CollectionIcon } from '@components/icons/collection-icon'
 import { CompletedIcon } from '@components/icons/completed-icon'
 import { ToWatchIcon } from '@components/icons/to-watch-icon'
 import { WatchingIcon } from '@components/icons/watch-icon'
 
+import type { Section } from 'types'
 interface UserListsStore {
   userList: Section[]
   setUserList: (userList: Section[]) => void

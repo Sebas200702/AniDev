@@ -1,17 +1,30 @@
-export const Profile = () => {
+import type { Session } from 'types'
+
+interface Props {
+  userInfo: Session
+}
+export const Profile = ({ userInfo }: Props) => {
   const handleClick = () => {
     document.getElementById('userDropdown')?.classList.toggle('hidden')
+  }
+  const handleLogout = async () => {
+    await fetch('/api/auth/signout', {
+      method: 'POST',
+    }).then(() => window.location.reload())
   }
   return (
     <>
       <div className="flex items-center justify-end gap-4">
         <div className="hidden text-end font-medium md:block dark:text-white">
-          <div>Guest</div>
+          <div>{userInfo.name ?? 'Guest'}</div>
         </div>
         <button onClick={handleClick}>
           <img
             className="h-10 w-10 rounded-full"
-            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+            src={
+              userInfo.avatar ??
+              'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
+            }
             alt="Profile"
             loading="lazy"
             decoding="async"
@@ -20,7 +33,7 @@ export const Profile = () => {
       </div>
       <div
         id="userDropdown"
-        className="absolute right-0 top-[70px] z-50 hidden w-48 rounded-md border border-secondary/50 bg-base/50 p-4 text-base text-white shadow-lg"
+        className="border-secondary/50 bg-base/50 absolute top-[70px] right-0 z-50 hidden w-48 rounded-md border p-4 text-base text-white shadow-lg"
       >
         <ul className="space-y-6 text-white">
           <a
@@ -97,6 +110,29 @@ export const Profile = () => {
               />
             </svg>
           </a>
+          {userInfo.name && (
+            <button
+              className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+              onClick={handleLogout}
+            >
+              <span>Logout</span>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                className="h-5 w-5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
+                <path d="M0 0h24v24H0z" stroke="none" />
+                <path d="M14 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2" />
+                <path d="M9 12h12l-3-3M18 15l3-3" />
+              </svg>
+            </button>
+          )}
         </ul>
       </div>
     </>

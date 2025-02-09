@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
-import { useFetch } from '@hooks/useFetch'
-import type { AnimeEpisode } from 'types'
 import '@styles/custom-scrollbar.css'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import Pagination from '@components/pagination'
 
+import { useEffect, useState } from 'react'
+
+import Pagination from '@components/pagination'
+import { useFetch } from '@hooks/useFetch'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+
+import type { AnimeEpisode } from 'types'
 interface Props {
   mal_id: number
   slug: string
@@ -139,10 +141,10 @@ export const AnimeEpisodes = ({
                 </span>
               </div>
             </picture>
-            <h3 className="text-pretty text-xl font-bold text-white transition-all duration-300 ease-in-out">
+            <h3 className="text-xl font-bold text-pretty text-white transition-all duration-300 ease-in-out">
               {title ?? `${slug} Episodio ${episode_id}`}
             </h3>
-            <span className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-lg font-bold text-white">
+            <span className="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-lg font-bold text-white">
               {episode_id}
             </span>
           </a>

@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import type { Anime } from 'types'
+
 import { baseUrl } from '@utils/base-url'
 
+import type { Anime } from 'types'
 describe('Endpoint test get anime with slug', () => {
   it('should return a anime', async () => {
     const anime: Anime | undefined = await fetch(

@@ -1,10 +1,12 @@
-import { useEffect, useState, useCallback } from 'react'
-import { AnimeCard } from '@components/anime-card'
-import { useWindowWidth } from '@store/window-width'
-import { useFetch } from '@hooks/useFetch'
-import type { Anime } from 'types'
 import '@styles/no-scrollbar.css'
 
+import { useCallback, useEffect, useState } from 'react'
+
+import { AnimeCard } from '@components/anime-card'
+import { useFetch } from '@hooks/useFetch'
+import { useWindowWidth } from '@store/window-width'
+
+import type { Anime } from 'types'
 interface Props {
   query: string
   title: string
@@ -78,8 +80,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
         const scrollAmount =
           windowWidth >= 1280
-            ? 6 * (windowWidth / 6.4)
-            : 4 * (windowWidth / 4.4)
+            ? 6 * (windowWidth / 6.4) + 1
+            : 4 * (windowWidth / 4.4) + 1
 
         const scrollDistance =
           direction === 'next' ? scrollAmount : -scrollAmount
@@ -110,7 +112,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
     return (
       <div className="relative mx-auto w-[100dvw]">
         <div className="mt-1 flex flex-row items-center justify-center space-x-4 py-4 md:mt-0">
-          <span className="ml-4 md:ml-8 inline-flex h-6 w-24 animate-pulse rounded-lg bg-zinc-800 md:h-8 md:w-32"></span>
+          <span className="ml-4 inline-flex h-6 w-24 animate-pulse rounded-lg bg-zinc-800 md:ml-8 md:h-8 md:w-32"></span>
           <div className="flex-1 border-t border-white/20 md:mt-2"></div>
         </div>
         <div className="relative overflow-hidden">
@@ -132,7 +134,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   return (
     <section className="anime-slider relative mx-auto w-[100dvw]">
-      <header className="flex items-center space-x-4 px-4 md:px-8 py-4 text-white">
+      <header className="flex items-center space-x-4 px-4 py-4 text-white md:px-8">
         <h2 className="text-xl font-bold md:text-3xl">{title}</h2>
         <div className="flex-1 border-t border-white/20 md:mt-2"></div>
       </header>
@@ -140,7 +142,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
       <div className="relative overflow-hidden">
         <div className="prev-button absolute inset-0 z-20 hidden h-full w-20 py-4 md:flex">
           <div className="flex h-full w-full bg-gradient-to-l from-transparent to-black/90">
-            <button className="group z-10 my-auto h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
+            <button className="group bg-enfasisColor z-10 my-auto h-16 w-10 cursor-pointer rounded-lg transition-all duration-300 ease-in-out focus:outline-none">
               <svg
                 className="mx-auto my-auto h-6 w-6 rotate-180"
                 xmlns="http://www.w3.org/2000/svg"
@@ -162,9 +164,9 @@ export const AnimeSlider = ({ query, title }: Props) => {
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
         </ul>
-        <div className="next-button absolute bottom-0 right-0 top-0 z-20 hidden h-full w-20 items-center justify-end py-4 md:flex">
+        <div className="next-button absolute top-0 right-0 bottom-0 z-20 hidden h-full w-20 items-center justify-end py-4 md:flex">
           <div className="flex h-full w-full items-center justify-end bg-gradient-to-r from-transparent to-black/90">
-            <button className="group z-10 my-auto h-16 w-10 rounded-lg bg-enfasisColor transition-all duration-300 ease-in-out focus:outline-none">
+            <button className="group bg-enfasisColor z-10 my-auto h-16 w-10 cursor-pointer rounded-lg transition-all duration-300 ease-in-out focus:outline-none">
               <svg
                 className="mx-auto my-auto h-6 w-6"
                 xmlns="http://www.w3.org/2000/svg"

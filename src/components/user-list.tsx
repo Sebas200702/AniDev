@@ -1,6 +1,7 @@
+import { UserListOptions } from '@components/user-list-options'
 import { UserListSection } from '@components/user-list-section'
 import { useUserListsStore } from '@store/user-list-store'
-import { UserListOptions } from '@components/user-list-options'
+
 export const UserList = () => {
   const { userList: sections } = useUserListsStore()
   return (

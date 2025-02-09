@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
-import { supabase } from '@libs/supabase'
 import { redis } from '@libs/redis'
+import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = async () => {
   try {

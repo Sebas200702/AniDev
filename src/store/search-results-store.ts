@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+
 import type { Anime, AppliedFilters } from 'types'
 
 interface SearchStoreResults {

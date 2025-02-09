@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+
 import type { Anime } from 'types'
 
 interface CarouselStore {

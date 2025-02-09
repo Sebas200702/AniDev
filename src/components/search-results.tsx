@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
+
 import { AnimeCard } from '@components/anime-card'
 import { useSearchStoreResults } from '@store/search-results-store'
-import { useEffect, useState } from 'react'
 
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)

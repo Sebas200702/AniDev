@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
 import { useSearchStoreResults } from '@store/search-results-store'
 import { useWindowWidth } from '@store/window-width'
 
@@ -9,7 +10,11 @@ interface Props {
 export const SearchBar = ({ location }: Props) => {
   const { query, setQuery, setLoading } = useSearchStoreResults()
   const [isExpanded, setIsExpanded] = useState(true)
+  const [count, setCount] = useState(0)
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
+  const mobileSettings =
+    isExpanded && windowWidth && windowWidth < 768 && count % 2 === 0
+  const desktopSettings = isExpanded && windowWidth && windowWidth >= 768
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,6 +59,7 @@ export const SearchBar = ({ location }: Props) => {
   }, [])
 
   const toggleExpand = () => {
+    setCount(count + 1)
     if (isExpanded) return
     setIsExpanded(!isExpanded)
     document.getElementById('default-search')?.focus()
@@ -61,17 +67,17 @@ export const SearchBar = ({ location }: Props) => {
 
   return (
     <form
-      className={`flex transition-all inset-0 duration-300 md:relative md:w-full ${isExpanded && windowWidth && windowWidth < 768 ? 'absolute z-50 w-full translate-y-full bg-base/30 p-2' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
+      className={`inset-0 flex transition-all duration-300 md:relative md:w-full ${isExpanded && windowWidth && windowWidth < 768 ? 'bg-base/30 absolute z-50 w-full translate-y-full p-2' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
       onSubmit={handleSubmit}
       id="search-bar"
     >
       <div
-        className={`flex w-full items-center justify-center overflow-hidden rounded-lg bg-secondary/30 px-2 transition-all duration-300 ease-in-out`}
+        className={`flex w-full items-center justify-center overflow-hidden rounded-lg bg-black/40 px-2 transition-all duration-300 ease-in-out`}
       >
         <input
           type="search"
           id="default-search"
-          className={`w-full border-none bg-transparent py-2 text-sm text-white transition-all duration-300 ease-in-out autofill:!bg-transparent autofill:!shadow-transparent focus:outline-none focus:ring-0 ${
+          className={`w-full border-none bg-transparent py-2 text-sm text-white transition-all duration-300 ease-in-out focus:ring-0 focus:outline-none ${
             isExpanded || (windowWidth && windowWidth >= 768)
               ? 'px-3 opacity-100'
               : 'w-0 px-0 opacity-0'
@@ -83,7 +89,7 @@ export const SearchBar = ({ location }: Props) => {
         />
 
         <button
-          type={'button'}
+          type={mobileSettings || desktopSettings ? 'submit' : 'button'}
           className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${windowWidth && windowWidth < 768 ? 'absolute' : ''} ${isExpanded && windowWidth && windowWidth < 768 ? 'right-2' : ''} `}
           onClick={toggleExpand}
         >

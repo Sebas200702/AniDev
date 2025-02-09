@@ -1,16 +1,19 @@
-import { useMemo, useEffect } from 'react'
-import { SearchResults } from '@components/search-results'
-import { useDebounce } from '@hooks/useDebounce'
-import { useFetch } from '@hooks/useFetch'
-import { useSearchStoreResults } from '@store/search-results-store'
-import { FilterSection } from './filter-section'
-import { baseUrl } from '@utils/base-url'
-import { createFiltersToApply } from '@utils/filters-to-apply'
-import type { Anime } from 'types'
-import { useUrlSync } from '@hooks/useUrlSync'
 import '@styles/custom-scrollbar.css'
 import '@styles/search-section.css'
 
+import { useEffect, useMemo } from 'react'
+
+import { SearchResults } from '@components/search-results'
+import { useDebounce } from '@hooks/useDebounce'
+import { useFetch } from '@hooks/useFetch'
+import { useUrlSync } from '@hooks/useUrlSync'
+import { useSearchStoreResults } from '@store/search-results-store'
+import { baseUrl } from '@utils/base-url'
+import { createFiltersToApply } from '@utils/filters-to-apply'
+
+import { FilterSection } from './filter-section'
+
+import type { Anime } from 'types'
 export const SearchComponent = () => {
   const { query, setResults, appliedFilters, setLoading } =
     useSearchStoreResults()

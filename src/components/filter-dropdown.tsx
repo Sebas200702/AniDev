@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
-import type { FilterOption } from 'types'
-import { useWindowWidth } from '@store/window-width'
 import '@styles/custom-scrollbar.css'
 
+import { useEffect, useRef, useState } from 'react'
+
+import { useWindowWidth } from '@store/window-width'
+
+import type { FilterOption } from 'types'
 interface FilterDropdownProps {
   label: string
   values: string[]
@@ -18,7 +20,6 @@ export const FilterDropdown = ({
   onClear,
   options,
 }: FilterDropdownProps) => {
-
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
@@ -32,12 +33,14 @@ export const FilterDropdown = ({
       )
     )
   }, [search, options])
- 
 
   useEffect(() => {
     window.addEventListener('click', (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node) && window.innerWidth< 768)
-       {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        window.innerWidth < 768
+      ) {
         setIsOpen(false)
       }
     })
@@ -83,7 +86,7 @@ export const FilterDropdown = ({
             className="min-w-[50px] flex-grow bg-transparent focus:outline-none"
           />
         </div>
-        <div className="absolute right-6 top-1/2 flex max-w-60 -translate-y-1/2 items-center space-x-1">
+        <div className="absolute top-1/2 right-6 flex max-w-60 -translate-y-1/2 items-center space-x-1">
           {(values.length > 0 || search) && (
             <button
               onClick={(e) => {
@@ -91,7 +94,7 @@ export const FilterDropdown = ({
                 onClear()
                 setSearch('')
               }}
-              className="rounded p-1 hover:bg-enfasisColor/80"
+              className="hover:bg-enfasisColor/80 rounded p-1"
             >
               <svg
                 className="h-3 w-3 text-gray-300"
@@ -118,12 +121,12 @@ export const FilterDropdown = ({
       </div>
 
       <div
-        className={`custom-scrollbar absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md bg-base shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
+        className={`custom-scrollbar bg-base absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
       >
         {filteredOptions.map((option) => (
           <label
             key={option.value}
-            className="flex cursor-pointer items-center gap-3 px-4 py-2 text-sm hover:bg-secondary"
+            className="hover:bg-secondary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm"
           >
             <input
               type="checkbox"
@@ -132,7 +135,7 @@ export const FilterDropdown = ({
               className="peer hidden"
             />
 
-            <span className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out peer-checked:border-enfasisColor peer-checked:bg-enfasisColor">
+            <span className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out"

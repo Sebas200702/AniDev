@@ -1,0 +1,28 @@
+---
+import Input from '@components/input.astro'
+import EmailIcon from '@icons/email-icon.astro'
+import PasswordIcon from '@icons/password-icon.astro'
+interface Props {
+  title: string
+  action: string
+  bgImage: string
+}
+
+const { title, action, bgImage } = Astro.props
+---
+
+<section
+  class="flex w-full flex-col items-center justify-center gap-4 p-4 text-white"
+>
+  <div class="flex w-full max-w-3xl flex-row">
+    <form class="mt-8 w-full space-y-6" action={action} method="post">
+      <h2 class="text-4xl font-bold text-white">{title}</h2>
+      <Input name="email" type="email" placeholder="Email" required>
+        <EmailIcon class="h-5 w-5" />
+      </Input>
+      <Input name="password" type="password" placeholder="Password" required>
+        <PasswordIcon class="h-5 w-5" />
+      </Input>
+    </form>
+  </div>
+</section>

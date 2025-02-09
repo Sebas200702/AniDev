@@ -36,7 +36,7 @@ export const VideoPlayer = ({ url, sutitles }) => {
   }, [])
 
   return (
-    <div className="video-container aspect-[16/9] h-full ">
+    <div className="video-container aspect-[16/9] h-full">
       <video ref={videoRef} className="video-js vjs-default-skin" />
     </div>
   )

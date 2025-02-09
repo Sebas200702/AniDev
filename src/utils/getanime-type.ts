@@ -1,4 +1,5 @@
 import { AnimeTypes } from 'types'
+
 export const getAnimeType = (type?: string) => {
   if (!type) return 'Unknown'
   const typeNormalized = type.toLowerCase()

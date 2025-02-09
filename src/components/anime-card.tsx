@@ -1,6 +1,7 @@
 import { AnimeTag } from '@components/anime-tag'
-import { normalizeString } from '@utils/normalize-string'
 import { genreToColor } from '@utils/genre-to-color'
+import { normalizeString } from '@utils/normalize-string'
+
 import type { Anime } from 'types'
 
 interface Props {
@@ -65,7 +66,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
             className="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
           />
-          <div className="duration-400 absolute bottom-0 left-0 h-1/3 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
+          <div className="absolute bottom-0 left-0 h-1/3 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all duration-400 ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
         </picture>
         <footer className="absolute bottom-4 left-1 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoin
@@ -80,7 +81,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
           </h3>
         </footer>
       </a>
-      <div className="absolute right-2 top-5">
+      <div className="absolute top-5 right-2">
         <AnimeTag tag={year} type={year} />
       </div>
     </article>

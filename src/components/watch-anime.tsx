@@ -1,4 +1,5 @@
 import { PlayIcon } from '@components/icons/play-icon'
+
 export const WatchAnimeButton = ({ url }: { url: string }) => {
   return (
     <a

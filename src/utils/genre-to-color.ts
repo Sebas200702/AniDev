@@ -1,4 +1,5 @@
 import { AnimeGenres } from 'types'
+
 export const genreToColor = (genre: string) => {
   if (genre === AnimeGenres.ACTION) return 'md:group-hover:text-red-400'
   if (genre === AnimeGenres.ADVENTURE) return 'md:group-hover:text-enfasisColor'

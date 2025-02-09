@@ -1,0 +1,25 @@
+---
+import type { HTMLInputTypeAttribute } from 'types'
+interface Props {
+  name: string
+  type: HTMLInputTypeAttribute
+  placeholder: string
+  required?: boolean
+}
+
+const { name, type, placeholder, required } = Astro.props
+---
+
+<div class="relative flex w-full flex-col gap-2">
+  <input
+    type={type}
+    name={name}
+    id={name}
+    class="bg-base/30 p-2"
+    placeholder={placeholder}
+    required={required}
+  />
+  <div class="absolute top-1/2 right-2 -translate-y-1/2 text-gray-400">
+    <slot />
+  </div>
+</div>

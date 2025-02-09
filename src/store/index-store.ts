@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+
 import type { Collection } from 'types'
 interface IndexStore {
   animeBanners: number[]
