@@ -2,8 +2,6 @@ import '@styles/custom-scrollbar.css'
 
 import { useEffect, useRef, useState } from 'react'
 
-import { useWindowWidth } from '@store/window-width'
-
 import type { FilterOption } from 'types'
 interface FilterDropdownProps {
   label: string
