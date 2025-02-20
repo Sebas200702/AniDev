@@ -1,24 +1,9 @@
-import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
-
-    const cacheKey = `animes ${url.searchParams.toString()}`
-    const cachedData = await redis.get(cacheKey)
-
-    if (cachedData) {
-      return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
-        status: 200,
-        headers: { 'content-type': 'application/json' },
-      })
-    }
-
     const [order_by, order_direction] = url.searchParams
       .get('order_by')
       ?.split(' ') ?? ['relevance_score', 'desc']
@@ -99,7 +84,6 @@ export const GET: APIRoute = async ({ url }) => {
       console.log(error)
       throw new Error('Ocurrió un error al obtener los animes.')
     }
-    await redis.set(cacheKey, JSON.stringify(data))
 
     return new Response(JSON.stringify({ data }), {
       status: 200,

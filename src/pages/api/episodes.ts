@@ -1,13 +1,9 @@
-import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
     const id = url.searchParams.get('id')
     const page = url.searchParams.get('page')
       ? parseInt(url.searchParams.get('page') ?? '1', 10)
@@ -30,24 +26,12 @@ export const GET: APIRoute = async ({ url }) => {
       )
     }
 
-    const cached = await redis.get(`episodes:${id}-${page}`)
-
-    if (cached) {
-      return new Response(JSON.stringify({ data: JSON.parse(cached) }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-    }
     const { data, error } = await supabase
       .from('anime_episodes')
       .select('*')
       .eq('anime_mal_id', id)
       .order('episode_id', { ascending: true })
       .range((page - 1) * 100, page * 100 - 1)
-
-    await redis.set(`episodes:${id}-${page}`, JSON.stringify(data))
 
     if (error) {
       throw new Error('Error fetching episodes')

@@ -1,21 +1,11 @@
-import { redis } from '@libs/redis'
+
 import { supabase } from '@libs/supabase'
 
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
-    const cachedData = await redis.get(`episode:${url.searchParams.toString()}`)
 
-    if (cachedData) {
-      return new Response(JSON.stringify({ episode: JSON.parse(cachedData) }), {
-        status: 200,
-        headers: { 'content-type': 'application/json' },
-      })
-    }
     const slug = url.searchParams.get('slug')
     const ep = url.searchParams.get('ep')
 
@@ -51,11 +41,6 @@ export const GET: APIRoute = async ({ url }) => {
       .eq('anime_mal_id', id)
       .eq('episode_id', ep)
       .single()
-
-    await redis.set(
-      `episode:${url.searchParams.toString()}`,
-      JSON.stringify(data)
-    )
 
     if (error) {
       if (import.meta.env.MODE === 'development') {
