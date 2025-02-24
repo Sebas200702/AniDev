@@ -1,5 +1,3 @@
-import '@styles/no-scrollbar.css'
-
 import { useCallback, useEffect, useState } from 'react'
 
 import { AnimeCard } from '@components/anime-card'
@@ -52,6 +50,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }, [setWindowWidth])
 
   useEffect(() => {
+    console.log(windowWidth)
+
     const sliders = document.querySelectorAll('.anime-slider')
 
     sliders.forEach((slider) => {
@@ -78,10 +78,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
       const handleScroll = (direction: 'next' | 'prev') => {
         if (!sliderList || windowWidth === null) return
 
-        const scrollAmount =
-          windowWidth >= 1280
-            ? 6 * (windowWidth / 6.4) + 1
-            : 4 * (windowWidth / 4.4) + 1
+        const scrollAmount = windowWidth - 120
 
         const scrollDistance =
           direction === 'next' ? scrollAmount : -scrollAmount
@@ -134,8 +131,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   return (
     <section className="anime-slider relative mx-auto w-[100dvw]">
-      <header className="flex items-center space-x-4 px-4 py-4 text-white md:px-8">
-        <h2 className="text-xl font-bold md:text-3xl">{title}</h2>
+      <header className="flex items-center space-x-4 px-4 py-4 md:px-20">
+        <h3 className="text-lx font-bold md:text-3xl">{title}</h3>
         <div className="flex-1 border-t border-white/20 md:mt-2"></div>
       </header>
 
@@ -159,7 +156,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
           </div>
         </div>
 
-        <ul className="anime-list mx-auto flex w-full flex-row overflow-x-auto overflow-y-hidden scroll-smooth md:px-[calc(((100dvw)/4.4)*0.2)] xl:px-[calc(((100dvw)/6.4)*0.2)]">
+        <ul className="anime-list mx-auto flex w-full flex-row gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-5 md:gap-10 md:px-20">
           {displayAnimes.map((anime: Anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} context={title} />
           ))}
