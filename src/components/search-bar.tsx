@@ -9,11 +9,10 @@ interface Props {
 
 export const SearchBar = ({ location }: Props) => {
   const { query, setQuery, setLoading } = useSearchStoreResults()
-  const [count, setCount] = useState(0)
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 const [isExpanded, setIsExpanded] = useState(windowWidth && windowWidth > 768)
   const mobileSettings =
-    isExpanded && windowWidth && windowWidth < 768 && count % 2 === 0
+    isExpanded && windowWidth && windowWidth < 768 && query 
   const desktopSettings = isExpanded && windowWidth && windowWidth >= 768
 
  
