@@ -1,4 +1,3 @@
-import '@styles/no-scrollbar.css'
 import '@styles/fade-out.css'
 
 import { memo, useCallback, useEffect } from 'react'
@@ -166,7 +165,7 @@ export const Carousel = () => {
           {banners.map((anime, index) => (
             <div
               key={anime.mal_id}
-              className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center px-8 md:justify-normal ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+              className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
             >
               <div
                 className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
@@ -175,22 +174,22 @@ export const Carousel = () => {
                 }}
               />
               <div
-                className={`absolute bottom-0 h-full w-full from-transparent ${index % 2 === 0 ? 'left-0 md:bg-gradient-to-l' : 'right-0 md:bg-gradient-to-r'} to-base/70`}
+                className={`absolute bottom-0 h-full w-full from-transparent ${index % 2 === 0 ? 'left-0 md:bg-gradient-to-l' : 'right-0 md:bg-gradient-to-r'} to-Primary-950/70`}
               />
-              <div className="to-base absolute right-0 bottom-0 left-0 h-full bg-gradient-to-b from-transparent md:h-1/2" />
+              <div className="to-Primary-950 absolute right-0 bottom-0 left-0 h-full bg-gradient-to-b from-transparent md:h-1/2" />
               <div
-                className={`mb-20 flex flex-col items-center gap-8 p-6 md:items-start md:justify-start md:gap-4 ${index % 2 === 0 ? 'md:mr-16 md:ml-8' : 'md:mr-8 md:ml-16'} z-10 max-w-2xl text-white`}
+                className={`z-10 mb-20 flex max-w-[800px] flex-col items-center gap-8 text-white md:items-start md:justify-start md:gap-4`}
               >
-                <h2 className="max-h-44 text-center text-2xl font-bold text-white drop-shadow-md md:mb-4 md:text-left md:text-5xl">
+                <h2 className="title max-h-44 text-center drop-shadow-md md:mb-4">
                   {reduceString(anime.title, 40)}
                 </h2>
-                <p className="mb-4 hidden text-xl text-white drop-shadow md:flex">
-                  {reduceString(anime.synopsis, 100)}
+                <p className="text-l mb-4 hidden drop-shadow md:flex">
+                  {reduceString(anime.synopsis, 200)}
                 </p>
-                <div className="mx-auto flex w-[240px] flex-row items-center gap-4 md:mx-0 md:w-80">
+                <div className="mx-auto flex w-[300px] flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
                   <a
                     href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
-                    className="button-secondary flex w-full"
+                    className="button-secondary text-s flex w-full"
                   >
                     Learn More
                   </a>
@@ -213,55 +212,57 @@ export const Carousel = () => {
           />
         ))}
       </div>
-      <button
-        type="button"
-        className="group absolute start-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none md:px-8"
-        onClick={handlePrev}
-      >
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
-          <svg
-            className="h-3 w-3 text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 6 10"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 1 1 5l4 4"
-            />
-          </svg>
-          <span className="sr-only">Previous</span>
-        </span>
-      </button>
+      <div className="absolute bottom-16 z-50 flex w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
+        <button
+          type="button"
+          className="group h-12 w-12 cursor-pointer items-center justify-center rounded-lg backdrop-blur-sm focus:outline-none md:h-16 md:w-16"
+          onClick={handlePrev}
+        >
+          <span className="bg-Primary-900/40 group-hover:bg-Primary-800/50 inline-flex h-full w-full items-center justify-center rounded-lg">
+            <svg
+              className="h-3 w-3 text-white md:h-4 md:w-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+            <span className="sr-only">Previous</span>
+          </span>
+        </button>
 
-      <button
-        type="button"
-        className="group absolute end-0 top-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none md:px-8"
-        onClick={handleNext}
-      >
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black/30 group-hover:bg-black/50 group-focus:ring-2 group-focus:ring-white">
-          <svg
-            className="h-3 w-3 text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 6 10"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 9 4-4-4-4"
-            />
-          </svg>
-          <span className="sr-only">Next</span>
-        </span>
-      </button>
+        <button
+          type="button"
+          className="group h-12 w-12 cursor-pointer items-center justify-center rounded-lg backdrop-blur-sm focus:outline-none md:h-16 md:w-16"
+          onClick={handleNext}
+        >
+          <span className="bg-Primary-900/40 group-hover:bg-Primary-800/50 inline-flex h-full w-full items-center justify-center rounded-lg">
+            <svg
+              className="h-3 w-3 text-white md:h-4 md:w-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+            <span className="sr-only">Next</span>
+          </span>
+        </button>
+      </div>
     </div>
   )
 }
