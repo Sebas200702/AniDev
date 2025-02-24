@@ -43,12 +43,12 @@ export const AnimeCard = ({ anime, context }: Props) => {
 
   return (
     <article
-      className="group relative transition-all duration-200 ease-in-out md:hover:scale-[1.03]"
+      className="group relative transition-all duration-200 ease-in-out md:hover:scale-[1.02]"
       title={title}
     >
       <a
         href={`/${slug}_${mal_id}`}
-        className={`flex h-auto flex-col items-center rounded-lg p-4 ${context === 'search' ? '' : 'w-[calc((100dvw)/2.4)] md:w-[calc((100dvw)/4.4)] xl:w-[calc((100dvw)/6.4)]'}`}
+        className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : 'w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc(calc(100dvw-360px)/6)]'}`}
         aria-label={`View details for ${title}`}
       >
         <picture
@@ -68,20 +68,20 @@ export const AnimeCard = ({ anime, context }: Props) => {
           />
           <div className="absolute bottom-0 left-0 h-1/3 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all duration-400 ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
         </picture>
-        <footer className="absolute bottom-4 left-1 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
+        <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoin
             class={`h-6 w-6 ${status === 'Currently Airing' ? 'text-green-400 md:group-hover:text-green-500' : status === 'Finished Airing' ? 'text-blue-400 md:group-hover:text-blue-500' : 'text-yellow-400 md:group-hover:text-yellow-500'}`}
             status={status}
           />
-          <h3
-            className={`w-full ${genreToColor(genres[0])} truncate text-xs font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
+          <h5
+            className={`w-full ${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
             aria-hidden="true"
           >
             {title}
-          </h3>
+          </h5>
         </footer>
       </a>
-      <div className="absolute top-5 right-2">
+      <div className="absolute top-2 -right-2">
         <AnimeTag tag={year} type={year} />
       </div>
     </article>
