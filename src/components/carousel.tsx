@@ -1,15 +1,15 @@
-import '@styles/fade-out.css'
+import '@styles/fade-out.css';
 
-import { memo, useCallback, useEffect } from 'react'
+import { memo, useCallback, useEffect } from 'react';
 
-import { WatchAnimeButton } from '@components/watch-anime'
-import { useCarouselScroll } from '@hooks/useCarouselScroll'
-import { useFetch } from '@hooks/useFetch'
-import { useCarouselStore } from '@store/carousel-store'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { normalizeString } from '@utils/normalize-string'
-import { reduceString } from '@utils/reduce-string'
+import { WatchAnimeButton } from '@components/watch-anime';
+import { useCarouselScroll } from '@hooks/useCarouselScroll';
+import { useFetch } from '@hooks/useFetch';
+import { useCarouselStore } from '@store/carousel-store';
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy';
+import { createDynamicUrl } from '@utils/create-dynamic-url';
+import { normalizeString } from '@utils/normalize-string';
+import { reduceString } from '@utils/reduce-string';
 
 import type { Anime } from 'types'
 const Indicator = memo(
@@ -149,7 +149,7 @@ export const Carousel = () => {
 
   return (
     <div
-      className={`carousel-anime-banner relative right-0 left-0 h-[50dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`carousel-anime-banner relative right-0 mb-4 left-0 h-[50dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -212,7 +212,7 @@ export const Carousel = () => {
           />
         ))}
       </div>
-      <div className="absolute bottom-16 z-50 flex w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
+      <div className="absolute bottom-12 z-50 flex w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
         <button
           type="button"
           className="group h-12 w-12 cursor-pointer items-center justify-center rounded-lg backdrop-blur-sm focus:outline-none md:h-16 md:w-16"
