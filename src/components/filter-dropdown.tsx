@@ -1,5 +1,3 @@
-import '@styles/custom-scrollbar.css'
-
 import { useEffect, useRef, useState } from 'react'
 
 import type { FilterOption } from 'types'
@@ -119,12 +117,12 @@ export const FilterDropdown = ({
       </div>
 
       <div
-        className={`custom-scrollbar bg-base absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
+        className={`custom-scrollbar bg-Primary-950 absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
       >
         {filteredOptions.map((option) => (
           <label
             key={option.value}
-            className="hover:bg-secondary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm"
+            className="hover:bg-Complementary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm"
           >
             <input
               type="checkbox"
