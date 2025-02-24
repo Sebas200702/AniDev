@@ -10,7 +10,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   output: 'server',
-  site: 'https://animeflix.vercel.app',
+  site: 'https://ani-dev.vercel.app',
   adapter: vercel(),
   integrations: [react(), sitemap()],
 
