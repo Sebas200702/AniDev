@@ -15,7 +15,7 @@ export const Profile = ({ userInfo }: Props) => {
   return (
     <>
       <div className="flex items-center justify-end gap-4">
-        <div className="hidden text-end font-medium md:block dark:text-white">
+        <div className="text-s hidden text-end md:block dark:text-white">
           <div>{userInfo.name ?? 'Guest'}</div>
         </div>
         <button onClick={handleClick}>
@@ -33,7 +33,7 @@ export const Profile = ({ userInfo }: Props) => {
       </div>
       <div
         id="userDropdown"
-        className="border-secondary/50 bg-base/50 absolute top-[70px] right-0 z-50 hidden w-48 rounded-md border p-4 text-base text-white shadow-lg"
+        className="border-Primary-950/50 bg-Primary-950/50 absolute top-[70px] right-0 z-50 hidden w-48 rounded-md border p-4 text-base text-white shadow-lg"
       >
         <ul className="space-y-6 text-white">
           <a
