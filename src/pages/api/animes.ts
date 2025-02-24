@@ -89,6 +89,7 @@ export const GET: APIRoute = async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=604800',
       },
     })
   } catch (error) {
