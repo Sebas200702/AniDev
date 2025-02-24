@@ -106,28 +106,28 @@ export const AnimeCollection = ({ id }: Props) => {
       <div className="flex h-60 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800 px-4"></div>
     )
 
+  const getPosition = (i: number) => {
+    if (i === 0) return style1
+    if (i === 1) return style2
+    return style3
+  }
+
   return (
-    <article className="bg-secondary mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
+    <article className="bg-Complementary mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
       <a href={`/collection/${normalizeString(title)}_${id}`}>
-        <h2 className="mx-auto h-12 max-w-80 p-4 text-center text-xl font-bold text-balance text-white">
+        <h4 className="text-lx mx-auto h-12 max-w-80 p-4 text-center font-bold text-balance text-white">
           {title || 'Sin Título'}
-        </h2>
+        </h4>
 
         <ul className="mx-auto -mt-4 flex h-full w-full flex-row justify-center">
           {animes.map((anime, i) => (
             <li key={anime.mal_id}>
-              <div
-                className={`bg-secondary aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center ${
-                  i === 0 ? style1 : i === 1 ? style2 : style3
-                }`}
-              >
-                <img
-                  src={anime.image_webp}
-                  alt={anime.title}
-                  fetchPriority="high"
-                  className="aspect-[225/330] w-full rounded-xl p-1.5"
-                />
-              </div>
+              <img
+                src={anime.image_webp}
+                alt={anime.title}
+                fetchPriority="high"
+                className={`aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center ${getPosition(i)}`}
+              />
             </li>
           ))}
         </ul>
