@@ -16,24 +16,7 @@ export const SearchBar = ({ location }: Props) => {
     isExpanded && windowWidth && windowWidth < 768 && count % 2 === 0
   const desktopSettings = isExpanded && windowWidth && windowWidth >= 768
 
-  useEffect(() => {
-    const handleResize = () => {
-      const newWidth = window.innerWidth
-      setWindowWidth(newWidth)
-      if (newWidth >= 768) {
-        setIsExpanded(true)
-      } else {
-        setIsExpanded(false)
-      }
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+ 
 
   useEffect(() => {
     const $searchBar = document.getElementById('search-bar') as HTMLFormElement
