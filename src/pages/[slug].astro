@@ -35,6 +35,7 @@ const getAnimeData = async () => {
 }
 
 const animeData = await getAnimeData()
+console.log(animeData)
 
 if (!animeData) {
   return Astro.redirect('/404', 301)
