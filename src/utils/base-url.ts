@@ -1,4 +1,4 @@
 export const baseUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://ani-dev-rust.vercel.app'
+    ? 'https://ani-dev.vercel.app'
     : 'http://localhost:4321'
