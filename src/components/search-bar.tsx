@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSearchStoreResults } from '@store/search-results-store'
-import { useWindowWidth } from '@store/window-width'
+import { useSearchStoreResults } from '@store/search-results-store';
+import { useWindowWidth } from '@store/window-width';
 
 interface Props {
   location: string
@@ -67,17 +67,17 @@ export const SearchBar = ({ location }: Props) => {
 
   return (
     <form
-      className={`inset-0 flex transition-all duration-300 md:relative md:w-full ${isExpanded && windowWidth && windowWidth < 768 ? 'bg-base/30 absolute z-50 w-full translate-y-full p-2' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
+      className={`inset-0 flex transition-all duration-300 md:relative md:w-full ${isExpanded && windowWidth && windowWidth < 768 ? 'bg-Primary-950/30 absolute z-50 w-full translate-y-full p-2' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
       onSubmit={handleSubmit}
       id="search-bar"
     >
       <div
-        className={`flex w-full items-center justify-center overflow-hidden rounded-lg bg-black/40 px-2 transition-all duration-300 ease-in-out`}
+        className={`flex w-full items-center justify-center overflow-hidden border-1 border-Primary-50/30 rounded-lg bg-black/40 px-2 transition-all duration-300 ease-in-out`}
       >
         <input
           type="search"
           id="default-search"
-          className={`w-full border-none bg-transparent py-2 text-sm text-white transition-all duration-300 ease-in-out focus:ring-0 focus:outline-none ${
+          className={`text-s w-full border-none bg-transparent py-2 text-white transition-all duration-300 ease-in-out focus:ring-0 focus:outline-none ${
             isExpanded || (windowWidth && windowWidth >= 768)
               ? 'px-3 opacity-100'
               : 'w-0 px-0 opacity-0'
