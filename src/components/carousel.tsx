@@ -36,7 +36,7 @@ const Indicator = memo(
 )
 
 const LoadingCarousel = () => (
-  <div className="carousel-anime-banner relative h-[50dvh] animate-pulse bg-zinc-900 md:h-[90dvh]">
+  <div className="carousel-anime-banner relative h-[60dvh] animate-pulse bg-zinc-900 md:h-[90dvh]">
     <div className="relative flex h-full w-full flex-shrink-0 flex-col items-center px-8 py-4 md:flex-row">
       <div className="z-10 mx-auto -mt-14 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:mr-16 md:ml-8 md:h-auto md:items-start md:justify-normal">
         <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-800 md:mt-4 md:mb-4"></div>
@@ -149,7 +149,7 @@ export const Carousel = () => {
 
   return (
     <div
-      className={`carousel-anime-banner relative right-0 mb-4 left-0 h-[50dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`carousel-anime-banner relative right-0 mb-4 left-0 h-[60dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
     >
@@ -202,7 +202,7 @@ export const Carousel = () => {
           ))}
         </div>
       </div>
-      <div className="absolute bottom-[20%] left-1/2 z-30 flex -translate-x-1/2 space-x-3 md:bottom-[5%]">
+      <div className="absolute bottom-20 left-1/2 z-30 flex -translate-x-1/2 space-x-3 md:bottom-[5%]">
         {banners.map((anime, index) => (
           <Indicator
             key={anime.mal_id}
