@@ -61,7 +61,7 @@ const slug = normalizeString(title)
 const description = reduceString(synopsis, 200) || 'No description available'
 const url = `${baseUrl}/${Astro.params.slug}`
 const watchNowUrl = `/watch/${slug}_${mal_id}`
-const shareText = `Watch ${title} on Animeflix`
+const shareText = `Watch ${title} on AniDev`
 ---
 
 <Layout description={description} image={image_large_webp} title={title}>
