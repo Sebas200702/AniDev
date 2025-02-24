@@ -80,7 +80,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative flex flex-row items-center py-4`}
+      className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20`}
     >
       <a
         href={`/${slug}_${mal_id}`}
@@ -88,7 +88,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         aria-label={`View details for ${title}`}
       >
         <picture
-          className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
+          className="aspect-[1080/550] h-full w-full object-cover object-center md:aspect-[1080/350]"
           style={{
             backgroundImage: `url(${createImageUrlProxy(imageUrl, '100', '0', 'webp')})`,
           }}
@@ -97,25 +97,25 @@ export const AnimeBanner = ({ id }: { id: number }) => {
             src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
             alt="Anime Banner"
             loading="lazy"
-            className="aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
+            className="aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]"
             width={720}
             height={300}
           />
         </picture>
-        <div className="to-base absolute inset-0 bg-gradient-to-b from-transparent opacity-0 transition-all duration-500 ease-in-out md:group-hover:opacity-70" />
+        <div className="to-Primary-950 absolute inset-0 bg-gradient-to-b from-transparent opacity-0 transition-all duration-500 ease-in-out md:group-hover:opacity-70" />
       </a>
-      <div className="absolute z-10 mx-auto flex h-full w-full flex-col justify-between gap-4 bg-black/30 px-4 py-6 md:right-0 md:bottom-0 md:m-8 md:h-auto md:max-w-80 md:rounded-lg md:p-4">
+      <div className="bg-Primary-950/50 absolute right-0 z-10 flex h-full w-full flex-col items-center justify-between p-8 md:right-20 md:bottom-10 md:max-h-44 md:max-w-96 md:rounded-l-2xl md:p-4 md:pr-10 xl:max-h-60">
         <a
           href={`/${slug}_${mal_id}`}
           className="transition-all duration-200 ease-in-out md:hover:opacity-95"
         >
-          <h2 className="max-h-16 overflow-hidden text-center text-xl font-bold text-white md:text-2xl">
-            {title}
-          </h2>
+          <h3 className="text-lx max-h-44 w-full overflow-hidden text-center font-bold text-white">
+            {reduceString(title, 40)}
+          </h3>
         </a>
 
-        <p className="max-h-32 overflow-hidden text-center text-sm text-white md:text-start">
-          {reduceString(synopsis, 70)}
+        <p className="text-sx md:text-s max-h-32 w-full overflow-hidden text-center text-white md:text-start">
+          {reduceString(synopsis, 80)}
         </p>
         <WatchAnimeButton url={`/watch/${slug}_${mal_id}`} />
       </div>
