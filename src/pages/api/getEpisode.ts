@@ -1,11 +1,9 @@
-
 import { supabase } from '@libs/supabase'
 
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ url }) => {
   try {
-
     const slug = url.searchParams.get('slug')
     const ep = url.searchParams.get('ep')
 
