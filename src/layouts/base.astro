@@ -3,11 +3,10 @@ import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar.astro'
 import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
-import '@styles/no-scrollbar.css'
 import '@styles/global.css'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep')
-const baseTitle = 'Animeflix - Watch anime online free'
+const baseTitle = 'AniDev - Watch anime online free'
 const { description, image, title } = Astro.props
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
   title?: string
 }
 const SEO_DESCRIPTION =
-  'Animeflix is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
+  'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 
 const seoTitle = (title: string | null, episode: string | null) => {
   if (!episode && !title) return baseTitle
@@ -35,7 +34,7 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <meta
       property="og:image"
       name="og:image"
-      content={image ?? 'https://animeflix.vercel.app/og-image.jpg'}
+      content={image ?? 'https://ani-dev.vercel.app/og-image.jpg'}
     />
     <meta property="og:title" content={seoTitle(title ?? '', episode)} />
     <meta property="og:description" content={description ?? SEO_DESCRIPTION} />
@@ -46,8 +45,14 @@ const seoTitle = (title: string | null, episode: string | null) => {
     />
     <meta name="twitter:description" content={description ?? SEO_DESCRIPTION} />
     <meta name="twitter:title" content={seoTitle(title ?? '', episode)} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="canonical" href="https://animeflix.vercel.app/" />
+    <link rel="canonical" href="https://ani-dev.vercel.app/" />
     <title>{seoTitle(title ?? '', episode)}</title>
     <script
       type="module"
@@ -59,7 +64,7 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <LoadTheme client:load />
     <div
       id="app"
-      class="no-scrollbar bg-base overflow-x-hidden overflow-y-auto"
+      class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-auto"
     >
       <header class="[grid-area:header]">
         <NavBar />
@@ -82,5 +87,6 @@ const seoTitle = (title: string | null, episode: string | null) => {
       'footer';
     height: 100dvh;
     width: 100dvw;
+    font-family: 'Nunito', sans-serif;
   }
 </style>
