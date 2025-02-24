@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
-import { useIndexStore } from '@store/index-store'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { normalizeString } from '@utils/normalize-string'
+import { useIndexStore } from '@store/index-store';
+import { createDynamicUrl } from '@utils/create-dynamic-url';
+import { normalizeString } from '@utils/normalize-string';
 
 import type { Anime, Collection } from 'types'
 interface Props {
@@ -115,7 +115,7 @@ export const AnimeCollection = ({ id }: Props) => {
   return (
     <article className="bg-Complementary mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
       <a href={`/collection/${normalizeString(title)}_${id}`}>
-        <h4 className="text-lx mx-auto h-12 max-w-80 p-4 text-center font-bold text-balance text-white">
+        <h4 className="text-l mx-auto h-12 max-w-80 p-4 text-center font-bold text-balance text-white">
           {title || 'Sin Título'}
         </h4>
 
