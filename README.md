@@ -1,6 +1,6 @@
-# 🌸 Animeflix
+# 🌸 AniDev
 
-Animeflix is a modern anime streaming and exploration platform built with AstroJS and powered by Supabase. It offers dynamic experiences for discovering, searching, and enjoying top animes, all with smooth transitions and responsive design.
+AniDev is a modern anime streaming and exploration platform built with AstroJS and powered by Supabase. It offers dynamic experiences for discovering, searching, and enjoying top animes, all with smooth transitions and responsive design.
 
 ## 🚀 Key Features
 
@@ -39,7 +39,7 @@ This hook simplifies making asynchronous requests. It can also be used to fetch 
 import { useFetch } from '@hooks/useFetch'
 
 const { data, error, loading } = useFetch<Anime[]>({
-  url: 'https://api.animeflix.com/animes?type=tv',
+  url: 'https://api.ani-dev.com/animes?type=tv',
 })
 ```
 
@@ -74,8 +74,8 @@ Create a `.env` file at the root of the project and add the appropriate keys.
 ### 1⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/animeflix.git
-cd animeflix
+git clone https://github.com/your-username/ani-dev.git
+cd AniDev
 ```
 
 ### 2⃣ Install dependencies
@@ -124,7 +124,7 @@ npm run dev
 
 ## 🤝 Contributions
 
-Contributions are welcome! If you have ideas, issues, or improvements, feel free to open an [issue](https://github.com/your-username/animeflix/issues) or submit a [pull request](https://github.com/your-username/animeflix/pulls).
+Contributions are welcome! If you have ideas, issues, or improvements, feel free to open an [issue](https://github.com/your-username/ani-dev/issues) or submit a [pull request](https://github.com/your-username/ani-dev/pulls).
 
 ---
 
