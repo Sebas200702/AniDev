@@ -2,18 +2,29 @@
 
 /* Personalización del tema mediante variables CSS */
 @theme {
-  --color-base: #121212;
-  --color-secondary: #1c1c1c;
+  --color-Primary-950: #121212;
+  --color-Primary-900: #3d3d3d;
+  --color-Primary-800: #454545;
+  --color-Primary-700: #4f4f4f;
+  --color-Primary-600: #5d5d5d;
+  --color-Primary-500: #6d6d6d;
+  --color-Primary-400: #888888;
+  --color-Primary-300: #b0b0b0;
+  --color-Primary-200: #d1d1d1;
+  --color-Primary-100: #e7e7e7;
+  --color-Primary-50: #f6f6f6;
+  --color-Complementary: #1c1c1c;
+
   /* Para "enfasisColor" podrías definirlo aquí si tienes un valor fijo o, alternativamente,
      gestionar su actualización mediante JavaScript en tiempo de ejecución */
   --color-enfasisColor: var(--enfasis-dynamic);
 }
 
 .button-primary {
-  @apply border-enfasisColor bg-enfasisColor md:hover:border-enfasisColor/50 md:hover:text-enfasisColor items-center justify-center rounded-lg border-3 px-2 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out md:px-4 md:text-sm md:hover:bg-transparent md:hover:shadow-md;
+  @apply border-enfasisColor bg-enfasisColor md:hover:border-enfasisColor/50 md:hover:text-enfasisColor items-center justify-center rounded-lg border-3 px-2 py-2 text-white transition-all duration-300 ease-in-out md:px-4 md:hover:bg-transparent md:hover:shadow-md;
 }
 .button-secondary {
-  @apply items-center justify-center rounded-lg border-3 bg-transparent px-2 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out md:px-4 md:text-sm md:hover:opacity-50 md:hover:shadow-md;
+  @apply items-center justify-center rounded-lg border-3 bg-transparent px-2 py-2 text-xs font-semibold text-white transition-all duration-300 ease-in-out md:text-sm md:hover:opacity-50 md:hover:shadow-md;
 }
 .custom-scrollbar {
   @apply overflow-x-hidden overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-zinc-700 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent;
@@ -24,4 +35,23 @@
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.title {
+  @apply text-[28px] font-black md:text-start md:text-[50px];
+}
+.subtitle {
+  @apply text-[32px] font-bold;
+}
+.text-lx {
+  @apply text-[20px] font-bold xl:text-[28px];
+}
+.text-l {
+  @apply text-[20px] font-medium;
+}
+.text-s {
+  @apply text-[12px] font-normal xl:text-[16px];
+}
+.text-sx {
+  @apply text-[12px] font-normal;
 }
