@@ -26,7 +26,7 @@ export const ColectionList = ({ id }: Props) => {
   else colectionLength = 1
 
   return (
-    <ul className="flex flex-row gap-8 p-4 md:p-8">
+    <ul className="flex flex-row gap-8 p-4 md:px-20">
       {Array.from({ length: colectionLength }).map((_, index) => (
         <AnimeCollection key={index + 1} id={`${id}-${index + 1}`} />
       ))}
