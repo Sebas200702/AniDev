@@ -1,5 +1,3 @@
-import '@styles/custom-scrollbar.css'
-
 import { useEffect, useState } from 'react'
 
 import Pagination from '@components/pagination'
