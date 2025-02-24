@@ -1,4 +1,3 @@
-import '@styles/custom-scrollbar.css'
 import '@styles/search-section.css'
 
 import { useEffect, useMemo } from 'react'
