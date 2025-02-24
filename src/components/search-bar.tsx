@@ -41,7 +41,6 @@ const [isExpanded, setIsExpanded] = useState(windowWidth && windowWidth > 768)
   }, [])
 
   const toggleExpand = () => {
-    setCount(count + 1)
     if (isExpanded) return
     setIsExpanded(!isExpanded)
     document.getElementById('default-search')?.focus()
