@@ -98,7 +98,7 @@ export const FilterSection = () => {
           <button
             type="button"
             onClick={resetFilters}
-            className="border-secondary bg-secondary hover:bg-base mx-auto flex w-full max-w-60 items-center justify-center rounded border px-4 py-2 text-sm transition-all hover:border-white hover:opacity-90 md:max-w-32"
+            className="border-Complementary bg-Complementary hover:bg-base mx-auto flex w-full max-w-60 items-center justify-center rounded border px-4 py-2 text-sm transition-all hover:border-white hover:opacity-90 md:max-w-32"
           >
             <svg
               className="mr-2 h-4 w-4"
