@@ -29,7 +29,7 @@ const {
 ---
 
 <article class="anime-info-container flex w-full flex-row gap-4 md:gap-20">
-  <section class="flex w-full flex-col gap-10 text-white">
+  <section class="flex w-full md:flex-col gap-10 flex-col-reverse text-white">
     <AnimeHeader title={title} />
 
     <AnimeNavBar genres={genres} rating={rating} type={type} />
@@ -47,7 +47,7 @@ const {
   </section>
 
   <section
-    class="mx-auto flex w-full max-w-96 flex-col justify-between md:flex-row"
+    class="mx-auto flex w-full max-w-96 md:flex-col flex-col-reverse justify-between"
     transition:animate={slide({ duration: '0.4s' })}
   >
     <AnimeAside animeData={animeData} />
