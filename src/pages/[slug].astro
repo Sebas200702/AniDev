@@ -31,13 +31,8 @@ if (!animeData) {
   return Astro.redirect('/404', 301)
 }
 
-const {
-  title,
-  image_large_webp,
-  image_webp,
-  banner_image,
-  synopsis,
-} = animeData as Anime
+const { title, image_large_webp, image_webp, banner_image, synopsis } =
+  animeData as Anime
 
 const description = reduceString(synopsis, 200) || 'No description available'
 ---

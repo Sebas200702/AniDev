@@ -71,9 +71,9 @@ export const AnimeCard = ({ anime, context }: Props) => {
             color="Primary-950/70"
             width="full"
             gradient="b"
-            rounded='lg'
+            rounded="lg"
             zIndex={10}
-            hover='h-full'
+            hover="h-full"
           />
         </picture>
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">

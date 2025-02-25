@@ -1,6 +1,6 @@
-import { CaretIcon } from '@components/icons/caret-icon';
-import { FilterIcon } from '@components/icons/filter-icon';
-import { MoreOptionsIcon } from '@components/icons/more-options-icon';
+import { CaretIcon } from '@components/icons/caret-icon'
+import { FilterIcon } from '@components/icons/filter-icon'
+import { MoreOptionsIcon } from '@components/icons/more-options-icon'
 
 export const UserListOptions = () => {
   const handleClick = () => {

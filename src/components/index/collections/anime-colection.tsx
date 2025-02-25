@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
-import { useIndexStore } from '@store/index-store';
-import { createDynamicUrl } from '@utils/create-dynamic-url';
-import { normalizeString } from '@utils/normalize-string';
+import { useIndexStore } from '@store/index-store'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { normalizeString } from '@utils/normalize-string'
 
 import type { Anime, Collection } from 'types'
 interface Props {

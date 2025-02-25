@@ -1,18 +1,18 @@
 import {
-    formatOptions,
-    genreOptions,
-    orderByOptions,
-    ratingOptions,
-    seasonOptions,
-    statusOptions,
-    yearOptions
-} from 'types';
+  formatOptions,
+  genreOptions,
+  orderByOptions,
+  ratingOptions,
+  seasonOptions,
+  statusOptions,
+  yearOptions,
+} from 'types'
 
 import type { AppliedFilters } from 'types'
-import { FilterDropdown } from '@components/search/filters/filter-dropdown';
-import { studioOptions } from '@utils/create-studios-options';
-import { useCallback } from 'react';
-import { useSearchStoreResults } from '@store/search-results-store';
+import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { studioOptions } from '@utils/create-studios-options'
+import { useCallback } from 'react'
+import { useSearchStoreResults } from '@store/search-results-store'
 
 export const FilterSection = () => {
   const { appliedFilters, setAppliedFilters, resetFilters } =
@@ -110,7 +110,7 @@ export const FilterSection = () => {
             </svg>
             Reset
           </button>
-      </div>
+        </div>
       </ul>
     </section>
   )

@@ -1,16 +1,16 @@
-import '@styles/search-section.css';
+import '@styles/search-section.css'
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react'
 
-import { SearchResults } from '@components/search/results/search-results';
-import { useDebounce } from '@hooks/useDebounce';
-import { useFetch } from '@hooks/useFetch';
-import { useUrlSync } from '@hooks/useUrlSync';
-import { useSearchStoreResults } from '@store/search-results-store';
-import { baseUrl } from '@utils/base-url';
-import { createFiltersToApply } from '@utils/filters-to-apply';
+import { SearchResults } from '@components/search/results/search-results'
+import { useDebounce } from '@hooks/useDebounce'
+import { useFetch } from '@hooks/useFetch'
+import { useUrlSync } from '@hooks/useUrlSync'
+import { useSearchStoreResults } from '@store/search-results-store'
+import { baseUrl } from '@utils/base-url'
+import { createFiltersToApply } from '@utils/filters-to-apply'
 
-import { FilterSection } from './filters/filter-section';
+import { FilterSection } from './filters/filter-section'
 
 import type { Anime } from 'types'
 export const SearchComponent = () => {

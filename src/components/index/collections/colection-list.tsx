@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
-import { AnimeCollection } from '@components/index/collections/anime-colection';
-import { useWindowWidth } from '@store/window-width';
+import { AnimeCollection } from '@components/index/collections/anime-colection'
+import { useWindowWidth } from '@store/window-width'
 
 interface Props {
   id: number

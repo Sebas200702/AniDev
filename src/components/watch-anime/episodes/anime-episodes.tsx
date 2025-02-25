@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 import type { AnimeEpisode } from 'types'
-import Pagination from '@components/watch-anime/episodes/pagination';
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy';
-import { useFetch } from '@hooks/useFetch';
+import Pagination from '@components/watch-anime/episodes/pagination'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { useFetch } from '@hooks/useFetch'
 
 interface Props {
   mal_id: number

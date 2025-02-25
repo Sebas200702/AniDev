@@ -1,6 +1,6 @@
-import { UserListOptions } from '@components/profile/user-tabs/user-list-options';
-import { UserListSection } from '@components/profile/user-tabs/user-list-section';
-import { useUserListsStore } from '@store/user-list-store';
+import { UserListOptions } from '@components/profile/user-tabs/user-list-options'
+import { UserListSection } from '@components/profile/user-tabs/user-list-section'
+import { useUserListsStore } from '@store/user-list-store'
 
 export const UserList = () => {
   const { userList: sections } = useUserListsStore()
