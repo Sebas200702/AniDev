@@ -110,7 +110,7 @@ export const Carousel = () => {
 
   return (
     <section
-      className={`carousel-anime-banner relative right-0 left-0 mb-4 h-[60vh] md:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`carousel-anime-banner relative right-0 left-0 mb-4 h-[60dvh] md:h-[90dvh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
