@@ -76,10 +76,10 @@ export const AnimeBanner = ({ id }: { id: number }) => {
     <section
       className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20`}
     >
-      <article className="relative transition-all duration-400 ease-in-out hover:scale-[1.01] md:hover:opacity-95">
+      <article className="group relative transition-all duration-400 ease-in-out md:hover:opacity-95">
         <a
           href={`/${slug}_${mal_id}`}
-          className="group h-full w-full"
+          className="h-full w-full"
           aria-label={`View details for ${title}`}
         >
           <picture
@@ -98,12 +98,13 @@ export const AnimeBanner = ({ id }: { id: number }) => {
             />
           </picture>
           <Overlay
-            heigth="1/2"
-            color="Primary-950 opacity-0"
+            heigth="1/3"
+            color="Primary-950/100"
             width="full"
             gradient="b"
             rounded="lg"
-            hover="opacity-70"
+            hover="h-full"
+            zIndex={10}
           />
         </a>
         <BannerInfo

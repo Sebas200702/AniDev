@@ -15,10 +15,10 @@ export const Overlay = ({
   hover,
   rounded,
   zIndex,
-}: Props) => {
+  }: Props) => {
   return (
     <div
-      className={`absolute right-0 bottom-0 left-0 z-${zIndex ?? '1'} h-${heigth} w-${width} rounded-${rounded} bg-gradient-to-${gradient} from-transparent to-${color} transition-all duration-400 ease-in-out md:group-hover:${hover} `}
+      className={`absolute right-0 bottom-0 left-0 z-${zIndex ?? '1'} h-${heigth} w-${width} rounded-${rounded} bg-gradient-to-${gradient} from-transparent to-${color}  transition-all duration-400 ease-in-out md:group-hover:${hover} `}
     />
   )
 }
