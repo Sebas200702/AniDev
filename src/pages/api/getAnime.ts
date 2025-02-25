@@ -26,8 +26,6 @@ export const GET: APIRoute = async ({ url }) => {
     const { data, error } = await supabase.rpc('get_anime_by_id', { id })
 
     if (error) {
-      console.log(url)
-      console.log(error)
       throw new Error('Error retrieving anime data')
     }
 
@@ -45,9 +43,6 @@ export const GET: APIRoute = async ({ url }) => {
       },
     })
   } catch (err) {
-    if (import.meta.env.MODE === 'development') {
-      console.error('Unhandled Error:', err)
-    }
     return new Response(JSON.stringify({ error: 'Ups something went wrong' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

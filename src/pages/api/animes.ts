@@ -81,7 +81,6 @@ export const GET: APIRoute = async ({ url }) => {
     const orderFunction = getFunctionToExecute(order_by, order_direction)
     const { data, error } = await supabase.rpc(orderFunction, filters)
     if (error) {
-      console.log(error)
       throw new Error('Ocurrió un error al obtener los animes.')
     }
 

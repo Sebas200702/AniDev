@@ -52,7 +52,6 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }, [setWindowWidth])
 
   useEffect(() => {
-    console.log(windowWidth)
 
     const sliders = document.querySelectorAll('.anime-slider')
 

@@ -21,7 +21,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const { setAnimeBanners, animeBanners } = useIndexStore()
   const [loading, setLoading] = useState(true)
 
-  const getBannerUrl = async (url: string) => {
+  const getBannerData = async (url: string) => {
     const response = await fetch(`/api/animes?${url}&banners_filter=true`).then(
       (res) => res.json()
     )
@@ -29,7 +29,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
       const { url: newUrl } = createDynamicUrl(1)
-      return await getBannerUrl(newUrl)
+      return await getBannerData(newUrl)
     }
 
     return {
@@ -52,15 +52,15 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         return
       }
       const { url } = createDynamicUrl(1)
-      const data = await getBannerUrl(url)
-      if (!data) return
+      const data = await getBannerData(url)
+      if (!data || animeBanners.includes(data.mal_id)) return
       setBannerData(data)
       setAnimeBanners([...animeBanners, data.mal_id])
       sessionStorage.setItem(`animeBanner_${id}`, JSON.stringify(data))
 
       setTimeout(() => {
         setLoading(false)
-      }, 100)
+      }, 200)
     }
 
     fetchBannerData()
