@@ -74,29 +74,31 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20`}
+      className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20 `}
     >
-      <article className="group relative transition-all duration-400 ease-in-out md:hover:opacity-95">
+      <article className="group relative transition-all duration-400 ease-in-out md:hover:opacity-95 w-full  ">
         <a
           href={`/${slug}_${mal_id}`}
-          className="h-full w-full"
           aria-label={`View details for ${title}`}
         >
-          <picture
-            className="aspect-[1080/550] h-full w-full object-cover object-center md:aspect-[1080/350]"
+          <div
+            className="rounded-2xl w-full h-full  md:aspect-[1080/350] "
             style={{
               backgroundImage: `url(${createImageUrlProxy(imageUrl, '100', '0', 'webp')})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
           >
-            <img
+             <img
               src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
               alt="Anime Banner"
               loading="lazy"
-              className="aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]"
-              width={720}
-              height={300}
+              className='aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]'
+
             />
-          </picture>
+           
+          </div>
           <Overlay
             heigth="1/3"
             color="Primary-950/100"

@@ -126,7 +126,7 @@ export const AnimeCollection = ({ id }: Props) => {
           {animes.map((anime, i) => (
             <li
               key={anime.mal_id}
-              className={`${getPosition(i)} max-w-44 rounded-md`}
+              className={`${getPosition(i)} max-w-44 rounded-md w-full`}
               style={{
                 backgroundImage: `url(${anime.image_small_webp})`,
                 backgroundSize: 'cover',
