@@ -1,16 +1,16 @@
 ---
-import { AnimeSlider } from '@components/anime-slider-list'
-import { Carousel } from '@components/carousel'
-import { AnimeBanner } from '@components/anime-banner.tsx'
+import { AnimeSlider } from '@components/index/slider/anime-slider-list'
+import { Carousel } from '@components/index/carousel/carousel'
+import { AnimeBanner } from '@components/index/banners/anime-banner'
 import Layout from '@layouts/base.astro'
-import { ColectionList } from '@components/colection-list'
-import { AnimeTop } from '@components/top-anime'
+import { ColectionList } from '@components/index/collections/colection-list'
+import { AnimeTop } from '@components/index/anime-top/top-anime'
 ---
 
 <Layout>
   <Carousel client:load />
 
-  <section class="-mt-20 flex flex-col gap-y-8 md:-mt-12 md:gap-y-20">
+  <section class="-mt-20 flex flex-col gap-y-6 md:gap-y-20">
     <AnimeSlider
       client:visible
       query="year_filter=2025&type_filter=tv"

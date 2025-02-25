@@ -1,0 +1,52 @@
+---
+import { AnimeEpisodes } from '@components/watch-anime/episodes/anime-episodes'
+import { NextPrevEpisodeBtn } from '@components/watch-anime/episodes/next-prev-episode-btn'
+
+interface Props {
+  episodesLength: number
+  currentEpisode: number
+  duration: string
+  mal_id: string
+  slug: string
+  image_webp: string
+  title: string
+  episode: string
+  image_large_webp: string
+}
+const { episodesLength, image_large_webp, duration, mal_id, title, episode } =
+  Astro.props
+---
+
+<div class="rounded-lg bg-[#1c1c1c] p-4 xl:mt-0">
+  <div
+    class={`flex justify-between ${
+      episode === '1' ? 'flex-row-reverse' : 'flex-row'
+    }`}
+  >
+    <NextPrevEpisodeBtn
+      client:visible
+      episodesLength={episodesLength}
+      currentEpisode={parseInt(episode)}
+      action="Previous"
+      slug={Astro.params.slug ?? ''}
+    />
+    <NextPrevEpisodeBtn
+      client:visible
+      episodesLength={episodesLength}
+      currentEpisode={parseInt(episode)}
+      action="Next"
+      slug={Astro.params.slug ?? ''}
+    />
+  </div>
+  <div class="relative mx-auto flex h-full xl:w-96">
+    <AnimeEpisodes
+      totalEpisodes={episodesLength}
+      client:load
+      mal_id={parseInt(mal_id)}
+      slug={title}
+      image_webp={image_large_webp}
+      currentEpisode={parseInt(episode)}
+      duration={duration}
+    />
+  </div>
+</div>

@@ -1,0 +1,16 @@
+---
+import { splitTextOnP } from '@utils/split-text-on-p'
+
+interface Props {
+  synopsis: string
+}
+
+const { synopsis } = Astro.props
+---
+
+<section aria-labelledby="sinopsis-heading">
+  <text class="max-w-5xl space-y-2 text-gray-50/90">
+    <p>{splitTextOnP(synopsis ?? '')[0]}</p>
+    <p>{splitTextOnP(synopsis ?? '')[1]}</p>
+  </text>
+</section>

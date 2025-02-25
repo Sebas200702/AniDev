@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+interface Props {
+  banner_image: string
+  image_webp: string
+  title: string
+}
+
+const { banner_image, image_webp, title } = Astro.props
+---
+
+<div
+  class="absolute inset-0 max-h-[calc(100dvh-300px)] w-full max-w-[100dvw] overflow-hidden"
+>
+  <Image
+    src={banner_image
+      ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
+      : image_webp}
+    alt={`${title} banner`}
+    loading="lazy"
+    fetchpriority="high"
+    class={banner_image
+      ? 'xl:h-auto w-full h-full object-cover object-center'
+      : '-my-96 aspect-[225/330] w-full opacity-85'}
+    width={225}
+    height={330}
+    quality={10}
+  />
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-[8px]"></div>
+  <div
+    class="to-Primary-950/100 absolute bottom-0 left-0 h-1/2 w-full bg-gradient-to-b from-transparent"
+  >
+  </div>
+</div>

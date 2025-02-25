@@ -1,8 +1,8 @@
+import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
+import { Overlay } from '@components/overlay'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
-
-import type { Anime } from 'types'
 
 interface Props {
   anime: Anime
@@ -66,7 +66,15 @@ export const AnimeCard = ({ anime, context }: Props) => {
             className="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
           />
-          <div className="absolute bottom-0 left-0 h-1/3 w-full rounded-lg bg-gradient-to-b from-transparent to-black/70 opacity-100 transition-all duration-400 ease-in-out md:group-hover:h-full md:group-hover:to-black/90" />
+          <Overlay
+            heigth="1/3"
+            color="Primary-950/70"
+            width="full"
+            gradient="b"
+            rounded='lg'
+            zIndex={10}
+            hover='h-full'
+          />
         </picture>
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoin

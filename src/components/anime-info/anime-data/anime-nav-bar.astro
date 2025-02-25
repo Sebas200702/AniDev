@@ -1,0 +1,18 @@
+---
+import { AnimeTag } from '@components/anime-tag'
+import { getAnimeType } from '@utils/getanime-type'
+import { normalizeRating } from '@utils/normalize-rating'
+interface Props {
+  genres: string[]
+  rating: string
+  type: string
+}
+
+const { genres, rating, type } = Astro.props
+---
+
+<nav class="flex flex-row flex-wrap gap-3" aria-label="Categorías y géneros">
+  <AnimeTag tag={getAnimeType(type)} type={type} />
+  {genres.map((genre) => <AnimeTag tag={genre} type={genre} style="w-auto" />)}
+  {rating && <AnimeTag tag={normalizeRating(rating)} type={rating} />}
+</nav>
