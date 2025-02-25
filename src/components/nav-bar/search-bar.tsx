@@ -57,7 +57,7 @@ export const SearchBar = ({ location }: Props) => {
 
   return (
     <form
-      className={`inset-0 flex transition-all duration-300 md:relative md:w-full p-2 ${isExpanded && isMobile ? 'bg-Primary-950/30 absolute z-50 w-full translate-y-16 ' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
+      className={`inset-0 flex transition-all duration-300 md:relative md:w-full ${isExpanded && isMobile ? 'bg-Primary-950/30 absolute z-50 w-screen translate-y-16 p-2 ' : 'mx-auto h-10 w-10 md:w-full'} items-center justify-center text-white`}
       onSubmit={handleSubmit}
       id="search-bar"
     >
