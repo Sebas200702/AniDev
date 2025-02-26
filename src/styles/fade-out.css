@@ -2,22 +2,13 @@
   0% {
     opacity: 1;
   }
-  80% {
-    opacity: 0;
-  }
   100% {
     opacity: 0;
   }
 }
 
-.anime-info-container {
+.fade-out {
   animation: fade-out 0.4s ease-in-out;
   animation-timeline: view();
   animation-range: exit;
-}
-
-.carousel-anime-banner {
-  animation: fade-out 0.4s ease-in-out;
-  animation-timeline: view();
-  animation-range: exit 15%;
 }
