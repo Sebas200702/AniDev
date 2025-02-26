@@ -137,21 +137,21 @@ export const FilterDropdown = ({
         className={`custom-scrollbar bg-Primary-950 absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
       >
         {filteredOptions.map((option) => (
-          <li
+          <button
             key={option.value}
-            className="hover:bg-Complementary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm"
+            className="hover:bg-Complementary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm w-full"
+            onClick={() => toggleOption(option.value)}
           >
             <input
               type="checkbox"
               checked={values.includes(option.value)}
-              onChange={() => toggleOption(option.value)}
               className="peer hidden"
               id={`option-${option.value}`}
             />
 
             <span
-              className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out"
-              aria-hidden="true"
+              className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out cursor-pointer"
+
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ export const FilterDropdown = ({
             >
               {option.label}
             </label>
-          </li>
+          </button>
         ))}
       </ul>
     </div>

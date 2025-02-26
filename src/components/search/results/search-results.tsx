@@ -20,7 +20,7 @@ export const SearchResults = () => {
     setTimeout(() => {
       setFadeIn(true)
       setCompletedSearch(true)
-    }, 500)
+    }, 600)
   }, [animes, setFadeIn, query, appliedFilters, loading, setCompletedSearch])
 
   if (
