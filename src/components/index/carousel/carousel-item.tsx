@@ -11,14 +11,17 @@ interface CarouselItemProps {
 }
 export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
   return (
-    <div
+    <li
       key={anime.mal_id}
       className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
       <div
-        className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center"
+        className="absolute inset-0 -z-10 h-full w-full"
         style={{
           backgroundImage: `url(${createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       />
       <div
@@ -32,7 +35,6 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
         rounded="none"
         hover="none"
       />
-
       <div
         className={`z-10 mb-20 flex max-w-[800px] flex-col items-center gap-8 text-white md:items-start md:justify-start md:gap-4`}
       >
@@ -54,6 +56,6 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           />
         </div>
       </div>
-    </div>
+    </li>
   )
 }
