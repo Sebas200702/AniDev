@@ -5,7 +5,7 @@ const [title, id] = Astro.params.slug?.split('_') ?? ['', '']
 ---
 
 <Layout>
-  <section class="mt-16 p-4 md:px-20 md:py-4">
+  <section class="mt-28  md:px-20 ">
     <PageColectionList title={title} id={id} client:visible />
   </section>
 </Layout>
