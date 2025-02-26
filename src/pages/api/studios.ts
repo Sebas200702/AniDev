@@ -10,7 +10,10 @@ export const GET: APIRoute = async () => {
 
     return new Response(JSON.stringify(data), {
       status: 200,
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        'Cache-Control': 'max-age=31536000',
+      },
     })
   } catch (error) {
     console.error('Error en el endpoint:', error)

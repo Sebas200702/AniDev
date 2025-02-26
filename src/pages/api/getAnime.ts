@@ -1,6 +1,5 @@
-import { supabase } from '@libs/supabase'
-
 import type { APIRoute } from 'astro'
+import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = async ({ url }) => {
   try {
@@ -40,6 +39,7 @@ export const GET: APIRoute = async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'max-age=31536000',
       },
     })
   } catch (err) {

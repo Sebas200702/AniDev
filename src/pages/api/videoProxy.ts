@@ -29,6 +29,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         status: 200,
         headers: {
           'Content-Type': 'application/vnd.apple.mpegurl',
+          'Cache-Control': 'max-age=31536000',
         },
       })
     }

@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro'
-
 import sharp from 'sharp'
 
 export const GET: APIRoute = async ({ url }) => {
@@ -45,7 +44,7 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
-        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Cache-Control': 'max-age=31536000',
         'Content-Length': optimizedBuffer.length.toString(),
       },
     })
