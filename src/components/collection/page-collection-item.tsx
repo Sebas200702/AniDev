@@ -13,10 +13,10 @@ export const CollectionItem = ({ anime }: Props) => {
   return (
     <li
       key={anime.mal_id}
-      className="bg-secondary mx-auto flex aspect-[500/260] w-full max-w-[500px] flex-row rounded-lg"
+      className="bg-Complementary mx-auto  aspect-[600/390] w-full  flex  rounded-lg overflow-hidden"
     >
       <picture
-        className="aspect-[225/330] h-full w-[35%] overflow-hidden rounded-l-lg"
+        className="aspect-[225/330] h-full w-auto overflow-hidden rounded-l-lg"
         title={anime.title}
         style={{
           backgroundImage: `url(${anime.image_small_webp})`,
@@ -29,32 +29,33 @@ export const CollectionItem = ({ anime }: Props) => {
           <img
             src={anime.image_large_webp}
             alt={anime.title}
-            className="aspect-[225/330] h-full rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
+            className="w-full aspect-[225/330]  h-full rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
             loading="lazy"
           />
         </a>
       </picture>
 
-      <div className="flex h-full w-[65%] flex-col justify-between p-3 xl:p-4">
+      <div className="flex h-full w-[65%]  flex-col justify-between p-2 xl:p-4">
         <h3
           title={anime.title}
-          className="overflow-hidden font-bold text-pretty text-white xl:text-xl"
+          className="overflow-hidden w-full font-bold text-pretty text-white text-l"
         >
-          {reduceString(anime.title, 40)}
+          {reduceString(anime.title, 20)}
         </h3>
-        <p className="hidden text-xs text-gray-500 md:flex">
-          {reduceString(anime.synopsis, 60)}
-        </p>
-        <div className="mt-1 flex flex-row gap-2 text-xs text-gray-500 xl:mt-2 xl:text-base">
+
+        <div className="mt-1 flex flex-row gap-2 text-xs text-gray-500 xl:mt-2 text-s">
           {anime.genres.slice(0, 2).map((genre) => (
             <AnimeTag key={genre} tag={genre} type={genre} style="w-auto" />
           ))}
         </div>
-        <span className="flex items-center gap-2 text-xs text-gray-400 md:text-sm">
-          <StarIcon style="text-enfasisColor xl:h-4 xl:w-4 h-3 w-3" />
+        <p className=" text-sx text-Primary-200 flex">
+          {reduceString(anime.synopsis, 50)}
+        </p>
+        <span className="flex items-center gap-2 text-sx text-gray-400 ">
+          <StarIcon style="text-enfasisColor h-5 w-5 " />
           {anime.score}/10
         </span>
-        <footer className="flex flex-row justify-center gap-4">
+        <footer className=" flex flex-row h-min  gap-2 ">
           <WatchAnimeButton
             url={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           />
