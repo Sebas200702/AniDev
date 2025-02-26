@@ -97,11 +97,11 @@ export const AnimeBanner = ({ id }: { id: number }) => {
               className='aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]'
 
             />
-           
+
           </div>
           <Overlay
             heigth="1/3"
-            color="Primary-950/100"
+            color="Primary-950/70"
             width="full"
             gradient="b"
             rounded="lg"
