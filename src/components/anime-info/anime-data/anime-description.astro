@@ -8,9 +8,7 @@ interface Props {
 const { synopsis } = Astro.props
 ---
 
-<section aria-labelledby="sinopsis-heading">
-  <text class="max-w-5xl space-y-2 text-gray-50/90">
-    <p>{splitTextOnP(synopsis ?? '')[0]}</p>
-    <p>{splitTextOnP(synopsis ?? '')[1]}</p>
-  </text>
-</section>
+<div class="max-w-5xl text-Primary-50/90 space-y-2 w-full">
+  <p class="max-w-[80ch] text-balance">{splitTextOnP(synopsis ?? '')[0]}</p>
+  <p class="max-w-[80ch] text-balance">{splitTextOnP(synopsis ?? '')[1]}</p>
+</div>
