@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
-
 import { AnimeCollection } from '@components/index/collections/anime-colection'
+import { useEffect } from 'react'
 import { useWindowWidth } from '@store/window-width'
 
 interface Props {
@@ -26,7 +25,7 @@ export const ColectionList = ({ id }: Props) => {
   else colectionLength = 1
 
   return (
-    <ul className="flex flex-row gap-8 p-4 md:px-20">
+    <ul className="flex flex-row gap-8 p-4 md:px-20 fade-out">
       {Array.from({ length: colectionLength }).map((_, index) => (
         <AnimeCollection key={index + 1} id={`${id}-${index + 1}`} />
       ))}
