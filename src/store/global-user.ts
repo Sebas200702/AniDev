@@ -7,7 +7,7 @@ interface GlobalUserPreferences {
 
 export const useGlobalUserPreferences = create<GlobalUserPreferences>(
   (set) => ({
-    enfasis: '#073C92',
+    enfasis: '#0057E7',
     setEnfasis: (color: string) => set({ enfasis: color }),
   })
 )
