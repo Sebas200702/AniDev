@@ -1,6 +1,6 @@
 export const splitTextOnP = (text: string) => {
   const midpoint = Math.floor(text.length / 2)
-  if (text.length < 1000) return [text, '']
+  if (text.length < 400) return [text, '']
 
   let splitPoint = text.lastIndexOf('.', midpoint)
   if (splitPoint === -1) {
