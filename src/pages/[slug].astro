@@ -31,19 +31,14 @@ if (!animeData) {
   return Astro.redirect('/404', 301)
 }
 
-const { title, image_large_webp, image_webp, banner_image, synopsis } =
+const { title, image_large_webp, synopsis } =
   animeData as Anime
 
 const description = reduceString(synopsis, 200) || 'No description available'
 ---
 
 <Layout description={description} image={image_large_webp} title={title}>
-  <section class="mt-24 flex flex-col gap-8 p-4 text-white md:mx-20 xl:mx-40">
-    <AnimeBackground
-      banner_image={banner_image}
-      image_webp={image_webp}
-      title={title}
-    />
+  <section class="flex flex-col gap-8 p-4 text-white md:px-20 ">
     <AnimeInfo animeData={animeData} />
   </section>
 </Layout>
