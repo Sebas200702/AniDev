@@ -3,6 +3,7 @@ import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
+import { useWindowWidth } from '@store/window-width'
 
 interface Props {
   anime: Anime
@@ -36,10 +37,13 @@ export const AnimeCard = ({ anime, context }: Props) => {
     mal_id,
     year,
     image_small_webp,
+    image_webp,
     status,
     genres,
   } = anime
   const slug = normalizeString(title)
+  const { width: windowWidth } = useWindowWidth()
+  const isMobile = windowWidth && windowWidth < 768
 
   return (
     <article
@@ -48,7 +52,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
     >
       <a
         href={`/${slug}_${mal_id}`}
-        className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : '  w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc((100dvw-360px)/6)]'}`}
+        className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : 'w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc((100dvw-360px)/6)]'}`}
         aria-label={`View details for ${title}`}
       >
         <picture
@@ -61,10 +65,12 @@ export const AnimeCard = ({ anime, context }: Props) => {
           }}
         >
           <img
-            src={image_large_webp}
+            src={isMobile ? image_webp : image_large_webp}
             alt={title}
             className="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
+            width={225}
+            height={330}
           />
           <Overlay
             heigth="1/3"
