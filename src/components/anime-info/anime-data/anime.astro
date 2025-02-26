@@ -1,12 +1,14 @@
 ---
 import AnimeHeader from '@components/anime-info/anime-data/anime-header.astro'
-import AnimeNavBar from '@components/anime-info/anime-data/anime-nav-bar.astro'
+import AnimeGenresBar from '@components/anime-info/anime-data/anime-genres-bar.astro'
 import AnimeDescription from '@components/anime-info/anime-data/anime-description.astro'
-import AnimeAside from './anime-aside.astro'
-import AnimeNumbers from '@components/anime-info/anime-data/anime-numbers.astro'
+import AnimeCover from '@components/anime-info/anime-data/anime-cover.astro'
+import { AnimeNavBar } from '@components/anime-info/anime-data/anime-nav-bar'
 import type { Anime } from 'types'
 import { slide } from 'astro:transitions'
 import AnimeTrailer from '@components/anime-info/anime-trailer.astro'
+import AnimeBackground from '@components/anime-info/anime-background.astro'
+import AnimeDetails from './anime-details.astro'
 
 interface Props {
   animeData: Anime
@@ -28,28 +30,29 @@ const {
 } = animeData
 ---
 
-<article class="anime-info-container flex w-full flex-row gap-4 md:gap-20">
-  <section class="flex w-full md:flex-col gap-10 text-white">
-    <AnimeHeader title={title} />
-
-    <AnimeNavBar genres={genres} rating={rating} type={type} />
-
-    <AnimeNumbers score={score} year={year} duration={duration} />
-
-    <AnimeDescription synopsis={synopsis} />
-
-    <AnimeTrailer
-      trailer_url={trailer_url}
-      banner_image={banner_image}
-      image_large_webp={image_large_webp}
-      title={title}
-    />
-  </section>
-
+<article
+  class="anime-info-container mt-28 flex w-full flex-col gap-16 md:mt-75 md:gap-20"
+>
+  <AnimeBackground
+    banner_image={banner_image}
+    image_webp={image_large_webp}
+    title={title}
+  />
   <section
-    class="mx-auto flex w-full max-w-96"
-    transition:animate={slide({ duration: '0.4s' })}
+    class="flex w-full flex-col-reverse items-start gap-20 text-white md:flex-row z-10"
   >
-    <AnimeAside animeData={animeData} />
+    <AnimeCover animeData={animeData} />
+    <div class="flex w-full flex-col gap-6">
+      <AnimeHeader title={title} />
+      <AnimeGenresBar genres={genres} rating={rating} type={type} />
+
+      <div>
+        <AnimeNavBar client:only />
+      </div>
+    </div>
   </section>
+
+  <AnimeDescription synopsis={synopsis} />
+
+  <AnimeDetails animeData={animeData} />
 </article>
