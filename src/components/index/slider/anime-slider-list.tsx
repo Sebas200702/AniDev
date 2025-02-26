@@ -53,7 +53,6 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }, [setWindowWidth])
 
   useEffect(() => {
-
     const sliders = document.querySelectorAll('.anime-slider')
 
     sliders.forEach((slider) => {
@@ -107,11 +106,11 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
   const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
 
-  if (loading || !cachedAnimes || !animes || !displayAnimes) return <AnimeSliderLoader />
-    
+  if (loading || !cachedAnimes || !animes || !displayAnimes)
+    return <AnimeSliderLoader />
 
   return (
-    <section className="anime-slider relative mx-auto w-[100dvw]">
+    <section className="anime-slider fade-out relative mx-auto w-[100dvw]">
       <SliderHeader title={title} />
 
       <div className="relative overflow-hidden">
@@ -120,7 +119,9 @@ export const AnimeSlider = ({ query, title }: Props) => {
 
         <ul className="anime-list mx-auto flex w-full flex-row gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-5 md:gap-10 md:px-20">
           {displayAnimes.map((anime: Anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} context={title} />
+            <li key={anime.mal_id}>
+              <AnimeCard anime={anime} context={title} />
+            </li>
           ))}
         </ul>
       </div>
