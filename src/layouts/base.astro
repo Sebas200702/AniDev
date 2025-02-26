@@ -4,6 +4,7 @@ import NavBar from '@components/nav-bar/nav-bar.astro'
 import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
 import '@styles/global.css'
+import '@styles/fade-out.css'
 
 const episode = new URLSearchParams(Astro.url.search).get('ep')
 const baseTitle = 'AniDev - Watch anime online free'
@@ -48,9 +49,12 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
       href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-      rel="stylesheet"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript><link rel="stylesheet" href="styles.css" /></noscript>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="canonical" href="https://ani-dev.vercel.app/" />
     <title>{seoTitle(title ?? '', episode)}</title>
