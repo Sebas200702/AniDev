@@ -16,6 +16,7 @@ import { AnimeTop } from '@components/index/anime-top/top-anime'
       query="year_filter=2025&type_filter=tv"
       title="Top 2025"
     />
+    <AnimeTop client:visible />
     <ColectionList client:visible id={1} />
 
     <AnimeBanner id={1} client:visible />
@@ -42,6 +43,6 @@ import { AnimeTop } from '@components/index/anime-top/top-anime'
       query="genre_filter=sliceoflife"
       title="Slice of Life"
     />
-    <AnimeTop client:visible />
+
   </section>
 </Layout>
