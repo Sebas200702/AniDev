@@ -29,7 +29,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       />
       <Overlay
         heigth="full"
-        color="Primary-950/100"
+        color="Primary-950"
         width="auto"
         gradient="b"
         rounded="none"
