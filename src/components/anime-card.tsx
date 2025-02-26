@@ -48,7 +48,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
     >
       <a
         href={`/${slug}_${mal_id}`}
-        className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : '  w-full max-w-[calc((100dvw-32px)/2.4)] md:max-w-[calc((100dvw-280px)/4)] xl:max-w-[calc((100dvw-360px)/6)]'}`}
+        className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : '  w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc((100dvw-360px)/6)]'}`}
         aria-label={`View details for ${title}`}
       >
         <picture
