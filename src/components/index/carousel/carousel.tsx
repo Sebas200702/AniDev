@@ -1,5 +1,3 @@
-import '@styles/fade-out.css'
-
 import { useCallback, useEffect } from 'react'
 
 import type { Anime } from 'types'
@@ -62,7 +60,7 @@ export const Carousel = () => {
     banners.forEach((anime) => {
       const image = new Image()
       image.src = anime.image_large_webp
-      image.src = createImageUrlProxy(anime.banner_image, '0', '10', 'webp')
+      image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
     })
   }, [banners])
 
@@ -110,7 +108,7 @@ export const Carousel = () => {
 
   return (
     <section
-      className={`carousel-anime-banner relative right-0 left-0 mb-4 h-[65vh] md:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`fade-out relative right-0 left-0 mb-4 h-[65vh] md:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
