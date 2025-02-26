@@ -11,6 +11,6 @@ export const LoadingCarousel = () => (
         </div>
       </div>
     </div>
-    <div className="absolute bottom-[20%] left-1/2 z-30 flex h-6 w-52 -translate-x-1/2 animate-pulse rounded-lg bg-zinc-800 md:bottom-[5%]"></div>
+    <div className="absolute bottom-[20%] left-1/2 z-30 flex h-4 w-44 -translate-x-1/2 animate-pulse rounded-lg bg-zinc-800 md:bottom-[8%]"></div>
   </div>
 )
