@@ -2,17 +2,16 @@ import '@styles/search-section.css'
 
 import { useEffect, useMemo } from 'react'
 
+import type { Anime } from 'types'
+import { FilterSection } from './filters/filter-section'
 import { SearchResults } from '@components/search/results/search-results'
-import { useDebounce } from '@hooks/useDebounce'
-import { useFetch } from '@hooks/useFetch'
-import { useUrlSync } from '@hooks/useUrlSync'
-import { useSearchStoreResults } from '@store/search-results-store'
 import { baseUrl } from '@utils/base-url'
 import { createFiltersToApply } from '@utils/filters-to-apply'
+import { useDebounce } from '@hooks/useDebounce'
+import { useFetch } from '@hooks/useFetch'
+import { useSearchStoreResults } from '@store/search-results-store'
+import { useUrlSync } from '@hooks/useUrlSync'
 
-import { FilterSection } from './filters/filter-section'
-
-import type { Anime } from 'types'
 export const SearchComponent = () => {
   const { query, setResults, appliedFilters, setLoading } =
     useSearchStoreResults()
@@ -47,7 +46,7 @@ export const SearchComponent = () => {
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
-    <section className="custom-scrollbar" id="search-section">
+    <section id="search-section">
       <div className="mt-16 [grid-area:aside]">
         <FilterSection />
       </div>
