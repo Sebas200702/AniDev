@@ -75,6 +75,7 @@ export const SearchBar = ({ location }: Props) => {
           type="button"
           className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${isMobile ? 'absolute' : ''} ${isExpanded && isMobile ? 'right-2' : ''}`}
           onClick={toggleExpand}
+          aria-label='Search'
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
