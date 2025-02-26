@@ -12,7 +12,7 @@ const { trailer_url, banner_image, image_large_webp, title } = Astro.props
 
 {
   trailer_url ? (
-    <div class="mt-10 flex w-full flex-col md:max-w-5xl">
+    <div class="flex w-full flex-col md:max-w-5xl">
       <lite-youtube
         class="rounded-lg"
         videoid={trailer_url.split('v=')[1]}
