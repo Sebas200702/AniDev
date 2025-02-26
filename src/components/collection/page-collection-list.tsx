@@ -33,7 +33,7 @@ export const PageColectionList = ({ title, id }: Props) => {
   return (
     <div className="mx-auto flex flex-col gap-4">
       <header className="flex flex-row justify-between">
-        <h2 className="mb-6 h-20 overflow-hidden text-xl font-bold text-white md:h-auto md:px-10 md:text-3xl">
+        <h2 className="mb-6 h-20 overflow-hidden text-xl font-bold text-white md:h-auto  md:text-3xl">
           {title}
         </h2>
       </header>
