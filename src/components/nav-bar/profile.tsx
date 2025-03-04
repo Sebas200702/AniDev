@@ -21,7 +21,7 @@ export const Profile = ({ userInfo }: Props) => {
         <button onClick={handleClick}>
           <img
             className="h-10 w-10 rounded-full"
-            src={userInfo.avatar ?? 'profile-picture-5.webp'}
+            src={userInfo.avatar ?? '/profile-picture-5.webp'}
             alt="Profile"
             loading="lazy"
             decoding="async"
