@@ -1,5 +1,4 @@
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
-import { reduceString } from '@utils/reduce-string'
 import { useEffect } from 'react'
 import { useWindowWidth } from '@store/window-width'
 
@@ -33,13 +32,13 @@ export const BannerInfo = ({
         href={`/${slug}_${mal_id}`}
         className="transition-all duration-200 ease-in-out md:hover:opacity-95"
       >
-        <h3 className="text-lx max-h-44 w-full overflow-hidden text-center font-bold text-white">
-          {reduceString(title, 40)}
+        <h3 className="text-lx line-clamp-2 max-h-44 w-full overflow-hidden text-center font-bold text-white">
+          {title }
         </h3>
       </a>
 
-      <p className="text-s max-h-32 w-full overflow-hidden text-center text-white">
-        {reduceString(synopsis, 80)}
+      <p className="text-s max-h-32 w-full line-clamp-2 overflow-hidden text-center text-white">
+        {synopsis}
       </p>
       <WatchAnimeButton url={`/watch/${slug}_${mal_id}`} />
     </div>

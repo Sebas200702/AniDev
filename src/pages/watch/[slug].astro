@@ -4,7 +4,7 @@ import AnimeEpisodesList from '@components/watch-anime/episodes/anime-episode-li
 import { baseUrl } from '@utils/base-url'
 
 import type { Anime, AnimeEpisode } from 'types'
-import { reduceString } from '@utils/reduce-string'
+
 import { slide } from 'astro:transitions'
 import { VideoPlayer } from '@components/watch-anime/player/player.jsx'
 import Footer from '@components/watch-anime/episodes/footer.astro'
@@ -77,7 +77,7 @@ const {
   episodes: episodesLength,
   duration,
 } = animeData as Anime
-const description = reduceString(synopsis, 200) || 'No description available'
+const description = synopsis || 'No description available'
 
 const {
   chapterImage,
