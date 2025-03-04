@@ -186,3 +186,20 @@ export type HTMLInputTypeAttribute =
   | 'time'
   | 'url'
   | 'week'
+declare namespace JSX {
+  interface IntrinsicElements {
+    'lite-youtube': React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLElement> & {
+        videoid: string
+        params?: string
+      },
+      HTMLElement
+    >
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'lite-youtube': HTMLElement
+  }
+}
