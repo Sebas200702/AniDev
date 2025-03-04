@@ -41,7 +41,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
   ]
 
   return (
-    <section className="flex h-min flex-col items-center col-span-3  w-full md:col-span-1 justify-center">
+    <section className="flex h-min flex-col items-center   w-full md:col-span-1 justify-center">
       <header className="bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl px-4 py-1 backdrop-blur-md">
         <h2 className="text-l text-center text-pretty">Details</h2>
       </header>

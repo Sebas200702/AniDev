@@ -20,7 +20,7 @@ export const AnimeTrailer = ({
   return (
     <>
       {trailer_url ? (
-        <div className="relative col-span-2 flex h-min w-full flex-col md:max-w-5xl">
+        <div className="relative  flex h-min w-full flex-col ">
           <lite-youtube
             videoid={videoId}
             params="modestbranding=1&rel=0"

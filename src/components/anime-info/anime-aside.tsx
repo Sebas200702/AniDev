@@ -15,7 +15,7 @@ export const AnimeAside = ({
   url,
 }: Props) => {
   return (
-    <aside className="top-28 z-10 md:row-span-2 col-span-3 md:col-span-1  p-4 md:p-0 flex h-min w-full flex-col gap-8 md:items-start xl:sticky">
+    <aside className="top-28 z-10 anime-aside  p-4 md:p-0 flex h-min w-full flex-col gap-8 md:items-start xl:sticky">
       <figure className="aspect-[225/330] w-auto rounded-lg">
         <img
           src={animeData.image_large_webp}

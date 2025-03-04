@@ -1,3 +1,5 @@
+import '@styles/anime-page.css'
+
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { useEffect, useState } from 'react'
 
@@ -36,15 +38,13 @@ export const AnimeInfo = ({ slug }: Props) => {
     getAnimeData(slug)
   }, [])
 
-  if (!animeData) return <AnimeLoader />
+  if (animeData) return <AnimeLoader />
 
   const url = `${baseUrl}/${normalizeString(animeData.title)}_${animeData.mal_id}`
 
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const shareText = `Watch ${animeData.title} on AniDev`
   const seoTitle = `${animeData.title} -  ${baseTitle}`
-
-
 
   return (
     <>
@@ -59,7 +59,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="anime-page z-10 md:-mt-56 -mt-96 grid gap-4 md:gap-10 xl:gap-15 px-4 md:px-20  ">
+      <article className="anime-page  flex flex-col">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -69,7 +69,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className='row-span-2 col-span-3  md:col-span-2'>
+        <div className="anime-showbox">
           <AnimeShowBox
             trailer_url={animeData.trailer_url}
             banner_image={animeData.banner_image}
@@ -77,8 +77,6 @@ export const AnimeInfo = ({ slug }: Props) => {
             title={animeData.title}
             synopsis={animeData.synopsis}
           />
-
-
         </div>
 
         <AnimeDetails animeData={animeData} />

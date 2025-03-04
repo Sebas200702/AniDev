@@ -1,11 +1,53 @@
 @media screen and (min-width: 1280px) {
   .anime-page {
+    display: grid;
     grid-template-columns: 2fr 3fr 3fr 2.5fr;
+    padding: 0 80px 0 80px;
+    margin-top: -14rem;
+    z-index: 10;
+    gap: 60px;
+  }
+  .anime-header {
+    grid-column: span 3 / span 3;
+  }
+  .anime-aside {
+    grid-column: span 1 / span 1;
+    grid-row: span 2 / span 2;
+  }
+  .anime-showbox {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
   }
 }
 @media screen and (max-width: 1279px) {
   .anime-page {
+    display: grid;
     grid-template-columns: 2fr 2fr 2fr;
+    padding: 0 80px 0 80px;
+    margin-top: -14rem;
+    z-index: 10;
+    gap: 40px;
+  }
+  .anime-header {
+    grid-column: span 2 / span 2;
+  }
+  .anime-aside {
+    grid-column: span 1 / span 1;
+    grid-row: span 2 / span 2;
+  }
+  .anime-showbox {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
   }
 }
-
+@media screen and (max-width: 767px) {
+  .anime-page {
+    display: flex;
+    flex: column;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: -24rem;
+    gap: 16px;
+    z-index: 10;
+  }
+}
