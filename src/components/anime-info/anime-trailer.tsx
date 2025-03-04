@@ -39,7 +39,7 @@ export const AnimeTrailer = ({
             <lite-youtube
               videoid={videoId}
               style={{ aspectRatio: '16/9' }}
-              class="w-full rounded-sm"
+              class="w-full rounded-lg "
             />
           ) : (
             <div className="aspect-video w-full animate-pulse rounded-sm bg-gray-700" />
