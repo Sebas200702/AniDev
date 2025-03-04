@@ -5,10 +5,21 @@ import { AnimeBanner } from '@components/index/banners/anime-banner'
 import Layout from '@layouts/base.astro'
 import { ColectionList } from '@components/index/collections/colection-list'
 import { AnimeTop } from '@components/index/anime-top/top-anime'
+import { CreateMetaDatas } from '@components/create-meta-datas'
+import { baseTitle } from '@utils/base-url'
+
+const SEO_DESCRIPTION =
+  'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 ---
 
 <Layout>
   <Carousel client:load />
+  <CreateMetaDatas
+    client:only
+    title={baseTitle}
+    description={SEO_DESCRIPTION}
+    image={'https://ani-dev.vercel.app/og-image.jpg'}
+  />
 
   <section class="-mt-20 flex flex-col gap-y-6 md:gap-y-20">
     <AnimeSlider
@@ -43,6 +54,5 @@ import { AnimeTop } from '@components/index/anime-top/top-anime'
       query="genre_filter=sliceoflife"
       title="Slice of Life"
     />
-
   </section>
 </Layout>
