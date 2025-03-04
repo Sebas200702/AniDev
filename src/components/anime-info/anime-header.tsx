@@ -11,7 +11,7 @@ interface Props {
 
 export const AnimeHeader = ({ animeData }: Props) => {
   return (
-    <header className="flex w-auto flex-col gap-4  justify-end  anime-header xl:mt-0">
+    <header className="flex w-auto flex-col md:col-span-2 gap-4 xl:col-span-4 justify-end  anime-header xl:mt-0">
       <h2 className="title max-w-[30ch] text-pretty md:text-wrap">
         {animeData.title}
       </h2>

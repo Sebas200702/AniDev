@@ -1,5 +1,3 @@
-import '@styles/anime-page.css'
-
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { useEffect, useState } from 'react'
 
@@ -59,7 +57,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="anime-page  flex flex-col">
+      <article className="md:px-20 z-10 px-4 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-15 md:-mt-54 -mt-96">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -69,7 +67,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className="anime-showbox">
+        <div className="xl:col-span-3 md:col-span-2 row-span-2">
           <AnimeShowBox
             trailer_url={animeData.trailer_url}
             banner_image={animeData.banner_image}
