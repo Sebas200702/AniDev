@@ -1,7 +1,7 @@
 export const AnimeTopLoader = () => {
   return (
     <div className="relative">
-      <header className="flex w-full flex-row items-center justify-around gap-4 mb-4">
+      <header className="flex w-full flex-row items-center justify-around gap-4 mb-10">
         <div className="mt-2 flex-1 border-t border-white/20"></div>
         <div className="h-6 w-28 rounded-md bg-zinc-800 md:h-8 md:w-40"></div>
 
