@@ -61,6 +61,7 @@ export const Carousel = () => {
       const image = new Image()
       image.src = anime.image_large_webp
       image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
+      image.src = createImageUrlProxy(anime.banner_image, '100', '0', 'webp')
     })
   }, [banners])
 
