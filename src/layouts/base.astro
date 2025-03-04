@@ -4,6 +4,7 @@ import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
 import { AstroFont } from 'astro-font'
 import '@styles/global.css'
+import '@styles/fade-out.css'
 ---
 
 <html lang="en">
@@ -39,12 +40,6 @@ import '@styles/global.css'
           fallback: 'sans-serif',
         },
       ]}
-    />
-    <link
-      rel="preload"
-      href="/src/styles/fade-out.css"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
     />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="canonical" href="https://ani-dev.vercel.app/" />
