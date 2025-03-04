@@ -2,7 +2,7 @@ export const AnimeSliderLoader = () => {
     return (
         <div className="relative mx-auto w-[100dvw]">
           <div className="mt-1 flex flex-row items-center justify-center space-x-4 p-4 md:mt-0 mb-6">
-            <span className="ml-16 inline-flex h-6 w-24 animate-pulse rounded-lg bg-zinc-800  md:h-8 md:w-32"></span>
+            <span className="md:ml-16 inline-flex h-6 w-24 animate-pulse rounded-lg bg-zinc-800  md:h-8 md:w-32"></span>
             <div className="flex-1 border-t border-white/20 md:mt-2"></div>
           </div>
           <div className="relative overflow-hidden">
