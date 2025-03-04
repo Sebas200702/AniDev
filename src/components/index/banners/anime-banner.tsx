@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { BannerInfo } from '@components/index/banners/banner-info'
 import { BannerLoader } from '@components/index/banners/banner-loader'
 import { Overlay } from '@components/overlay'
+import { Picture } from '@components/picture'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
@@ -74,15 +75,12 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20 `}
+      className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20`}
     >
-      <article className="group relative transition-all duration-400 ease-in-out md:hover:opacity-95 w-full  ">
-        <a
-          href={`/${slug}_${mal_id}`}
-          aria-label={`View details for ${title}`}
-        >
+      <article className="group relative w-full transition-all duration-400 ease-in-out md:hover:opacity-95">
+        <a href={`/${slug}_${mal_id}`} aria-label={`View details for ${title}`}>
           <div
-            className="rounded-2xl w-full h-full  md:aspect-[1080/350] "
+            className="h-full w-full rounded-2xl md:aspect-[1080/350]"
             style={{
               backgroundImage: `url(${createImageUrlProxy(imageUrl, '100', '0', 'webp')})`,
               backgroundSize: 'cover',
@@ -90,24 +88,14 @@ export const AnimeBanner = ({ id }: { id: number }) => {
               backgroundRepeat: 'no-repeat',
             }}
           >
-             <img
+            <img
               src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
               alt="Anime Banner"
               loading="lazy"
-              className='aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]'
-
+              className="aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]"
             />
-
           </div>
-          <Overlay
-            heigth="1/3"
-            color="Primary-950/70"
-            width="full"
-            gradient="b"
-            rounded="lg"
-            hover="h-full"
-            zIndex={10}
-          />
+          <Overlay className="to-Primary-950/80 md:gruop-hover:h-full  h-1/2 w-full bg-gradient-to-b" />
         </a>
         <BannerInfo
           title={title}
