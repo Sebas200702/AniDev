@@ -1,3 +1,5 @@
+import { NextPrevIcon } from '@components/icons/next-prev-icon'
+
 interface NexPrevBtnCarouselProps {
   action: () => void
   label: string
@@ -13,21 +15,7 @@ export const NexPrevBtnCarousel = ({
       onClick={action}
     >
       <span className="bg-Primary-900/40 group-hover:bg-Primary-800/50 inline-flex h-full w-full items-center justify-center rounded-lg">
-        <svg
-          className="h-3 w-3 text-white md:h-4 md:w-4"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 6 10"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M5 1 1 5l4 4"
-          />
-        </svg>
+        <NextPrevIcon />
         <span className="sr-only">{label}</span>
       </span>
     </button>
