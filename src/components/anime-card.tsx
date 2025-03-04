@@ -1,6 +1,7 @@
 import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
+import { Picture } from '@components/picture'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { useWindowWidth } from '@store/window-width'
@@ -55,14 +56,9 @@ export const AnimeCard = ({ anime, context }: Props) => {
         className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : 'w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc((100dvw-360px)/6)]'}`}
         aria-label={`View details for ${title}`}
       >
-        <picture
-          className="relative h-full w-full rounded-lg"
-          style={{
-            backgroundImage: `url(${image_small_webp})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
+        <Picture
+          image={image_small_webp}
+          styles="relative h-full w-full rounded-lg"
         >
           <img
             src={isMobile ? image_webp : image_large_webp}
@@ -81,7 +77,8 @@ export const AnimeCard = ({ anime, context }: Props) => {
             zIndex={10}
             hover="h-full"
           />
-        </picture>
+        </Picture>
+
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoin
             class={`h-6 w-6 ${status === 'Currently Airing' ? 'text-green-400 md:group-hover:text-green-500' : status === 'Finished Airing' ? 'text-blue-400 md:group-hover:text-blue-500' : 'text-yellow-400 md:group-hover:text-yellow-500'}`}
