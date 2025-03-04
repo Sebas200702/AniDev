@@ -32,12 +32,6 @@ export const GET: APIRoute = async ({ url }) => {
 
   try {
     const response = await fetch(imageUrl)
-    if (!response.ok) {
-      return new Response('', {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    }
 
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
@@ -53,12 +47,18 @@ export const GET: APIRoute = async ({ url }) => {
 
     const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
+    if (!optimizedBuffer || !response.ok || !image) {
+      return new Response(JSON.stringify({ error: 'Error processing image' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
     await redis.set(`image-${imageUrl}`, JSON.stringify(optimizedBuffer))
 
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
-        'Cache-Control': 'max-age=31536000',
         'Content-Length': optimizedBuffer.length.toString(),
       },
     })
