@@ -12,7 +12,7 @@ interface AnimeListsStore {
 export const useAnimeListsStore = create<AnimeListsStore>((set) => ({
   animeList: [
     {
-      label: 'synopsis',
+      label: 'Synopsis',
       icon: SynopsisIcon,
       selected: true,
     },
