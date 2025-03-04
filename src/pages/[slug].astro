@@ -1,44 +1,15 @@
 ---
 import Layout from '@layouts/base.astro'
-import { baseUrl } from '@utils/base-url'
 
-import type { Anime } from '../types'
-import { reduceString } from '@utils/reduce-string'
+import '@styles/anime-page.css'
 
-import '@styles/fade-out.css'
+import { AnimeInfo } from '@components/anime-info/anime'
 
-import AnimeBackground from '@components/anime-info/anime-background.astro'
-import AnimeInfo from '@components/anime-info/anime-data/anime.astro'
-
-const getAnimeData = async () => {
-  try {
-    const animeData = await fetch(
-      `${baseUrl}/api/getAnime?slug=${Astro.params.slug}`,
-      { cache: 'force-cache' }
-    )
-      .then((res) => res.json())
-      .then((data) => data.anime)
-    return animeData
-  } catch (error) {
-    console.error(error)
-    return null
-  }
-}
-
-const animeData = await getAnimeData()
-
-if (!animeData) {
-  return Astro.redirect('/404', 301)
-}
-
-const { title, image_large_webp, synopsis } =
-  animeData as Anime
-
-const description = reduceString(synopsis, 200) || 'No description available'
+const slug = Astro.params.slug ?? ''
 ---
 
-<Layout description={description} image={image_large_webp} title={title}>
-  <section class="flex flex-col gap-8 p-4 text-white md:px-20 ">
-    <AnimeInfo animeData={animeData} />
+<Layout>
+  <section class="flex flex-col text-white">
+    <AnimeInfo client:only slug={slug} />
   </section>
 </Layout>
