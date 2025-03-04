@@ -38,7 +38,7 @@ export const AnimeInfo = ({ slug }: Props) => {
     getAnimeData(slug)
   }, [])
 
-  if (animeData) return <AnimeLoader />
+  if (!animeData) return <AnimeLoader />
 
   const url = `${baseUrl}/${normalizeString(animeData.title)}_${animeData.mal_id}`
 
