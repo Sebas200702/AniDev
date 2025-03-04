@@ -1,8 +1,23 @@
 import type { APIRoute } from 'astro'
+import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = async ({ url }) => {
   try {
+    if (!redis.isOpen) {
+      await redis.connect()
+    }
+
+    const cacheKey = `animes ${url.searchParams.toString()}`
+    const cachedData = await redis.get(cacheKey)
+
+    if (cachedData) {
+      return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
+
     const [order_by, order_direction] = url.searchParams
       .get('order_by')
       ?.split(' ') ?? ['relevance_score', 'desc']
