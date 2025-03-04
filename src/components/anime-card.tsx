@@ -68,15 +68,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
             width={225}
             height={330}
           />
-          <Overlay
-            heigth="1/3"
-            color="Primary-950/70"
-            width="full"
-            gradient="b"
-            rounded="lg"
-            zIndex={10}
-            hover="h-full"
-          />
+          <Overlay className="h-1/3 md:group-hover:h-full w-full bg-gradient-to-b to-Primary-950/80 " />
         </Picture>
 
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
