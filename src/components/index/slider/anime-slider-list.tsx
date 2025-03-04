@@ -114,8 +114,8 @@ export const AnimeSlider = ({ query, title }: Props) => {
       <SliderHeader title={title} />
 
       <div className="relative overflow-hidden">
-        <NexPrevBtnSlideList label="prev-button " styles="rotate-180" />
-        <NexPrevBtnSlideList label="next-button" styles="right-0" />
+        <NexPrevBtnSlideList label="prev-button " styles="" />
+        <NexPrevBtnSlideList label="next-button" styles="right-0 rotate-180" />
 
         <ul className="anime-list mx-auto flex w-full flex-row gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-5 md:gap-10 md:px-20">
           {displayAnimes.map((anime: Anime) => (
