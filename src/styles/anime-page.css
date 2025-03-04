@@ -1,0 +1,11 @@
+@media screen and (min-width: 1280px) {
+  .anime-page {
+    grid-template-columns: 2fr 3fr 3fr 2.5fr;
+  }
+}
+@media screen and (max-width: 1279px) {
+  .anime-page {
+    grid-template-columns: 2fr 2fr 2fr;
+  }
+}
+
