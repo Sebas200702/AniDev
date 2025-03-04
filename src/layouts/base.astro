@@ -1,28 +1,8 @@
 ---
-import Footer from '@components/footer.astro'
 import NavBar from '@components/nav-bar/nav-bar.astro'
 import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
 import '@styles/global.css'
-import '@styles/fade-out.css'
-
-const episode = new URLSearchParams(Astro.url.search).get('ep')
-const baseTitle = 'AniDev - Watch anime online free'
-const { description, image, title } = Astro.props
-
-interface Props {
-  description?: string
-  image?: string
-  title?: string
-}
-const SEO_DESCRIPTION =
-  'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
-
-const seoTitle = (title: string | null, episode: string | null) => {
-  if (!episode && !title) return baseTitle
-  if (!episode) return `${title} - ${baseTitle}`
-  return `${title} - Episodio ${episode} - ${baseTitle}`
-}
 ---
 
 <html lang="en">
@@ -31,21 +11,18 @@ const seoTitle = (title: string | null, episode: string | null) => {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description ?? SEO_DESCRIPTION} />
+    <meta name="description" content="" />
     <meta
       property="og:image"
       name="og:image"
-      content={image ?? 'https://ani-dev.vercel.app/og-image.jpg'}
+      content={'https://ani-dev.vercel.app/og-image.jpg'}
     />
-    <meta property="og:title" content={seoTitle(title ?? '', episode)} />
-    <meta property="og:description" content={description ?? SEO_DESCRIPTION} />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
     <meta property="og:type" content="website" />
-    <meta
-      name="twitter:card"
-      content={image ? 'summary_large_image' : 'summary'}
-    />
-    <meta name="twitter:description" content={description ?? SEO_DESCRIPTION} />
-    <meta name="twitter:title" content={seoTitle(title ?? '', episode)} />
+    <meta name="twitter:card" content={'summary_large_image'} />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:title" content="" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -54,14 +31,17 @@ const seoTitle = (title: string | null, episode: string | null) => {
       as="style"
       onload="this.onload=null;this.rel='stylesheet'"
     />
+    <link
+      rel="preload"
+      href="/src/styles/fade-out.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+
     <noscript><link rel="stylesheet" href="styles.css" /></noscript>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="canonical" href="https://ani-dev.vercel.app/" />
-    <title>{seoTitle(title ?? '', episode)}</title>
-    <script
-      type="module"
-      src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"
-      defer></script>
+    <title></title>
     <ClientRouter />
   </head>
   <body>
