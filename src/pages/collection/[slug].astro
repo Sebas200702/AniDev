@@ -1,11 +1,12 @@
 ---
 import Layout from '@layouts/base.astro'
 import { PageColectionList } from '@components/collection/page-collection-list'
+import { slugToText } from '@utils/slug-to-text'
 const [title, id] = Astro.params.slug?.split('_') ?? ['', '']
 ---
 
 <Layout>
-  <section class="mt-28  md:px-20 ">
-    <PageColectionList title={title} id={id} client:visible />
+  <section class="mt-28 px-4 md:px-20">
+    <PageColectionList title={slugToText(title)} id={id} client:visible />
   </section>
 </Layout>
