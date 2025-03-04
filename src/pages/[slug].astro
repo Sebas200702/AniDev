@@ -8,6 +8,6 @@ const slug = Astro.params.slug ?? ''
 
 <Layout>
   <section class="flex flex-col text-white">
-    <AnimeInfo client:only slug={slug} />
+    <AnimeInfo client:load slug={slug} />
   </section>
 </Layout>
