@@ -2,6 +2,7 @@
 import NavBar from '@components/nav-bar/nav-bar.astro'
 import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
+import { AstroFont } from 'astro-font'
 import '@styles/global.css'
 ---
 
@@ -25,11 +26,19 @@ import '@styles/global.css'
     <meta name="twitter:title" content="" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
+    <AstroFont
+      config={[
+        {
+          src: [],
+          name: 'Nunito',
+          googleFontsURL:
+            'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap',
+          preload: true,
+          display: 'swap',
+          selector: 'body',
+          fallback: 'sans-serif',
+        },
+      ]}
     />
     <link
       rel="preload"
