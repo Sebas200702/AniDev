@@ -1,20 +1,8 @@
 import type { APIRoute } from 'astro'
-import { redis } from '@libs/redis'
 import sharp from 'sharp'
 
 export const GET: APIRoute = async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
-  if (!redis.isOpen) {
-    await redis.connect()
-  }
-  const cachedData = await redis.get(`image-${imageUrl}`)
-
-  if (cachedData) {
-    return new Response(JSON.stringify(JSON.parse(cachedData)), {
-      status: 200,
-      headers: { 'content-type': 'application/json' },
-    })
-  }
 
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
   const quality = Math.min(
@@ -54,7 +42,6 @@ export const GET: APIRoute = async ({ url }) => {
       })
     }
 
-    await redis.set(`image-${imageUrl}`, JSON.stringify(optimizedBuffer))
 
     return new Response(optimizedBuffer, {
       headers: {
