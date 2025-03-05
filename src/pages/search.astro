@@ -1,8 +1,14 @@
 ---
 import { SearchComponent } from '@components/search/search-section'
 import Layout from '@layouts/base.astro'
+import  {CreateMetaDatas} from '@components/create-meta-datas'
+import { baseTitle } from '@utils/base-url'
+
+const title = `Search - ${baseTitle}`
+const description = 'Search for anime'
 ---
 
 <Layout title="Search">
+  <CreateMetaDatas client:load title={title} description={description} image="" />
   <SearchComponent client:visible />
 </Layout>
