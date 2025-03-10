@@ -32,7 +32,6 @@ export const AnimeBanner = ({ id }: { id: number }) => {
       const { url: newUrl } = createDynamicUrl(1)
       return await getBannerData(newUrl)
     }
-
     return {
       imageUrl: anime.banner_image,
       title: anime.title,
@@ -54,9 +53,10 @@ export const AnimeBanner = ({ id }: { id: number }) => {
       }
       const { url } = createDynamicUrl(1)
       const data = await getBannerData(url)
-      if (!data || animeBanners.includes(data.mal_id)) return
+
       setBannerData(data)
-      setAnimeBanners([...animeBanners, data.mal_id])
+      animeBanners.push(data.mal_id)
+      setAnimeBanners(animeBanners)
       sessionStorage.setItem(`animeBanner_${id}`, JSON.stringify(data))
 
       setTimeout(() => {
@@ -95,7 +95,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
               className="aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]"
             />
           </div>
-          <Overlay className="to-Primary-950/80 md:gruop-hover:h-full  h-1/2 w-full bg-gradient-to-b" />
+          <Overlay className="to-Primary-950/80 md:gruop-hover:h-full h-1/2 w-full bg-gradient-to-b" />
         </a>
         <BannerInfo
           title={title}
