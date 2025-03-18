@@ -38,6 +38,12 @@ export type Animes = {
   animes: Anime[]
 }
 
+export  enum ToastType {
+  Success = 'success',
+  Error = 'error',
+  Warning = 'warning',
+  Info = 'info',
+}
 interface Collection {
   title: string
   query: string
