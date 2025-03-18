@@ -2,6 +2,8 @@
 import Layout from '@layouts/base.astro'
 import AnimeEpisodesList from '@components/watch-anime/episodes/anime-episode-list.astro'
 import { baseUrl } from '@utils/base-url'
+import { CreateMetaDatas } from '@components/create-meta-datas'
+import { baseTitle } from '@utils/base-url'
 
 import type { Anime, AnimeEpisode } from 'types'
 
@@ -78,7 +80,7 @@ const {
   duration,
 } = animeData as Anime
 const description = synopsis || 'No description available'
-
+const seoTitle = `${title} -  ${baseTitle}`
 const {
   chapterImage,
   episodeTitle,
@@ -89,11 +91,8 @@ const {
 ---
 
 <Layout
-  description={description}
-  image={chapterImage ?? image_large_webp}
-  title=`${title} - Episode: ${episode}`
-  }
 >
+  <CreateMetaDatas title={seoTitle} description={episodeDescription ?? description} image={chapterImage ?? image_large_webp} />
   <section
     class="xl:w-full mx-auto mt-20 flex h-min w-full flex-col justify-center gap-20 overflow-hidden md:px-20 p-4 xl:max-h-[calc(100dvh-80px)] xl:flex-row"
     aria-label="Reproductor de episodios y lista de episodios"
