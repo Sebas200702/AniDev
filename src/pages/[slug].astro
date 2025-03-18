@@ -1,9 +1,20 @@
 ---
 import Layout from '@layouts/base.astro'
-
 import { AnimeInfo } from '@components/anime-info/anime'
+import { supabase } from '@libs/supabase'
 
 const slug = Astro.params.slug ?? ''
+
+const mal_id = slug.split('_').pop()
+
+const { count, error } = await supabase
+  .from('anime')
+  .select('*', { count: 'exact', head: true })
+  .eq('mal_id', mal_id)
+
+if (error || count === 0) {
+  return Astro.redirect('/404')
+}
 ---
 
 <Layout>
