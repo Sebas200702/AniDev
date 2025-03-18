@@ -2,8 +2,10 @@ import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
+import { StatusPoin } from '@components/status-point'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
+import { statusColors } from '@utils/status-colors'
 import { useWindowWidth } from '@store/window-width'
 
 interface Props {
@@ -11,26 +13,6 @@ interface Props {
   context?: string
 }
 
-interface StatusPoinProps {
-  class: string
-  status?: string
-}
-
-const StatusPoin = ({ class: className, status }: StatusPoinProps) => {
-  return (
-    <div title={status}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        className={className}
-      >
-        <path d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 7a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7z" />
-      </svg>
-    </div>
-  )
-}
 export const AnimeCard = ({ anime, context }: Props) => {
   const {
     title,
@@ -68,12 +50,12 @@ export const AnimeCard = ({ anime, context }: Props) => {
             width={225}
             height={330}
           />
-          <Overlay className="h-1/3 md:group-hover:h-full w-full bg-gradient-to-b to-Primary-950/80 " />
+          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </Picture>
 
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoin
-            class={`h-6 w-6 ${status === 'Currently Airing' ? 'text-green-400 md:group-hover:text-green-500' : status === 'Finished Airing' ? 'text-blue-400 md:group-hover:text-blue-500' : 'text-yellow-400 md:group-hover:text-yellow-500'}`}
+            class={`h-6 w-6 ${statusColors(status)}`}
             status={status}
           />
           <h5
