@@ -3,6 +3,7 @@ import NavBar from '@components/nav-bar/nav-bar.astro'
 import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
 import { AstroFont } from 'astro-font'
+import { LoadWindowWidth } from '@components/load-window-width'
 import '@styles/global.css'
 import '@styles/fade-out.css'
 ---
@@ -48,6 +49,7 @@ import '@styles/fade-out.css'
   </head>
   <body>
     <LoadTheme client:load />
+    <LoadWindowWidth client:load />
     <div
       id="app"
       class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-auto"

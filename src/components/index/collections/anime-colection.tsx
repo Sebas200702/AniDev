@@ -40,7 +40,7 @@ export const AnimeCollection = ({ id }: Props) => {
       setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
-      if (!data || isCollectionUnique(data.animes_ids)) return
+    
       setAnimes(data.animes)
       setTitle(data.title)
 
@@ -49,7 +49,7 @@ export const AnimeCollection = ({ id }: Props) => {
         query: url,
         animes_ids: data.animes_ids,
       }
-      collections.push(newCollection)
+      
 
       setCollections([...collections, newCollection])
       sessionStorage.setItem(
@@ -89,12 +89,15 @@ export const AnimeCollection = ({ id }: Props) => {
       return await fetchAnimes(newUrl, generatedTitle)
     }
 
-    return {
+    const newCollection = {
       animes: fetchedAnimes,
       title: dynamicTitle,
       query: url,
       animes_ids: newAnimeIds,
     }
+    collections.push(newCollection)
+    return newCollection
+    
   }
 
   const style1 =
@@ -106,7 +109,8 @@ export const AnimeCollection = ({ id }: Props) => {
 
   if (loading || !animes.length)
     return (
-      <div className="flex h-60 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800 px-4"></div>
+      <div className="h-60 flex  w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800 ">
+      </div>
     )
 
   const getPosition = (i: number) => {
@@ -116,7 +120,7 @@ export const AnimeCollection = ({ id }: Props) => {
   }
 
   return (
-    <article className="bg-Complementary mx-auto flex max-h-60 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
+    <article className="bg-Complementary mx-auto flex max-h-60 h-full w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
       <a href={`/collection/${normalizeString(title)}_${id}`}>
         <h4 className="text-l mx-auto h-12 max-w-80 p-4 text-center font-bold text-balance text-white">
           {title || 'Sin Título'}

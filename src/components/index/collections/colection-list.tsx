@@ -7,18 +7,7 @@ interface Props {
 }
 
 export const ColectionList = ({ id }: Props) => {
-  const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth)
-    setWindowWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [setWindowWidth])
-
+  const { width: windowWidth } = useWindowWidth()
   let colectionLength
   if (windowWidth && windowWidth >= 1280) colectionLength = 4
   else if (windowWidth && windowWidth >= 768) colectionLength = 2

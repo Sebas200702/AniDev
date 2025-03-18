@@ -1,14 +1,14 @@
-import { baseTitle, baseUrl } from '@utils/base-url'
 import { useEffect, useState } from 'react'
 
 import type { Anime } from 'types'
-import { AnimeAside } from '@components/anime-info/anime-aside.tsx'
+import { AnimeAside } from '@components/anime-info/anime-aside'
 import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { CreateMetaDatas } from '@components/create-meta-datas'
+import { baseTitle } from '@utils/base-url'
 import { normalizeString } from '@utils/normalize-string'
 
 interface Props {
@@ -20,7 +20,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
   const getAnimeData = async (slug: string) => {
     try {
-      const animeData = await fetch(`${baseUrl}/api/getAnime?slug=${slug}`, {
+      const animeData = await fetch(`/api/getAnime?slug=${slug}`, {
         cache: 'force-cache',
       })
         .then((res) => res.json())
@@ -38,7 +38,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
   if (!animeData) return <AnimeLoader />
 
-  const url = `${baseUrl}/${normalizeString(animeData.title)}_${animeData.mal_id}`
+  const url = `/${normalizeString(animeData.title)}_${animeData.mal_id}`
 
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const shareText = `Watch ${animeData.title} on AniDev`
