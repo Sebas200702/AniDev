@@ -4,7 +4,7 @@ import { signIn } from 'auth-astro/client'
 export const GoogleBtn = () => {
   const handleGoogleClick = async () => {
     signIn('google', {
-      redirectTo: '/'
+      redirectTo: '/',
     })
   }
   return (
@@ -14,7 +14,6 @@ export const GoogleBtn = () => {
       onClick={handleGoogleClick}
     >
       <GoogleIcon style="h-6 w-6" />
-      
     </button>
   )
 }
