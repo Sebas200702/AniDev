@@ -1,8 +1,8 @@
 interface Props {
-  class?: string
+  style?: string
 }
 
-export const EmailIcon = ({ class: className }: Props) => (
+export const EmailIcon = ({ style }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -10,7 +10,7 @@ export const EmailIcon = ({ class: className }: Props) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className={className}
+    className={style}
     viewBox="0 0 24 24"
   >
     <path d="M0 0h24v24H0z" stroke="none"></path>

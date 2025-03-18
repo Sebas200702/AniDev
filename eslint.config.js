@@ -1,33 +1,29 @@
-import eslintPluginTypescript from '@typescript-eslint/eslint-plugin'
-import eslintPluginPrettier from 'eslint-plugin-prettier'
-import eslintPluginAstro from 'eslint-plugin-astro'
-import typescriptParser from '@typescript-eslint/parser'
 import astroParser from 'astro-eslint-parser'
+import eslintPluginAstro from 'eslint-plugin-astro'
+import eslintPluginPrettier from 'eslint-plugin-prettier'
+import eslintPluginTypescript from '@typescript-eslint/eslint-plugin'
+import typescriptParser from '@typescript-eslint/parser'
 
 export default [
-  // Configuración global para TypeScript
   {
     languageOptions: {
-      parser: typescriptParser, // Parser para TypeScript
+      parser: typescriptParser,
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
-        project: './tsconfig.json', // Asegúrate de tener el archivo tsconfig.json
+        project: './tsconfig.json',
       },
     },
     plugins: {
       '@typescript-eslint': eslintPluginTypescript,
       prettier: eslintPluginPrettier,
     },
-    rules: {
-      // Agregar reglas específicas para TypeScript aquí
-    },
   },
-  // Configuración específica para archivos .astro
+
   {
     files: ['*.astro'],
     languageOptions: {
-      parser: astroParser, // Parser para archivos Astro
+      parser: astroParser,
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
@@ -36,9 +32,6 @@ export default [
     plugins: {
       astro: eslintPluginAstro,
       prettier: eslintPluginPrettier,
-    },
-    rules: {
-      // Agregar reglas específicas para Astro aquí
     },
   },
 ]

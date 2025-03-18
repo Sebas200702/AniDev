@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro'
+import { rateLimit } from '@middlewares/rate-limit'
 import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
     if (!redis.isOpen) {
       await redis.connect()
@@ -92,4 +93,4 @@ export const GET: APIRoute = async ({ url }) => {
       headers: { 'Content-Type': 'application/json' },
     })
   }
-}
+})

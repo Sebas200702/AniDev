@@ -16,7 +16,8 @@
       "@store/*": ["store/*"],
       "@data/*": ["data/*"],
       "@utils/*": ["utils/*"],
-      "types": ["types.d.ts"]
+      "types": ["types.d.ts"],
+      "@middlewares/*": ["middlewares/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"

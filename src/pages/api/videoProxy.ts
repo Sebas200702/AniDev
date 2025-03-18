@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro'
+import { rateLimit } from '@middlewares/rate-limit'
 
-export const GET: APIRoute = async ({ request, url }) => {
+export const GET: APIRoute = rateLimit(async ({ request, url }) => {
   const resourceUrl = url.searchParams.get('url')
 
   if (!resourceUrl) {
@@ -69,4 +70,4 @@ export const GET: APIRoute = async ({ request, url }) => {
     console.error('Proxy error:', error)
     return new Response('Internal Server Error', { status: 500 })
   }
-}
+})

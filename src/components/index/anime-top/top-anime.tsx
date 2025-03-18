@@ -12,9 +12,9 @@ export const AnimeTop = () => {
   if (loading || !aninme) return <AnimeTopLoader />
 
   return (
-    <section className="relative  mx-auto w-[100dvw] justify-center fade-out gap-10">
+    <section className="relative  mx-auto w-[100dvw] justify-center fade-out ">
       <AnimeTopHeader />
-      <ul className="mx-auto grid grid-cols-2 justify-around gap-4 md:grid-cols-5 md:px-4 xl:grid-cols-10">
+      <ul className="mx-auto grid xl:grid-cols-2 grid-cols-1 justify-around  xl:gap-x-12 gap-y-4 px-4 md:px-20 ">
         {aninme.map((anime, index) => (
           <AnimeTopItem key={anime.mal_id} anime={anime} index={index} />
         ))}

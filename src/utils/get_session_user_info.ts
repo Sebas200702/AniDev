@@ -1,10 +1,13 @@
-import { supabase } from '@libs/supabase'
+import { getSession } from 'auth-astro/server'
 
-export const getSessionUserInfo = async () => {
-  const { data } = await supabase.auth.getSession()
+export const getSessionUserInfo = async ({ request }: { request: Request | undefined }) => {
+  if (!request) return null
+  const session = await getSession(request)
+
   const userInfo = {
-    name: (data?.session?.user?.user_metadata?.name as string) ?? null,
-    avatar: (data?.session?.user?.user_metadata?.avatar_url as string) ?? null,
+    name: session?.user?.name ?? null,
+    avatar: session?.user?.image ?? null,
   }
+
   return userInfo
 }

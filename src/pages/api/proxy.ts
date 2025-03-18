@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro'
+import { rateLimit } from '@middlewares/rate-limit'
 import sharp from 'sharp'
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = rateLimit(async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
 
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
@@ -56,4 +57,4 @@ export const GET: APIRoute = async ({ url }) => {
       headers: { 'Content-Type': 'application/json' },
     })
   }
-}
+})

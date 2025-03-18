@@ -1,27 +1,26 @@
 import type { Session } from 'types'
+import { signOut } from 'auth-astro/client'
 
 interface Props {
-  userInfo: Session
+  userInfo: Session | null
 }
 export const Profile = ({ userInfo }: Props) => {
   const handleClick = () => {
     document.getElementById('userDropdown')?.classList.toggle('hidden')
   }
   const handleLogout = async () => {
-    await fetch('/api/auth/signout', {
-      method: 'POST',
-    }).then(() => window.location.reload())
+    await signOut()
   }
   return (
     <>
       <div className="flex items-center justify-end gap-4">
         <div className="text-s hidden text-end md:block dark:text-white">
-          <div>{userInfo.name ?? 'Guest'}</div>
+          <div>{userInfo?.name ?? 'Guest'}</div>
         </div>
         <button onClick={handleClick}>
           <img
             className="h-10 w-10 rounded-full"
-            src={userInfo.avatar ?? '/profile-picture-5.webp'}
+            src={userInfo?.avatar ?? '/profile-picture-5.webp'}
             alt="Profile"
             loading="lazy"
             decoding="async"
@@ -55,7 +54,7 @@ export const Profile = ({ userInfo }: Props) => {
                 </svg>
                 <span>Settings</span>
               </div>
-              <span className="text-gray-400 dark:text-gray-500"></span>
+              <span className="text-gray-400 dark:text-gray-500">{userInfo?.name}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4"
@@ -112,12 +111,12 @@ export const Profile = ({ userInfo }: Props) => {
             </a>
           </li>
           <li>
-            {userInfo.name && (
+            {userInfo?.name && (
               <button
                 className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
                 onClick={handleLogout}
               >
-                <span>Logout</span>
+                <span>Sign out</span>
 
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -134,6 +133,14 @@ export const Profile = ({ userInfo }: Props) => {
                   <path d="M9 12h12l-3-3M18 15l3-3" />
                 </svg>
               </button>
+            )}
+            {!userInfo?.name && (
+              <a
+                href="/signup"
+                className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+              >
+                <span>Sign up</span>
+              </a>
             )}
           </li>
         </ul>

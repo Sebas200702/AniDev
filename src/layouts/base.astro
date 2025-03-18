@@ -4,6 +4,8 @@ import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
 import { AstroFont } from 'astro-font'
 import { LoadWindowWidth } from '@components/load-window-width'
+import { Toaster } from '@pheralb/toast'
+import Footer from '@components/footer.astro'
 import '@styles/global.css'
 import '@styles/fade-out.css'
 ---
@@ -60,6 +62,15 @@ import '@styles/fade-out.css'
       <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
         <slot />
       </main>
+      <Toaster
+        client:load
+        theme="dark"
+        position="bottom-right"
+        toastOptions={{
+          animationOnClose: 'swipe',
+        }}
+      />
+      <Footer />
     </div>
   </body>
 </html>

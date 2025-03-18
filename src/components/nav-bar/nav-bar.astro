@@ -3,7 +3,7 @@ const url = Astro.url.pathname
 import { SearchBar } from '@components/nav-bar/search-bar'
 import { Profile } from '@components/nav-bar/profile'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
-const sesionUserInfo = await getSessionUserInfo()
+const sesionUserInfo = await getSessionUserInfo({request: Astro.request})
 ---
 
 <nav

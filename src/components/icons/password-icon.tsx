@@ -1,7 +1,7 @@
 interface Props {
-  class?: string
+  style?: string
 }
-export const PasswordIcon = ({ class: className }: Props) => {
+export const PasswordIcon = ({ style}: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ export const PasswordIcon = ({ class: className }: Props) => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={className}
+      className={style}
       viewBox="0 0 24 24"
     >
       <path d="M0 0h24v24H0z" stroke="none"></path>

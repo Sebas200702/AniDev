@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { rateLimit } from '@middlewares/rate-limit'
 import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 
@@ -58,9 +59,9 @@ const fetchAnimeData = async (slug: string, id: number) => {
   return fetchPromise
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    const slug = url.searchParams.get('slug')
+    const slug = url.searchParams.get('slug') ?? ''
     const validation = validateSlug(slug)
 
     if (!validation.valid) {
@@ -74,7 +75,7 @@ export const GET: APIRoute = async ({ url }) => {
       throw new Error('Invalid ID type')
     }
 
-    const data = await fetchAnimeData(slug!, validation.id)
+    const data = await fetchAnimeData(slug, validation.id)
 
     return new Response(JSON.stringify({ anime: data }), {
       status: 200,
@@ -92,4 +93,4 @@ export const GET: APIRoute = async ({ url }) => {
       headers: { 'Content-Type': 'application/json' },
     })
   }
-}
+})

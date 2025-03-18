@@ -1,12 +1,11 @@
 ---
 import Layout from '@layouts/base.astro'
-import Formulary from '@components/auth/forms/formulary.astro'
+import { Formulary } from '@components/auth/forms/formulary'
 const title = 'Sign In'
 const action = '/api/auth/signin'
-const bgImage =
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+const bgImage = '/sign-in.webp'
 ---
 
 <Layout title={title}>
-  <Formulary title={title} action={action} bgImage={bgImage} />
+  <Formulary client:load title={title} action={action} bgImage={bgImage} />
 </Layout>
