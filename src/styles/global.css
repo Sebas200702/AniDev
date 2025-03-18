@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-/* Personalización del tema mediante variables CSS */
 @theme {
   --color-Primary-950: #121212;
   --color-Primary-900: #3d3d3d;
@@ -15,8 +14,6 @@
   --color-Primary-50: #f6f6f6;
   --color-Complementary: #1c1c1c;
 
-  /* Para "enfasisColor" podrías definirlo aquí si tienes un valor fijo o, alternativamente,
-     gestionar su actualización mediante JavaScript en tiempo de ejecución */
   --color-enfasisColor: var(--enfasis-dynamic);
 }
 
@@ -58,4 +55,6 @@
 .text-sx {
   @apply text-[10px] font-normal xl:text-[12px];
 }
-
+.text-sxx {
+  @apply text-[10px] font-light;
+}
