@@ -13,6 +13,15 @@ interface Props {
   title: string
 }
 
+  /**
+   * Component that renders a slider of animes with a title, buttons to navigate and a list of animes.
+   * The animes are fetched from the API and cached in the session storage.
+   * The component also handles the window resize event to update the buttons visibility.
+   * @param {Object} props - The component props.
+   * @param {string} props.query - The query to fetch the animes from the API.
+   * @param {string} props.title - The title to display in the slider.
+   * @returns {ReactElement} The rendered component.
+   */
 export const AnimeSlider = ({ query, title }: Props) => {
   const [cachedAnimes, setCachedAnimes] = useState<Anime[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
@@ -117,7 +126,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
         <NexPrevBtnSlideList label="prev-button " styles="" />
         <NexPrevBtnSlideList label="next-button" styles="right-0 rotate-180" />
 
-        <ul className="anime-list mx-auto flex w-full flex-row gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-5 md:gap-10 md:px-20">
+        <ul className="anime-list mx-auto flex w-full flex-row gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-4 md:gap-10 md:px-20">
           {displayAnimes.map((anime: Anime) => (
             <li key={anime.mal_id}>
               <AnimeCard anime={anime} context={title} />
