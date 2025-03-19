@@ -54,9 +54,6 @@ export const Profile = ({ userInfo }: Props) => {
                 </svg>
                 <span>Settings</span>
               </div>
-              <span className="text-gray-400 dark:text-gray-500">
-                {userInfo?.name}
-              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4"
