@@ -94,7 +94,9 @@ export const AnimeBanner = ({ id }: { id: number }) => {
               className="aspect-[1080/550] h-full w-full rounded-2xl object-cover object-center md:aspect-[1080/350]"
             />
           </div>
-          <Overlay className="to-Primary-950/80 md:gruop-hover:h-full h-1/2 w-full bg-gradient-to-b" />
+          <Overlay className="to-Primary-950/80  h-1/2 w-full bg-gradient-to-b" />
+          <Overlay className="md:group-hover:w-full to-Primary-950/30  h-full w-0 bg-gradient-to-l" />
+
         </a>
         <BannerInfo
           title={title}
