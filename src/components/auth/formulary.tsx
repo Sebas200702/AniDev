@@ -1,7 +1,7 @@
 import { EmailIcon } from '@components/icons/email-icon'
 import { Favicon } from '@components/icons/favicon'
-import { GoogleBtn } from '@components/auth/forms/google-btn'
-import { Input } from '@components/auth/forms/input'
+import { GoogleBtn } from '@components/auth/google-btn'
+import { Input } from '@components/auth/input'
 import { Overlay } from '@components/overlay'
 import { PasswordIcon } from '@components/icons/password-icon'
 import { Picture } from '@components/picture'
@@ -186,7 +186,7 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
           styles="w-full"
         >
           <Favicon
-            className={`absolute top-2 z-20 h-8 w-8 md:h-16 md:w-16 ${title === 'Sign Up' ? 'left-4' : 'right-4'} `}
+            className={`absolute top-2 z-20 h-8 w-8 md:h-16 md:w-16 right-4 ${title === 'Sign Up' ? 'md:left-4' : 'md:right-4'} `}
           />
 
           <Overlay
