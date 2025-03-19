@@ -46,12 +46,12 @@ export const SearchComponent = () => {
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
-    <section id="search-section">
+    <section id="search-section"  >
       <div className="mt-16 [grid-area:aside]">
         <FilterSection />
       </div>
 
-      <div className="mt-16 w-full [grid-area:results]">
+      <div className="mt-16 w-full  [grid-area:results]">
         <SearchResults />
       </div>
     </section>
