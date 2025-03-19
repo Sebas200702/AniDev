@@ -1,8 +1,8 @@
 interface Props {
-  class?: string
+  className?: string
 }
 
-export const ClockIcon = ({ class: className }: Props) => (
+export const ClockIcon = ({ className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
