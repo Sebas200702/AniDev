@@ -1,8 +1,8 @@
 interface Props {
-  class?: string
+  className?: string
 }
 
-export const CalendarIcon = ({ class: className }: Props) => {
+export const CalendarIcon = ({ className }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
