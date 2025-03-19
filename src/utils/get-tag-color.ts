@@ -1,6 +1,6 @@
 export const getTagColor = (type: string) => {
   enum AnimeTags {
-    'Anime' = 'bg-enfasisColor md:hover:bg-enfasisColor text-white',
+    'Anime' = 'bg-emerald-700 md:hover:bg-emerald-800 text-white',
     'Special' = 'bg-yellow-500 md:hover:bg-yellow-400 text-white',
     'OVA' = 'bg-green-500 md:hover:bg-green-400 text-white',
     'ONA' = 'bg-red-500 md:hover:bg-red-400 text-white',
@@ -13,7 +13,7 @@ export const getTagColor = (type: string) => {
 
   const tagColor =
     AnimeTags[type as keyof typeof AnimeTags] ??
-    'text-white bg-enfasisColor md:hover:saturate-[.6]'
+    'text-white bg-enfasisColor md:hover:bg-enfasisColor'
 
   return tagColor
 }
