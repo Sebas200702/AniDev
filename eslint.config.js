@@ -6,6 +6,8 @@ import typescriptParser from '@typescript-eslint/parser'
 
 export default [
   {
+    ignores: ['.astro/**'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
@@ -19,14 +21,16 @@ export default [
       prettier: eslintPluginPrettier,
     },
   },
-
   {
     files: ['*.astro'],
     languageOptions: {
       parser: astroParser,
       parserOptions: {
+        parser: astroParser,
         ecmaVersion: 2020,
         sourceType: 'module',
+        extraFileExtensions: ['.astro'],
+        project: './tsconfig.json',
       },
     },
     plugins: {
