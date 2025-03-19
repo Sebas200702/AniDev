@@ -1,12 +1,9 @@
 import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
-import { FallIcon } from '@components/icons/fall-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
-import { SpringIcon } from '@components/icons/spring-icon'
+import { SeasonIcon } from '@icons/season-icon'
 import { StarIcon } from '@components/icons/star-icon'
-import { SummerIcon } from '@components/icons/summer-icon'
-import { WinterIcon } from '@components/icons/winter-icon'
 import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 
@@ -14,16 +11,7 @@ interface AnimeTopItemProps {
   anime: Anime
   index: number
 }
-const SeasonIcon = ({ season }: { season: string }) => {
-  if (season === 'fall') return <FallIcon className="h-4 w-4 text-orange-500" />
-  if (season === 'spring')
-    return <SpringIcon className="h-4 w-4 text-green-500" />
-  if (season === 'summer')
-    return <SummerIcon className="h-4 w-4 text-yellow-500" />
-  if (season === 'winter')
-    return <WinterIcon className="h-4 w-4 text-blue-500" />
-  return null
-}
+
 export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
   return (
     <li
@@ -62,11 +50,11 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
             <div className="flex w-full flex-row items-center justify-between gap-4">
               <ul className="flex flex-row items-center gap-2">
                 <span className="flex flex-row items-center justify-center gap-2">
-                  <StarIcon style="w-4 h-4 text-enfasisColor" />
+                  <StarIcon className="w-4 h-4 text-enfasisColor" />
                   {formatScore(anime.score)}
                 </span>
                 <span className="flex flex-row items-center justify-center gap-2">
-                  <SeasonIcon season={anime.season ?? 'spring'} />
+                  <SeasonIcon season={anime.season ?? 'spring'} className="h-4 w-4" />
                   {capitalize(anime.season ?? '')}
                 </span>
               </ul>
