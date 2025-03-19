@@ -6,10 +6,9 @@ export const SearchResultsLoader = () => {
         .map((_, i) => (
           <div
             key={i + 1}
-            className="flex h-auto w-full animate-pulse flex-col rounded-lg p-4 duration-200"
+            className="flex h-auto w-full animate-pulse flex-col rounded-lg p-4 bg-zinc-700 duration-200 h-full aspect-[225/330] "
           >
-            <div className="aspect-[225/330] h-full w-full animate-pulse rounded-lg bg-zinc-700 p-2 duration-200"></div>
-          </div>
+            
         ))}
     </div>
   )
