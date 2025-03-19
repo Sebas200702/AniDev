@@ -1,5 +1,4 @@
 import { AnimeCollection } from '@components/index/collections/anime-colection'
-import { useEffect } from 'react'
 import { useWindowWidth } from '@store/window-width'
 
 interface Props {
