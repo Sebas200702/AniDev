@@ -24,28 +24,30 @@ export const SectionList = ({ section, sections }: Props) => {
   return (
     <li key={section.label} title={section.label}>
       <button
-        className={`flex h-full max-h-8 items-center gap-1 border-b p-2 transition ease-in-out duration-100 cursor-pointer hover:bg-zinc-800/50 md:max-h-12 xl:gap-3 xl:p-5 ${
-          isSelected
-            ? 'border-enfasisColor text-enfasisColor'
-            : 'border-gray-100/20 text-gray-400'
-        }`}
+        className={`group relative flex h-full max-h-8 cursor-pointer items-center justify-center overflow-hidden p-2 transition-colors duration-200 ease-in-out hover:bg-zinc-800/50 md:max-h-12 xl:p-5 ${isSelected ? 'text-enfasisColor' : 'text-gray-400'} after:bg-enfasisColor after:absolute after:bottom-0 after:left-0 after:h-[2px] after:transition-all after:duration-300 after:ease-in-out ${isSelected ? 'after:w-full' : 'after:w-0'}`}
         onClick={(e) => handleClick(e, section.label)}
       >
         <div className="flex h-4 w-4 items-center justify-center xl:h-6 xl:w-6">
           {section.icon ? (
-            <section.icon className="h-full w-full transition-all duration-100 ease-in-out" />
+            <section.icon
+              className={`h-full w-full transition-transform duration-300 ${
+                isSelected ? 'scale-110' : 'scale-100'
+              }`}
+            />
           ) : (
             <span className="text-red-500">⚠️</span>
           )}
         </div>
 
-        <ul
-          className={`flex flex-row gap-3 text-m transition-all duration-300 ease-in-out xl:text-l ${
-            isSelected ? 'ml-2 w-auto opacity-100' : 'ml-0 hidden opacity-0'
+        <span
+          className={`text-m xl:text-l transition-all duration-300 ease-in-out ${
+            isSelected
+              ? 'ml-2 w-auto translate-x-0 opacity-100'
+              : 'w-0 -translate-x-full opacity-0'
           }`}
         >
-          <span>{section.label}</span>
-        </ul>
+          {section.label}
+        </span>
       </button>
     </li>
   )
