@@ -116,24 +116,28 @@ Each endpoint supports various query parameters for filtering, sorting, and pagi
 ## 🚀 Getting Started
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/your-username/ani-dev.git
 cd AniDev
 ```
 
 2. **Install dependencies**
+
 ```bash
 pnpm install
 ```
 
 3. **Set up environment variables**
-Create a `.env` file in the root directory with:
+   Create a `.env` file in the root directory with:
+
 ```env
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_supabase_key
 ```
 
 4. **Start the development server**
+
 ```bash
 pnpm dev
 ```

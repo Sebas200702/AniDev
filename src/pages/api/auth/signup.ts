@@ -29,13 +29,10 @@ export const POST: APIRoute = rateLimit(async ({ request, redirect }) => {
 
     if (error) {
       console.error('Error en el endpoint:', error.message)
-      return new Response(
-        JSON.stringify({ error: error.message }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
   } catch (error) {
     console.error('Error en el endpoint:', error)

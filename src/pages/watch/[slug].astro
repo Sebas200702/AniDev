@@ -90,26 +90,29 @@ const {
 } = episodeDetails
 ---
 
-<Layout
->
-  <CreateMetaDatas title={seoTitle} description={episodeDescription ?? description} image={chapterImage ?? image_large_webp} />
+<Layout>
+  <CreateMetaDatas
+    title={seoTitle}
+    description={episodeDescription ?? description}
+    image={chapterImage ?? image_large_webp}
+  />
   <section
-    class="xl:w-full mx-auto mt-20 flex h-min w-full flex-col justify-center gap-20 overflow-hidden md:px-20 p-4 xl:max-h-[calc(100dvh-80px)] xl:flex-row"
+    class="mx-auto mt-20 flex h-min w-full flex-col justify-center gap-20 overflow-hidden p-4 md:px-20 xl:max-h-[calc(100dvh-80px)] xl:w-full xl:flex-row"
     aria-label="Reproductor de episodios y lista de episodios"
   >
     <div
-      class="mb-10 flex aspect-[16/9] w-full flex-col gap-5 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)] "
+      class="mb-10 flex aspect-[16/9] w-full flex-col gap-5 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)]"
     >
       <div
         id="video-iframe"
-        class="relative flex aspect-[16/9] h-full w-full items-center justify-center bg-Complementary rounded-lg"
+        class="bg-Complementary relative flex aspect-[16/9] h-full w-full items-center justify-center rounded-lg"
         transition:animate={slide({ duration: '0.4s' })}
       >
         {
           anime_video_1 ? (
             <VideoPlayer url={anime_video_1} sutitles={subtitles} client:load />
           ) : (
-            <p class="text-center text-Primary-200 text-l">
+            <p class="text-Primary-200 text-l text-center">
               El video no está disponible.
             </p>
           )

@@ -32,7 +32,7 @@ export const CollectionItem = ({ anime }: Props) => {
       <div className="flex h-full w-[75%] flex-col justify-between p-4">
         <h3
           title={anime.title}
-          className="text-l w-full xl:line-clamp-2 line-clamp-1 overflow-hidden font-bold text-pretty text-white"
+          className="text-l line-clamp-1 w-full overflow-hidden font-bold text-pretty text-white xl:line-clamp-2"
         >
           {anime.title}
         </h3>
@@ -42,7 +42,7 @@ export const CollectionItem = ({ anime }: Props) => {
             <AnimeTag key={genre} tag={genre} type={genre} style="w-auto" />
           ))}
         </div>
-        <p className="text-sx line-clamp-2 text-Primary-200 ">
+        <p className="text-sx text-Primary-200 line-clamp-2">
           {anime.synopsis ?? 'No description available'}
         </p>
         <span className="text-sx flex items-center gap-2 text-gray-400">

@@ -31,13 +31,13 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
       title={anime.title}
       key={anime.mal_id}
     >
-      <span className="text-lx flex flex-row items-center gap-2 font-bold w-12  md:w-18">
+      <span className="text-lx flex w-12 flex-row items-center gap-2 font-bold md:w-18">
         <strong className="text-enfasisColor">#</strong>
         {index + 1}
       </span>
       <a
         href={`/${anime.title}_${anime.mal_id}`}
-        className={`bg-Complementary flex   w-full flex-row items-center rounded-lg `}
+        className={`bg-Complementary flex w-full flex-row items-center rounded-lg`}
         aria-label={`View details for ${anime.title}`}
       >
         <Picture
@@ -47,7 +47,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           <img
             src={anime.image_large_webp}
             alt={anime.title}
-            className="aspect-[225/330] w-full h-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
+            className="aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
             loading="lazy"
           />
           <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />

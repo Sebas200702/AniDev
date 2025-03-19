@@ -41,11 +41,11 @@ export const AnimeDetails = ({ animeData }: Props) => {
   ]
 
   return (
-    <section className="flex h-min flex-col items-center   w-full md:col-span-1 justify-center">
+    <section className="flex h-min w-full flex-col items-center justify-center md:col-span-1">
       <header className="bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl px-4 py-1 backdrop-blur-md">
         <h2 className="text-l text-center text-pretty">Details</h2>
       </header>
-      <ul className="bg-Complementary xl text-m flex  w-full flex-col gap-5 rounded-md p-4">
+      <ul className="bg-Complementary xl text-m flex w-full flex-col gap-5 rounded-md p-4">
         {animeDetails.map((detail) => (
           <li className="flex w-full flex-row gap-1" key={detail.name}>
             <span className="text-gray-50/70">{detail.name}: </span>

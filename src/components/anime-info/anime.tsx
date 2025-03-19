@@ -57,7 +57,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="md:px-20 z-10 px-4 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-15 md:-mt-54 -mt-96">
+      <article className="z-10 -mt-96 grid grid-cols-1 gap-4 px-4 md:-mt-54 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -67,7 +67,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className="xl:col-span-3 md:col-span-2 row-span-2">
+        <div className="row-span-2 md:col-span-2 xl:col-span-3">
           <AnimeShowBox
             trailer_url={animeData.trailer_url}
             banner_image={animeData.banner_image}

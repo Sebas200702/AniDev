@@ -38,7 +38,7 @@ export type Animes = {
   animes: Anime[]
 }
 
-export  enum ToastType {
+export enum ToastType {
   Success = 'success',
   Error = 'error',
   Warning = 'warning',

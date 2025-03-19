@@ -139,7 +139,7 @@ export const FilterDropdown = ({
         {filteredOptions.map((option) => (
           <button
             key={option.value}
-            className="hover:bg-Complementary flex cursor-pointer items-center gap-3 px-4 py-2 text-sm w-full"
+            className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm"
             onClick={() => toggleOption(option.value)}
           >
             <input
@@ -150,10 +150,7 @@ export const FilterDropdown = ({
               id={`option-${option.value}`}
             />
 
-            <span
-              className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out cursor-pointer"
-
-            >
+            <span className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out"

@@ -11,7 +11,7 @@ interface Props {
 
 export const AnimeHeader = ({ animeData }: Props) => {
   return (
-    <header className="flex w-auto flex-col md:col-span-2 gap-4 xl:col-span-4 justify-end  anime-header xl:mt-0">
+    <header className="anime-header flex w-auto flex-col justify-end gap-4 md:col-span-2 xl:col-span-4 xl:mt-0">
       <h2 className="title max-w-[30ch] text-pretty md:text-wrap">
         {animeData.title}
       </h2>
@@ -31,7 +31,7 @@ export const AnimeHeader = ({ animeData }: Props) => {
         )}
       </ul>
 
-      <div className="anime-header grid items-center justify-between gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+      <div className="anime-header grid grid-cols-1 items-center justify-between gap-4 md:grid-cols-2 xl:grid-cols-3">
         <AnimeNavBar />
         <AnimeNumbers
           score={animeData.score}

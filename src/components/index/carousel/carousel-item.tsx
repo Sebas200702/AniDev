@@ -34,10 +34,10 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       <div
         className={`z-10 mb-20 flex max-w-[800px] flex-col items-center gap-8 text-white md:items-start md:justify-start md:gap-4`}
       >
-        <h2 className="title max-h-44 line-clamp-1 text-center drop-shadow-md md:mb-4">
+        <h2 className="title line-clamp-1 max-h-44 text-center drop-shadow-md md:mb-4">
           {anime.title}
         </h2>
-        <p className="text-l mb-4 line-clamp-2 w-0 h-0 md:h-auto md:w-auto drop-shadow  ">
+        <p className="text-l mb-4 line-clamp-2 h-0 w-0 drop-shadow md:h-auto md:w-auto">
           {anime.synopsis ?? 'No description available'}
         </p>
         <div className="mx-auto flex w-[300px] flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">

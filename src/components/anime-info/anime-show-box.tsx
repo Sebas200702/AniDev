@@ -30,7 +30,8 @@ export const AnimeShowBox = ({
       />
     )
 
-  if (currentSelectedLabel === 'Characters') return <div className="col-span-2">Characters</div>
+  if (currentSelectedLabel === 'Characters')
+    return <div className="col-span-2">Characters</div>
 
   if (currentSelectedLabel === 'Synopsis')
     return <AnimeDescription synopsis={synopsis} />

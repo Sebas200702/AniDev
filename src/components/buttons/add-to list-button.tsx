@@ -9,7 +9,7 @@ export const AddToListButton = () => {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        className="w-3 h-3 xl:w-4 xl:h-4"
+        className="h-3 w-3 xl:h-4 xl:w-4"
       >
         <path stroke="none" d="M0 0h24v24H0z" />
         <path d="M19 8H5M5 12h9M11 16H5M15 16h6M18 13v6" />

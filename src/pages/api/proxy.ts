@@ -43,7 +43,6 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       })
     }
 
-
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,

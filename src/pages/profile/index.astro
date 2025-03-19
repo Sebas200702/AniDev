@@ -4,7 +4,7 @@ import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { Image } from 'astro:assets'
 import { UserList } from '@components/profile/user-tabs/user-list'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
-const sesionUserInfo = await getSessionUserInfo({request: Astro.request})
+const sesionUserInfo = await getSessionUserInfo({ request: Astro.request })
 ---
 
 <Layout title="Profile">

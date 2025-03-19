@@ -3,5 +3,4 @@ export const baseUrl =
     ? 'https://ani-dev.vercel.app'
     : 'http://localhost:4321'
 
-
 export const baseTitle = 'AniDev - Watch anime online free'
