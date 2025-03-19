@@ -1,4 +1,24 @@
+import { AiredDayIcon } from '@icons/aired-day-icon'
+import { AiredFromIcon } from '@icons/aried-from-icon'
+import { AiredToIcon } from '@icons/aired-to-icon'
 import type { Anime } from 'types'
+import { CalendarIcon } from '@components/icons/calendar-icon'
+import { ClockIcon } from '@components/icons/clock-icon'
+import { EpisodeIcon } from '@icons/episode-icon'
+import { IdIcon } from '@icons/id-icon'
+import { OtherTitlesIcon } from '@icons/other-titles-icon'
+import { ProducerIcon } from '@icons/producer-icon'
+import { ScoredByIcon } from '@components/icons/scored-by-icon'
+import { SeasonIcon } from '@icons/season-icon'
+import { SourceIcon } from '@components/icons/source-icon'
+import { StarIcon } from '@components/icons/star-icon'
+import { StatusIcon } from '@icons/status-icon'
+import { StudioIcon } from '@icons/studio-icon'
+import { ThemesIcon } from '@icons/themes-icon'
+import { TitleJapaneseIcon } from '@icons/title-japanese-icon'
+import { TypeIcon } from '@icons/type-icon'
+import { capitalize } from '@utils/capitalize'
+
 interface Props {
   animeData: Anime
 }
@@ -20,24 +40,40 @@ export const AnimeDetails = ({ animeData }: Props) => {
     title_synonyms,
     mal_id,
     source,
+    duration,
+    score,
+    year,
   } = animeData
 
   const animeDetails = [
-    { name: 'Status', value: status },
-    { name: 'Type', value: type },
-    { name: 'Studios', value: studios.join(', ') },
-    { name: 'Themes', value: themes?.join(', ') },
-    { name: 'Producers', value: producers?.slice(0, 3).join(', ') },
-    { name: 'Season', value: season },
-    { name: 'Aired Day', value: aired_day },
-    { name: 'Episodes', value: episodes },
-    { name: 'Scored By', value: scored_by },
-    { name: 'Aired To', value: aired_to },
-    { name: 'Aired From', value: aired_from },
-    { name: 'Title Japanese', value: title_japanese },
-    { name: 'Title Synonyms', value: title_synonyms.slice(0, 3).join(', ') },
-    { name: 'Mal ID', value: mal_id },
-    { name: 'Source', value: source },
+    { name: 'Status', value: status, icon: StatusIcon },
+    { name: 'Season', value: season, icon: SeasonIcon },
+    { name: 'Type', value: type, icon: TypeIcon },
+    { name: 'Studios', value: studios.join(', '), icon: StudioIcon },
+    { name: 'Themes', value: themes?.join(', '), icon: ThemesIcon },
+    { name: 'Duration', value: duration, icon: ClockIcon},
+    { name: 'Score', value: score, icon: StarIcon },
+    { name: 'Year', value: year, icon: CalendarIcon },
+    {
+      name: 'Producers',
+      value: producers?.slice(0, 3).join(', '),
+      icon: ProducerIcon,
+    },
+
+    { name: 'Aired Day', value: aired_day, icon: AiredDayIcon },
+    { name: 'Episodes', value: episodes, icon: EpisodeIcon },
+    { name: 'Scored By', value: scored_by, icon: ScoredByIcon },
+    { name: 'Aired To', value: aired_to, icon: AiredToIcon },
+    { name: 'Aired From', value: aired_from, icon: AiredFromIcon },
+    { name: 'Title Japanese', value: title_japanese, icon: TitleJapaneseIcon },
+    {
+      name: 'Title Synonyms',
+      value: title_synonyms.slice(0, 3).join(', '),
+      icon: OtherTitlesIcon,
+    },
+    { name: 'Mal ID', value: mal_id, icon: IdIcon },
+    { name: 'Source', value: source, icon: SourceIcon },
+
   ]
 
   return (
@@ -45,11 +81,24 @@ export const AnimeDetails = ({ animeData }: Props) => {
       <header className="bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl px-4 py-1 backdrop-blur-md">
         <h2 className="text-l text-center text-pretty">Details</h2>
       </header>
-      <ul className="bg-Complementary xl text-m flex w-full flex-col gap-5 rounded-md p-4">
+      <ul className="bg-Complementary flex w-full flex-col gap-5 rounded-md p-8">
         {animeDetails.map((detail) => (
-          <li className="flex w-full flex-row gap-1" key={detail.name}>
-            <span className="text-gray-50/70">{detail.name}: </span>
-            {!detail.value ? 'Unknown' : detail.value}
+          <li
+            className="flex w-full flex-row items-center gap-4"
+            key={detail.name}
+            title={capitalize(detail.name)}
+          >
+            {detail.icon && (
+              <detail.icon
+                className={`h-full max-h-5 w-full max-w-5 ${detail.name !== 'Status' && detail.name !== 'Type' && detail.name !== 'Season' ? 'text-enfasisColor' : ''}`}
+                season={season ?? ''}
+                status={status}
+                type={type}
+              />
+            )}
+            <span className="text-s">
+              {!detail.value ? 'Unknown' : capitalize(detail.value.toString())}
+            </span>
           </li>
         ))}
       </ul>
