@@ -145,6 +145,7 @@ export const FilterDropdown = ({
             <input
               type="checkbox"
               checked={values.includes(option.value)}
+              readOnly
               className="peer hidden"
               id={`option-${option.value}`}
             />
