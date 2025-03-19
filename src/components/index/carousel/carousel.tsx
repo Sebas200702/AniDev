@@ -128,7 +128,7 @@ export const Carousel = () => {
           ))}
         </ul>
       </div>
-      <nav className="absolute bottom-20 left-1/2 z-30 flex -translate-x-1/2 space-x-3 md:bottom-[8%]">
+      <nav className="absolute bottom-20 left-1/2 z-50 flex -translate-x-1/2 space-x-3 md:bottom-[8%]">
         {banners.map((anime, index) => (
           <Indicator
             key={anime.mal_id}
@@ -138,7 +138,7 @@ export const Carousel = () => {
           />
         ))}
       </nav>
-      <div className="absolute bottom-12 z-50 flex w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
+      <div className="absolute bottom-12 z-40 flex w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
         <NexPrevBtnCarousel action={handlePrev} label="Previous" />
         <NexPrevBtnCarousel action={handleNext} label="Next" />
       </div>
