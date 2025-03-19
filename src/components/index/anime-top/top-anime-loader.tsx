@@ -13,7 +13,7 @@ export const AnimeTopLoader = () => {
               key={i + 1}
               className="flex w-full flex-row items-center gap-2"
             >
-              <div className="h-full w-full max-w-18"></div>
+              <div className="h-full w-full max-w-12 md:max-w-18"></div>
               <div className="bg-Complementary w-full animate-pulse rounded-lg duration-300">
                 <div className="aspect-[225/330] h-auto w-full max-w-20 animate-pulse rounded-lg bg-zinc-800 md:max-w-32"></div>
               </div>

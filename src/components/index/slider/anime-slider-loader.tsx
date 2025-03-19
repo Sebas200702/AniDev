@@ -6,7 +6,7 @@ export const AnimeSliderLoader = () => {
         <span className="inline-flex h-6 w-26 animate-pulse rounded-lg bg-zinc-800"></span>
         <div className="flex-1"></div>
       </header>
-      <div className="relative overflow-hidden p-4">
+      <div className="relative overflow-hidden py-4">
         <div className="anime-list flex w-full flex-row gap-10 overflow-x-auto">
           {Array(24)
             .fill(0)
