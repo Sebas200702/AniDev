@@ -174,31 +174,34 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
     })
 
   return (
-    <section className="flex h-full items-center justify-center p-4  md:mt-0 mt-8 text-white">
+    <section className="mt-8 flex h-full items-center justify-center p-4 text-white md:mt-0">
       <div
-        className={`border-enfasisColor/50 flex w-full max-w-5xl flex-col rounded-lg border-2 ${title === 'Sign Up' ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+        className={`border-enfasisColor/50 relative h-136 w-full max-w-5xl overflow-hidden rounded-lg border-2 ${title === 'Sign Up' ? 'md:flex-row' : 'md:flex-row-reverse'}`}
       >
         <Picture
           image={
             createImageUrlProxy(`${baseUrl}${bgImage}`, '100', '0', 'webp') ??
             ''
           }
-          styles="md:w-1/2 relative"
+          styles="w-full"
         >
           <Favicon
-            className={`absolute top-2 w-8 h-8 md:w-16 z-20 md:h-16 ${title === 'Sign Up' ? 'left-4' : 'right-4'} `}
+            className={`absolute top-2 z-20 h-8 w-8 md:h-16 md:w-16 ${title === 'Sign Up' ? 'left-4' : 'right-4'} `}
           />
-          <Overlay className="to-Complementary/40 h-full w-full bg-gradient-to-t via-transparent" />
-          <Overlay className="to-Complementary/80 h-full w-full bg-gradient-to-r via-transparent" />
+
+          <Overlay
+            className={`to-Primary-950/40 h-full w-full ${title === 'Sign Up' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
+          />
           <img
             src={bgImage}
-            className="h-full  object-cover object-center"
+            className="h-full w-full object-cover object-center"
             alt=""
           />
         </Picture>
-
-        <div className="bg-Complementary md:w-1/2 md:p-8 p-6  ">
-          <h2 className="text-Primary-50 mb-6 text-lx font-bold">{title}</h2>
+        <div
+          className={`bg-Primary-950/70 absolute top-0 flex h-full flex-col justify-between backdrop-blur-xs ${title === 'Sign Up' ? 'right-0' : 'left-0'} w-full p-6 md:w-1/2 md:p-8`}
+        >
+          <h2 className="text-Primary-50 text-lx mb-6 font-bold">{title}</h2>
 
           <form onSubmit={onSubmit} className="space-y-6">
             {isSignUp && (
@@ -234,27 +237,27 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
             </button>
 
             <div className="my-4 flex items-center">
-              <div className="flex-grow border-t border-gray-600"></div>
-              <span className="mx-4 text-gray-400">or</span>
-              <div className="flex-grow border-t border-gray-600"></div>
+              <div className="flex-grow border-t border-gray-400"></div>
+              <span className="mx-4 text-gray-200">or</span>
+              <div className="flex-grow border-t border-gray-400"></div>
             </div>
           </form>
           <div>
             <GoogleBtn />
           </div>
 
-          <div className="text-Primary-400 mt-6 text-center text-sm">
+          <div className="text-Primary-200 mt-6 text-center text-sm">
             {title === 'Sign In' ? (
               <p>
                 Don't have an account?{' '}
-                <a href="/signup" className="text-enfasisColor hover:underline">
+                <a href="/signup" className="text-blue-500 hover:underline">
                   Sign up
                 </a>
               </p>
             ) : (
               <p>
                 Already have an account?{' '}
-                <a href="/signin" className="text-enfasisColor hover:underline">
+                <a href="/signin" className="text-blue-500 hover:underline">
                   Sign in
                 </a>
               </p>
