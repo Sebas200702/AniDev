@@ -2,6 +2,14 @@ interface Props {
   className?: string
 }
 
+/**
+ * ClockIcon component renders an icon representing a clock.
+ * 
+ * This component accepts a className prop for styling purposes and is used as a visual representation.
+ * 
+ * @param {Props} props - The component's props
+ * @returns {JSX.Element} The ClockIcon component
+ */
 export const ClockIcon = ({ className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

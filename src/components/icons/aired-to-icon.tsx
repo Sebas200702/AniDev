@@ -1,3 +1,11 @@
+/**
+ * AiredToIcon component renders an icon representing the end date an anime aired.
+ *
+ * This component accepts a className prop for custom styling.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Optional class name for styling
+ */
 export const AiredToIcon = ({ className }: { className?: string }) => {
   return (
     <svg

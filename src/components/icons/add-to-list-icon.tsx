@@ -2,6 +2,11 @@ interface Props {
   class?: string
 }
 
+/**
+ * AddToListIcon component renders an icon for adding an item to a list.
+ *
+ * This component accepts a class prop to allow for custom styling.
+ */
 export const AddToListIcon = ({ class: className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

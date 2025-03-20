@@ -1,3 +1,8 @@
+/**
+ * PageCollectionLoader component displays a loading state for the collection.
+ *
+ * This component does not take any props and is used to indicate loading state.
+ */
 export const PageCollectionLoader = () => {
   return (
     <div className="mx-auto flex flex-col gap-4">

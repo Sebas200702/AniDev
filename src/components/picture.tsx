@@ -1,3 +1,11 @@
+/**
+ * Picture component displays an image with a background.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} [props.styles] - Optional additional styles for the picture.
+ * @param {string} props.image - The image URL to display as background.
+ * @param {React.ReactNode} props.children - Optional children to render inside the picture.
+ */
 export const Picture = ({
   styles,
   image,

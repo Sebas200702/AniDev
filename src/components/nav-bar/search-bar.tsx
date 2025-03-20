@@ -6,8 +6,21 @@ import { useWindowWidth } from '@store/window-width'
 interface Props {
   location: string
 }
-
-export const SearchBar = ({ location }: Props) => {
+/**
+ * SearchBar component renders a search input field for querying anime and manages the search state.
+ *
+ * This component has a collapsed state on mobile devices and an expanded state on desktop devices.
+ * It handles user input, debounces the input, and fetches the search results from the API.
+ * The search state is stored in the search store and cleared when the component is unmounted.
+ *
+ * @param {Props} props - The props for the component.
+ * @param {string} props.location - The current location of the search bar.
+ * @returns {JSX.Element} The rendered search bar component.
+ *
+ * @example
+ * <SearchBar location="top" />
+ */
+export const SearchBar = ({ location }: Props): JSX.Element => {
   const { query, setQuery, setLoading } = useSearchStoreResults()
   const { width: windowWidth, setWidth } = useWindowWidth()
   const [isExpanded, setIsExpanded] = useState(false)

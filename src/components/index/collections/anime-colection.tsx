@@ -6,16 +6,61 @@ import { normalizeString } from '@utils/normalize-string'
 import { useIndexStore } from '@store/index-store'
 
 interface Props {
+  /**
+   * Unique identifier for the anime collection used for caching and retrieval.
+   */
   id: string
 }
 
-export const AnimeCollection = ({ id }: Props) => {
+/**
+ * AnimeCollection component fetches and displays a collection of anime based on the provided ID.
+ *
+ * @summary
+ * A component that displays a visually appealing collection of anime cards with a title and navigation.
+ *
+ * @description
+ * This component manages the loading state, fetches anime data, and checks for unique collections.
+ * It uses session storage to cache the fetched data for faster access. The component ensures that
+ * each collection contains unique anime entries by validating IDs before displaying. If a collection
+ * is not unique, it will fetch a new set of animes. The component also handles responsive layout
+ * and provides a link to view the full collection.
+ *
+ * The component maintains an internal state for anime data, loading status, collection title,
+ * and query parameters. It implements an efficient caching mechanism using sessionStorage to
+ * improve performance on subsequent visits. When no cached data is available, it dynamically
+ * generates a URL and fetches a new collection of anime.
+ *
+ * The UI displays a title, anime cards in a grid layout, and a "View All" link that navigates
+ * to the complete collection. During loading, a skeleton loader is displayed to improve
+ * user experience.
+ *
+ * @features
+ * - Caching: Uses sessionStorage to cache fetched collections for faster loading
+ * - Uniqueness validation: Ensures each collection contains unique anime entries
+ * - Responsive design: Adapts to different screen sizes with appropriate styling
+ * - Visual effects: Implements card rotation and hover animations for interactive feel
+ * - Error handling: Gracefully handles loading states and empty collections
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.id - The unique identifier for the anime collection used for caching and retrieval
+ * @returns {JSX.Element} The rendered anime collection with title, anime cards, and navigation
+ *
+ * @example
+ * <AnimeCollection id="collection-1" />
+ */
+export const AnimeCollection = ({ id }: Props): JSX.Element => {
   const { collections, setCollections } = useIndexStore()
   const [loading, setLoading] = useState(true)
   const [animes, setAnimes] = useState<Anime[]>([])
   const [title, setTitle] = useState('')
   const [query, setQuery] = useState('')
 
+  /**
+   * Checks if a collection is unique by comparing the IDs of the anime entries.
+   *
+   * @param {number[]} newAnimeIds - The IDs of the anime entries in the new collection.
+   * @returns {boolean} True if the collection is unique, false otherwise.
+   */
   const isCollectionUnique = (newAnimeIds: number[]): boolean => {
     return collections.some(
       (collection) => collection.animes_ids.join('-') === newAnimeIds.join('-')
@@ -76,6 +121,13 @@ export const AnimeCollection = ({ id }: Props) => {
     }, 200)
   }, [])
 
+  /**
+   * Fetches a new collection of anime based on the provided URL and title.
+   *
+   * @param {string} url - The URL to fetch the anime data from.
+   * @param {string} dynamicTitle - The title of the collection.
+   * @returns {Promise<{ animes: Anime[], title: string, query: string, animes_ids: number[] }>} The fetched anime data.
+   */
   const fetchAnimes = async (url: string, dynamicTitle: string) => {
     const response = await fetch(
       `/api/animes?limit_count=3&${url}&banners_filter=false`
@@ -110,6 +162,12 @@ export const AnimeCollection = ({ id }: Props) => {
       <div className="flex h-54 w-full  animate-pulse items-center justify-center rounded-lg bg-zinc-800"></div>
     )
 
+  /**
+   * Returns the CSS style for the anime card based on its position.
+   *
+   * @param {number} i - The position of the anime card.
+   * @returns {string} The CSS style for the anime card.
+   */
   const getPosition = (i: number) => {
     if (i === 0) return style1
     if (i === 1) return style2

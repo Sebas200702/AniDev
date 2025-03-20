@@ -1,3 +1,9 @@
+/**
+ * getTagColor returns the corresponding CSS class for a given anime tag type.
+ *
+ * @param {string} type - The tag type to evaluate.
+ * @returns {string} The CSS class for the tag type.
+ */
 export const getTagColor = (type: string) => {
   enum AnimeTags {
     'Anime' = 'bg-emerald-700 md:hover:bg-emerald-800 text-white',

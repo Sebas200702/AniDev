@@ -4,6 +4,18 @@ import { SummerIcon } from '@icons/summer-icon'
 import { UnknownIcon } from '@icons/unknown-icon'
 import { WinterIcon } from '@icons/winter-icon'
 
+/**
+ * SeasonIcon component renders an icon representing the season of an anime.
+ *
+ * This component takes two props: `className` and `season`. The `className` prop
+ * is optional and is used to apply additional CSS classes to the icon. The `season`
+ * prop is required and determines which icon to render.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Additional CSS classes to apply to the icon
+ * @param {string} props.season - The season of the anime (spring, summer, winter, fall)
+ * @returns {JSX.Element} The rendered icon
+ */
 export const SeasonIcon = ({
   className,
   season,

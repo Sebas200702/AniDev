@@ -1,3 +1,11 @@
+/**
+ * MoreOptionsIcon component renders an icon representing additional options.
+ *
+ * This component accepts a className prop to allow for custom styling.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Optional class name to apply to the icon
+ */
 export const MoreOptionsIcon = ({ className }: { className?: string }) => {
   return (
     <svg

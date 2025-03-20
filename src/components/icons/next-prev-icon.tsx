@@ -1,3 +1,8 @@
+/**
+ * NextPrevIcon component renders an icon representing navigation options.
+ *
+ * This component does not take any props and is used as a visual representation.
+ */
 export const NextPrevIcon = () => (
   <svg
     className="mx-auto h-3 w-3 text-white md:h-4 md:w-4"

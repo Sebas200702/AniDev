@@ -1,3 +1,11 @@
+/**
+ * CollectionIcon component renders an icon representing a collection.
+ * 
+ * This component accepts a className prop to allow for custom styling.
+ * 
+ * @param {Object} props - The component's props
+ * @param {string} [props.className] - Optional class name for custom styling
+ */
 export const CollectionIcon = ({ className }: { className?: string }) => {
   return (
     <svg

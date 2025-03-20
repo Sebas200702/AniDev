@@ -1,6 +1,15 @@
 import { splitTextOnP } from '@utils/split-text-on-p'
 
+/**
+ * AnimeDescription component displays the synopsis and other descriptive information about an anime.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.synopsis - The synopsis of the anime.
+ */
 interface Props {
+  /**
+   * The synopsis of the anime.
+   */
   synopsis: string
 }
 

@@ -4,11 +4,26 @@ import type { Anime } from 'types'
 import { CollectionItem } from '@components/collection/page-collection-item'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
 
+/**
+ * Props for the PageColectionList component.
+ *
+ * @typedef {Object} Props
+ * @property {string} title - The title of the collection.
+ * @property {string} id - The ID of the collection to fetch data for.
+ */
 interface Props {
   title: string
   id: string
 }
 
+/**
+ * PageColectionList component displays a list of anime collections with a title and fetches data based on the collection ID.
+ *
+ * @description Displays a list of anime collections with a title and fetches data based on the collection ID.
+ * @param {Object} props - The props for the component.
+ * @param {string} props.title - The title of the collection.
+ * @param {string} props.id - The ID of the collection to fetch data for.
+ */
 export const PageColectionList = ({ title, id }: Props) => {
   const [url, setUrl] = useState('')
   const [animes, setAnimes] = useState<Anime[]>()

@@ -1,12 +1,33 @@
 import { useEffect } from 'react'
 
+/**
+ * Props for the CreateMetaDatas component.
+ */
 interface Props {
+  /**
+   * The title to set in the document.
+   */
   title: string
+  /**
+   * The description to set in the document.
+   */
   description: string
+  /**
+   * The image URL to set in the document's metadata.
+   */
   image: string
 }
+
+/**
+ * CreateMetaDatas component updates the document's metadata including title, description, and image.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.title - The title to set in the document.
+ * @param {string} props.description - The description to set in the document.
+ * @param {string} props.image - The image URL to set in the document's metadata.
+ */
 export const CreateMetaDatas = ({ title, description, image }: Props) => {
-  const channgeMetaData = () => {
+  const changeMetaData = () => {
     const domTitle = document.querySelector('title') as HTMLTitleElement
     const domDescription = document.querySelector(
       'meta[name="description"]'
@@ -51,7 +72,7 @@ export const CreateMetaDatas = ({ title, description, image }: Props) => {
   }
 
   useEffect(() => {
-    channgeMetaData()
+    changeMetaData()
   }, [])
 
   return null

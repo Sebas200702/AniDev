@@ -1,8 +1,18 @@
 interface Props {
+  /**
+   * The title of the anime to be shared.
+   */
   title: string
+  /**
+   * The URL of the anime to be shared.
+   */
   url: string
+  /**
+   * The text to be shared along with the anime.
+   */
   text: string
 }
+
 const ShareIcon = () => {
   return (
     <svg
@@ -21,6 +31,14 @@ const ShareIcon = () => {
   )
 }
 
+/**
+ * ShareButton component renders a button to share an anime on social media.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.title - The title of the anime to be shared.
+ * @param {string} props.url - The URL of the anime to be shared.
+ * @param {string} props.text - The text to be shared along with the anime.
+ */
 export const ShareButton = ({ title, url, text }: Props) => {
   const handleClick = () => {
     navigator.share({

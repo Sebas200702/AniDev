@@ -29,9 +29,13 @@ const capitalizeTitle = (text: string): string => {
     .join(' ')
 }
 
+/**
+ * createDynamicUrl generates a dynamic URL for fetching anime data based on specified filters.
+ *
+ * @param {number} [limit=6] - The maximum number of items to fetch.
+ * @returns {FilterResult} An object containing the generated URL and title.
+ */
 export const createDynamicUrl = (limit = 6): FilterResult => {
-  const filters = Object.values(AnimeFilters)
-  const types = Object.values(AnimeTypes)
   const genres = getPopularGenres()
 
   const getRandomFilters = (count: number): AnimeFilters[] => {

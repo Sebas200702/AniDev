@@ -1,3 +1,8 @@
+/**
+ * CompletedIcon component renders an icon representing a completed status.
+ *
+ * This component takes an optional className prop to allow for custom styling.
+ */
 export const CompletedIcon = ({ className }: { className?: string }) => {
   return (
     <svg

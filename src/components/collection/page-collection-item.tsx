@@ -7,10 +7,13 @@ import { StarIcon } from '@components/icons/star-icon'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { normalizeString } from '@utils/normalize-string'
 
-interface Props {
-  anime: Anime
-}
-export const CollectionItem = ({ anime }: Props) => {
+/**
+ * CollectionItem component displays a collection item in a list, including its image, title, genres, synopsis, and score.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Anime} props.anime - The anime object containing details to display.
+ */
+export const CollectionItem = ({ anime }: { anime: Anime }) => {
   return (
     <li
       key={anime.mal_id}
@@ -46,7 +49,7 @@ export const CollectionItem = ({ anime }: Props) => {
           {anime.synopsis ?? 'No description available'}
         </p>
         <span className="text-sx flex items-center gap-2 text-gray-400">
-          <StarIcon style="text-enfasisColor h-5 w-5 " />
+          <StarIcon className="text-enfasisColor h-5 w-5 " />
           {anime.score}/10
         </span>
         <footer className="flex h-min flex-row gap-2">

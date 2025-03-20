@@ -1,3 +1,11 @@
+/**
+ * CharacterIcon component renders an icon representing a character.
+ *
+ * This component takes an optional className prop to allow for custom styling.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Optional class name for custom styling
+ */
 export const CharacterIcon = ({ className }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

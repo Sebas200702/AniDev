@@ -4,6 +4,29 @@ import { signOut } from 'auth-astro/client'
 interface Props {
   userInfo: Session | null
 }
+
+/**
+ * Profile component renders the user's profile information and a dropdown menu.
+ *
+ * This component displays the user's name and avatar, and allows for logging out.
+ * It should be used in the navigation bar to provide a link to the user's profile,
+ * and to allow the user to log out.
+ *
+ * @description
+ * The component is responsive and will adapt to different screen sizes.
+ * The user's avatar is displayed as a rounded image, and the name is displayed
+ * as a link to the user's profile page.
+ * The dropdown menu is displayed when the user clicks on their avatar,
+ * and contains a link to the user's profile page and a logout button.
+ *
+ * @param {Props} props - The props for the component.
+ * @param {Session | null} props.userInfo - The user session information, or null if not logged in.
+ *
+ * @returns {JSX.Element} The rendered profile component.
+ *
+ * @example
+ * <Profile userInfo={session} />
+ */
 export const Profile = ({ userInfo }: Props) => {
   const handleClick = () => {
     document.getElementById('userDropdown')?.classList.toggle('hidden')

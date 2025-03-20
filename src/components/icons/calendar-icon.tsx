@@ -2,6 +2,14 @@ interface Props {
   className?: string
 }
 
+/**
+ * CalendarIcon component renders an icon representing a calendar.
+ *
+ * This component accepts a className prop for custom styling.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Optional class name for styling
+ */
 export const CalendarIcon = ({ className }: Props) => {
   return (
     <svg

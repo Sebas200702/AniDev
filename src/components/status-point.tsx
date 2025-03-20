@@ -1,3 +1,10 @@
+/**
+ * StatusPoin component displays a status indicator with an optional tooltip.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.class - CSS class for styling the status indicator.
+ * @param {string} [props.status] - Optional status text for the tooltip.
+ */
 interface StatusPoinProps {
   class: string
   status?: string

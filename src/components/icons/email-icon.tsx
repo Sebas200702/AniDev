@@ -2,6 +2,11 @@ interface Props {
   style?: string
 }
 
+/**
+ * EmailIcon component renders an icon representing an email.
+ *
+ * This component accepts a style prop to customize its appearance.
+ */
 export const EmailIcon = ({ style }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

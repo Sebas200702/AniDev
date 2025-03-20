@@ -1,3 +1,11 @@
+/**
+ * CaretIcon component renders a caret icon for indicating direction.
+ *
+ * This component accepts a className prop for custom styling.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Optional class name for custom styling.
+ */
 export const CaretIcon = ({ className }: { className?: string }) => {
   return (
     <svg

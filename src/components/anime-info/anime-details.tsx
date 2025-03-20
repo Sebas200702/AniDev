@@ -23,6 +23,12 @@ interface Props {
   animeData: Anime
 }
 
+/**
+ * AnimeDetails component displays detailed information about an anime, including its genres and release date.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Anime} props.animeData - The anime object containing details to display.
+ */
 export const AnimeDetails = ({ animeData }: Props) => {
   const {
     status,

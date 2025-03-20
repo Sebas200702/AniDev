@@ -1,3 +1,11 @@
+/**
+ * IdIcon component renders an icon representing an ID.
+ * 
+ * This component accepts an optional className prop for custom styling.
+ * 
+ * @param {Object} props - Component properties
+ * @param {string} [props.className] - Optional class name for custom styling
+ */
 export const IdIcon = ({ className }: { className?: string }) => {
   return (
     <svg

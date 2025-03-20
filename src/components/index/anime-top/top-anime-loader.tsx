@@ -1,3 +1,8 @@
+/**
+ * TopAnimeLoader component displays a loading state for the top anime list.
+ *
+ * This component does not take any props and is used to indicate loading state.
+ */
 export const AnimeTopLoader = () => {
   return (
     <div className="relative">

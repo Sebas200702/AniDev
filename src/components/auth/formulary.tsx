@@ -14,10 +14,20 @@ import { useAuthFormStore } from '@store/auth-form-store'
 import { useEffect } from 'react'
 
 interface Props {
+  /**
+   * The title of the formulary.
+   */
   title: string
+  /**
+   * The action URL for the form submission.
+   */
   action: string
+  /**
+   * The background image URL for the formulary.
+   */
   bgImage?: string
 }
+
 interface ApiJsonResponse {
   url?: string
   message?: string
@@ -74,6 +84,14 @@ const handleResponseRedirection = (
   return RedirectionResult.DEFAULT_REDIRECT
 }
 
+/**
+ * Formulary component handles user input for authentication, including login and registration.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.title - The title of the formulary.
+ * @param {string} props.action - The action URL for the form submission.
+ * @param {string} [props.bgImage] - The background image URL for the formulary.
+ */
 export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
   const {
     values,

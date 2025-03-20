@@ -1,6 +1,11 @@
 import { SectionList } from '@components/section-list'
 import { useAnimeListsStore } from '@store/anime-list-store'
 
+/**
+ * AnimeNavBar component renders a navigation bar for anime details.
+ *
+ * This component does not take any props and is used as a visual representation.
+ */
 export const AnimeNavBar = () => {
   const { animeList, setAnimeList } = useAnimeListsStore()
   return (

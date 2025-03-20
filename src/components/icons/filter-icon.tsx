@@ -1,3 +1,11 @@
+/**
+ * FilterIcon component renders an icon representing a filter.
+ * 
+ * This component takes an optional className prop for custom styling and is used as a visual representation.
+ * 
+ * @param {Object} props - The component's properties
+ * @param {string} [props.className] - Optional class name for custom styling
+ */
 export const FilterIcon = ({ className }: { className?: string }) => {
   return (
     <svg

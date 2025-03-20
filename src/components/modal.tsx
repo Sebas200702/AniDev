@@ -1,3 +1,9 @@
+/**
+ * Modal component displays a modal overlay that can contain children elements.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {React.ReactNode} [props.children] - Optional children to display inside the modal.
+ */
 interface Props {
   children?: React.ReactNode
 }

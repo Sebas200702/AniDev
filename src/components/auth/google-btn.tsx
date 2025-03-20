@@ -1,6 +1,11 @@
 import { GoogleIcon } from '@components/icons/google-icon'
 import { signIn } from 'auth-astro/client'
 
+/**
+ * GoogleBtn component renders a button for Google authentication.
+ *
+ * This component does not take any props and is used as a visual representation.
+ */
 export const GoogleBtn = () => {
   const handleGoogleClick = async () => {
     signIn('google')

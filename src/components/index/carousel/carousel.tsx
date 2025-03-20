@@ -11,7 +11,29 @@ import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import { useCarouselStore } from '@store/carousel-store'
 import { useFetch } from '@hooks/useFetch'
 
-export const Carousel = () => {
+/**
+ * Carousel component displays a rotating banner of featured anime content.
+ *
+ * @description This component manages the loading state, fetches banner data, and provides interactive
+ * navigation controls. It uses session storage to cache the fetched data for faster access on subsequent
+ * visits. The component implements touch gestures, keyboard navigation, and automatic rotation for an
+ * engaging user experience.
+ *
+ * The component maintains state through the useCarouselStore for banners data, loading status, current
+ * index, and animation effects. It implements an efficient image preloading mechanism to ensure smooth
+ * transitions between carousel items. When no cached data is available, it dynamically generates a URL
+ * and fetches a new set of banner images.
+ *
+ * The UI features a responsive layout that adapts to different screen sizes, with full-width banner
+ * images, navigation indicators, and next/previous buttons. During loading, a skeleton loader is
+ * displayed to improve user experience.
+ *
+ * @returns {JSX.Element} The rendered carousel with banner items, indicators, and navigation controls
+ *
+ * @example
+ * <Carousel />
+ */
+export const Carousel = (): JSX.Element => {
   const {
     url,
     setUrl,

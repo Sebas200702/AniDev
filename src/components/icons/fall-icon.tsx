@@ -1,3 +1,11 @@
+/**
+ * FallIcon component renders an icon representing the fall season.
+ *
+ * This component takes an optional className prop to allow for custom styling.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Optional class name for custom styling
+ */
 export const FallIcon = ({ className }: { className?: string }) => {
   return (
     <svg

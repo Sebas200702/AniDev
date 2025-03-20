@@ -1,3 +1,8 @@
+/**
+ * AnimeLoader component displays a loading indicator for an anime.
+ *
+ * This component does not take any props and is used as a visual representation.
+ */
 export const AnimeLoader = () => {
   return (
     <div className="">

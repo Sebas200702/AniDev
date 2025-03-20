@@ -1,5 +1,14 @@
 import type { Section } from 'types'
 
+/**
+ * Props for the SectionList component.
+ *
+ * @typedef {Object} Props
+ * @property {Section} section - The current section being displayed.
+ * @property {Object} sections - An object containing the list of sections and a setter function.
+ * @property {Section[]} sections.list - Array of sections.
+ * @property {function} sections.set - Function to update the selected section.
+ */
 interface Props {
   section: Section
   sections: {
@@ -8,6 +17,11 @@ interface Props {
   }
 }
 
+/**
+ * SectionList component displays a list of sections and allows selection of a section.
+ *
+ * @param {Props} props - The props for the component.
+ */
 export const SectionList = ({ section, sections }: Props) => {
   const isSelected =
     sections.list.find((s) => s.label === section.label)?.selected || false

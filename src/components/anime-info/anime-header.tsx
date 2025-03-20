@@ -4,7 +4,16 @@ import { AnimeTag } from '@components/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
 
+/**
+ * AnimeHeader component displays the title and header information of an anime.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Anime} props.animeData - The anime object containing details to display.
+ */
 interface Props {
+  /**
+   * The anime object containing details to display.
+   */
   animeData: Anime
 }
 

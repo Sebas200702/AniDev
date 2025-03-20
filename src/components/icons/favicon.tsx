@@ -1,3 +1,11 @@
+/**
+ * Favicon component renders the favicon icon for the application.
+ *
+ * This component takes an optional className prop to allow for custom styling.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Optional class name to apply to the favicon icon
+ */
 export const Favicon = ({ className }: { className?: string }) => {
   return (
     <svg

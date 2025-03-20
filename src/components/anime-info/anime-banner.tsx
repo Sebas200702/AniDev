@@ -2,11 +2,28 @@ import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 
+/**
+ * Props for the AnimeBanner component.
+ *
+ * @typedef {Object} Props
+ * @property {string} banner_image - The banner image URL.
+ * @property {string} image_large_webp - The large webp image URL.
+ * @property {string} title - The title of the anime.
+ */
 interface Props {
   banner_image: string
   image_large_webp: string
   title: string
 }
+
+/**
+ * AnimeBanner component renders a banner for an anime.
+ *
+ * This component takes in props for the banner image, large webp image, and title,
+ * and is used as a visual representation.
+ *
+ * @param {Props} props - The props for the component.
+ */
 export const AnimeBanner = ({
   banner_image,
   image_large_webp,

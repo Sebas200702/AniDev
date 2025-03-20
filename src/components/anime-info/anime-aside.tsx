@@ -4,12 +4,37 @@ import { ShareButton } from '@components/buttons/share-button'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 
+/**
+ * AnimeAside component displays additional information about an anime in a sidebar format.
+ *
+ * This component takes in anime data, watch now URL, share text, and URL as props.
+ * It displays the anime image, watch now button, and share button.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Anime} props.animeData - The anime object containing details to display.
+ * @param {string} props.watchNowUrl - The URL to watch the anime now.
+ * @param {string} props.shareText - The text to share about the anime.
+ * @param {string} props.url - The URL of the anime page.
+ */
 interface Props {
+  /**
+   * The anime object containing details to display.
+   */
   animeData: Anime
+  /**
+   * The URL to watch the anime now.
+   */
   watchNowUrl: string
+  /**
+   * The text to share about the anime.
+   */
   shareText: string
+  /**
+   * The URL of the anime page.
+   */
   url: string
 }
+
 export const AnimeAside = ({
   animeData,
   watchNowUrl,

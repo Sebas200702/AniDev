@@ -1,3 +1,10 @@
+/**
+ * PasswordIcon component renders an icon representing a password.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.style] - Optional CSS class name
+ * This component takes a style prop for styling purposes and is used as a visual representation.
+ */
 interface Props {
   style?: string
 }

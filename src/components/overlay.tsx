@@ -1,3 +1,9 @@
+/**
+ * Overlay component displays a semi-transparent overlay that can be styled.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} [props.className] - Optional additional classes for styling the overlay.
+ */
 interface Props {
   className?: string
 }

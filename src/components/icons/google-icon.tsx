@@ -1,3 +1,11 @@
+/**
+ * GoogleIcon component renders an icon representing Google.
+ *
+ * This component takes an optional style prop to customize the icon's appearance.
+ *
+ * @param {Object} props
+ * @param {string} [props.style] - Optional CSS class to apply to the icon
+ */
 export const GoogleIcon = ({ style }: { style?: string }) => {
   return (
     <svg

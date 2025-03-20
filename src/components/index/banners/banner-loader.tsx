@@ -1,4 +1,13 @@
+/**
+ * BannerLoader component displays a loading state for the banner.
+ *
+ * This component takes an animationNumber prop to customize the animation.
+ * It is used to indicate loading state.
+ */
 interface BannerLoaderProps {
+  /**
+   * The animation number to customize the animation.
+   */
   animationNumber: number
 }
 export const BannerLoader = ({ animationNumber }: BannerLoaderProps) => {

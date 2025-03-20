@@ -2,6 +2,11 @@ interface Props {
   className: string
 }
 
+/**
+ * PlayIcon component renders an icon representing play functionality.
+ *
+ * This component takes a className prop for styling purposes and is used as a visual representation.
+ */
 export const PlayIcon = ({ className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

@@ -1,3 +1,11 @@
+/**
+ * ScoredByIcon component renders an icon representing the score given by a user.
+ *
+ * This component takes an optional className prop for styling purposes.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} [props.className] - The CSS class name to apply to the SVG element.
+ */
 export const ScoredByIcon = ({ className }: { className?: string }) => {
   return (
     <svg

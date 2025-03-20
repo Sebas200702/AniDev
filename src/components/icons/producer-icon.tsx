@@ -1,3 +1,11 @@
+/**
+ * ProducerIcon component renders an icon representing a producer.
+ *
+ * This component takes an optional className prop to allow for custom styling.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Optional class name for custom styling
+ */
 export const ProducerIcon = ({ className }: { className?: string }) => {
   return (
     <svg

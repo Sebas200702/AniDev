@@ -2,6 +2,13 @@ import { useCallback, useRef } from 'react'
 
 import type { Anime } from 'types'
 
+/**
+ * useCarouselScroll is a custom hook that manages the scrolling behavior of a carousel.
+ *
+ * @param {Anime[] | null} banners - The array of anime banners to display in the carousel.
+ * @param {number} currentIndex - The current index of the displayed banner.
+ * @param {function} setCurrentIndex - Function to update the current index.
+ */
 export const useCarouselScroll = (
   banners: Anime[] | null,
   currentIndex: number,

@@ -1,3 +1,11 @@
+/**
+ * OtherTitlesIcon component renders an icon representing other titles.
+ *
+ * This component takes an optional className prop for styling purposes.
+ *
+ * @param {Object} props
+ * @param {string} [props.className] - Optional CSS class name
+ */
 export const OtherTitlesIcon = ({ className }: { className?: string }) => {
   return (
     <svg

@@ -1,3 +1,9 @@
+/**
+ * AnimeTopHeader component displays the title for the top anime section.
+ *
+ * @param {Object} props - The props for the component.
+
+ */
 export const AnimeTopHeader = () => {
   return (
     <header className="relative mx-auto  flex w-[100dvw] flex-row items-center gap-4 py-4 px-4 md:px-20">

@@ -8,8 +8,21 @@ import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
 import { useWindowWidth } from '@store/window-width'
 
+/**
+ * AnimeCard component displays information about an anime including its title, image, and status.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Anime} props.anime - The anime object containing details to display.
+ * @param {string} [props.context] - Optional context for the component.
+ */
 interface Props {
+  /**
+   * The anime object containing details to display.
+   */
   anime: Anime
+  /**
+   * Optional context for the component.
+   */
   context?: string
 }
 

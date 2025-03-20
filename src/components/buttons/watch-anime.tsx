@@ -1,5 +1,11 @@
 import { PlayIcon } from '@components/icons/play-icon'
 
+/**
+ * WatchAnimeButton component renders a button to watch an anime.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.url - The URL to navigate to when the button is clicked.
+ */
 export const WatchAnimeButton = ({ url }: { url: string }) => {
   return (
     <a

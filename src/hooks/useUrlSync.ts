@@ -2,6 +2,11 @@ import { useEffect, useRef } from 'react'
 
 import { useSearchStoreResults } from '@store/search-results-store'
 
+/**
+ * useUrlSync is a custom hook that synchronizes the URL state with the search query and applied filters.
+ *
+ * This hook updates the store when the URL changes and vice versa.
+ */
 export const useUrlSync = () => {
   const { query, appliedFilters, setQuery, setAppliedFilters } =
     useSearchStoreResults()

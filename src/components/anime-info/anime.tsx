@@ -11,10 +11,21 @@ import { CreateMetaDatas } from '@components/create-meta-datas'
 import { baseTitle } from '@utils/base-url'
 import { normalizeString } from '@utils/normalize-string'
 
+/**
+ * AnimeInfo component serves as the main container for all anime-related information and displays it.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.slug - The slug of the anime to fetch and display.
+ */
 interface Props {
   slug: string
 }
 
+/**
+ * AnimeInfo component represents an anime entity.
+ *
+ * This component fetches and displays anime data based on the provided slug.
+ */
 export const AnimeInfo = ({ slug }: Props) => {
   const [animeData, setAnimeData] = useState<Anime>()
 

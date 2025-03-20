@@ -1,3 +1,11 @@
+/**
+ * AiredDayIcon component renders an icon representing the day an anime aired.
+ *
+ * This component accepts a className prop for custom styling.
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Optional class name for styling
+ */
 export const AiredDayIcon = ({ className }: { className?: string }) => {
   return (
     <svg

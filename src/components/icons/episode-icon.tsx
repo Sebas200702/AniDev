@@ -1,3 +1,8 @@
+/**
+ * EpisodeIcon component renders an icon representing an episode.
+ *
+ * This component takes an optional className prop to allow for custom styling.
+ */
 export const EpisodeIcon = ({ className }: { className?: string }) => {
   return (
     <svg

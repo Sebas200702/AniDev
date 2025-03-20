@@ -7,8 +7,21 @@ import { StarIcon } from '@components/icons/star-icon'
 import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 
+/**
+ * AnimeTopItem component displays a single item in the top anime list.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {Anime} props.anime - The anime object containing details to display.
+ * @param {number} props.index - The index of the anime in the list.
+ */
 interface AnimeTopItemProps {
+  /**
+   * The anime object containing details to display.
+   */
   anime: Anime
+  /**
+   * The index of the anime in the list.
+   */
   index: number
 }
 
