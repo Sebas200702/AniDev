@@ -1,13 +1,26 @@
-interface Props {
-  style?: string
-}
-
+import type { IconProps } from "types"
 /**
  * EmailIcon component renders an icon representing an email.
  *
- * This component accepts a style prop to customize its appearance.
+ * @description This component renders an SVG icon that visually represents an email or message.
+ * It features an envelope design with a simple and clean outline style that works well in various
+ * UI contexts such as contact forms, user profiles, or notification systems.
+ *
+ * The icon is designed with accessibility in mind, using semantic SVG attributes and maintaining
+ * good contrast. The stroke-based design ensures the icon remains crisp and legible at different
+ * sizes while adapting to the current text color through the "currentColor" value.
+ *
+ * The component accepts a style prop that allows for customization of the icon's appearance
+ * through CSS classes, enabling easy integration with different design systems and themes.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional CSS class name to customize the icon's appearance
+ * @returns {JSX.Element} The rendered email icon SVG
+ *
+ * @example
+ * <EmailIcon className="w-6 h-6 text-blue-500" />
  */
-export const EmailIcon = ({ style }: Props) => (
+export const EmailIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -15,7 +28,7 @@ export const EmailIcon = ({ style }: Props) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className={style}
+    className={className}
     viewBox="0 0 24 24"
   >
     <path d="M0 0h24v24H0z" stroke="none"></path>

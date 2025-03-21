@@ -1,12 +1,28 @@
+import type { IconProps } from "types"
+
 /**
- * ProducerIcon component renders an icon representing a producer.
+ * ProducerIcon component renders an icon representing a producer or production company.
  *
- * This component takes an optional className prop to allow for custom styling.
+ * @description This component displays an SVG icon that visually represents a film or media producer.
+ * The icon features a simplified film clapperboard design with horizontal bars and diagonal lines,
+ * making it recognizable as a production-related symbol. The component is designed to be lightweight
+ * and adaptable to different UI contexts through customizable styling.
  *
- * @param {Object} props - Component props
- * @param {string} [props.className] - Optional class name for custom styling
+ * The icon inherits the current text color through the "currentColor" setting, allowing it
+ * to adapt to various UI color schemes seamlessly. The SVG paths are structured to create
+ * a clear visual representation that works well at different sizes while maintaining visual clarity.
+ *
+ * This icon is typically used in anime details pages, credits sections, or anywhere that production
+ * companies or producers need to be represented visually in the interface.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for custom styling of the SVG element
+ * @returns {JSX.Element} The rendered producer icon SVG
+ *
+ * @example
+ * <ProducerIcon className="w-6 h-6 text-gray-500" />
  */
-export const ProducerIcon = ({ className }: { className?: string }) => {
+export const ProducerIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

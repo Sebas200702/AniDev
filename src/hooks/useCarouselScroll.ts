@@ -5,9 +5,30 @@ import type { Anime } from 'types'
 /**
  * useCarouselScroll is a custom hook that manages the scrolling behavior of a carousel.
  *
- * @param {Anime[] | null} banners - The array of anime banners to display in the carousel.
- * @param {number} currentIndex - The current index of the displayed banner.
- * @param {function} setCurrentIndex - Function to update the current index.
+ * @description This hook provides functionality for navigating through a carousel of anime banners.
+ * It manages touch events for mobile swiping, keyboard navigation with arrow keys, and automatic
+ * scrolling with a timer. The hook maintains references to the container element, touch positions,
+ * and interval timer to ensure smooth transitions between banner items.
+ *
+ * The hook implements touch navigation by tracking touch start and end positions to determine
+ * swipe direction. It handles automatic scrolling with a configurable interval that resets
+ * whenever the user manually navigates. The scroll behavior is synchronized with the current
+ * index state, ensuring the visual display matches the logical state.
+ *
+ * For accessibility, the hook provides keyboard navigation support through arrow keys,
+ * allowing users to navigate the carousel without using touch or mouse interactions.
+ *
+ * @param {Anime[] | null} banners - The array of anime banners to display in the carousel
+ * @param {number} currentIndex - The current index of the displayed banner
+ * @param {function} setCurrentIndex - Function to update the current index
+ * @returns {Object} Object containing refs and handler functions for carousel navigation
+ *
+ * @example
+ * const { bannerContainerRef, handleNext, handlePrev, handleTouchStart } = useCarouselScroll(
+ *   animeList,
+ *   currentBannerIndex,
+ *   setCurrentBannerIndex
+ * );
  */
 export const useCarouselScroll = (
   banners: Anime[] | null,

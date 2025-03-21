@@ -1,3 +1,29 @@
+/**
+ * AnimeSliderLoader component displays a loading state for anime sliders.
+ *
+ * @description This component provides visual feedback while anime slider content is being fetched.
+ * It displays a series of pulsing placeholder elements that mimic the structure of the actual
+ * anime slider. The component creates a responsive layout that maintains visual consistency
+ * with the loaded content.
+ *
+ * The layout includes a placeholder for the section header with title and a horizontal scrollable
+ * area with anime card placeholders. Each card contains a pulsing element that represents the
+ * anime poster. These elements are styled with animation effects to signal to users that content
+ * is loading.
+ *
+ * The component adapts to different screen sizes, displaying different numbers of visible items
+ * based on the viewport width. On mobile devices, approximately 2 cards are visible, increasing
+ * to 4 on medium screens and 6 on larger screens. It maintains consistent padding and spacing
+ * to ensure a smooth transition when the actual content loads.
+ *
+ * The animations use a consistent pulse effect across all placeholder elements to provide
+ * a cohesive loading experience that aligns with the application's visual language.
+ *
+ * @returns {JSX.Element} The rendered loading animation for the anime slider
+ *
+ * @example
+ * <AnimeSliderLoader />
+ */
 export const AnimeSliderLoader = () => {
   return (
     <div className="relative flex w-[100dvw] flex-col">

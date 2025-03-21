@@ -17,12 +17,30 @@ interface Props {
 }
 
 /**
- * PageColectionList component displays a list of anime collections with a title and fetches data based on the collection ID.
+ * PageColectionList component fetches and displays a collection of anime based on the provided ID.
  *
- * @description Displays a list of anime collections with a title and fetches data based on the collection ID.
- * @param {Object} props - The props for the component.
- * @param {string} props.title - The title of the collection.
- * @param {string} props.id - The ID of the collection to fetch data for.
+ * @description This component manages the loading state, fetches anime data, and checks for unique collections.
+ * It uses session storage to cache the fetched data for faster access. The component ensures that
+ * each collection contains unique anime entries by validating IDs before displaying. If a collection
+ * is not unique, it will fetch a new set of animes. The component also handles responsive layout
+ * and provides a link to view the full collection.
+ *
+ * The component maintains an internal state for anime data, loading status, collection title,
+ * and query parameters. It implements an efficient caching mechanism using sessionStorage to
+ * improve performance on subsequent visits. When no cached data is available, it dynamically
+ * generates a URL and fetches a new collection of anime.
+ *
+ * The UI displays a title, anime cards in a grid layout, and a "View All" link that navigates
+ * to the complete collection. During loading, a skeleton loader is displayed to improve
+ * user experience.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.title - The title of the collection to display
+ * @param {string} props.id - The unique identifier for the anime collection used for caching and retrieval
+ * @returns {JSX.Element} The rendered anime collection with title, anime cards, and navigation
+ *
+ * @example
+ * <PageColectionList title="Popular Anime" id="collection-1" />
  */
 export const PageColectionList = ({ title, id }: Props) => {
   const [url, setUrl] = useState('')

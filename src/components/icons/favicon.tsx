@@ -1,12 +1,29 @@
+import type { IconProps } from "types"
+
 /**
  * Favicon component renders the favicon icon for the application.
  *
- * This component takes an optional className prop to allow for custom styling.
+ * @description This component displays the application's favicon, which consists of a stylized "A" letter
+ * in white and a blue "D" letter. The SVG-based icon is designed to provide brand recognition and visual
+ * identity for the application. The icon features a clean, modern design with two distinct paths that
+ * create the complete favicon image.
  *
- * @param {Object} props
+ * The component accepts an optional className parameter that allows for custom styling and positioning
+ * of the icon throughout the application. This flexibility enables the favicon to be appropriately sized
+ * and styled in different contexts, such as headers, footers, or loading screens.
+ *
+ * The SVG viewBox is set to "0 0 73 83" to maintain proper proportions regardless of the display size.
+ * The icon uses a combination of white and blue (#0057E7) colors that represent the application's brand
+ * identity.
+ *
+ * @param {IconProps} props - The component props
  * @param {string} [props.className] - Optional class name to apply to the favicon icon
+ * @returns {JSX.Element} The rendered favicon SVG icon with proper styling and dimensions
+ *
+ * @example
+ * <Favicon className="h-8 w-8" />
  */
-export const Favicon = ({ className }: { className?: string }) => {
+export const Favicon = ({ className }: IconProps) => {
   return (
     <svg
       width="73"

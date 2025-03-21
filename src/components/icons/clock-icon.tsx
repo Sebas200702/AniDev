@@ -1,16 +1,30 @@
-interface Props {
-  className?: string
-}
+import type { IconProps } from "types"
 
 /**
  * ClockIcon component renders an icon representing a clock.
- * 
- * This component accepts a className prop for styling purposes and is used as a visual representation.
- * 
- * @param {Props} props - The component's props
- * @returns {JSX.Element} The ClockIcon component
+ *
+ * @description This component displays a clock icon using SVG paths to create a visually
+ * recognizable representation of time. The icon features a circular clock face with hour
+ * and minute hands positioned to show a specific time. The SVG is designed with
+ * clean lines and a recognizable shape that clearly communicates time-related functionality.
+ *
+ * The component uses the standard SVG structure with appropriate viewBox and stroke settings to
+ * ensure consistent rendering across different sizes. The icon inherits the current text color
+ * through the "currentColor" setting, allowing it to adapt to various UI color schemes without
+ * modification.
+ *
+ * The SVG paths are carefully structured to create a clock face with hands pointing to
+ * approximately 7:15, providing a visual representation that is immediately recognizable
+ * as a time indicator.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for styling the SVG element
+ * @returns {JSX.Element} The rendered clock icon SVG
+ *
+ * @example
+ * <ClockIcon className="w-6 h-6 text-gray-500" />
  */
-export const ClockIcon = ({ className }: Props) => (
+export const ClockIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"

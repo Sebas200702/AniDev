@@ -16,6 +16,21 @@ const getPopularGenres = (): AnimeGenres[] => {
   )
 }
 
+/**
+ * Capitalizes words in a title following standard title case rules.
+ *
+ * @description This function transforms a string into proper title case by capitalizing
+ * the first letter of each word, except for specific articles, conjunctions, and prepositions
+ * (like 'from', 'of', 'the', etc.) that appear in the middle of the title. The first word
+ * is always capitalized regardless of what word it is.
+ *
+ * @param {string} text - The text to be formatted in title case
+ * @returns {string} The formatted text in proper title case
+ *
+ * @example
+ * capitalizeTitle("the world of anime") // Returns "The World of Anime"
+ * capitalizeTitle("journey to the east") // Returns "Journey to the East"
+ */
 const capitalizeTitle = (text: string): string => {
   return text
     .split(' ')
@@ -30,10 +45,26 @@ const capitalizeTitle = (text: string): string => {
 }
 
 /**
- * createDynamicUrl generates a dynamic URL for fetching anime data based on specified filters.
+ * Creates a dynamic URL and title for fetching anime data based on randomly selected filters.
  *
- * @param {number} [limit=6] - The maximum number of items to fetch.
- * @returns {FilterResult} An object containing the generated URL and title.
+ * @description This function generates a URL with query parameters and a corresponding title
+ * based on randomly selected anime filters. It supports various filter types including genre,
+ * type (TV/Movie), year, and status. The function uses weighted randomization to prioritize
+ * certain filter combinations for better user experience. The generated title is formatted
+ * using templates that make the collections more engaging and descriptive.
+ *
+ * The function employs several helper methods to:
+ * - Select random filters from available options
+ * - Choose anime types with weighted preferences
+ * - Generate appealing title templates
+ * - Apply filters and create corresponding URL parameters
+ *
+ * @param {number} [limit=6] - The maximum number of anime items to fetch
+ * @returns {FilterResult} An object containing the generated URL query string and formatted title
+ *
+ * @example
+ * createDynamicUrl(10)
+ * // Might return: { url: "limit_count=10&genre_filter=action&type_filter=movie", title: "Top 10 Action Movies" }
  */
 export const createDynamicUrl = (limit = 6): FilterResult => {
   const genres = getPopularGenres()
@@ -76,7 +107,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
       'Uncover the Best {filters}',
       '{limit} Must-Watch {filters}',
       'Your Guide to {filters}',
-      '{filters} You Can’t Miss',
+      '{filters} You Can\'t Miss',
       'The Ultimate {filters} List',
       'Discover {filters}',
       'Find the Top {filters} Anime',

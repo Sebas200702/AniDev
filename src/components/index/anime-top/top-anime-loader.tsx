@@ -1,7 +1,26 @@
 /**
- * TopAnimeLoader component displays a loading state for the top anime list.
+ * AnimeTopLoader component displays a loading state for the top anime list.
  *
- * This component does not take any props and is used to indicate loading state.
+ * @description This component provides visual feedback while the top anime data is being fetched.
+ * It displays a series of pulsing placeholder elements that mimic the structure of the actual
+ * top anime list. The component creates a responsive layout that maintains visual consistency
+ * with the loaded content.
+ *
+ * The layout includes placeholder elements for the section header with title, and a grid of
+ * anime items. Each item contains placeholders for the rank number, anime poster, and metadata.
+ * These elements are styled with animation effects to signal to users that content is loading.
+ *
+ * The component adapts to different screen sizes, displaying a single column on mobile devices
+ * and two columns on larger screens. It maintains consistent padding and spacing to ensure
+ * a smooth transition when the actual content loads.
+ *
+ * The animations use a consistent pulse effect across all placeholder elements to provide
+ * a cohesive loading experience that aligns with the application's visual language.
+ *
+ * @returns {JSX.Element} The rendered loading animation for the top anime section
+ *
+ * @example
+ * <AnimeTopLoader />
  */
 export const AnimeTopLoader = () => {
   return (

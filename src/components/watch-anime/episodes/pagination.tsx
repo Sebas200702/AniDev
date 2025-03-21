@@ -1,11 +1,44 @@
 import { useState } from 'react'
 
+/**
+ * Props interface for the Pagination component.
+ *
+ * @interface PaginationProps
+ * @property {number} totalPages - The total number of pages available.
+ * @property {number} [initialPage=1] - The initial active page when component mounts.
+ * @property {function} [onPageChange] - Callback function triggered when page changes.
+ */
 interface PaginationProps {
   totalPages: number
   initialPage?: number
   onPageChange?: (page: number) => void
 }
 
+/**
+ * Pagination component for navigating through multiple pages of content.
+ *
+ * @description This component provides a user interface for paginated content navigation.
+ * It displays the current page and allows users to navigate between pages using numbered
+ * buttons and previous/next controls. The component intelligently handles large numbers
+ * of pages by showing ellipses (...) for page ranges that aren't directly adjacent to
+ * the current page or the first/last pages.
+ *
+ * The component maintains an internal state for the current page and provides visual
+ * feedback by highlighting the active page. It implements boundary checks to prevent
+ * navigation beyond the available page range and provides disabled states for navigation
+ * controls when at the first or last page.
+ *
+ * The pagination follows accessibility best practices with proper labeling and focus states.
+ *
+ * @param {PaginationProps} props - The component props
+ * @param {number} props.totalPages - The total number of pages available
+ * @param {number} [props.initialPage=1] - The initial active page when component mounts
+ * @param {function} [props.onPageChange] - Callback function triggered when page changes
+ * @returns {JSX.Element} The rendered pagination controls
+ *
+ * @example
+ * <Pagination totalPages={10} initialPage={1} onPageChange={(page) => console.log(`Page changed to ${page}`)} />
+ */
 export default function Pagination({
   totalPages,
   initialPage = 1,

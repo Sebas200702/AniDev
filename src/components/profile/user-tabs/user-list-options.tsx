@@ -1,3 +1,25 @@
+/**
+ * UserListOptions component provides sorting and filtering controls for user anime lists.
+ *
+ * @description This component manages the display of list control options with responsive behavior.
+ * It provides a toggle mechanism for showing/hiding options on mobile devices while maintaining
+ * a persistent display on larger screens. The component implements a clean interface for sorting
+ * and filtering anime list entries.
+ *
+ * The component uses a simple toggle function to show or hide the options menu on mobile devices.
+ * On desktop screens, the options are always visible and styled differently to match the layout.
+ * The responsive design adapts to different screen sizes by changing the positioning, background,
+ * and layout of elements.
+ *
+ * The UI displays sort and filter buttons with appropriate icons. On mobile, these options are
+ * hidden by default and can be toggled with a "More Options" button. The component uses CSS
+ * transitions for smooth visual feedback during interactions.
+ *
+ * @returns {JSX.Element} The rendered options panel with sort and filter controls
+ *
+ * @example
+ * <UserListOptions />
+ */
 import { CaretIcon } from '@components/icons/caret-icon'
 import { FilterIcon } from '@components/icons/filter-icon'
 import { MoreOptionsIcon } from '@components/icons/more-options-icon'

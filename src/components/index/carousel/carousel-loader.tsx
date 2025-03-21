@@ -2,21 +2,22 @@
  * LoadingCarousel component displays a loading animation for the carousel.
  *
  * @description This component provides visual feedback while content is being fetched for the carousel.
- * It shows a series of pulsing elements to indicate that loading is in progress.
- *
- * The component creates a responsive layout that mimics the structure of the actual carousel content.
+ * It shows a series of pulsing elements to indicate that loading is in progress. The component
+ * creates a responsive layout that mimics the structure of the actual carousel content.
  * It includes placeholder elements for the title, description, action buttons, and navigation indicators.
  * These elements are styled with animation effects to signal to users that content is loading.
  *
- * The layout adjusts based on screen size, with different arrangements for mobile and desktop views.
- * On mobile devices, elements are stacked vertically with appropriate spacing, while on desktop,
- * they are arranged horizontally with more generous spacing and additional elements.
+ * The component implements a responsive design that adapts to different screen sizes. On mobile devices,
+ * elements are stacked vertically with appropriate spacing, while on desktop, they are arranged
+ * horizontally with more generous spacing and additional elements. This ensures a consistent
+ * user experience across various devices.
  *
  * Background and foreground colors use a consistent dark theme with varying shades to create
  * visual hierarchy. All animated elements use the same pulse animation to provide a cohesive
- * loading experience.
+ * loading experience. The layout maintains proper z-index values to ensure correct layering
+ * of UI elements.
  *
- * @returns {JSX.Element} The rendered loading animation for the carousel.
+ * @returns {JSX.Element} The rendered loading animation for the carousel with pulsing placeholder elements
  *
  * @example
  * <LoadingCarousel />

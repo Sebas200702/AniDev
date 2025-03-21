@@ -18,9 +18,34 @@ interface Props {
 }
 
 /**
- * SectionList component displays a list of sections and allows selection of a section.
+ * SectionList component displays an interactive navigation section item.
  *
- * @param {Props} props - The props for the component.
+ * @description This component renders a single navigation item with icon and label that can be
+ * selected by the user. It manages the selected state of the section and provides visual feedback
+ * through styling changes. When a section is selected, it updates the global section list state
+ * through the provided setter function.
+ *
+ * The component implements a clean transition effect when sections are selected, displaying the
+ * section label with a smooth animation. Each section item features an underline indicator that
+ * appears when the section is active, and the icon scales slightly to provide additional visual feedback.
+ *
+ * The UI displays the section icon at all times, while the text label is conditionally rendered
+ * based on the selected state. When selected, the text animates into view with a transition effect.
+ * The component uses consistent styling to maintain visual harmony with other navigation elements.
+ *
+ * @param {Props} props - The component props
+ * @param {Section} props.section - The section to be rendered
+ * @param {Object} props.sections - Object containing the section list and setter function
+ * @returns {JSX.Element} The rendered section list item with interactive functionality
+ *
+ * @example
+ * <SectionList
+ *   section={{ label: "Overview", icon: OverviewIcon, selected: true }}
+ *   sections={{
+ *     list: sectionsList,
+ *     set: updateSections
+ *   }}
+ * />
  */
 export const SectionList = ({ section, sections }: Props) => {
   const isSelected =

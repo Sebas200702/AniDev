@@ -2,7 +2,7 @@ import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
-import { StatusPoin } from '@components/status-point'
+import { StatusPoint } from '@components/status-point'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
@@ -11,9 +11,26 @@ import { useWindowWidth } from '@store/window-width'
 /**
  * AnimeCard component displays information about an anime including its title, image, and status.
  *
- * @param {Object} props - The props for the component.
- * @param {Anime} props.anime - The anime object containing details to display.
- * @param {string} [props.context] - Optional context for the component.
+ * @description This component renders a visually appealing card for an anime entry with responsive design.
+ * It displays the anime's poster image, title, release year, and status in a structured layout.
+ * The component features hover effects and optimized image loading with low-resolution placeholders
+ * during loading and higher resolution images for the final display.
+ *
+ * The card adapts to different screen sizes with appropriate styling and image quality adjustments.
+ * On mobile devices, it loads a lower resolution image to improve performance. The component
+ * includes a gradient overlay to improve text readability when displayed over the anime image.
+ *
+ * A status indicator shows the current airing status of the anime using color-coded visual cues,
+ * while the title is displayed with genre-specific coloring for enhanced visual categorization.
+ * The year tag is positioned in the top-right corner for quick reference.
+ *
+ * @param {Props} props - The component props
+ * @param {Anime} props.anime - The anime object containing details to display including title, images, status, and genres
+ * @param {string} [props.context] - Optional context identifier that affects the card's display style
+ * @returns {JSX.Element} The rendered anime card with image, title, status, and year tag
+ *
+ * @example
+ * <AnimeCard anime={animeData} context="search" />
  */
 interface Props {
   /**
@@ -67,7 +84,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
         </Picture>
 
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
-          <StatusPoin
+          <StatusPoint
             class={`h-6 w-6 ${statusColors(status)}`}
             status={status}
           />

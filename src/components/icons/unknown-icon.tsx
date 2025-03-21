@@ -1,4 +1,29 @@
-export const UnknownIcon = ({ className }: { className?: string }) => (
+import type { IconProps } from 'types'
+
+/**
+ * UnknownIcon component renders an icon representing an unknown or help state.
+ *
+ * @description This component displays a question mark icon that visually represents help,
+ * unknown status, or information requests. The SVG icon features a document or note-like shape
+ * with a question mark, making it intuitive for users to identify help or unknown-related functionality.
+ * The component is designed to be lightweight and adaptable to different UI contexts through
+ * customizable styling.
+ *
+ * The icon inherits the current text color through the "currentColor" setting, allowing it
+ * to adapt to various UI color schemes seamlessly. The SVG paths are structured to create
+ * a clear visual representation that works well at different sizes while maintaining visual clarity.
+ *
+ * This icon is typically used in help sections, unknown states, or anywhere that requires
+ * indicating that something is unknown or needs clarification.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for custom styling of the SVG element
+ * @returns {JSX.Element} The rendered unknown/question mark icon SVG
+ *
+ * @example
+ * <UnknownIcon className="w-6 h-6 text-gray-500" />
+ */
+export const UnknownIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

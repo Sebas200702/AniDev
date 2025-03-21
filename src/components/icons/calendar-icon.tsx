@@ -1,16 +1,28 @@
-interface Props {
-  className?: string
-}
-
+import type{ IconProps } from "types"
 /**
  * CalendarIcon component renders an icon representing a calendar.
  *
- * This component accepts a className prop for custom styling.
+ * @description This component displays a calendar icon using SVG paths to create a visually
+ * recognizable representation of a calendar. The icon features a calendar outline with date
+ * markers to effectively communicate date-related functionality. The SVG is designed with
+ * clean lines and a recognizable shape that conveys the intended meaning clearly.
  *
- * @param {Object} props - Component props
- * @param {string} [props.className] - Optional class name for styling
+ * The component uses the standard SVG structure with appropriate viewBox and stroke settings to
+ * ensure consistent rendering across different sizes. The icon inherits the current text color
+ * through the "currentColor" setting, allowing it to adapt to various UI color schemes without
+ * modification.
+ *
+ * The SVG paths are carefully structured to create a calendar with date dots, providing
+ * a visual representation that is immediately recognizable as a calendar interface element.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for styling the SVG element
+ * @returns {JSX.Element} The rendered calendar icon SVG
+ *
+ * @example
+ * <CalendarIcon className="w-6 h-6 text-gray-500" />
  */
-export const CalendarIcon = ({ className }: Props) => {
+export const CalendarIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

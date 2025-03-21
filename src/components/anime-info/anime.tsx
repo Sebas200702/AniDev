@@ -14,18 +14,29 @@ import { normalizeString } from '@utils/normalize-string'
 /**
  * AnimeInfo component serves as the main container for all anime-related information and displays it.
  *
- * @param {Object} props - The props for the component.
- * @param {string} props.slug - The slug of the anime to fetch and display.
+ * @description This component fetches and displays comprehensive anime data based on the provided slug.
+ * It manages loading states and handles the API request to retrieve anime details. Upon successful data
+ * retrieval, it organizes the information into a structured layout with various specialized components.
+ *
+ * The component creates a visually appealing presentation with a banner at the top, followed by a grid
+ * layout containing the anime's image, metadata, trailer, and detailed information. During the loading
+ * phase, a skeleton loader is displayed to improve user experience.
+ *
+ * The component also prepares metadata for SEO optimization and generates URLs for watching and sharing
+ * the anime. The responsive layout adjusts based on screen size, providing an optimal viewing experience
+ * across devices.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.slug - The slug of the anime to fetch and display
+ * @returns {JSX.Element} The rendered anime information page with all components
+ *
+ * @example
+ * <AnimeInfo slug="my-hero-academia_31964" />
  */
 interface Props {
   slug: string
 }
 
-/**
- * AnimeInfo component represents an anime entity.
- *
- * This component fetches and displays anime data based on the provided slug.
- */
 export const AnimeInfo = ({ slug }: Props) => {
   const [animeData, setAnimeData] = useState<Anime>()
 

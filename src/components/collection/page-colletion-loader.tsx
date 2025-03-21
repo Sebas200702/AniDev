@@ -1,7 +1,26 @@
 /**
- * PageCollectionLoader component displays a loading state for the collection.
+ * PageCollectionLoader component displays a loading state for the collection page.
  *
- * This component does not take any props and is used to indicate loading state.
+ * @description This component provides visual feedback while collection data is being fetched.
+ * It displays a series of pulsing placeholder elements that mimic the structure of the actual
+ * collection items. The component creates a responsive layout that maintains visual consistency
+ * with the loaded content.
+ *
+ * The layout includes a placeholder for the collection title at the top, followed by a grid of
+ * anime item placeholders. Each item contains a pulsing element that represents the anime card.
+ * These elements are styled with animation effects to signal to users that content is loading.
+ *
+ * The component adapts to different screen sizes, displaying a single column on mobile devices,
+ * two columns on medium screens, and three columns on larger screens. It maintains consistent
+ * padding and spacing to ensure a smooth transition when the actual content loads.
+ *
+ * The animations use a consistent pulse effect across all placeholder elements to provide
+ * a cohesive loading experience that aligns with the application's visual language.
+ *
+ * @returns {JSX.Element} The rendered loading animation for the collection page
+ *
+ * @example
+ * <PageCollectionLoader />
  */
 export const PageCollectionLoader = () => {
   return (

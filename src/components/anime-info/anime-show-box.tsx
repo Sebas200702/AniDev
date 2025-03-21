@@ -3,14 +3,37 @@ import { AnimeTrailer } from '@components/anime-info/anime-trailer'
 import { useAnimeListsStore } from '@store/anime-list-store'
 
 /**
- * AnimeShowBox component displays a box containing information about an anime like synopsis, characters, and trailer.
+ * AnimeShowBox component displays content based on the selected tab for an anime.
  *
- * @param {Object} props - The props for the component.
- * @param {string} props.trailer_url - The URL of the anime trailer.
- * @param {string} props.banner_image - The banner image of the anime.
- * @param {string} props.image_large_webp - The large webp image of the anime.
- * @param {string} props.title - The title of the anime.
- * @param {string} props.synopsis - The synopsis of the anime.
+ * @description This component manages the display of different content sections for an anime
+ * based on user selection. It dynamically renders the appropriate component according to the
+ * currently selected tab (Synopsis, Trailer, or Characters). The component uses the anime list
+ * store to track the active selection and conditionally renders the corresponding content.
+ *
+ * For the Synopsis tab, it displays the anime's description using the AnimeDescription component.
+ * For the Trailer tab, it renders the AnimeTrailer component with all necessary media properties.
+ * For the Characters tab, it shows a placeholder for character information.
+ *
+ * The component implements a clean, conditional rendering approach that ensures only the
+ * relevant content is displayed at any given time, improving both performance and user experience
+ * by reducing unnecessary DOM elements.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.trailer_url - The URL of the anime trailer
+ * @param {string} props.banner_image - The banner image of the anime
+ * @param {string} props.image_large_webp - The large webp image of the anime
+ * @param {string} props.title - The title of the anime
+ * @param {string} props.synopsis - The synopsis of the anime
+ * @returns {JSX.Element} The rendered content based on the selected tab
+ *
+ * @example
+ * <AnimeShowBox
+ *   trailer_url="https://youtube.com/watch?v=abc123"
+ *   banner_image="https://example.com/banner.jpg"
+ *   image_large_webp="https://example.com/image.webp"
+ *   title="Anime Title"
+ *   synopsis="This is the anime synopsis."
+ * />
  */
 interface Props {
   trailer_url: string

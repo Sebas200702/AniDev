@@ -1,4 +1,29 @@
-export const TitleJapaneseIcon = ({ className }: { className?: string }) => {
+import type { IconProps } from "types"
+
+/**
+ * TitleJapaneseIcon component renders an icon representing Japanese title text.
+ *
+ * @description This component displays an SVG icon that visually represents Japanese text or titles.
+ * The icon features stylized characters that resemble Japanese writing, making it intuitive for users
+ * to identify Japanese title-related information. The component is designed to be lightweight and
+ * adaptable to different UI contexts through customizable styling.
+ *
+ * The icon inherits the current text color through the "currentColor" setting, allowing it
+ * to adapt to various UI color schemes seamlessly. The SVG paths are structured to create
+ * a clear visual representation of Japanese characters that works well at different sizes while
+ * maintaining visual clarity.
+ *
+ * This icon is typically used in anime information displays, language selection interfaces, or
+ * anywhere that Japanese titles or text need to be represented visually.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for custom styling of the SVG element
+ * @returns {JSX.Element} The rendered Japanese title icon SVG
+ *
+ * @example
+ * <TitleJapaneseIcon className="w-6 h-6 text-gray-500" />
+ */
+export const TitleJapaneseIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

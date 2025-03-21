@@ -1,12 +1,28 @@
+import type { IconProps } from 'types'
 /**
  * AiredDayIcon component renders an icon representing the day an anime aired.
  *
- * This component accepts a className prop for custom styling.
+ * @description This component displays a calendar icon with a clock element to visually represent
+ * the broadcast day of an anime series. The icon combines calendar and time elements to effectively
+ * communicate the concept of a specific airing day. The SVG is designed with clean lines and
+ * recognizable shapes that convey the intended meaning clearly.
  *
- * @param {Object} props - Component props
- * @param {string} [props.className] - Optional class name for styling
+ * The component uses the standard SVG structure with appropriate viewBox and stroke settings to
+ * ensure consistent rendering across different sizes. The icon inherits the current text color
+ * through the "currentColor" setting, allowing it to adapt to various UI color schemes without
+ * modification.
+ *
+ * The SVG paths are carefully structured to create a calendar base with a clock element, providing
+ * a visual representation that is immediately recognizable as representing a day-specific schedule.
+ *
+ * @param {IconProps} props - Component props
+ * @param {string} [props.className] - Optional class name for styling the SVG element
+ * @returns {JSX.Element} The rendered calendar with clock icon SVG
+ *
+ * @example
+ * <AiredDayIcon className="w-6 h-6 text-gray-500" />
  */
-export const AiredDayIcon = ({ className }: { className?: string }) => {
+export const AiredDayIcon = ({ className }: IconProps): JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

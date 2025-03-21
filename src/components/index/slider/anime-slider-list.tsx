@@ -13,15 +13,30 @@ interface Props {
   title: string
 }
 
-  /**
-   * Component that renders a slider of animes with a title, buttons to navigate and a list of animes.
-   * The animes are fetched from the API and cached in the session storage.
-   * The component also handles the window resize event to update the buttons visibility.
-   * @param {Object} props - The component props.
-   * @param {string} props.query - The query to fetch the animes from the API.
-   * @param {string} props.title - The title to display in the slider.
-   * @returns {ReactElement} The rendered component.
-   */
+/**
+ * AnimeSlider component displays a horizontally scrollable list of anime cards with navigation controls.
+ *
+ * @description This component manages the loading state, fetches anime data, and provides horizontal scrolling functionality.
+ * It uses session storage to cache the fetched data for faster access. The component implements responsive
+ * behavior by adjusting the navigation controls and scroll behavior based on the window width.
+ *
+ * The component maintains an internal state for anime data, loading status, and window dimensions.
+ * It implements an efficient caching mechanism using sessionStorage to improve performance on
+ * subsequent visits. When no cached data is available, it dynamically fetches anime based on the
+ * provided query parameter.
+ *
+ * The UI displays a title header, left and right navigation buttons, and a horizontally scrollable
+ * list of anime cards. During loading, a skeleton loader is displayed to improve user experience.
+ * The navigation buttons automatically hide when scrolling reaches the beginning or end of the list.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.query - The query string used to fetch anime data from the API
+ * @param {string} props.title - The title displayed at the top of the slider
+ * @returns {JSX.Element} The rendered anime slider with title, navigation buttons, and scrollable anime cards
+ *
+ * @example
+ * <AnimeSlider query="genre_filter=action" title="Action Anime" />
+ */
 export const AnimeSlider = ({ query, title }: Props) => {
   const [cachedAnimes, setCachedAnimes] = useState<Anime[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()

@@ -1,4 +1,29 @@
-export const SummerIcon = ({ className }: { className?: string }) => {
+import type { IconProps } from "types"
+
+/**
+ * SummerIcon component renders a sun icon with radiating beams.
+ *
+ * @description This component displays a stylized sun icon that represents summer or sunny weather.
+ * The SVG icon features a central circle representing the sun with radiating beams extending outward
+ * in cardinal and diagonal directions. The icon is designed to be lightweight and adaptable to
+ * different UI contexts through customizable styling.
+ *
+ * The icon inherits the current text color through the "currentColor" setting, allowing it
+ * to adapt to various UI color schemes seamlessly. The SVG paths are structured to create
+ * a clear visual representation of a sun that works well at different sizes while
+ * maintaining visual clarity.
+ *
+ * This icon is typically used in weather applications, seasonal displays, or anywhere that
+ * summer or sunny conditions need to be represented visually.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for custom styling of the SVG element
+ * @returns {JSX.Element} The rendered sun icon SVG
+ *
+ * @example
+ * <SummerIcon className="w-6 h-6 text-yellow-500" />
+ */
+export const SummerIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

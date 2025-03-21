@@ -19,16 +19,37 @@ interface Props {
 /**
  * AnimeBanner component renders a banner for an anime.
  *
- * This component takes in props for the banner image, large webp image, and title,
- * and is used as a visual representation.
+ * @description This component creates a visually appealing banner display for anime content.
+ * It handles different image sources by prioritizing the banner image when available, falling
+ * back to the large webp image when necessary. The component applies proper image optimization
+ * techniques by using low-resolution placeholders during loading and higher resolution images
+ * for the final display.
  *
- * @param {Props} props - The props for the component.
+ * The component implements a responsive design with a fixed aspect ratio and viewport-based height
+ * to ensure consistent presentation across different screen sizes. It also includes a gradient
+ * overlay to improve text readability when content is placed over the banner image.
+ *
+ * The Picture component is used to provide progressive image loading, improving the perceived
+ * performance and user experience when navigating between different anime pages.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.banner_image - The URL of the anime banner image
+ * @param {string} props.image_large_webp - The URL of the large anime image in WebP format (fallback)
+ * @param {string} props.title - The title of the anime used for the image alt text
+ * @returns {JSX.Element} The rendered anime banner with optimized images and overlay
+ *
+ * @example
+ * <AnimeBanner
+ *   banner_image="https://example.com/banner.jpg"
+ *   image_large_webp="https://example.com/large.webp"
+ *   title="Anime Title"
+ * />
  */
 export const AnimeBanner = ({
   banner_image,
   image_large_webp,
   title,
-}: Props) => {
+}: Props): JSX.Element => {
   return (
     <div className="relative aspect-[1080/600] h-[60dvh] w-full overflow-hidden">
       <Picture

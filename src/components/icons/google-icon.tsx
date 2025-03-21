@@ -1,19 +1,37 @@
+import type { IconProps } from "types"
+
 /**
- * GoogleIcon component renders an icon representing Google.
+ * GoogleIcon component renders an icon representing Google's logo.
  *
- * This component takes an optional style prop to customize the icon's appearance.
+ * @description This component displays the official Google logo as an SVG with its distinctive
+ * four-color design. The icon consists of four paths that create the complete Google "G" logo
+ * with its characteristic yellow, red, green, and blue segments. The SVG is designed to maintain
+ * its visual clarity across different sizes while preserving the brand identity.
  *
- * @param {Object} props
- * @param {string} [props.style] - Optional CSS class to apply to the icon
+ * The component accepts an optional style parameter that allows for custom styling and sizing
+ * of the icon throughout the application. This flexibility enables the Google icon to be
+ * appropriately sized and styled in different contexts, such as authentication buttons,
+ * social login options, or integration indicators.
+ *
+ * The SVG viewBox is set to "0 0 48 48" to maintain proper proportions regardless of the display size.
+ * The icon uses the official Google brand colors: #FFC107 (yellow), #FF3D00 (red), #4CAF50 (green),
+ * and #1976D2 (blue) to ensure brand consistency.
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.style] - Optional CSS class to apply to the icon for custom styling
+ * @returns {JSX.Element} The rendered Google logo SVG icon with proper styling and dimensions
+ *
+ * @example
+ * <GoogleIcon className="h-8 w-8" />
  */
-export const GoogleIcon = ({ style }: { style?: string }) => {
+export const GoogleIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="100"
       height="100"
       viewBox="0 0 48 48"
-      className={style}
+      className={className}
     >
       <path
         fill="#FFC107"

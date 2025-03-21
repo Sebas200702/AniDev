@@ -5,7 +5,24 @@ import { useSearchStoreResults } from '@store/search-results-store'
 /**
  * useUrlSync is a custom hook that synchronizes the URL state with the search query and applied filters.
  *
- * This hook updates the store when the URL changes and vice versa.
+ * @description This hook manages bidirectional synchronization between the application's search state
+ * and the browser URL. It updates the URL when search parameters change and updates the store when
+ * URL changes (like during navigation). The hook tracks query strings and filter parameters, encoding
+ * them as URL search parameters for shareable and bookmarkable search states.
+ *
+ * The hook implements debouncing to prevent excessive URL history entries and handles the initial
+ * mount by parsing existing URL parameters to restore previous search state. It properly handles
+ * browser navigation events (back/forward) by listening to popstate events and updating the
+ * application state accordingly.
+ *
+ * Filter values are serialized as comma-separated lists in URL parameters, allowing for multiple
+ * selections within a single filter category. The hook maintains a reference to the last URL state
+ * to prevent redundant history entries when the same search is performed multiple times.
+ *
+ * @returns {void} This hook doesn't return any values but affects URL and search store state
+ *
+ * @example
+ * useUrlSync()
  */
 export const useUrlSync = () => {
   const { query, appliedFilters, setQuery, setAppliedFilters } =

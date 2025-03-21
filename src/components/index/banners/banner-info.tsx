@@ -11,18 +11,20 @@ interface BannerInfoProps {
 /**
  * BannerInfo component displays information about an anime in a banner format.
  *
- * @description This component renders a responsive information panel for anime banners.
- * It displays the anime title, a brief synopsis, and a watch button. The component
- * adapts its layout and positioning based on the screen size, providing different
- * styles for mobile and desktop views.
+ * @description This component manages the responsive display of anime information within banners.
+ * It adapts its layout based on screen size, using the window width to determine device type.
+ * On mobile devices, it covers the entire banner area with a semi-transparent background,
+ * while on desktop it appears as a panel on the right side with rounded corners.
  *
- * The component uses the window width to determine the device type and adjusts its
- * appearance accordingly. On mobile devices, it covers the entire banner area, while
- * on desktop it appears as a panel on the right side with rounded corners.
+ * The component displays three main elements: a clickable title that links to the anime details page,
+ * a truncated synopsis limited to two lines for concise presentation, and a watch button that
+ * directs users to the anime viewing page. The layout is optimized for both mobile and desktop
+ * viewing experiences with appropriate spacing and sizing.
  *
- * The UI includes a clickable title that links to the anime details page, a truncated
- * synopsis that shows only the first two lines, and a watch button that directs users
- * to the anime viewing page.
+ * The component implements responsive design principles with different styles for varying screen
+ * sizes. It uses CSS utilities for text truncation, overflow handling, and smooth transitions
+ * when interacting with clickable elements. The semi-transparent background ensures text
+ * readability against any banner image.
  *
  * @param {BannerInfoProps} props - The component props
  * @param {string} props.title - The title of the anime to display

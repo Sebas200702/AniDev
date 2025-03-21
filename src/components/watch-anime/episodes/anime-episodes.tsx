@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import type { AnimeEpisode } from 'types'
+import { AnimeEpisodesLoader } from '@components/watch-anime/episodes/anime-episodes-loader'
 import Pagination from '@components/watch-anime/episodes/pagination'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { useFetch } from '@hooks/useFetch'
@@ -14,6 +15,41 @@ interface Props {
   duration: string
 }
 
+/**
+ * AnimeEpisodes component displays a list of episodes for a specific anime.
+ *
+ * @description This component manages the loading state, fetches episode data, and provides
+ * pagination functionality. It automatically scrolls to the current episode when loaded and
+ * maintains the page state in the URL for better navigation. The component displays episodes
+ * in a responsive grid layout with episode thumbnails, titles, and duration information.
+ *
+ * The component maintains internal state for the current page, scroll behavior, and fetched
+ * episode data. It calculates the total number of pages based on the total episodes count
+ * and implements pagination controls when necessary. When loading or when data isn't available,
+ * it displays a skeleton loader to improve user experience.
+ *
+ * Each episode is rendered as a clickable card with the episode thumbnail, title, duration,
+ * and episode number. The current episode is highlighted with a different background color
+ * for easy identification.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.slug - The slug of the anime for URL construction
+ * @param {number} props.mal_id - The MyAnimeList ID used for API requests
+ * @param {string} [props.image_webp] - Optional WebP image URL used as fallback for episode thumbnails
+ * @param {number} props.totalEpisodes - The total number of episodes for the anime
+ * @param {number} [props.currentEpisode] - Optional current episode number for auto-scrolling and highlighting
+ * @param {string} props.duration - The duration of episodes
+ * @returns {JSX.Element} The rendered episode list with pagination controls
+ *
+ * @example
+ * <AnimeEpisodes
+ *   slug="attack-on-titan_1234"
+ *   mal_id={1234}
+ *   totalEpisodes={25}
+ *   currentEpisode={5}
+ *   duration="24 min per ep"
+ * />
+ */
 export const AnimeEpisodes = ({
   slug,
   mal_id,
@@ -71,28 +107,11 @@ export const AnimeEpisodes = ({
 
   if (loading || !episodes || page === null)
     return (
-      <div className="z-10 h-full w-full p-2">
-        <div className="anime-list custom-scrollbar relative grid max-h-[500px] w-full grid-cols-1 gap-4 overflow-y-auto p-2 md:grid-cols-3 md:overflow-y-auto xl:mt-0 xl:max-h-[90%] xl:grid-cols-1 xl:overflow-y-auto">
-          {Array(100)
-            .fill(0)
-            .map((_, i) => (
-              <div
-                className="flex h-full w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-700 p-2 transition-all duration-300 ease-in-out md:max-w-[400px]"
-                key={i + 1}
-              >
-                <div className="aspect-[16/9] h-full w-full animate-pulse rounded-md bg-zinc-800 object-cover transition-all duration-200 ease-in-out"></div>
-                <div className="h-8 w-full animate-pulse rounded-md bg-zinc-800 transition-all duration-200 ease-in-out"></div>
-              </div>
-            ))}
-        </div>
-        <div className={`w-full ${totalPages > 1 ? '' : 'hidden'}`}>
-          <Pagination
-            totalPages={totalPages}
-            initialPage={page ?? 1}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      </div>
+      <AnimeEpisodesLoader
+        totalPages={totalPages}
+        page={page}
+        handlePageChange={handlePageChange}
+      />
     )
 
   return (

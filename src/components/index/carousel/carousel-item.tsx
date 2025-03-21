@@ -13,12 +13,9 @@ interface CarouselItemProps {
 /**
  * CarouselItem component renders an individual item in the carousel.
  *
- * @description This component displays the anime's banner image, title, and a brief description.
- * It also includes a "Learn More" button and a "Watch Anime" button.
- *
- * The component manages the visual presentation of each carousel item, including responsive layout
- * adjustments based on screen size. It alternates the layout direction (left-to-right or right-to-left)
- * based on the item's index to create visual variety in the carousel.
+ * @description This component manages the visual presentation of each carousel item, displaying the anime's
+ * banner image, title, and a brief description. It alternates the layout direction (left-to-right or
+ * right-to-left) based on the item's index to create visual variety in the carousel.
  *
  * The component implements overlay gradients to ensure text readability against the background image.
  * It displays a prominent title, a brief synopsis that is visible on larger screens, and navigation
@@ -27,6 +24,10 @@ interface CarouselItemProps {
  * The banner images are optimized with different resolutions for various loading stages to improve
  * performance and user experience. The component uses the Picture component for progressive image
  * loading and the Overlay component to create gradient effects over the images.
+ *
+ * The responsive layout adjusts based on screen size, with different text visibility and positioning
+ * options for mobile and desktop viewports. Action buttons maintain consistent placement and styling
+ * across all screen sizes.
  *
  * @param {CarouselItemProps} props - The component props
  * @param {Anime} props.anime - The anime object containing details to display including title, synopsis, and images

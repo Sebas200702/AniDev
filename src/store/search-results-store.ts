@@ -1,7 +1,43 @@
-import { create } from 'zustand'
-
 import type { Anime, AppliedFilters } from 'types'
 
+import { create } from 'zustand'
+
+/**
+ * SearchStoreResults provides state management for anime search functionality.
+ *
+ * @description This store manages the state for the search feature, including query text, results,
+ * loading states, and filter applications. It centralizes search-related data and operations to
+ * ensure consistency across components that interact with search functionality.
+ *
+ * The store maintains several key pieces of state:
+ * - Query string that represents the user's search input
+ * - Results array containing matching anime data
+ * - Loading state to track ongoing search operations
+ * - Error state for handling failed requests
+ * - Applied filters object containing active search filters
+ *
+ * The store provides methods to update these states, including specialized functions for
+ * setting queries, managing results, applying filters, and controlling loading indicators.
+ * The filter management includes support for both direct object assignment and functional
+ * updates for complex state transitions.
+ *
+ * @interface SearchStoreResults
+ * @property {string} query - Current search query text
+ * @property {string|null} error - Error message if search request failed
+ * @property {boolean} loading - Flag indicating if search is in progress
+ * @property {Anime[]|null} results - Array of anime matching the search criteria
+ * @property {AppliedFilters} appliedFilters - Object containing active search filters
+ * @property {Function} setQuery - Updates the search query text
+ * @property {Function} setResults - Updates search results, loading state, and error state
+ * @property {Function} setAppliedFilters - Updates the applied filters
+ * @property {Function} resetFilters - Clears all applied filters
+ * @property {Function} setLoading - Sets the loading state
+ *
+ * @example
+ * const { query, results, loading, setQuery, setAppliedFilters } = useSearchStoreResults();
+ * setQuery('dragon ball');
+ * setAppliedFilters({ genre: 'action' });
+ */
 interface SearchStoreResults {
   query: string
   error: string | null

@@ -4,11 +4,29 @@ import { signIn } from 'auth-astro/client'
 /**
  * GoogleBtn component renders a button for Google authentication.
  *
- * This component does not take any props and is used as a visual representation.
+ * @description This component provides a Google sign-in button that triggers the authentication process.
+ * It uses the auth-astro library to handle the sign-in flow with Google as the provider. When clicked,
+ * the button initiates the OAuth flow, redirecting the user to Google's authentication page.
+ *
+ * The component is designed with a clean, recognizable interface featuring the Google icon for
+ * immediate brand recognition. It maintains a consistent styling with other authentication options
+ * while clearly indicating its purpose through the Google logo.
+ *
+ * The button is fully responsive and adapts to its container width, making it suitable for various
+ * layout configurations. It follows accessibility best practices with proper button semantics and
+ * visual indicators.
+ *
+ * @returns {JSX.Element} The rendered Google authentication button with icon
+ *
+ * @example
+ * <GoogleBtn />
  */
-export const GoogleBtn = () => {
+export const GoogleBtn = (): JSX.Element => {
   const handleGoogleClick = async () => {
-    signIn('google')
+    signIn('google', {
+      redirect: true,
+      callbackUrl: '/',
+    })
   }
   return (
     <button

@@ -1,12 +1,35 @@
+import type { IconProps } from 'types'
 import { statusColors } from '@utils/status-colors'
 
+interface StatusIconProps extends IconProps {
+  status: string
+}
+/**
+ * StatusIcon component displays an SVG icon representing the airing status of an anime.
+ *
+ * @description This component renders different SVG icons based on the provided status string.
+ * It uses the statusColors utility to apply appropriate coloring to each status icon.
+ * The component handles three main states:
+ * - "Currently Airing": Shows a broadcasting/signal icon
+ * - "Not yet aired": Shows a disabled/crossed-out broadcasting icon
+ * - All other statuses (e.g., "Finished Airing"): Shows a checkmark in a circle
+ *
+ * Each icon is styled consistently with the same SVG attributes while the paths
+ * change to represent the different statuses visually. The component accepts
+ * an optional className for additional styling customization.
+ *
+ * @param {StatusIconProps} props - The component props
+ * @param {string} props.status - The anime status string that determines which icon to display
+ * @param {string} [props.className] - Optional CSS class name for styling the SVG
+ * @returns {JSX.Element} The SVG icon representing the anime's status
+ *
+ * @example
+ * <StatusIcon status="Currently Airing" className="icon-md" />
+ */
 export const StatusIcon = ({
   className,
   status,
-}: {
-  className?: string
-  status: string
-}) => {
+}: StatusIconProps) => {
   const color = statusColors(status)
   if (status === 'Currently Airing') {
     return (

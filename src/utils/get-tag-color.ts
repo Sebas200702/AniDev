@@ -1,8 +1,25 @@
 /**
  * getTagColor returns the corresponding CSS class for a given anime tag type.
  *
- * @param {string} type - The tag type to evaluate.
- * @returns {string} The CSS class for the tag type.
+ * @description This utility function determines the appropriate CSS styling for anime tags
+ * based on their type. It maps each anime type to a specific color scheme that includes
+ * background colors, hover effects, and text colors to provide visual distinction between
+ * different types of anime content.
+ *
+ * The function uses an enum to define the mapping between anime types and their corresponding
+ * CSS classes. If the provided type doesn't match any predefined types in the enum, it falls
+ * back to a default styling with the emphasis color.
+ *
+ * Each color scheme is designed to be visually distinct while maintaining consistent styling
+ * patterns across the application. The hover effects are included for interactive elements
+ * and are responsive (applied only on medium screens and above).
+ *
+ * @param {string} type - The tag type to evaluate (e.g., 'Anime', 'Movie', 'OVA')
+ * @returns {string} The CSS class string for styling the tag
+ *
+ * @example
+ * const tagStyle = getTagColor('Movie');
+ * // Returns: 'bg-purple-500 md:hover:bg-purple-400 text-white'
  */
 export const getTagColor = (type: string) => {
   enum AnimeTags {

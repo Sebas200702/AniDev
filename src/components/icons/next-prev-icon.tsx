@@ -1,7 +1,24 @@
 /**
  * NextPrevIcon component renders an icon representing navigation options.
  *
- * This component does not take any props and is used as a visual representation.
+ * @description This component displays a chevron arrow icon that indicates navigation direction
+ * for previous or next content. The SVG icon is styled with responsive sizing that adapts to
+ * different screen sizes, appearing smaller on mobile devices and larger on desktop viewports.
+ * The icon inherits the current text color through the "currentColor" setting, allowing it to
+ * adapt to various UI color schemes seamlessly.
+ *
+ * The icon is designed with accessibility in mind, using the aria-hidden attribute to ensure
+ * it's properly handled by screen readers. The SVG paths create a simple, recognizable
+ * directional arrow that works well at different sizes while maintaining visual clarity.
+ *
+ * The component doesn't accept any props and is intended to be used as a visual element within
+ * navigation controls such as pagination, carousels, or any interface requiring directional
+ * indicators.
+ *
+ * @returns {JSX.Element} The rendered navigation arrow icon SVG
+ *
+ * @example
+ * <NextPrevIcon />
  */
 export const NextPrevIcon = () => (
   <svg

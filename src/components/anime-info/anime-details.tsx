@@ -24,10 +24,27 @@ interface Props {
 }
 
 /**
- * AnimeDetails component displays detailed information about an anime, including its genres and release date.
+ * AnimeDetails component displays detailed information about an anime in a structured format.
  *
- * @param {Object} props - The props for the component.
- * @param {Anime} props.animeData - The anime object containing details to display.
+ * @description This component organizes and presents comprehensive information about an anime
+ * including its status, type, studios, themes, and other metadata. Each piece of information
+ * is displayed with an appropriate icon for visual enhancement and better user experience.
+ *
+ * The component takes an anime data object and extracts various properties such as status,
+ * type, studios, themes, producers, and more. It then creates a structured list of these
+ * details, each accompanied by a relevant icon. The component handles missing data gracefully
+ * by displaying "Unknown" for any undefined values.
+ *
+ * The UI presents the details in a styled section with a header and a scrollable list. Each
+ * detail is rendered as a list item with an icon and formatted text. Special styling is applied
+ * to certain categories like Status, Type, and Season to visually differentiate them.
+ *
+ * @param {Props} props - The component props
+ * @param {Anime} props.animeData - The anime object containing all details to display
+ * @returns {JSX.Element} The rendered section containing organized anime details
+ *
+ * @example
+ * <AnimeDetails animeData={animeData} />
  */
 export const AnimeDetails = ({ animeData }: Props) => {
   const {

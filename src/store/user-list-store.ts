@@ -1,11 +1,40 @@
-import { create } from 'zustand'
-
 import { CollectionIcon } from '@components/icons/collection-icon'
 import { CompletedIcon } from '@components/icons/completed-icon'
+import type { Section } from 'types'
 import { ToWatchIcon } from '@components/icons/to-watch-icon'
 import { WatchingIcon } from '@components/icons/watch-icon'
+import { create } from 'zustand'
 
-import type { Section } from 'types'
+/**
+ * UserListsStore provides state management for user anime list sections.
+ *
+ * @description This store manages the state of different user anime list sections like Collection,
+ * Completed, To Watch, and Watching. It maintains which section is currently selected and provides
+ * a method to update the selection state. The store uses Zustand for efficient state management
+ * with minimal re-renders.
+ *
+ * The store initializes with a default set of sections where Collection is selected by default.
+ * Each section contains a label, an associated icon component, and a selected state flag.
+ * The setUserList method allows components to update the entire list of sections, typically
+ * used when changing which section is selected.
+ *
+ * Components can subscribe to this store to access the current navigation state and
+ * respond to user interactions by updating the selected section.
+ *
+ * @interface UserListsStore
+ * @property {Section[]} userList - Array of section objects with label, icon, and selected state
+ * @property {Function} setUserList - Method to update the user list sections
+ *
+ * @example
+ * const { userList, setUserList } = useUserListsStore();
+ * const updateSelection = (sectionLabel) => {
+ *   const updatedList = userList.map(section => ({
+ *     ...section,
+ *     selected: section.label === sectionLabel
+ *   }));
+ *   setUserList(updatedList);
+ * };
+ */
 interface UserListsStore {
   userList: Section[]
   setUserList: (userList: Section[]) => void

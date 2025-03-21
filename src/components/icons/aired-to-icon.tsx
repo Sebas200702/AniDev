@@ -1,12 +1,28 @@
+import type { IconProps } from 'types'
+
 /**
  * AiredToIcon component renders an icon representing the end date an anime aired.
  *
- * This component accepts a className prop for custom styling.
+ * @description This component displays a calendar icon with an upward arrow, symbolizing the end date
+ * of an anime's broadcast period. The icon is designed to be used in anime detail pages or listings
+ * where airing information is displayed. The component uses SVG paths to create a visually
+ * consistent icon that matches the application's design system.
  *
- * @param {Object} props - Component props
- * @param {string} [props.className] - Optional class name for styling
+ * The icon is fully customizable through the className prop, allowing for different sizes,
+ * colors, and other styling options based on the context where it's used. The SVG is configured
+ * with appropriate viewBox and stroke properties to ensure crisp rendering at any size.
+ *
+ * All SVG paths use the currentColor value, which means the icon will inherit the text color
+ * from its parent element, making it easy to integrate with different color schemes and themes.
+ *
+ * @param {IconProps} props - Component props
+ * @param {string} [props.className] - Optional class name for styling the icon
+ * @returns {JSX.Element} The rendered SVG icon representing an anime's end air date
+ *
+ * @example
+ * <AiredToIcon className="w-6 h-6 text-gray-500" />
  */
-export const AiredToIcon = ({ className }: { className?: string }) => {
+export const AiredToIcon = ({ className }: IconProps): JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

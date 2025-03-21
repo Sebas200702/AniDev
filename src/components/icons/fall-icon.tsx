@@ -1,12 +1,29 @@
+import type { IconProps } from "types"
+
 /**
  * FallIcon component renders an icon representing the fall season.
  *
- * This component takes an optional className prop to allow for custom styling.
+ * @description This component displays a maple leaf icon that visually represents the fall season
+ * in anime seasonal categorization. The SVG icon features a recognizable leaf shape with stems,
+ * making it intuitive for users to identify fall-related content. The component is designed to be
+ * lightweight and adaptable to different UI contexts through customizable styling.
  *
- * @param {Object} props - Component props
- * @param {string} [props.className] - Optional class name for custom styling
+ * The icon inherits the current text color through the "currentColor" setting, allowing it
+ * to adapt to various UI color schemes seamlessly. The SVG paths are structured to create
+ * a clear visual representation of a fall leaf that works well at different sizes while
+ * maintaining visual clarity.
+ *
+ * This icon is typically used in seasonal anime navigation, filtering interfaces, or
+ * anywhere that fall season content needs to be represented visually.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for custom styling of the SVG element
+ * @returns {JSX.Element} The rendered fall season icon SVG
+ *
+ * @example
+ * <FallIcon className="w-6 h-6 text-amber-500" />
  */
-export const FallIcon = ({ className }: { className?: string }) => {
+export const FallIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

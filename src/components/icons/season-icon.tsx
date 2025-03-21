@@ -1,28 +1,39 @@
 import { FallIcon } from '@icons/fall-icon'
+import type { IconProps } from 'types'
 import { SpringIcon } from '@icons/spring-icon'
 import { SummerIcon } from '@icons/summer-icon'
 import { UnknownIcon } from '@icons/unknown-icon'
 import { WinterIcon } from '@icons/winter-icon'
+interface SeasonIconProps extends IconProps {
+  season: string
+}
 
 /**
  * SeasonIcon component renders an icon representing the season of an anime.
  *
- * This component takes two props: `className` and `season`. The `className` prop
- * is optional and is used to apply additional CSS classes to the icon. The `season`
- * prop is required and determines which icon to render.
+ * @description This component dynamically selects and renders the appropriate seasonal icon based on
+ * the provided season parameter. Each season is represented by a distinct icon with season-specific
+ * coloring: spring (green), summer (yellow), winter (blue), and fall (orange). If an unrecognized
+ * season is provided, a neutral gray unknown icon is displayed as a fallback.
  *
- * @param {Object} props
- * @param {string} [props.className] - Additional CSS classes to apply to the icon
- * @param {string} props.season - The season of the anime (spring, summer, winter, fall)
- * @returns {JSX.Element} The rendered icon
+ * The component applies consistent styling across all seasonal representations while allowing for
+ * additional customization through the optional className prop. Each icon inherits the base styling
+ * while adding season-specific color treatment to provide visual differentiation and intuitive
+ * recognition of the anime's seasonal categorization.
+ *
+ * This icon component is typically used in anime detail pages, seasonal anime listings, or filtering
+ * interfaces where visual identification of an anime's associated season enhances user experience
+ * and provides contextual information.
+ *
+ * @param {SeasonIconProps} props - The component props
+ * @param {string} [props.className] - Optional class name for additional styling of the icon
+ * @param {string} props.season - The season to display (spring, summer, winter, fall)
+ * @returns {JSX.Element} The rendered seasonal icon with appropriate styling
+ *
+ * @example
+ * <SeasonIcon season="winter" className="w-6 h-6" />
  */
-export const SeasonIcon = ({
-  className,
-  season,
-}: {
-  className?: string
-  season: string
-}) => {
+export const SeasonIcon = ({ className, season }: SeasonIconProps) => {
   if (season === 'spring')
     return <SpringIcon className={`${className} text-green-500`} />
   if (season === 'summer')

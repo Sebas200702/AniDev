@@ -7,8 +7,24 @@ import { useFetch } from '@hooks/useFetch'
 /**
  * AnimeTop component displays the list of top anime.
  *
- * @param {Object} props - The props for the component.
- * @param {Anime[]} props.animeList - The list of top anime to display.
+ * @description This component fetches and displays a ranked list of top anime based on score.
+ * It manages the loading state and handles the API request to retrieve anime data.
+ * The component uses the useFetch hook to efficiently retrieve anime data from the API
+ * with specific parameters for ordering, limiting, and filtering the results.
+ *
+ * The component displays a loading skeleton during the data fetching process to improve
+ * user experience. Once data is loaded, it renders a responsive grid layout containing
+ * ranked anime items, each displaying details such as title, image, score, and genres.
+ *
+ * The UI adapts to different screen sizes with appropriate grid layouts - single column
+ * on mobile devices and dual columns on larger screens. Each anime entry is displayed
+ * using the AnimeTopItem component which provides a consistent and visually appealing
+ * presentation of anime information.
+ *
+ * @returns {JSX.Element} The rendered top anime section with header and list of ranked anime items
+ *
+ * @example
+ * <AnimeTop />
  */
 export const AnimeTop = () => {
   const { data: anime, loading } = useFetch<Anime[]>({

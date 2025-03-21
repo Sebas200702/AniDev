@@ -1,7 +1,26 @@
 /**
- * AnimeLoader component displays a loading indicator for an anime.
+ * AnimeLoader component displays a loading state for anime detail pages.
  *
- * This component does not take any props and is used as a visual representation.
+ * @description This component provides visual feedback while anime content is being fetched.
+ * It displays a series of pulsing elements to indicate that loading is in progress.
+ * The component creates a responsive layout that mimics the structure of the actual anime detail page.
+ *
+ * The layout includes placeholder elements for the banner image, anime poster, title, metadata,
+ * and content sections. These elements are styled with animation effects to signal to users
+ * that content is loading.
+ *
+ * The layout adjusts based on screen size, with different arrangements for mobile and desktop views.
+ * On mobile devices, elements are stacked vertically with appropriate spacing, while on desktop,
+ * they are arranged in a grid layout with more complex positioning.
+ *
+ * Background and foreground colors use a consistent dark theme with varying shades to create
+ * visual hierarchy. All animated elements use the same pulse animation to provide a cohesive
+ * loading experience.
+ *
+ * @returns {JSX.Element} The rendered loading animation for the anime detail page
+ *
+ * @example
+ * <AnimeLoader />
  */
 export const AnimeLoader = () => {
   return (

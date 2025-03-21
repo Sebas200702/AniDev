@@ -20,15 +20,29 @@ interface Props {
 }
 
 /**
- * AnimeTag component displays a tag for an anime.
+ * AnimeTag component displays a clickable tag for an anime with appropriate styling.
  *
- * This component takes in props for the tag to display, its type, and additional styles.
- * It links to a search query based on the tag and displays the tag with a color based on its type.
+ * @description This component renders a tag element that serves as a link to search results
+ * filtered by the tag's value. It automatically determines the appropriate color for the tag
+ * based on its content using the getTagColor utility. The component also generates the correct
+ * filter query parameter using the getFilterOfTag utility to ensure proper search functionality.
  *
- * @param {Object} props - The props for the component.
- * @param {string} props.tag - The tag to display.
- * @param {string} [props.type] - Optional type of the tag.
- * @param {string} [props.style] - Optional additional styles for the tag.
+ * The tag is styled as a rounded button with appropriate padding and font styling for visual
+ * appeal. It includes hover effects through CSS transitions for better user interaction feedback.
+ * The component supports customization through an optional style prop that can override the
+ * default width setting while maintaining consistent visual appearance.
+ *
+ * For accessibility, the component includes an appropriate aria-label describing the tag's purpose
+ * and content, ensuring screen reader users can understand its function.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.tag - The tag text to display
+ * @param {string} [props.type] - Optional type of the tag used for filtering
+ * @param {string} [props.style] - Optional additional styles for the tag
+ * @returns {JSX.Element} The rendered tag component with appropriate styling and link behavior
+ *
+ * @example
+ * <AnimeTag tag="Action" type="genre" />
  */
 export const AnimeTag = ({ tag, type, style }: Props) => {
   const tagColor = getTagColor(tag ?? '')

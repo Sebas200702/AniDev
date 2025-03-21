@@ -8,21 +8,24 @@ interface Props {
 /**
  * Profile component renders the user's profile information and a dropdown menu.
  *
- * This component displays the user's name and avatar, and allows for logging out.
- * It should be used in the navigation bar to provide a link to the user's profile,
- * and to allow the user to log out.
+ * @description This component displays the user's avatar and name in the navigation bar,
+ * providing access to a dropdown menu with navigation options and authentication actions.
+ * The dropdown menu contains links to the user's profile page, settings, and a logout button
+ * or sign up link depending on authentication status.
  *
- * @description
- * The component is responsive and will adapt to different screen sizes.
- * The user's avatar is displayed as a rounded image, and the name is displayed
- * as a link to the user's profile page.
- * The dropdown menu is displayed when the user clicks on their avatar,
- * and contains a link to the user's profile page and a logout button.
+ * The component is fully responsive, adapting to different screen sizes by showing or hiding
+ * the username based on available space. The dropdown menu is toggled by clicking on the user's
+ * avatar, providing a clean and intuitive user interface. The menu appears below the avatar with
+ * a subtle animation and contains easily recognizable icons for each action.
  *
- * @param {Props} props - The props for the component.
- * @param {Session | null} props.userInfo - The user session information, or null if not logged in.
+ * For authenticated users, the component displays the user's avatar and name, with options to
+ * navigate to profile settings, view their profile page, or sign out. For guests, it shows a
+ * default avatar and provides a sign-up option. The component handles the authentication state
+ * transition by calling the appropriate sign-out function when requested.
  *
- * @returns {JSX.Element} The rendered profile component.
+ * @param {Props} props - The component props
+ * @param {Session | null} props.userInfo - The user session information, or null if not logged in
+ * @returns {JSX.Element} The rendered profile component with dropdown menu
  *
  * @example
  * <Profile userInfo={session} />

@@ -14,6 +14,26 @@ import { studioOptions } from '@utils/create-studios-options'
 import { useCallback } from 'react'
 import { useSearchStoreResults } from '@store/search-results-store'
 
+/**
+ * FilterSection component provides a comprehensive set of filters for anime search functionality.
+ *
+ * @description This component manages the display and application of various anime filters including
+ * genres, years, status, format, studio, season, rating, and sorting options. It interacts with the
+ * search store to update and maintain the state of applied filters across the application.
+ *
+ * The component implements a callback mechanism to efficiently update specific filter categories
+ * without affecting other filter selections. When filter values are added, they're stored in the
+ * appropriate category; when all values for a category are removed, that filter is deleted entirely.
+ *
+ * The UI presents filter options in a responsive grid layout that adapts to different screen sizes.
+ * Each filter category is implemented as a dropdown with multi-select capability. A reset button
+ * allows users to clear all applied filters at once for easy search refinement.
+ *
+ * @returns {JSX.Element} The rendered filter section with multiple filter dropdowns and a reset button
+ *
+ * @example
+ * <FilterSection />
+ */
 export const FilterSection = () => {
   const { appliedFilters, setAppliedFilters, resetFilters } =
     useSearchStoreResults()

@@ -10,8 +10,25 @@ import { normalizeString } from '@utils/normalize-string'
 /**
  * CollectionItem component displays a collection item in a list, including its image, title, genres, synopsis, and score.
  *
- * @param {Object} props - The props for the component.
- * @param {Anime} props.anime - The anime object containing details to display.
+ * @description This component renders an individual anime item within a collection list.
+ * It displays the anime's poster image, title, genres, synopsis, and score in a structured layout.
+ * The component features a responsive design with hover effects on the image and provides
+ * interactive elements for user engagement including watch, add to list, and share buttons.
+ *
+ * The anime poster image is displayed on the left side with a hover scale effect for visual feedback.
+ * The right section contains the anime's metadata organized in a vertical layout with appropriate
+ * spacing and text truncation for longer content. The component handles missing data gracefully
+ * by displaying fallback text for synopsis when unavailable.
+ *
+ * The footer section contains action buttons that allow users to watch the anime, add it to their list,
+ * or share it with others, enhancing the overall user experience and engagement with the content.
+ *
+ * @param {Object} props - The component props
+ * @param {Anime} props.anime - The anime object containing details to display including title, image, genres, synopsis, and score
+ * @returns {JSX.Element} The rendered collection item with anime details and interactive elements
+ *
+ * @example
+ * <CollectionItem anime={animeData} />
  */
 export const CollectionItem = ({ anime }: { anime: Anime }) => {
   return (

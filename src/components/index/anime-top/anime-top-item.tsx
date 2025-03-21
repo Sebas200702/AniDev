@@ -6,13 +6,32 @@ import { SeasonIcon } from '@icons/season-icon'
 import { StarIcon } from '@components/icons/star-icon'
 import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
+import { normalizeString } from '@utils/normalize-string'
 
 /**
  * AnimeTopItem component displays a single item in the top anime list.
  *
- * @param {Object} props - The props for the component.
- * @param {Anime} props.anime - The anime object containing details to display.
- * @param {number} props.index - The index of the anime in the list.
+ * @description This component renders an individual anime entry in the top anime ranking list.
+ * It displays the anime's rank number, poster image, title, type, score, season, episode count,
+ * and genres. The component implements a responsive layout that adapts to different screen sizes
+ * with appropriate styling and information visibility.
+ *
+ * The component features an interactive poster image with hover effects and gradient overlays
+ * to enhance visual appeal. It organizes anime metadata in a structured format with clear visual
+ * hierarchy, using icons to represent score and season information. The component also includes
+ * navigation links to the detailed anime page.
+ *
+ * Accessibility features include appropriate aria labels and semantic HTML structure to ensure
+ * the content is navigable for all users. The component optimizes image loading with the Picture
+ * component for progressive enhancement.
+ *
+ * @param {AnimeTopItemProps} props - The component props
+ * @param {Anime} props.anime - The anime object containing details to display including title, image, score, and genres
+ * @param {number} props.index - The index of the anime in the list, used to display the rank number
+ * @returns {JSX.Element} The rendered anime list item with rank, image, and metadata
+ *
+ * @example
+ * <AnimeTopItem anime={animeData} index={0} />
  */
 interface AnimeTopItemProps {
   /**
@@ -28,7 +47,7 @@ interface AnimeTopItemProps {
 export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
   return (
     <li
-      className="group relative flex h-full w-full flex-row gap-2 transition-all duration-200 ease-in-out md:gap-6"
+      className=" relative flex h-full w-full flex-row gap-2 transition-all duration-200 ease-in-out md:gap-6"
       title={anime.title}
       key={anime.mal_id}
     >
@@ -36,38 +55,48 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
         <strong className="text-enfasisColor">#</strong>
         {index + 1}
       </span>
-      <a
-        href={`/${anime.title}_${anime.mal_id}`}
-        className={`bg-Complementary flex w-full flex-row items-center rounded-lg`}
-        aria-label={`View details for ${anime.title}`}
-      >
-        <Picture
-          image={anime.image_small_webp}
-          styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
+      <div className="bg-Complementary flex w-full flex-row items-center rounded-lg">
+        <a
+          href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+          className={`relative group aspect-[225/330] w-full max-w-20 overflow-hidden rounded-lg md:max-w-32`}
+          aria-label={`View details for ${anime.title}`}
         >
-          <img
-            src={anime.image_large_webp}
-            alt={anime.title}
-            className="aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
-            loading="lazy"
-          />
-          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
-        </Picture>
-
+          <Picture
+            image={anime.image_small_webp}
+            styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
+          >
+            <img
+              src={anime.image_large_webp}
+              alt={anime.title}
+              className="aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out gro
+              up-hover:scale-105"
+              loading="lazy"
+            />
+            <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
+          </Picture>
+        </a>
         <article className="flex h-full w-full flex-row gap-4 p-4 md:p-6">
           <div className="text-s flex h-full w-full flex-col justify-between">
             <header className="flex flex-row items-center justify-between gap-4">
-              <h5 className="text-l line-clamp-1">{anime.title}</h5>
+              <a
+                href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+                className="text-l line-clamp-1"
+              >
+                {anime.title}
+              </a>
               <span className="hidden md:flex">{anime.type} Series </span>
             </header>
             <div className="flex w-full flex-row items-center justify-between gap-4">
               <ul className="flex flex-row items-center gap-2">
                 <span className="flex flex-row items-center justify-center gap-2">
-                  <StarIcon className="w-4 h-4 text-enfasisColor" />
+                  <StarIcon className="text-enfasisColor h-4 w-4" />
                   {formatScore(anime.score)}
                 </span>
                 <span className="flex flex-row items-center justify-center gap-2">
-                  <SeasonIcon season={anime.season ?? 'spring'} className="h-4 w-4" />
+                  <SeasonIcon
+                    season={anime.season ?? 'spring'}
+                    className="h-4 w-4"
+                  />
                   {capitalize(anime.season ?? '')}
                 </span>
               </ul>
@@ -83,7 +112,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
             </footer>
           </div>
         </article>
-      </a>
+      </div>
     </li>
   )
 }

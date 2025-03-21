@@ -7,15 +7,26 @@ interface Props {
   location: string
 }
 /**
- * SearchBar component renders a search input field for querying anime and manages the search state.
+ * SearchBar component renders a search input field for querying anime.
  *
- * This component has a collapsed state on mobile devices and an expanded state on desktop devices.
- * It handles user input, debounces the input, and fetches the search results from the API.
- * The search state is stored in the search store and cleared when the component is unmounted.
+ * @description This component provides a responsive search interface that adapts between mobile and desktop views.
+ * On mobile devices, it displays as a collapsed icon that expands when clicked, while on desktop it remains
+ * permanently expanded. The component handles user interactions, manages input state, and provides real-time
+ * search functionality.
  *
- * @param {Props} props - The props for the component.
- * @param {string} props.location - The current location of the search bar.
- * @returns {JSX.Element} The rendered search bar component.
+ * The component maintains internal states for the search query, loading status, and expansion state.
+ * It implements event listeners to handle clicks outside the search bar and window resizing for responsive
+ * behavior. The search input is debounced to prevent excessive API calls while typing, and results are
+ * stored in a centralized search store for access across the application.
+ *
+ * The UI features a clean, minimalist design with a search icon button and an expanding input field.
+ * The search bar changes appearance based on device size and interaction state, with smooth transitions
+ * for an enhanced user experience. When submitted, it navigates to a dedicated search results page
+ * with the query parameters included in the URL.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.location - The current location of the search bar used to determine behavior
+ * @returns {JSX.Element} The rendered search bar component with appropriate styling and behavior
  *
  * @example
  * <SearchBar location="top" />

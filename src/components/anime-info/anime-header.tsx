@@ -7,8 +7,25 @@ import { normalizeRating } from '@utils/normalize-rating'
 /**
  * AnimeHeader component displays the title and header information of an anime.
  *
- * @param {Object} props - The props for the component.
- * @param {Anime} props.animeData - The anime object containing details to display.
+ * @description This component renders the title, genres, type, and rating of an anime in a structured header format.
+ * It organizes anime metadata into a visually appealing layout with proper spacing and alignment. The component
+ * displays the anime title prominently at the top, followed by a list of tags representing the anime's genres,
+ * type, and age rating.
+ *
+ * The component creates an accessible and responsive header that adapts to different screen sizes. On mobile
+ * devices, elements are centered for better viewing, while on larger screens, they align to the left and
+ * expand appropriately. The genre tags are interactive elements that link to related anime searches.
+ *
+ * The header also includes a navigation bar component that provides additional user interface options for
+ * interacting with the anime content. All elements maintain consistent styling and spacing to create a
+ * cohesive visual hierarchy.
+ *
+ * @param {Props} props - The component props
+ * @param {Anime} props.animeData - The anime object containing details to display including title, type, genres, and rating
+ * @returns {JSX.Element} The rendered header containing the anime title, tags, and navigation
+ *
+ * @example
+ * <AnimeHeader animeData={animeData} />
  */
 interface Props {
   /**

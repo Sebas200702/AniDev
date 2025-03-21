@@ -21,17 +21,40 @@ interface Props {
 /**
  * AnimeTrailer component renders a trailer for an anime.
  *
- * This component takes in props for the trailer URL, banner image, large image, and title,
- * and uses them to display the trailer video or a fallback image.
+ * @description This component displays either a YouTube video trailer or a fallback image for an anime.
+ * It dynamically loads the lite-youtube web component for efficient video embedding when a trailer URL
+ * is available. The component handles the loading state of the YouTube component and displays a loading
+ * placeholder while the video is being prepared.
  *
- * @param {Props} props - The props for the component.
+ * The component extracts the video ID from the YouTube URL and passes it to the lite-youtube component
+ * when ready. If no trailer URL is provided, the component falls back to displaying either the banner
+ * image or the large webp image of the anime with proper optimization for performance.
+ *
+ * The UI adapts based on the availability of the trailer, providing a consistent viewing experience
+ * regardless of whether video content is available. During the loading of the YouTube component,
+ * an animated placeholder maintains layout stability and provides visual feedback to the user.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.trailer_url - The YouTube URL of the anime trailer
+ * @param {string} props.banner_image - The URL of the anime banner image used as fallback
+ * @param {string} props.image_large_webp - The URL of the large anime image in WebP format used as secondary fallback
+ * @param {string} props.title - The title of the anime used for accessibility and alt text
+ * @returns {JSX.Element} The rendered trailer video or fallback image
+ *
+ * @example
+ * <AnimeTrailer
+ *   trailer_url="https://www.youtube.com/watch?v=abcdefgh"
+ *   banner_image="/images/anime-banner.jpg"
+ *   image_large_webp="/images/anime-large.webp"
+ *   title="My Anime Title"
+ * />
  */
 export const AnimeTrailer = ({
   trailer_url,
   banner_image,
   image_large_webp,
   title,
-}: Props) => {
+}: Props): JSX.Element => {
   const [isLiteYouTubeLoaded, setIsLiteYouTubeLoaded] = useState(false)
   const videoId = trailer_url?.split('v=')[1]?.split('&')[0]
 
