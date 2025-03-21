@@ -30,6 +30,7 @@
     "astro-font": "^1.0.0",
     "auth-astro": "4.2.0",
     "color": "^4.2.3",
+    "next-auth": "^4.24.11",
     "node-fetch": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "rate-limiter-flexible": "^6.1.0",
