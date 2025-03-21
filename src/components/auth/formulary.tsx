@@ -254,7 +254,7 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
             )}
 
             <Input name="email" type="email" placeholder="Email" required>
-              <EmailIcon style="h-5 w-5" />
+              <EmailIcon className="h-5 w-5" />
             </Input>
 
             <Input
@@ -263,7 +263,7 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
               placeholder="Password"
               required
             >
-              <PasswordIcon style="h-5 w-5" />
+              <PasswordIcon className="h-5 w-5" />
             </Input>
 
             <button
