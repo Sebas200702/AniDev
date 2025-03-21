@@ -86,7 +86,7 @@ export const AnimeTrailer = ({
         </div>
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
-          <picture className="aspect-video h-full w-full rounded-sm">
+          <picture className="aspect-video h-full w-full rounded-sm backdrop-blur-sm">
             <img
               src={banner_image ?? image_large_webp}
               alt={title}
