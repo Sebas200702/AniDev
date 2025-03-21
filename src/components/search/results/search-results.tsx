@@ -61,7 +61,7 @@ export const SearchResults = () => {
 
   return (
     <ul
-      className={`mx-auto grid w-full max-w-7xl grid-cols-2 p-4 gap-6 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 xl:gap-10 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+      className={`mx-auto grid w-full max-w-7xl grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 xl:gap-10 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
     >
       {animes?.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />

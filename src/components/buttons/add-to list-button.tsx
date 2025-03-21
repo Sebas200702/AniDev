@@ -20,7 +20,7 @@
  */
 export const AddToListButton = () => {
   return (
-    <button className="button-secondary" title="Add to List" >
+    <button className="button-secondary" title="Add to List">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

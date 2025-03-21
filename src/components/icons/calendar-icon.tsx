@@ -1,4 +1,4 @@
-import type{ IconProps } from "types"
+import type { IconProps } from 'types'
 /**
  * CalendarIcon component renders an icon representing a calendar.
  *

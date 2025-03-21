@@ -1,14 +1,14 @@
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from 'react'
 
-import type { Anime } from "types"
-import { FilterSection } from "@components/search/filters/filter-section"
-import { SearchResults } from "@components/search/results/search-results"
-import { baseUrl } from "@utils/base-url"
-import { createFiltersToApply } from "@utils/filters-to-apply"
-import { useDebounce } from "@hooks/useDebounce"
-import { useFetch } from "@hooks/useFetch"
-import { useSearchStoreResults } from "@store/search-results-store"
-import { useUrlSync } from "@hooks/useUrlSync"
+import type { Anime } from 'types'
+import { FilterSection } from '@components/search/filters/filter-section'
+import { SearchResults } from '@components/search/results/search-results'
+import { baseUrl } from '@utils/base-url'
+import { createFiltersToApply } from '@utils/filters-to-apply'
+import { useDebounce } from '@hooks/useDebounce'
+import { useFetch } from '@hooks/useFetch'
+import { useSearchStoreResults } from '@store/search-results-store'
+import { useUrlSync } from '@hooks/useUrlSync'
 
 /**
  * SearchComponent handles the anime search functionality with filters and results display.

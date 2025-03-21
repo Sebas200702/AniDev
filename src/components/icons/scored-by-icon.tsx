@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 
 /**
  * ScoredByIcon component renders an icon representing the score given by a user.

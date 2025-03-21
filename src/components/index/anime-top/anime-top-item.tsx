@@ -47,7 +47,7 @@ interface AnimeTopItemProps {
 export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
   return (
     <li
-      className=" relative flex h-full w-full flex-row gap-2 transition-all duration-200 ease-in-out md:gap-6"
+      className="relative flex h-full w-full flex-row gap-2 transition-all duration-200 ease-in-out md:gap-6"
       title={anime.title}
       key={anime.mal_id}
     >
@@ -58,7 +58,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
       <div className="bg-Complementary flex w-full flex-row items-center rounded-lg">
         <a
           href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
-          className={`relative group aspect-[225/330] w-full max-w-20 overflow-hidden rounded-lg md:max-w-32`}
+          className={`group relative aspect-[225/330] w-full max-w-20 overflow-hidden rounded-lg md:max-w-32`}
           aria-label={`View details for ${anime.title}`}
         >
           <Picture
@@ -68,8 +68,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
             <img
               src={anime.image_large_webp}
               alt={anime.title}
-              className="aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out gro
-              up-hover:scale-105"
+              className="gro up-hover:scale-105 aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out"
               loading="lazy"
             />
             <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />

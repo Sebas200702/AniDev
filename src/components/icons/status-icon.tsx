@@ -26,10 +26,7 @@ interface StatusIconProps extends IconProps {
  * @example
  * <StatusIcon status="Currently Airing" className="icon-md" />
  */
-export const StatusIcon = ({
-  className,
-  status,
-}: StatusIconProps) => {
+export const StatusIcon = ({ className, status }: StatusIconProps) => {
   const color = statusColors(status)
   if (status === 'Currently Airing') {
     return (

@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 
 /**
  * Favicon component renders the favicon icon for the application.

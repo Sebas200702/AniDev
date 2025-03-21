@@ -27,7 +27,8 @@ export const genreToColor = (genre: string) => {
   if (genre === AnimeGenres.DRAMA) return 'md:group-hover:text-purple-400'
   if (genre === AnimeGenres.ROMANCE) return 'md:group-hover:text-pink-300'
   if (genre === AnimeGenres.SCI_FI) return 'md:group-hover:text-indigo-300'
-  if (genre === AnimeGenres.SLICE_OF_LIFE) return 'md:group-hover:text-green-300'
+  if (genre === AnimeGenres.SLICE_OF_LIFE)
+    return 'md:group-hover:text-green-300'
   if (genre === AnimeGenres.SPORTS) return 'md:group-hover:text-orange-300'
   if (genre === AnimeGenres.FANTASY) return 'md:group-hover:text-pink-400'
   if (genre === AnimeGenres.MYSTERY) return 'md:group-hover:text-yellow-200'

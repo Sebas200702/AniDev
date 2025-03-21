@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 
 /**
  * SpringIcon component renders an icon representing a spring or seasonal anime.
@@ -23,7 +23,7 @@ import type { IconProps } from "types"
  * @example
  * <SpringIcon className="w-6 h-6 text-green-500" />
  */
-export const SpringIcon = ({ className }:IconProps) => {
+export const SpringIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

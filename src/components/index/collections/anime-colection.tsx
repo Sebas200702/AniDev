@@ -159,7 +159,7 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
 
   if (loading || !animes.length)
     return (
-      <div className="flex h-54 w-full  animate-pulse items-center justify-center rounded-lg bg-zinc-800"></div>
+      <div className="flex h-54 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800"></div>
     )
 
   /**
@@ -175,7 +175,7 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
   }
 
   return (
-    <article className="bg-Complementary mx-auto flex  h-54 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
+    <article className="bg-Complementary mx-auto flex h-54 w-full flex-col overflow-hidden rounded-lg transition-all duration-300 ease-in-out md:p-4 md:hover:scale-[1.03]">
       <a href={`/collection/${normalizeString(title)}_${id}`}>
         <h4 className="text-l mx-auto h-12 max-w-80 p-4 text-center font-bold text-balance text-white">
           {title || 'Sin Título'}

@@ -1,4 +1,4 @@
-import type { IconProps } from "types";
+import type { IconProps } from 'types'
 
 /**
  * StarIcon component renders a star-shaped icon for ratings and favorites.
@@ -23,7 +23,7 @@ import type { IconProps } from "types";
  * @example
  * <StarIcon className="w-6 h-6 text-yellow-500" />
  */
-export const StarIcon = ({ className }:IconProps) => (
+export const StarIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

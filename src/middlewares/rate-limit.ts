@@ -51,37 +51,41 @@ export const rateLimit = (
       const response = await handler(context)
       const headers = new Headers(response.headers)
       headers.set('X-RateLimit-Limit', limiter.points.toString())
-      headers.set('X-RateLimit-Remaining', rateLimitResult.remainingPoints.toString())
-      headers.set('X-RateLimit-Reset', Math.ceil(rateLimitResult.msBeforeNext / 1000).toString())
+      headers.set(
+        'X-RateLimit-Remaining',
+        rateLimitResult.remainingPoints.toString()
+      )
+      headers.set(
+        'X-RateLimit-Reset',
+        Math.ceil(rateLimitResult.msBeforeNext / 1000).toString()
+      )
 
       return new Response(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers
+        headers,
       })
     } catch (error: any) {
-
       if (error.remainingPoints !== undefined) {
         return new Response(
           JSON.stringify({
             error: 'Too many requests',
-            retryAfter: Math.ceil(error.msBeforeNext / 1000)
+            retryAfter: Math.ceil(error.msBeforeNext / 1000),
           }),
           {
             status: 429,
             headers: {
               'Content-Type': 'application/json',
-              'Retry-After': Math.ceil(error.msBeforeNext / 1000).toString()
-            }
+              'Retry-After': Math.ceil(error.msBeforeNext / 1000).toString(),
+            },
           }
         )
       }
 
-
       console.error('Rate limit error:', error)
       return new Response(JSON.stringify({ error: 'Internal server error' }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
     }
   }

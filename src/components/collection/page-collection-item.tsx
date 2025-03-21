@@ -66,7 +66,7 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
           {anime.synopsis ?? 'No description available'}
         </p>
         <span className="text-sx flex items-center gap-2 text-gray-400">
-          <StarIcon className="text-enfasisColor h-5 w-5 " />
+          <StarIcon className="text-enfasisColor h-5 w-5" />
           {anime.score}/10
         </span>
         <footer className="flex h-min flex-row gap-2">

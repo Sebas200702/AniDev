@@ -224,7 +224,7 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
           styles="w-full"
         >
           <Favicon
-            className={`absolute top-2 z-20 h-8 w-8 md:h-16 md:w-16 right-4 ${title === 'Sign Up' ? 'md:left-4' : 'md:right-4'} `}
+            className={`absolute top-2 right-4 z-20 h-8 w-8 md:h-16 md:w-16 ${title === 'Sign Up' ? 'md:left-4' : 'md:right-4'} `}
           />
 
           <Overlay

@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 
 /**
  * ToWatchIcon component renders an icon representing a bookmark or "to watch" functionality.

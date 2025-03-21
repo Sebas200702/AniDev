@@ -1,4 +1,4 @@
-import type { IconProps } from "types";
+import type { IconProps } from 'types'
 
 /**
  * WatchingIcon component renders an eye icon representing a watching or visibility state.

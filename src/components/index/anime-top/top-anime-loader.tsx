@@ -25,7 +25,7 @@
 export const AnimeTopLoader = () => {
   return (
     <div className="relative">
-      <header className=" flex w-full flex-row items-center space-x-4 py-4  px-4 md:px-20">
+      <header className="flex w-full flex-row items-center space-x-4 px-4 py-4 md:px-20">
         <span className="bg-enfasisColor h-8 w-2 rounded-lg xl:h-10"></span>
         <span className="inline-flex h-7.5 w-32 animate-pulse rounded-lg bg-zinc-800 xl:h-10.5"></span>
       </header>

@@ -21,7 +21,7 @@
  */
 export const normalizeRating = (rating: string): string => {
   // Return early for common cases
-  if (!rating || rating.includes("All Ages")) return 'E'
+  if (!rating || rating.includes('All Ages')) return 'E'
 
   const match = rating.match(/\d+/)
   return match ? `${match[0]}+` : 'E'

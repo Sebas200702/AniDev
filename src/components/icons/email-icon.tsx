@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 /**
  * EmailIcon component renders an icon representing an email.
  *

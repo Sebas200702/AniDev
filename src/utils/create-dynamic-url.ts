@@ -107,7 +107,7 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
       'Uncover the Best {filters}',
       '{limit} Must-Watch {filters}',
       'Your Guide to {filters}',
-      '{filters} You Can\'t Miss',
+      "{filters} You Can't Miss",
       'The Ultimate {filters} List',
       'Discover {filters}',
       'Find the Top {filters} Anime',

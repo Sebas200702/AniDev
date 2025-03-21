@@ -74,7 +74,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
     { name: 'Type', value: type, icon: TypeIcon },
     { name: 'Studios', value: studios.join(', '), icon: StudioIcon },
     { name: 'Themes', value: themes?.join(', '), icon: ThemesIcon },
-    { name: 'Duration', value: duration, icon: ClockIcon},
+    { name: 'Duration', value: duration, icon: ClockIcon },
     { name: 'Score', value: score, icon: StarIcon },
     { name: 'Year', value: year, icon: CalendarIcon },
     {
@@ -96,7 +96,6 @@ export const AnimeDetails = ({ animeData }: Props) => {
     },
     { name: 'Mal ID', value: mal_id, icon: IdIcon },
     { name: 'Source', value: source, icon: SourceIcon },
-
   ]
 
   return (

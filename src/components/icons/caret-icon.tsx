@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 /**
  * CaretIcon component renders a caret icon for indicating direction.
  *

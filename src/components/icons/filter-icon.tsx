@@ -1,4 +1,4 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 /**
  * FilterIcon component renders an icon representing a filter.
  *
