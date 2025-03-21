@@ -8,7 +8,7 @@ const slug = Astro.params.slug ?? ''
 const mal_id = slug.split('_').pop()
 
 const { count, error } = await supabase
-  .from('anime')
+  .from('old_anime')
   .select('*', { count: 'exact', head: true })
   .eq('mal_id', mal_id)
 
