@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { Image } from 'astro:assets'
 
 /**
  * Props for the AnimeTrailer component.
@@ -88,7 +87,7 @@ export const AnimeTrailer = ({
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
           <picture className="aspect-video h-full w-full rounded-sm">
-            <Image
+            <img
               src={banner_image ?? image_large_webp}
               alt={title}
               class="aspect-video h-full w-full rounded-sm transition-all ease-in-out"
