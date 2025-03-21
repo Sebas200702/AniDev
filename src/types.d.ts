@@ -49,6 +49,9 @@ interface Collection {
   query: string
   animes_ids: number[]
 }
+export interface IconProps {
+  className?: string
+}
 export interface FilterOption {
   value: string
   label: string
