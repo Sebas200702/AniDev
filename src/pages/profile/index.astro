@@ -1,37 +1,46 @@
 ---
 import Layout from '@layouts/base.astro'
+import { Picture } from '@components/picture'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import { Image } from 'astro:assets'
+import { Overlay } from '@components/overlay'
+
 import { UserList } from '@components/profile/user-tabs/user-list'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 const sesionUserInfo = await getSessionUserInfo({ request: Astro.request })
 ---
 
 <Layout title="Profile">
-  <section class="mx-auto mt-16 flex w-full flex-col gap-8 p-4 text-white">
-    <picture class="absolute inset-0 h-80 w-full max-w-full overflow-hidden">
-      <Image
+  <section
+    class="p-y mx-auto mt-16 flex w-full flex-col gap-16 px-4 text-white md:px-20"
+  >
+    <Picture
+      styles="w-full h-100 object-cover object-center  absolute top-0 left-0"
+      image={createImageUrlProxy(
+        'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
+        '100',
+        '0',
+        'webp'
+      )}
+    >
+      <img
+        class="absolute inset-0 h-100 w-full object-cover object-center"
         src={createImageUrlProxy(
           'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-          '1920',
-          '50',
+          '1080',
+          '60',
           'webp'
         )}
-        alt="Profile backdrop-blur"
+        alt=""
         loading="lazy"
-        fetchpriority="high"
-        class="absolute inset-0 h-full w-full object-cover object-center"
-        width={225}
-        height={330}
-        quality={10}
       />
-    </picture>
-    <div
-      class="absolute top-0 left-0 h-80 w-full bg-gradient-to-l from-transparent to-[#121212]/100 xl:w-[70%]"
-    >
-    </div>
+      <Overlay
+      className="to-Primary-950 absolute inset-0 h-full w-full bg-gradient-to-b"
+    />
+    </Picture>
+
+
     <article
-      class="z-10 mt-2 flex w-full flex-row items-center gap-4 p-4 text-white md:ml-14 md:gap-10"
+      class="z-10 mt-24 flex w-full flex-row items-center gap-4 text-white md:gap-10"
     >
       <img
         src={sesionUserInfo?.avatar ??
