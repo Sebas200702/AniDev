@@ -90,7 +90,7 @@ export const AnimeTrailer = ({
             <img
               src={banner_image ?? image_large_webp}
               alt={title}
-              className="aspect-video h-full w-full rounded-sm transition-all ease-in-out"
+              className="aspect-video h-full w-full rounded-sm transition-all ease-in-out object-cover object-center"
               loading="lazy"
             />
           </picture>
