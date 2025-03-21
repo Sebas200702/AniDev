@@ -34,6 +34,12 @@ export type Anime = {
   readonly relevance_score: number
 }
 
+declare module '@auth-astro/client' {
+  interface AstroSignInOptions {
+    callbackUrl?: string
+  }
+}
+
 export type Animes = {
   animes: Anime[]
 }
