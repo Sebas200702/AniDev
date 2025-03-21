@@ -34,7 +34,7 @@ export const GoogleBtn = (): JSX.Element => {
       className="button-secondary flex w-full items-center justify-center gap-3"
       onClick={handleGoogleClick}
     >
-      <GoogleIcon style="h-6 w-6" />
+      <GoogleIcon className="h-6 w-6" />
     </button>
   )
 }
