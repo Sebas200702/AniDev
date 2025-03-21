@@ -92,9 +92,6 @@ export const AnimeTrailer = ({
               alt={title}
               class="aspect-video h-full w-full rounded-sm transition-all ease-in-out"
               loading="lazy"
-              width={225}
-              height={330}
-              quality={10}
             />
           </picture>
         </div>
