@@ -24,7 +24,6 @@ import { signIn } from 'auth-astro/client'
 export const GoogleBtn = (): JSX.Element => {
   const handleGoogleClick = async () => {
     signIn('google', {
-      redirect: true,
       callbackUrl: '/',
     })
   }
