@@ -64,7 +64,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
   if (!animeData) return <AnimeLoader />
 
-  const url = `/${normalizeString(animeData.title)}_${animeData.mal_id}`
+  const url = `/anime/${normalizeString(animeData.title)}_${animeData.mal_id}`
 
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const shareText = `Watch ${animeData.title} on AniDev`
