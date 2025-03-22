@@ -1,0 +1,12 @@
+---
+import Layout from '@layouts/base.astro'
+import { AnimeInfo } from '@components/anime-info/anime'
+
+const slug = Astro.params.slug ?? ''
+---
+
+<Layout>
+  <section class="flex flex-col text-white">
+    <AnimeInfo client:load slug={slug} />
+  </section>
+</Layout>
