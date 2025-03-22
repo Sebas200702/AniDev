@@ -87,7 +87,7 @@ export const CreateMetaDatas = ({ title, description, image }: Props) => {
     if (domDescriptionOg) domDescriptionOg.content = description
     if (domType) domType.content = 'website'
 
-    if (domCard) domCard.content = 'summary_large_image'
+    if (domCard) domCard.content = image
     if (domDescriptionTwitter) domDescriptionTwitter.content = description
     if (domTitleTwitter) domTitleTwitter.content = title
     if (domImageTwitter) domImageTwitter.content = image
