@@ -36,7 +36,7 @@ interface Props {
 
 export const AnimeHeader = ({ animeData }: Props) => {
   return (
-    <header className="anime-header flex w-auto flex-col justify-end gap-4 md:col-span-2 xl:col-span-4 xl:mt-0">
+    <header className="anime-header flex w-auto flex-col justify-end gap-8 md:col-span-2 xl:col-span-4 xl:mt-0">
       <h2 className="title max-w-[30ch] text-center text-pretty md:text-left md:text-wrap">
         {animeData.title}
       </h2>
@@ -56,9 +56,7 @@ export const AnimeHeader = ({ animeData }: Props) => {
         )}
       </ul>
 
-      <div className="anime-header grid grid-cols-1 items-center justify-between gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <AnimeNavBar />
-      </div>
+      <AnimeNavBar />
     </header>
   )
 }
