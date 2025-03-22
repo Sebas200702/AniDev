@@ -5,23 +5,11 @@ import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
-
-    const cacheKey = `animes ${url.searchParams.toString()}`
-    const cachedData = await redis.get(cacheKey)
-
-    if (cachedData) {
-      return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
-        status: 200,
-        headers: { 'content-type': 'application/json' },
-      })
-    }
-
     const [order_by, order_direction] = url.searchParams
       .get('order_by')
       ?.split(' ') ?? ['relevance_score', 'desc']
+
+    console.log(order_by, order_direction)
 
     enum Filters {
       limit_count = 'limit_count',
@@ -103,7 +91,6 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'max-age=31536000',
       },
     })
   } catch (error) {

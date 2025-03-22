@@ -18,8 +18,10 @@
  * @example
  * normalizeString("My Hero Academia: Season 2") // returns "My-Hero-Academia-Season-2"
  */
-export const normalizeString = (str: string) => {
-  return str
-    .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
-    .replace(/\s/g, '-')
+export const normalizeString = (str: string, removeSpace: boolean = true) => {
+  if (removeSpace)
+    return str
+      .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
+      .replace(/\s/g, '-')
+  return str.replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
 }
