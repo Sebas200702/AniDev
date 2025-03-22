@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 import type { Session } from 'types'
 import { signOut } from 'auth-astro/client'
 
@@ -31,19 +33,33 @@ interface Props {
  * <Profile userInfo={session} />
  */
 export const Profile = ({ userInfo }: Props) => {
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
   const handleClick = () => {
-    document.getElementById('userDropdown')?.classList.toggle('hidden')
+    dropdownRef.current?.classList.toggle('hidden')
   }
   const handleLogout = async () => {
     await signOut()
   }
+  useEffect(() => {
+    window.addEventListener('click', (e) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target as Node)
+      ) {
+        dropdownRef.current.classList.add('hidden')
+      }
+    })
+  }, [dropdownRef, buttonRef])
   return (
     <>
       <div className="flex items-center justify-end gap-4">
         <div className="text-s hidden text-end md:block dark:text-white">
           <div>{userInfo?.name ?? 'Guest'}</div>
         </div>
-        <button onClick={handleClick}>
+        <button onClick={handleClick} ref={buttonRef}>
           <img
             className="h-10 w-10 rounded-full"
             src={userInfo?.avatar ?? '/profile-picture-5.webp'}
@@ -54,8 +70,8 @@ export const Profile = ({ userInfo }: Props) => {
         </button>
       </div>
       <div
-        id="userDropdown"
-        className="border-Primary-950/50 bg-Primary-950/50 absolute top-[70px] right-0 z-50 hidden w-48 rounded-md border p-4 text-base text-white shadow-lg"
+        ref={dropdownRef}
+        className="border-Primary-950/50 bg-Primary-950/50 absolute top-[70px] right-0 z-50 hidden w-48 rounded-md border p-4 text-base text-white shadow-lg backdrop-blur-sm"
       >
         <ul className="space-y-6 text-white">
           <li>
