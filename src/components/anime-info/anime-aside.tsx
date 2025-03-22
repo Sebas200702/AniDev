@@ -62,7 +62,7 @@ export const AnimeAside = ({
   url,
 }: Props) => {
   return (
-    <aside className="anime-aside top-28 z-10 row-span-2 flex h-min w-full flex-col gap-8 p-4 md:items-start md:p-0 xl:sticky">
+    <aside className="anime-aside mt-26 md:mt-0 top-28 z-10 row-span-2 flex h-min w-full flex-col gap-8 px-10 md:items-start md:p-0 xl:sticky">
       <Picture
         image={createImageUrlProxy(
           animeData.image_large_webp,
