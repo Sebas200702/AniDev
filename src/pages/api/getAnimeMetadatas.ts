@@ -6,6 +6,9 @@ import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
+    if (!redis.isOpen) {
+      await redis.connect()
+    }
     const id = url.searchParams.get('id')
 
     if (!id) {
@@ -24,7 +27,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     }
     const { data, error } = await supabase
       .from('old_anime')
-      .select('title, synopsis, image_url')
+      .select('title, synopsis, image_large_webp')
       .eq('mal_id', id)
       .single()
 
@@ -35,7 +38,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     const animeMetadatas = {
       title: `${data.title} - ${baseTitle}`,
       description: data.synopsis,
-      image: data.image_url,
+      image: data.image_large_webp,
     }
 
     await redis.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas))
