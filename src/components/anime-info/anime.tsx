@@ -42,15 +42,19 @@ export const AnimeInfo = ({ slug }: Props) => {
 
   const getAnimeData = async (slug: string) => {
     try {
-      const animeData = await fetch(`/api/getAnime?slug=${slug}`, {
+      const response = await fetch(`/api/getAnime?slug=${slug}`, {
         cache: 'force-cache',
       })
-        .then((res) => res.json())
-        .then((data) => data.anime)
+
+      if (response.status === 404) {
+        window.location.href = '/404'
+      }
+
+      const animeData = await response.json().then((data) => data.anime)
+
       setAnimeData(animeData)
     } catch (error) {
-      console.error('Error al obtener los datos del anime:', error)
-      return null
+      console.log(error)
     }
   }
 
@@ -79,7 +83,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10 -mt-96 grid grid-cols-1 gap-4 px-4 md:-mt-54 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <article className="z-10 -mt-[60dvh] grid grid-cols-1 gap-8 px-4 md:-mt-54 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
