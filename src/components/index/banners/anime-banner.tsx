@@ -96,7 +96,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20`}
+      className={`anime-banner-${animationNumber} fade-out relative flex flex-row items-center px-4 py-4 md:px-20`}
     >
       <article className="group relative w-full transition-all duration-400 ease-in-out md:hover:opacity-95">
         <a
