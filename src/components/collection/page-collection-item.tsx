@@ -40,7 +40,7 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
         image={anime.image_small_webp}
         styles="aspect-[225/330] h-full w-auto overflow-hidden rounded-l-lg"
       >
-        <a href={`/${normalizeString(anime.title)}_${anime.mal_id}`}>
+        <a href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}>
           <img
             src={anime.image_large_webp}
             alt={anime.title}
@@ -76,7 +76,7 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
           <AddToListButton />
           <ShareButton
             title={anime.title}
-            url={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+            url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
             text={`Watch ${anime.title} on Animeflix`}
           />
         </footer>

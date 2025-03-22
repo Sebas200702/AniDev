@@ -64,7 +64,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
       title={title}
     >
       <a
-        href={`/${slug}_${mal_id}`}
+        href={`/anime/${slug}_${mal_id}`}
         className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : 'w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc((100dvw-360px)/6)]'}`}
         aria-label={`View details for ${title}`}
       >

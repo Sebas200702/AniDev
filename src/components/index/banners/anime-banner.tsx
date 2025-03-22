@@ -99,9 +99,12 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
       className={`anime-banner-${animationNumber} relative flex flex-row items-center px-4 py-4 md:px-20`}
     >
       <article className="group relative w-full transition-all duration-400 ease-in-out md:hover:opacity-95">
-        <a href={`/${slug}_${mal_id}`} aria-label={`View details for ${title}`}>
+        <a
+          href={`/anime/${slug}_${mal_id}`}
+          aria-label={`View details for ${title}`}
+        >
           <div
-            className="h-full w-full rounded-2xl md:aspect-[1080/350]"
+            className="h-full w-full rounded-2xl aspect-[1080/600] md:aspect-[1080/350]"
             style={{
               backgroundImage: `url(${createImageUrlProxy(imageUrl, '100', '0', 'webp')})`,
               backgroundSize: 'cover',

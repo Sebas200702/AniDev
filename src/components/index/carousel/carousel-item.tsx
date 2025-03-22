@@ -54,11 +54,11 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           loading="lazy"
         />
       </Picture>
-
       <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />
       <Overlay
         className={`to-Primary-950/70 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} `}
       />
+
       <div
         className={`z-10 mb-20 flex max-w-[800px] flex-col items-center gap-8 text-white md:items-start md:justify-start md:gap-4`}
       >
@@ -70,7 +70,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
         </p>
         <div className="mx-auto flex w-[300px] flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
           <a
-            href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+            href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
             className="button-secondary text-s flex w-full"
           >
             Learn More

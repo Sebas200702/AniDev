@@ -57,7 +57,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
       </span>
       <div className="bg-Complementary flex w-full flex-row items-center rounded-lg">
         <a
-          href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+          href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
           className={`group relative aspect-[225/330] w-full max-w-20 overflow-hidden rounded-lg md:max-w-32`}
           aria-label={`View details for ${anime.title}`}
         >
@@ -78,7 +78,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           <div className="text-s flex h-full w-full flex-col justify-between">
             <header className="flex flex-row items-center justify-between gap-4">
               <a
-                href={`/${normalizeString(anime.title)}_${anime.mal_id}`}
+                href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
                 className="text-l line-clamp-1"
               >
                 {anime.title}

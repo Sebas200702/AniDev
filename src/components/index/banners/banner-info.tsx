@@ -62,7 +62,7 @@ export const BannerInfo = ({
       className={`bg-Primary-950/50 absolute z-10 flex h-full w-full ${isMobile ? 'inset-0' : ''} flex-col items-center justify-between p-3 md:right-0 md:bottom-10 md:max-h-44 md:max-w-96 md:rounded-l-2xl md:p-4 md:pr-10 xl:max-h-60`}
     >
       <a
-        href={`/${slug}_${mal_id}`}
+        href={`/anime/${slug}_${mal_id}`}
         className="transition-all duration-200 ease-in-out md:hover:opacity-95"
       >
         <h3 className="text-lx line-clamp-2 max-h-44 w-full overflow-hidden text-center font-bold text-white">
