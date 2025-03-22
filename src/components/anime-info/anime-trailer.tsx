@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { Picture } from '@components/picture'
 
 /**
  * Props for the AnimeTrailer component.
@@ -86,14 +87,19 @@ export const AnimeTrailer = ({
         </div>
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
-          <picture className="aspect-video h-full w-full rounded-sm backdrop-blur-sm">
+          <Picture
+            image={banner_image ?? image_large_webp}
+            styles="aspect-video h-full relative w-full rounded-sm"
+          >
             <img
               src={banner_image ?? image_large_webp}
               alt={title}
-              className="aspect-video h-full w-full rounded-sm transition-all ease-in-out object-cover object-center"
+              className="aspect-video h-full w-full rounded-sm object-cover object-center transition-all ease-in-out"
               loading="lazy"
             />
-          </picture>
+              <span className="bg-Complementary/90 absolute text-Primary-200  text-center flex inset-0 text-l items-center justify-center h-full w-full">Video not available</span>
+
+          </Picture>
         </div>
       )}
     </>
