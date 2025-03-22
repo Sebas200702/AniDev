@@ -7,8 +7,6 @@ import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
-import { CreateMetaDatas } from '@components/create-meta-datas'
-import { baseTitle } from '@utils/base-url'
 import { normalizeString } from '@utils/normalize-string'
 
 /**
@@ -68,15 +66,11 @@ export const AnimeInfo = ({ slug }: Props) => {
 
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const shareText = `Watch ${animeData.title} on AniDev`
-  const seoTitle = `${animeData.title} -  ${baseTitle}`
+
 
   return (
     <>
-      <CreateMetaDatas
-        title={seoTitle}
-        description={animeData.synopsis ?? 'No description available'}
-        image={animeData.image_large_webp}
-      />
+
       <AnimeBanner
         banner_image={animeData.banner_image}
         image_large_webp={animeData.image_large_webp}

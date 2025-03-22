@@ -6,8 +6,39 @@ import { AstroFont } from 'astro-font'
 import { LoadWindowWidth } from '@components/load-window-width'
 import { Toaster } from '@pheralb/toast'
 import Footer from '@components/footer.astro'
+import { baseTitle, baseUrl } from '@utils/base-url'
 import '@styles/global.css'
 import '@styles/fade-out.css'
+interface Props {
+  animeId?: string
+  title?: string
+  description?: string
+  image?: string
+}
+
+const { animeId, title, description, image } = Astro.props
+
+let metaTitle = title || `${baseTitle}`
+let metaDesc =
+  description ||
+  'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
+let metaImage = image || `${baseUrl}/favicon.svg`
+
+if (animeId) {
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/getAnimeMetadatas?id=${animeId}`
+    )
+    if (response.ok) {
+      const metadata = await response.json()
+      metaTitle = metadata.title
+      metaDesc = metadata.synopsis
+      metaImage = metadata.image_url
+    }
+  } catch (error) {
+    console.error('Error al obtener metadatos pre-renderizados:', error)
+  }
+}
 ---
 
 <html lang="en">
@@ -16,18 +47,14 @@ import '@styles/fade-out.css'
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="" />
-    <meta
-      property="og:image"
-      name="og:image"
-      content=""
-    />
-    <meta property="og:title" content="" />
-    <meta property="og:description" content="" />
+    <meta name="description" content={metaDesc} />
+    <meta property="og:image" name="og:image" content={metaImage} />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDesc} />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="" />
-    <meta name="twitter:description" content="" />
-    <meta name="twitter:title" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content={metaDesc} />
+    <meta name="twitter:title" content={metaTitle} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <AstroFont
@@ -45,8 +72,8 @@ import '@styles/fade-out.css'
       ]}
     />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="canonical" href="https://ani-dev.vercel.app/" />
-    <title></title>
+    <link rel="canonical" href={baseUrl} />
+    <title>{metaTitle}</title>
     <ClientRouter />
   </head>
   <body>

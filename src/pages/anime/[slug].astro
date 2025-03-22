@@ -3,9 +3,10 @@ import Layout from '@layouts/base.astro'
 import { AnimeInfo } from '@components/anime-info/anime'
 
 const slug = Astro.params.slug ?? ''
+const mal_id = slug.split('_')[1]
 ---
 
-<Layout>
+<Layout animeId={mal_id}>
   <section class="flex flex-col text-white">
     <AnimeInfo client:load slug={slug} />
   </section>

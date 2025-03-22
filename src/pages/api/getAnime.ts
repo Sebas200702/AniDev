@@ -86,6 +86,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
         Vary: 'Accept-Encoding',
       },
     })
+
   } catch (error) {
     console.error('Endpoint error:', error)
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
