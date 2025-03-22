@@ -52,7 +52,7 @@ if (animeId) {
     <meta property="og:title" content={metaTitle} />
     <meta property="og:description" content={metaDesc} />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content={metaImage ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:description" content={metaDesc} />
     <meta name="twitter:title" content={metaTitle} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
