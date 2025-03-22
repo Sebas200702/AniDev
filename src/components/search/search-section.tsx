@@ -1,3 +1,5 @@
+import '@styles/search-section.css'
+
 import { useEffect, useMemo } from 'react'
 
 import type { Anime } from 'types'
