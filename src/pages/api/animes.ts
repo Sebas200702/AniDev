@@ -5,11 +5,20 @@ import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
+    if (!redis.isOpen) {
+      await redis.connect()
+    }
+
+    const cachedData = await redis.get(`animes:${url.searchParams}`)
+    if (cachedData) {
+      return new Response(JSON.stringify(JSON.parse(cachedData)), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
     const [order_by, order_direction] = url.searchParams
       .get('order_by')
       ?.split(' ') ?? ['relevance_score', 'desc']
-
-    console.log(order_by, order_direction)
 
     enum Filters {
       limit_count = 'limit_count',
@@ -87,10 +96,16 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       throw new Error('Ocurrió un error al obtener los animes.')
     }
 
+    await redis.set(`animes:${url.searchParams}`, JSON.stringify({ data }), {
+      EX: 3600,
+    })
     return new Response(JSON.stringify({ data }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=600, s-maxage=3600',
+        'CDN-Cache-Control': 'max-age=3600',
+        Vary: 'Accept-Encoding',
       },
     })
   } catch (error) {
