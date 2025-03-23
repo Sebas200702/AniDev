@@ -44,10 +44,11 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
   const [loading, setLoading] = useState(true)
 
   const getBannerData = async (url: string) => {
-    const response = await fetch(`/api/animes?${url}&banners_filter=true`).then(
-      (res) => res.json()
-    )
-    const anime = response.data[0]
+    const response = await fetch(
+      `/api/animes?${url}&banners_filter=true&limit_count=1`
+    ).then((res) => res.json())
+
+    const [anime] = response.data
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
       const { url: newUrl } = createDynamicUrl(1)
@@ -104,7 +105,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
           aria-label={`View details for ${title}`}
         >
           <div
-            className="h-full w-full rounded-2xl aspect-[1080/600] md:aspect-[1080/350]"
+            className="aspect-[1080/600] h-full w-full rounded-2xl md:aspect-[1080/350]"
             style={{
               backgroundImage: `url(${createImageUrlProxy(imageUrl, '100', '0', 'webp')})`,
               backgroundSize: 'cover',

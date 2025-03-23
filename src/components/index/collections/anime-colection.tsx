@@ -197,6 +197,7 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
                 src={anime.image_webp}
                 alt={anime.title}
                 fetchPriority="high"
+                loading="lazy"
                 className="aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center"
               />
             </li>

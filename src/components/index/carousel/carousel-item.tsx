@@ -51,7 +51,6 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           className="absolute inset-0 h-full w-full object-cover object-center"
           src={createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')}
           alt="Anime Banner"
-          loading="lazy"
         />
       </Picture>
       <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />

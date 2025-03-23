@@ -66,7 +66,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
             styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
           >
             <img
-              src={anime.image_large_webp}
+              src={anime.image_webp}
               alt={anime.title}
               className="gro up-hover:scale-105 aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out"
               loading="lazy"
