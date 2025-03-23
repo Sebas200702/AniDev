@@ -49,7 +49,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       .order('episode_id', { ascending: true })
       .range((page - 1) * 100, page * 100 - 1)
 
-    await redis.set(`episodes:${id}-${page}`, JSON.stringify(data))
+    await redis.set(`episodes:${id}-${page}`, JSON.stringify(data), { EX: 3600 })
 
     if (error) {
       throw new Error('Error fetching episodes')

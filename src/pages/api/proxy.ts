@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro'
 import { rateLimit } from '@middlewares/rate-limit'
+import { redis } from '@libs/redis'
 import sharp from 'sharp'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
@@ -20,7 +21,26 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
   }
 
   try {
+    if (!redis.isOpen) {
+      await redis.connect()
+    }
+
+    const cachedData = await redis.get(`proxy:${url.searchParams}`)
+    if (cachedData) {
+      return new Response(cachedData, {
+        status: 200,
+        headers: { 'Content-Type': 'image/webp' },
+      })
+    }
+
     const response = await fetch(imageUrl)
+
+    if (!response.ok) {
+      return new Response(JSON.stringify({ error: 'Invalid image URL' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
 
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
@@ -36,17 +56,21 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
 
     const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
-    if (!optimizedBuffer || !response.ok || !image) {
+    if (!optimizedBuffer) {
       return new Response(JSON.stringify({ error: 'Error processing image' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       })
     }
 
+    await redis.set(`proxy:${url.searchParams}`, optimizedBuffer, { EX: 3600 })
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=600, s-maxage=3600',
+        'CDN-Cache-Control': 'max-age=3600',
+        Vary: 'Accept-Encoding',
       },
     })
   } catch (error) {
