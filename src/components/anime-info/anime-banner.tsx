@@ -51,7 +51,7 @@ export const AnimeBanner = ({
   title,
 }: Props): JSX.Element => {
   return (
-    <div className="relative aspect-[1080/600] h-[60dvh] w-full overflow-hidden">
+    <div className="relative aspect-[1080/600] h-[60vh] w-full overflow-hidden">
       <Picture
         image={
           banner_image
