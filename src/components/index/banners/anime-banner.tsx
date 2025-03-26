@@ -106,11 +106,11 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
           aria-label={`View details for ${title}`}
         >
           <Picture
-            image={createImageUrlProxy(imageUrl, '0', '0', 'avif')}
+            image={createImageUrlProxy(imageUrl, '0', '0', 'webp')}
             styles="aspect-[1080/600] h-full w-full  md:aspect-[1080/350] object-cover object-center"
           >
             <img
-              src={createImageUrlProxy(imageUrl, '1920', '50', 'avif')}
+              src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
               alt="Anime Banner"
               loading="lazy"
               className="relative aspect-[1080/550] h-full w-full object-cover object-center md:aspect-[1080/350]"

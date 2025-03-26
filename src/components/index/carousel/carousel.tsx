@@ -82,8 +82,8 @@ export const Carousel = (): JSX.Element => {
     banners.forEach((anime) => {
       const image = new Image()
       image.src = anime.image_large_webp
-      image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'avif')
-      image.src = createImageUrlProxy(anime.banner_image, '100', '0', 'avif')
+      image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
+      image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
     })
   }, [banners])
 
