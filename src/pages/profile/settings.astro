@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/base.astro'
+import { SelectColor } from '@components/profile/select-color'
 ---
 
 <Layout title="Settings">
@@ -7,5 +8,18 @@ import Layout from '@layouts/base.astro'
     class="mx-auto mt-16 flex w-full flex-col gap-8 p-4 text-white xl:max-w-7xl"
   >
     <h2 class="text-3xl font-bold text-pretty">Settings</h2>
+    <ul
+      class="border-Primary-300/20 bg-Complementary flex w-full flex-col gap-4 rounded-lg border-1 p-4"
+    >
+      <li class="flex flex-row items-center justify-between gap-4">
+        <div>
+          <p class="text-l  text-pretty">Enfasis Color</p>
+          <small class="text-Primary-300 text-sx"
+            >Select the color you want to use as enfasis color</small
+          >
+        </div>
+        <SelectColor client:load />
+      </li>
+    </ul>
   </section>
 </Layout>
