@@ -3,6 +3,7 @@ import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { StatusPoint } from '@components/status-point'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
@@ -57,11 +58,23 @@ export const AnimeCard = ({ anime, context }: Props) => {
   const slug = normalizeString(title)
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
+  let timer: NodeJS.Timeout
+  const handleMouseEnter = async () => {
+    timer = setTimeout(() => {
+      fetch(`/api/getAnimeMetadatas?id=${mal_id}`)
+    }, 1000)
+  }
+
+  const handleMouseLeave = () => {
+    clearTimeout(timer)
+  }
 
   return (
     <article
       className="group relative transition-all duration-200 ease-in-out md:hover:scale-[1.02]"
       title={title}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <a
         href={`/anime/${slug}_${mal_id}`}
@@ -69,13 +82,13 @@ export const AnimeCard = ({ anime, context }: Props) => {
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={image_small_webp}
+          image={createImageUrlProxy(image_small_webp, '0', '0', 'avif')}
           styles="relative h-full w-full rounded-lg"
         >
           <img
-            src={isMobile ? image_webp : image_large_webp}
+            src={createImageUrlProxy(isMobile ? image_webp : image_large_webp, '0', '50', 'avif')}
             alt={title}
-            className="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
+            className="aspect-[225/330] w-full relative rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
             width={225}
             height={330}
