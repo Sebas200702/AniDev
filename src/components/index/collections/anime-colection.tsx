@@ -1,7 +1,9 @@
 import type { Anime, Collection } from 'types'
 import { useEffect, useState } from 'react'
 
+import { Picture } from '@components/picture'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useIndexStore } from '@store/index-store'
 
@@ -183,24 +185,24 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
 
         <ul className="mx-auto -mt-4 flex h-full w-full flex-row justify-center">
           {animes.map((anime, i) => (
-            <li
+            <Picture
               key={anime.mal_id}
-              className={`${getPosition(i)} w-full max-w-44 rounded-md`}
-              style={{
-                backgroundImage: `url(${anime.image_small_webp})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}
+              image={createImageUrlProxy(
+                anime.image_small_webp,
+                '0',
+                '0',
+                'avif'
+              )}
+              styles={`${getPosition(i)} w-full max-w-44 rounded-md`}
             >
               <img
-                src={anime.image_webp}
+                src={createImageUrlProxy(anime.image_webp, '0', '30', 'avif')}
                 alt={anime.title}
                 fetchPriority="high"
                 loading="lazy"
-                className="aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center"
+                className="aspect-[225/330] h-auto w-full relative max-w-44 rounded-md object-cover object-center"
               />
-            </li>
+            </Picture>
           ))}
         </ul>
       </a>
