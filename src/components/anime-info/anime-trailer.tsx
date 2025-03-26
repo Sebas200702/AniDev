@@ -97,8 +97,9 @@ export const AnimeTrailer = ({
               className="aspect-video h-full w-full rounded-sm object-cover object-center transition-all ease-in-out"
               loading="lazy"
             />
-              <span className="bg-Complementary/90 absolute text-Primary-200  text-center flex inset-0 text-l items-center justify-center h-full w-full">Video not available</span>
-
+            <span className="bg-Complementary/90 text-Primary-200 text-l absolute inset-0 flex h-full w-full items-center justify-center text-center">
+              Video not available
+            </span>
           </Picture>
         </div>
       )}

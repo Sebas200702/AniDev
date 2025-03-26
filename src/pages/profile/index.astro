@@ -11,7 +11,7 @@ const sesionUserInfo = await getSessionUserInfo({ request: Astro.request })
 
 <Layout title="Profile">
   <section
-    class="p-y mx-auto mt-16 flex w-full flex-col md:gap-16  gap-24 px-4 text-white md:px-20"
+    class="p-y mx-auto mt-16 flex w-full flex-col gap-24 px-4 text-white md:gap-16 md:px-20"
   >
     <Picture
       styles="w-full h-100 object-cover object-center  absolute top-0 left-0"
@@ -39,7 +39,7 @@ const sesionUserInfo = await getSessionUserInfo({ request: Astro.request })
     </Picture>
 
     <article
-      class="z-10 mt-24  flex w-full flex-row items-center gap-4 text-white md:gap-10"
+      class="z-10 mt-24 flex w-full flex-row items-center gap-4 text-white md:gap-10"
     >
       <img
         src={sesionUserInfo?.avatar ??

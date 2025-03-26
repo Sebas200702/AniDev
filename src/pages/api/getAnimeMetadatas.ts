@@ -41,7 +41,9 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       image: data.image_large_webp,
     }
 
-    await redis.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas), { EX: 3600 })
+    await redis.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas), {
+      EX: 3600,
+    })
     return new Response(JSON.stringify(animeMetadatas), {
       status: 200,
       headers: {

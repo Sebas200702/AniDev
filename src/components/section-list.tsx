@@ -63,10 +63,10 @@ export const SectionList = ({ section, sections }: Props) => {
   return (
     <li key={section.label} title={section.label}>
       <button
-        className={`group relative flex h-full md:max-h-12 max-h-10 cursor-pointer items-center justify-center overflow-hidden md:p-5 p-2 transition-colors duration-200 ease-in-out hover:bg-zinc-800/50 ${isSelected ? 'text-enfasisColor' : 'text-gray-400'} after:bg-enfasisColor after:absolute after:bottom-0 after:left-0 after:h-[2px] after:transition-all after:duration-300 after:ease-in-out ${isSelected ? 'after:w-full' : 'after:w-0'}`}
+        className={`group relative flex h-full max-h-10 cursor-pointer items-center justify-center overflow-hidden p-2 transition-colors duration-200 ease-in-out hover:bg-zinc-800/50 md:max-h-12 md:p-5 ${isSelected ? 'text-enfasisColor' : 'text-gray-400'} after:bg-enfasisColor after:absolute after:bottom-0 after:left-0 after:h-[2px] after:transition-all after:duration-300 after:ease-in-out ${isSelected ? 'after:w-full' : 'after:w-0'}`}
         onClick={(e) => handleClick(e, section.label)}
       >
-        <div className="flex md:h-6 h-5 md:w-6 w-5 items-center justify-center">
+        <div className="flex h-5 w-5 items-center justify-center md:h-6 md:w-6">
           {section.icon ? (
             <section.icon
               className={`h-full w-full transition-transform duration-300 ${

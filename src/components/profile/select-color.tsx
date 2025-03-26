@@ -7,5 +7,12 @@ export const SelectColor = () => {
     setEnfasis(e.target.value)
   }
 
-  return <input type="color" value={enfasis} onChange={handleColorChange} className="w-10 h-10 rounded bg-Complementary" />
+  return (
+    <input
+      type="color"
+      value={enfasis}
+      onChange={handleColorChange}
+      className="bg-Complementary h-10 w-10 rounded"
+    />
+  )
 }

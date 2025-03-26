@@ -87,7 +87,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <img
             src={isMobile ? image_webp : image_large_webp}
             alt={title}
-            className="aspect-[225/330] w-full relative rounded-lg object-cover object-center transition-all ease-in-out"
+            className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
             width={225}
             height={330}

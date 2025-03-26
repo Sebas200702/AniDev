@@ -67,10 +67,8 @@ export const AnimeInfo = ({ slug }: Props) => {
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const shareText = `Watch ${animeData.title} on AniDev`
 
-
   return (
     <>
-
       <AnimeBanner
         banner_image={animeData.banner_image}
         image_large_webp={animeData.image_large_webp}
