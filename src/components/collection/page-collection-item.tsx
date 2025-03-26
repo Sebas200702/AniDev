@@ -43,9 +43,9 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
       >
         <a href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}>
           <img
-            src={createImageUrlProxy(anime.image_large_webp, '0', '0', 'avif')}
+            src={anime.image_large_webp}
             alt={anime.title}
-            className="aspect-[225/330] h-full w-full relative rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
+            className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
             loading="lazy"
           />
         </a>

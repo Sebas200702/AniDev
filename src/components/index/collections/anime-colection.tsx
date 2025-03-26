@@ -187,20 +187,15 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
           {animes.map((anime, i) => (
             <Picture
               key={anime.mal_id}
-              image={createImageUrlProxy(
-                anime.image_small_webp,
-                '0',
-                '0',
-                'avif'
-              )}
+              image={anime.image_small_webp}
               styles={`${getPosition(i)} w-full max-w-44 rounded-md`}
             >
               <img
-                src={createImageUrlProxy(anime.image_webp, '0', '30', 'avif')}
+                src={anime.image_webp}
                 alt={anime.title}
                 fetchPriority="high"
                 loading="lazy"
-                className="aspect-[225/330] h-auto w-full relative max-w-44 rounded-md object-cover object-center"
+                className="relative aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center"
               />
             </Picture>
           ))}

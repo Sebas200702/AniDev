@@ -63,16 +63,11 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           aria-label={`View details for ${anime.title}`}
         >
           <Picture
-            image={createImageUrlProxy(
-              anime.image_small_webp,
-              '0',
-              '0',
-              'avif'
-            )}
+            image={anime.image_small_webp}
             styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
           >
             <img
-              src={createImageUrlProxy(anime.image_webp, '0', '50', 'avif')}
+              src={anime.image_webp}
               alt={anime.title}
               className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
               loading="lazy"
