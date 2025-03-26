@@ -23,9 +23,13 @@ import { useGlobalUserPreferences } from '@store/global-user'
  * <LoadTheme />
  */
 export const LoadTheme = () => {
-  const enfasis = useGlobalUserPreferences((state) => state.enfasis)
+  const { enfasis, setEnfasis } = useGlobalUserPreferences()
   useEffect(() => {
+    const savedEnfasis = localStorage.getItem('enfasis')
+    if (savedEnfasis) {
+      setEnfasis(savedEnfasis)
+    }
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
-  }, [enfasis])
+  }, [enfasis, setEnfasis])
   return null
 }
