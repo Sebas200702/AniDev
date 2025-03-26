@@ -62,24 +62,14 @@ export const AnimeAside = ({
   url,
 }: Props) => {
   return (
-    <aside className="anime-aside mt-26 md:mt-0 top-28 z-10 row-span-2 flex h-min w-full flex-col gap-8 px-10 md:items-start md:p-0 xl:sticky">
+    <aside className="anime-aside top-28 z-10 row-span-2 mt-26 flex h-min w-full flex-col gap-8 px-10 md:mt-0 md:items-start md:p-0 xl:sticky">
       <Picture
-        image={createImageUrlProxy(
-          animeData.image_large_webp,
-          '100',
-          '0',
-          'avif'
-        )}
+        image={animeData.image_small_webp}
         styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
       >
         <img
-          className="aspect-[225/330] w-full relative rounded-lg object-cover object-center transition-all ease-in-out"
-          src={createImageUrlProxy(
-            animeData.image_large_webp,
-            '1920',
-            '50',
-            'webp'
-          )}
+          className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
+          src={animeData.image_large_webp}
           alt={animeData.title}
           loading="lazy"
         />
