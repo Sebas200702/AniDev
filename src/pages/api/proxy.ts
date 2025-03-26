@@ -1,9 +1,8 @@
 import type { APIRoute } from 'astro'
-import { rateLimit } from '@middlewares/rate-limit'
 import { redis } from '@libs/redis'
 import sharp from 'sharp'
 
-export const GET: APIRoute = rateLimit(async ({ url }) => {
+export const GET: APIRoute = async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
 
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
@@ -63,7 +62,9 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       })
     }
 
-    await redis.set(`proxy:${url.searchParams}`, optimizedBuffer, { EX: 3600 })
+    await redis.set(`proxy:${url.searchParams}`, optimizedBuffer, {
+      EX: 3600,
+    })
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
@@ -80,4 +81,4 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       headers: { 'Content-Type': 'application/json' },
     })
   }
-})
+}
