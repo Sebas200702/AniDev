@@ -43,20 +43,22 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       key={anime.mal_id}
       className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
-      <Picture
-        image={createImageUrlProxy(anime.banner_image, '100', '0', 'webp')}
-        styles="absolute inset-0  w-full"
-      >
-        <img
-          className="absolute inset-0 h-full w-full object-cover object-center"
-          src={createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')}
-          alt="Anime Banner"
-        />
-      </Picture>
-      <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />
-      <Overlay
-        className={`to-Primary-950/70 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} `}
-      />
+      <div className="absolute inset-0 w-full overflow-hidden">
+        <Picture
+          image={createImageUrlProxy(anime.banner_image, '0', '0', 'avif')}
+          styles="w-full object-cover object-center"
+        >
+          <img
+            className="relative h-full w-full object-cover object-center"
+            src={createImageUrlProxy(anime.banner_image, '1920', '50', 'avif')}
+            alt="Anime Banner"
+          />
+          <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />
+          <Overlay
+            className={`to-Primary-950/70 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} `}
+          />
+        </Picture>
+      </div>
 
       <div
         className={`z-10 mb-20 flex max-w-[800px] flex-col items-center gap-8 text-white md:items-start md:justify-start md:gap-4`}
