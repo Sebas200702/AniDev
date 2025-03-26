@@ -82,8 +82,8 @@ export const Carousel = (): JSX.Element => {
     banners.forEach((anime) => {
       const image = new Image()
       image.src = anime.image_large_webp
-      image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
-      image.src = createImageUrlProxy(anime.banner_image, '100', '0', 'webp')
+      image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'avif')
+      image.src = createImageUrlProxy(anime.banner_image, '100', '0', 'avif')
     })
   }, [banners])
 
@@ -137,7 +137,7 @@ export const Carousel = (): JSX.Element => {
       aria-label="Carousel of Animes"
     >
       <div
-        className="anime-list relative h-full overflow-x-auto"
+        className="anime-list relative h-full max-w-[100vw] overflow-x-hidden"
         ref={bannerContainerRef}
         id="banner-container"
         onTouchStart={handleTouchStart}
