@@ -107,7 +107,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
         >
           <Picture
             image={createImageUrlProxy(imageUrl, '0', '0', 'webp')}
-            styles="aspect-[1080/600] h-full w-full  md:aspect-[1080/350] object-cover object-center"
+            styles="aspect-[1080/600] h-full w-full  md:aspect-[1080/350] object-cover object-center relative"
           >
             <img
               src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}

@@ -55,16 +55,16 @@ export const AnimeBanner = ({
       <Picture
         image={
           banner_image
-            ? createImageUrlProxy(banner_image, '100', '0', 'avif')
-            : createImageUrlProxy(image_large_webp, '100', '0', 'avif')
+            ? createImageUrlProxy(banner_image, '100', '0', 'webp')
+            : createImageUrlProxy(image_large_webp, '100', '0', 'webp')
         }
-        styles=" w-full object-cover object-center"
+        styles=" w-full object-cover object-center relative"
       >
         <img
           src={
             banner_image
-              ? createImageUrlProxy(banner_image, '1920', '50', 'avif')
-              : createImageUrlProxy(image_large_webp, '1920', '50', 'avif')
+              ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
+              : createImageUrlProxy(image_large_webp, '1920', '50', 'webp')
           }
           alt={`${title} banner`}
           loading="lazy"

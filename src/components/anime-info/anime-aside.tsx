@@ -2,7 +2,6 @@ import type { Anime } from 'types'
 import { Picture } from '@components/picture'
 import { ShareButton } from '@components/buttons/share-button'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 
 /**
  * AnimeAside component displays additional information about an anime in a sidebar format.
@@ -65,7 +64,7 @@ export const AnimeAside = ({
     <aside className="anime-aside top-28 z-10 row-span-2 mt-26 flex h-min w-full flex-col gap-8 px-10 md:mt-0 md:items-start md:p-0 xl:sticky">
       <Picture
         image={animeData.image_small_webp}
-        styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
+        styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative"
       >
         <img
           className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"

@@ -38,7 +38,7 @@ export const Picture = ({
   children: React.ReactNode
 }) => {
   return (
-    <picture className={`${styles} relative overflow-hidden`}>
+    <picture className={`${styles} overflow-hidden`}>
       <div
         className="absolute inset-0 bg-cover bg-center blur-lg filter"
         style={{ backgroundImage: `url(${image})` }}

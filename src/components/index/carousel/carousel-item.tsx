@@ -46,7 +46,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       <div className="absolute inset-0 w-full overflow-hidden">
         <Picture
           image={createImageUrlProxy(anime.banner_image, '0', '0', 'webp')}
-          styles="w-full object-cover object-center"
+          styles="w-full object-cover object-center relative"
         >
           <img
             className="relative h-full w-full object-cover object-center"

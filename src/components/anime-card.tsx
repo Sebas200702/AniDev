@@ -3,7 +3,6 @@ import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { StatusPoint } from '@components/status-point'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
@@ -83,7 +82,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
       >
         <Picture
           image={image_small_webp}
-          styles="relative h-full w-full rounded-lg"
+          styles="relative h-full w-full rounded-lg relative"
         >
           <img
             src={isMobile ? image_webp : image_large_webp}

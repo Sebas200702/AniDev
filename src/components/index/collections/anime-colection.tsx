@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 
 import { Picture } from '@components/picture'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useIndexStore } from '@store/index-store'
 
@@ -188,7 +187,7 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
             <Picture
               key={anime.mal_id}
               image={anime.image_small_webp}
-              styles={`${getPosition(i)} w-full max-w-44 rounded-md`}
+              styles={`${getPosition(i)} w-full max-w-44 rounded-md relative`}
             >
               <img
                 src={anime.image_webp}
