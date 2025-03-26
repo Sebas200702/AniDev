@@ -5,6 +5,7 @@ import { Picture } from '@components/picture'
 import { SeasonIcon } from '@icons/season-icon'
 import { StarIcon } from '@components/icons/star-icon'
 import { capitalize } from '@utils/capitalize'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
 
@@ -62,13 +63,18 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           aria-label={`View details for ${anime.title}`}
         >
           <Picture
-            image={anime.image_small_webp}
+            image={createImageUrlProxy(
+              anime.image_small_webp,
+              '0',
+              '0',
+              'avif'
+            )}
             styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
           >
             <img
-              src={anime.image_webp}
+              src={createImageUrlProxy(anime.image_webp, '0', '50', 'avif')}
               alt={anime.title}
-              className="gro up-hover:scale-105 aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out"
+              className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
               loading="lazy"
             />
             <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
