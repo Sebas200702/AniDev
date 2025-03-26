@@ -5,6 +5,7 @@ import { Picture } from '@components/picture'
 import { ShareButton } from '@components/buttons/share-button'
 import { StarIcon } from '@components/icons/star-icon'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 
 /**
@@ -42,9 +43,9 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
       >
         <a href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}>
           <img
-            src={anime.image_large_webp}
+            src={createImageUrlProxy(anime.image_large_webp, '0', '0', 'avif')}
             alt={anime.title}
-            className="aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
+            className="aspect-[225/330] h-full w-full relative rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
             loading="lazy"
           />
         </a>
