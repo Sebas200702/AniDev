@@ -63,14 +63,14 @@ export const GET: APIRoute = async ({ url }) => {
     }
 
     await redis.set(`proxy:${url.searchParams}`, optimizedBuffer, {
-      EX: 3600,
+      EX: 86400,
     })
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
-        'Cache-Control': 'public, max-age=600, s-maxage=3600',
-        'CDN-Cache-Control': 'max-age=3600',
+        'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+        'CDN-Cache-Control': 'max-age=86400',
         Vary: 'Accept-Encoding',
       },
     })
