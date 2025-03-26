@@ -58,3 +58,7 @@
 .text-sxx {
   @apply text-[10px] font-light;
 }
+
+* {
+  color-scheme: dark;
+}
