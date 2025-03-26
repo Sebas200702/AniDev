@@ -68,12 +68,12 @@ export const AnimeAside = ({
           animeData.image_large_webp,
           '100',
           '0',
-          'webp'
+          'avif'
         )}
         styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
       >
         <img
-          className="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
+          className="aspect-[225/330] w-full relative rounded-lg object-cover object-center transition-all ease-in-out"
           src={createImageUrlProxy(
             animeData.image_large_webp,
             '1920',
