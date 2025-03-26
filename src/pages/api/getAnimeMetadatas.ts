@@ -40,14 +40,16 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       description: data.synopsis,
       image: data.image_large_webp,
     }
-
     await redis.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas), {
-      EX: 3600,
+      EX: 24 * 60 * 60,
     })
     return new Response(JSON.stringify(animeMetadatas), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+        'CDN-Cache-Control': 'max-age=86400',
+        Vary: 'Accept-Encoding',
       },
     })
   } catch (error) {
