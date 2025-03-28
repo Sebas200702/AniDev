@@ -21,6 +21,15 @@ export const GET: APIRoute = rateLimit(async () => {
     if (error) {
       throw new Error('Ocurrió un error al obtener los estudios.')
     }
+    if (!data) {
+      return new Response(
+        JSON.stringify({ error: 'No se encontraron estudios' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
 
     await redis.set('studios', JSON.stringify(data))
 
