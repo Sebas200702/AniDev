@@ -46,7 +46,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
 
   const getBannerData = async (url: string) => {
     const response = await fetch(
-      `/api/animes?${url}&banners_filter=true&limit_count=1`
+      `/api/animes?${url}&banners_filter=true&limit_count=1&format=anime-banner`
     ).then((res) => res.json())
 
     const [anime] = response.data
