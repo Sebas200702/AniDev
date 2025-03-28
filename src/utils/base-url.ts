@@ -20,7 +20,7 @@
  *
  * @example
  * import { baseUrl } from '@utils/base-url';
- * const apiEndpoint = `${baseUrl}/api/animes`;
+ * const apiEndpoint = `${baseUrl}/api/animes/full`;
  */
 export const baseUrl =
   process.env.NODE_ENV === 'production'
