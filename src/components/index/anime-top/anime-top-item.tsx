@@ -1,11 +1,10 @@
-import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
+import type { AnimeTopInfo } from 'types'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { SeasonIcon } from '@icons/season-icon'
 import { StarIcon } from '@components/icons/star-icon'
 import { capitalize } from '@utils/capitalize'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
 
@@ -38,7 +37,7 @@ interface AnimeTopItemProps {
   /**
    * The anime object containing details to display.
    */
-  anime: Anime
+  anime: AnimeTopInfo
   /**
    * The index of the anime in the list.
    */
