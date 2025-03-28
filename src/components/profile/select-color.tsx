@@ -14,7 +14,7 @@ export const SelectColor = () => {
       type="color"
       value={enfasis}
       onChange={handleColorChange}
-      className="bg-Complementary h-10 w-10 [-webkit-appearance:none] [appearance:none] [-moz-appearance:none] cursor-pointer [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-lg [&::-moz-color-swatch]:border-none [&::-moz-color-swatch]:rounded-lg"
+      className="bg-Complementary h-10 w-10 cursor-pointer [appearance:none] [-moz-appearance:none] [-webkit-appearance:none] [&::-moz-color-swatch]:rounded-lg [&::-moz-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-lg [&::-webkit-color-swatch]:border-none"
     />
   )
 }

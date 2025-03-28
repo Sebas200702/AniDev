@@ -1,6 +1,6 @@
 import type { ErrorInfo, ReactNode } from 'react'
 
-import  { Component } from 'react'
+import { Component } from 'react'
 import { ToastType } from 'types'
 import { toast } from '@pheralb/toast'
 
