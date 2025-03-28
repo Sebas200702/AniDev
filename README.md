@@ -63,7 +63,7 @@ This hook simplifies making asynchronous requests with automatic loading and err
 import { useFetch } from '@hooks/useFetch'
 
 const { data, error, loading } = useFetch<Anime[]>({
-  url: '/api/animes?type_filter=tv',
+  url: '/api/animes/full?type_filter=tv',
 })
 ```
 
@@ -84,7 +84,7 @@ const debouncedSearch = useDebounce(search, 300)
 
 AniDev provides various API endpoints for fetching anime data:
 
-- `/api/animes` - Get animes with filtering options
+- `/api/animes/full` - Get animes with filtering options
 - `/api/getAnime` - Get detailed information about a specific anime
 - `/api/episodes` - Get episodes list for an anime
 - `/api/getEpisode` - Get specific episode details
