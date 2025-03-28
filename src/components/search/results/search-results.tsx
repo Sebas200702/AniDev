@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import { AnimeCard } from '@components/anime-card'
-import { NotResultsFound } from '@components/search/results/not-results-found'
+import { LoadingCard } from './loading-card'
 import { SearchResultsLoader } from '@components/search/results/serch-results-loader'
+import { ToastType } from 'types'
+import { toast } from '@pheralb/toast'
 import { useSearchStoreResults } from '@store/search-results-store'
 
 /**
@@ -28,21 +30,35 @@ import { useSearchStoreResults } from '@store/search-results-store'
  */
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)
-  const [completedSearch, setCompletedSearch] = useState(false)
+  const [toastShown, setToastShown] = useState(false)
   const {
     results: animes,
     query,
     loading,
     appliedFilters,
+    isLoadingMore,
+    setCompletedSearch,
+    completedSearch,
   } = useSearchStoreResults()
 
   useEffect(() => {
-    if (!animes) return
-    setTimeout(() => {
-      setFadeIn(true)
-      setCompletedSearch(true)
-    }, 600)
+    if (!animes || !completedSearch || loading) return
+    setFadeIn(true)
+    setToastShown(false)
   }, [animes, setFadeIn, query, appliedFilters, loading, setCompletedSearch])
+  useEffect(() => {
+    if (
+      animes?.length === 0 &&
+      !toastShown &&
+      (query || Object.keys(appliedFilters).length > 0) &&
+      completedSearch
+    ) {
+      toast[ToastType.Warning]({
+        text: 'No se encontraron resultados',
+      })
+      setToastShown(true)
+    }
+  }, [animes, query, appliedFilters, completedSearch, toastShown])
 
   if (
     (loading && (query || appliedFilters)) ||
@@ -50,22 +66,31 @@ export const SearchResults = () => {
   ) {
     return <SearchResultsLoader />
   }
-
   if (
-    animes?.length === 0 &&
-    (query || Object.keys(appliedFilters).length > 0) &&
-    completedSearch
+    !animes ||
+    (animes?.length === 0 &&
+      (query || Object.keys(appliedFilters).length > 0) &&
+      completedSearch &&
+      !toastShown)
   ) {
-    return <NotResultsFound />
+    return null
+  }
+
+  const renderLoadingCards = () => {
+    if (!isLoadingMore) return null
+    return Array(10)
+      .fill(0)
+      .map((_, index) => <LoadingCard key={`loading-card-${index + 1}`} />)
   }
 
   return (
     <ul
       className={`mx-auto grid w-full max-w-7xl grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 xl:gap-10 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
     >
-      {animes?.map((anime) => (
+      {animes.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />
       ))}
+      {isLoadingMore && renderLoadingCards()}
     </ul>
   )
 }
