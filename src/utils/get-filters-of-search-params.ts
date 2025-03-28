@@ -1,5 +1,4 @@
 import { Filters } from 'types'
-import { generateQueryPattern } from './generate-query-pattern'
 
 export const getFilters = (filtersEnum: typeof Filters, url: URL) => {
   return Object.values(filtersEnum).reduce(
@@ -12,11 +11,10 @@ export const getFilters = (filtersEnum: typeof Filters, url: URL) => {
         filters[filter] = value !== 'false'
       } else if (
         filter === Filters.page_number ||
-        filter === Filters.limit_count
+        filter === Filters.limit_count ||
+        filter === Filters.search_query
       ) {
         filters[filter] = value ?? null
-      } else if (filter === Filters.search_query) {
-        filters[filter] = generateQueryPattern(value ?? '')
       } else {
         filters[filter] = value ? value.split('_') : null
       }
