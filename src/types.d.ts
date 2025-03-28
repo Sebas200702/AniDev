@@ -31,7 +31,6 @@ export type Anime = {
   readonly producers: string[] | null
   readonly season: string | null
   readonly aired_day: string | null
-  readonly relevance_score: number
 }
 
 declare module '@auth-astro/client' {
@@ -39,11 +38,63 @@ declare module '@auth-astro/client' {
     callbackUrl?: string
   }
 }
+export enum OrderFunctions {
+  score = 'get_animes_order_by_score',
+  score_asc = 'get_animes_order_by_score_asc',
+  title = 'get_animes_order_by_title',
+  title_asc = 'get_animes_order_by_title_asc',
+}
+export enum Filters {
+  limit_count = 'limit_count',
+  page_number = 'page_number',
+  genre_filter = 'genre_filter',
+  type_filter = 'type_filter',
+  studio_filter = 'studio_filter',
+  score_filter = 'score_filter',
+  status_filter = 'status_filter',
+  search_query = 'search_query',
+  parental_control = 'parental_control',
+  year_filter = 'year_filter',
+  rating_filter = 'rating_filter',
+  banners_filter = 'banners_filter',
+  season_filter = 'season_filter',
+}
 
 export type Animes = {
   animes: Anime[]
 }
 
+export interface AnimeCardInfo
+  extends Pick<
+    Anime,
+    | 'mal_id'
+    | 'title'
+    | 'image_webp'
+    | 'mal_id'
+    | 'year'
+    | 'status'
+    | 'genres'
+    | 'image_small_webp'
+    | 'image_large_webp'
+  > {}
+export interface AnimeBannerInfo
+  extends Pick<Anime, 'mal_id' | 'title' | 'synopsis' | 'banner_image'> {}
+
+export interface AnimeCollectionInfo
+  extends Pick<Anime, 'mal_id' | 'title' | 'image_webp' | 'image_small_webp'> {}
+export interface AnimeTopInfo
+  extends Pick<
+    Anime,
+    | 'mal_id'
+    | 'title'
+    | 'image_webp'
+    | 'image_small_webp'
+    | 'score'
+    | 'genres'
+    | 'season'
+    | 'type'
+    | 'episodes'
+  > {}
 export enum ToastType {
   Success = 'success',
   Error = 'error',
@@ -165,8 +216,6 @@ export const orderByOptions: FilterOption[] = [
   { value: 'score', label: 'Highest Score' },
   { value: 'title asc', label: 'A-Z' },
   { value: 'title', label: 'Z-A ' },
-  { value: 'relevance_score asc', label: ' The Least Relevant' },
-  { value: 'relevance_score', label: 'The Most Relevant' },
 ]
 export interface Section {
   label: string
