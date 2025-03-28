@@ -35,6 +35,15 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       console.error('Error al obtener metadatos del anime:', error)
       return new Response('Internal server error', { status: 500 })
     }
+    if (!data) {
+      return new Response(
+        JSON.stringify({ error: 'No se encontraron metadatos del anime' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
     const animeMetadatas = {
       title: `${data.title} - ${baseTitle}`,
       description: data.synopsis,
