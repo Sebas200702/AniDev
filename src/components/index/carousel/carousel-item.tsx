@@ -1,4 +1,4 @@
-import type { Anime } from 'types'
+import type { AnimeBannerInfo } from 'types'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
@@ -6,7 +6,7 @@ import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 
 interface CarouselItemProps {
-  anime: Anime
+  anime: AnimeBannerInfo
   index: number
 }
 
