@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import type { Anime } from 'types'
+import type { AnimeBannerInfo } from 'types'
 import { CarouselItem } from '@components/index/carousel/carousel-item'
 import { Indicator } from '@components/index/carousel/indicator'
 import { LoadingCarousel } from '@components/index/carousel/carousel-loader'
@@ -68,10 +68,10 @@ export const Carousel = (): JSX.Element => {
     if (url || banners.length > 0) return
 
     const newUrl = createDynamicUrl()
-    setUrl(`/api/animes?${newUrl.url}&banners_filter=true`)
+    setUrl(`/api/animes?${newUrl.url}&banners_filter=true&format=anime-banner`)
     sessionStorage.setItem(
       'banners-url',
-      `/api/animes?${newUrl.url}&banners_filter=true`
+      `/api/animes?${newUrl.url}&banners_filter=true&format=anime-banner`
     )
     setLoading(true)
     setBanners([])
@@ -81,7 +81,6 @@ export const Carousel = (): JSX.Element => {
     if (!banners || banners.length === 0) return
     banners.forEach((anime) => {
       const image = new Image()
-      image.src = anime.image_large_webp
       image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
       image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
     })
@@ -100,7 +99,9 @@ export const Carousel = (): JSX.Element => {
     fetchBannerData()
   }, [fetchBannerData])
 
-  const { data: bannersData, loading: bannersLoading } = useFetch<Anime[]>({
+  const { data: bannersData, loading: bannersLoading } = useFetch<
+    AnimeBannerInfo[]
+  >({
     url: url,
   })
 
