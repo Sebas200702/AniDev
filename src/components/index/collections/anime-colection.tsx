@@ -1,4 +1,4 @@
-import type { Anime, Collection } from 'types'
+import type { AnimeCollectionInfo, Collection } from 'types'
 import { useEffect, useState } from 'react'
 
 import { Picture } from '@components/picture'
@@ -52,7 +52,7 @@ interface Props {
 export const AnimeCollection = ({ id }: Props): JSX.Element => {
   const { collections, setCollections } = useIndexStore()
   const [loading, setLoading] = useState(true)
-  const [animes, setAnimes] = useState<Anime[]>([])
+  const [animes, setAnimes] = useState<AnimeCollectionInfo[]>([])
   const [title, setTitle] = useState('')
   const [query, setQuery] = useState('')
 
@@ -131,10 +131,10 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
    */
   const fetchAnimes = async (url: string, dynamicTitle: string) => {
     const response = await fetch(
-      `/api/animes?limit_count=3&${url}&banners_filter=false`
+      `/api/animes?limit_count=3&${url}&banners_filter=false&format=anime-collection`
     ).then((res) => res.json())
 
-    const fetchedAnimes: Anime[] = response.data ?? []
+    const fetchedAnimes: AnimeCollectionInfo[] = response.data ?? []
     const newAnimeIds = fetchedAnimes.map((anime) => anime.mal_id)
     if (isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
       const { url: newUrl, title: generatedTitle } = createDynamicUrl(20)
