@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import type { Anime } from 'types'
 import { AnimeCard } from '@components/anime-card'
+import type { AnimeCardInfo } from 'types'
 import { AnimeSliderLoader } from '@components/index/slider/anime-slider-loader'
 import { NexPrevBtnSlideList } from '@components/index/slider/next-prev-btn-slider-list'
 import { SliderHeader } from '@components/index/slider/slider-header'
@@ -38,7 +38,7 @@ interface Props {
  * <AnimeSlider query="genre_filter=action" title="Action Anime" />
  */
 export const AnimeSlider = ({ query, title }: Props) => {
-  const [cachedAnimes, setCachedAnimes] = useState<Anime[]>([])
+  const [cachedAnimes, setCachedAnimes] = useState<AnimeCardInfo[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
 
   const storageKey = `animes_${query}`
@@ -53,7 +53,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
     return null
   }, [storageKey])
 
-  const { data: animes, loading } = useFetch<Anime[]>({
+  const { data: animes, loading } = useFetch<AnimeCardInfo[]>({
     url: `/api/animes?limit_count=24&${query}&banners_filter=false`,
     skip: cachedAnimes.length > 0,
   })
@@ -142,7 +142,7 @@ export const AnimeSlider = ({ query, title }: Props) => {
         <NexPrevBtnSlideList label="next-button" styles="right-0 rotate-180" />
 
         <ul className="anime-list mx-auto flex w-full flex-row gap-5 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-4 md:gap-10 md:px-20">
-          {displayAnimes.map((anime: Anime) => (
+          {displayAnimes.map((anime: AnimeCardInfo) => (
             <li key={anime.mal_id}>
               <AnimeCard anime={anime} context={title} />
             </li>
