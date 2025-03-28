@@ -32,8 +32,7 @@ interface Props {
  * <SearchBar location="top" />
  */
 export const SearchBar = ({ location }: Props): JSX.Element => {
-  const { query, setQuery, setLoading, setCompletedSearch } =
-    useSearchStoreResults()
+  const { query, setQuery, setLoading } = useSearchStoreResults()
   const { width: windowWidth, setWidth } = useWindowWidth()
   const [isExpanded, setIsExpanded] = useState(false)
   const isMobile = windowWidth && windowWidth < 768
@@ -69,9 +68,8 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.target.value)
       setLoading(true)
-      setCompletedSearch(false)
     },
-    [setQuery, setLoading, setCompletedSearch]
+    [setQuery, setLoading]
   )
 
   const toggleExpand = () => {

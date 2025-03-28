@@ -31,21 +31,23 @@ import { useSearchStoreResults } from '@store/search-results-store'
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)
   const [toastShown, setToastShown] = useState(false)
+  const [completedSearch, setCompletedSearch] = useState(false)
   const {
     results: animes,
     query,
     loading,
     appliedFilters,
     isLoadingMore,
-    setCompletedSearch,
-    completedSearch,
   } = useSearchStoreResults()
 
   useEffect(() => {
-    if (!animes || !completedSearch || loading || !query) return
-    setFadeIn(true)
-    setToastShown(false)
-  }, [animes, setFadeIn, query, appliedFilters, loading, setCompletedSearch])
+    if (!animes || loading || !query) return
+    setTimeout(() => {
+      setFadeIn(true)
+      setToastShown(false)
+      setCompletedSearch(true)
+    }, 1000)
+  }, [animes, setFadeIn, query, appliedFilters, loading])
 
   if (
     (loading && (query || appliedFilters)) ||
@@ -60,7 +62,7 @@ export const SearchResults = () => {
       completedSearch)
   ) {
     return (
-      <div className="font-bold items-center flex h-full justify-center text-center text-3xl">
+      <div className="flex h-full items-center justify-center text-center text-3xl font-bold">
         Results not found
       </div>
     )

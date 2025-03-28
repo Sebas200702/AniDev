@@ -45,9 +45,7 @@ export const SearchComponent = () => {
     setLoading,
     results,
     setIsLoadingMore,
-    setCompletedSearch,
     isLoadingMore,
-    completedSearch,
   } = useSearchStoreResults()
   const [page, setPage] = useState(4)
   const debouncedQuery = useDebounce(query, 600)
@@ -81,7 +79,6 @@ export const SearchComponent = () => {
     }
 
     setResults([...(results ?? []), ...moreAnime], false, fetchError)
-    setCompletedSearch(true)
     setIsLoadingMore(false)
     setPage((prev) => prev + 1)
     isFetching.current = false
@@ -124,9 +121,8 @@ export const SearchComponent = () => {
 
   useEffect(() => {
     setLoading(isLoading)
-    if (!isLoading && !completedSearch) {
+    if (!isLoading) {
       setResults(animes ?? [], false, fetchError)
-      setCompletedSearch(true)
     }
   }, [
     animes,
@@ -134,8 +130,6 @@ export const SearchComponent = () => {
     fetchError,
     setResults,
     setLoading,
-    setCompletedSearch,
-    completedSearch,
   ])
 
   return (
