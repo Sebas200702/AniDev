@@ -1,24 +1,24 @@
 import { describe, expect, it } from 'vitest'
 
+import type { Anime } from 'types'
 import { baseUrl } from '@utils/base-url'
 
-import type { Anime } from 'types'
 describe('Endpoint test get animes with params', () => {
   it('should return a list of animes', async () => {
-    const animes = await fetch(`${baseUrl}/api/animes`)
+    const animes = await fetch(`${baseUrl}/api/animes/full`)
       .then((res) => res.json())
       .then((data) => data.anime)
     expect(animes).toBeDefined()
   })
   it('should return a list of animes with limit_count', async () => {
-    const animes = await fetch(`${baseUrl}/api/animes?limit_count=10`)
+    const animes = await fetch(`${baseUrl}/api/animes/full?limit_count=10`)
       .then((res) => res.json())
       .then((data) => data.anime)
     expect(animes).toBeDefined()
     expect(animes.length).toBe(10)
   })
   it('should return a list of animes with genre_filter', async () => {
-    const animes = await fetch(`${baseUrl}/api/animes?genre_filter=action`)
+    const animes = await fetch(`${baseUrl}/api/animes/full?genre_filter=action`)
       .then((res) => res.json())
       .then((data) => data.anime)
     expect(animes).toBeDefined()
@@ -28,7 +28,7 @@ describe('Endpoint test get animes with params', () => {
     })
   })
   it('should return a list of animes with type_filter', async () => {
-    const animes = await fetch(`${baseUrl}/api/animes?type_filter=tv`)
+    const animes = await fetch(`${baseUrl}/api/animes/full?type_filter=tv`)
       .then((res) => res.json())
       .then((data) => data.anime)
     expect(animes).toBeDefined()
@@ -39,7 +39,7 @@ describe('Endpoint test get animes with params', () => {
   })
   it('should return a list of animes with status_filter', async () => {
     const animes = await fetch(
-      `${baseUrl}/api/animes?status_filter=Currently Airing`
+      `${baseUrl}/api/animes/full?status_filter=Currently Airing`
     )
       .then((res) => res.json())
       .then((data) => data.anime)
@@ -50,7 +50,9 @@ describe('Endpoint test get animes with params', () => {
     })
   })
   it('should return a list of animes with studio_filter', async () => {
-    const animes = await fetch(`${baseUrl}/api/animes?studio_filter=wit studio`)
+    const animes = await fetch(
+      `${baseUrl}/api/animes/full?studio_filter=wit studio`
+    )
       .then((res) => res.json())
       .then((data) => data.anime)
     expect(animes).toBeDefined()
@@ -61,7 +63,7 @@ describe('Endpoint test get animes with params', () => {
   })
   it('two filters', async () => {
     const animes = await fetch(
-      `${baseUrl}/api/animes?limit_count=10&genre_filter=action`
+      `${baseUrl}/api/animes/full?limit_count=10&genre_filter=action`
     )
       .then((res) => res.json())
       .then((data) => data.anime)
@@ -73,7 +75,7 @@ describe('Endpoint test get animes with params', () => {
   })
   it('three filters', async () => {
     const animes = await fetch(
-      `${baseUrl}/api/animes?limit_count=10&genre_filter=action&type_filter=tv`
+      `${baseUrl}/api/animes/full?limit_count=10&genre_filter=action&type_filter=tv`
     )
       .then((res) => res.json())
       .then((data) => data.anime)
@@ -86,7 +88,7 @@ describe('Endpoint test get animes with params', () => {
   })
   it('all filters', async () => {
     const animes = await fetch(
-      `${baseUrl}/api/animes?limit_count=10&genre_filter=action&type_filter=tv&studio_filter=mappa`
+      `${baseUrl}/api/animes/full?limit_count=10&genre_filter=action&type_filter=tv&studio_filter=mappa`
     )
       .then((res) => res.json())
       .then((data) => data.anime)
