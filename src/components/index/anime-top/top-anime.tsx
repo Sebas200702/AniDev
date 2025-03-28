@@ -1,5 +1,5 @@
-import type { Anime } from 'types'
 import { AnimeTopHeader } from '@components/index/anime-top/header'
+import type { AnimeTopInfo } from 'types'
 import { AnimeTopItem } from '@components/index/anime-top/anime-top-item'
 import { AnimeTopLoader } from '@components/index/anime-top/top-anime-loader'
 import { useFetch } from '@hooks/useFetch'
@@ -27,8 +27,8 @@ import { useFetch } from '@hooks/useFetch'
  * <AnimeTop />
  */
 export const AnimeTop = () => {
-  const { data: anime, loading } = useFetch<Anime[]>({
-    url: '/api/animes?order_by=score&limit_count=10&type_filter=tv&banner_filter=false',
+  const { data: anime, loading } = useFetch<AnimeTopInfo[]>({
+    url: '/api/animes?order_by=score&limit_count=10&type_filter=tv&banner_filter=false&format=top-anime',
   })
 
   if (loading || !anime) return <AnimeTopLoader />
