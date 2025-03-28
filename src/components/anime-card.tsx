@@ -1,4 +1,4 @@
-import type { Anime } from 'types'
+import type { AnimeCardInfo } from 'types'
 import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
@@ -36,7 +36,7 @@ interface Props {
   /**
    * The anime object containing details to display.
    */
-  anime: Anime
+  anime: AnimeCardInfo
   /**
    * Optional context for the component.
    */
