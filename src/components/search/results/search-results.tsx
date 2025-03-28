@@ -42,23 +42,10 @@ export const SearchResults = () => {
   } = useSearchStoreResults()
 
   useEffect(() => {
-    if (!animes || !completedSearch || loading) return
+    if (!animes || !completedSearch || loading || !query) return
     setFadeIn(true)
     setToastShown(false)
   }, [animes, setFadeIn, query, appliedFilters, loading, setCompletedSearch])
-  useEffect(() => {
-    if (
-      animes?.length === 0 &&
-      !toastShown &&
-      (query || Object.keys(appliedFilters).length > 0) &&
-      completedSearch
-    ) {
-      toast[ToastType.Warning]({
-        text: 'No se encontraron resultados',
-      })
-      setToastShown(true)
-    }
-  }, [animes, query, appliedFilters, completedSearch, toastShown])
 
   if (
     (loading && (query || appliedFilters)) ||
@@ -70,10 +57,13 @@ export const SearchResults = () => {
     !animes ||
     (animes?.length === 0 &&
       (query || Object.keys(appliedFilters).length > 0) &&
-      completedSearch &&
-      !toastShown)
+      completedSearch)
   ) {
-    return null
+    return (
+      <div className="font-bold items-center flex h-full justify-center text-center text-3xl">
+        Results not found
+      </div>
+    )
   }
 
   const renderLoadingCards = () => {

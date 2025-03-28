@@ -30,15 +30,6 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       console.error('Error al obtener los animes:', error)
       throw new Error('Ocurrió un error al obtener los animes.')
     }
-    if (!data) {
-      return new Response(
-        JSON.stringify({ error: 'No se encontraron animes' }),
-        {
-          status: 404,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-    }
 
     await redis.set(`animes:${url.searchParams}`, JSON.stringify({ data }), {
       EX: 3600,
