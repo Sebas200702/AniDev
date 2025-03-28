@@ -1,10 +1,11 @@
 import '@styles/search-section.css'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
-import type { Anime } from 'types'
+import type { AnimeCardInfo } from 'types'
 import { FilterSection } from '@components/search/filters/filter-section'
 import { SearchResults } from '@components/search/results/search-results'
+import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { baseUrl } from '@utils/base-url'
 import { createFiltersToApply } from '@utils/filters-to-apply'
 import { useDebounce } from '@hooks/useDebounce'
@@ -37,30 +38,86 @@ import { useUrlSync } from '@hooks/useUrlSync'
  * <SearchComponent client:visible />
  */
 export const SearchComponent = () => {
-  const { query, setResults, appliedFilters, setLoading } =
-    useSearchStoreResults()
-  const debouncedQuery = useDebounce(query, 500)
+  const {
+    query,
+    setResults,
+    appliedFilters,
+    setLoading,
+    results,
+    setIsLoadingMore,
+    isLoadingMore,
+  } = useSearchStoreResults()
+  const [page, setPage] = useState(4)
+  const debouncedQuery = useDebounce(query, 600)
+  const isFetching = useRef(false)
   const filtersToApply = useMemo(
     () => createFiltersToApply(appliedFilters),
     [appliedFilters]
   )
+  const [isAllResults, setIsAllResults] = useState(false)
   const url = useMemo(() => {
-    const baseQuery = `${baseUrl}/api/animes?limit_count=60&banners_filter=false`
+    const baseQuery = `${baseUrl}/api/animes?limit_count=30&banners_filter=false&format=search`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
   }, [debouncedQuery, filtersToApply])
 
+  const fetchMoreAnimes = async () => {
+    if (isFetching.current) return
+    isFetching.current = true
+    setIsLoadingMore(true)
+    const moreAnime = await fetch(
+      `${url.replace('limit_count=30', 'limit_count=10')}&page_number=${page}`
+    )
+      .then((res) => res.json())
+      .then((data) => data.data)
+
+    if (!moreAnime || moreAnime.length === 0) {
+      setIsAllResults(true)
+      setIsLoadingMore(false)
+      return
+    }
+
+    setResults([...(results ?? []), ...moreAnime], false, fetchError)
+    setIsLoadingMore(false)
+    setPage((prev) => prev + 1)
+    isFetching.current = false
+  }
+
+  const handleScroll = async () => {
+    const app = document.querySelector('#app')
+    if (!app) return
+    const appScrollTop = app.scrollTop
+    const appClientHeight = app.clientHeight
+    const appScrollHeight = app.scrollHeight
+
+    if (
+      appScrollTop + appClientHeight >= appScrollHeight - 300 &&
+      !isLoadingMore &&
+      !isAllResults &&
+      !isFetching.current
+    ) {
+      await fetchMoreAnimes()
+    }
+  }
   const {
     data: animes,
     loading: isLoading,
     error: fetchError,
-  } = useFetch<Anime[]>({
+  } = useFetch<AnimeCardInfo[]>({
     url,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
 
   useUrlSync()
+  useEffect(() => {
+    const app = document.querySelector('#app')
+    if (!app) return
+    app.addEventListener('scroll', handleScroll)
+    return () => {
+      app.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll, page])
 
   useEffect(() => {
     setLoading(isLoading)
@@ -71,12 +128,14 @@ export const SearchComponent = () => {
 
   return (
     <section id="search-section">
-      <div className="mt-16 [grid-area:aside]">
+      <div className="[grid-area:aside]">
         <FilterSection />
       </div>
 
-      <div className="mt-16 w-full [grid-area:results]">
-        <SearchResults />
+      <div className="mt-16 [grid-area:results]">
+        <SearchResultsErrorBoundary>
+          <SearchResults />
+        </SearchResultsErrorBoundary>
       </div>
     </section>
   )
