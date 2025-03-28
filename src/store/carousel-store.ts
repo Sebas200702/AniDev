@@ -1,4 +1,4 @@
-import type { Anime } from 'types'
+import type { AnimeBannerInfo } from 'types'
 /**
  * CarouselStore manages state for the anime carousel component.
  *
@@ -25,8 +25,8 @@ import { create } from 'zustand'
 interface CarouselStore {
   url: string
   setUrl: (url: string) => void
-  banners: Anime[]
-  setBanners: (banners: Anime[]) => void
+  banners: AnimeBannerInfo[]
+  setBanners: (banners: AnimeBannerInfo[]) => void
   loading: boolean
   setLoading: (loading: boolean) => void
   currentIndex: number
@@ -39,7 +39,7 @@ export const useCarouselStore = create<CarouselStore>((set) => ({
   url: '',
   setUrl: (url: string) => set({ url }),
   banners: [],
-  setBanners: (banners: Anime[]) => set({ banners }),
+  setBanners: (banners: AnimeBannerInfo[]) => set({ banners }),
   loading: false,
   setLoading: (loading: boolean) => set({ loading }),
   currentIndex: 0,
