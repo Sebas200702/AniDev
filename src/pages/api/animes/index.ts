@@ -54,7 +54,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     }
     await redis.set(
       `animes-partial:${url.searchParams}`,
-      JSON.stringify({ data }),
+      JSON.stringify(data),
       {
         EX: 24 * 60 * 60,
       }
