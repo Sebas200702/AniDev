@@ -30,42 +30,13 @@ import { LoadingCard } from './loading-card'
  */
 export const SearchResults = () => {
   const [fadeIn, setFadeIn] = useState(false)
-  const [toastShown, setToastShown] = useState(false)
-  const [completedSearch, setCompletedSearch] = useState(false)
   const {
     results: animes,
-    query,
-    loading,
-    appliedFilters,
     isLoadingMore,
+    loading,
+    query,
+    appliedFilters,
   } = useSearchStoreResults()
-
-  useEffect(() => {
-    if (!animes || loading || !query) return
-    setTimeout(() => {
-      setFadeIn(true)
-      setCompletedSearch(true)
-    }, 600)
-  }, [animes, setFadeIn, query, appliedFilters, loading])
-
-  if (
-    (loading && (query || appliedFilters)) ||
-    (!animes && (query || appliedFilters)) ||
-    (!completedSearch && (query || appliedFilters))
-  ) {
-    return <SearchResultsLoader />
-  }
-  if (
-    animes?.length === 0 &&
-    (query || Object.keys(appliedFilters).length > 0) &&
-    completedSearch
-  ) {
-    return (
-      <div className="flex h-full items-center justify-center text-center text-3xl font-bold">
-        Results not found
-      </div>
-    )
-  }
 
   const renderLoadingCards = () => {
     if (!isLoadingMore) return null
@@ -74,6 +45,28 @@ export const SearchResults = () => {
       .map((_, index) => <LoadingCard key={`loading-card-${index + 1}`} />)
   }
 
+  useEffect(() => {
+    if (animes?.length ) {
+      setFadeIn(true)
+    }
+  }, [animes])
+
+  if (loading) {
+    return <SearchResultsLoader />
+  }
+
+  if (animes?.length === 0 && (query || appliedFilters) && !loading) {
+    toast[ToastType.Warning]({
+      text: `No results found for "${query}" with the selected filters.`,
+    })
+    return (
+      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-center p-4">
+        <p className="text-center text-lg font-semibold text-gray-300">
+          No results found. Please try a different search.
+        </p>
+      </div>
+    )
+  }
   return (
     <ul
       className={`mx-auto grid w-full max-w-7xl grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 xl:gap-10 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
