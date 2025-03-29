@@ -122,9 +122,6 @@ export const SearchComponent = () => {
   }, [handleScroll, page])
 
   useEffect(() => {
-   
-setLoading(isLoading)
-   
       setResults(animes, false, fetchError)
     
   }, [animes, isLoading, fetchError, setResults, setLoading])
