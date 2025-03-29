@@ -22,14 +22,17 @@ import { useEffect } from 'react'
  * @example
  * <LoadTheme />
  */
-export const LoadTheme = () => {
-  const { enfasis, setEnfasis } = useGlobalUserPreferences()
+export const LoadUserPrefences = () => {
+  const { enfasis, setEnfasis, parentalControl, setParentalControl } =
+    useGlobalUserPreferences()
   useEffect(() => {
     const savedEnfasis = localStorage.getItem('enfasis')
-    if (savedEnfasis) {
-      setEnfasis(savedEnfasis)
-    }
+    const savedParentalControl = localStorage.getItem('parental_control')
+    if (!savedEnfasis && !savedParentalControl) return
+    setEnfasis(savedEnfasis ?? '#0057E7')
+    setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
+
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
-  }, [enfasis, setEnfasis])
+  }, [enfasis, setEnfasis, parentalControl, setParentalControl])
   return null
 }
