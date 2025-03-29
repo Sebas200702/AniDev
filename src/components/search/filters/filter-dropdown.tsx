@@ -103,7 +103,7 @@ export const FilterDropdown = ({
       aria-expanded={isOpen}
     >
       <div className="relative text-white">
-        <label
+        <button
           className="custom-scrollbar flex max-h-[60px] w-full cursor-text flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
           onClick={handleInputClick}
         >
@@ -117,7 +117,7 @@ export const FilterDropdown = ({
             aria-autocomplete="list"
             aria-controls="dropdown-options"
           />
-        </label>
+        </button>
 
         <nav
           className="absolute top-1/2 right-6 flex max-w-60 -translate-y-1/2 items-center space-x-1"
