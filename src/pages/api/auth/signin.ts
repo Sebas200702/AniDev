@@ -1,6 +1,6 @@
-import type { APIRoute } from 'astro'
-import { rateLimit } from '@middlewares/rate-limit'
 import { supabase } from '@libs/supabase'
+import { rateLimit } from '@middlewares/rate-limit'
+import type { APIRoute } from 'astro'
 
 export const POST: APIRoute = rateLimit(
   async ({ request, redirect, cookies }) => {

@@ -8,11 +8,11 @@ import {
   yearOptions,
 } from 'types'
 
-import type { AppliedFilters } from 'types'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { useSearchStoreResults } from '@store/search-results-store'
 import { studioOptions } from '@utils/create-studios-options'
 import { useCallback } from 'react'
-import { useSearchStoreResults } from '@store/search-results-store'
+import type { AppliedFilters } from 'types'
 
 /**
  * FilterSection component provides a comprehensive set of filters for anime search functionality.

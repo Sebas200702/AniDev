@@ -1,5 +1,5 @@
-import { SectionList } from '@components/section-list'
 import { UserListOptions } from '@components/profile/user-tabs/user-list-options'
+import { SectionList } from '@components/section-list'
 import { useUserListsStore } from '@store/user-list-store'
 
 /**

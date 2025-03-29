@@ -1,12 +1,12 @@
 ---
-import NavBar from '@components/nav-bar/nav-bar.astro'
-import { LoadTheme } from '@components/loadtheme'
 import { ClientRouter } from 'astro:transitions'
-import { AstroFont } from 'astro-font'
-import { LoadWindowWidth } from '@components/load-window-width'
-import { Toaster } from '@pheralb/toast'
 import Footer from '@components/footer.astro'
+import { LoadWindowWidth } from '@components/load-window-width'
+import { LoadTheme } from '@components/loadtheme'
+import NavBar from '@components/nav-bar/nav-bar.astro'
+import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
+import { AstroFont } from 'astro-font'
 import '@styles/global.css'
 import '@styles/fade-out.css'
 interface Props {
@@ -42,7 +42,7 @@ if (animeId) {
 ---
 
 <html lang="en">
-  <head>
+ <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

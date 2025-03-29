@@ -1,12 +1,12 @@
-import type { AnimeCardInfo } from 'types'
 import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { StatusPoint } from '@components/status-point'
+import { useWindowWidth } from '@store/window-width'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
-import { useWindowWidth } from '@store/window-width'
+import type { AnimeCardInfo } from 'types'
 
 /**
  * AnimeCard component displays information about an anime including its title, image, and status.
@@ -100,12 +100,12 @@ export const AnimeCard = ({ anime, context }: Props) => {
             class={`h-6 w-6 ${statusColors(status)}`}
             status={status}
           />
-          <h5
+          <span
             className={`w-full ${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
             aria-hidden="true"
           >
             {title}
-          </h5>
+          </span>
         </footer>
       </a>
       <div className="absolute top-2 -right-2">

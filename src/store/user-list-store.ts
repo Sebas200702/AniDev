@@ -1,8 +1,8 @@
 import { CollectionIcon } from '@components/icons/collection-icon'
 import { CompletedIcon } from '@components/icons/completed-icon'
-import type { Section } from 'types'
 import { ToWatchIcon } from '@components/icons/to-watch-icon'
 import { WatchingIcon } from '@components/icons/watch-icon'
+import type { Section } from 'types'
 import { create } from 'zustand'
 
 /**

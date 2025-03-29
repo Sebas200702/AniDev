@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-import type { Session } from 'types'
 import { signOut } from 'auth-astro/client'
+import type { Session } from 'types'
 
 interface Props {
   userInfo: Session | null

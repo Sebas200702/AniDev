@@ -2,16 +2,16 @@ import '@styles/search-section.css'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import type { AnimeCardInfo } from 'types'
+import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'
 import { SearchResults } from '@components/search/results/search-results'
-import { SearchResultsErrorBoundary } from '@components/error-boundary'
-import { baseUrl } from '@utils/base-url'
-import { createFiltersToApply } from '@utils/filters-to-apply'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
-import { useSearchStoreResults } from '@store/search-results-store'
 import { useUrlSync } from '@hooks/useUrlSync'
+import { useSearchStoreResults } from '@store/search-results-store'
+import { baseUrl } from '@utils/base-url'
+import { createFiltersToApply } from '@utils/filters-to-apply'
+import type { AnimeCardInfo } from 'types'
 
 /**
  * SearchComponent handles the anime search functionality with filters and results display.

@@ -1,6 +1,6 @@
-import { AnimeDescription } from './anime-description'
 import { AnimeTrailer } from '@components/anime-info/anime-trailer'
 import { useAnimeListsStore } from '@store/anime-list-store'
+import { AnimeDescription } from './anime-description'
 
 /**
  * AnimeShowBox component displays content based on the selected tab for an anime.

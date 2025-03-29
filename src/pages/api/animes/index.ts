@@ -1,10 +1,10 @@
-import type { APIRoute } from 'astro'
-import { Filters } from 'types'
-import { getFilters } from '@utils/get-filters-of-search-params'
-import { getFunctionToExecute } from '@utils/get-database-fuction-to-execute'
-import { rateLimit } from '@middlewares/rate-limit'
 import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
+import { rateLimit } from '@middlewares/rate-limit'
+import { getFunctionToExecute } from '@utils/get-database-fuction-to-execute'
+import { getFilters } from '@utils/get-filters-of-search-params'
+import type { APIRoute } from 'astro'
+import { Filters } from 'types'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {

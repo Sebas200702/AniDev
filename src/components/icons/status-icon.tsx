@@ -1,5 +1,5 @@
-import type { IconProps } from 'types'
 import { statusColors } from '@utils/status-colors'
+import type { IconProps } from 'types'
 
 interface StatusIconProps extends IconProps {
   status: string

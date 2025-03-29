@@ -1,12 +1,12 @@
 import { AnimeTag } from '@components/anime-tag'
-import type { AnimeTopInfo } from 'types'
+import { StarIcon } from '@components/icons/star-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { SeasonIcon } from '@icons/season-icon'
-import { StarIcon } from '@components/icons/star-icon'
 import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
+import type { AnimeTopInfo } from 'types'
 
 /**
  * AnimeTopItem component displays a single item in the top anime list.

@@ -1,8 +1,8 @@
-import { AnimeTopHeader } from '@components/index/anime-top/header'
-import type { AnimeTopInfo } from 'types'
 import { AnimeTopItem } from '@components/index/anime-top/anime-top-item'
+import { AnimeTopHeader } from '@components/index/anime-top/header'
 import { AnimeTopLoader } from '@components/index/anime-top/top-anime-loader'
 import { useFetch } from '@hooks/useFetch'
+import type { AnimeTopInfo } from 'types'
 
 /**
  * AnimeTop component displays the list of top anime.

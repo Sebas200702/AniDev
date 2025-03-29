@@ -1,5 +1,5 @@
+import { type FormValues, useAuthFormStore } from '@store/auth-form-store'
 import type { ReactNode } from 'react'
-import { useAuthFormStore, type FormValues } from '@store/auth-form-store'
 import { useState } from 'react'
 
 /**

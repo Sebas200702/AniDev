@@ -1,5 +1,5 @@
-import type { APIRoute } from 'astro'
 import { redis } from '@libs/redis'
+import type { APIRoute } from 'astro'
 import sharp from 'sharp'
 
 export const GET: APIRoute = async ({ url }) => {

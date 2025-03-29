@@ -1,8 +1,8 @@
-import type { Anime } from 'types'
 import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import { AnimeTag } from '@components/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
+import type { Anime } from 'types'
 
 /**
  * AnimeHeader component displays the title and header information of an anime.

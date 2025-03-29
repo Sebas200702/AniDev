@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import type { Anime } from 'types'
 import { baseUrl } from '@utils/base-url'
+import type { Anime } from 'types'
 
 describe('Endpoint test get animes with params', () => {
   it('should return a list of animes', async () => {

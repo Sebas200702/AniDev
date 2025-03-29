@@ -1,10 +1,10 @@
-import type { AnimeCollectionInfo, Collection } from 'types'
 import { useEffect, useState } from 'react'
+import type { AnimeCollectionInfo, Collection } from 'types'
 
 import { Picture } from '@components/picture'
+import { useIndexStore } from '@store/index-store'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
-import { useIndexStore } from '@store/index-store'
 
 interface Props {
   /**

@@ -1,7 +1,7 @@
-import type { Anime } from 'types'
-import { Picture } from '@components/picture'
 import { ShareButton } from '@components/buttons/share-button'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
+import { Picture } from '@components/picture'
+import type { Anime } from 'types'
 
 /**
  * AnimeAside component displays additional information about an anime in a sidebar format.

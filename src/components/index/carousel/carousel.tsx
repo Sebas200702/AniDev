@@ -1,15 +1,15 @@
 import { useCallback, useEffect } from 'react'
 
-import type { AnimeBannerInfo } from 'types'
 import { CarouselItem } from '@components/index/carousel/carousel-item'
-import { Indicator } from '@components/index/carousel/indicator'
 import { LoadingCarousel } from '@components/index/carousel/carousel-loader'
+import { Indicator } from '@components/index/carousel/indicator'
 import { NexPrevBtnCarousel } from '@components/index/carousel/nex-prev-btn-carousel'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
-import { useCarouselStore } from '@store/carousel-store'
 import { useFetch } from '@hooks/useFetch'
+import { useCarouselStore } from '@store/carousel-store'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
+import type { AnimeBannerInfo } from 'types'
 
 /**
  * Carousel component displays a rotating banner of featured anime content.

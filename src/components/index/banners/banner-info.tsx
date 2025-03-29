@@ -1,6 +1,6 @@
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
-import { useEffect } from 'react'
 import { useWindowWidth } from '@store/window-width'
+import { useEffect } from 'react'
 interface BannerInfoProps {
   title: string
   synopsis: string

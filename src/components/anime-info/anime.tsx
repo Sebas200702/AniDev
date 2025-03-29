@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import type { Anime } from 'types'
 import { AnimeAside } from '@components/anime-info/anime-aside'
 import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
@@ -8,6 +7,7 @@ import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { normalizeString } from '@utils/normalize-string'
+import type { Anime } from 'types'
 
 /**
  * AnimeInfo component serves as the main container for all anime-related information and displays it.

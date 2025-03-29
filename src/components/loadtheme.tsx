@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { useGlobalUserPreferences } from '@store/global-user'
+import { useEffect } from 'react'
 
 /**
  * LoadTheme component applies user-specific theme colors based on global preferences.

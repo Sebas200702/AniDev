@@ -1,9 +1,9 @@
 import { FallIcon } from '@icons/fall-icon'
-import type { IconProps } from 'types'
 import { SpringIcon } from '@icons/spring-icon'
 import { SummerIcon } from '@icons/summer-icon'
 import { UnknownIcon } from '@icons/unknown-icon'
 import { WinterIcon } from '@icons/winter-icon'
+import type { IconProps } from 'types'
 interface SeasonIconProps extends IconProps {
   season: string
 }

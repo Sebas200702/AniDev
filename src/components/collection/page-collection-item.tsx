@@ -1,11 +1,11 @@
-import { AddToListButton } from '@components/buttons/add-to list-button'
-import type { Anime } from 'types'
 import { AnimeTag } from '@components/anime-tag'
-import { Picture } from '@components/picture'
+import { AddToListButton } from '@components/buttons/add-to list-button'
 import { ShareButton } from '@components/buttons/share-button'
-import { StarIcon } from '@components/icons/star-icon'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
+import { StarIcon } from '@components/icons/star-icon'
+import { Picture } from '@components/picture'
 import { normalizeString } from '@utils/normalize-string'
+import type { Anime } from 'types'
 
 /**
  * CollectionItem component displays a collection item in a list, including its image, title, genres, synopsis, and score.

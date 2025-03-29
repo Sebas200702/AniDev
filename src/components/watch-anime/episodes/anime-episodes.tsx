@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
-import type { AnimeEpisode } from 'types'
 import { AnimeEpisodesLoader } from '@components/watch-anime/episodes/anime-episodes-loader'
 import Pagination from '@components/watch-anime/episodes/pagination'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { useFetch } from '@hooks/useFetch'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import type { AnimeEpisode } from 'types'
 
 interface Props {
   mal_id: number

@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { AnimeCard } from '@components/anime-card'
-import type { AnimeCardInfo } from 'types'
 import { AnimeSliderLoader } from '@components/index/slider/anime-slider-loader'
 import { NexPrevBtnSlideList } from '@components/index/slider/next-prev-btn-slider-list'
 import { SliderHeader } from '@components/index/slider/slider-header'
 import { useFetch } from '@hooks/useFetch'
 import { useWindowWidth } from '@store/window-width'
+import type { AnimeCardInfo } from 'types'
 
 interface Props {
   query: string

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import type { Anime } from 'types'
 import { CollectionItem } from '@components/collection/page-collection-item'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
+import type { Anime } from 'types'
 
 /**
  * Props for the PageColectionList component.

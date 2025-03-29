@@ -6,10 +6,10 @@ import { BannerInfo } from '@components/index/banners/banner-info'
 import { BannerLoader } from '@components/index/banners/banner-loader'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import { normalizeString } from '@utils/normalize-string'
 import { useIndexStore } from '@store/index-store'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { normalizeString } from '@utils/normalize-string'
 
 /**
  * AnimeBanner component displays a banner for an anime.

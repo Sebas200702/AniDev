@@ -1,8 +1,8 @@
-import type { APIRoute } from 'astro'
-import { baseTitle } from '@utils/base-url'
-import { rateLimit } from '@middlewares/rate-limit'
 import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
+import { rateLimit } from '@middlewares/rate-limit'
+import { baseTitle } from '@utils/base-url'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {

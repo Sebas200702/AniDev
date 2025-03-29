@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { useWindowWidth } from '@store/window-width'
+import { useEffect } from 'react'
 
 /**
  * LoadWindowWidth component updates the window width in the application state on resize.

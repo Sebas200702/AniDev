@@ -1,8 +1,8 @@
 import type { ErrorInfo, ReactNode } from 'react'
 
+import { toast } from '@pheralb/toast'
 import { Component } from 'react'
 import { ToastType } from 'types'
-import { toast } from '@pheralb/toast'
 
 interface ErrorBoundaryProps {
   children: ReactNode
