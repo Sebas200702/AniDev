@@ -29,6 +29,11 @@
       "bracketSpacing": true
     }
   },
+  "css": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
   "overrides": [
     { "include": ["**/*.astro"], "javascript": { "globals": [] } },
     {
