@@ -1,9 +1,9 @@
-import auth from 'auth-astro'
-import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
-import tailwindcss from '@tailwindcss/vite'
 import vercel from '@astrojs/vercel'
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'astro/config'
+import auth from 'auth-astro'
 
 export default defineConfig({
   output: 'server',
