@@ -1,5 +1,6 @@
 ---
-import { SelectColor } from '@components/profile/select-color'
+import { ParentalControl } from '@components/profile/settings/parental-control'
+import { SelectColor } from '@components/profile/settings/select-color'
 import Layout from '@layouts/base.astro'
 ---
 
@@ -19,6 +20,15 @@ import Layout from '@layouts/base.astro'
           >
         </div>
         <SelectColor client:load />
+      </li>
+      <li class="flex flex-row items-center justify-between gap-4">
+        <div>
+          <p class="text-l text-pretty">Parental Control</p>
+          <small class="text-Primary-300 text-sx"
+            >Enable or disable content rated +18 (Default disabled)</small
+          >
+        </div>
+        <ParentalControl client:load />
       </li>
     </ul>
   </section>
