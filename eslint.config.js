@@ -1,41 +1,47 @@
 import astroParser from 'astro-eslint-parser'
 import eslintPluginAstro from 'eslint-plugin-astro'
-import eslintPluginPrettier from 'eslint-plugin-prettier'
-import eslintPluginTypescript from '@typescript-eslint/eslint-plugin'
-import typescriptParser from '@typescript-eslint/parser'
+import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y'
+import eslintPluginReact from 'eslint-plugin-react'
+import love from 'eslint-config-love'
+import tsParser from '@typescript-eslint/parser'
 
 export default [
   {
-    ignores: ['.astro/**'],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      parser: typescriptParser,
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: 'module',
-        project: './tsconfig.json',
-      },
-    },
-    plugins: {
-      '@typescript-eslint': eslintPluginTypescript,
-      prettier: eslintPluginPrettier,
-    },
-  },
-  {
-    files: ['*.astro'],
+    files: ['**/*.astro'],
     languageOptions: {
       parser: astroParser,
       parserOptions: {
-        parser: astroParser,
-        ecmaVersion: 2020,
-        sourceType: 'module',
+        parser: tsParser,
         extraFileExtensions: ['.astro'],
-        project: './tsconfig.json',
       },
     },
     plugins: {
       astro: eslintPluginAstro,
-      prettier: eslintPluginPrettier,
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    plugins: {
+      react: eslintPluginReact,
+      'jsx-a11y': eslintPluginJsxA11y,
+    },
+    rules: {
+      ...eslintPluginReact.configs.recommended.rules,
+      ...eslintPluginJsxA11y.configs.recommended.rules,
+      ...love.configs,
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+    },
+    settings: {
+      react: { version: 'detect' },
     },
   },
 ]
