@@ -1,7 +1,7 @@
 #search-section {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  grid-template-areas: "aside results";
+  grid-template-areas: 'aside results';
   width: 100%;
   height: 100%;
 }
@@ -10,8 +10,8 @@
   #search-section {
     display: grid;
     grid-template-areas:
-      "aside"
-      "results";
+      'aside'
+      'results';
     grid-template-columns: 1fr;
   }
 }
