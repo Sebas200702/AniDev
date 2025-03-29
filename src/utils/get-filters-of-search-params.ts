@@ -8,7 +8,7 @@ export const getFilters = (filtersEnum: typeof Filters, url: URL) => {
         filter === Filters.parental_control ||
         filter === Filters.banners_filter
       ) {
-        filters[filter] = value !== 'false'
+        filters[filter] = value === 'true' ? true : false
       } else if (
         filter === Filters.page_number ||
         filter === Filters.limit_count ||
