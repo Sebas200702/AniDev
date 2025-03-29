@@ -1,8 +1,8 @@
 ---
 import { ClientRouter } from 'astro:transitions'
 import Footer from '@components/footer.astro'
+import { LoadUserPrefences } from '@components/load-user-preferences'
 import { LoadWindowWidth } from '@components/load-window-width'
-import { LoadTheme } from '@components/loadtheme'
 import NavBar from '@components/nav-bar/nav-bar.astro'
 import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
@@ -79,7 +79,7 @@ if (animeId) {
     <ClientRouter />
   </head>
   <body>
-    <LoadTheme client:load />
+    <LoadUserPrefences client:load />
     <LoadWindowWidth client:load />
     <div
       id="app"
