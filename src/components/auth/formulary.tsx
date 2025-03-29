@@ -172,13 +172,17 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
       const responseContent = await parseResponse(response)
 
       if (!response.ok) {
-        throw new Error(
-          typeof responseContent === 'object' && responseContent.message
-            ? responseContent.message
-            : typeof responseContent === 'string'
-              ? responseContent
-              : 'Error en la solicitud'
-        )
+        let errorMessage: string
+
+        if (typeof responseContent === 'object' && responseContent.message) {
+          errorMessage = responseContent.message
+        } else if (typeof responseContent === 'string') {
+          errorMessage = responseContent
+        } else {
+          errorMessage = 'Error en la solicitud'
+        }
+
+        throw new Error(errorMessage)
       }
 
       const redirectionResult = handleResponseRedirection(
@@ -287,7 +291,7 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
           <div className="text-Primary-200 mt-6 text-center text-sm">
             {title === 'Sign In' ? (
               <p>
-                Don't have an account?{' '}
+                <span>Don&apos;t have an account?</span>{' '}
                 <a href="/signup" className="text-blue-500 hover:underline">
                   Sign up
                 </a>
