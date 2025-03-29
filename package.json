@@ -45,6 +45,7 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/video.js": "^7.3.58",
     "@typescript-eslint/parser": "^8.28.0",
     "astro-eslint-parser": "^1.2.2",
