@@ -8,6 +8,7 @@ import { SearchResults } from '@components/search/results/search-results'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
 import { useUrlSync } from '@hooks/useUrlSync'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { baseUrl } from '@utils/base-url'
 import { createFiltersToApply } from '@utils/filters-to-apply'
@@ -47,6 +48,7 @@ export const SearchComponent = () => {
     setIsLoadingMore,
     isLoadingMore,
   } = useSearchStoreResults()
+  const { parentalControl } = useGlobalUserPreferences()
   const [page, setPage] = useState(4)
   const debouncedQuery = useDebounce(query, 600)
   const isFetching = useRef(false)
@@ -56,11 +58,11 @@ export const SearchComponent = () => {
   )
   const [isAllResults, setIsAllResults] = useState(false)
   const url = useMemo(() => {
-    const baseQuery = `${baseUrl}/api/animes?limit_count=30&banners_filter=false&format=search`
+    const baseQuery = `${baseUrl}/api/animes?limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
-  }, [debouncedQuery, filtersToApply])
+  }, [debouncedQuery, filtersToApply, parentalControl])
 
   const fetchMoreAnimes = async () => {
     if (isFetching.current) return
@@ -121,8 +123,9 @@ export const SearchComponent = () => {
 
   useEffect(() => {
     setLoading(isLoading)
+
     if (!isLoading) {
-      setResults(animes ?? [], false, fetchError)
+      setResults(animes, false, fetchError)
     }
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
