@@ -125,7 +125,7 @@ export const SearchComponent = () => {
     setLoading(isLoading)
 
     if (!isLoading) {
-      setResults(animes, false, fetchError)
+      setResults((animes ?? []), false, fetchError)
     }
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
