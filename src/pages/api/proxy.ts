@@ -69,7 +69,6 @@ export const GET: APIRoute = async ({ url }) => {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
-
       },
     })
   } catch (error) {
