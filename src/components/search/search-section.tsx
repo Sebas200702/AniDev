@@ -124,13 +124,7 @@ export const SearchComponent = () => {
     if (!isLoading) {
       setResults(animes ?? [], false, fetchError)
     }
-  }, [
-    animes,
-    isLoading,
-    fetchError,
-    setResults,
-    setLoading,
-  ])
+  }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
     <section id="search-section">
