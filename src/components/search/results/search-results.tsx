@@ -51,7 +51,7 @@ export const SearchResults = () => {
     }
   }, [animes])
 
-  if (!animes || loading) {
+  if (loading) {
     return <SearchResultsLoader />
   }
 
