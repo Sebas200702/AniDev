@@ -124,9 +124,9 @@ export const SearchComponent = () => {
   useEffect(() => {
    
 
-    if (!isLoading) {
-      setResults((animes ?? []), false, fetchError)
-    }
+   
+      setResults(animes, false, fetchError)
+    
   }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
