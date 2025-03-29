@@ -72,6 +72,11 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     [setQuery, setLoading]
   )
 
+  useEffect(() => {
+    if (!query) {
+      setLoading(false)
+    }
+  }, [query])
   const toggleExpand = () => {
     if (!isExpanded) {
       setIsExpanded(true)
