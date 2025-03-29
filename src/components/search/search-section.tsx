@@ -123,7 +123,7 @@ export const SearchComponent = () => {
 
   useEffect(() => {
    
-
+setLoading(isLoading)
    
       setResults(animes, false, fetchError)
     
