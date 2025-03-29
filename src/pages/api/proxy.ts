@@ -1,4 +1,3 @@
-import { redis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 import sharp from 'sharp'
 
@@ -20,29 +19,30 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
-
-    const cachedData = await redis.get(`proxy:${url.searchParams}`)
-    if (cachedData) {
-      return new Response(cachedData, {
-        status: 200,
-        headers: { 'Content-Type': 'image/webp' },
-      })
-    }
-
     const response = await fetch(imageUrl)
-
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: 'Invalid image URL' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return new Response(
+        JSON.stringify({ error: 'Invalid image URL (response not ok)' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
+    const contentType = response.headers.get('content-type') ?? ''
+    if (!contentType.startsWith('image/')) {
+      return new Response(
+        JSON.stringify({ error: 'URL does not point to a valid image' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
     }
 
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
+
     let image = sharp(buffer)
     if (width > 0) {
       image = image.resize({ width })
@@ -52,23 +52,23 @@ export const GET: APIRoute = async ({ url }) => {
       format === 'avif' ? image.avif({ quality }) : image.webp({ quality })
 
     const optimizedBuffer = await image.toBuffer()
-
-    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
-
     if (!optimizedBuffer) {
-      return new Response(JSON.stringify({ error: 'Error processing image' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return new Response(
+        JSON.stringify({ error: 'Error processing image (empty buffer)' }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
     }
 
-    await redis.set(`proxy:${url.searchParams}`, optimizedBuffer, {
-      EX: 86400,
-    })
+    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=86400',
+        Vary: 'Accept-Encoding',
       },
     })
   } catch (error) {
