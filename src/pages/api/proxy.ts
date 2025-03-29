@@ -69,9 +69,7 @@ export const GET: APIRoute = async ({ url }) => {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
-        'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-        'CDN-Cache-Control': 'max-age=86400',
-        Vary: 'Accept-Encoding',
+
       },
     })
   } catch (error) {
