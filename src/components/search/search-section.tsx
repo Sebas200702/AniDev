@@ -122,7 +122,7 @@ export const SearchComponent = () => {
   }, [handleScroll, page])
 
   useEffect(() => {
-    setLoading(isLoading)
+   
 
     if (!isLoading) {
       setResults((animes ?? []), false, fetchError)
