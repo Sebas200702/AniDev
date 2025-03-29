@@ -44,22 +44,21 @@ export const SearchResults = () => {
     if (!animes || loading || !query) return
     setTimeout(() => {
       setFadeIn(true)
-      setToastShown(false)
       setCompletedSearch(true)
-    }, 1000)
+    }, 600)
   }, [animes, setFadeIn, query, appliedFilters, loading])
 
   if (
     (loading && (query || appliedFilters)) ||
+    (!animes && (query || appliedFilters)) ||
     (!completedSearch && (query || appliedFilters))
   ) {
     return <SearchResultsLoader />
   }
   if (
-    !animes ||
-    (animes?.length === 0 &&
-      (query || Object.keys(appliedFilters).length > 0) &&
-      completedSearch)
+    animes?.length === 0 &&
+    (query || Object.keys(appliedFilters).length > 0) &&
+    completedSearch
   ) {
     return (
       <div className="flex h-full items-center justify-center text-center text-3xl font-bold">
@@ -79,7 +78,7 @@ export const SearchResults = () => {
     <ul
       className={`mx-auto grid w-full max-w-7xl grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 xl:gap-10 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
     >
-      {animes.map((anime) => (
+      {animes?.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />
       ))}
       {isLoadingMore && renderLoadingCards()}
