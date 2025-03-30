@@ -46,12 +46,12 @@ export const SearchResults = () => {
   }
 
   useEffect(() => {
-    if (animes?.length ) {
+    if (animes?.length) {
       setFadeIn(true)
     }
   }, [animes])
 
-  if (!animes && loading || loading) {
+  if ((!animes && loading) || loading) {
     return <SearchResultsLoader />
   }
 
