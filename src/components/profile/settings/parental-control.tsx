@@ -25,7 +25,7 @@ export const ParentalControl = () => {
         id="parental-control"
         checked={parentalControl}
         onChange={handleChange}
-        className="cursor-pointer rounded-lg border-2 border-Complementary bg-Complementary text-Complementary focus:ring-0 peer hidden"
+        className="border-Complementary bg-Complementary text-Complementary peer hidden cursor-pointer rounded-lg border-2 focus:ring-0"
       />
       <span className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out">
         <svg
