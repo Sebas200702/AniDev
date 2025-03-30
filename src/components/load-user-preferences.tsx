@@ -28,7 +28,7 @@ export const LoadUserPrefences = () => {
   useEffect(() => {
     const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
-    if (!savedEnfasis && !savedParentalControl) return
+
     setEnfasis(savedEnfasis ?? '#0057E7')
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
 
