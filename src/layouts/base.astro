@@ -6,6 +6,7 @@ import { LoadWindowWidth } from '@components/load-window-width'
 import NavBar from '@components/nav-bar/nav-bar.astro'
 import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
+import { getSessionUserInfo } from '@utils/get_session_user_info'
 import { AstroFont } from 'astro-font'
 import '@styles/global.css'
 import '@styles/fade-out.css'
@@ -39,6 +40,7 @@ if (animeId) {
     console.error('Error al obtener metadatos pre-renderizados:', error)
   }
 }
+const userInfo = await getSessionUserInfo({ request: Astro.request })
 ---
 
 <html lang="en">
@@ -79,7 +81,7 @@ if (animeId) {
     <ClientRouter />
   </head>
   <body>
-    <LoadUserPrefences client:load />
+    <LoadUserPrefences userInfo={userInfo} client:load />
     <LoadWindowWidth client:load />
     <div
       id="app"
