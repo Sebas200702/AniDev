@@ -19,16 +19,22 @@ export const GET: APIRoute = rateLimit(async () => {
 
     const { data, error } = await supabase.rpc('get_unique_studios')
     if (error) {
-      throw new Error('Ocurrió un error al obtener los estudios.')
+    return new Response(
+      JSON.stringify({ error: 'An error occurred while fetching the studios.' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
     }
     if (!data) {
-      return new Response(
-        JSON.stringify({ error: 'No se encontraron estudios' }),
-        {
-          status: 404,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+    return new Response(
+      JSON.stringify({ error: 'No studios found' }),
+      {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
     }
 
     await redis.set('studios', JSON.stringify(data))
