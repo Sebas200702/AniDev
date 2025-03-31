@@ -10,10 +10,10 @@ import { toast } from '@pheralb/toast'
 import { useAuthFormStore } from '@store/auth-form-store'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { parseResponse } from '@utils/parse-response'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
-import type{ ApiJsonResponse } from 'types'
-import { parseResponse } from '@utils/parse-response'
+import type { ApiJsonResponse } from 'types'
 
 interface Props {
   /**
@@ -29,10 +29,6 @@ interface Props {
    */
   bgImage?: string
 }
-
-
-
-
 
 enum RedirectionResult {
   URL_FROM_JSON,

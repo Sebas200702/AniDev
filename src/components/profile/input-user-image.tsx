@@ -15,12 +15,11 @@ export const InputUserImage = () => {
     $imageEditor?.classList.replace('hidden', 'flex')
   }
 
-
   return (
     <form id="image-form">
       <label
         htmlFor="file-upload"
-        className="bg-Complementary absolute z-20 md:bottom-4 md:opacity-0 md:right-5 flex cursor-pointer -translate-x-3/4 translate-y-1/2 md:translate-y-0 md:translate-x-0 items-center justify-center rounded-full  p-2 border-1 border-Primary-300/20 transition-all duration-200 ease-in-out md:group-hover:opacity-95  "
+        className="bg-Complementary border-Primary-300/20 absolute z-20 flex -translate-x-3/4 translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-1 p-2 transition-all duration-200 ease-in-out md:right-5 md:bottom-4 md:translate-x-0 md:translate-y-0 md:opacity-0 md:group-hover:opacity-95"
         title="Upload image"
       >
         <svg
@@ -31,13 +30,13 @@ export const InputUserImage = () => {
           strokeLinejoin="round"
           strokeWidth="2"
           viewBox="0 0 24 24"
-          className="md:h-5 md:w-5 w-3.5 h-3.5 text-white transition-all duration-200 ease-in-out group-hover:scale-110 group-hover:text-enfasisColor"
+          className="group-hover:text-enfasisColor h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out group-hover:scale-110 md:h-5 md:w-5"
         >
           <path stroke="none" d="M0 0h24v24H0z" />
           <path d="M12 20H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1a2 2 0 0 0 2-2 1 1 0 0 1 1-1h6a1 1 0 0 1 1 1 2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v3.5M16 19h6M19 16v6" />
           <path d="M9 13a3 3 0 1 0 6 0 3 3 0 0 0-6 0" />
         </svg>
-        <span className="text-sm hidden">Upload image</span>
+        <span className="hidden text-sm">Upload image</span>
         <input
           type="file"
           id="file-upload"

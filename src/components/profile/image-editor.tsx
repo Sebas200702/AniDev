@@ -144,14 +144,14 @@ export const ImageEditor = ({ userName }: Props) => {
   }
 
   return (
-    <section className="image-editor flex-col items-center justify-center absolute z-20 top-0 left-0 right-0 bottom-0 bg-Complementary/50 w-full h-full hidden">
+    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-20 hidden h-full w-full flex-col items-center justify-center">
       <h2 className="text-lx font-semibold">Edit your profile image</h2>
       <div
-        className="img-preview overflow-hidden rounded-full translate-y-1/2 z-30"
+        className="img-preview z-30 translate-y-1/2 overflow-hidden rounded-full"
         style={{ width: '100%', height: '150px' }}
       ></div>
 
-      <div className="bg-Complementary pt-24 p-8 rounded-xl flex flex-col gap-10 items-center border-2 border-enfasisColor/40 relative">
+      <div className="bg-Complementary border-enfasisColor/40 relative flex flex-col items-center gap-10 rounded-xl border-2 p-8 pt-24">
         <button
           className="absolute top-5 right-5 cursor-pointer"
           onClick={handleClose}
@@ -159,19 +159,19 @@ export const ImageEditor = ({ userName }: Props) => {
           <CloseIcon className="h-5 w-5" />
         </button>
 
-        <div className="rounded-md overflow-hidden">
+        <div className="overflow-hidden rounded-md">
           <Cropper
             preview=".img-preview"
             ref={cropperRef}
             src={image ?? '/placeholder.webp'}
-            className="w-64 h-64 md:w-96 md:h-96"
+            className="h-64 w-64 md:h-96 md:w-96"
             initialAspectRatio={1}
             aspectRatio={1}
             guides={false}
           />
         </div>
 
-        <footer className="flex gap-8 flex-row w-full">
+        <footer className="flex w-full flex-row gap-8">
           <button
             className="button-primary text-m w-full"
             onClick={getCropData}
