@@ -15,11 +15,12 @@ export const InputUserImage = () => {
     $imageEditor?.classList.replace('hidden', 'flex')
   }
 
+
   return (
     <form id="image-form">
       <label
         htmlFor="file-upload"
-        className="bg-Complementary absolute z-20 md:bottom-4 md:opacity-0 md:right-5 flex cursor-pointer -translate-x-3/4 translate-y-1/2 items-center justify-center rounded-full  p-2 border-1 border-Primary-300/20 transition-all duration-200 ease-in-out md:group-hover:opacity-95  "
+        className="bg-Complementary absolute z-20 md:bottom-4 md:opacity-0 md:right-5 flex cursor-pointer -translate-x-3/4 translate-y-1/2 md:translate-y-0 md:translate-x-0 items-center justify-center rounded-full  p-2 border-1 border-Primary-300/20 transition-all duration-200 ease-in-out md:group-hover:opacity-95  "
         title="Upload image"
       >
         <svg
