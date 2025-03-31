@@ -2,8 +2,6 @@
 const url = Astro.url.pathname
 import { Profile } from '@components/nav-bar/profile'
 import { SearchBar } from '@components/nav-bar/search-bar'
-import { getSessionUserInfo } from '@utils/get_session_user_info'
-const sesionUserInfo = await getSessionUserInfo({ request: Astro.request })
 ---
 
 <nav
@@ -21,7 +19,7 @@ const sesionUserInfo = await getSessionUserInfo({ request: Astro.request })
       <SearchBar client:load location={url} />
     </li>
     <li class="w-full max-w-xs">
-      <Profile client:visible userInfo={sesionUserInfo} />
+      <Profile client:visible  />
     </li>
   </ul>
 </nav>
