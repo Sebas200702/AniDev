@@ -1,9 +1,10 @@
 import { pinata } from '@libs/pinata'
+import { checkSession } from '@middlewares/auth'
 
 import type { APIRoute } from 'astro'
 import sharp from 'sharp'
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = checkSession(async ({ request }) => {
   const { image, filename } = await request.json()
 
   if (!image) {
@@ -37,8 +38,16 @@ export const POST: APIRoute = async ({ request }) => {
     type: 'image/webp',
   })
 
+  const { files } = await pinata.files.public.list()
+
+  const existingFile = files.find((file) => file.name === filename)
+
+  if (existingFile) {
+    await pinata.files.public.delete([existingFile.id])
+  }
+
   const { cid } = await pinata.upload.public.file(newFile)
   const url = await pinata.gateways.public.convert(cid)
 
   return new Response(JSON.stringify({ data: url }), { status: 200 })
-}
+})
