@@ -32,6 +32,11 @@ export type Anime = {
   readonly season: string | null
   readonly aired_day: string | null
 }
+export interface ApiJsonResponse {
+  url?: string
+  message?: string
+  [key: string]: unknown
+}
 
 declare module '@auth-astro/client' {
   interface AstroSignInOptions {
