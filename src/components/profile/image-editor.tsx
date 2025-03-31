@@ -13,9 +13,14 @@ interface Props {
   userName: string
 }
 
+interface Payload {
+  image: string
+  filename: string
+}
 export const ImageEditor = ({ userName }: Props) => {
   const { image } = useUploadImageStore()
   const [cropData, setCropData] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const { setUserInfo, userInfo } = useGlobalUserPreferences()
@@ -23,21 +28,29 @@ export const ImageEditor = ({ userName }: Props) => {
   const cropperRef = useRef<ReactCropperElement>(null)
 
   useEffect(() => {
-    if (errorMessage) {
-      toast[ToastType.Error]({ text: errorMessage })
-      setErrorMessage(null)
-    }
-  }, [errorMessage])
+    if (isLoading) {
+      toast[ToastType.Loading]({
+        text: 'Uploading Image',
+        options: {
+          promise: getCropData(),
+          success: successMessage ?? 'Done',
+          error: errorMessage ?? 'Error',
 
-  useEffect(() => {
-    if (successMessage) {
-      toast[ToastType.Success]({ text: successMessage })
-      setSuccessMessage(null)
+          autoDismiss: true,
+          onSuccess: () => {
+            console.log('Success')
+          },
+          onError: () => {
+            console.log('Error')
+          },
+        },
+      })
     }
-  }, [successMessage])
+  }, [isLoading])
 
   const getCropData = async () => {
     if (cropperRef.current?.cropper) {
+      setIsLoading(true)
       const croppedData = cropperRef.current.cropper
         .getCroppedCanvas()
         .toDataURL()
@@ -46,6 +59,64 @@ export const ImageEditor = ({ userName }: Props) => {
     }
   }
 
+  const uploadImage = async (payload: Payload) => {
+    const response = await fetch('/api/uploadImage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+      credentials: 'include',
+    })
+
+    const responseContent = await response.json()
+
+    if (!response.ok) {
+      let errMsg: string
+
+      if (typeof responseContent === 'object' && responseContent.message) {
+        errMsg = responseContent.message
+      } else if (typeof responseContent === 'string') {
+        errMsg = responseContent
+      } else {
+        errMsg = 'Error en la solicitud'
+      }
+      throw new Error(errMsg)
+    }
+
+    const { data: newImage } = responseContent
+    const newUserInfo = {
+      name: userInfo?.name ?? '',
+      avatar: newImage as string,
+    }
+
+    setUserInfo(newUserInfo)
+    await saveImage(newImage)
+  }
+  const saveImage = async (newImage: string) => {
+    const saveImageRes = await fetch('api/saveImage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newImage),
+      credentials: 'include',
+    })
+    const responseContent = await saveImageRes.json()
+
+    if (!saveImageRes.ok) {
+      let errMsg: string
+
+      if (typeof responseContent === 'object' && responseContent.message) {
+        errMsg = responseContent.message
+      } else if (typeof responseContent === 'string') {
+        errMsg = responseContent
+      } else {
+        errMsg = 'Error en la solicitud'
+      }
+      throw new Error(errMsg)
+    }
+  }
   const submitImage = async (croppedImage: string) => {
     if (!croppedImage) return
 
@@ -54,39 +125,8 @@ export const ImageEditor = ({ userName }: Props) => {
       filename: `${userName}_Avatar`,
     }
     try {
-      const response = await fetch('/api/uploadImage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-        credentials: 'include',
-      })
+      await uploadImage(payload)
 
-      const responseContent = await response.json()
-
-      if (!response.ok) {
-        let errMsg: string
-
-        if (typeof responseContent === 'object' && responseContent.message) {
-          errMsg = responseContent.message
-        } else if (typeof responseContent === 'string') {
-          errMsg = responseContent
-        } else {
-          errMsg = 'Error en la solicitud'
-        }
-        throw new Error(errMsg)
-      }
-      console.log(responseContent)
-
-      const { data: newImage } = responseContent
-      console.log(newImage)
-      const newUserInfo = {
-        name: userInfo?.name ?? '',
-        avatar: newImage as string,
-      }
-
-      setUserInfo(newUserInfo)
       setSuccessMessage('Imagen actualizada correctamente')
     } catch (error) {
       const errorMsg =
@@ -94,6 +134,7 @@ export const ImageEditor = ({ userName }: Props) => {
       setErrorMessage(errorMsg)
     } finally {
       handleClose()
+      setIsLoading(false)
     }
   }
 
