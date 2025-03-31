@@ -1,3 +1,4 @@
+import { supabase } from '@libs/supabase'
 import { getSession } from 'auth-astro/server'
 
 /**
@@ -23,6 +24,7 @@ import { getSession } from 'auth-astro/server'
  *   console.log(`User: ${userInfo.name}, Avatar: ${userInfo.avatar}`);
  * }
  */
+
 export const getSessionUserInfo = async ({
   request,
 }: {
@@ -30,10 +32,15 @@ export const getSessionUserInfo = async ({
 }) => {
   if (!request) return null
   const session = await getSession(request)
-
+  const { data, error } = await supabase
+    .from('public_users')
+    .select('avatar_url')
+    .eq('name', session?.user?.name)
+    .single()
+  const userImage = data?.avatar_url
   const userInfo = {
     name: session?.user?.name ?? null,
-    avatar: session?.user?.image ?? null,
+    avatar: error ? (session?.user?.image ?? null) : userImage,
   }
 
   return userInfo
