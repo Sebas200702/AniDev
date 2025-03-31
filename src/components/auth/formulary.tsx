@@ -12,6 +12,8 @@ import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
+import type{ ApiJsonResponse } from 'types'
+import { parseResponse } from '@utils/parse-response'
 
 interface Props {
   /**
@@ -28,28 +30,9 @@ interface Props {
   bgImage?: string
 }
 
-interface ApiJsonResponse {
-  url?: string
-  message?: string
-  [key: string]: unknown
-}
 
-const parseResponse = async (
-  response: Response
-): Promise<ApiJsonResponse | string> => {
-  const contentType = response.headers.get('content-type')
 
-  if (contentType?.includes('application/json')) {
-    try {
-      return (await response.json()) as ApiJsonResponse
-    } catch (e) {
-      console.error('Error parsing JSON response:', e)
-      return {}
-    }
-  } else {
-    return await response.text()
-  }
-}
+
 
 enum RedirectionResult {
   URL_FROM_JSON,
