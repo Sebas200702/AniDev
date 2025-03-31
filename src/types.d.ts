@@ -105,6 +105,7 @@ export enum ToastType {
   Error = 'error',
   Warning = 'warning',
   Info = 'info',
+  Loading = 'loading'
 }
 interface Collection {
   title: string
