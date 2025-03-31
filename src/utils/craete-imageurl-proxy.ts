@@ -28,6 +28,7 @@ export const createImageUrlProxy = (
   quality?: string,
   format?: string
 ) => {
+  if (!imageUrl) return ''
   return !width || !quality || !format
     ? `/api/proxy?url=${imageUrl}`
     : `/api/proxy?url=${imageUrl}&w=${width}&q=${quality}&format=${format}`
