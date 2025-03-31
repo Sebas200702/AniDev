@@ -26,6 +26,10 @@ import { create } from 'zustand'
  */
 interface GlobalUserPreferences {
   enfasis: string
+  userInfo: { name: string | null; avatar: string | null } | null
+  setUserInfo: (
+    user: { name: string | null; avatar: string | null } | null
+  ) => void
   parentalControl: boolean
   setParentalControl: (value: boolean) => void
   setEnfasis: (color: string) => void
@@ -35,6 +39,10 @@ export const useGlobalUserPreferences = create<GlobalUserPreferences>(
   (set) => ({
     enfasis: '#0057E7',
     setEnfasis: (color: string) => set({ enfasis: color }),
+    userInfo: { name: null, avatar: null },
+    setUserInfo(user) {
+      set({ userInfo: user })
+    },
     parentalControl: true,
     setParentalControl(value) {
       set({ parentalControl: value })
