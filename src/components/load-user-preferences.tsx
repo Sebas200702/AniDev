@@ -1,4 +1,5 @@
 import { useGlobalUserPreferences } from '@store/global-user'
+
 import { useEffect } from 'react'
 
 /**
@@ -22,17 +23,27 @@ import { useEffect } from 'react'
  * @example
  * <LoadTheme />
  */
-export const LoadUserPrefences = () => {
-  const { enfasis, setEnfasis, parentalControl, setParentalControl } =
-    useGlobalUserPreferences()
+interface Props {
+  userInfo: { name: string | null; avatar: string | null } | null
+}
+export const LoadUserPrefences = ({ userInfo }: Props) => {
+  const {
+    enfasis,
+    setEnfasis,
+    parentalControl,
+    setParentalControl,
+    setUserInfo,
+  } = useGlobalUserPreferences()
+
   useEffect(() => {
     const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
 
     setEnfasis(savedEnfasis ?? '#0057E7')
+    setUserInfo(userInfo)
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
 
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
-  }, [enfasis, setEnfasis, parentalControl, setParentalControl])
+  }, [enfasis, setEnfasis, parentalControl, setParentalControl, setUserInfo])
   return null
 }
