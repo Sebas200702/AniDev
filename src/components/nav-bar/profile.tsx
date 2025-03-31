@@ -1,11 +1,7 @@
 import { useEffect, useRef } from 'react'
 
+import { useGlobalUserPreferences } from '@store/global-user'
 import { signOut } from 'auth-astro/client'
-import type { Session } from 'types'
-
-interface Props {
-  userInfo: Session | null
-}
 
 /**
  * Profile component renders the user's profile information and a dropdown menu.
@@ -32,7 +28,8 @@ interface Props {
  * @example
  * <Profile userInfo={session} />
  */
-export const Profile = ({ userInfo }: Props) => {
+export const Profile = () => {
+  const { userInfo } = useGlobalUserPreferences()
   const dropdownRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const handleClick = () => {
