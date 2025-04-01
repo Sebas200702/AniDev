@@ -3,6 +3,54 @@ import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import type { APIRoute } from 'astro'
 
+/**
+ * getAnime endpoint retrieves detailed information about a specific anime.
+ *
+ * @summary
+ * An API endpoint that fetches comprehensive anime data using a slug identifier.
+ *
+ * @description
+ * This endpoint implements a robust caching mechanism using Redis to optimize performance
+ * and reduce database load. It validates the provided slug format, extracts the anime ID,
+ * and returns detailed anime information from the database. The endpoint includes rate
+ * limiting to prevent abuse and implements proper error handling for various scenarios.
+ *
+ * The endpoint uses a two-level caching strategy:
+ * 1. Redis cache with a TTL of 1 hour
+ * 2. In-memory request deduplication to prevent duplicate requests
+ *
+ * @features
+ * - Rate limiting: Prevents API abuse with configurable limits
+ * - Caching: Redis-based caching with 1-hour TTL
+ * - Request deduplication: Prevents duplicate requests for the same anime
+ * - Input validation: Validates slug format and ID
+ * - Error handling: Comprehensive error handling with appropriate status codes
+ * - Cache headers: Proper cache control headers for CDN and browser caching
+ *
+ * @param {APIRoute} context - The API context containing request information
+ * @param {URL} context.url - The request URL containing query parameters
+ * @param {string} context.url.searchParams.get('slug') - The anime slug in format 'title_id'
+ * @returns {Promise<Response>} A Response object containing the anime data or error message
+ *
+ * @example
+ * // Request
+ * GET /api/getAnime?slug=one-piece_21
+ *
+ * // Success Response (200)
+ * {
+ *   "anime": {
+ *     "id": 21,
+ *     "title": "One Piece",
+ *     // ... other anime details
+ *   }
+ * }
+ *
+ * // Error Response (404)
+ * {
+ *   "error": "Invalid slug format"
+ * }
+ */
+
 interface ValidationResult {
   valid: boolean
   error?: string
