@@ -9,7 +9,10 @@ export const UserInfo = () => {
   const { userInfo } = useGlobalUserPreferences()
   const { setImage } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
+  const isEnabled = !!userInfo
+
   const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
+    enabled: isEnabled,
     onDropDataUrl: (dataUrl) => {
       setImage(dataUrl)
 
@@ -44,7 +47,9 @@ export const UserInfo = () => {
         className="group relative flex max-h-26 max-w-26 w-full h-full items-center justify-center rounded-full md:h-40 md:w-40"
       >
         <div
-          className={`bg-enfasisColor absolute inset-0 flex  items-center justify-center rounded-full transition-opacity duration-200 w-f ${isDragging ? 'opacity-100' : 'opacity-0'}`}
+          className={`bg-enfasisColor absolute inset-0 flex items-center justify-center rounded-full transition-opacity duration-200 w-f ${
+            isDragging ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{ zIndex: -1 }}
         >
           <span className="px-2 text-center text-sm font-medium text-white">
