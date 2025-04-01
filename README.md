@@ -14,6 +14,7 @@ AniDev is a modern anime streaming and exploration platform built with AstroJS a
 - 📄 **Unit Testing**: Uses Vitest for testing API endpoints and components.
 - 🔐 **Authentication**: Secure user authentication with Supabase Auth.
 - 📱 **Responsive UI**: TailwindCSS for beautiful and responsive layouts.
+- 🎯 **Code Quality**: Biome for linting and formatting.
 
 ---
 
@@ -48,7 +49,9 @@ AniDev is a modern anime streaming and exploration platform built with AstroJS a
 │   └── utils/         # Helper functions and utilities
 ├── 🗁 public/         # Static assets
 ├── 🗁 .github/        # GitHub workflows and configs
-└── 🗁 .vscode/        # VS Code specific settings
+├── 🗁 .vscode/        # VS Code specific settings
+├── 🗁 .astro/         # Astro build output
+└── 🗁 node_modules/   # Project dependencies
 ```
 
 ---
@@ -84,15 +87,56 @@ const debouncedSearch = useDebounce(search, 300)
 
 AniDev provides various API endpoints for fetching anime data:
 
+### Anime Endpoints
 - `/api/animes/full` - Get animes with filtering options
 - `/api/getAnime` - Get detailed information about a specific anime
+- `/api/getAnimeMetadatas` - Get SEO metadata for an anime
 - `/api/episodes` - Get episodes list for an anime
 - `/api/getEpisode` - Get specific episode details
-- `/api/videoProxy` - Proxy for streaming video content
 - `/api/studios` - Get anime studios information
-- `/api/auth/*` - Authentication endpoints (signin, signup, signout, callback)
+
+### Media Endpoints
+- `/api/videoProxy` - Proxy for streaming video content
+- `/api/proxy` - Image proxy with optimization (resize, quality, format)
+- `/api/uploadImage` - Upload and optimize images (requires authentication)
+- `/api/saveImage` - Save user avatar images (requires authentication)
+
+### Authentication Endpoints
+- `/api/auth/signup` - Register a new user
+- `/api/auth/signin` - Login an existing user
+- `/api/auth/signout` - Logout the current user
+- `/api/auth/callback` - OAuth callback handling
 
 Each endpoint supports various query parameters for filtering, sorting, and pagination.
+
+## 🔧 Middlewares
+
+AniDev implements several middleware functions to enhance API security and functionality:
+
+### Rate Limiting
+```typescript
+import { rateLimit } from '@middlewares/rate-limit'
+
+export const GET = rateLimit(async (context) => {
+  // Your API handler here
+}, { points: 100, duration: 60 })
+```
+- Prevents API abuse by limiting request rates
+- Configurable points and duration
+- Returns 429 status with Retry-After header when limit is exceeded
+- Includes rate limit headers in responses
+
+### Authentication Check
+```typescript
+import { checkSession } from '@middlewares/auth'
+
+export const POST = checkSession(async (context) => {
+  // Your protected API handler here
+})
+```
+- Verifies user session before allowing access
+- Returns 401 status for unauthorized requests
+- Automatically adds session to context
 
 ---
 
@@ -107,8 +151,7 @@ Each endpoint supports various query parameters for filtering, sorting, and pagi
 - [Video.js](https://videojs.com/) - Video Player
 - [Zustand](https://zustand-demo.pmnd.rs/) - State Management
 - [Vitest](https://vitest.dev/) - Testing Framework
-- [Prettier](https://prettier.io/) - Code Formatting
-- [ESLint](https://eslint.org/) - Code Linting
+- [Biome](https://biomejs.dev/) - Code Formatting and Linting
 - [Vercel](https://vercel.com/) - Deployment Platform
 
 ---
@@ -150,8 +193,8 @@ Visit `http://localhost:4321` to see your application running.
 - `pnpm build` - Build for production
 - `pnpm preview` - Preview production build
 - `pnpm test` - Run tests
-- `pnpm lint` - Lint code
-- `pnpm format` - Format code
+- `pnpm lint` - Lint code with Biome
+- `pnpm format` - Format code with Biome
 
 ---
 
