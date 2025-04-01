@@ -43,5 +43,5 @@ export const getSessionUserInfo = async ({
     avatar: error ? (session?.user?.image ?? null) : userImage,
   }
 
-  return userInfo
+  return userInfo.name ? userInfo : null
 }
