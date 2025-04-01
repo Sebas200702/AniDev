@@ -61,6 +61,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     <meta name="twitter:site" content={baseUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href={userInfo?.avatar} as="image" />
     <AstroFont
       config={[
         {
