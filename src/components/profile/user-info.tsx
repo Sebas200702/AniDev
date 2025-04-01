@@ -44,10 +44,10 @@ export const UserInfo = () => {
         ref={(el) => {
           dropTargetRef.current = el
         }}
-        className="group relative flex max-h-26 max-w-26 w-full h-full items-center justify-center rounded-full md:h-40 md:w-40"
+        className="group relative flex h-full max-h-26 w-full max-w-26 items-center justify-center rounded-full md:h-40 md:w-40"
       >
         <div
-          className={`bg-enfasisColor absolute inset-0 flex items-center justify-center rounded-full transition-opacity duration-200 w-f ${
+          className={`bg-enfasisColor absolute inset-0 flex w-full items-center justify-center rounded-full transition-opacity duration-200 ${
             isDragging ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ zIndex: -1 }}

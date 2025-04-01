@@ -15,7 +15,6 @@ export const useDragAndDrop = ({
   const dragCounter = useRef(0)
   const dropTargetRef = useRef<HTMLDivElement | null>(null)
 
-
   const handleDragEnter = useCallback(
     (e: DragEvent) => {
       if (!enabled) return
