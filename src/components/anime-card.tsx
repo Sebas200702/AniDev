@@ -58,12 +58,33 @@ export const AnimeCard = ({ anime, context }: Props) => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
   let timer: NodeJS.Timeout
+
+  /**
+   * Handles the mouse enter event for the anime card.
+   *
+   * @description
+   * This function implements a debounced fetch request to load additional metadata
+   * for the anime when the user hovers over the card. It uses a 1-second delay to
+   * prevent excessive API calls during quick mouse movements.
+   *
+   * The function makes a request to the `/api/getAnimeMetadatas` endpoint with the
+   * anime's MAL ID to fetch additional information that can be used for tooltips
+   * or other hover interactions.
+   */
   const handleMouseEnter = async () => {
     timer = setTimeout(() => {
       fetch(`/api/getAnimeMetadatas?id=${mal_id}`)
     }, 1000)
   }
 
+  /**
+   * Handles the mouse leave event for the anime card.
+   *
+   * @description
+   * This function cleans up the timer set by handleMouseEnter when the user's mouse
+   * leaves the card. It prevents the metadata fetch from occurring if the user moves
+   * away from the card before the debounce delay expires.
+   */
   const handleMouseLeave = () => {
     clearTimeout(timer)
   }
