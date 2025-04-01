@@ -207,15 +207,15 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
           styles="w-full"
         >
           <Favicon
-            className={`absolute top-2 right-4 z-20 h-8 w-8 md:h-16 md:w-16 ${title === 'Sign Up' ? 'md:left-4' : 'md:right-4'} `}
+            className={`absolute top-2 right-4 text-enfasisColor z-20 h-8 w-8 md:h-16 md:w-16 ${title === 'Sign Up' ? 'md:left-4' : 'md:right-4'} `}
           />
 
           <Overlay
-            className={`to-Primary-950/40 h-full w-full ${title === 'Sign Up' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
+            className={`to-Primary-950/40 h-full z-10 w-full ${title === 'Sign Up' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
           />
           <img
             src={bgImage}
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-cover object-center relative"
             alt=""
           />
         </Picture>
