@@ -20,7 +20,7 @@ export const InputUserImage = () => {
     <form id="image-form">
       <label
         htmlFor="file-upload"
-        className="bg-Complementary border-Primary-300/20 absolute z-20 flex -translate-x-3/4 translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-1 p-2 transition-all duration-200 ease-in-out md:right-5 md:bottom-4 md:translate-x-0 md:translate-y-0 md:opacity-0 md:group-hover:opacity-95"
+        className="bg-Complementary border-Primary-300/20 absolute z-20 flex -translate-x-3/4 translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-1 p-2 transition-all duration-200 ease-in-out md:right-3 md:bottom-4  md:translate-y-0 md:opacity-0 md:group-hover:opacity-95"
         title="Upload image"
       >
         <svg
