@@ -2,10 +2,27 @@ import type { APIContext } from 'astro'
 import { getSession } from 'auth-astro/server'
 
 /**
- * Middleware to check the session of the user.
+ * Authentication middleware for API endpoints to ensure user session validity.
  *
- * @param {Function} handler - The API handler function to be wrapped with session checking.
- * @returns {Function} A middleware-wrapped handler function with session validation applied.
+ * @description This middleware implements session validation for protected API routes.
+ * It checks for the presence of a valid user session using auth-astro's session management.
+ * If no valid session is found, it returns a 401 Unauthorized response. For valid sessions,
+ * it attaches the session object to the context for use in the route handler.
+ *
+ * The middleware includes proper error handling for both authentication failures and
+ * server errors, returning appropriate HTTP status codes and JSON responses.
+ *
+ * @param {Function} handler - The API handler function to be protected with session validation
+ * @returns {Function} A middleware-wrapped handler function with session validation applied
+ *
+ * @example
+ * export const get = checkSession(
+ *   async (context) => {
+ *     // Access session data from context
+ *     const { user } = context.session;
+ *     return new Response(JSON.stringify({ data: "Protected data" }), { status: 200 });
+ *   }
+ * );
  */
 export const checkSession = (
   handler: (context: APIContext) => Promise<Response>
