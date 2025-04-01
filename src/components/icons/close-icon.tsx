@@ -1,5 +1,25 @@
 import type { IconProps } from 'types'
 
+/**
+ * CloseIcon component renders an X-shaped close button icon.
+ *
+ * @description
+ * This component renders a simple SVG icon representing a close or dismiss action.
+ * The icon consists of two diagonal lines forming an X shape. It uses the current
+ * text color through the `currentColor` value and supports custom styling through
+ * the className prop.
+ *
+ * The icon is designed to be minimal and clear, with rounded line caps and joins
+ * for a polished appearance. It maintains a consistent 24x24 viewport and uses
+ * a 2px stroke width for optimal visibility at various sizes.
+ *
+ * @param {IconProps} props - The component props
+ * @param {string} [props.className] - Optional additional CSS classes for styling
+ * @returns {JSX.Element} The rendered close icon SVG
+ *
+ * @example
+ * <CloseIcon className="w-6 h-6 text-red-500" />
+ */
 export const CloseIcon = ({ className }: IconProps) => {
   return (
     <svg
