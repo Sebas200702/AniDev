@@ -59,7 +59,7 @@ export const Profile = () => {
         <button onClick={handleClick} ref={buttonRef}>
           <img
             className="h-10 w-10 rounded-full"
-            src={userInfo?.avatar ?? '/profile-picture-5.webp'}
+            src={userInfo?.avatar ?? '/placeholder.webp'}
             alt="Profile"
             loading="lazy"
             decoding="async"
