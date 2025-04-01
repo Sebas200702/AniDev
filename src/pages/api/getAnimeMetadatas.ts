@@ -4,6 +4,53 @@ import { rateLimit } from '@middlewares/rate-limit'
 import { baseTitle } from '@utils/base-url'
 import type { APIRoute } from 'astro'
 
+/**
+ * getAnimeMetadatas endpoint retrieves SEO metadata for a specific anime.
+ *
+ * @summary
+ * An API endpoint that fetches and caches SEO-related metadata for anime pages.
+ *
+ * @description
+ * This endpoint provides SEO-optimized metadata for anime pages, including title,
+ * description, and featured image. It implements a caching mechanism using Redis
+ * to optimize performance and reduce database load. The endpoint includes rate
+ * limiting to prevent abuse and implements proper error handling for various scenarios.
+ *
+ * The endpoint formats the metadata specifically for SEO purposes:
+ * - Combines anime title with site name
+ * - Provides synopsis as meta description
+ * - Includes high-quality image URL for social sharing
+ *
+ * @features
+ * - Rate limiting: Prevents API abuse with configurable limits
+ * - Caching: Redis-based caching with 24-hour TTL
+ * - SEO optimization: Properly formatted metadata
+ * - Error handling: Comprehensive error handling
+ * - Cache headers: Proper cache control headers for CDN and browser
+ * - Performance: Efficient database queries with proper indexing
+ *
+ * @param {APIRoute} context - The API context containing request information
+ * @param {URL} context.url - The request URL containing query parameters
+ * @param {string} context.url.searchParams.get('id') - The anime ID (MAL ID)
+ * @returns {Promise<Response>} A Response object containing the metadata or error message
+ *
+ * @example
+ * // Request
+ * GET /api/getAnimeMetadatas?id=21
+ *
+ * // Success Response (200)
+ * {
+ *   "title": "One Piece - AniDev",
+ *   "description": "Follow Monkey D. Luffy and his pirate crew...",
+ *   "image": "https://example.com/one-piece-large.webp"
+ * }
+ *
+ * // Error Response (404)
+ * {
+ *   "error": "No se encontraron metadatos del anime"
+ * }
+ */
+
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
     if (!redis.isOpen) {
