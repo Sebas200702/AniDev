@@ -1,49 +1,67 @@
-import { Picture } from '@components/picture'
+import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { useRef } from 'react'
 import { ImageEditor } from './image-editor'
 import { InputUserImage } from './input-user-image'
 
 export const UserInfo = () => {
   const { userInfo } = useGlobalUserPreferences()
   const { setImage } = useUploadImageStore()
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    const droppedFile = e.dataTransfer.files[0]
-    if (!droppedFile) return
-    const reader = new FileReader()
-    reader.onload = () => {
-      setImage(reader.result as string)
-    }
-    reader.readAsDataURL(droppedFile)
-    const $imageEditor = document.querySelector('.image-editor')
+  const imageRef = useRef<HTMLImageElement | null>(null)
+  const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
+    onDropDataUrl: (dataUrl) => {
+      setImage(dataUrl)
 
-    $imageEditor?.classList.replace('hidden', 'flex')
+      const $imageEditor = document.querySelector('.image-editor')
+      $imageEditor?.classList.replace('opacity-0', 'opacity-100')
+      $imageEditor?.classList.remove('pointer-events-none')
+
+      if (imageRef.current) {
+        imageRef.current.classList.remove('opacity-10')
+        imageRef.current.classList.add('opacity-100')
+      }
+    },
+  })
+
+  if (imageRef.current) {
+    if (isDragging) {
+      imageRef.current.classList.remove('opacity-100')
+      imageRef.current.classList.add('opacity-10')
+    } else {
+      imageRef.current.classList.remove('opacity-10')
+      imageRef.current.classList.add('opacity-100')
+    }
   }
+
   return (
     <article className="z-10 mt-24 flex w-full flex-row items-center gap-6 text-white md:gap-8">
       <div
+        {...dragDropProps}
+        ref={(el) => {
+          dropTargetRef.current = el
+        }}
         className="group relative flex h-26 w-26 items-center justify-center rounded-full md:h-40 md:w-40"
-        onDrop={handleDrop}
-        onDragOver={(event) => event.preventDefault()}
       >
-        <Picture
-          image={createImageUrlProxy(userInfo?.avatar ?? '')}
-          styles="h-26 w-26 rounded-full md:h-36 md:w-36 relative"
+        <div
+          className={`absolute inset-0 flex items-center justify-center rounded-full h-26 w-26 md:h-36 md:w-36 bg-enfasisColor transition-opacity duration-200 ${isDragging ? 'opacity-100' : 'opacity-0'}`}
+          style={{ zIndex: -1 }}
         >
-          <img
-            src={userInfo?.avatar ?? '/profile-picture-5.webp'}
-            alt={`${userInfo?.name} Avatar`}
-            className="relative h-26 w-26 rounded-full md:h-36 md:w-36"
-            loading="lazy"
-          />
-        </Picture>
+          <span className="text-white text-sm font-medium text-center px-2">
+            Drop your image here
+          </span>
+        </div>
+
+        <img
+          ref={imageRef}
+          src={userInfo?.avatar ?? '/placeholder.webp'}
+          alt={`${userInfo?.name} Avatar`}
+          className="relative h-26 w-26 rounded-full md:h-36 md:w-36 transition-all duration-200"
+        />
         {userInfo?.name && <InputUserImage />}
       </div>
 
       <ImageEditor userName={userInfo?.name ?? ''} />
-
       <span className="truncate text-lg font-bold md:text-4xl">
         {userInfo?.name ?? 'Guest'}
       </span>
