@@ -13,7 +13,6 @@ export const useDragAndDrop = ({
   const dragCounter = useRef(0)
   const dropTargetRef = useRef<HTMLDivElement | null>(null)
 
-  // Usamos useCallback para evitar recrear las funciones en cada render
   const handleDragEnter = useCallback((e: DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -38,7 +37,7 @@ export const useDragAndDrop = ({
     (e: DragEvent) => {
       e.preventDefault()
       e.stopPropagation()
-      // Opcional: podríamos asegurarnos de mantener el estado "dragging"
+
       if (!isDragging && dragCounter.current > 0) {
         setIsDragging(true)
       }
@@ -50,15 +49,11 @@ export const useDragAndDrop = ({
     (e: DragEvent) => {
       e.preventDefault()
       e.stopPropagation()
-
-      // Reseteamos el contador y el estado
       dragCounter.current = 0
       setIsDragging(false)
 
       const droppedFile = e.dataTransfer?.files[0]
       if (!droppedFile) return
-
-      // Llamamos a los callbacks provistos
       if (onDrop) {
         onDrop(droppedFile)
       }
@@ -76,8 +71,6 @@ export const useDragAndDrop = ({
   useEffect(() => {
     const dropTarget = dropTargetRef.current
     if (!dropTarget) return
-
-    // Se añaden los listeners directamente al elemento de drop
     dropTarget.addEventListener('dragenter', handleDragEnter)
     dropTarget.addEventListener('dragleave', handleDragLeave)
     dropTarget.addEventListener('dragover', handleDragOver)
@@ -93,7 +86,6 @@ export const useDragAndDrop = ({
 
   return {
     isDragging,
-    // Se expone únicamente el ref para que el componente lo asigne al contenedor
     dragDropProps: {
       ref: dropTargetRef,
     },
