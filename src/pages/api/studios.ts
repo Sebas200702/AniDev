@@ -3,6 +3,52 @@ import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import type { APIRoute } from 'astro'
 
+/**
+ * studios endpoint retrieves a list of unique anime studios.
+ *
+ * @summary
+ * An API endpoint that fetches and caches a list of all unique anime studios.
+ *
+ * @description
+ * This endpoint implements a long-term caching mechanism using Redis to optimize
+ * performance and reduce database load. It fetches unique studio names from the
+ * database using a stored procedure and caches the results for an extended period.
+ * The endpoint includes rate limiting to prevent abuse and implements proper
+ * error handling for various scenarios.
+ *
+ * The endpoint uses Redis caching with a one-year TTL to store the studio list,
+ * as this data rarely changes. It implements comprehensive error handling and
+ * proper response formatting for both successful and error cases.
+ *
+ * @features
+ * - Rate limiting: Prevents API abuse with configurable limits
+ * - Long-term caching: Redis-based caching with 1-year TTL
+ * - Database optimization: Uses stored procedure for efficient querying
+ * - Error handling: Comprehensive error handling with appropriate status codes
+ * - Response formatting: Consistent JSON response structure
+ * - Cache headers: Proper cache control headers for long-term caching
+ *
+ * @param {APIRoute} context - The API context containing request information
+ * @returns {Promise<Response>} A Response object containing the studios list or error message
+ *
+ * @example
+ * // Request
+ * GET /api/studios
+ *
+ * // Success Response (200)
+ * [
+ *   "Studio Ghibli",
+ *   "Madhouse",
+ *   "Kyoto Animation",
+ *   // ... other studios
+ * ]
+ *
+ * // Error Response (404)
+ * {
+ *   "error": "No studios found"
+ * }
+ */
+
 export const GET: APIRoute = rateLimit(async () => {
   try {
     if (!redis.isOpen) {
