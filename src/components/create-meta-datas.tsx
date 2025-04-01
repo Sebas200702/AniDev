@@ -49,6 +49,22 @@ interface Props {
  * />
  */
 export const CreateMetaDatas = ({ title, description, image }: Props) => {
+  /**
+   * Updates the document's metadata with the provided title, description, and image.
+   *
+   * @description
+   * This function updates various meta tags in the document head to ensure proper SEO
+   * and social media sharing. It handles both standard HTML meta tags and platform-specific
+   * meta tags for Open Graph (Facebook) and Twitter Cards.
+   *
+   * The function updates the following meta tags:
+   * - Standard HTML: title and description
+   * - Open Graph: title, description, image, and type
+   * - Twitter Card: title, description, image, and card type
+   *
+   * All updates are performed safely with null checks to prevent errors if any meta tags
+   * are missing from the document.
+   */
   const changeMetaData = () => {
     const domTitle = document.querySelector('title') as HTMLTitleElement
     const domDescription = document.querySelector(
