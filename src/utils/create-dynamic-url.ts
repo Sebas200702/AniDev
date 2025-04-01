@@ -1,5 +1,12 @@
 import { AnimeFilters, AnimeGenres, AnimeTypes } from 'types'
 
+/**
+ * Generates a random number within a specified range.
+ *
+ * @param {number} min - The minimum value (inclusive)
+ * @param {number} max - The maximum value (inclusive)
+ * @returns {number} A random integer between min and max
+ */
 const getRandomNumber = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -10,6 +17,11 @@ interface FilterResult {
 
 const unpopularGenres = [AnimeGenres.EROTICA, AnimeGenres.BOYS_LOVE]
 
+/**
+ * Retrieves a list of popular anime genres, excluding unpopular ones.
+ *
+ * @returns {AnimeGenres[]} Array of popular anime genres
+ */
 const getPopularGenres = (): AnimeGenres[] => {
   return Object.values(AnimeGenres).filter(
     (genre) => !unpopularGenres.includes(genre)
@@ -69,6 +81,12 @@ const capitalizeTitle = (text: string): string => {
 export const createDynamicUrl = (limit = 6): FilterResult => {
   const genres = getPopularGenres()
 
+  /**
+   * Selects a random set of filters from the available options.
+   *
+   * @param {number} count - Number of filters to select
+   * @returns {AnimeFilters[]} Array of randomly selected filters
+   */
   const getRandomFilters = (count: number): AnimeFilters[] => {
     const validFilters = [
       AnimeFilters.Status,
@@ -85,6 +103,12 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     return Array.from(selectedFilters)
   }
 
+  /**
+   * Selects a random anime type with weighted preferences.
+   * Movies have a 70% chance, TV shows have a 30% chance.
+   *
+   * @returns {AnimeTypes} The selected anime type
+   */
   const getRandomType = (): AnimeTypes => {
     const weightedTypes = [
       { type: AnimeTypes.MOVIE, weight: 0.7 },
@@ -99,6 +123,11 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     return AnimeTypes.TV
   }
 
+  /**
+   * Selects a random title template from predefined options.
+   *
+   * @returns {string} A randomly selected title template
+   */
   const getRandomTitleTemplate = (): string => {
     const templates = [
       'Top {limit} {filters}',
@@ -116,6 +145,12 @@ export const createDynamicUrl = (limit = 6): FilterResult => {
     return templates[getRandomNumber(0, templates.length - 1)]
   }
 
+  /**
+   * Generates URL parameters and title based on applied filters.
+   *
+   * @param {AnimeFilters[]} appliedFilters - Array of filters to apply
+   * @returns {FilterResult} Object containing URL parameters and formatted title
+   */
   const generateUrlAndTitle = (
     appliedFilters: AnimeFilters[]
   ): FilterResult => {
