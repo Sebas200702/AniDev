@@ -39,7 +39,7 @@ export const useGlobalUserPreferences = create<GlobalUserPreferences>(
   (set) => ({
     enfasis: '#0057E7',
     setEnfasis: (color: string) => set({ enfasis: color }),
-    userInfo: { name: null, avatar: null },
+    userInfo: null,
     setUserInfo(user) {
       set({ userInfo: user })
     },
