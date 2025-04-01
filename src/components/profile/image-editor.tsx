@@ -153,9 +153,9 @@ export const ImageEditor = ({ userName }: Props) => {
   }
 
   return (
-    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-20 pointer-events-none flex opacity-0 h-full w-full flex-col items-center justify-center">
+    <section className="image-editor bg-Complementary/50 pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-20 flex h-full w-full flex-col items-center justify-center opacity-0">
       <h2 className="text-lx font-semibold">Edit your profile image</h2>
-      <div className="img-preview w-full h-full max-w-40 max-h-40 rounded-full overflow-hidden translate-y-1/2 z-20"></div>
+      <div className="img-preview z-20 h-full max-h-40 w-full max-w-40 translate-y-1/2 overflow-hidden rounded-full"></div>
 
       <div className="bg-Complementary border-enfasisColor/40 relative flex flex-col items-center gap-10 rounded-xl border-2 p-8 pt-24">
         <button
@@ -171,8 +171,8 @@ export const ImageEditor = ({ userName }: Props) => {
           className="relative overflow-hidden rounded-md"
         >
           {isDragging && (
-            <div className="absolute inset-0 flex items-center justify-center bg-enfasisColor opacity-80 z-10">
-              <span className="text-white text-lg font-medium text-center px-4">
+            <div className="bg-enfasisColor absolute inset-0 z-10 flex items-center justify-center opacity-80">
+              <span className="px-4 text-center text-lg font-medium text-white">
                 Drop your image here
               </span>
             </div>
@@ -182,7 +182,7 @@ export const ImageEditor = ({ userName }: Props) => {
             preview=".img-preview"
             ref={cropperRef}
             src={image ?? '/placeholder.webp'}
-            className={`h-64 w-64 md:h-96 md:w-96 transition-opacity duration-200 ${isDragging ? 'opacity-30' : 'opacity-100'}`}
+            className={`h-64 w-64 transition-opacity duration-200 md:h-96 md:w-96 ${isDragging ? 'opacity-30' : 'opacity-100'}`}
             initialAspectRatio={1}
             aspectRatio={1}
             guides={false}

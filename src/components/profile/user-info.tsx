@@ -44,10 +44,10 @@ export const UserInfo = () => {
         className="group relative flex h-26 w-26 items-center justify-center rounded-full md:h-40 md:w-40"
       >
         <div
-          className={`absolute inset-0 flex items-center justify-center rounded-full h-26 w-26 md:h-36 md:w-36 bg-enfasisColor transition-opacity duration-200 ${isDragging ? 'opacity-100' : 'opacity-0'}`}
+          className={`bg-enfasisColor absolute inset-0 flex h-26 w-26 items-center justify-center rounded-full transition-opacity duration-200 md:h-36 md:w-36 ${isDragging ? 'opacity-100' : 'opacity-0'}`}
           style={{ zIndex: -1 }}
         >
-          <span className="text-white text-sm font-medium text-center px-2">
+          <span className="px-2 text-center text-sm font-medium text-white">
             Drop your image here
           </span>
         </div>
@@ -56,7 +56,7 @@ export const UserInfo = () => {
           ref={imageRef}
           src={userInfo?.avatar ?? '/placeholder.webp'}
           alt={`${userInfo?.name} Avatar`}
-          className="relative h-26 w-26 rounded-full md:h-36 md:w-36 transition-all duration-200"
+          className="relative h-26 w-26 rounded-full transition-all duration-200 md:h-36 md:w-36"
         />
         {userInfo?.name && <InputUserImage />}
       </div>
