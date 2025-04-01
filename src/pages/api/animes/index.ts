@@ -6,6 +6,63 @@ import { getFilters } from '@utils/get-filters-of-search-params'
 import type { APIRoute } from 'astro'
 import { Filters } from 'types'
 
+/**
+ * Main anime listing endpoint with multiple format options.
+ *
+ * @summary
+ * An API endpoint that retrieves anime listings with various formats and filtering options.
+ *
+ * @description
+ * This endpoint provides a flexible way to retrieve anime data in different formats
+ * based on the requested view type. It supports multiple display formats including
+ * cards, banners, top anime lists, collections, and search results. The endpoint
+ * implements caching using Redis to optimize performance and includes rate limiting
+ * to prevent abuse.
+ *
+ * Supported formats:
+ * - AnimeCard: Grid view of anime cards
+ * - AnimeBanner: Banner-style listings
+ * - TopAnime: Highest rated anime
+ * - AnimeCollection: Curated collections
+ * - Search: Custom search results with sorting
+ *
+ * @features
+ * - Multiple display formats
+ * - Redis caching with 24-hour TTL
+ * - Rate limiting
+ * - Dynamic sorting and filtering
+ * - Comprehensive error handling
+ * - Query parameter support
+ *
+ * @param {APIRoute} context - The API context containing request information
+ * @param {URL} context.url - The request URL containing query parameters
+ * @param {string} context.url.searchParams.get('format') - Display format type
+ * @param {string} context.url.searchParams.get('order_by') - Sort field and direction
+ * @param {Filters} context.url.searchParams - Additional filter parameters
+ * @returns {Promise<Response>} A Response object containing anime data or error message
+ *
+ * @example
+ * // Request
+ * GET /api/animes?format=anime-card&order_by=score desc
+ *
+ * // Success Response (200)
+ * {
+ *   "data": [
+ *     {
+ *       "id": 1,
+ *       "title": "Example Anime",
+ *       "score": 8.5,
+ *       // ... other anime data
+ *     }
+ *   ]
+ * }
+ *
+ * // Error Response (500)
+ * {
+ *   "error": "Ocurrió un error en el servidor."
+ * }
+ */
+
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
     if (!redis.isOpen) {
