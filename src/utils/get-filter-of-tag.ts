@@ -1,5 +1,19 @@
 import { AnimeFilters } from 'types'
 
+/**
+ * Checks if a string contains any numeric digits.
+ *
+ * @description This utility function uses a regular expression to test if a string
+ * contains any numeric characters. It's used as a helper function to identify
+ * year-related tags in the getFilterOfTag function.
+ *
+ * @param {string} str - The string to check for numeric content
+ * @returns {boolean} True if the string contains at least one digit, false otherwise
+ *
+ * @example
+ * haveNumbers("2023") // Returns true
+ * haveNumbers("Action") // Returns false
+ */
 const haveNumbers = (str: string) => /\d/.test(str)
 
 /**
