@@ -4,6 +4,7 @@ import { Cropper } from 'react-cropper'
 import type { ReactCropperElement } from 'react-cropper'
 import '@styles/cropper.css'
 import { CloseIcon } from '@components/icons/close-icon'
+import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 
@@ -17,8 +18,9 @@ interface Payload {
   image: string
   filename: string
 }
+
 export const ImageEditor = ({ userName }: Props) => {
-  const { image } = useUploadImageStore()
+  const { image, setImage } = useUploadImageStore()
   const [cropData, setCropData] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -26,6 +28,10 @@ export const ImageEditor = ({ userName }: Props) => {
   const { setUserInfo, userInfo } = useGlobalUserPreferences()
 
   const cropperRef = useRef<ReactCropperElement>(null)
+
+  const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
+    onDropDataUrl: (dataUrl) => setImage(dataUrl),
+  })
 
   useEffect(() => {
     if (isLoading) {
@@ -93,6 +99,7 @@ export const ImageEditor = ({ userName }: Props) => {
     setUserInfo(newUserInfo)
     await saveImage(newImage)
   }
+
   const saveImage = async (newImage: string) => {
     const saveImageRes = await fetch('api/saveImage', {
       method: 'POST',
@@ -117,6 +124,7 @@ export const ImageEditor = ({ userName }: Props) => {
       throw new Error(errMsg)
     }
   }
+
   const submitImage = async (croppedImage: string) => {
     if (!croppedImage) return
 
@@ -140,16 +148,14 @@ export const ImageEditor = ({ userName }: Props) => {
 
   const handleClose = () => {
     const $imageEditor = document.querySelector('.image-editor')
-    $imageEditor?.classList.replace('flex', 'hidden')
+    $imageEditor?.classList.replace('opacity-100', 'opacity-0')
+    $imageEditor?.classList.add('pointer-events-none')
   }
 
   return (
-    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-20 hidden h-full w-full flex-col items-center justify-center">
+    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-20 pointer-events-none flex opacity-0 h-full w-full flex-col items-center justify-center">
       <h2 className="text-lx font-semibold">Edit your profile image</h2>
-      <div
-        className="img-preview z-30 translate-y-1/2 overflow-hidden rounded-full"
-        style={{ width: '100%', height: '150px' }}
-      ></div>
+      <div className="img-preview w-full h-full max-w-40 max-h-40 rounded-full overflow-hidden translate-y-1/2 z-20"></div>
 
       <div className="bg-Complementary border-enfasisColor/40 relative flex flex-col items-center gap-10 rounded-xl border-2 p-8 pt-24">
         <button
@@ -159,12 +165,24 @@ export const ImageEditor = ({ userName }: Props) => {
           <CloseIcon className="h-5 w-5" />
         </button>
 
-        <div className="overflow-hidden rounded-md">
+        <div
+          {...dragDropProps}
+          ref={dropTargetRef}
+          className="relative overflow-hidden rounded-md"
+        >
+          {isDragging && (
+            <div className="absolute inset-0 flex items-center justify-center bg-enfasisColor opacity-80 z-10">
+              <span className="text-white text-lg font-medium text-center px-4">
+                Drop your image here
+              </span>
+            </div>
+          )}
+
           <Cropper
             preview=".img-preview"
             ref={cropperRef}
             src={image ?? '/placeholder.webp'}
-            className="h-64 w-64 md:h-96 md:w-96"
+            className={`h-64 w-64 md:h-96 md:w-96 transition-opacity duration-200 ${isDragging ? 'opacity-30' : 'opacity-100'}`}
             initialAspectRatio={1}
             aspectRatio={1}
             guides={false}
