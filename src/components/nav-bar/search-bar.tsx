@@ -62,12 +62,11 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       if (location.includes('search')) return
       
       if (query.trim()) {
-        // Utilizar la API de navegación de Astro solo si hay una consulta
-        navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+        navigate(`/search?q=${encodeURIComponent(query.trim())}`)
       }
     },
     [query, location]
-  );
+  )
 
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,10 +91,10 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   
   const handleButtonClick = (e: React.MouseEvent) => {
     if (isMobile && !isExpanded) {
-      e.preventDefault(); // Prevenir submit
-      toggleExpand(); // Solo expandir
+      e.preventDefault()
+      toggleExpand()
     }
-    // En otros casos, permitir el comportamiento de submit por defecto
+    
   }
 
   return (
@@ -116,7 +115,11 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         />
         <button
           type="submit"
-          className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${isMobile ? 'absolute' : ''} ${isExpanded && isMobile ? 'right-2' : ''}`}
+          className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${
+            isMobile ? 'absolute' : ''
+          } ${
+            isExpanded && isMobile ? 'right-6' : ''
+          }`}
           onClick={handleButtonClick}
           aria-label="Search"
         >
