@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-
 import { useSearchStoreResults } from '@store/search-results-store'
 import { useWindowWidth } from '@store/window-width'
+import { navigate } from 'astro:transitions/client'
 
 interface Props {
   location: string
@@ -56,15 +56,18 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   }, [setQuery])
 
   const handleSubmit = useCallback(
-  (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    
-    if (location.includes('search')) return
-   
-    window.history.pushState({}, '', `/search?q=${query}`)
-  },
-  [query, location]
-);
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      
+      if (location.includes('search')) return
+      
+      if (query.trim()) {
+        // Utilizar la API de navegación de Astro solo si hay una consulta
+        navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+      }
+    },
+    [query, location]
+  );
 
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,11 +82,20 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       setLoading(false)
     }
   }, [query])
+  
   const toggleExpand = () => {
     if (!isExpanded) {
       setIsExpanded(true)
       document.getElementById('default-search')?.focus()
     }
+  }
+  
+  const handleButtonClick = (e: React.MouseEvent) => {
+    if (isMobile && !isExpanded) {
+      e.preventDefault(); // Prevenir submit
+      toggleExpand(); // Solo expandir
+    }
+    // En otros casos, permitir el comportamiento de submit por defecto
   }
 
   return (
@@ -103,9 +115,9 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
           onChange={handleInput}
         />
         <button
-          type="button"
+          type="submit"
           className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${isMobile ? 'absolute' : ''} ${isExpanded && isMobile ? 'right-2' : ''}`}
-          onClick={toggleExpand}
+          onClick={handleButtonClick}
           aria-label="Search"
         >
           <svg
