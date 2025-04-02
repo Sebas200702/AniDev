@@ -56,13 +56,15 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   }, [setQuery])
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      if (location.includes('search')) return
-      e.preventDefault()
-      window.location.href = `/search?q=${query}`
-    },
-    [query, location]
-  )
+  (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    
+    if (location.includes('search')) return
+   
+    window.history.pushState({}, '', `/search?q=${query}`)
+  },
+  [query, location]
+);
 
   const handleInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
