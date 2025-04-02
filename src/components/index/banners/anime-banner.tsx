@@ -1,5 +1,3 @@
-import '@styles/anime-banner.css'
-
 import { useEffect, useState } from 'react'
 
 import { BannerInfo } from '@components/index/banners/banner-info'
