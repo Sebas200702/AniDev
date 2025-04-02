@@ -88,6 +88,7 @@ const debouncedSearch = useDebounce(search, 300)
 AniDev provides various API endpoints for fetching anime data:
 
 ### Anime Endpoints
+
 - `/api/animes/full` - Get animes with filtering options
 - `/api/getAnime` - Get detailed information about a specific anime
 - `/api/getAnimeMetadatas` - Get SEO metadata for an anime
@@ -96,12 +97,14 @@ AniDev provides various API endpoints for fetching anime data:
 - `/api/studios` - Get anime studios information
 
 ### Media Endpoints
+
 - `/api/videoProxy` - Proxy for streaming video content
 - `/api/proxy` - Image proxy with optimization (resize, quality, format)
 - `/api/uploadImage` - Upload and optimize images (requires authentication)
 - `/api/saveImage` - Save user avatar images (requires authentication)
 
 ### Authentication Endpoints
+
 - `/api/auth/signup` - Register a new user
 - `/api/auth/signin` - Login an existing user
 - `/api/auth/signout` - Logout the current user
@@ -114,19 +117,25 @@ Each endpoint supports various query parameters for filtering, sorting, and pagi
 AniDev implements several middleware functions to enhance API security and functionality:
 
 ### Rate Limiting
+
 ```typescript
 import { rateLimit } from '@middlewares/rate-limit'
 
-export const GET = rateLimit(async (context) => {
-  // Your API handler here
-}, { points: 100, duration: 60 })
+export const GET = rateLimit(
+  async (context) => {
+    // Your API handler here
+  },
+  { points: 100, duration: 60 }
+)
 ```
+
 - Prevents API abuse by limiting request rates
 - Configurable points and duration
 - Returns 429 status with Retry-After header when limit is exceeded
 - Includes rate limit headers in responses
 
 ### Authentication Check
+
 ```typescript
 import { checkSession } from '@middlewares/auth'
 
@@ -134,6 +143,7 @@ export const POST = checkSession(async (context) => {
   // Your protected API handler here
 })
 ```
+
 - Verifies user session before allowing access
 - Returns 401 status for unauthorized requests
 - Automatically adds session to context
