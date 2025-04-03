@@ -77,7 +77,7 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
 
   const optimizedBuffer = await sharp(buffer)
     .resize({ width: 150 })
-    .webp({ quality: 75 })
+    .webp({ quality: 100 })
     .toBuffer()
 
   if (!optimizedBuffer) {
