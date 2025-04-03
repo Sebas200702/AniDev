@@ -1,18 +1,14 @@
 import '@styles/search-section.css'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'
 import { SearchResults } from '@components/search/results/search-results'
-import { useDebounce } from '@hooks/useDebounce'
-import { useFetch } from '@hooks/useFetch'
+
 import { useUrlSync } from '@hooks/useUrlSync'
-import { useGlobalUserPreferences } from '@store/global-user'
+
 import { useSearchStoreResults } from '@store/search-results-store'
-import { baseUrl } from '@utils/base-url'
-import { createFiltersToApply } from '@utils/filters-to-apply'
-import type { AnimeCardInfo } from 'types'
 
 /**
  * SearchComponent handles the anime search functionality with filters and results display.
@@ -39,30 +35,14 @@ import type { AnimeCardInfo } from 'types'
  * <SearchComponent client:visible />
  */
 export const SearchComponent = () => {
-  const {
-    query,
-    setResults,
-    appliedFilters,
-    setLoading,
-    results,
-    setIsLoadingMore,
-    isLoadingMore,
-  } = useSearchStoreResults()
-  const { parentalControl } = useGlobalUserPreferences()
+  const { setResults, url, results, setIsLoadingMore, isLoadingMore } =
+    useSearchStoreResults()
+
   const [page, setPage] = useState(4)
-  const debouncedQuery = useDebounce(query, 600)
+
   const isFetching = useRef(false)
-  const filtersToApply = useMemo(
-    () => createFiltersToApply(appliedFilters),
-    [appliedFilters]
-  )
+
   const [isAllResults, setIsAllResults] = useState(false)
-  const url = useMemo(() => {
-    const baseQuery = `${baseUrl}/api/animes?limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
-    const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
-    const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
-    return `${baseQuery}${searchQuery}${filterQuery}`
-  }, [debouncedQuery, filtersToApply, parentalControl])
 
   const fetchMoreAnimes = async () => {
     if (isFetching.current) return
@@ -80,7 +60,7 @@ export const SearchComponent = () => {
       return
     }
 
-    setResults([...(results ?? []), ...moreAnime], false, fetchError)
+    setResults([...(results ?? []), ...moreAnime], false, null)
     setIsLoadingMore(false)
     setPage((prev) => prev + 1)
     isFetching.current = false
@@ -102,14 +82,6 @@ export const SearchComponent = () => {
       await fetchMoreAnimes()
     }
   }
-  const {
-    data: animes,
-    loading: isLoading,
-    error: fetchError,
-  } = useFetch<AnimeCardInfo[]>({
-    url,
-    skip: !url || (!filtersToApply && !debouncedQuery),
-  })
 
   useUrlSync()
   useEffect(() => {
@@ -120,13 +92,6 @@ export const SearchComponent = () => {
       app.removeEventListener('scroll', handleScroll)
     }
   }, [handleScroll, page])
-
-  useEffect(() => {
-    setLoading(isLoading)
-    if (!isLoading) {
-      setResults(animes, false, fetchError)
-    }
-  }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
     <section id="search-section">
