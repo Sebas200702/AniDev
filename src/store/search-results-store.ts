@@ -41,6 +41,7 @@ import { create } from 'zustand'
 interface SearchStoreResults {
   query: string
   error: string | null
+  url: string
   loading: boolean
   completedSearch: boolean
   results: AnimeCardInfo[] | null
@@ -59,11 +60,13 @@ interface SearchStoreResults {
   resetFilters: () => void
   setLoading: (loading: boolean) => void
   setCompletedSearch: (completedSearch: boolean) => void
+  setUrl: (url: string) => void
 }
 
 export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   query: '',
   error: null,
+  url: '',
   loading: false,
   completedSearch: false,
   results: null,
@@ -100,5 +103,8 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
 
   setLoading: (loading) => {
     set((state) => ({ ...state, loading }))
+  },
+  setUrl(url) {
+    set((state) => ({ ...state, url }))
   },
 }))
