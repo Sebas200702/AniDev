@@ -1,9 +1,5 @@
-import { baseUrl } from '@utils/base-url'
+import { studios } from 'constanst'
 import type { FilterOption } from 'types'
-
-const studios: string[] = await fetch(`${baseUrl}/api/studios`).then(
-  (response) => response.json()
-)
 
 /**
  * createStudioOptions function generates filter options for anime studios.
