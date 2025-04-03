@@ -1,7 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { navigate } from 'astro:transitions/client'
+import { useDebounce } from '@hooks/useDebounce'
+import { useFetch } from '@hooks/useFetch'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { useWindowWidth } from '@store/window-width'
-import { navigate } from 'astro:transitions/client'
+import { baseUrl } from '@utils/base-url'
+import { createFiltersToApply } from '@utils/filters-to-apply'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { AnimeCardInfo } from 'types'
 
 interface Props {
   location: string
@@ -32,11 +38,36 @@ interface Props {
  * <SearchBar location="top" />
  */
 export const SearchBar = ({ location }: Props): JSX.Element => {
-  const { query, setQuery, setLoading } = useSearchStoreResults()
+  const { query, setQuery, setLoading, appliedFilters, setResults, setUrl } =
+    useSearchStoreResults()
   const { width: windowWidth, setWidth } = useWindowWidth()
+  const { parentalControl } = useGlobalUserPreferences()
+  const debouncedQuery = useDebounce(query, 600)
   const [isExpanded, setIsExpanded] = useState(false)
   const isMobile = windowWidth && windowWidth < 768
   const isDesktop = windowWidth && windowWidth >= 768
+  const filtersToApply = useMemo(
+    () => createFiltersToApply(appliedFilters),
+    [appliedFilters]
+  )
+  const url = useMemo(() => {
+    const baseQuery = `${baseUrl}/api/animes?limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
+    const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
+    const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
+    return `${baseQuery}${searchQuery}${filterQuery}`
+  }, [debouncedQuery, filtersToApply, parentalControl])
+
+  const {
+    data: animes,
+    loading: isLoading,
+    error: fetchError,
+  } = useFetch<AnimeCardInfo[]>({
+    url,
+    skip: !url || (!filtersToApply && !debouncedQuery),
+  })
+  useEffect(() => {
+    setUrl(url)
+  }, [url])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -58,9 +89,9 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      
+
       if (location.includes('search')) return
-      
+
       if (query.trim()) {
         navigate(`/search?q=${encodeURIComponent(query.trim())}`)
       }
@@ -81,21 +112,26 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       setLoading(false)
     }
   }, [query])
-  
+
   const toggleExpand = () => {
     if (!isExpanded) {
       setIsExpanded(true)
       document.getElementById('default-search')?.focus()
     }
   }
-  
+
   const handleButtonClick = (e: React.MouseEvent) => {
     if (isMobile && !isExpanded) {
       e.preventDefault()
       toggleExpand()
     }
-    
   }
+  useEffect(() => {
+    setLoading(isLoading)
+    if (!isLoading) {
+      setResults(animes, false, fetchError)
+    }
+  }, [animes, isLoading, fetchError, setResults, setLoading])
 
   return (
     <form
@@ -117,9 +153,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
           type="submit"
           className={`flex h-10 w-10 items-center justify-center rounded-lg bg-transparent text-white transition-all duration-300 ease-in-out ${
             isMobile ? 'absolute' : ''
-          } ${
-            isExpanded && isMobile ? 'right-6' : ''
-          }`}
+          } ${isExpanded && isMobile ? 'right-6' : ''}`}
           onClick={handleButtonClick}
           aria-label="Search"
         >
