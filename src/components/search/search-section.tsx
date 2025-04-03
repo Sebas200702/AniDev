@@ -93,6 +93,17 @@ export const SearchComponent = () => {
     }
   }, [handleScroll, page])
 
+  useEffect(() => {
+    const app = document.querySelector('#app')
+
+    if (!app) return
+
+    app.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }, [url])
+
   return (
     <section id="search-section">
       <div className="[grid-area:aside]">
