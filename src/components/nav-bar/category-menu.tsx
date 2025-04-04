@@ -51,7 +51,7 @@ export const CategoryMenu = () => {
         {Object.values(AnimeGenres).map((genre) => (
           <li key={genre} className="hover:bg-Complementary/20">
             <a
-              href={`/search?genre_filter=${genre}`}
+              href={`/search?genre_filter=${genre.toLowerCase()}`}
               className="block px-4 py-2 text-white hover:bg-Complementary/20 transition-colors duration-200 focus:outline-none focus:bg-Complementary/30"
               role="menuitem"
             >
