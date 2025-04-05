@@ -1,3 +1,4 @@
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useEffect, useState } from 'react'
 import type { AnimeCollectionInfo, Collection } from 'types'
 
@@ -50,6 +51,7 @@ interface Props {
  * <AnimeCollection id="collection-1" />
  */
 export const AnimeCollection = ({ id }: Props): JSX.Element => {
+  const { parentalControl } = useGlobalUserPreferences()
   const { collections, setCollections } = useIndexStore()
   const [loading, setLoading] = useState(true)
   const [animes, setAnimes] = useState<AnimeCollectionInfo[]>([])
@@ -137,7 +139,10 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
     const fetchedAnimes: AnimeCollectionInfo[] = response.data ?? []
     const newAnimeIds = fetchedAnimes.map((anime) => anime.mal_id)
     if (isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
-      const { url: newUrl, title: generatedTitle } = createDynamicUrl(30)
+      const { url: newUrl, title: generatedTitle } = createDynamicUrl(
+        30,
+        parentalControl
+      )
       return await fetchAnimes(newUrl, generatedTitle)
     }
 

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
-
 import { BannerInfo } from '@components/index/banners/banner-info'
 import { BannerLoader } from '@components/index/banners/banner-loader'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useIndexStore } from '@store/index-store'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
+import { useEffect, useState } from 'react'
 
 /**
  * AnimeBanner component displays a banner for an anime.
@@ -41,6 +41,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
   const animationNumber = id % 2 === 0 ? 1 : 2
   const { setAnimeBanners, animeBanners } = useIndexStore()
   const [loading, setLoading] = useState(true)
+  const { parentalControl } = useGlobalUserPreferences()
 
   const getBannerData = async (url: string) => {
     const response = await fetch(
@@ -50,7 +51,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
     const [anime] = response.data
 
     if (!anime || animeBanners.includes(anime.mal_id)) {
-      const { url: newUrl } = createDynamicUrl(1)
+      const { url: newUrl } = createDynamicUrl(1, parentalControl)
       return await getBannerData(newUrl)
     }
     return {

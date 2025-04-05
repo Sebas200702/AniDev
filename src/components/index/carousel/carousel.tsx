@@ -1,9 +1,11 @@
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useCallback, useEffect } from 'react'
 
 import { CarouselItem } from '@components/index/carousel/carousel-item'
 import { LoadingCarousel } from '@components/index/carousel/carousel-loader'
 import { Indicator } from '@components/index/carousel/indicator'
 import { NexPrevBtnCarousel } from '@components/index/carousel/nex-prev-btn-carousel'
+import { ParentalControl } from '@components/profile/settings/parental-control'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import { useFetch } from '@hooks/useFetch'
 import { useCarouselStore } from '@store/carousel-store'
@@ -58,6 +60,7 @@ export const Carousel = (): JSX.Element => {
     resetInterval,
     handleKeyDown,
   } = useCarouselScroll(banners, currentIndex, setCurrentIndex)
+  const { parentalControl } = useGlobalUserPreferences()
 
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
@@ -67,7 +70,7 @@ export const Carousel = (): JSX.Element => {
     setBanners(banners)
     if (url || banners.length > 0) return
 
-    const newUrl = createDynamicUrl()
+    const newUrl = createDynamicUrl(6, parentalControl)
     setUrl(`/api/animes?${newUrl.url}&banners_filter=true&format=anime-banner`)
     sessionStorage.setItem(
       'banners-url',
