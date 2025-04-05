@@ -100,7 +100,7 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
           </footer>
         </div>
       </a>
-      <div className="flex flex-row  xl:gap-2 gap-1 absolute xl:bottom-6 bottom-4 right-4 xl:right-6 z-30 md:opacity-0 md:group-hover:opacity-100  ease-in-out transition-opacity duration-300">
+      <div className="flex flex-row  xl:gap-2 gap-1 absolute xl:bottom-6 bottom-4 right-4 xl:right-6 z-10 md:opacity-0 md:group-hover:opacity-100  ease-in-out transition-opacity duration-300">
         <a href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}>
           <PlayIcon className="xl:w-5 w-4 h-4 xl:h-5 md:hover:text-enfasisColor transition-all ease-in-out duration-300" />
         </a>
