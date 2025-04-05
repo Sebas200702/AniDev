@@ -91,7 +91,7 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
             </span>
             <span className="flex flex-row gap-2 items-center justify-center">
               <EpisodeIcon className="w-4 h-4 text-enfasisColor" />
-              {anime.episodes ?? 'unknown'}
+              {anime.episodes ?? '-'}
             </span>
             <span className="flex flex-row gap-2 items-center justify-center">
               <CalendarIcon className="w-4 h-4 text-enfasisColor" />
