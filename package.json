@@ -23,7 +23,7 @@
     "@pheralb/toast": "^1.0.0",
     "@supabase/supabase-js": "^2.46.1",
     "@tailwindcss/vite": "^4.0.4",
-    "astro": "^5.5.6",
+    "astro": "^5.6.1",
     "astro-font": "^1.0.0",
     "auth-astro": "4.2.0",
     "cropperjs": "^2.0.0",
