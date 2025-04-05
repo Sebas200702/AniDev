@@ -82,7 +82,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     <title>{metaTitle}</title>
     <ClientRouter />
   </head>
-  <div
+  <body
     id="app"
     class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-scroll"
   >
@@ -103,7 +103,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
       }}
     />
     <Footer />
-  </div>
+  </body>
 </html>
 <style is:global>
 #app {
