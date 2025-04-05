@@ -110,7 +110,7 @@ export const SearchComponent = () => {
         <FilterSection />
       </div>
 
-      <div className="mt-16 [grid-area:results]">
+      <div className="md:mt-16 my-10 [grid-area:results]">
         <SearchResultsErrorBoundary>
           <SearchResults />
         </SearchResultsErrorBoundary>
