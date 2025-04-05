@@ -67,11 +67,9 @@ export const SearchComponent = () => {
   }
 
   const handleScroll = async () => {
-    const app = document.querySelector('#app')
-    if (!app) return
-    const appScrollTop = app.scrollTop
-    const appClientHeight = app.clientHeight
-    const appScrollHeight = app.scrollHeight
+    const appScrollTop = document.documentElement.scrollTop
+    const appClientHeight = document.documentElement.clientHeight
+    const appScrollHeight = document.documentElement.scrollHeight
 
     if (
       appScrollTop + appClientHeight >= appScrollHeight - 300 &&
@@ -85,20 +83,14 @@ export const SearchComponent = () => {
 
   useUrlSync()
   useEffect(() => {
-    const app = document.querySelector('#app')
-    if (!app) return
-    app.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll)
     return () => {
-      app.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', handleScroll)
     }
   }, [handleScroll, page])
 
   useEffect(() => {
-    const app = document.querySelector('#app')
-
-    if (!app) return
-
-    app.scrollTo({
+    window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
