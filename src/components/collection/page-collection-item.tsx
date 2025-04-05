@@ -1,9 +1,13 @@
-import { AnimeTag } from '@components/anime-tag'
-import { AddToListButton } from '@components/buttons/add-to list-button'
+import { CalendarIcon } from '@components/icons/calendar-icon'
+import { EpisodeIcon } from '@components/icons/episode-icon'
+
 import { ShareButton } from '@components/buttons/share-button'
-import { WatchAnimeButton } from '@components/buttons/watch-anime'
-import { StarIcon } from '@components/icons/star-icon'
+import { AddToListIcon } from '@components/icons/add-to-list-icon'
+import { PlayIcon } from '@components/icons/play-icon'
+import { TypeIcon } from '@components/icons/type-icon'
+import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
+import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { Anime } from 'types'
 
@@ -31,55 +35,84 @@ import type { Anime } from 'types'
  * <CollectionItem anime={animeData} />
  */
 export const CollectionItem = ({ anime }: { anime: Anime }) => {
+  const shareText = `Watch ${anime.title} on AniDev`
   return (
     <li
       key={anime.mal_id}
-      className="bg-Complementary mx-auto flex aspect-[700/400] w-full overflow-hidden rounded-lg"
+      className="relative group md:hover:translate-x-2 transition-all duration-300 ease-in-out"
     >
-      <Picture
-        image={anime.image_small_webp}
-        styles="aspect-[225/330] h-full w-auto overflow-hidden rounded-l-lg relative"
+      <a
+        href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
+        className="bg-Complementary mx-auto flex aspect-[100/28]  overflow-hidden rounded-lg  relative "
+        title={anime.title}
       >
-        <a href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}>
+        <div className="absolute w-full h-full">
+          <Picture
+            image={createImageUrlProxy(
+              anime.banner_image ?? anime.image_large_webp,
+              '0',
+              '0',
+              'webp'
+            )}
+            styles=" w-full h-full object-cover object-center relative grayscale-100 md:group-hover:grayscale-40 transition-all ease-in-out duration-300"
+          >
+            <img
+              src={createImageUrlProxy(
+                anime.banner_image ?? anime.image_large_webp,
+                '500',
+                '60',
+                'webp'
+              )}
+              alt={normalizeString(anime.title)}
+              className=" w-full h-full object-cover object-center relative"
+              loading="lazy"
+            />
+            <Overlay className="to-Primary-950 to-70% h-full w-full bg-gradient-to-l  via-0% via-Primary-950/40" />
+          </Picture>
+        </div>
+        <Picture
+          image={anime.image_small_webp}
+          styles="aspect-[225/330] h-full  overflow-hidden rounded-l-lg relative"
+        >
           <img
-            src={anime.image_large_webp}
+            src={anime.image_webp}
             alt={anime.title}
-            className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all duration-300 ease-in-out md:hover:scale-110"
+            className="relative aspect-[225/330] h-full w-full rounded-l-lg object-cover object-center "
             loading="lazy"
           />
-        </a>
-      </Picture>
-      <div className="flex h-full w-[75%] flex-col justify-between p-4">
-        <h3
-          title={anime.title}
-          className="text-l line-clamp-1 w-full overflow-hidden font-bold text-pretty text-white xl:line-clamp-2"
-        >
-          {anime.title}
-        </h3>
+        </Picture>
+        <div className="xl:p-6 p-4 w-[80%] flex flex-col h-full justify-between z-20">
+          <h3 className="line-clamp-1 text-l">{anime.title}</h3>
 
-        <div className="text-s mt-1 flex flex-row gap-2 text-xs text-gray-500 xl:mt-2">
-          {anime.genres.slice(0, 2).map((genre) => (
-            <AnimeTag key={genre} tag={genre} type={genre} style="w-auto" />
-          ))}
+          <footer className="flex text-sx w-20  gap-3">
+            <span className="flex flex-row gap-2 items-center justify-center">
+              <TypeIcon className="h-4 w-4" type={anime.type} />
+              {anime.type}
+            </span>
+            <span className="flex flex-row gap-2 items-center justify-center">
+              <EpisodeIcon className="w-4 h-4 text-enfasisColor" />
+              {anime.episodes ?? 'unknown'}
+            </span>
+            <span className="flex flex-row gap-2 items-center justify-center">
+              <CalendarIcon className="w-4 h-4 text-enfasisColor" />
+              {anime.year}
+            </span>
+          </footer>
         </div>
-        <p className="text-sx text-Primary-200 line-clamp-2">
-          {anime.synopsis ?? 'No description available'}
-        </p>
-        <span className="text-sx flex items-center gap-2 text-gray-400">
-          <StarIcon className="text-enfasisColor h-5 w-5" />
-          {anime.score}/10
+      </a>
+      <div className="flex flex-row  xl:gap-2 gap-1 absolute xl:bottom-6 bottom-4 right-4 xl:right-6 z-30 md:opacity-0 md:group-hover:opacity-100  ease-in-out transition-opacity duration-300">
+        <a href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}>
+          <PlayIcon className="xl:w-5 w-4 h-4 xl:h-5 md:hover:text-enfasisColor transition-all ease-in-out duration-300" />
+        </a>
+        <span>
+          <AddToListIcon className="xl:w-5 w-4 h-4 xl:h-5 md:hover:text-enfasisColor transition-all ease-in-out duration-300 cursor-pointer" />
         </span>
-        <footer className="flex h-min flex-row gap-2">
-          <WatchAnimeButton
-            url={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
-          />
-          <AddToListButton />
-          <ShareButton
-            title={anime.title}
-            url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-            text={`Watch ${anime.title} on Animeflix`}
-          />
-        </footer>
+        <ShareButton
+          className="cursor-pointer md:hover:text-enfasisColor transition-all ease-in-out duration-300"
+          url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
+          title={anime.title}
+          text={shareText}
+        />
       </div>
     </li>
   )
