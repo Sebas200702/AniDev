@@ -76,7 +76,7 @@ export const AnimeAside = ({
 
       <div className="flex h-full w-full flex-row justify-end gap-2">
         <WatchAnimeButton url={watchNowUrl} />
-        <ShareButton title={animeData.title} url={url} text={shareText} />
+        <ShareButton title={animeData.title} url={url} text={shareText} className='button-secondary' />
       </div>
     </aside>
   )
