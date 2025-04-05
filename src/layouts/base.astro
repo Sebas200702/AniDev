@@ -84,7 +84,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
   </head>
   <body
     id="app"
-    class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-auto"
+    class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-scroll"
   >
     <LoadUserPrefences userInfo={userInfo} client:load />
     <LoadWindowWidth client:load />
