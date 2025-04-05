@@ -26,5 +26,7 @@ export const typeColors = (type: string) => {
   if (type === AnimeTypes.ONA) return 'text-red-500 '
   if (type === AnimeTypes.PV) return 'text-orange-500 '
   if (type === AnimeTypes.CM) return 'text-indigo-600 '
+  if (type === AnimeTypes.MUSIC) return 'text-pink-500 '
+
   return 'text-Primary-50'
 }
