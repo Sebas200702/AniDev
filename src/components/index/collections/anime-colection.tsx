@@ -82,7 +82,7 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
         return
       }
 
-      const { url, title: generatedTitle } = createDynamicUrl(20)
+      const { url, title: generatedTitle } = createDynamicUrl(30)
       setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
@@ -131,13 +131,13 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
    */
   const fetchAnimes = async (url: string, dynamicTitle: string) => {
     const response = await fetch(
-      `/api/animes?limit_count=3&${url}&banners_filter=false&format=anime-collection`
+      `/api/animes?${url.replace('limit_count=30', 'limit_count=3')}&banners_filter=false&format=anime-collection`
     ).then((res) => res.json())
 
     const fetchedAnimes: AnimeCollectionInfo[] = response.data ?? []
     const newAnimeIds = fetchedAnimes.map((anime) => anime.mal_id)
     if (isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
-      const { url: newUrl, title: generatedTitle } = createDynamicUrl(20)
+      const { url: newUrl, title: generatedTitle } = createDynamicUrl(30)
       return await fetchAnimes(newUrl, generatedTitle)
     }
 
