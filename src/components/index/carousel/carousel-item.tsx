@@ -80,6 +80,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           <a
             href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
             className="button-secondary text-s flex w-full"
+            title={anime.title}
           >
             Learn More
           </a>
