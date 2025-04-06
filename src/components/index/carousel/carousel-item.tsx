@@ -59,7 +59,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
                 : createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
             }
             alt="Anime Banner"
-            loading='lazy'
+            loading="lazy"
           />
           <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />
           <Overlay
@@ -78,6 +78,13 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           {anime.synopsis ?? 'No description available'}
         </p>
         <div className="mx-auto flex w-[300px] flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
+          <a
+            className="button-secondary w-full text-m flex  justify-center items-center"
+            href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
+            title={`Discover  ${anime.title}`}
+          >
+            Discover More
+          </a>
           <WatchAnimeButton
             url={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           />
