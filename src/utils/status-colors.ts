@@ -22,10 +22,10 @@
  */
 export const statusColors = (status: string) => {
   enum COLORS {
-    'Currently Airing' = 'text-green-400 md:group-hover:text-green-500',
-    'Finished Airing' = 'text-blue-400 md:group-hover:text-blue-500',
-    'Not yet aired' = 'text-yellow-400 md:group-hover:text-yellow-500',
-    unknown = 'text-gray-400 md:group-hover:text-gray-500',
+    'Currently Airing' = 'bg-green-400 md:group-hover:bg-green-500',
+    'Finished Airing' = 'bg-blue-400 md:group-hover:bg-blue-500',
+    'Not yet aired' = 'bg-yellow-400 md:group-hover:bg-yellow-500',
+    unknown = 'bg-gray-400 md:group-hover:bg-gray-500',
   }
 
   return COLORS[status as keyof typeof COLORS]
