@@ -51,9 +51,6 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async () => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
     const cachedData = await redis.get('studios')
 
     if (cachedData) {
@@ -100,7 +97,5 @@ export const GET: APIRoute = rateLimit(async () => {
         headers: { 'Content-Type': 'application/json' },
       }
     )
-  }finally{
-    await redis.disconnect()
   }
 })

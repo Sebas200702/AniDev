@@ -65,10 +65,6 @@ import { Filters } from 'types'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
-
     const cached = await redis.get(`animes-partial:${url.searchParams}`)
     if (cached) {
       return new Response(JSON.stringify({ data: JSON.parse(cached) }), {
@@ -132,7 +128,5 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
         headers: { 'Content-Type': 'application/json' },
       }
     )
-  }finally{
-    await redis.disconnect()
   }
 })

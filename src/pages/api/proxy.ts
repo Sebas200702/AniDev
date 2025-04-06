@@ -49,9 +49,7 @@ import sharp from 'sharp'
  */
 
 export const GET: APIRoute = async ({ url }) => {
-  if (!redis.isOpen) {
-    await redis.connect()
-  }
+
   const imageUrl = url.searchParams.get('url')
 
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
@@ -138,7 +136,5 @@ export const GET: APIRoute = async ({ url }) => {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
-  }finally{
-    await redis.disconnect()
   }
 }

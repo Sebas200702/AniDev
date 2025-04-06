@@ -5,9 +5,6 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    if (!redis.isOpen) {
-      await redis.connect()
-    }
 
     const id = url.searchParams.get('id')
     const page = url.searchParams.get('page')
@@ -76,7 +73,5 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
-  }finally{
-    await redis.disconnect()
   }
 })

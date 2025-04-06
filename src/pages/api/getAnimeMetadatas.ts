@@ -109,7 +109,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
   } catch (error) {
     console.error('Error al obtener metadatos del anime:', error)
     return new Response('Internal server error', { status: 500 })
-  }finally{
-    await redis.disconnect()
+  } finally {
+    if (redis.isOpen) await redis.disconnect()
   }
 })
