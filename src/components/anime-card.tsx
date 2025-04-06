@@ -114,9 +114,9 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </Picture>
 
-        <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
+        <footer className="absolute bottom-0 left-0 z-10 flex w-full  flex-row items-center justify-center gap-4 py-2 px-4 ">
           <StatusPoint
-            class={` h-3 w-3 rounded-full ${statusColors(status).replaceAll('text', 'bg')} relative `}
+            class={` h-3 w-3 rounded-full ${statusColors(status)} relative `}
             status={status}
           />
           <span
