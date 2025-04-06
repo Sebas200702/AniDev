@@ -1,6 +1,7 @@
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
+import { useWindowWidth } from '@store/window-width'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeBannerInfo } from 'types'
@@ -38,6 +39,8 @@ interface CarouselItemProps {
  * <CarouselItem anime={animeData} index={0} />
  */
 export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
+  const { width: windowWidth } = useWindowWidth()
+  const isMobile = windowWidth && windowWidth < 768
   return (
     <li
       key={anime.mal_id}
@@ -50,7 +53,11 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
         >
           <img
             className="relative h-full w-full object-cover object-center"
-            src={createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')}
+            src={
+              isMobile
+                ? createImageUrlProxy(anime.banner_image, '720', '50', 'webp')
+                : createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
+            }
             alt="Anime Banner"
           />
           <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />
