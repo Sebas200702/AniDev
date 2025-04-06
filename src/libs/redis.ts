@@ -29,7 +29,7 @@ import { createClient } from 'redis'
  */
 export const redis = createClient({
   username: 'default',
-  password: 'c84gKiknzQ491k77kqEO1f9DUAnDPujA',
+  password: import.meta.env.REDIS_PASSWORD,
   socket: {
     host: 'redis-14957.crce181.sa-east-1-2.ec2.redns.redis-cloud.com',
     port: 14957,
