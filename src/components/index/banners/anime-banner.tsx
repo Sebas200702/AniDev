@@ -4,6 +4,7 @@ import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useIndexStore } from '@store/index-store'
+import { useWindowWidth } from '@store/window-width'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
@@ -42,6 +43,8 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
   const { setAnimeBanners, animeBanners } = useIndexStore()
   const [loading, setLoading] = useState(true)
   const { parentalControl } = useGlobalUserPreferences()
+  const { width: windowWidth } = useWindowWidth()
+  const isMobile = windowWidth && windowWidth < 768
 
   const getBannerData = async (url: string) => {
     const response = await fetch(
@@ -109,7 +112,11 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
             styles="aspect-[1080/600] h-full w-full  md:aspect-[1080/350] object-cover object-center relative"
           >
             <img
-              src={createImageUrlProxy(imageUrl, '1920', '50', 'webp')}
+              src={
+                isMobile
+                  ? createImageUrlProxy(imageUrl, '720', '50', 'webp')
+                  : createImageUrlProxy(imageUrl, '1920', '50', 'webp')
+              }
               alt="Anime Banner"
               loading="lazy"
               className="relative aspect-[1080/550] h-full w-full object-cover object-center md:aspect-[1080/350]"
