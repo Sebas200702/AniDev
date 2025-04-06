@@ -1,3 +1,8 @@
+import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { useGlobalUserPreferences } from '@store/global-user'
+import { useSearchStoreResults } from '@store/search-results-store'
+import { studioOptions } from '@utils/create-studios-options'
+import { useCallback } from 'react'
 import {
   formatOptions,
   genreOptions,
@@ -7,11 +12,6 @@ import {
   statusOptions,
   yearOptions,
 } from 'types'
-
-import { FilterDropdown } from '@components/search/filters/filter-dropdown'
-import { useSearchStoreResults } from '@store/search-results-store'
-import { studioOptions } from '@utils/create-studios-options'
-import { useCallback } from 'react'
 import type { AppliedFilters } from 'types'
 
 /**
@@ -37,6 +37,8 @@ import type { AppliedFilters } from 'types'
 export const FilterSection = () => {
   const { appliedFilters, setAppliedFilters, resetFilters } =
     useSearchStoreResults()
+  const { parentalControl } = useGlobalUserPreferences()
+  const restritedAnimes = 'rx+-+hentai'
 
   const updateFilter = useCallback(
     (category: keyof AppliedFilters, values: string[]) => {
@@ -102,7 +104,11 @@ export const FilterSection = () => {
         values={appliedFilters.rating_filter ?? []}
         onChange={(values) => updateFilter('rating_filter', values)}
         onClear={() => updateFilter('rating_filter', [])}
-        options={ratingOptions}
+        options={
+          parentalControl
+            ? ratingOptions.filter((option) => option.value !== restritedAnimes)
+            : ratingOptions
+        }
       />
       <FilterDropdown
         label="Order By"

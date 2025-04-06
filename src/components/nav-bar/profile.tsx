@@ -68,7 +68,7 @@ export const Profile = () => {
       </div>
       <div
         ref={dropdownRef}
-        className=" bg-Primary-950/60  absolute top-16 right-20  z-50 hidden w-48 rounded-b-md p-4  text-base text-white shadow-lg  backdrop-blur-sm"
+        className=" bg-Primary-950/60  absolute top-16 md:right-20  right-0 z-50 hidden w-48 rounded-b-md p-4  text-base text-white shadow-lg  backdrop-blur-sm"
       >
         <ul className="space-y-6">
           <li>

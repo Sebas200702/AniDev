@@ -194,6 +194,7 @@ export const ratingOptions: FilterOption[] = [
   { value: 'pg - children', label: 'Kids' },
   { value: 'pg-13 - teens 13 or older', label: 'Teens' },
   { value: 'r - 17+ (violence & profanity)', label: 'Adults' },
+  { value: 'rx+-+hentai', label: 'Hentai' },
 ]
 
 export const statusOptions: FilterOption[] = [
