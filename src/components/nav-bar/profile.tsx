@@ -68,13 +68,13 @@ export const Profile = () => {
       </div>
       <div
         ref={dropdownRef}
-        className="border-Primary-950/50 bg-Primary-950/50 absolute top-[70px] right-0 z-50 hidden w-48 rounded-md border p-4 text-base text-white shadow-lg backdrop-blur-sm"
+        className=" bg-Primary-950/60  absolute top-16 right-20  z-50 hidden w-48 rounded-b-md p-4  text-base text-white shadow-lg  backdrop-blur-sm"
       >
-        <ul className="space-y-6 text-white">
+        <ul className="space-y-6">
           <li>
             <a
               href="/profile/settings"
-              className="flex items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+              className="flex items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50 text-Primary-50 md:hover:text-enfasisColor"
             >
               <div className="flex items-center gap-3">
                 <svg
@@ -112,7 +112,7 @@ export const Profile = () => {
           <li>
             <a
               href="/profile"
-              className="flex items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+              className="flex items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50 text-Primary-50 md:hover:text-enfasisColor"
             >
               <div className="flex items-center gap-3">
                 <svg
@@ -151,7 +151,7 @@ export const Profile = () => {
           <li>
             {userInfo?.name && (
               <button
-                className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+                className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50 text-Primary-50 md:hover:text-enfasisColor"
                 onClick={handleLogout}
               >
                 <span>Sign out</span>
@@ -175,7 +175,7 @@ export const Profile = () => {
             {!userInfo?.name && (
               <a
                 href="/signup"
-                className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+                className=" text-Primary-50 md:hover:text-enfasisColor flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
               >
                 <span>Sign up</span>
               </a>
