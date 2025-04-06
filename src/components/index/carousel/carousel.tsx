@@ -87,7 +87,7 @@ export const Carousel = (): JSX.Element => {
     banners.forEach((anime) => {
       const image = new Image()
       if (isMobile) {
-        image.src = createImageUrlProxy(anime.banner_image, '420', '50', 'webp')
+        image.src = createImageUrlProxy(anime.banner_image, '720', '50', 'webp')
         image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
         return
       }
