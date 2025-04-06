@@ -132,5 +132,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
         headers: { 'Content-Type': 'application/json' },
       }
     )
+  }finally{
+    await redis.disconnect()
   }
 })
