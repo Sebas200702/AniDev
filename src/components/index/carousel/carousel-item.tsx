@@ -77,13 +77,6 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           {anime.synopsis ?? 'No description available'}
         </p>
         <div className="mx-auto flex w-[300px] flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
-          <a
-            href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-            className="button-secondary text-s flex w-full"
-            title={anime.title}
-          >
-            Learn More
-          </a>
           <WatchAnimeButton
             url={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           />
