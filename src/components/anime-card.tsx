@@ -110,8 +110,6 @@ export const AnimeCard = ({ anime, context }: Props) => {
             alt={title}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
-            width={225}
-            height={330}
           />
           <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </Picture>
