@@ -1,6 +1,7 @@
 import { redis } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
+import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(
