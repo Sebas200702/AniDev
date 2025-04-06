@@ -1,3 +1,4 @@
+import { redis } from '@libs/redis'
 import type { APIRoute } from 'astro'
 import sharp from 'sharp'
 
@@ -48,6 +49,9 @@ import sharp from 'sharp'
  */
 
 export const GET: APIRoute = async ({ url }) => {
+  if (!redis.isOpen) {
+    await redis.connect()
+  }
   const imageUrl = url.searchParams.get('url')
 
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
@@ -56,6 +60,7 @@ export const GET: APIRoute = async ({ url }) => {
     100
   )
   const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
+  const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
   if (!imageUrl) {
     return new Response(JSON.stringify({ error: 'Missing "url" parameter' }), {
@@ -65,6 +70,14 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
+    const cachedData = await redis.get(`image-${url.searchParams.toString()}`)
+    if (cachedData) {
+      const response = Buffer.from(JSON.parse(cachedData).data)
+      return new Response(response, {
+        status: 200,
+        headers: { 'Content-Type': mimeType },
+      })
+    }
     const response = await fetch(imageUrl)
     if (!response.ok) {
       return new Response(
@@ -108,13 +121,15 @@ export const GET: APIRoute = async ({ url }) => {
       )
     }
 
-    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
+    await redis.set(
+      `image-${url.searchParams.toString()}`,
+      JSON.stringify(optimizedBuffer),
+      { EX: 31536000 }
+    )
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
-        'Cache-Control': 'public, max-age=86400',
-        Vary: 'Accept-Encoding',
       },
     })
   } catch (error) {
