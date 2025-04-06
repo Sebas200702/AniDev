@@ -88,7 +88,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
   </head>
   <body
     id="app"
-    class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-auto"
+    class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-scroll"
   >
     <LoadUserPrefences userInfo={userInfo} client:load />
     <LoadWindowWidth client:load />
@@ -109,3 +109,28 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     <Footer />
   </body>
 </html>
+<style is:global>
+#app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Nunito', sans-serif;
+}
+.navbar-animation {
+  animation: enchanted-header auto both;
+  animation-range: 0 300px;
+  animation-timeline: scroll(root block);
+}
+@keyframes enchanted-header {
+  to {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+  }
+}
+</style>
