@@ -139,7 +139,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       onSubmit={handleSubmit}
       id="search-bar"
     >
-      <div className="border-Primary-50/30 flex w-full items-center justify-center overflow-hidden rounded-lg border-1 bg-black/40 px-2 transition-all duration-300 ease-in-out">
+      <div className="border-Primary-50/30 flex w-full max-w-xl items-center justify-center overflow-hidden rounded-lg border-1 bg-black/40 px-2 transition-all duration-300 ease-in-out">
         <input
           type="search"
           id="default-search"
