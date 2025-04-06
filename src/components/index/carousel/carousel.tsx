@@ -5,10 +5,10 @@ import { CarouselItem } from '@components/index/carousel/carousel-item'
 import { LoadingCarousel } from '@components/index/carousel/carousel-loader'
 import { Indicator } from '@components/index/carousel/indicator'
 import { NexPrevBtnCarousel } from '@components/index/carousel/nex-prev-btn-carousel'
-import { ParentalControl } from '@components/profile/settings/parental-control'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import { useFetch } from '@hooks/useFetch'
 import { useCarouselStore } from '@store/carousel-store'
+import { useWindowWidth } from '@store/window-width'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import type { AnimeBannerInfo } from 'types'
@@ -61,6 +61,8 @@ export const Carousel = (): JSX.Element => {
     handleKeyDown,
   } = useCarouselScroll(banners, currentIndex, setCurrentIndex)
   const { parentalControl } = useGlobalUserPreferences()
+  const { width: windowWidth } = useWindowWidth()
+  const isMobile = windowWidth && windowWidth < 768
 
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
@@ -84,6 +86,11 @@ export const Carousel = (): JSX.Element => {
     if (!banners || banners.length === 0) return
     banners.forEach((anime) => {
       const image = new Image()
+      if (isMobile) {
+        image.src = createImageUrlProxy(anime.banner_image, '420', '50', 'webp')
+        image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
+        return
+      }
       image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
       image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
     })
