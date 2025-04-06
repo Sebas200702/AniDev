@@ -4,7 +4,6 @@ import Footer from '@components/footer.astro'
 import { LoadUserPrefences } from '@components/load-user-preferences'
 import { LoadWindowWidth } from '@components/load-window-width'
 import NavBar from '@components/nav-bar/nav-bar.astro'
-import { connectRedis, redis } from '@libs/redis'
 import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
@@ -17,9 +16,6 @@ interface Props {
   title?: string
   description?: string
   image?: string
-}
-if (!redis.isOpen) {
-  await connectRedis()
 }
 
 const { animeId, title, description, image } = Astro.props
