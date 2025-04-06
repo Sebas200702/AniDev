@@ -60,6 +60,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
           className={`group relative aspect-[225/330] w-full max-w-20 overflow-hidden rounded-lg md:max-w-32`}
           aria-label={`View details for ${anime.title}`}
+          title={anime.title}
         >
           <Picture
             image={anime.image_small_webp}
