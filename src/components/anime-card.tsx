@@ -116,11 +116,11 @@ export const AnimeCard = ({ anime, context }: Props) => {
 
         <footer className="absolute bottom-1 left-0 z-10 flex w-full max-w-[90%] flex-row items-center justify-center gap-2 p-2 md:left-3">
           <StatusPoint
-            class={`h-6 w-6 ${statusColors(status)}`}
+            class={` h-3 w-3 rounded-full ${statusColors(status)} relative `}
             status={status}
           />
           <span
-            className={`w-full ${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
+            className={`w-[80%] ${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
             aria-hidden="true"
           >
             {title}
