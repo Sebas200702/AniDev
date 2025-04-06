@@ -4,6 +4,7 @@ import Footer from '@components/footer.astro'
 import { LoadUserPrefences } from '@components/load-user-preferences'
 import { LoadWindowWidth } from '@components/load-window-width'
 import NavBar from '@components/nav-bar/nav-bar.astro'
+import { connectRedis, redis } from '@libs/redis'
 import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
@@ -16,6 +17,9 @@ interface Props {
   title?: string
   description?: string
   image?: string
+}
+if (!redis.isOpen) {
+  await connectRedis()
 }
 
 const { animeId, title, description, image } = Astro.props
@@ -110,27 +114,27 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
   </body>
 </html>
 <style is:global>
-#app {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas:
-    'header'
-    'main'
-    'footer';
-  height: 100vh;
-  width: 100vw;
-  font-family: 'Nunito', sans-serif;
-}
-.navbar-animation {
-  animation: enchanted-header auto both;
-  animation-range: 0 300px;
-  animation-timeline: scroll(root block);
-}
-@keyframes enchanted-header {
-  to {
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
+  #app {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Nunito', sans-serif;
   }
-}
+  .navbar-animation {
+    animation: enchanted-header auto both;
+    animation-range: 0 300px;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes enchanted-header {
+    to {
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+    }
+  }
 </style>
