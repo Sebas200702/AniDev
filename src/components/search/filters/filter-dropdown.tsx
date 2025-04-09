@@ -24,6 +24,20 @@ interface FilterDropdownProps {
  * The UI displays a label, search input, selected options, and control buttons. The dropdown options
  * are presented as a scrollable list with checkboxes that visually indicate the selected state.
  *
+ * State Management:
+ * - Tracks dropdown open/closed state
+ * - Manages search input value
+ * - Filters options based on search query
+ * - Handles selected values
+ * - Controls mobile responsiveness
+ *
+ * Event Handling:
+ * - Click outside to close
+ * - Keyboard navigation
+ * - Search input changes
+ * - Option selection/deselection
+ * - Clear all selections
+ *
  * @param {FilterDropdownProps} props - The component props
  * @param {string} props.label - The label text for the dropdown
  * @param {string[]} props.values - Array of currently selected option values
