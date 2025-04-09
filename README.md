@@ -5,8 +5,8 @@ AniDev is a modern anime streaming and exploration platform built with AstroJS a
 ## 🚀 Key Features
 
 - 🎨 **Modern Design**: Responsive and smooth transitions using `astro:transitions`.
-- 🧬 **Reusable Components**: Includes NavBar, Footer, AnimeCard, AnimeTag, etc.
-- 🔍 **Dynamic Search**: Uses `useDebounce` for optimized queries and fast search.
+- 🧬 **Reusable Components**: Includes NavBar, Footer, AnimeCard, AnimeTag, CategoryMenu, etc.
+- 🔍 **Dynamic Search**: Uses `useDebounce` for optimized queries and fast search with advanced filtering.
 - 📦 **Efficient Backend**: Integrated with Supabase, with optimized RPC functions.
 - 🎥 **Video Playback**: Featuring high-quality anime streaming with Video.js.
 - 🌟 **Advanced Filtering**: Search animes by genres, studios, ratings, year, season, etc.
