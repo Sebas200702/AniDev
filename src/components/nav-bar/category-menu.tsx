@@ -1,6 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimeGenres } from 'types'
 
+/**
+ * CategoryMenu component provides a dropdown menu for anime genre filtering.
+ *
+ * @description This component renders a button that toggles a dropdown menu containing
+ * all available anime genres. When clicked, it displays a scrollable list of genres
+ * that users can select to filter anime content. The menu includes smooth animations
+ * for opening and closing, and handles clicks outside the menu to close it automatically.
+ *
+ * The component uses a backdrop blur effect for the dropdown menu to create a modern,
+ * semi-transparent appearance that matches the application's design system. Each genre
+ * in the list is clickable and navigates to the search page with the selected genre
+ * as a filter parameter.
+ *
+ * The menu is fully responsive and includes proper ARIA attributes for accessibility.
+ * It also features a rotating arrow icon that indicates the menu's open/closed state.
+ *
+ * @returns {JSX.Element} The rendered category menu with dropdown functionality
+ *
+ * @example
+ * <CategoryMenu />
+ */
 export const CategoryMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
