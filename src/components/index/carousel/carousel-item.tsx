@@ -81,7 +81,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           <a
             className="button-secondary w-full text-m flex  justify-center items-center"
             href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-            title={`Discover  ${anime.title}`}
+            title={`Discover ${anime.title}`}
           >
             Discover More
           </a>
