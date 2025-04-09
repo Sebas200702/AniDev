@@ -29,6 +29,15 @@ import { useSearchStoreResults } from '@store/search-results-store'
  * The component updates the search results in the store when new data is received or when loading state
  * changes, ensuring that all parts of the application have access to the current search state.
  *
+ * Key features:
+ * - Real-time URL synchronization with search parameters
+ * - Advanced filtering system with multiple criteria
+ * - Responsive grid layout for filters and results
+ * - Error boundary for graceful error handling
+ * - Loading state management
+ * - Debounced search queries
+ * - Shareable search URLs
+ *
  * @returns {JSX.Element} The rendered search interface with filters and results sections
  *
  * @example
