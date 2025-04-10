@@ -31,7 +31,9 @@ interface Props {
 export const ColectionList = ({ id }: Props) => {
   const { width: windowWidth } = useWindowWidth()
   let colectionLength
-  if (windowWidth && windowWidth >= 1280) colectionLength = 4
+
+  if (windowWidth && windowWidth >= 1920) colectionLength = 4
+  else if (windowWidth && windowWidth >= 1280) colectionLength = 3
   else if (windowWidth && windowWidth >= 768) colectionLength = 2
   else colectionLength = 1
 
