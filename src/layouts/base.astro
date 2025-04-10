@@ -86,27 +86,29 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     <title>{metaTitle}</title>
     <ClientRouter />
   </head>
-  <body
-    id="app"
-    class="no-scrollbar bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-scroll"
-  >
-    <LoadUserPrefences userInfo={userInfo} client:load />
-    <LoadWindowWidth client:load />
-    <header class="[grid-area:header]">
-      <NavBar />
-    </header>
-    <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
-      <slot />
-    </main>
-    <Toaster
-      client:load
-      theme="dark"
-      position="bottom-right"
-      toastOptions={{
-        animationOnClose: 'swipe',
-      }}
-    />
-    <Footer />
+  <body>
+    <div
+      id="app"
+      class="bg-Primary-950 text-Primary-50 overflow-x-hidden overflow-y-scroll no-scrollbar"
+    >
+      <LoadUserPrefences userInfo={userInfo} client:load />
+      <LoadWindowWidth client:load />
+      <header class="[grid-area:header]">
+        <NavBar />
+      </header>
+      <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
+        <slot />
+      </main>
+      <Toaster
+        client:load
+        theme="dark"
+        position="bottom-right"
+        toastOptions={{
+          animationOnClose: 'swipe',
+        }}
+      />
+      <Footer />
+    </div>
   </body>
 </html>
 <style is:global>
@@ -121,11 +123,12 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     height: 100vh;
     width: 100vw;
     font-family: 'Nunito', sans-serif;
+    scroll-timeline: --scrollApp;
   }
   .navbar-animation {
     animation: enchanted-header auto both;
     animation-range: 0 300px;
-    animation-timeline: scroll(root block);
+    animation-timeline: --scrollApp;
   }
   @keyframes enchanted-header {
     to {
