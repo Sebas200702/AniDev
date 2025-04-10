@@ -91,7 +91,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
 
   return (
     <article
-      className="group relative transition-all duration-200 ease-in-out md:hover:scale-[1.02]"
+      className="group relative transition-all anime-card duration-200 ease-in-out md:hover:scale-[1.02]"
       title={title}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
