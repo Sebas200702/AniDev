@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { AnimeCard } from '@components/anime-card'
+import { LoadingCard } from '@components/search/results/loading-card'
 import { SearchResultsLoader } from '@components/search/results/serch-results-loader'
 import { toast } from '@pheralb/toast'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { ToastType } from 'types'
-import { LoadingCard } from './loading-card'
 
 /**
  * SearchResults component displays search results for anime based on user queries and filters.
@@ -46,10 +46,10 @@ export const SearchResults = () => {
   }
 
   useEffect(() => {
-    if (animes?.length) {
+    if (animes?.length || (!animes?.length && !loading)) {
       setFadeIn(true)
     }
-  }, [animes])
+  }, [animes, loading])
 
   if ((!animes && loading) || loading) {
     return <SearchResultsLoader />
