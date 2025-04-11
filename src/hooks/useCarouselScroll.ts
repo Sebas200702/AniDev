@@ -95,7 +95,7 @@ export const useCarouselScroll = (
     }
     intervalRef.current = window.setInterval(() => {
       handleNext()
-    }, 4000)
+    }, 5000)
   }, [handleNext])
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
