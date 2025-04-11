@@ -73,7 +73,7 @@ export const BannerInfo = ({
       <p className="text-s line-clamp-2 max-h-32 w-full overflow-hidden text-center text-white">
         {synopsis}
       </p>
-      <WatchAnimeButton url={`/watch/${slug}_${mal_id}`} />
+      <WatchAnimeButton url={`/watch/${slug}_${mal_id}`} title={title} />
     </div>
   )
 }
