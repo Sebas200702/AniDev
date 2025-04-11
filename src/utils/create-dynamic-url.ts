@@ -1,4 +1,3 @@
-
 import { AnimeFilters, AnimeGenres, AnimeTypes } from 'types'
 
 /**
@@ -15,7 +14,6 @@ interface FilterResult {
   url: string
   title: string
 }
-
 
 const unpopularGenres = [AnimeGenres.EROTICA, AnimeGenres.BOYS_LOVE]
 
@@ -80,7 +78,10 @@ const capitalizeTitle = (text: string): string => {
  * createDynamicUrl(10)
  * // Might return: { url: "limit_count=10&genre_filter=action&type_filter=movie", title: "Top 10 Action Movies" }
  */
-export const createDynamicUrl = (limit = 6 , parentalControl = true): FilterResult => {
+export const createDynamicUrl = (
+  limit = 6,
+  parentalControl = true
+): FilterResult => {
   const genres = getPopularGenres()
 
   /**

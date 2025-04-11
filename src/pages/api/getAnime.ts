@@ -61,8 +61,6 @@ const pendingRequests = new Map<string, Promise<any>>()
 const CACHE_TTL = 3600
 const CACHE_PREFIX = 'anime:'
 
-
-
 const validateSlug = (slug: string | null): ValidationResult => {
   if (!slug) return { valid: false, error: 'No title query provided' }
 

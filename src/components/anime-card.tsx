@@ -91,7 +91,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
 
   return (
     <article
-      className="group relative transition-all anime-card duration-200 ease-in-out md:hover:scale-[1.02]"
+      className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.02]"
       title={title}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -106,7 +106,9 @@ export const AnimeCard = ({ anime, context }: Props) => {
           styles="relative h-full w-full rounded-lg relative"
         >
           <img
-            src={isMobile||context === 'search' ? image_webp : image_large_webp}
+            src={
+              isMobile || context === 'search' ? image_webp : image_large_webp
+            }
             alt={title}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
@@ -114,9 +116,9 @@ export const AnimeCard = ({ anime, context }: Props) => {
           <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </Picture>
 
-        <footer className="absolute bottom-0 left-0 z-10 flex w-full  flex-row items-center justify-center gap-4 py-2 px-4 ">
+        <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-row items-center justify-center gap-4 px-4 py-2">
           <StatusPoint
-            class={` h-3 w-3 rounded-full ${statusColors(status)} relative `}
+            class={`h-3 w-3 rounded-full ${statusColors(status)} relative`}
             status={status}
           />
           <span

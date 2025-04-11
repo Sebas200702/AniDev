@@ -213,7 +213,7 @@ export const FilterDropdown = ({
               </svg>
             </span>
 
-            <span className="text-gray-400 peer-checked:text-white ">
+            <span className="text-gray-400 peer-checked:text-white">
               {option.label}
             </span>
           </button>

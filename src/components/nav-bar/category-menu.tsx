@@ -43,9 +43,9 @@ export const CategoryMenu = () => {
   }, [])
 
   return (
-    <div className=" text-m" ref={menuRef}>
+    <div className="text-m" ref={menuRef}>
       <button
-        className="flex items-center gap-4 text-white rounded-md p-2 duration-200"
+        className="flex items-center gap-4 rounded-md p-2 text-white duration-200"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -63,8 +63,8 @@ export const CategoryMenu = () => {
         </svg>
       </button>
       <ul
-        className={`absolute backdrop-blur-md w-48 max-h-72 overflow-y-auto top-16 flex flex-col gap-2 bg-Primary-950/60  custom-scrollbar rounded-b-md shadow-lg  transition-all duration-200 ease-in-out ${
-          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        className={`bg-Primary-950/60 custom-scrollbar absolute top-16 flex max-h-72 w-48 flex-col gap-2 overflow-y-auto rounded-b-md shadow-lg backdrop-blur-md transition-all duration-200 ease-in-out ${
+          isOpen ? 'visible opacity-100' : 'invisible opacity-0'
         }`}
         role="menu"
         aria-orientation="vertical"
@@ -73,7 +73,7 @@ export const CategoryMenu = () => {
           <li key={genre} className="hover:bg-Complementary/20">
             <a
               href={`/search?genre_filter=${genre.toLowerCase()}`}
-              className="block px-6 py-2  text-white hover:bg-Complementary/20 hover:text-enfasisColor transition-colors duration-200 focus:outline-none focus:bg-Complementary/30"
+              className="hover:bg-Complementary/20 hover:text-enfasisColor focus:bg-Complementary/30 block px-6 py-2 text-white transition-colors duration-200 focus:outline-none"
               role="menuitem"
             >
               {genre}

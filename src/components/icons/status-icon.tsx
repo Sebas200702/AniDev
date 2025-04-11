@@ -27,7 +27,7 @@ interface StatusIconProps extends IconProps {
  * <StatusIcon status="Currently Airing" className="icon-md" />
  */
 export const StatusIcon = ({ className, status }: StatusIconProps) => {
-  const color = statusColors(status).replaceAll('bg','text')
+  const color = statusColors(status).replaceAll('bg', 'text')
   if (status === 'Currently Airing') {
     return (
       <svg

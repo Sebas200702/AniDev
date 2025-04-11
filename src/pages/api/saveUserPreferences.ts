@@ -1,7 +1,7 @@
-import { supabase } from "@libs/supabase";
-import { checkSession } from "@middlewares/auth";
-import { getSession } from "auth-astro/server";
-import type { APIRoute } from "astro";
+import { supabase } from '@libs/supabase'
+import { checkSession } from '@middlewares/auth'
+import type { APIRoute } from 'astro'
+import { getSession } from 'auth-astro/server'
 
 export const POST: APIRoute = checkSession(async ({ request }) => {
   const user = await getSession(request).then((res) => res?.user)
@@ -12,18 +12,20 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
     })
   }
   const body = await request.json()
-  const {enfasiscolor, parentalControl} = body
-
+  const { enfasiscolor, parentalControl } = body
 
   if (!enfasiscolor && !parentalControl) {
-    return new Response(JSON.stringify({ error: 'User preferences is required' }), {
-      status: 400,
-    })
+    return new Response(
+      JSON.stringify({ error: 'User preferences is required' }),
+      {
+        status: 400,
+      }
+    )
   }
 
   const { data, error } = await supabase
     .from('public_users')
-    .update({ enfasis_color: enfasiscolor , parental_control: parentalControl})
+    .update({ enfasis_color: enfasiscolor, parental_control: parentalControl })
     .eq('name', user.name)
   console.log(user.name)
 

@@ -25,7 +25,10 @@ import { PlayIcon } from '@components/icons/play-icon'
 export const WatchAnimeButton = ({
   url,
   title,
-}: { url: string; title: string }) => {
+}: {
+  url: string
+  title: string
+}) => {
   return (
     <a
       href={url}

@@ -64,13 +64,13 @@ export const PageColectionList = ({ title, id }: Props) => {
   if (!animes) return <PageCollectionLoader />
 
   return (
-    <section className="mx-auto flex flex-col gap-4 md:mb-20 mb-10">
+    <section className="mx-auto mb-10 flex flex-col gap-4 md:mb-20">
       <header className="flex flex-row justify-between">
         <h2 className="mb-6 h-20 overflow-hidden text-xl font-bold text-white md:h-auto md:text-3xl">
           {title}
         </h2>
       </header>
-      <ul className="grid grid-cols-1 md:gap-10 gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
         {animes.map((anime) => (
           <CollectionItem key={anime.mal_id} anime={anime} />
         ))}
