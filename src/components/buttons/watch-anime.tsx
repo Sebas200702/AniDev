@@ -22,12 +22,15 @@ import { PlayIcon } from '@components/icons/play-icon'
  * @example
  * <WatchAnimeButton url="/watch/my-hero-academia_31964" />
  */
-export const WatchAnimeButton = ({ url }: { url: string }) => {
+export const WatchAnimeButton = ({
+  url,
+  title,
+}: { url: string; title: string }) => {
   return (
     <a
       href={url}
       className="button-primary text-m flex w-full items-center justify-center gap-2"
-      title='WatchNow'
+      title={`Watch ${title}`}
     >
       <PlayIcon className="h-3 w-3 xl:h-4 xl:w-4" />
       Watch Now
