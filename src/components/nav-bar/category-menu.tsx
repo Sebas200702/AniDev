@@ -63,7 +63,7 @@ export const CategoryMenu = () => {
         </svg>
       </button>
       <ul
-        className={`absolute  w-48 max-h-72 overflow-y-auto top-16 flex flex-col gap-2 bg-Primary-950/60  custom-scrollbar rounded-b-md shadow-lg backdrop-blur-sm transition-all duration-200 ease-in-out ${
+        className={`absolute backdrop-blur-md w-48 max-h-72 overflow-y-auto top-16 flex flex-col gap-2 bg-Primary-950/60  custom-scrollbar rounded-b-md shadow-lg  transition-all duration-200 ease-in-out ${
           isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         role="menu"
