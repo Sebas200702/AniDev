@@ -87,6 +87,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           </a>
           <WatchAnimeButton
             url={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
+            title={anime.title}
           />
         </div>
       </div>
