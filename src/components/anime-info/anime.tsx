@@ -6,6 +6,7 @@ import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
+import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
 import type { Anime } from 'types'
 
@@ -38,26 +39,13 @@ interface Props {
 export const AnimeInfo = ({ slug }: Props) => {
   const [animeData, setAnimeData] = useState<Anime>()
 
-  const getAnimeData = async (slug: string) => {
-    try {
-      const response = await fetch(`/api/getAnime?slug=${slug}`, {
-        cache: 'force-cache',
-      })
-
-      if (response.status === 404) {
-        window.location.href = '/404'
-      }
-
-      const animeData = await response.json().then((data) => data.anime)
-
-      setAnimeData(animeData)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
-    getAnimeData(slug)
+    const fetchData = async () => {
+      const data = await getAnimeData(slug)
+      if (!data) return
+      setAnimeData(data)
+    }
+    fetchData()
   }, [])
 
   if (!animeData) return <AnimeLoader />
