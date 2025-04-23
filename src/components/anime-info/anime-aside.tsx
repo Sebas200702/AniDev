@@ -75,7 +75,7 @@ export const AnimeAside = ({
       </Picture>
 
       <div className="flex h-full w-full flex-row justify-end gap-2">
-        <WatchAnimeButton url={watchNowUrl} />
+        <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
         <ShareButton
           title={animeData.title}
           url={url}
