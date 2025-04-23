@@ -1,10 +1,10 @@
 ---
+import { WatchAnime } from '@components/watch-anime/watch-anime'
 import Layout from '@layouts/base.astro'
+const slug = Astro.params.slug ?? ''
+const currentEpisode = parseInt(Astro.params.episode ?? '')
 ---
 
 <Layout>
-  <div class="flex h-screen w-full flex-col items-center justify-center">
-    <h1 class="text-4xl font-bold">Watch</h1>
-    <p class="mt-4 text-lg">This page is under construction.</p>
-  </div>
+  <WatchAnime client:load slug={slug} />
 </Layout>
