@@ -52,11 +52,16 @@ export const Profile = () => {
   }, [dropdownRef, buttonRef])
   return (
     <>
-      <div className="flex items-center justify-end gap-4">
-        <div className="text-s hidden text-end md:block dark:text-white">
-          <div>{userInfo?.name ?? 'Guest'}</div>
-        </div>
-        <button onClick={handleClick} ref={buttonRef}>
+      <article className="flex items-center justify-end gap-4">
+        <span className="text-s hidden text-end md:block dark:text-white">
+          {userInfo?.name ?? 'Guest'}
+        </span>
+        <button
+          className="cursor-pointer"
+          title="Options"
+          onClick={handleClick}
+          ref={buttonRef}
+        >
           <img
             className="h-10 w-10 rounded-full"
             src={userInfo?.avatar ?? '/placeholder.webp'}
@@ -65,7 +70,7 @@ export const Profile = () => {
             decoding="async"
           />
         </button>
-      </div>
+      </article>
       <div
         ref={dropdownRef}
         className="bg-Primary-950/60 absolute top-16 right-0 z-50 hidden w-48 rounded-b-md p-4 text-base text-white shadow-lg backdrop-blur-sm md:right-20"
