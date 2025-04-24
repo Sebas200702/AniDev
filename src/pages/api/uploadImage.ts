@@ -58,7 +58,8 @@ import sharp from 'sharp'
  */
 
 export const POST: APIRoute = checkSession(async ({ request }) => {
-  const { image, filename } = await request.json()
+  const { image, filename, type } = await request.json()
+
 
   if (!image) {
     return new Response(JSON.stringify({ message: 'Missing image data' }), {
@@ -75,10 +76,10 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
 
   const buffer = Buffer.from(base64String, 'base64')
 
-  const optimizedBuffer = await sharp(buffer)
-    .resize({ width: 150 })
-    .webp({ quality: 100 })
-    .toBuffer()
+  const optimizedBuffer =
+    type === 'image/gif'
+      ? buffer
+      : await sharp(buffer).resize({ width: 150 }).toBuffer()
 
   if (!optimizedBuffer) {
     return new Response(
@@ -87,13 +88,23 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
     )
   }
 
-  const newFile = new File([optimizedBuffer], filename || 'image.webp', {
-    type: 'image/webp',
+  const newFile = new File([optimizedBuffer], filename ?? 'image.webp', {
+    type: type ?? 'image/webp',
   })
 
   const { files } = await pinata.files.public.list()
 
-  const existingFile = files.find((file) => file.name === filename)
+  const existingFile = files.find((file) => {
+    const fileNameWithoutExtension = (file.name ?? '')
+      .split('.')
+      .slice(0, -1)
+      .join('.')
+    const inputFileNameWithoutExtension = (filename ?? '')
+      .split('.')
+      .slice(0, -1)
+      .join('.')
+    return fileNameWithoutExtension === inputFileNameWithoutExtension
+  })
 
   if (existingFile) {
     await pinata.files.public.delete([existingFile.id])
