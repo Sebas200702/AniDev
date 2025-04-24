@@ -112,7 +112,6 @@ export const useDragAndDrop = ({
       if (!enabled) return
       e.preventDefault()
       e.stopPropagation()
-      // Reiniciamos contador y estado
       dragCounter.current = 0
       setIsDragging(false)
       const droppedFile = e.dataTransfer?.files[0]
