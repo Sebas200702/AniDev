@@ -62,8 +62,18 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     <meta name="twitter:site" content={baseUrl} />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self';  script-src 'self' 'unsafe-inline';frame-src 'self' https://www.youtube.com/ ; style-src 'self'  'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' https://i.ytimg.com data: https://cdn.myanimelist.net/ https://coffee-advanced-tern-335.mypinata.cloud"
+      content="
+    default-src 'self';
+    connect-src 'self' data:;
+    script-src 'self' 'unsafe-inline';
+    frame-src 'self' https://www.youtube.com/;
+    style-src 'self' 'unsafe-inline';
+    font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+    img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud;
+    worker-src  'self' blob:;
+  "
     />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     {userInfo && <link rel="preload" href={userInfo?.avatar} as="image" />}
