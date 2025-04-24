@@ -1,10 +1,11 @@
 import { useUploadImageStore } from '@store/upload-image'
 export const InputUserImage = () => {
-  const { setImage } = useUploadImageStore()
+  const { setImage, setType } = useUploadImageStore()
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
     if (!file) return
+    setType(file.type)
     const reader = new FileReader()
     reader.onload = () => {
       setImage(reader.result as string)
