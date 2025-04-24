@@ -1,7 +1,9 @@
 import { useUploadImageStore } from '@store/upload-image'
+import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useRef, useState } from 'react'
 import { Cropper } from 'react-cropper'
 import type { ReactCropperElement } from 'react-cropper'
+import { SuperImageCropper } from 'super-image-cropper'
 import '@styles/cropper.css'
 import { CloseIcon } from '@components/icons/close-icon'
 import { useDragAndDrop } from '@hooks/useDragAndDrop'
@@ -20,17 +22,26 @@ interface Payload {
 }
 
 export const ImageEditor = ({ userName }: Props) => {
-  const { image, setImage } = useUploadImageStore()
+  const { image, setImage, type, setType } = useUploadImageStore()
   const [cropData, setCropData] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const { setUserInfo, userInfo } = useGlobalUserPreferences()
+  const isGif = type?.toLowerCase().endsWith('gif')
 
+  const imageCropper = useRef(new SuperImageCropper()).current
   const cropperRef = useRef<ReactCropperElement>(null)
 
   const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
-    onDropDataUrl: (dataUrl) => setImage(dataUrl),
+    onDrop: (file) => {
+      setType(file.type)
+      const reader = new FileReader()
+      reader.onload = () => {
+        setImage(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    },
   })
 
   useEffect(() => {
@@ -55,13 +66,27 @@ export const ImageEditor = ({ userName }: Props) => {
   }, [isLoading])
 
   const getCropData = async () => {
-    if (cropperRef.current?.cropper) {
-      setIsLoading(true)
-      const croppedData = cropperRef.current.cropper
-        .getCroppedCanvas()
-        .toDataURL()
-      setCropData(croppedData)
-      await submitImage(croppedData)
+    if (!cropperRef.current?.cropper) return
+    setIsLoading(true)
+
+    console.log(isGif)
+
+    try {
+      const cropped = isGif
+        ? await imageCropper.crop({
+            cropperInstance: cropperRef.current.cropper,
+            src: image!,
+            outputType: 'base64',
+          })
+        : cropperRef.current.cropper.getCroppedCanvas().toDataURL()
+
+      setCropData(cropped as string)
+      await submitImage(cropped as string)
+    } catch (e) {
+      setErrorMessage(e instanceof Error ? e.message : 'Error')
+    } finally {
+      setIsLoading(false)
+      handleClose()
     }
   }
 
@@ -94,6 +119,7 @@ export const ImageEditor = ({ userName }: Props) => {
     const newUserInfo = {
       name: userInfo?.name ?? '',
       avatar: newImage as string,
+      type,
     }
 
     setUserInfo(newUserInfo)
@@ -127,10 +153,10 @@ export const ImageEditor = ({ userName }: Props) => {
 
   const submitImage = async (croppedImage: string) => {
     if (!croppedImage) return
-
     const payload = {
       image: croppedImage,
-      filename: `${userName}_Avatar`,
+      filename: `${normalizeString(userName)}_Avatar`,
+      type,
     }
     try {
       await uploadImage(payload)
