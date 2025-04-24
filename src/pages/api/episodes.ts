@@ -70,6 +70,7 @@ export const GET: APIRoute = rateLimit(
         },
       })
     } catch (error) {
+      console.error('Error in GET /api/episodes:', error)
       return new Response(
         JSON.stringify({ error: 'Ups something went wrong' }),
         {
