@@ -24,10 +24,14 @@ import { create } from 'zustand'
  */
 interface UploadImageStore {
   image: string | null
+  type: string | null
   setImage: (image: string) => void
+  setType: (type: string) => void
 }
 
 export const useUploadImageStore = create<UploadImageStore>((set) => ({
   image: null,
+  type: null,
   setImage: (image) => set({ image }),
+  setType: (type) => set({ type }),
 }))
