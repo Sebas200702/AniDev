@@ -1,21 +1,39 @@
 import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { ImageEditor } from './image-editor'
 import { InputUserImage } from './input-user-image'
 
 export const UserInfo = () => {
   const { userInfo } = useGlobalUserPreferences()
-  const { setImage } = useUploadImageStore()
+  const { setImage, setType } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
   const isEnabled = !!userInfo
+  useEffect(() => {
+    const original = HTMLCanvasElement.prototype.getContext as any
+    HTMLCanvasElement.prototype.getContext = function (
+      contextType: string,
+      options?: any
+    ) {
+      if (contextType === '2d') {
+
+        const opts = { ...(options ?? {}), willReadFrequently: true }
+        return original.call(this, contextType, opts)
+      }
+      return original.apply(this, arguments as any)
+    }
+  }, [])
 
   const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
     enabled: isEnabled,
-    onDropDataUrl: (dataUrl) => {
-      setImage(dataUrl)
-
+    onDrop: (file) => {
+      setType(file.type)
+      const reader = new FileReader()
+      reader.onload = () => {
+        setImage(reader.result as string)
+      }
+      reader.readAsDataURL(file)
       const $imageEditor = document.querySelector('.image-editor')
       $imageEditor?.classList.replace('opacity-0', 'opacity-100')
       $imageEditor?.classList.remove('pointer-events-none')
