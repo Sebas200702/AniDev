@@ -41,10 +41,10 @@ export const checkSession = (
 
       return handler(context)
     } catch (error) {
+      console.error('Error verifying session:', error);
       return new Response(
         JSON.stringify({
-          error: 'Error al verificar la sesión',
-          details: error instanceof Error ? error.message : String(error),
+          error: 'An internal server error occurred',
         }),
         {
           status: 500,
