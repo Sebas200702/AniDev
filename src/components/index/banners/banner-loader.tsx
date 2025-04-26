@@ -27,7 +27,7 @@ interface BannerLoaderProps {
 }
 export const BannerLoader = ({ animationNumber }: BannerLoaderProps) => {
   return (
-    <div className="mx-4  md:mx-20">
+    <div className="m-4  md:mx-20">
       <div
         className={`anime-banner-${animationNumber} flex aspect-[1080/600] h-full w-full animate-pulse items-center justify-center rounded-2xl bg-zinc-800 transition-all duration-200 ease-in-out md:aspect-[1080/350]`}
       ></div>
