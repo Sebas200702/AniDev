@@ -60,7 +60,6 @@ import sharp from 'sharp'
 export const POST: APIRoute = checkSession(async ({ request }) => {
   const { image, filename, type } = await request.json()
 
-
   if (!image) {
     return new Response(JSON.stringify({ message: 'Missing image data' }), {
       status: 400,

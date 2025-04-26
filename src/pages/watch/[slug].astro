@@ -2,9 +2,9 @@
 import { WatchAnime } from '@components/watch-anime/watch-anime'
 import Layout from '@layouts/base.astro'
 const slug = Astro.params.slug ?? ''
-const currentEpisode = parseInt(Astro.params.episode ?? '')
+const currentEpisode = parseInt(Astro.url.searchParams.get('ep') ?? '1') || 1
 ---
 
 <Layout>
-  <WatchAnime client:load slug={slug} />
+  <WatchAnime client:load slug={slug} currentEpisode={currentEpisode} />
 </Layout>
