@@ -102,7 +102,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
     <section
       className={`anime-banner-${animationNumber} fade-out relative flex flex-row items-center px-4 py-4 md:px-20`}
     >
-      <article className="group relative w-full overflow-hidden rounded-2xl transition-all duration-400 ease-in-out md:hover:opacity-95">
+      <article className="group relative w-full overflow-hidden rounded-2xl transition-all duration-400 ease-in-out md:hover:opacity-95 bg-Complementary">
         <a
           href={`/anime/${slug}_${mal_id}`}
           aria-label={`View details for ${title}`}
