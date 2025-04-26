@@ -59,7 +59,7 @@ export default function Pagination({
       <button
         key={1}
         onClick={() => handlePageChange(1)}
-        className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
+        className={`flex h-8 w-8 items-center cursor-pointer justify-center rounded-md text-sm ${
           currentPage === 1
             ? 'bg-enfasisColor text-white'
             : 'bg-transparent text-gray-300 hover:text-white'
@@ -116,7 +116,7 @@ export default function Pagination({
         <button
           key={totalPages}
           onClick={() => handlePageChange(totalPages)}
-          className={`flex h-8 w-8 items-center justify-center rounded-md text-sm ${
+          className={`flex h-8 w-8 items-center justify-center cursor-pointer rounded-md text-sm ${
             currentPage === totalPages
               ? 'bg-enfasisColor text-white'
               : 'bg-transparent text-gray-300 hover:text-white'
@@ -135,7 +135,7 @@ export default function Pagination({
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent text-sm text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent text-sm cursor-pointer text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         aria-label="Previous page"
       >
         <svg
@@ -158,7 +158,7 @@ export default function Pagination({
       <button
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent text-sm text-gray-300 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent text-sm text-gray-300 cursor-pointer hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         aria-label="Next page"
       >
         <svg
