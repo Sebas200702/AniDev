@@ -17,7 +17,6 @@ export const UserInfo = () => {
       options?: any
     ) {
       if (contextType === '2d') {
-
         const opts = { ...(options ?? {}), willReadFrequently: true }
         return original.call(this, contextType, opts)
       }
