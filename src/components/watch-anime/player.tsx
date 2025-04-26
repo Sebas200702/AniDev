@@ -1,5 +1,7 @@
 export const Player = () => {
   return (
-    <div className="w-6xl aspect-video h-full bg-Complementary">Player</div>
+    <div className="bg-Complementary relative flex aspect-[16/9] h-full w-full items-center justify-center rounded-lg">
+      Player
+    </div>
   )
 }
