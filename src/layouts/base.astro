@@ -4,6 +4,7 @@ import Footer from '@components/footer.astro'
 import { LoadUserPrefences } from '@components/load-user-preferences'
 import { LoadWindowWidth } from '@components/load-window-width'
 import NavBar from '@components/nav-bar/nav-bar.astro'
+import { ProgressBar } from '@components/progres-bar'
 import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
@@ -105,6 +106,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
       <LoadWindowWidth client:load />
       <header class="[grid-area:header]">
         <NavBar />
+        <ProgressBar client:load />
       </header>
       <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
         <slot />
