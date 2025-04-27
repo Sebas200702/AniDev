@@ -16,7 +16,6 @@ import { StudioIcon } from '@icons/studio-icon'
 import { ThemesIcon } from '@icons/themes-icon'
 import { TitleJapaneseIcon } from '@icons/title-japanese-icon'
 import { TypeIcon } from '@icons/type-icon'
-import { capitalize } from '@utils/capitalize'
 import type { Anime } from 'types'
 
 interface Props {
@@ -99,16 +98,16 @@ export const AnimeDetails = ({ animeData }: Props) => {
   ]
 
   return (
-    <section className="flex h-min w-full flex-col items-center justify-center md:col-span-1">
+    <section className="flex h-min w-full flex-col items-center justify-center md:col-span-1 px-10 md:px-0">
       <header className="bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl px-4 py-1 backdrop-blur-md">
         <h2 className="text-l text-center text-pretty">Details</h2>
       </header>
       <ul className="bg-Complementary flex w-full flex-col gap-5 rounded-md p-8">
         {animeDetails.map((detail) => (
           <li
-            className="flex w-full flex-row items-center gap-4"
+            className="flex w-full flex-row items-center gap-4 capitalize"
             key={detail.name}
-            title={capitalize(detail.name)}
+            title={detail.name}
           >
             {detail.icon && (
               <detail.icon
@@ -118,8 +117,8 @@ export const AnimeDetails = ({ animeData }: Props) => {
                 type={type}
               />
             )}
-            <span className="text-s">
-              {!detail.value ? 'Unknown' : capitalize(detail.value.toString())}
+            <span className="text-s capitalize text-pretty">
+              {!detail.value ? 'Unknown' : detail.value.toString()}
             </span>
           </li>
         ))}
