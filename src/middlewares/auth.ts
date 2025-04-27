@@ -30,18 +30,16 @@ export const checkSession = (
   return async (context: APIContext): Promise<Response> => {
     try {
       const session = await getSession(context.request)
-
       if (!session?.user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
           headers: { 'Content-Type': 'application/json' },
         })
       }
-      ;(context as any).session = session
-
+      ;(context as any).locals.session = session
       return handler(context)
     } catch (error) {
-      console.error('Error verifying session:', error);
+      console.error('Error verifying session:', error)
       return new Response(
         JSON.stringify({
           error: 'An internal server error occurred',
