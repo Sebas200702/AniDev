@@ -43,6 +43,10 @@ export const getFilters = (filtersEnum: typeof Filters, url: URL) => {
         filter === Filters.search_query
       ) {
         filters[filter] = value ?? null
+      } else if (filter === Filters.aired_day_filter) {
+        if (value) {
+          filters[filter] = value.split('_')
+        }
       } else {
         filters[filter] = value ? value.split('_') : null
       }
