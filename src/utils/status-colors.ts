@@ -23,8 +23,8 @@
 export const statusColors = (status: string) => {
   enum COLORS {
     'Currently Airing' = 'bg-green-400 md:group-hover:bg-green-500',
-    'Finished Airing' = 'bg-blue-400 md:group-hover:bg-blue-500',
-    'Not yet aired' = 'bg-yellow-400 md:group-hover:bg-yellow-500',
+    'Finished Airing' = 'bg-blue-500 md:group-hover:bg-blue-600',
+    'Not yet aired' = 'bg-yellow-500 md:group-hover:bg-yellow-600',
     unknown = 'bg-gray-400 md:group-hover:bg-gray-500',
   }
 
