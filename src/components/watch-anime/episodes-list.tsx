@@ -24,7 +24,7 @@ export const EpisodesList = ({
   image_large_webp,
 }: Props) => {
   return (
-    <div className="rounded-lg bg-[#1c1c1c] p-4 xl:mt-0 mb-10">
+    <div className="mb-10 rounded-lg bg-[#1c1c1c] p-4 xl:mt-0">
       <div
         className={`flex justify-between ${
           currentEpisode === 1 ? 'flex-row-reverse' : 'flex-row'
