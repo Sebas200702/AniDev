@@ -75,7 +75,6 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
     .from('public_users')
     .update({ avatar_url: avatar })
     .eq('name', user.name)
-  console.log(user.name)
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
