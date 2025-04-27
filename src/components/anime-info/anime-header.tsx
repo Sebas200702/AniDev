@@ -1,4 +1,4 @@
-import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
+
 import { AnimeTag } from '@components/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
@@ -36,8 +36,8 @@ interface Props {
 
 export const AnimeHeader = ({ animeData }: Props) => {
   return (
-    <header className="anime-header flex w-auto flex-col justify-end gap-8 md:col-span-2 xl:col-span-4 xl:mt-0">
-      <h2 className="title max-w-[30ch] text-center text-pretty md:text-left md:text-wrap">
+    <header className="anime-header flex w-auto flex-col justify-center md:gap-8 gap-6 md:col-span-2 xl:col-span-4 xl:mt-0">
+      <h2 className="title max-w-[30ch] text-center text-pretty md:text-left mx-auto md:mx-0 md:text-wrap">
         {animeData.title}
       </h2>
       <ul
@@ -56,7 +56,7 @@ export const AnimeHeader = ({ animeData }: Props) => {
         )}
       </ul>
 
-      <AnimeNavBar />
+
     </header>
   )
 }
