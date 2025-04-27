@@ -63,6 +63,7 @@ export enum Filters {
   rating_filter = 'rating_filter',
   banners_filter = 'banners_filter',
   season_filter = 'season_filter',
+  aired_day_filter = 'aired_day_filter',
 }
 
 export type Animes = {
@@ -196,6 +197,15 @@ export const ratingOptions: FilterOption[] = [
   { value: 'r - 17+ (violence & profanity)', label: 'Adults' },
   { value: 'rx+-+hentai', label: 'Hentai' },
 ]
+export const airedDayOptions: FilterOption[] = [
+  { value: 'sunday', label: 'Sunday' },
+  { value: 'monday', label: 'Monday' },
+  { value: 'tuesday', label: 'Tuesday' },
+  { value: 'wednesday', label: 'Wednesday' },
+  { value: 'thursday', label: 'Thursday' },
+  { value: 'friday', label: 'Friday' },
+  { value: 'saturday', label: 'Saturday' },
+]
 
 export const statusOptions: FilterOption[] = [
   { value: 'currently airing', label: 'Airing' },
@@ -226,7 +236,7 @@ export const orderByOptions: FilterOption[] = [
 ]
 export interface Section {
   label: string
-  icon: React.FC<{ className?: string }>
+  icon?: React.FC<{ className?: string }>
   selected: boolean
 }
 
