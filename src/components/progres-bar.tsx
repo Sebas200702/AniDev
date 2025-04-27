@@ -10,7 +10,6 @@ export const ProgressBar = () => {
       setIsLoading(true)
       setProgress(0)
 
- 
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current)
         progressIntervalRef.current = null
@@ -25,7 +24,6 @@ export const ProgressBar = () => {
     }
 
     const handleNavigationEnd = () => {
-
       setProgress(100)
 
       if (progressIntervalRef.current) {
@@ -33,12 +31,10 @@ export const ProgressBar = () => {
         progressIntervalRef.current = null
       }
 
-
       setTimeout(() => {
         setIsLoading(false)
       }, 500)
     }
-
 
     document.addEventListener('astro:before-preparation', handleNavigationStart)
     document.addEventListener('astro:page-load', handleNavigationEnd)
@@ -58,13 +54,13 @@ export const ProgressBar = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full z-50 transition-opacity duration-300 rounded-md ${
+      className={`fixed top-0 left-0 z-50 w-full rounded-md transition-opacity duration-300 ${
         isLoading ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <div className="h-1 bg-Primary-900/30">
+      <div className="bg-Primary-900/30 h-1">
         <div
-          className="h-full bg-enfasisColor transition-all duration-200 ease-out"
+          className="bg-enfasisColor h-full transition-all duration-200 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
