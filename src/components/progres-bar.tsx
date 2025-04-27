@@ -1,5 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
 
+/**
+ * ProgressBar component displays a loading progress bar at the top of the screen.
+ *
+ * @description This component renders a progress bar that visually indicates the loading state
+ * of the application during navigation events. It listens for custom events (`astro:before-preparation`
+ * and `astro:page-load`) to start and stop the progress bar animation. The progress bar smoothly
+ * transitions its width to simulate loading progress and disappears once the loading is complete.
+ *
+ * The progress bar's width increases incrementally up to 90% during loading and jumps to 100% when
+ * the loading is finished. It uses a timeout to delay the hiding of the progress bar for a smoother
+ * user experience.
+ *
+ * The component is styled to appear fixed at the top of the viewport and uses opacity transitions
+ * to fade in and out based on the loading state.
+ *
+ * @returns {JSX.Element} The rendered progress bar component.
+ *
+ * @example
+ * <ProgressBar />
+ */
 export const ProgressBar = () => {
   const [progress, setProgress] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
