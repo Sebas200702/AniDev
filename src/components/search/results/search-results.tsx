@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { AnimeCard } from '@components/anime-card'
 import { LoadingCard } from '@components/search/results/loading-card'
@@ -6,6 +6,7 @@ import { SearchResultsLoader } from '@components/search/results/serch-results-lo
 import { toast } from '@pheralb/toast'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { ToastType } from 'types'
+import { NotResultsFound } from './not-results-found'
 
 /**
  * SearchResults component displays search results for anime based on user queries and filters.
@@ -45,6 +46,14 @@ export const SearchResults = () => {
   }
 
   useEffect(() => {
+    if (animes?.length === 0 && (query || appliedFilters) && !loading) {
+      toast[ToastType.Warning]({
+        text: `No results found for "${query}" with the selected filters.`,
+      })
+    }
+  }, [animes, query, appliedFilters, loading])
+
+  useEffect(() => {
     if (animes?.length || (!animes?.length && !loading)) {
       const $animeCards = document.querySelectorAll('.anime-card')
       $animeCards.forEach((card) => {
@@ -65,18 +74,9 @@ export const SearchResults = () => {
     return <SearchResultsLoader />
   }
 
-  if (animes?.length === 0 && (query || appliedFilters) && !loading) {
-    toast[ToastType.Warning]({
-      text: `No results found for "${query}" with the selected filters.`,
-    })
-    return (
-      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-center p-4">
-        <p className="text-center text-lg font-semibold text-gray-300">
-          No results found. Please try a different search.
-        </p>
-      </div>
-    )
-  }
+  if (animes?.length === 0 && (query || appliedFilters) && !loading)
+    return <NotResultsFound />
+
   return (
     <ul
       className={`mx-auto grid w-full max-w-7xl grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 xl:grid-cols-6 xl:gap-10`}
