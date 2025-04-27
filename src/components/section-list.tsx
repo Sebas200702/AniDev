@@ -15,6 +15,7 @@ interface Props {
     list: Section[]
     set: (list: Section[]) => void
   }
+  context?: string
 }
 
 /**
@@ -47,9 +48,11 @@ interface Props {
  *   }}
  * />
  */
-export const SectionList = ({ section, sections }: Props) => {
+export const SectionList = ({ section, sections, context }: Props) => {
   const isSelected =
     sections.list.find((s) => s.label === section.label)?.selected || false
+
+  const isNotDefault = context !== 'default' && context
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,
     label: string
@@ -59,30 +62,28 @@ export const SectionList = ({ section, sections }: Props) => {
       sections.list.map((s) => ({ ...s, selected: s.label === label }))
     )
   }
-
+  const styles = isSelected
+    ? 'ml-2 w-auto translate-x-0 opacity-100'
+    : 'w-0 -translate-x-full opacity-0'
   return (
     <li key={section.label} title={section.label}>
       <button
         className={`group relative flex h-full max-h-10 cursor-pointer items-center justify-center overflow-hidden p-2 transition-colors duration-200 ease-in-out hover:bg-zinc-800/50 md:max-h-12 md:p-5 ${isSelected ? 'text-enfasisColor' : 'text-gray-400'} after:bg-enfasisColor after:absolute after:bottom-0 after:left-0 after:h-[2px] after:transition-all after:duration-300 after:ease-in-out ${isSelected ? 'after:w-full' : 'after:w-0'}`}
         onClick={(e) => handleClick(e, section.label)}
       >
-        <div className="flex h-5 w-5 items-center justify-center md:h-6 md:w-6">
-          {section.icon ? (
+        {section.icon && (
+          <div className="flex h-5 w-5 items-center justify-center md:h-6 md:w-6">
             <section.icon
               className={`h-full w-full transition-transform duration-300 ${
                 isSelected ? 'scale-110' : 'scale-100'
               }`}
             />
-          ) : (
-            <span className="text-red-500">⚠️</span>
-          )}
-        </div>
+          </div>
+        )}
 
         <span
-          className={`text-m xl:text-l transition-all duration-300 ease-in-out ${
-            isSelected
-              ? 'ml-2 w-auto translate-x-0 opacity-100'
-              : 'w-0 -translate-x-full opacity-0'
+          className={` transition-all duration-300 ease-in-out ${
+            !isNotDefault ? styles : 'ml-2 w-auto translate-x-0 opacity-100'
           }`}
         >
           {section.label}
