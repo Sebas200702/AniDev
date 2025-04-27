@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { Picture } from '@components/picture'
 import { AnimeEpisodesLoader } from '@components/watch-anime/episodes/anime-episodes-loader'
 import Pagination from '@components/watch-anime/episodes/pagination'
 import { useFetch } from '@hooks/useFetch'
@@ -84,7 +85,7 @@ export const AnimeEpisodes = ({
       if (!episodesList || !targetEpisode) return
       const offsetTop = targetEpisode.offsetTop
       episodesList.scrollTo({
-        top: offsetTop - episodesList.clientHeight / 2,
+        top: offsetTop,
         behavior: 'smooth',
       })
       setShouldScroll(false)
@@ -105,7 +106,7 @@ export const AnimeEpisodes = ({
     setShouldScroll(false)
   }
 
-  if (loading || !episodes || page === null)
+  if (loading || !episodes || !page || !totalEpisodes || !mal_id) {
     return (
       <AnimeEpisodesLoader
         totalPages={totalPages}
@@ -113,6 +114,7 @@ export const AnimeEpisodes = ({
         handlePageChange={handlePageChange}
       />
     )
+  }
 
   return (
     <section className="z-10 w-full p-2">
@@ -123,23 +125,18 @@ export const AnimeEpisodes = ({
             className={`group relative flex h-auto w-full flex-col gap-4 rounded-lg p-2 transition-all duration-300 ease-in-out hover:saturate-[.7] md:max-w-[400px] md:hover:scale-[1.01] ${
               currentEpisode === episode_id
                 ? 'bg-enfasisColor'
-                : 'md:hover:bg-zinc-500'
+                : 'md:hover:bg-zinc-600'
             }`}
             key={episode_id}
           >
-            <picture
-              className="relative aspect-[16/9] h-full w-full rounded-md"
-              style={{
-                backgroundImage: `url(${createImageUrlProxy(
-                  image_url ?? image_webp,
-                  '100',
-                  '0',
-                  'webp'
-                )})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}
+            <Picture
+              styles="relative aspect-[16/9] h-full w-full rounded-md"
+              image={createImageUrlProxy(
+                image_url ?? image_webp,
+                '100',
+                '0',
+                'webp'
+              )}
             >
               <img
                 src={createImageUrlProxy(
@@ -150,30 +147,30 @@ export const AnimeEpisodes = ({
                 )}
                 alt={title ?? `Episodio ${episode_id}`}
                 loading="lazy"
-                className="aspect-[16/9] h-full w-full rounded-md object-cover"
+                className="aspect-[16/9] h-full w-full rounded-md object-cover relative"
               />
-              <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-black/30 px-2 py-1">
+              <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-black/50 px-2.5 py-1.25 text-xs font-bold text-white transition-all duration-300 ease-in-out">
                 <span className="text-sm text-white">
                   {duration.replace(/\s*per\s*ep/i, '')}
                 </span>
               </div>
-            </picture>
+            </Picture>
             <h3 className="text-xl font-bold text-pretty text-white transition-all duration-300 ease-in-out">
               {title ?? `${slug} Episodio ${episode_id}`}
             </h3>
-            <span className="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-lg font-bold text-white">
+            <span className="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-lg font-bold text-white">
               {episode_id}
             </span>
           </a>
         ))}
       </ul>
-      <div className={`w-full ${totalPages > 1 ? '' : 'hidden'}`}>
+      <footer className={`w-full ${totalPages > 1 ? '' : 'hidden'}`}>
         <Pagination
           totalPages={totalPages}
-          initialPage={page || 1}
+          initialPage={page ?? 1}
           onPageChange={handlePageChange}
         />
-      </div>
+      </footer>
     </section>
   )
 }
