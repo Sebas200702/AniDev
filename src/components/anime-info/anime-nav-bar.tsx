@@ -26,8 +26,8 @@ import { useAnimeListsStore } from '@store/anime-list-store'
 export const AnimeNavBar = () => {
   const { animeList, setAnimeList } = useAnimeListsStore()
   return (
-    <nav className="flex flex-row items-center justify-between md:mt-0">
-      <ul className="flex flex-row">
+    <nav className="flex flex-row items-center justify-between md:mt-0 w-full">
+      <ul className="flex flex-row text-m ">
         {animeList.map((section) => (
           <SectionList
             key={section.label}
