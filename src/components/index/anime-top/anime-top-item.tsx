@@ -1,4 +1,5 @@
 import { AnimeTag } from '@components/anime-tag'
+import { EpisodeIcon } from '@components/icons/episode-icon'
 import { StarIcon } from '@components/icons/star-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
@@ -84,25 +85,34 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
               >
                 {anime.title}
               </a>
-              <span className="hidden md:flex">{anime.type} Series </span>
             </header>
             <div className="flex w-full flex-row items-center justify-between gap-4">
               <ul className="flex flex-row items-center gap-2">
-                <span className="flex flex-row items-center justify-center gap-2">
+                <span
+                  className="flex flex-row items-center justify-center gap-2"
+                  title={`Score: ${anime.score ?? 'N/A'}`}
+                >
                   <StarIcon className="text-enfasisColor h-4 w-4" />
                   {formatScore(anime.score)}
                 </span>
-                <span className="flex flex-row items-center justify-center gap-2">
+                <span
+                  className="flex flex-row items-center justify-center gap-2"
+                  title={`Type: ${anime.type ?? 'N/A'}`}
+                >
                   <SeasonIcon
                     season={anime.season ?? 'spring'}
                     className="h-4 w-4"
                   />
                   {capitalize(anime.season ?? '')}
                 </span>
+                <span
+                  className="flex flex-row items-center justify-center gap-2"
+                  title={`Episodes: ${anime.episodes ?? 'N/A'}`}
+                >
+                  <EpisodeIcon className="h-4 w-4 text-enfasisColor" />
+                  {anime.episodes ?? 'N/A'}
+                </span>
               </ul>
-              <span className="hidden flex-row items-center justify-center gap-2 md:flex">
-                {anime.episodes} Episodes
-              </span>
             </div>
 
             <footer className="text-s flex w-full flex-row gap-3">
