@@ -52,14 +52,7 @@ export const ImageEditor = ({ userName }: Props) => {
           promise: getCropData(),
           success: successMessage ?? 'Done',
           error: errorMessage ?? 'Error',
-
           autoDismiss: true,
-          onSuccess: () => {
-            console.log('Success')
-          },
-          onError: () => {
-            console.log('Error')
-          },
         },
       })
     }
@@ -68,8 +61,6 @@ export const ImageEditor = ({ userName }: Props) => {
   const getCropData = async () => {
     if (!cropperRef.current?.cropper) return
     setIsLoading(true)
-
-    console.log(isGif)
 
     try {
       const cropped = isGif
@@ -82,8 +73,16 @@ export const ImageEditor = ({ userName }: Props) => {
 
       setCropData(cropped as string)
       await submitImage(cropped as string)
+      setSuccessMessage('Image uploaded successfully')
+      setErrorMessage(null)
     } catch (e) {
-      setErrorMessage(e instanceof Error ? e.message : 'Error')
+      setErrorMessage(
+        e instanceof Error ? e.message : 'Error while uploading image'
+      )
+      setSuccessMessage(null)
+      throw new Error(
+        e instanceof Error ? e.message : 'Error while uploading image'
+      )
     } finally {
       setIsLoading(false)
       handleClose()
@@ -110,7 +109,7 @@ export const ImageEditor = ({ userName }: Props) => {
       } else if (typeof responseContent === 'string') {
         errMsg = responseContent
       } else {
-        errMsg = 'Error en la solicitud'
+        errMsg = 'Error while uploading image'
       }
       throw new Error(errMsg)
     }
@@ -145,7 +144,7 @@ export const ImageEditor = ({ userName }: Props) => {
       } else if (typeof responseContent === 'string') {
         errMsg = responseContent
       } else {
-        errMsg = 'Error en la solicitud'
+        errMsg = 'Error while saving image'
       }
       throw new Error(errMsg)
     }
@@ -160,12 +159,10 @@ export const ImageEditor = ({ userName }: Props) => {
     }
     try {
       await uploadImage(payload)
-
-      setSuccessMessage('Imagen actualizada correctamente')
     } catch (error) {
-      const errorMsg =
-        error instanceof Error ? error.message : 'Error en la solicitud'
-      setErrorMessage(errorMsg)
+      throw new Error(
+        error instanceof Error ? error.message : 'Error while uploading image'
+      )
     } finally {
       handleClose()
       setIsLoading(false)
