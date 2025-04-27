@@ -4,6 +4,7 @@ import { useSearchStoreResults } from '@store/search-results-store'
 import { studioOptions } from '@utils/create-studios-options'
 import { useCallback } from 'react'
 import {
+  airedDayOptions,
   formatOptions,
   genreOptions,
   orderByOptions,
@@ -98,6 +99,13 @@ export const FilterSection = () => {
         onChange={(values) => updateFilter('season_filter', values)}
         onClear={() => updateFilter('season_filter', [])}
         options={seasonOptions}
+      />
+      <FilterDropdown
+        label="Day"
+        values={appliedFilters.aired_day_filter ?? []}
+        onChange={(values) => updateFilter('aired_day_filter', values)}
+        onClear={() => updateFilter('aired_day_filter', [])}
+        options={airedDayOptions}
       />
       <FilterDropdown
         label="Rating"
