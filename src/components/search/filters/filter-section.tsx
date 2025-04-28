@@ -57,7 +57,7 @@ export const FilterSection = () => {
   )
 
   return (
-    <ul className="no-scrollbar top-16 mt-16 grid w-full grid-cols-2 gap-10 border-zinc-300/10 p-4 md:sticky md:mt-0 md:h-full md:max-h-[calc(100vh-192px)] md:w-auto md:grid-cols-1 md:overflow-y-auto md:border-r">
+    <ul className="no-scrollbar top-16 mt-16 grid w-full grid-cols-2 gap-8 border-zinc-300/10 px-4 md:sticky md:mt-0 md:h-full md:max-h-[calc(100vh-192px)] md:w-auto md:grid-cols-1 md:overflow-y-auto md:border-r">
       <FilterDropdown
         label="Genres"
         values={appliedFilters.genre_filter ?? []}
