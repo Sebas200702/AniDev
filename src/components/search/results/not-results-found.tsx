@@ -20,11 +20,11 @@
  * <NotResultsFound />
  */
 export const NotResultsFound = () => {
-    return (
-        <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-center p-4">
-          <p className="text-center text-lg font-semibold text-gray-300">
-            No results found. Please try a different search.
-          </p>
-        </div>
-      )
+  return (
+    <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-center p-4">
+      <p className="text-center text-lg font-semibold text-gray-300">
+        No results found. Please try a different search.
+      </p>
+    </div>
+  )
 }

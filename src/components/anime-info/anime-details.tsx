@@ -98,7 +98,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
   ]
 
   return (
-    <section className="flex h-min w-full flex-col items-center justify-center md:col-span-1 px-10 md:px-0">
+    <section className="flex h-min w-full flex-col items-center justify-center px-10 md:col-span-1 md:px-0">
       <header className="bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl px-4 py-1 backdrop-blur-md">
         <h2 className="text-l text-center text-pretty">Details</h2>
       </header>
@@ -117,7 +117,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
                 type={type}
               />
             )}
-            <span className="text-s capitalize text-pretty">
+            <span className="text-s text-pretty capitalize">
               {!detail.value ? 'Unknown' : detail.value.toString()}
             </span>
           </li>

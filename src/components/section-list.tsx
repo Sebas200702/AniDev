@@ -82,7 +82,7 @@ export const SectionList = ({ section, sections, context }: Props) => {
         )}
 
         <span
-          className={` transition-all duration-300 ease-in-out ${
+          className={`transition-all duration-300 ease-in-out ${
             !isNotDefault ? styles : 'ml-2 w-auto translate-x-0 opacity-100'
           }`}
         >

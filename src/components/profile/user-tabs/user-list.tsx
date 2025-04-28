@@ -29,7 +29,7 @@ export const UserList = () => {
 
   return (
     <nav className="flex w-full flex-row items-center justify-between">
-      <ul className="flex flex-row text-m">
+      <ul className="text-m flex flex-row">
         {sections.map((section) => (
           <SectionList
             key={section.label}

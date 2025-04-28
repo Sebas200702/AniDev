@@ -34,7 +34,7 @@ export const Navigation = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-8 h-8 text-Primary-50"
+          className="text-Primary-50 h-8 w-8"
         >
           <path
             strokeLinecap="round"
@@ -45,11 +45,9 @@ export const Navigation = () => {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 h-screen z-40 w-64 transform transition-all duration-300
-          bg-Primary-950 border-r border-Primary-800 shadow-xl
-          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
+        className={`bg-Primary-950 border-Primary-800 fixed top-0 left-0 z-40 h-screen w-64 transform border-r shadow-xl transition-all duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
       >
-        <div className="flex items-center justify-between p-4 border-b border-Primary-800">
+        <div className="border-Primary-800 flex items-center justify-between border-b p-4">
           <Logo />
           <button
             className=""
@@ -62,7 +60,7 @@ export const Navigation = () => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-8 h-8 text-Primary-50"
+              className="text-Primary-50 h-8 w-8"
             >
               <path
                 strokeLinecap="round"
@@ -72,15 +70,15 @@ export const Navigation = () => {
             </svg>
           </button>
         </div>
-        <nav className="space-y-2 h-full flex flex-col p-4">
+        <nav className="flex h-full flex-col space-y-2 p-4">
           <CategoryMenu />
-          <a href="/calendar" className="text-m ">
+          <a href="/calendar" className="text-m">
             Calendar
           </a>
         </nav>
       </aside>
 
-      <nav className="hidden md:flex items-center gap-5">
+      <nav className="hidden items-center gap-5 md:flex">
         <CategoryMenu />
         <a href="/calendar" className="text-m w-min">
           Calendar

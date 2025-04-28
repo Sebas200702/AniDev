@@ -5,10 +5,10 @@ import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
+import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
-import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import type { Anime } from 'types'
 
 /**
@@ -64,7 +64,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10 -mt-[60vh] grid grid-cols-1 gap-10 px-4 md:-mt-54 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5 md:mb-20 mb-10">
+      <article className="z-10 -mt-[60vh] mb-10 grid grid-cols-1 gap-10 px-4 md:-mt-54 md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -74,8 +74,8 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className="row-span-2 md:col-span-2 xl:col-span-3 flex flex-col gap-4">
-        <AnimeNavBar />
+        <div className="row-span-2 flex flex-col gap-4 md:col-span-2 xl:col-span-3">
+          <AnimeNavBar />
           <AnimeShowBox
             trailer_url={animeData.trailer_url}
             banner_image={animeData.banner_image}

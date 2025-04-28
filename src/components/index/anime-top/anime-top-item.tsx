@@ -109,7 +109,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
                   className="flex flex-row items-center justify-center gap-2"
                   title={`Episodes: ${anime.episodes ?? 'N/A'}`}
                 >
-                  <EpisodeIcon className="h-4 w-4 text-enfasisColor" />
+                  <EpisodeIcon className="text-enfasisColor h-4 w-4" />
                   {anime.episodes ?? 'N/A'}
                 </span>
               </ul>
