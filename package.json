@@ -27,7 +27,6 @@
     "astro-font": "^1.0.0",
     "auth-astro": "4.2.0",
     "cropperjs": "^2.0.0",
-    "lucide-react": "^0.503.0",
     "next-auth": "^4.24.11",
     "node-fetch": "^3.3.2",
     "pinata": "^2.1.3",
