@@ -77,8 +77,6 @@ export const Navigation = () => {
           </a>
         </nav>
       </aside>
-
-      
     </div>
   )
 }
