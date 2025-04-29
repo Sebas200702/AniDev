@@ -1,25 +1,25 @@
 ---
 import { Logo } from '@components/logo'
+import { CategoryMenu } from '@components/nav-bar/category-menu'
 import { Profile } from '@components/nav-bar/profile'
-import { SearchBar } from '@components/nav-bar/search-bar'
-import { Navigation } from '@components/sidebar'
+import { SearchButton } from '@components/nav-bar/search-button'
 const url = Astro.url.pathname
 ---
 
 <nav
-  class="bg-Primary-950/40 navbar-animation fixed top-0 z-30 flex h-16 w-full items-center gap-6 px-4 md:gap-8 md:px-20"
+  class="bg-Primary-950/40 navbar-animation fixed top-0 z-30 flex h-16 w-full items-center gap-6 px-4 md:gap-8 md:px-10"
 >
   <ul class="flex w-full flex-row items-center justify-between">
-    <li
-      class="text-lx flex w-full max-w-xs flex-row-reverse items-center md:flex-row md:gap-4"
-    >
+    <li class="text-lx flex-row- flex items-center gap-8">
       <Logo />
-      <Navigation client:load />
+
+      <a href="/schedule" class="text-m w-min"> Schedule </a>
+      <CategoryMenu client:load />
     </li>
-    <li class="w-full max-w-2xl">
-      <SearchBar client:load location={url} />
-    </li>
-    <li class="w-full max-w-xs">
+
+    <li class="flex flex-row">
+      <SearchButton client:load />
+
       <Profile client:load />
     </li>
   </ul>
