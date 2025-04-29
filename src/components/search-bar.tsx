@@ -21,7 +21,8 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     appliedFilters,
     setResults,
     setUrl,
-    searchBarIsOpen
+    searchBarIsOpen,
+    setSearchIsOpen,
   } = useSearchStoreResults()
   const { parentalControl } = useGlobalUserPreferences()
   const debouncedQuery = useDebounce(query, 600)
@@ -50,6 +51,23 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   useEffect(() => {
     setUrl(url)
   }, [url])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const $SearchBarContainer = document.getElementById(
+        'search-bar-container'
+      )
+      console.log(event.target === $SearchBarContainer)
+
+      if (event.target && event.target === $SearchBarContainer) {
+        setSearchIsOpen(false)
+      }
+    }
+    window.addEventListener('click', handleClickOutside)
+    return () => {
+      window.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,17 +106,20 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   return (
     <div
       id="search-bar-container"
-      className={`fixed  flex  items-start pointer-events-none  z-50  sm:items-center justify-center bg-black/60  w-full h-full backdrop-blur-sm p-4 cursor-pointer ${
+      className={`fixed  flex     z-50 items-center justify-center bg-black/60  w-full h-full backdrop-blur-sm p-4 ${
         searchBarIsOpen ? 'block' : 'hidden'
       }`}
     >
       <form
+        id="search-bar"
+        role="search"
         onSubmit={handleSubmit}
-        className="relative flex-col flex w-full max-w-xl  shadow-lg overflow-hidden gap-4"
+        className="relative flex-col flex w-full max-w-xl  shadow-lg overflow-hidden gap-6"
       >
-        <div className="text-gray-400 select-none">
-          For quick access: <kbd className="kbd">Ctrl</kbd> +{' '}
-          <kbd className="kbd">S</kbd>
+        <div className="text-gray-400 select-none md:flex hidden gap-4 ">
+          For quick access:{' '}
+          <kbd className="kbd bg-Primary-950 px-3 rounded-xs">Ctrl</kbd> +{' '}
+          <kbd className="kbd bg-Primary-950 px-3 rounded-xs">S</kbd>
         </div>
 
         <div className="flex items-center bg-Complementary  px-4 py-2  rounded-md">
