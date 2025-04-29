@@ -78,12 +78,7 @@ export const Navigation = () => {
         </nav>
       </aside>
 
-      <nav className="hidden items-center gap-5 md:flex">
-        <CategoryMenu />
-        <a href="/calendar" className="text-m w-min">
-          Calendar
-        </a>
-      </nav>
+      
     </div>
   )
 }
