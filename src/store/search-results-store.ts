@@ -50,7 +50,7 @@ interface SearchStoreResults {
   isLoadingMore: boolean
   setIsLoadingMore: (loadingMore: boolean) => void
   setQuery: (query: string) => void
-  setSearchIsOpen: (isOpen:boolean) => void
+  setSearchIsOpen: (isOpen: boolean) => void
   setResults: (
     results: AnimeCardInfo[] | null,
     loading: boolean,
@@ -85,8 +85,8 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   setQuery: (query) => {
     set((state) => ({ ...state, query }))
   },
-  setSearchIsOpen:(isOpen) =>{
-    set((state) =>({...state, isOpen}))
+  setSearchIsOpen: (isOpen) => {
+    set((state) => ({ ...state, searchBarIsOpen: isOpen }))
   },
 
   setResults: (results, loading, error) => {
