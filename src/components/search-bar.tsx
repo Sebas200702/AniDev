@@ -106,7 +106,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   return (
     <div
       id="search-bar-container"
-      className={`fixed  flex     z-50 items-center justify-center bg-black/60  w-full h-full backdrop-blur-sm p-4 ${
+      className={`fixed z-50 flex h-full w-full items-center justify-center bg-black/60 p-4 backdrop-blur-sm ${
         searchBarIsOpen ? 'block' : 'hidden'
       }`}
     >
@@ -114,19 +114,19 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         id="search-bar"
         role="search"
         onSubmit={handleSubmit}
-        className="relative flex-col flex w-full max-w-xl  shadow-lg overflow-hidden gap-6"
+        className="relative flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg"
       >
-        <div className="text-gray-400 select-none md:flex hidden gap-4 ">
+        <div className="hidden gap-4 text-gray-400 select-none md:flex">
           For quick access:{' '}
-          <kbd className="kbd bg-Primary-950 px-3 rounded-xs">Ctrl</kbd> +{' '}
-          <kbd className="kbd bg-Primary-950 px-3 rounded-xs">S</kbd>
+          <kbd className="kbd bg-Primary-950 rounded-xs px-3">Ctrl</kbd> +{' '}
+          <kbd className="kbd bg-Primary-950 rounded-xs px-3">S</kbd>
         </div>
 
-        <div className="flex items-center bg-Complementary  px-4 py-2  rounded-md">
+        <div className="bg-Complementary flex items-center rounded-md px-4 py-2">
           <input
             type="search"
             id="default-search"
-            className="w-full h-full  text-sm placeholder-gray-300  text-white  focus:outline-none"
+            className="h-full w-full text-sm text-white placeholder-gray-300 focus:outline-none"
             placeholder="Search Anime..."
             value={query}
             autoComplete="off"
@@ -135,7 +135,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
           <button
             type="submit"
             aria-label="Search"
-            className=" transform  flex items-center justify-center h-8 w-8"
+            className="flex h-8 w-8 transform items-center justify-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

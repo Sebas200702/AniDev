@@ -6,7 +6,7 @@ export const SearchButton = () => {
   }
 
   return (
-    <button className="text-white p-4 cursor-pointer" onClick={handleClick}>
+    <button className="cursor-pointer p-4 text-white" onClick={handleClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5"

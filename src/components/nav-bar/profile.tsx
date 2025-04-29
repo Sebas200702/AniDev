@@ -53,7 +53,6 @@ export const Profile = () => {
   return (
     <>
       <article className="flex items-center justify-end gap-4">
-        
         <button
           className="cursor-pointer"
           title="Options"
