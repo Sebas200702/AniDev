@@ -53,9 +53,7 @@ export const Profile = () => {
   return (
     <>
       <article className="flex items-center justify-end gap-4">
-        <span className="text-s hidden text-end md:block dark:text-white">
-          {userInfo?.name ?? 'Guest'}
-        </span>
+        
         <button
           className="cursor-pointer"
           title="Options"
