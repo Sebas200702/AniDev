@@ -182,7 +182,7 @@ export const FilterDropdown = ({
 
       <ul
         id="dropdown-options"
-        className={`custom-scrollbar bg-Primary-950 border-gray-100/10 absolute -bottom-3 z-30 max-h-60 w-full translate-y-full gap-4 overflow-auto rounded-md border py-4 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
+        className={`custom-scrollbar bg-Primary-950 absolute -bottom-3 z-30 max-h-60 w-full translate-y-full gap-4 overflow-auto rounded-md border border-gray-100/10 py-4 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
       >
         {filteredOptions.map((option) => (
           <button

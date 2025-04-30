@@ -36,14 +36,14 @@ export const AppliedFiltersComponent = () => {
             values?.map((value) => (
               <span
                 key={`${category}-${value}`}
-                className="bg-enfasisColor/20 hover:bg-enfasisColor/30 transition-colors duration-300 ease-in-out cursor-default text-Primary-100 inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium capitalize"
+                className="bg-enfasisColor/20 hover:bg-enfasisColor/30 text-Primary-100 inline-flex cursor-default items-center rounded-full px-3 py-1.5 text-xs font-medium capitalize transition-colors duration-300 ease-in-out"
               >
                 {value}
                 <button
                   onClick={() =>
                     removeFilter(category as keyof AppliedFilters, value)
                   }
-                  className="text-enfasisColor/40 ml-1 inline-flex h-4 w-4 cursor-pointer items-center justify-center hover:text-enfasisColor"
+                  className="text-enfasisColor/40 hover:text-enfasisColor ml-1 inline-flex h-4 w-4 cursor-pointer items-center justify-center"
                   title={`Remove ${value} filter`}
                 >
                   <svg
