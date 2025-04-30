@@ -65,7 +65,7 @@ export const FilterDropdown = ({
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLButtonElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dinamicLabel = `${options.find((option) => option.value === values[0])?.label ?? ''}${
     values.length > 1 ? ` +${values.length - 1}` : ''
@@ -113,15 +113,16 @@ export const FilterDropdown = ({
   }
 
   return (
-    <div
-      className="relative mx-auto w-full"
+    <button
+      className="relative mx-auto w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
       ref={dropdownRef}
       aria-haspopup="listbox"
       aria-expanded={isOpen}
+      onClick={handleInputClick}
     >
-      <div className="hover:bg-enfasisColor/5 hover:border-enfasisColor/40 relative rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out">
+   
         <button
-          className="custom-scrollbar flex max-h-[60px] w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
+          className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
           onClick={handleInputClick}
         >
           <input
@@ -130,7 +131,7 @@ export const FilterDropdown = ({
             placeholder={placeholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="min-w-[50px] flex-grow cursor-pointer bg-transparent focus:outline-none"
+            className="w-full h-full flex-grow cursor-pointer bg-transparent focus:outline-none"
             aria-autocomplete="list"
             aria-controls="dropdown-options"
           />
@@ -178,7 +179,7 @@ export const FilterDropdown = ({
             </svg>
           </button>
         </nav>
-      </div>
+    
 
       <ul
         id="dropdown-options"
@@ -222,6 +223,6 @@ export const FilterDropdown = ({
           </button>
         ))}
       </ul>
-    </div>
+    </button>
   )
 }
