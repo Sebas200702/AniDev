@@ -1,6 +1,7 @@
 import '@styles/search-section.css'
 
 import { useEffect, useRef, useState } from 'react'
+import { AppliedFiltersComponent } from '@components/search/filters/applied-filters'
 
 import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'
@@ -115,6 +116,7 @@ export const SearchComponent = () => {
     <section id="search-section">
       <div className="[grid-area:aside]">
         <FilterSection />
+        <AppliedFiltersComponent />
       </div>
 
       <div className="my-10 [grid-area:results] md:mt-16">
