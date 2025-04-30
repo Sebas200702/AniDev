@@ -103,7 +103,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
       >
         <Picture
           image={image_small_webp}
-          styles="relative h-full w-full rounded-lg relative"
+          styles="relative h-full w-full rounded-lg"
         >
           <img
             src={
