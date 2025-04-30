@@ -119,7 +119,7 @@ export const FilterDropdown = ({
       aria-haspopup="listbox"
       aria-expanded={isOpen}
     >
-      <div className="relative text-white hover:bg-enfasisColor/20 border rounded-md border-gray-100/10 hover:border-enfasisColor transition-all duration-200 ease-in-out">
+      <div className="hover:bg-enfasisColor/20 hover:border-enfasisColor relative rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out">
         <button
           className="custom-scrollbar flex max-h-[60px] w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
           onClick={handleInputClick}
@@ -130,7 +130,7 @@ export const FilterDropdown = ({
             placeholder={placeholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="min-w-[50px] flex-grow bg-transparent focus:outline-none cursor-pointer"
+            className="min-w-[50px] flex-grow cursor-pointer bg-transparent focus:outline-none"
             aria-autocomplete="list"
             aria-controls="dropdown-options"
           />
@@ -163,7 +163,7 @@ export const FilterDropdown = ({
             </button>
           )}
           <button
-            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ease-in-out cursor-pointer ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} opciones`}
           >
@@ -182,12 +182,12 @@ export const FilterDropdown = ({
 
       <ul
         id="dropdown-options"
-        className={`custom-scrollbar bg-Primary-950 absolute -bottom-3 z-30 py-4 gap-4  max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg border border-enfasisColor transition-all duration-300 ease-in-out   ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
+        className={`custom-scrollbar bg-Primary-950 border-enfasisColor absolute -bottom-3 z-30 max-h-60 w-full translate-y-full gap-4 overflow-auto rounded-md border py-4 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
       >
         {filteredOptions.map((option) => (
           <button
             key={option.value}
-            className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 py-2 px-4  text-sm"
+            className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm"
             onClick={() => toggleOption(option.value)}
           >
             <input

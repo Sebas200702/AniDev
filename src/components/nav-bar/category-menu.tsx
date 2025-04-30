@@ -46,7 +46,7 @@ export const CategoryMenu = () => {
   return (
     <div className="text-m" ref={menuRef}>
       <button
-        className="flex items-center gap-2 rounded-md text-white duration-200 cursor-pointer"
+        className="flex cursor-pointer items-center gap-2 rounded-md text-white duration-200"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -65,7 +65,7 @@ export const CategoryMenu = () => {
         </svg>
       </button>
       <ul
-        className={`bg-Primary-950/60 custom-scrollbar top-16 flex max-h-72 flex-col gap-2 overflow-y-auto rounded-b-md shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out absolute ${
+        className={`bg-Primary-950/60 custom-scrollbar absolute top-16 flex max-h-72 flex-col gap-2 overflow-y-auto rounded-b-md shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out ${
           isOpen ? 'visible h-72 opacity-100' : 'invisible h-0 opacity-0'
         }`}
         role="menu"

@@ -1,7 +1,6 @@
-import type { IconProps } from "types"
+import type { IconProps } from 'types'
 
-
-export const CategoryIcon = ({className}:IconProps)=> {
+export const CategoryIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

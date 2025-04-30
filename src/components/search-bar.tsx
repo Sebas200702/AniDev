@@ -128,7 +128,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   return (
     <div
       id="search-bar-container"
-      className={`fixed z-50 flex h-full w-full flex-col items-center justify-center bg-black/60 p-4 gap-8  backdrop-blur-sm ${
+      className={`fixed z-50 flex h-full w-full flex-col items-center justify-center gap-8 bg-black/60 p-4 backdrop-blur-sm ${
         searchBarIsOpen ? 'block' : 'hidden'
       }`}
     >
@@ -136,7 +136,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         id="search-bar"
         role="search"
         onSubmit={handleSubmit}
-        className="relative flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg mt-24"
+        className="relative mt-24 flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg"
       >
         <div className="hidden gap-4 text-gray-400 select-none md:flex">
           For quick access:{' '}
@@ -178,22 +178,22 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       </form>
 
       <ul
-        className={`max-h-96 w-full max-w-xl overflow-y-auto no-scrollbar transition-all duration-300 ${isLoading || results ? 'h-auto opacity-100' : 'h-0 opacity-0'} rounded-md bg-Complementary p-4 gap-4 flex flex-col shadow-lg`}
+        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${isLoading || results ? 'h-auto opacity-100' : 'h-0 opacity-0'} bg-Complementary flex flex-col gap-4 rounded-md p-4 shadow-lg`}
       >
         {isLoading &&
           Array.from({ length: 10 }, (_, index) => (
             <div
               key={index}
-              className="flex items-center gap-4 p-2  animate-pulse bg-zinc-800 rounded-md"
+              className="flex animate-pulse items-center gap-4 rounded-md bg-zinc-800 p-2"
             >
-              <div className="aspect-[225/300] max-w-24 w-full h-full bg-zinc-700 rounded-md"></div>
+              <div className="aspect-[225/300] h-full w-full max-w-24 rounded-md bg-zinc-700"></div>
 
-              <div className="h-4 w-1/2 bg-zinc-700 rounded-md"></div>
+              <div className="h-4 w-1/2 rounded-md bg-zinc-700"></div>
             </div>
           ))}
 
         {!isLoading && results?.length === 0 && (
-          <div className="flex items-center gap-4 p-2 w-full justify-center  h-96">
+          <div className="flex h-96 w-full items-center justify-center gap-4 p-2">
             No results found
           </div>
         )}
@@ -203,7 +203,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
             key={result.mal_id}
             href={`/anime/${normalizeString(result.title)}_${result.mal_id}`}
             onClick={() => setSearchIsOpen(false)}
-            className="flex items-center gap-4 p-2 hover:bg-Primary-900 rounded-md "
+            className="hover:bg-Primary-900 flex items-center gap-4 rounded-md p-2"
           >
             <Picture
               styles="relative h-full max-w-24 w-full"
@@ -212,7 +212,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
               <img
                 src={result.image_webp}
                 alt={result.title}
-                className="rounded-md aspect-[225/300] object-center w-full object-cover relative"
+                className="relative aspect-[225/300] w-full rounded-md object-cover object-center"
                 loading="lazy"
               />
             </Picture>

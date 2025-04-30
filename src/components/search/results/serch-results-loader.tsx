@@ -22,7 +22,7 @@ import { LoadingCard } from '@components/search/results/loading-card'
  */
 export const SearchResultsLoader = () => {
   return (
-    <div className="md:px-20 grid h-full w-full  grid-cols-2 gap-6 p-4 md:grid-cols-6 xl:grid-cols-8 xl:gap-10">
+    <div className="grid h-full w-full grid-cols-2 gap-6 p-4 md:grid-cols-6 md:px-20 xl:grid-cols-8 xl:gap-10">
       {Array(30)
         .fill(0)
         .map((_, i) => (

@@ -1,7 +1,7 @@
 import '@styles/search-section.css'
 
-import { useEffect, useRef, useState } from 'react'
 import { AppliedFiltersComponent } from '@components/search/filters/applied-filters'
+import { useEffect, useRef, useState } from 'react'
 
 import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'

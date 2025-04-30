@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react'
 
 type Shortcut = { keys: string[]; action: string }
@@ -10,10 +9,7 @@ export function useShortcuts(shortCuts: Shortcut[], actionMap: ActionMap) {
       shortCuts.map((s) => [s.keys.join('+'), actionMap[s.action]])
     )
 
-
-
     console.log('map', map)
-
 
     const handler = (evt: KeyboardEvent) => {
       const combo = [

@@ -24,26 +24,26 @@ export const AppliedFiltersComponent = () => {
     [setAppliedFilters]
   )
   return (
-    <section className="md:px-20 p-4 h-12">
+    <section className="h-12 p-4 md:px-20">
       <div
-        className={`p-4 w-full h-12 flex gap-6 items-center   ${appliedFiltersEntries.length > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'} transition-opacity duration-300  rounded-md `}
+        className={`flex h-12 w-full items-center gap-6 p-4 ${appliedFiltersEntries.length > 0 ? 'opacity-100' : 'pointer-events-none opacity-0'} rounded-md transition-opacity duration-300`}
         title="Applied filters"
         aria-label="Applied filters"
       >
-        <TagIcon className="h-6 w-6 text-enfasisColor" />
+        <TagIcon className="text-enfasisColor h-6 w-6" />
         <div className="flex flex-wrap gap-2">
           {appliedFiltersEntries.map(([category, values]) =>
             values?.map((value) => (
               <span
                 key={`${category}-${value}`}
-                className="inline-flex capitalize items-center rounded-full bg-enfasisColor/30 hover:bg-enfasisColor/40  px-3 py-1.5 text-xs font-medium text-Primary-100"
+                className="bg-enfasisColor/30 hover:bg-enfasisColor/40 text-Primary-100 inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium capitalize"
               >
                 {value}
                 <button
                   onClick={() =>
                     removeFilter(category as keyof AppliedFilters, value)
                   }
-                  className="ml-1 inline-flex h-4 w-4  items-center justify-center text-enfasisColor hover:text-blue-500 cursor-pointer"
+                  className="text-enfasisColor ml-1 inline-flex h-4 w-4 cursor-pointer items-center justify-center hover:text-blue-500"
                   title={`Remove ${value} filter`}
                 >
                   <svg

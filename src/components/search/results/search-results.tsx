@@ -79,7 +79,7 @@ export const SearchResults = () => {
 
   return (
     <ul
-      className={` grid w-full md:px-20 grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-6 xl:grid-cols-8 xl:gap-10`}
+      className={`grid w-full grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-6 md:px-20 xl:grid-cols-8 xl:gap-10`}
     >
       {animes?.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />

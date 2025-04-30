@@ -7,8 +7,8 @@ export const NavBarMenu = () => {
     setIsOpen(!isOpen)
   }
   return (
-    <div className="flex  items-center justify-between ">
-      <button className="md:hidden cursor-pointer" onClick={toggleMenu}>
+    <div className="flex items-center justify-between">
+      <button className="cursor-pointer md:hidden" onClick={toggleMenu}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -24,9 +24,9 @@ export const NavBarMenu = () => {
         </svg>
       </button>
       <ul
-        className={`flex items-center  flex-row gap-4 inset-0 p-4 transition-all duration-300 bg-Complementary md:bg-transparent z-40  h-16 absolute md:static text-white ${isOpen ? 'opacity-100' : 'opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto'}`}
+        className={`bg-Complementary absolute inset-0 z-40 flex h-16 flex-row items-center gap-4 p-4 text-white transition-all duration-300 md:static md:bg-transparent ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0 md:pointer-events-auto md:opacity-100'}`}
       >
-        <button className="md:hidden cursor-pointer" onClick={toggleMenu}>
+        <button className="cursor-pointer md:hidden" onClick={toggleMenu}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -43,7 +43,7 @@ export const NavBarMenu = () => {
         </button>
         <a
           href="/schedule"
-          className="text-m flex flex-row gap-2 items-center justify-center"
+          className="text-m flex flex-row items-center justify-center gap-2"
         >
           <CalendarIcon className="h-5 w-5" />
           Schedule

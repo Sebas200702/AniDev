@@ -59,8 +59,8 @@ export const FilterSection = () => {
   )
 
   return (
-    <div className="flex items-start md:px-20 px-4 mt-20">
-      <ul className="no-scrollbar  grid w-[90%] grid-cols-2 gap-8 border-zinc-300/10    md md:grid-cols-5  ">
+    <div className="mt-20 flex items-start px-4 md:px-20">
+      <ul className="no-scrollbar md grid w-[90%] grid-cols-2 gap-8 border-zinc-300/10 md:grid-cols-5">
         <SearchBar />
         <FilterDropdown
           label="Genres"
@@ -136,14 +136,14 @@ export const FilterSection = () => {
           </>
         )}
       </ul>
-      <li className="flex  items-center justify-center gap-4 w-[10%] ">
+      <li className="flex w-[10%] items-center justify-center gap-4">
         <button
           type="button"
           onClick={resetFilters}
-          className="button-primary text-s flex  items-center justify-center gap-2"
+          className="button-primary text-s flex items-center justify-center gap-2"
         >
           <svg
-            className=" h-6 w-6"
+            className="h-6 w-6"
             fill="none"
             strokeWidth="2"
             stroke="currentColor"
@@ -158,7 +158,7 @@ export const FilterSection = () => {
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <svg
-            className={` h-6 w-6 transition-all duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-6 w-6 transition-all duration-200 ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             strokeWidth="2"
             stroke="currentColor"
