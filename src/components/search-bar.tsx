@@ -52,6 +52,8 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       if (el) el.focus()
     },
     'navigate-profile': () => navigate('/profile'),
+    'navigate-home': () => navigate('/'),
+    'navigate-settings': () => navigate('/profile/settings')
   }
   useShortcuts(shortCuts, actionMap)
 
