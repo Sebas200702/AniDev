@@ -287,6 +287,7 @@ declare global {
 
 export const shortCuts = [
   { keys: ['ctrl', 'q'], action: 'open-search' },
+  { keys: ['esc'], action: 'close-search' },
   { keys: ['ctrl', 's'], action: 'navigate-settings' },
   { keys: ['ctrl', 'h'], action: 'navigate-home' },
   { keys: ['ctrl', 'p'], action: 'navigate-profile' },
