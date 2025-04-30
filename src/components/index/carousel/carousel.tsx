@@ -142,7 +142,7 @@ export const Carousel = (): JSX.Element => {
 
   return (
     <section
-      className={`fade-out relative right-0 left-0 h-[65vh] md:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`fade-out relative right-0 left-0 h-[85vh] md:h-[650px] xl:h-[900px] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
