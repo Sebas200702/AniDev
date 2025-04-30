@@ -1,21 +1,22 @@
 ---
 import { Logo } from '@components/logo'
-import { CategoryMenu } from '@components/nav-bar/category-menu'
+import { NavBarMenu } from '@components/nav-bar/nav-bar-menu'
 import { Profile } from '@components/nav-bar/profile'
 import { SearchButton } from '@components/nav-bar/search-button'
 const url = Astro.url.pathname
 ---
 
 <nav
-  class="bg-Primary-950/40 navbar-animation fixed top-0 z-30 flex h-16 w-full items-center gap-6 px-4 md:gap-8 md:px-10"
+  class="bg-Primary-950/40 navbar-animation  fixed top-0 z-30 flex h-16 w-full items-center gap-6 px-4 md:gap-8 md:px-10"
 >
   <ul class="flex w-full flex-row items-center justify-between">
-    <li class="text-lx flex-row- flex items-center gap-8">
+    <li class="text-lx md:flex-row flex-row-reverse flex items-center gap-8">
       <Logo />
-
-      <a href="/schedule" class="text-m w-min"> Schedule </a>
-      <CategoryMenu client:load />
+      <NavBarMenu client:load/>
     </li>
+
+
+
 
     <li class="flex flex-row">
       <SearchButton client:load />
