@@ -1,17 +1,7 @@
 #search-section {
   display: grid;
-  grid-template-columns: 1fr 5fr;
-  grid-template-areas: 'aside results';
-  width: 100%;
-  height: 100%;
-}
-
-@media screen and (max-width: 767px) {
-  #search-section {
-    display: grid;
-    grid-template-areas:
-      'aside'
-      'results';
-    grid-template-columns: 1fr;
-  }
+  grid-template-areas:
+    'aside'
+    'results';
+  grid-template-columns: 1fr;
 }
