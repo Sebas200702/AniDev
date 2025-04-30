@@ -119,7 +119,7 @@ export const FilterDropdown = ({
       aria-haspopup="listbox"
       aria-expanded={isOpen}
     >
-      <div className="hover:bg-enfasisColor/20 hover:border-enfasisColor relative rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out">
+      <div className="hover:bg-enfasisColor/5 hover:border-enfasisColor/40 relative rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out">
         <button
           className="custom-scrollbar flex max-h-[60px] w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
           onClick={handleInputClick}
@@ -182,7 +182,7 @@ export const FilterDropdown = ({
 
       <ul
         id="dropdown-options"
-        className={`custom-scrollbar bg-Primary-950 border-enfasisColor absolute -bottom-3 z-30 max-h-60 w-full translate-y-full gap-4 overflow-auto rounded-md border py-4 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
+        className={`custom-scrollbar bg-Primary-950 border-gray-100/10 absolute -bottom-3 z-30 max-h-60 w-full translate-y-full gap-4 overflow-auto rounded-md border py-4 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
       >
         {filteredOptions.map((option) => (
           <button
