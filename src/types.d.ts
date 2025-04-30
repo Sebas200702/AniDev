@@ -290,8 +290,4 @@ export const shortCuts = [
   { keys: ['ctrl', 's'], action: 'navigate-settings' },
   { keys: ['ctrl', 'h'], action: 'navigate-home' },
   { keys: ['ctrl', 'p'], action: 'navigate-profile' },
-  { keys: ['ctrl', 'a'], action: 'navigate-anime' },
-  { keys: ['ctrl', 'c'], action: 'navigate-collection' },
-  { keys: ['ctrl', 'm'], action: 'toggle-mute' },
-  { keys: ['ctrl', 'f'], action: 'toggle-fullscreen' },
 ]
