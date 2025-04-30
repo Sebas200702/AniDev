@@ -6,10 +6,9 @@ import { useShortcuts } from '@hooks/useShortCuts'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
-import { baseUrl } from '@utils/base-url'
 import { createFiltersToApply } from '@utils/filters-to-apply'
 import { normalizeString } from '@utils/normalize-string'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { ToastType, shortCuts } from 'types'
 
 import type { AnimeCardInfo } from 'types'
@@ -32,6 +31,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   } = useSearchStoreResults()
   const { parentalControl } = useGlobalUserPreferences()
   const debouncedQuery = useDebounce(query, 600)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const filtersToApply = useMemo(
     () => createFiltersToApply(appliedFilters),
@@ -39,7 +39,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   )
 
   const url = useMemo(() => {
-    const baseQuery = `${baseUrl}/api/animes?limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
+    const baseQuery = `/api/animes?limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
@@ -48,8 +48,11 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     'close-search': () => setSearchIsOpen(false),
     'open-search': () => {
       setSearchIsOpen(true)
-      const el = document.getElementById('default-search')
-      if (el) el.focus()
+      const el  = document.getElementById('default-search')  as  HTMLInputElement | null
+
+      if (!el) return
+      el.focus()
+      
     },
     'navigate-profile': () => navigate('/profile'),
     'navigate-home': () => navigate('/'),
@@ -65,6 +68,11 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     url,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
+  useEffect(() => {
+    if (searchBarIsOpen && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [searchBarIsOpen])
 
   useEffect(() => {
     setUrl(url)
@@ -140,14 +148,15 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         onSubmit={handleSubmit}
         className="relative mt-24 flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg"
       >
-        <div className="hidden gap-4 text-gray-400 select-none md:flex">
+        <div className="hidden gap-4 text-gray-300 select-none md:flex">
           For quick access:{' '}
           <kbd className="kbd bg-Primary-950 rounded-xs px-3">Ctrl</kbd> +{' '}
-          <kbd className="kbd bg-Primary-950 rounded-xs px-3">Q</kbd>
+          <kbd className="kbd bg-Primary-950 rounded-xs px-3">K</kbd>
         </div>
 
         <div className="bg-Complementary flex items-center rounded-md px-4 py-2">
           <input
+            ref={inputRef}
             type="search"
             id="default-search"
             className="h-full w-full text-sm text-white placeholder-gray-300 focus:outline-none"
