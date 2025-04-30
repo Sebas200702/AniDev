@@ -1,8 +1,9 @@
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { SearchBar } from '@components/search/filters/search-bar'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { studioOptions } from '@utils/create-studios-options'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import {
   airedDayOptions,
   formatOptions,
@@ -39,6 +40,7 @@ export const FilterSection = () => {
   const { appliedFilters, setAppliedFilters, resetFilters } =
     useSearchStoreResults()
   const { parentalControl } = useGlobalUserPreferences()
+  const [isOpen, setIsOpen] = useState(false)
   const restritedAnimes = 'rx+-+hentai'
 
   const updateFilter = useCallback(
@@ -57,90 +59,115 @@ export const FilterSection = () => {
   )
 
   return (
-    <ul className="no-scrollbar top-16 mt-16 grid w-full grid-cols-2 gap-8 border-zinc-300/10 px-4 md:sticky md:mt-0 md:h-full md:max-h-[calc(100vh-192px)] md:w-auto md:grid-cols-1 md:overflow-y-auto md:border-r">
-      <FilterDropdown
-        label="Genres"
-        values={appliedFilters.genre_filter ?? []}
-        onChange={(values) => updateFilter('genre_filter', values)}
-        onClear={() => updateFilter('genre_filter', [])}
-        options={genreOptions}
-      />
-      <FilterDropdown
-        label="Year"
-        values={appliedFilters.year_filter ?? []}
-        onChange={(values) => updateFilter('year_filter', values)}
-        onClear={() => updateFilter('year_filter', [])}
-        options={yearOptions}
-      />
-      <FilterDropdown
-        label="Status"
-        values={appliedFilters.status_filter ?? []}
-        onChange={(values) => updateFilter('status_filter', values)}
-        onClear={() => updateFilter('status_filter', [])}
-        options={statusOptions}
-      />
-      <FilterDropdown
-        label="Format"
-        values={appliedFilters.type_filter ?? []}
-        onChange={(values) => updateFilter('type_filter', values)}
-        onClear={() => updateFilter('type_filter', [])}
-        options={formatOptions}
-      />
-      <FilterDropdown
-        label="Studio"
-        values={appliedFilters.studio_filter ?? []}
-        onChange={(values) => updateFilter('studio_filter', values)}
-        onClear={() => updateFilter('studio_filter', [])}
-        options={studioOptions}
-      />
-      <FilterDropdown
-        label="Season"
-        values={appliedFilters.season_filter ?? []}
-        onChange={(values) => updateFilter('season_filter', values)}
-        onClear={() => updateFilter('season_filter', [])}
-        options={seasonOptions}
-      />
-      <FilterDropdown
-        label="Day"
-        values={appliedFilters.aired_day_filter ?? []}
-        onChange={(values) => updateFilter('aired_day_filter', values)}
-        onClear={() => updateFilter('aired_day_filter', [])}
-        options={airedDayOptions}
-      />
-      <FilterDropdown
-        label="Rating"
-        values={appliedFilters.rating_filter ?? []}
-        onChange={(values) => updateFilter('rating_filter', values)}
-        onClear={() => updateFilter('rating_filter', [])}
-        options={
-          parentalControl
-            ? ratingOptions.filter((option) => option.value !== restritedAnimes)
-            : ratingOptions
-        }
-      />
-      <FilterDropdown
-        label="Order By"
-        values={appliedFilters.order_by ?? []}
-        onChange={(values) => updateFilter('order_by', values)}
-        onClear={() => updateFilter('order_by', [])}
-        options={orderByOptions}
-      />
-      <button
-        type="button"
-        onClick={resetFilters}
-        className="button-primary text-s flex w-full items-center justify-center gap-2"
-      >
-        <svg
-          className="mr-2 h-4 w-4"
-          fill="none"
-          strokeWidth="2"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+    <div className="flex items-start md:px-20 px-4 mt-20">
+      <ul className="no-scrollbar  grid w-[90%] grid-cols-2 gap-8 border-zinc-300/10    md md:grid-cols-5  ">
+        <SearchBar />
+        <FilterDropdown
+          label="Genres"
+          values={appliedFilters.genre_filter ?? []}
+          onChange={(values) => updateFilter('genre_filter', values)}
+          onClear={() => updateFilter('genre_filter', [])}
+          options={genreOptions}
+        />
+        <FilterDropdown
+          label="Year"
+          values={appliedFilters.year_filter ?? []}
+          onChange={(values) => updateFilter('year_filter', values)}
+          onClear={() => updateFilter('year_filter', [])}
+          options={yearOptions}
+        />
+        <FilterDropdown
+          label="Status"
+          values={appliedFilters.status_filter ?? []}
+          onChange={(values) => updateFilter('status_filter', values)}
+          onClear={() => updateFilter('status_filter', [])}
+          options={statusOptions}
+        />
+        <FilterDropdown
+          label="Format"
+          values={appliedFilters.type_filter ?? []}
+          onChange={(values) => updateFilter('type_filter', values)}
+          onClear={() => updateFilter('type_filter', [])}
+          options={formatOptions}
+        />
+        {isOpen && (
+          <>
+            <FilterDropdown
+              label="Studio"
+              values={appliedFilters.studio_filter ?? []}
+              onChange={(values) => updateFilter('studio_filter', values)}
+              onClear={() => updateFilter('studio_filter', [])}
+              options={studioOptions}
+            />
+            <FilterDropdown
+              label="Season"
+              values={appliedFilters.season_filter ?? []}
+              onChange={(values) => updateFilter('season_filter', values)}
+              onClear={() => updateFilter('season_filter', [])}
+              options={seasonOptions}
+            />
+            <FilterDropdown
+              label="Day"
+              values={appliedFilters.aired_day_filter ?? []}
+              onChange={(values) => updateFilter('aired_day_filter', values)}
+              onClear={() => updateFilter('aired_day_filter', [])}
+              options={airedDayOptions}
+            />
+            <FilterDropdown
+              label="Rating"
+              values={appliedFilters.rating_filter ?? []}
+              onChange={(values) => updateFilter('rating_filter', values)}
+              onClear={() => updateFilter('rating_filter', [])}
+              options={
+                parentalControl
+                  ? ratingOptions.filter(
+                      (option) => option.value !== restritedAnimes
+                    )
+                  : ratingOptions
+              }
+            />
+            <FilterDropdown
+              label="Order By"
+              values={appliedFilters.order_by ?? []}
+              onChange={(values) => updateFilter('order_by', values)}
+              onClear={() => updateFilter('order_by', [])}
+              options={orderByOptions}
+            />
+          </>
+        )}
+      </ul>
+      <li className="flex  items-center justify-center gap-4 w-[10%] ">
+        <button
+          type="button"
+          onClick={resetFilters}
+          className="button-primary text-s flex  items-center justify-center gap-2"
         >
-          <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-        Reset
-      </button>
-    </ul>
+          <svg
+            className=" h-6 w-6"
+            fill="none"
+            strokeWidth="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="button-secondary text-s flex items-center justify-center gap-2"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <svg
+            className={` h-6 w-6 transition-all duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            strokeWidth="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </li>
+    </div>
   )
 }
