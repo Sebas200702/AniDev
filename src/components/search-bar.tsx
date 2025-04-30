@@ -1,12 +1,17 @@
 import { navigate } from 'astro:transitions/client'
+import { Picture } from '@components/picture'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
+import { useShortcuts } from '@hooks/useShortCuts'
+import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
-
 import { baseUrl } from '@utils/base-url'
 import { createFiltersToApply } from '@utils/filters-to-apply'
+import { normalizeString } from '@utils/normalize-string'
 import { useCallback, useEffect, useMemo } from 'react'
+import { ToastType, shortCuts } from 'types'
+
 import type { AnimeCardInfo } from 'types'
 
 interface Props {
@@ -19,6 +24,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     setQuery,
     setLoading,
     appliedFilters,
+    results,
     setResults,
     setUrl,
     searchBarIsOpen,
@@ -38,6 +44,16 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
   }, [debouncedQuery, filtersToApply, parentalControl])
+  const actionMap = {
+    'close-search': () => setSearchIsOpen(false),
+    'open-search': () => {
+      setSearchIsOpen(true)
+      const el = document.getElementById('default-search')
+      if (el) el.focus()
+    },
+    'navigate-profile': () => navigate('/profile'),
+  }
+  useShortcuts(shortCuts, actionMap)
 
   const {
     data: animes,
@@ -51,18 +67,16 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   useEffect(() => {
     setUrl(url)
   }, [url])
+  const handleClickOutside = (event: MouseEvent) => {
+    const $SearchBarContainer = document.getElementById('search-bar-container')
+    console.log(event.target === $SearchBarContainer)
+
+    if (event.target && event.target === $SearchBarContainer) {
+      setSearchIsOpen(false)
+    }
+  }
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const $SearchBarContainer = document.getElementById(
-        'search-bar-container'
-      )
-      console.log(event.target === $SearchBarContainer)
-
-      if (event.target && event.target === $SearchBarContainer) {
-        setSearchIsOpen(false)
-      }
-    }
     window.addEventListener('click', handleClickOutside)
     return () => {
       window.removeEventListener('click', handleClickOutside)
@@ -76,6 +90,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       if (location.includes('search')) return
 
       if (query.trim()) {
+        setSearchIsOpen(false)
         navigate(`/search?q=${encodeURIComponent(query.trim())}`)
       }
     },
@@ -89,6 +104,13 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     },
     [setQuery, setLoading]
   )
+  useEffect(() => {
+    if (animes?.length === 0 && (query || appliedFilters) && !isLoading) {
+      toast[ToastType.Warning]({
+        text: `No results found for "${query}" with the selected filters.`,
+      })
+    }
+  }, [animes, appliedFilters, isLoading])
 
   useEffect(() => {
     if (!query) {
@@ -106,7 +128,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   return (
     <div
       id="search-bar-container"
-      className={`fixed z-50 flex h-full w-full items-center justify-center bg-black/60 p-4 backdrop-blur-sm ${
+      className={`fixed z-50 flex h-full w-full flex-col items-center justify-center bg-black/60 p-4 gap-8  backdrop-blur-sm ${
         searchBarIsOpen ? 'block' : 'hidden'
       }`}
     >
@@ -114,12 +136,12 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         id="search-bar"
         role="search"
         onSubmit={handleSubmit}
-        className="relative flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg"
+        className="relative flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg mt-24"
       >
         <div className="hidden gap-4 text-gray-400 select-none md:flex">
           For quick access:{' '}
           <kbd className="kbd bg-Primary-950 rounded-xs px-3">Ctrl</kbd> +{' '}
-          <kbd className="kbd bg-Primary-950 rounded-xs px-3">S</kbd>
+          <kbd className="kbd bg-Primary-950 rounded-xs px-3">Q</kbd>
         </div>
 
         <div className="bg-Complementary flex items-center rounded-md px-4 py-2">
@@ -154,6 +176,60 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
           </button>
         </div>
       </form>
+
+      <ul
+        className={`max-h-96 w-full max-w-xl overflow-y-auto no-scrollbar transition-all duration-300 ${isLoading || results ? 'h-auto opacity-100' : 'h-0 opacity-0'} rounded-md bg-Complementary p-4 gap-4 flex flex-col shadow-lg`}
+      >
+        {isLoading &&
+          Array.from({ length: 10 }, (_, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-4 p-2  animate-pulse bg-zinc-800 rounded-md"
+            >
+              <div className="aspect-[225/300] max-w-24 w-full h-full bg-zinc-700 rounded-md"></div>
+
+              <div className="h-4 w-1/2 bg-zinc-700 rounded-md"></div>
+            </div>
+          ))}
+
+        {!isLoading && results?.length === 0 && (
+          <div className="flex items-center gap-4 p-2 w-full justify-center  h-96">
+            No results found
+          </div>
+        )}
+
+        {results?.slice(0, 10).map((result) => (
+          <a
+            key={result.mal_id}
+            href={`/anime/${normalizeString(result.title)}_${result.mal_id}`}
+            onClick={() => setSearchIsOpen(false)}
+            className="flex items-center gap-4 p-2 hover:bg-Primary-900 rounded-md "
+          >
+            <Picture
+              styles="relative h-full max-w-24 w-full"
+              image={result.image_small_webp}
+            >
+              <img
+                src={result.image_webp}
+                alt={result.title}
+                className="rounded-md aspect-[225/300] object-center w-full object-cover relative"
+                loading="lazy"
+              />
+            </Picture>
+
+            <h3 className="text-lg font-semibold">{result.title}</h3>
+          </a>
+        ))}
+        {results && results?.length > 10 && !isLoading && (
+          <a
+            href={`/search?q=${encodeURIComponent(query)}`}
+            onClick={() => setSearchIsOpen(false)}
+            className="button-primary flex items-center justify-center"
+          >
+            <h3 className="text-lg font-semibold">See all results</h3>
+          </a>
+        )}
+      </ul>
     </div>
   )
 }
