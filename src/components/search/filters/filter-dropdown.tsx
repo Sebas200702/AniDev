@@ -8,6 +8,7 @@ interface FilterDropdownProps {
   onChange: (values: string[]) => void
   onClear: () => void
   options: FilterOption[]
+  styles: string
 }
 
 /**
@@ -61,6 +62,7 @@ export const FilterDropdown = ({
   onChange,
   onClear,
   options,
+  styles,
 }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
@@ -114,13 +116,13 @@ export const FilterDropdown = ({
 
   return (
     <button
-      className="relative mx-auto w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
+      className={`relative mx-auto ${styles} w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out`}
       ref={dropdownRef}
       aria-haspopup="listbox"
       aria-expanded={isOpen}
       onClick={handleInputClick}
     >
-   
+
         <button
           className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
           onClick={handleInputClick}
@@ -179,7 +181,7 @@ export const FilterDropdown = ({
             </svg>
           </button>
         </nav>
-    
+
 
       <ul
         id="dropdown-options"
