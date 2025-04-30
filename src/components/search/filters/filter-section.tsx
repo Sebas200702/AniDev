@@ -62,93 +62,96 @@ export const FilterSection = () => {
   )
 
   return (
-    <div className="mt-20 flex md:flex-row flex-col items-start px-4 gap-4 md:px-20">
-      <ul className="no-scrollbar md grid w-full grid-cols-2 gap-8 border-zinc-300/10 md:grid-cols-5">
-        <SearchBar />
-        <FilterDropdown
-          label="Genres"
-          values={appliedFilters.genre_filter ?? []}
-          onChange={(values) => updateFilter('genre_filter', values)}
-          onClear={() => updateFilter('genre_filter', [])}
-          options={genreOptions}
-        />
-        <FilterDropdown
-          label="Year"
-          values={appliedFilters.year_filter ?? []}
-          onChange={(values) => updateFilter('year_filter', values)}
-          onClear={() => updateFilter('year_filter', [])}
-          options={yearOptions}
-        />
-        <FilterDropdown
-          label="Status"
-          values={appliedFilters.status_filter ?? []}
-          onChange={(values) => updateFilter('status_filter', values)}
-          onClear={() => updateFilter('status_filter', [])}
-          options={statusOptions}
-        />
-        {(!isMobile || (isMobile && isOpen)) && (
-          <FilterDropdown
-            label="Format"
-            values={appliedFilters.type_filter ?? []}
-            onChange={(values) => updateFilter('type_filter', values)}
-            onClear={() => updateFilter('type_filter', [])}
-            options={formatOptions}
-          />
-        )}
-        {isOpen && (
-          <>
-            <FilterDropdown
-              label="Studio"
-              values={appliedFilters.studio_filter ?? []}
-              onChange={(values) => updateFilter('studio_filter', values)}
-              onClear={() => updateFilter('studio_filter', [])}
-              options={studioOptions}
-            />
-            <FilterDropdown
-              label="Season"
-              values={appliedFilters.season_filter ?? []}
-              onChange={(values) => updateFilter('season_filter', values)}
-              onClear={() => updateFilter('season_filter', [])}
-              options={seasonOptions}
-            />
-            <FilterDropdown
-              label="Day"
-              values={appliedFilters.aired_day_filter ?? []}
-              onChange={(values) => updateFilter('aired_day_filter', values)}
-              onClear={() => updateFilter('aired_day_filter', [])}
-              options={airedDayOptions}
-            />
-            <FilterDropdown
-              label="Rating"
-              values={appliedFilters.rating_filter ?? []}
-              onChange={(values) => updateFilter('rating_filter', values)}
-              onClear={() => updateFilter('rating_filter', [])}
-              options={
-                parentalControl
-                  ? ratingOptions.filter(
-                      (option) => option.value !== restritedAnimes
-                    )
-                  : ratingOptions
-              }
-            />
-            <FilterDropdown
-              label="Order By"
-              values={appliedFilters.order_by ?? []}
-              onChange={(values) => updateFilter('order_by', values)}
-              onClear={() => updateFilter('order_by', [])}
-              options={orderByOptions}
-            />
-          </>
-        )}
-      </ul>
-      <li className="flex  items-center justify-center md:gap-4 gap-2">
+    <ul
+      className={`no-scrollbar col-span-5 grid px-4 w-full grid-cols-2 gap-4 mt-20 md:px-20 border-zinc-300/10 md:grid-cols-5 overflow-hidden `}
+    >
+      <SearchBar />
+      <FilterDropdown
+        label="Genres"
+        values={appliedFilters.genre_filter ?? []}
+        onChange={(values) => updateFilter('genre_filter', values)}
+        onClear={() => updateFilter('genre_filter', [])}
+        options={genreOptions}
+        styles={'flex'}
+      />
+      <FilterDropdown
+        label="Year"
+        values={appliedFilters.year_filter ?? []}
+        onChange={(values) => updateFilter('year_filter', values)}
+        onClear={() => updateFilter('year_filter', [])}
+        options={yearOptions}
+        styles={'flex'}
+      />
+      <FilterDropdown
+        label="Status"
+        values={appliedFilters.status_filter ?? []}
+        onChange={(values) => updateFilter('status_filter', values)}
+        onClear={() => updateFilter('status_filter', [])}
+        options={statusOptions}
+        styles={'flex'}
+      />
+
+      <FilterDropdown
+        label="Format"
+        values={appliedFilters.type_filter ?? []}
+        onChange={(values) => updateFilter('type_filter', values)}
+        onClear={() => updateFilter('type_filter', [])}
+        options={formatOptions}
+        styles={`${(isMobile && isOpen) || !isMobile ? 'flex' : 'hidden'}`}
+      />
+
+      <FilterDropdown
+        label="Studio"
+        values={appliedFilters.studio_filter ?? []}
+        onChange={(values) => updateFilter('studio_filter', values)}
+        onClear={() => updateFilter('studio_filter', [])}
+        options={studioOptions}
+        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+      />
+      <FilterDropdown
+        label="Season"
+        values={appliedFilters.season_filter ?? []}
+        onChange={(values) => updateFilter('season_filter', values)}
+        onClear={() => updateFilter('season_filter', [])}
+        options={seasonOptions}
+        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+      />
+      <FilterDropdown
+        label="Day"
+        values={appliedFilters.aired_day_filter ?? []}
+        onChange={(values) => updateFilter('aired_day_filter', values)}
+        onClear={() => updateFilter('aired_day_filter', [])}
+        options={airedDayOptions}
+        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+      />
+      <FilterDropdown
+        label="Rating"
+        values={appliedFilters.rating_filter ?? []}
+        onChange={(values) => updateFilter('rating_filter', values)}
+        onClear={() => updateFilter('rating_filter', [])}
+        options={
+          parentalControl
+            ? ratingOptions.filter((option) => option.value !== restritedAnimes)
+            : ratingOptions
+        }
+        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+      />
+      <FilterDropdown
+        label="Order By"
+        values={appliedFilters.order_by ?? []}
+        onChange={(values) => updateFilter('order_by', values)}
+        onClear={() => updateFilter('order_by', [])}
+        options={orderByOptions}
+        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+      />
+      <li className="flex  items-center justify-center">
         <button
           type="button"
           onClick={resetFilters}
-          className="button-primary text-s flex items-center justify-center gap-2"
+          className=" text-s flex items-center justify-center relative mx-auto w-full px-3 py-2 hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-l-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
         >
           <svg
-            className="h-6 w-6"
+            className="md:h-5 md:w-5 h-4 w-4"
             fill="none"
             strokeWidth="2"
             stroke="currentColor"
@@ -159,11 +162,11 @@ export const FilterSection = () => {
         </button>
         <button
           type="button"
-          className="button-secondary text-s flex items-center justify-center gap-2"
+          className="  px-3 py-2  flex items-center justify-center relative mx-auto w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-r-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <svg
-            className={`h-6 w-6  transition-all duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            className={`md:h-5 md:w-5 h-4 w-4 transition-all duration-200 ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             strokeWidth="2"
             stroke="currentColor"
@@ -173,6 +176,6 @@ export const FilterSection = () => {
           </svg>
         </button>
       </li>
-    </div>
+    </ul>
   )
 }
