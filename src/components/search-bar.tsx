@@ -48,15 +48,16 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     'close-search': () => setSearchIsOpen(false),
     'open-search': () => {
       setSearchIsOpen(true)
-      const el  = document.getElementById('default-search')  as  HTMLInputElement | null
+      const el = document.getElementById(
+        'default-search'
+      ) as HTMLInputElement | null
 
       if (!el) return
       el.focus()
-      
     },
     'navigate-profile': () => navigate('/profile'),
     'navigate-home': () => navigate('/'),
-    'navigate-settings': () => navigate('/profile/settings')
+    'navigate-settings': () => navigate('/profile/settings'),
   }
   useShortcuts(shortCuts, actionMap)
 
@@ -159,7 +160,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
             ref={inputRef}
             type="search"
             id="default-search"
-            className="h-full w-full text-sm text-white placeholder-gray-300 focus:outline-none"
+            className="h-full w-full text-sm min-h-9 text-white placeholder-gray-300 focus:outline-none"
             placeholder="Search Anime..."
             value={query}
             autoComplete="off"
@@ -189,7 +190,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       </form>
 
       <ul
-        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${isLoading || results ? 'h-auto opacity-100' : 'h-0 opacity-0'} bg-Complementary flex flex-col gap-4 rounded-md p-4 shadow-lg`}
+        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${isLoading || results ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Complementary flex flex-col gap-4 rounded-md p-4 shadow-lg`}
       >
         {isLoading &&
           Array.from({ length: 10 }, (_, index) => (
