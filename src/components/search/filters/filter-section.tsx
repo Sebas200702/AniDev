@@ -86,7 +86,7 @@ export const FilterSection = () => {
           onClear={() => updateFilter('status_filter', [])}
           options={statusOptions}
         />
-        {!isMobile || (isMobile && isOpen )
+        {(!isMobile || (isMobile && isOpen ))
  && (
             <FilterDropdown
               label="Format"
