@@ -67,6 +67,10 @@ export const FilterDropdown = ({
   const [filteredOptions, setFilteredOptions] = useState(options)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const dinamicLabel = `${options.find((option) => option.value === values[0])?.label ?? ''}${
+    values.length > 1 ? ` +${values.length - 1}` : ''
+  }`
+  const placeholder = values.length === 0 ? label : dinamicLabel
 
   useEffect(() => {
     setFilteredOptions(
@@ -80,8 +84,7 @@ export const FilterDropdown = ({
     window.addEventListener('click', (e) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node) &&
-        window.innerWidth < 768
+        !dropdownRef.current.contains(e.target as Node)
       ) {
         setIsOpen(false)
       }
@@ -111,23 +114,23 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className="relative mx-auto w-full border-b border-gray-100/10"
+      className="relative mx-auto w-full"
       ref={dropdownRef}
       aria-haspopup="listbox"
       aria-expanded={isOpen}
     >
-      <div className="relative text-white">
+      <div className="relative text-white hover:bg-enfasisColor/20 border rounded-md border-gray-100/10 hover:border-enfasisColor transition-all duration-200 ease-in-out">
         <button
-          className="custom-scrollbar flex max-h-[60px] w-full cursor-text flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
+          className="custom-scrollbar flex max-h-[60px] w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
           onClick={handleInputClick}
         >
           <input
             ref={inputRef}
             type="text"
-            placeholder={label}
+            placeholder={placeholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="min-w-[50px] flex-grow bg-transparent focus:outline-none"
+            className="min-w-[50px] flex-grow bg-transparent focus:outline-none cursor-pointer"
             aria-autocomplete="list"
             aria-controls="dropdown-options"
           />
@@ -160,7 +163,7 @@ export const FilterDropdown = ({
             </button>
           )}
           <button
-            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ease-in-out hover:cursor-pointer ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 text-gray-400 transition-transform duration-200 ease-in-out cursor-pointer ${isOpen ? 'rotate-180' : ''}`}
             onClick={() => setIsOpen(!isOpen)}
             aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} opciones`}
           >
@@ -179,12 +182,12 @@ export const FilterDropdown = ({
 
       <ul
         id="dropdown-options"
-        className={`custom-scrollbar bg-Primary-950 absolute bottom-0 z-30 mt-1 max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg transition-all duration-300 ease-in-out md:static md:max-h-96 md:translate-y-0 ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
+        className={`custom-scrollbar bg-Primary-950 absolute -bottom-3 z-30 py-4 gap-4  max-h-60 w-full translate-y-full overflow-auto rounded-md shadow-lg border border-enfasisColor transition-all duration-300 ease-in-out   ${isOpen ? 'h-auto opacity-100' : 'h-0 opacity-0 pointer-events-none'}`}
       >
         {filteredOptions.map((option) => (
           <button
             key={option.value}
-            className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm"
+            className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 py-2 px-4  text-sm"
             onClick={() => toggleOption(option.value)}
           >
             <input
