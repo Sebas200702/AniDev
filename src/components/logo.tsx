@@ -1,6 +1,6 @@
 export const Logo = () => {
   return (
-    <a className="mr-8" href="/">
+    <a  href="/">
       <h1>
         Ani<span className="text-enfasisColor font-black">Dev</span>
       </h1>
