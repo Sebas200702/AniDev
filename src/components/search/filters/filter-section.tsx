@@ -2,6 +2,7 @@ import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { SearchBar } from '@components/search/filters/search-bar'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
+import { useWindowWidth } from '@store/window-width'
 import { studioOptions } from '@utils/create-studios-options'
 import { useCallback, useState } from 'react'
 import {
@@ -39,6 +40,8 @@ import type { AppliedFilters } from 'types'
 export const FilterSection = () => {
   const { appliedFilters, setAppliedFilters, resetFilters } =
     useSearchStoreResults()
+  const { width } = useWindowWidth()
+  const isMobile = width && width < 768
   const { parentalControl } = useGlobalUserPreferences()
   const [isOpen, setIsOpen] = useState(false)
   const restritedAnimes = 'rx+-+hentai'
@@ -83,13 +86,16 @@ export const FilterSection = () => {
           onClear={() => updateFilter('status_filter', [])}
           options={statusOptions}
         />
-        <FilterDropdown
-          label="Format"
-          values={appliedFilters.type_filter ?? []}
-          onChange={(values) => updateFilter('type_filter', values)}
-          onClear={() => updateFilter('type_filter', [])}
-          options={formatOptions}
-        />
+        {!isMobile || (isMobile && isOpen )
+ && (
+            <FilterDropdown
+              label="Format"
+              values={appliedFilters.type_filter ?? []}
+              onChange={(values) => updateFilter('type_filter', values)}
+              onClear={() => updateFilter('type_filter', [])}
+              options={formatOptions}
+            />
+          )}
         {isOpen && (
           <>
             <FilterDropdown
