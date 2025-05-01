@@ -102,8 +102,7 @@ export interface AnimeTopInfo
     | 'episodes'
   > {}
 
-
-export interface RandomAnime extends Pick<Anime, |'mal_id' | 'title'>{}
+export interface RandomAnime extends Pick<Anime, 'mal_id' | 'title'> {}
 export enum ToastType {
   Success = 'success',
   Error = 'error',
@@ -294,4 +293,5 @@ export const shortCuts = [
   { keys: ['ctrl', 's'], action: 'navigate-settings' },
   { keys: ['ctrl', 'h'], action: 'navigate-home' },
   { keys: ['ctrl', 'p'], action: 'navigate-profile' },
+  { keys: ['ctrl', 'r'], action: 'random-anime' },
 ]
