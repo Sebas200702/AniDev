@@ -6,10 +6,13 @@ export const SearchButton = () => {
   }
 
   return (
-    <button className="cursor-pointer p-4 text-white" onClick={handleClick}>
+    <button
+      className="hover:text-enfasisColor transition-all duration-300 px-2 py-4  cursor-pointer"
+      onClick={handleClick}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
+        className="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
