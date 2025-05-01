@@ -63,7 +63,7 @@ export const FilterSection = () => {
 
   return (
     <ul
-      className={`no-scrollbar col-span-5 grid px-4 w-full grid-cols-2 gap-4 mt-20 md:px-20 border-zinc-300/10 md:grid-cols-5 overflow-hidden `}
+      className={`no-scrollbar col-span-5 grid px-4 w-full grid-cols-2 gap-4 mt-20 md:px-20 border-zinc-300/10 md:grid-cols-5 `}
     >
       <SearchBar />
       <FilterDropdown
@@ -148,7 +148,7 @@ export const FilterSection = () => {
         <button
           type="button"
           onClick={resetFilters}
-          className=" text-s flex items-center justify-center relative mx-auto w-full px-3 py-2 hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-l-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
+          className=" text-s flex items-center justify-center relative mx-auto w-full cursor-pointer px-3 py-2 hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-l-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
         >
           <svg
             className="md:h-5 md:w-5 h-4 w-4"
@@ -162,7 +162,7 @@ export const FilterSection = () => {
         </button>
         <button
           type="button"
-          className="  px-3 py-2  flex items-center justify-center relative mx-auto w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-r-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
+          className="  px-3 py-2  flex items-center justify-center relative mx-auto w-full cursor-pointer hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-r-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out"
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <svg
