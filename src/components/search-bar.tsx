@@ -80,8 +80,6 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
   }, [url])
   const handleClickOutside = (event: MouseEvent) => {
     const $SearchBarContainer = document.getElementById('search-bar-container')
-    console.log(event.target === $SearchBarContainer)
-
     if (event.target && event.target === $SearchBarContainer) {
       setSearchIsOpen(false)
     }
@@ -210,28 +208,29 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
           </div>
         )}
 
-        {results?.slice(0, 10).map((result) => (
-          <a
-            key={result.mal_id}
-            href={`/anime/${normalizeString(result.title)}_${result.mal_id}`}
-            onClick={() => setSearchIsOpen(false)}
-            className="hover:bg-Primary-900 flex items-center gap-4 rounded-md p-2"
-          >
-            <Picture
-              styles="relative h-full max-w-24 w-full"
-              image={result.image_small_webp}
+        {!isLoading &&
+          results?.slice(0, 10).map((result) => (
+            <a
+              key={result.mal_id}
+              href={`/anime/${normalizeString(result.title)}_${result.mal_id}`}
+              onClick={() => setSearchIsOpen(false)}
+              className="hover:bg-Primary-900 flex items-center gap-4 rounded-md p-2"
             >
-              <img
-                src={result.image_webp}
-                alt={result.title}
-                className="relative aspect-[225/300] w-full rounded-md object-cover object-center"
-                loading="lazy"
-              />
-            </Picture>
+              <Picture
+                styles="relative h-full max-w-24 w-full"
+                image={result.image_small_webp}
+              >
+                <img
+                  src={result.image_webp}
+                  alt={result.title}
+                  className="relative aspect-[225/300] w-full rounded-md object-cover object-center"
+                  loading="lazy"
+                />
+              </Picture>
 
-            <h3 className="text-lg font-semibold">{result.title}</h3>
-          </a>
-        ))}
+              <h3 className="text-lg font-semibold">{result.title}</h3>
+            </a>
+          ))}
         {results && results?.length > 10 && !isLoading && (
           <a
             href={`/search?q=${encodeURIComponent(query)}`}
