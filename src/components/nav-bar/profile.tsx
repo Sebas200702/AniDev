@@ -70,7 +70,7 @@ export const Profile = () => {
       </article>
       <div
         ref={dropdownRef}
-        className="bg-Primary-950/60 absolute top-16 right-0 z-50 hidden w-48 rounded-b-md p-4 text-base text-white shadow-lg backdrop-blur-sm md:right-20"
+        className="bg-Primary-950/60 absolute top-16 right-0 z-50 hidden w-48 rounded-b-md p-4 text-base text-white shadow-lg backdrop-blur-sm md:right-4"
       >
         <ul className="space-y-6">
           <li>
