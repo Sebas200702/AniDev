@@ -112,15 +112,15 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
       </header>
       <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
         <slot />
+        <Toaster
+          client:load
+          theme="dark"
+          position="bottom-right"
+          toastOptions={{
+            animationOnClose: 'swipe',
+          }}
+        />
       </main>
-      <Toaster
-        client:load
-        theme="dark"
-        position="bottom-right"
-        toastOptions={{
-          animationOnClose: 'swipe',
-        }}
-      />
       <Footer />
     </div>
   </body>
