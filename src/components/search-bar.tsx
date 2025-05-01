@@ -58,6 +58,16 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     'navigate-profile': () => navigate('/profile'),
     'navigate-home': () => navigate('/'),
     'navigate-settings': () => navigate('/profile/settings'),
+    'random-anime': () => {
+      const handleClick = async () => {
+        const result = await fetch('/api/animes/random').then((res) =>
+          res.json()
+        )
+
+        navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
+      }
+      handleClick()
+    },
   }
   useShortcuts(shortCuts, actionMap)
 
