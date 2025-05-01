@@ -101,6 +101,9 @@ export interface AnimeTopInfo
     | 'type'
     | 'episodes'
   > {}
+
+
+export interface RandomAnime extends Pick<Anime, |'mal_id' | 'title'>{}
 export enum ToastType {
   Success = 'success',
   Error = 'error',
