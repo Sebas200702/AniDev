@@ -1,4 +1,3 @@
-import { redis } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { getRandomAnime } from '@utils/get-random-anime'
