@@ -97,7 +97,7 @@ export const FilterSection = () => {
         onChange={(values) => updateFilter('type_filter', values)}
         onClear={() => updateFilter('type_filter', [])}
         options={formatOptions}
-        styles={`${(isMobile && isOpen) || !isMobile ? 'flex' : 'hidden'}`}
+        styles={`flex`}
       />
 
       <FilterDropdown
