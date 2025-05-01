@@ -3,6 +3,7 @@ import { Logo } from '@components/logo'
 import { NavBarMenu } from '@components/nav-bar/nav-bar-menu'
 import { Profile } from '@components/nav-bar/profile'
 import { SearchButton } from '@components/nav-bar/search-button'
+import { RandomAnimeButton } from '@components/nav-bar/random-anime'
 const url = Astro.url.pathname
 ---
 
@@ -15,9 +16,9 @@ const url = Astro.url.pathname
       <NavBarMenu client:load />
     </li>
 
-    <li class="flex flex-row">
+    <li class="flex flex-row gap-2">
+      <RandomAnimeButton client:load />
       <SearchButton client:load />
-
       <Profile client:load />
     </li>
   </ul>
