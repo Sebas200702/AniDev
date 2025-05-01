@@ -63,7 +63,7 @@
             "useHeadingContent": "error",
             "useHtmlLang": "error",
             "useIframeTitle": "error",
-            "useKeyWithClickEvents": "error",
+
             "useKeyWithMouseEvents": "error",
             "useMediaCaption": "error",
             "useValidAnchor": "error",
