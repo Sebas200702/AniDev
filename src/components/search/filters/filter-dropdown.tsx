@@ -67,7 +67,7 @@ export const FilterDropdown = ({
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [filteredOptions, setFilteredOptions] = useState(options)
-  const dropdownRef = useRef<HTMLButtonElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const dinamicLabel = `${options.find((option) => option.value === values[0])?.label ?? ''}${
     values.length > 1 ? ` +${values.length - 1}` : ''
@@ -115,73 +115,69 @@ export const FilterDropdown = ({
   }
 
   return (
-    <button
-      className={`relative mx-auto ${styles} w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-md border border-gray-100/10 text-white transition-all duration-200 ease-in-out`}
+    <div
+      className={`relative mx-auto ${styles} w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
       ref={dropdownRef}
-      aria-haspopup="listbox"
-      aria-expanded={isOpen}
       onClick={handleInputClick}
     >
+      <button
+        className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
+        onClick={handleInputClick}
+      >
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder={placeholder}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full h-full flex-grow cursor-pointer bg-transparent focus:outline-none"
+          aria-autocomplete="list"
+          aria-controls="dropdown-options"
+        />
+      </button>
 
-        <button
-          className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
-          onClick={handleInputClick}
-        >
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={placeholder}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-full flex-grow cursor-pointer bg-transparent focus:outline-none"
-            aria-autocomplete="list"
-            aria-controls="dropdown-options"
-          />
-        </button>
-
-        <nav
-          className="absolute top-1/2 right-6 flex max-w-60 -translate-y-1/2 items-center space-x-1"
-          aria-label="Controls of selector"
-        >
-          {(values.length > 0 || search) && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onClear()
-                setSearch('')
-              }}
-              className="hover:bg-enfasisColor/80 rounded p-1"
-              aria-label="Clear selection"
-            >
-              <svg
-                className="h-3 w-3 text-gray-300"
-                fill="none"
-                strokeWidth="2"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
+      <nav
+        className="absolute top-1/2 right-6 flex max-w-60 -translate-y-1/2 items-center space-x-1"
+        aria-label="Controls of selector"
+      >
+        {(values.length > 0 || search) && (
           <button
-            className={`h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} opciones`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onClear()
+              setSearch('')
+            }}
+            className="hover:bg-enfasisColor/80 rounded p-1"
+            aria-label="Clear selection"
           >
             <svg
+              className="h-3 w-3 text-gray-300"
               fill="none"
               strokeWidth="2"
               stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path d="M19 9l-7 7-7-7" />
+              <path d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-        </nav>
-
+        )}
+        <button
+          className={`h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} opciones`}
+        >
+          <svg
+            fill="none"
+            strokeWidth="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </nav>
 
       <ul
         id="dropdown-options"
@@ -225,6 +221,6 @@ export const FilterDropdown = ({
           </button>
         ))}
       </ul>
-    </button>
+    </div>
   )
 }
