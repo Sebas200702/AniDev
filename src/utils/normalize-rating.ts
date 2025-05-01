@@ -20,8 +20,10 @@
  * normalizeRating("G - All Ages") // Returns "E"
  */
 export const normalizeRating = (rating: string): string => {
+    console.log(rating)
   // Return early for common cases
-  if (!rating || rating.includes('All Ages')) return 'E'
+  if (!rating || rating.includes('All Ages') || rating.includes('Children'))
+    return 'E'
 
   const match = rating.match(/\d+/)
   return match ? `${match[0]}+` : 'H'
