@@ -118,7 +118,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
 
         <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-row items-center justify-center gap-4 px-4 py-2">
           <StatusPoint
-            class={`max-h-3 h-full w-full max-w-3 rounded-full ${statusColors(status)} relative`}
+            class={`h-3 w-full max-w-3 rounded-full ${statusColors(status)} relative`}
             status={status}
           />
           <span
