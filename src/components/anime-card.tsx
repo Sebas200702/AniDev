@@ -122,7 +122,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
             status={status}
           />
           <span
-            className={`w-[80%] ${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
+            className={`${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
             aria-hidden="true"
           >
             {title}
