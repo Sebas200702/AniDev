@@ -146,7 +146,7 @@ export enum AnimeTypes {
   PV = 'PV',
   SPECIAL = 'Special',
   TV = 'TV',
-  TV_SPECIAL = 'TV SPECIAL',
+  TV_SPECIAL = 'TV Special',
 }
 export enum AnimeGenres {
   ACTION = 'Action',
@@ -228,6 +228,8 @@ export const formatOptions: FilterOption[] = [
   { value: 'special', label: 'Special' },
   { value: 'ona', label: 'ONA' },
   { value: 'music', label: 'Music' },
+
+
 ]
 
 export const orderByOptions: FilterOption[] = [
