@@ -16,6 +16,8 @@ import { StudioIcon } from '@icons/studio-icon'
 import { ThemesIcon } from '@icons/themes-icon'
 import { TitleJapaneseIcon } from '@icons/title-japanese-icon'
 import { TypeIcon } from '@icons/type-icon'
+import { useWindowWidth } from '@store/window-width'
+import { useState } from 'react'
 import type { Anime } from 'types'
 
 interface Props {
@@ -46,6 +48,11 @@ interface Props {
  * <AnimeDetails animeData={animeData} />
  */
 export const AnimeDetails = ({ animeData }: Props) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const handleClick = () => {
+    setIsOpen(!isOpen)
+  }
   const {
     status,
     type,
@@ -98,14 +105,36 @@ export const AnimeDetails = ({ animeData }: Props) => {
   ]
 
   return (
-    <section className="flex h-min w-full flex-col items-center justify-center px-10 md:col-span-1 md:px-0">
-      <header className="bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl px-4 py-1 backdrop-blur-md">
-        <h2 className="text-l text-center text-pretty">Details</h2>
+    <section
+      className={`flex h-min w-full flex-col items-center justify-center transition-all duration-300  px-10 md:col-span-1 md:px-0 ${isOpen ? '' : 'transform -translate-y-10 xl:translate-y-0 delay-300 '} `}
+    >
+      <header
+        className={`bg-enfasisColor w-[80%] items-center justify-center transition-all duration-300 ease-in-out delay-300 ${isOpen ? ' rounded-t-xl' : ' rounded-b-xl md:rounded-t-xl md:rounded-b-none'}  px-4 gap-4 py-1.5 flex flex-row`}
+      >
+        <h2 className="text-lg text-center text-pretty">Details</h2>
+        <button
+          title="Show more details"
+          className="md:hidden"
+          onClick={handleClick}
+        >
+          <svg
+            fill="none"
+            className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            strokeWidth="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
       </header>
-      <ul className="bg-Complementary flex w-full flex-col gap-5 rounded-md p-8">
+      <ul
+        className={`bg-Complementary flex w-full transition-all overflow-hidden flex-col  ${isOpen ? ' delay-300 max-h-500 opacity-100' : ' max-h-0 opacity-0 md:max-h-full md:opacity-100'} rounded-md   `}
+      >
         {animeDetails.map((detail) => (
           <li
-            className="flex w-full flex-row items-center gap-4 capitalize"
+            className="flex w-full flex-row items-center gap-4 px-6 xl:px-8 py-4 capitalize"
             key={detail.name}
             title={detail.name}
           >
