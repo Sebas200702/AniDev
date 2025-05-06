@@ -87,7 +87,7 @@ export const CollectionItem = ({ anime }: { anime: Anime }) => {
           <footer className="text-sx flex w-20 gap-3">
             <span className="flex flex-row items-center justify-center gap-2">
               <TypeIcon className="h-4 w-4" type={anime.type} />
-              {anime.type}
+              {anime.type === 'TV Special' ? 'Special' : anime.type}
             </span>
             <span className="flex flex-row items-center justify-center gap-2">
               <EpisodeIcon className="text-enfasisColor h-4 w-4" />
