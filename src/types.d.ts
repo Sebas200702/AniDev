@@ -228,8 +228,6 @@ export const formatOptions: FilterOption[] = [
   { value: 'special', label: 'Special' },
   { value: 'ona', label: 'ONA' },
   { value: 'music', label: 'Music' },
-
-
 ]
 
 export const orderByOptions: FilterOption[] = [

@@ -12,9 +12,9 @@ export const RandomAnimeButton = () => {
     <button
       onClick={handleClick}
       title="Random Anime"
-      className="hover:text-enfasisColor transition-all duration-300 px-2 py-4 cursor-pointer"
+      className="hover:text-enfasisColor cursor-pointer px-2 py-4 transition-all duration-300"
     >
-      <RandomIcon className="w-6 h-6" />
+      <RandomIcon className="h-6 w-6" />
     </button>
   )
 }

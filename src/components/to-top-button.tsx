@@ -32,18 +32,18 @@ export const ToTopButton = () => {
   return (
     <button
       id="TopButton"
-      className="absolute right-10 bottom-0 cursor-pointer bg-Complementary p-4 transition-all duration-300 hidden hover:pb-6 rounded-t-xl"
+      className="bg-Complementary absolute right-10 bottom-0 hidden cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6"
       onClick={handleClick}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox='0 0 24 24'
+        viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        className="w-5 h-5"
+        className="h-5 w-5"
       >
         <path stroke="none" d="M0 0h24v24H0z" />
         <path d="m7 11 5-5 5 5M7 17l5-5 5 5" />

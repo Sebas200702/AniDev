@@ -35,10 +35,10 @@ export const NexPrevBtnSlideList = ({
       className={` ${label} ${styles} to-Primary-950/90 absolute top-0 bottom-0 z-20 hidden h-full w-20 items-center justify-start bg-gradient-to-l from-transparent md:flex`}
     >
       <button
-        className="group bg-enfasisColor z-10 my-auto h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out flex focus:outline-none"
+        className="group bg-enfasisColor z-10 my-auto flex h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out focus:outline-none"
         aria-label="Next"
       >
-        <NextPrevIcon className="w-3 h-3 md:w-4 md:h-4" />
+        <NextPrevIcon className="h-3 w-3 md:h-4 md:w-4" />
       </button>
     </nav>
   )

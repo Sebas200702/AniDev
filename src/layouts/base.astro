@@ -113,7 +113,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
       </header>
       <main class="mx-auto w-full max-w-[100dvw] [grid-area:main]">
         <slot />
-        <ToTopButton client:load/>
+        <ToTopButton client:load />
         <Toaster
           client:load
           theme="dark"

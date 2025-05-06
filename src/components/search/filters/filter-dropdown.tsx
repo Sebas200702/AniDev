@@ -116,7 +116,7 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className={`relative mx-auto ${styles} w-full hover:bg-enfasisColor/5 hover:border-enfasisColor/40  rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
+      className={`relative mx-auto ${styles} hover:bg-enfasisColor/5 hover:border-enfasisColor/40 w-full rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
       ref={dropdownRef}
       onClick={handleInputClick}
     >
@@ -130,7 +130,7 @@ export const FilterDropdown = ({
           placeholder={placeholder}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full h-full flex-grow cursor-pointer bg-transparent focus:outline-none"
+          className="h-full w-full flex-grow cursor-pointer bg-transparent focus:outline-none"
           aria-autocomplete="list"
           aria-controls="dropdown-options"
         />

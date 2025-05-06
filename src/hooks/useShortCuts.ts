@@ -9,7 +9,6 @@ export function useShortcuts(shortCuts: Shortcut[], actionMap: ActionMap) {
       shortCuts.map((s) => [s.keys.join('+'), actionMap[s.action]])
     )
 
-
     const handler = (evt: KeyboardEvent) => {
       const combo = [
         evt.ctrlKey && 'ctrl',

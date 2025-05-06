@@ -210,7 +210,7 @@ export const ImageEditor = ({ userName }: Props) => {
 
       <div className="bg-Complementary border-enfasisColor/40 relative flex flex-col items-center gap-10 rounded-xl border-2 p-8 pt-24">
         <button
-          className="absolute top-5 right-5 cursor-pointer hover:opacity-70 transition-opacity"
+          className="absolute top-5 right-5 cursor-pointer transition-opacity hover:opacity-70"
           onClick={handleClose}
           aria-label="Close editor"
         >
@@ -245,7 +245,7 @@ export const ImageEditor = ({ userName }: Props) => {
 
         <footer className="flex w-full flex-row gap-8">
           <button
-            className="button-primary text-m w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none "
+            className="button-primary text-m w-full disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             onClick={getCropData}
             disabled={isLoading || !image}
           >

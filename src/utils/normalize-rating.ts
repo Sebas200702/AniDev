@@ -20,7 +20,7 @@
  * normalizeRating("G - All Ages") // Returns "E"
  */
 export const normalizeRating = (rating: string): string => {
-    console.log(rating)
+  console.log(rating)
   // Return early for common cases
   if (!rating || rating.includes('All Ages') || rating.includes('Children'))
     return 'E'

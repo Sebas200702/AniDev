@@ -59,7 +59,7 @@ export const NexPrevBtnCarousel = ({
       onClick={action}
     >
       <span className="bg-Primary-900/40 group-hover:bg-Primary-800/50 inline-flex h-full w-full items-center justify-center rounded-lg">
-        <NextPrevIcon className="w-4 h-4 md:w-5 md:h-5" />
+        <NextPrevIcon className="h-4 w-4 md:h-5 md:w-5" />
         <span className="sr-only">{label}</span>
       </span>
     </button>

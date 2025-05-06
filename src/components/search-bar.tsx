@@ -168,7 +168,7 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
             ref={inputRef}
             type="search"
             id="default-search"
-            className="h-full w-full text-sm min-h-9 text-white placeholder-gray-300 focus:outline-none"
+            className="h-full min-h-9 w-full text-sm text-white placeholder-gray-300 focus:outline-none"
             placeholder="Search Anime..."
             value={query}
             autoComplete="off"
