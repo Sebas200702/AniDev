@@ -32,7 +32,7 @@ export const ToTopButton = () => {
   return (
     <button
       id="TopButton"
-      className="bg-Complementary absolute right-10 bottom-0 hidden cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6"
+      className="bg-Complementary/50 absolute md:right-10 right-2 bottom-0  hidden cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6"
       onClick={handleClick}
     >
       <svg
