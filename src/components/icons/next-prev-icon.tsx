@@ -1,3 +1,4 @@
+import type { IconProps } from 'types'
 /**
  * NextPrevIcon component renders an icon representing navigation options.
  *
@@ -20,9 +21,9 @@
  * @example
  * <NextPrevIcon />
  */
-export const NextPrevIcon = () => (
+export const NextPrevIcon = ({ className }: IconProps) => (
   <svg
-    className="mx-auto h-3 w-3 text-white md:h-4 md:w-4"
+    className={className}
     aria-hidden="true"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
