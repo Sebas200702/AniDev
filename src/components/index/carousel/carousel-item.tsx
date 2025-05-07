@@ -61,9 +61,9 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
             alt="Anime Banner"
             loading="lazy"
           />
-          <Overlay className="to-Primary-950/100 h-full w-full bg-gradient-to-b" />
+          <Overlay className="to-Primary-950/100 via-Primary-950/10 h-full w-full bg-gradient-to-b" />
           <Overlay
-            className={`to-Primary-950/70 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} `}
+            className={`to-Primary-950/90 via-Primary-950/60 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
           />
         </Picture>
       </div>
