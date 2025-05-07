@@ -40,9 +40,12 @@
 .subtitle {
   @apply text-[32px] font-bold;
 }
-.text-lx {
+.text-lxx {
   @apply text-[20px] font-bold xl:text-[28px];
 }
+.text-lx {
+    @apply text-[18px] font-bold xl:text-[24px];
+  }
 .text-l {
   @apply text-[16px] font-medium xl:text-[20px];
 }
