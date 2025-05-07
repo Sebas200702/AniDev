@@ -109,7 +109,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
         >
           <Picture
             image={createImageUrlProxy(imageUrl, '0', '0', 'webp')}
-            styles="aspect-[1080/600] h-full w-full  md:aspect-[1080/350] object-cover object-center relative"
+            styles="aspect-[1080/600] h-full w-full  md:aspect-[1080/300] object-cover object-center relative"
           >
             <img
               src={
@@ -119,7 +119,7 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
               }
               alt="Anime Banner"
               loading="lazy"
-              className="relative aspect-[1080/550] h-full w-full object-cover object-center md:aspect-[1080/350]"
+              className="relative aspect-[1080/600] h-full w-full object-cover object-center md:aspect-[1080/300]"
             />
             <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b" />
             <Overlay className="to-Primary-950/30 h-full w-0 bg-gradient-to-l md:group-hover:w-full" />
