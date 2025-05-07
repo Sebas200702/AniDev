@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export const ToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false)
   const handleClick = () => {
     const app = document.getElementById('app')
     if (!app) return
@@ -10,16 +11,13 @@ export const ToTopButton = () => {
     })
   }
   const showButton = () => {
-    const TopButton = document.getElementById('TopButton')
     const app = document.getElementById('app')
     if (!app) return
-    console.log(app.scrollTop)
-    if (app.scrollTop !== 0) {
-      TopButton?.classList.replace('hidden', 'flex')
-    }
     if (app.scrollTop === 0) {
-      TopButton?.classList.replace('flex', 'hidden')
+      setIsVisible(false)
+      return
     }
+    setIsVisible(true)
   }
 
   useEffect(() => {
@@ -27,12 +25,13 @@ export const ToTopButton = () => {
 
     if (!app) return
     app.addEventListener('scroll', showButton)
-  }, [])
+
+  }, [isVisible])
 
   return (
     <button
       id="TopButton"
-      className="bg-Complementary/50 absolute md:right-10 right-2 bottom-0  hidden cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6"
+      className={`bg-enfasisColor absolute md:right-10 right-2 bottom-0 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'} cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6`}
       onClick={handleClick}
     >
       <svg
