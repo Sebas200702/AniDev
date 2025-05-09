@@ -19,20 +19,20 @@
  */
 export const ScheduleLoader = () => {
   return (
-    <div className="relative flex flex-col w-full max-w-7xl mx-auto px-6 py-12">
-      <div className="text-center mb-12">
-        <div className="h-10 w-64 mx-auto animate-pulse rounded-lg bg-zinc-800 mb-3" />
-        <div className="h-6 w-96 mx-auto animate-pulse rounded-lg bg-zinc-800/60" />
+    <div className="relative mx-auto flex w-full max-w-7xl flex-col px-6 py-12">
+      <div className="mb-12 text-center">
+        <div className="mx-auto mb-3 h-10 w-64 animate-pulse rounded-lg bg-zinc-800" />
+        <div className="mx-auto h-6 w-96 animate-pulse rounded-lg bg-zinc-800/60" />
       </div>
 
       <div className="relative min-h-[400px]">
-        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-r from-transparent via-Primary/20 to-transparent">
-          <div className="absolute inset-0 bg-Primary-50/10 backdrop-blur-sm" />
+        <div className="via-Primary/20 absolute top-0 bottom-0 left-1/2 w-[1px] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent">
+          <div className="bg-Primary-50/10 absolute inset-0 backdrop-blur-sm" />
         </div>
 
-        <div className="absolute left-1/2 -translate-x-1/2 -top-6">
-          <div className="w-6 h-6 rounded-full bg-Primary/20 flex items-center justify-center">
-            <div className="w-3 h-3 rounded-full bg-Primary/40" />
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2">
+          <div className="bg-Primary/20 flex h-6 w-6 items-center justify-center rounded-full">
+            <div className="bg-Primary/40 h-3 w-3 rounded-full" />
           </div>
         </div>
 
@@ -42,17 +42,16 @@ export const ScheduleLoader = () => {
             .map((_, index) => (
               <div
                 key={index}
-                className={`relative flex items-center ${index % 2 === 0 ? 'flex-row mr-auto pr-8' : 'flex-row-reverse ml-auto pl-8'}
-              `}
+                className={`relative flex items-center ${index % 2 === 0 ? 'mr-auto flex-row pr-8' : 'ml-auto flex-row-reverse pl-8'} `}
               >
-                <div className="absolute right-[calc(50%-0.5rem)] w-4 h-4 rounded-full bg-Primary-800 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-Primary-700 animate-pulse" />
+                <div className="bg-Primary-800 absolute right-[calc(50%-0.5rem)] flex h-4 w-4 items-center justify-center rounded-full">
+                  <div className="bg-Primary-700 h-2 w-2 animate-pulse rounded-full" />
                 </div>
 
-                <div className=" w-[calc(50%-1rem)] aspect-[120/40] h-full flex items-center gap-6 rounded-lg bg-Complementary/90 -translate-y-2 animate-pulse">
-                  <div className=" aspect-[225/330]  max-w-32 h-full rounded-l-lg bg-zinc-800" />
+                <div className="bg-Complementary/90 flex aspect-[120/40] h-full w-[calc(50%-1rem)] -translate-y-2 animate-pulse items-center gap-6 rounded-lg">
+                  <div className="aspect-[225/330] h-full max-w-32 rounded-l-lg bg-zinc-800" />
 
-                  <div className="flex flex-col gap-4 py-2 flex-1">
+                  <div className="flex flex-1 flex-col gap-4 py-2">
                     <div className="h-6 w-3/4 rounded-lg bg-zinc-800" />
                     <div className="h-4 w-24 rounded-full bg-zinc-800" />
                   </div>
@@ -62,9 +61,9 @@ export const ScheduleLoader = () => {
         </div>
 
         {/* Decorative bottom cap */}
-        <div className="absolute left-1/2 -translate-x-1/2 -bottom-6">
-          <div className="w-6 h-6 rounded-full bg-Primary/20 flex items-center justify-center">
-            <div className="w-3 h-3 rounded-full bg-Primary/40" />
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2">
+          <div className="bg-Primary/20 flex h-6 w-6 items-center justify-center rounded-full">
+            <div className="bg-Primary/40 h-3 w-3 rounded-full" />
           </div>
         </div>
       </div>

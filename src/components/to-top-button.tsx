@@ -25,13 +25,12 @@ export const ToTopButton = () => {
 
     if (!app) return
     app.addEventListener('scroll', showButton)
-
   }, [isVisible])
 
   return (
     <button
       id="TopButton"
-      className={`bg-enfasisColor absolute md:right-10 right-2 z-50 bottom-0 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'} cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6`}
+      className={`bg-enfasisColor absolute right-2 bottom-0 z-50 md:right-10 ${isVisible ? 'opacity-100' : 'pointer-events-none opacity-0'} cursor-pointer rounded-t-xl p-4 transition-all duration-300 hover:pb-6`}
       onClick={handleClick}
     >
       <svg

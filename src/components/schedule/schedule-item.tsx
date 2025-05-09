@@ -58,8 +58,7 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
 
   return (
     <article
-      className={`relative flex items-center ${isLeft ? 'flex-row mr-auto pr-8' : 'flex-row-reverse ml-auto pl-8'}
-      `}
+      className={`relative flex items-center ${isLeft ? 'mr-auto flex-row pr-8' : 'ml-auto flex-row-reverse pl-8'} `}
     >
       <a
         ref={elementRef}
@@ -67,11 +66,7 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
         onMouseLeave={handleMouseLeave}
         onMouseEnter={handleMouseEnter}
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className={`group relative flex items-center
-          gap-8 rounded-lg bg-Complementary/90
-          transition-all duration-500 ease-out
-          hover:bg-Complementary  dynamic-border -translate-y-2
-           overflow-hidden w-[calc(50%-1rem)] aspect-[120/40] h-full `}
+        className={`group bg-Complementary/90 hover:bg-Complementary dynamic-border relative flex aspect-[120/40] h-full w-[calc(50%-1rem)] -translate-y-2 items-center gap-8 overflow-hidden rounded-lg transition-all duration-500 ease-out`}
         style={
           {
             '--border-color-normal': `rgba(${colorToRGB(enfasis)}, 0.2)`,
@@ -87,19 +82,13 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
           <img
             src={anime.image_webp}
             alt={anime.title}
-            className="relative aspect-[225/330] w-full max-w-32 h-full object-cover object-center
-                transition-all duration-500 group-hover:scale-105 group-hover:brightness-105
-                group-hover:contrast-110 transform will-change-transform"
+            className="relative aspect-[225/330] h-full w-full max-w-32 transform object-cover object-center transition-all duration-500 will-change-transform group-hover:scale-105 group-hover:brightness-105 group-hover:contrast-110"
           />
         </Picture>
 
-        <div className="flex flex-col gap-4 py-2 relative z-10">
+        <div className="relative z-10 flex flex-col gap-4 py-2">
           <header>
-            <h3
-              className="text-2xl font-bold line-clamp-1 max-w-96 text-Primary group-hover:text-Primary
-              transition-colors duration-300 tracking-tight leading-tight
-              drop-shadow-sm group-hover:drop-shadow-md"
-            >
+            <h3 className="text-Primary group-hover:text-Primary line-clamp-1 max-w-96 text-2xl leading-tight font-bold tracking-tight drop-shadow-sm transition-colors duration-300 group-hover:drop-shadow-md">
               {anime.title}
             </h3>
           </header>
@@ -107,7 +96,7 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
           <footer className="flex items-center gap-3">
             <span
               role="status"
-              className="text-sm font-medium text-Primary-200 bg-Primary/5 rounded-full py-1.5 px-4"
+              className="text-Primary-200 bg-Primary/5 rounded-full px-4 py-1.5 text-sm font-medium"
             >
               {anime.status}
             </span>

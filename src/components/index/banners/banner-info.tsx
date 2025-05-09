@@ -65,7 +65,7 @@ export const BannerInfo = ({
         href={`/anime/${slug}_${mal_id}`}
         className="transition-all duration-200 ease-in-out md:hover:opacity-95"
       >
-        <h3 className="text-lx line-clamp-1 max-h-44 w-full overflow-hidden text-center font-bold text-white ">
+        <h3 className="text-lx line-clamp-1 max-h-44 w-full overflow-hidden text-center font-bold text-white">
           {title}
         </h3>
       </a>

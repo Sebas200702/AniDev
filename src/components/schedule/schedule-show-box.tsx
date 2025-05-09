@@ -84,8 +84,8 @@ export const CalendarShowBox = () => {
 
   if (error) {
     return (
-      <section aria-label="Error message" className="text-center py-12">
-        <h2 className="text-2xl font-bold text-Primary mb-4">Error</h2>
+      <section aria-label="Error message" className="py-12 text-center">
+        <h2 className="text-Primary mb-4 text-2xl font-bold">Error</h2>
         <p role="alert" className="text-Primary/60">
           {error}
         </p>
@@ -95,8 +95,8 @@ export const CalendarShowBox = () => {
 
   if (!animeList.length) {
     return (
-      <section aria-label="No content message" className="text-center py-12">
-        <h2 className="text-2xl font-bold text-Primary mb-4">No Anime Found</h2>
+      <section aria-label="No content message" className="py-12 text-center">
+        <h2 className="text-Primary mb-4 text-2xl font-bold">No Anime Found</h2>
         <p role="status" className="text-Primary/60">
           No scheduled anime for this day
         </p>
@@ -105,9 +105,9 @@ export const CalendarShowBox = () => {
   }
 
   return (
-    <section className="relative flex flex-col w-full max-w-7xl mx-auto px-6 py-12">
-      <header className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-Primary mb-3">
+    <section className="relative mx-auto flex w-full max-w-7xl flex-col px-6 py-12">
+      <header className="mb-12 text-center">
+        <h2 className="text-Primary mb-3 text-3xl font-bold">
           {currentSelectedLabel}'s Schedule
         </h2>
         <p className="text-Primary/60 text-lg">
@@ -121,9 +121,9 @@ export const CalendarShowBox = () => {
       >
         <div
           role="presentation"
-          className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-r from-transparent via-Primary-950 to-transparent"
+          className="via-Primary-950 absolute top-0 bottom-0 left-1/2 w-[1px] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent"
         >
-          <div className="absolute inset-0 bg-Primary-50/90 backdrop-blur-sm" />
+          <div className="bg-Primary-50/90 absolute inset-0 backdrop-blur-sm" />
         </div>
 
         <ol className="space-y-16">
@@ -133,11 +133,9 @@ export const CalendarShowBox = () => {
               <div
                 role="presentation"
                 aria-hidden="true"
-                className={`absolute ${index % 2 === 0 ? 'right-[calc(50%-0.5rem)]' : 'left-[calc(50%-0.5rem)]'}
-                top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-Primary-50
-                flex items-center justify-center transition-colors duration-300`}
+                className={`absolute ${index % 2 === 0 ? 'right-[calc(50%-0.5rem)]' : 'left-[calc(50%-0.5rem)]'} bg-Primary-50 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full transition-colors duration-300`}
               >
-                <div className="w-2 h-2 rounded-full bg-Primary group-hover:bg-Primary/90 transition-colors duration-300" />
+                <div className="bg-Primary group-hover:bg-Primary/90 h-2 w-2 rounded-full transition-colors duration-300" />
               </div>
 
               <CalendarItem anime={anime} isLeft={index % 2 === 0} />

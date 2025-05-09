@@ -74,7 +74,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className=" row-span-2 h-full flex flex-col gap-4 md:col-span-2 xl:col-span-3">
+        <div className="row-span-2 flex h-full flex-col gap-4 md:col-span-2 xl:col-span-3">
           <AnimeNavBar />
           <AnimeShowBox
             trailer_url={animeData.trailer_url}

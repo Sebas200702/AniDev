@@ -106,12 +106,12 @@ export const AnimeDetails = ({ animeData }: Props) => {
 
   return (
     <section
-      className={`flex h-min w-full flex-col items-center justify-center transition-all duration-300  px-10 md:col-span-1 md:px-0 ${isOpen ? '' : 'transform -translate-y-10 xl:translate-y-0 delay-300 '} `}
+      className={`flex h-min w-full flex-col items-center justify-center px-10 transition-all duration-300 md:col-span-1 md:px-0 ${isOpen ? '' : '-translate-y-10 transform delay-300 xl:translate-y-0'} `}
     >
       <header
-        className={`bg-enfasisColor w-[80%] items-center justify-center transition-all duration-300 ease-in-out delay-300 ${isOpen ? ' rounded-t-xl' : ' rounded-b-xl md:rounded-t-xl md:rounded-b-none'}  px-4 gap-4 py-1.5 flex flex-row`}
+        className={`bg-enfasisColor w-[80%] items-center justify-center transition-all delay-300 duration-300 ease-in-out ${isOpen ? 'rounded-t-xl' : 'rounded-b-xl md:rounded-t-xl md:rounded-b-none'} flex flex-row gap-4 px-4 py-1.5`}
       >
-        <h2 className="text-lg text-center text-pretty">Details</h2>
+        <h2 className="text-center text-lg text-pretty">Details</h2>
         <button
           title="Show more details"
           className="md:hidden"
@@ -130,11 +130,11 @@ export const AnimeDetails = ({ animeData }: Props) => {
         </button>
       </header>
       <ul
-        className={`bg-Complementary flex w-full transition-all overflow-hidden flex-col  ${isOpen ? ' delay-300 max-h-500 opacity-100' : ' max-h-0 opacity-0 md:max-h-full md:opacity-100'} rounded-md   `}
+        className={`bg-Complementary flex w-full flex-col overflow-hidden transition-all ${isOpen ? 'max-h-500 opacity-100 delay-300' : 'max-h-0 opacity-0 md:max-h-full md:opacity-100'} rounded-md`}
       >
         {animeDetails.map((detail) => (
           <li
-            className="flex w-full flex-row items-center gap-4 px-6 xl:px-8 py-4 capitalize"
+            className="flex w-full flex-row items-center gap-4 px-6 py-4 capitalize xl:px-8"
             key={detail.name}
             title={detail.name}
           >
