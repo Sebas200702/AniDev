@@ -27,7 +27,7 @@ export const normalizeRating = (rating: string): string => {
   if (lowerRating === AnimeRating.G) return 'E'
   if (lowerRating === AnimeRating.PG) return 'E'
   if (lowerRating === AnimeRating.PG_13) return '13+'
-  if (lowerRating === AnimeRating.R) return '16+'
+  if (lowerRating === AnimeRating.R) return '15+'
   if (lowerRating === AnimeRating.RN) return '17+'
   if (lowerRating === AnimeRating.RX) return '18+'
 
