@@ -43,14 +43,14 @@ export const ScheduleLoader = () => {
               <div
                 key={index}
                 className={`relative flex items-center ${index % 2 === 0 ? 'flex-row mr-auto pr-8' : 'flex-row-reverse ml-auto pl-8'}
-              w-[calc(50%-1rem)]`}
+              `}
               >
-                <div className="absolute right-[calc(50%-0.5rem)] w-4 h-4 rounded-full bg-Primary/20 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-Primary/40 animate-pulse" />
+                <div className="absolute right-[calc(50%-0.5rem)] w-4 h-4 rounded-full bg-Primary-800 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-Primary-700 animate-pulse" />
                 </div>
 
-                <div className="w-full flex items-center gap-6 rounded-lg bg-Complementary/90 -translate-y-2 animate-pulse">
-                  <div className="relative aspect-[225/330] w-full max-w-32 rounded-lg bg-zinc-800" />
+                <div className=" w-[calc(50%-1rem)] aspect-[120/40] h-full flex items-center gap-6 rounded-lg bg-Complementary/90 -translate-y-2 animate-pulse">
+                  <div className=" aspect-[225/330]  max-w-32 h-full rounded-l-lg bg-zinc-800" />
 
                   <div className="flex flex-col gap-4 py-2 flex-1">
                     <div className="h-6 w-3/4 rounded-lg bg-zinc-800" />
