@@ -1,6 +1,28 @@
 import { CalendarIcon } from '@components/icons/calendar-icon'
 import { useState } from 'react'
 import { CategoryMenu } from './category-menu'
+
+/**
+ * NavBarMenu component provides the main navigation menu for the application.
+ *
+ * @description This component renders a responsive navigation menu that adapts to different screen sizes.
+ * On mobile devices, it displays a hamburger menu that can be toggled to show/hide the navigation items.
+ * On desktop, it shows a horizontal menu with direct access to key features.
+ *
+ * The component includes navigation links to important sections like the Schedule and Categories.
+ * It integrates with the CategoryMenu component to provide genre-based navigation. The menu features
+ * smooth transitions and animations for opening/closing on mobile devices, with proper handling of
+ * pointer events to ensure optimal user interaction.
+ *
+ * The mobile version includes a hamburger menu icon that transforms into a close icon when the menu
+ * is open, providing clear visual feedback to users. The desktop version maintains a consistent
+ * horizontal layout with proper spacing and alignment of navigation items.
+ *
+ * @returns {JSX.Element} The rendered navigation menu with responsive behavior
+ *
+ * @example
+ * <NavBarMenu />
+ */
 export const NavBarMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const toggleMenu = () => {
