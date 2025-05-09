@@ -105,6 +105,21 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
     clearMessages,
     errors,
   } = useAuthFormStore()
+  useEffect(() => {
+    if (errorMessage) {
+      toast[ToastType.Error]({
+        text: errorMessage,
+      })
+    }
+  }, [errorMessage])
+
+  useEffect(() => {
+    if (successMessage) {
+      toast[ToastType.Success]({
+        text: successMessage,
+      })
+    }
+  }, [successMessage])
 
   useEffect(() => {
     resetForm()
@@ -183,16 +198,6 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
       setIsLoading(false)
     }
   }
-
-  errorMessage &&
-    toast[ToastType.Error]({
-      text: errorMessage,
-    })
-
-  successMessage &&
-    toast[ToastType.Success]({
-      text: successMessage,
-    })
 
   return (
     <section className="mt-8 flex h-full items-center justify-center p-4 text-white md:mt-0">
