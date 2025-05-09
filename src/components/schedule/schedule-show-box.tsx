@@ -1,9 +1,12 @@
 import { CalendarItem } from '@components/schedule/schedule-item'
 import { ScheduleLoader } from '@components/schedule/schedule-loader'
+import { toast } from '@pheralb/toast'
 import { useCalendarListStore } from '@store/calendar-list-store'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useEffect, useState } from 'react'
 import type { AnimeCardInfo } from 'types'
+
+import { ToastType } from 'types'
 
 /**
  * CalendarShowBox component displays a timeline of scheduled anime releases.
@@ -35,7 +38,13 @@ export const CalendarShowBox = () => {
 
   const currentSelected = calendarList.find((item) => item.selected)
   const currentSelectedLabel = currentSelected?.label
-
+  useEffect(() => {
+    if (error) {
+      toast[ToastType.Error]({
+        text: error,
+      })
+    }
+  }, [error])
   useEffect(() => {
     const fetchData = async () => {
       try {
