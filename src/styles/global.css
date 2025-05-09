@@ -16,6 +16,38 @@
 
   --color-enfasisColor: var(--enfasis-dynamic);
 }
+.dynamic-border {
+  --angle: 0deg;
+
+  position: relative;
+  border: 0;
+  padding: var(--border-width);
+}
+
+.dynamic-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--border-width);
+  background-clip: content-box;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: -1;
+
+  background-color: var(--border-color-normal);
+  transition: background 0.3s ease;
+}
+
+.dynamic-border.border-dynamic::before {
+  background: conic-gradient(
+    from var(--angle),
+    var(--border-color-normal) 70deg,
+    var(--border-color-hover) 90deg,
+    var(--border-color-normal) 120deg,
+    var(--border-color-normal) 360deg
+  );
+}
 
 .button-primary {
   @apply border-enfasisColor bg-enfasisColor md:hover:border-enfasisColor/80 md:hover:text-enfasisColor cursor-pointer items-center justify-center rounded-md border-2 p-1 text-white transition-all duration-300 ease-in-out md:hover:bg-transparent md:hover:shadow-md xl:p-2;
@@ -44,8 +76,8 @@
   @apply text-[20px] font-bold xl:text-[28px];
 }
 .text-lx {
-    @apply text-[18px] font-bold xl:text-[24px];
-  }
+  @apply text-[18px] font-bold xl:text-[24px];
+}
 .text-l {
   @apply text-[16px] font-medium xl:text-[20px];
 }
