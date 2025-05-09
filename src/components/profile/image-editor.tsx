@@ -12,18 +12,60 @@ import { useGlobalUserPreferences } from '@store/global-user'
 
 import { ToastType } from 'types'
 
+/**
+ * Props interface for the ImageEditor component.
+ *
+ * @interface Props
+ * @property {string} userName - The username of the current user for avatar naming.
+ */
 interface Props {
   userName: string
 }
 
+/**
+ * Payload interface for image upload.
+ *
+ * @interface Payload
+ * @property {string} image - The base64 encoded image data.
+ * @property {string} filename - The name for the uploaded file.
+ * @property {string | null} [type] - The MIME type of the image.
+ */
 interface Payload {
   image: string
   filename: string
   type?: string | null
 }
 
+/**
+ * ImageEditor component provides a modal interface for editing and uploading profile images.
+ *
+ * @description This component renders a modal editor for cropping and uploading profile images.
+ * It supports drag and drop functionality, image cropping with aspect ratio preservation,
+ * and handles both static images and GIFs differently. The component includes a preview
+ * of the cropped image and provides visual feedback during the upload process.
+ *
+ * The editor features:
+ * - Drag and drop image upload
+ * - Real-time image cropping with preview
+ * - Support for both static images and GIFs
+ * - Loading states and error handling
+ * - Toast notifications for operation feedback
+ * - Responsive design for different screen sizes
+ *
+ * The component integrates with the application's image upload and user preferences stores
+ * to manage the upload process and update the user's profile information. It includes
+ * proper error handling and validation for the upload process.
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.userName - The username used for generating the avatar filename
+ * @returns {JSX.Element} The rendered image editor modal with cropping interface
+ *
+ * @example
+ * <ImageEditor userName="john_doe" />
+ */
 export const ImageEditor = ({ userName }: Props) => {
-  const { image, setImage, type, setType } = useUploadImageStore()
+  const { image, setImage, type, setType, isEditorVisible, hideEditor } =
+    useUploadImageStore()
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
@@ -32,7 +74,6 @@ export const ImageEditor = ({ userName }: Props) => {
 
   const imageCropper = useRef(new SuperImageCropper()).current
   const cropperRef = useRef<ReactCropperElement>(null)
-  const editorRef = useRef<HTMLElement>(null)
 
   const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
     onDrop: (file) => {
@@ -91,7 +132,7 @@ export const ImageEditor = ({ userName }: Props) => {
       )
     } finally {
       setIsLoading(false)
-      handleClose()
+      hideEditor()
     }
   }
 
@@ -186,32 +227,17 @@ export const ImageEditor = ({ userName }: Props) => {
     }
   }
 
-  const handleClose = () => {
-    if (editorRef.current) {
-      editorRef.current.classList.replace('opacity-100', 'opacity-0')
-      editorRef.current.classList.add('pointer-events-none')
-    }
-  }
-
-  const handleOpen = () => {
-    if (editorRef.current) {
-      editorRef.current.classList.replace('opacity-0', 'opacity-100')
-      editorRef.current.classList.remove('pointer-events-none')
-    }
-  }
+  if (!isEditorVisible) return null
 
   return (
-    <section
-      ref={editorRef}
-      className="image-editor bg-Complementary/50 pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-20 flex h-full w-full flex-col items-center justify-center opacity-0 transition-opacity duration-300"
-    >
+    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-20 flex h-full w-full flex-col items-center justify-center transition-opacity duration-300">
       <h2 className="text-lx font-semibold">Edit your profile image</h2>
       <div className="img-preview z-20 h-full max-h-40 w-full max-w-40 translate-y-1/2 overflow-hidden rounded-full"></div>
 
       <div className="bg-Complementary border-enfasisColor/40 relative flex flex-col items-center gap-10 rounded-xl border-2 p-8 pt-24">
         <button
           className="absolute top-5 right-5 cursor-pointer transition-opacity hover:opacity-70"
-          onClick={handleClose}
+          onClick={hideEditor}
           aria-label="Close editor"
         >
           <CloseIcon className="h-5 w-5" />
