@@ -1,6 +1,33 @@
 import { useUploadImageStore } from '@store/upload-image'
+
+/**
+ * InputUserImage component provides a file input interface for uploading profile images.
+ *
+ * @description This component renders a styled file input button that allows users to select
+ * and upload profile images. The button is designed to appear as a camera icon with hover effects
+ * and transitions for better user interaction feedback.
+ *
+ * The component integrates with the upload image store to manage the selected image and its type.
+ * When a file is selected, it:
+ * - Reads the file using FileReader
+ * - Updates the store with the image data and type
+ * - Shows the image editor modal via the store
+ *
+ * The UI features:
+ * - A camera icon that scales and changes color on hover
+ * - Responsive design with different sizes for mobile and desktop
+ * - Smooth transitions and animations
+ * - Hidden file input for better styling control
+ * - Proper accessibility attributes
+ *
+ * @returns {JSX.Element} The rendered file input button with camera icon
+ *
+ * @example
+ * <InputUserImage />
+ */
 export const InputUserImage = () => {
-  const { setImage, setType } = useUploadImageStore()
+  const { setImage, setType, showEditor } = useUploadImageStore()
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
@@ -9,12 +36,9 @@ export const InputUserImage = () => {
     const reader = new FileReader()
     reader.onload = () => {
       setImage(reader.result as string)
+      showEditor()
     }
     reader.readAsDataURL(file)
-    const $imageEditor = document.querySelector('.image-editor')
-
-    $imageEditor?.classList.replace('opacity-0', 'opacity-100')
-    $imageEditor?.classList.remove('pointer-events-none')
   }
 
   return (
