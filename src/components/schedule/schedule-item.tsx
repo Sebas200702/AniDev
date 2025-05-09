@@ -59,7 +59,7 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
   return (
     <article
       className={`relative flex items-center ${isLeft ? 'flex-row mr-auto pr-8' : 'flex-row-reverse ml-auto pl-8'}
-      w-[calc(50%-1rem)] perspective-1000`}
+      `}
     >
       <a
         ref={elementRef}
@@ -70,8 +70,8 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
         className={`group relative flex items-center
           gap-8 rounded-lg bg-Complementary/90
           transition-all duration-500 ease-out
-          hover:bg-Complementary w-full dynamic-border -translate-y-2
-          p-4 overflow-hidden hover:scale-[1.02]`}
+          hover:bg-Complementary  dynamic-border -translate-y-2
+           overflow-hidden w-[calc(50%-1rem)] aspect-[120/40] h-full `}
         style={
           {
             '--border-color-normal': `rgba(${colorToRGB(enfasis)}, 0.2)`,
@@ -80,31 +80,23 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
         }
         aria-label={`View details for ${anime.title}`}
       >
-        <figure className="relative overflow-hidden transition-all duration-500 transform rounded-lg">
-          <Picture
-            image={anime.image_webp}
-            styles="relative overflow-hidden transition-all duration-500 transform rounded-lg"
-          >
-            <div
-              role="presentation"
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent
-              opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            />
-            <img
-              src={anime.image_webp}
-              alt={anime.title}
-              className="relative aspect-[225/330] w-full max-w-32 object-cover object-center
+        <Picture
+          image={anime.image_webp}
+          styles="relative overflow-hidden h-full w-full max-w-32 h-full transition-all duration-500 transform rounded-l-lg"
+        >
+          <img
+            src={anime.image_webp}
+            alt={anime.title}
+            className="relative aspect-[225/330] w-full max-w-32 h-full object-cover object-center
                 transition-all duration-500 group-hover:scale-105 group-hover:brightness-105
                 group-hover:contrast-110 transform will-change-transform"
-            />
-          </Picture>
-        </figure>
+          />
+        </Picture>
 
         <div className="flex flex-col gap-4 py-2 relative z-10">
           <header>
             <h3
-              className="text-2xl font-bold text-Primary line-clamp-2 group-hover:text-Primary
+              className="text-2xl font-bold line-clamp-1 max-w-96 text-Primary group-hover:text-Primary
               transition-colors duration-300 tracking-tight leading-tight
               drop-shadow-sm group-hover:drop-shadow-md"
             >
