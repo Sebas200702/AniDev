@@ -18,7 +18,6 @@
 }
 .dynamic-border {
   --angle: 0deg;
-
   position: relative;
   border: 0;
   padding: var(--border-width);
@@ -30,13 +29,12 @@
   inset: 0;
   border-radius: inherit;
   padding: var(--border-width);
-  background-clip: content-box;
+  background: var(--border-color-normal);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   z-index: -1;
-
-  background-color: var(--border-color-normal);
-  transition: background 0.3s ease;
 }
 
 .dynamic-border.border-dynamic::before {
