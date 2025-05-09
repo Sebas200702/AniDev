@@ -1,3 +1,4 @@
+import { AnimeRating } from 'types'
 /**
  * Normalizes anime age ratings into a simplified format.
  *
@@ -20,11 +21,16 @@
  * normalizeRating("G - All Ages") // Returns "E"
  */
 export const normalizeRating = (rating: string): string => {
-  console.log(rating)
-  // Return early for common cases
-  if (!rating || rating.includes('All Ages') || rating.includes('Children'))
-    return 'E'
+  const lowerRating = rating.toLowerCase()
 
-  const match = rating.match(/\d+/)
-  return match ? `${match[0]}+` : 'H'
+  // Check against AnimeRating enum values
+  if (lowerRating === AnimeRating.G) return 'E'
+  if (lowerRating === AnimeRating.PG) return 'E'
+  if (lowerRating === AnimeRating.PG_13) return '13+'
+  if (lowerRating === AnimeRating.R) return '16+'
+  if (lowerRating === AnimeRating.RN) return '17+'
+  if (lowerRating === AnimeRating.RX) return '18+'
+
+  // If no match found, return 'E' as default
+  return 'E'
 }

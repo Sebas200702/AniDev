@@ -1,4 +1,5 @@
 import { AnimeFilters } from 'types'
+import { AnimeRating } from 'types'
 
 /**
  * Checks if a string contains any numeric digits.
@@ -48,13 +49,7 @@ export const getFilterOfTag = (tag: string) => {
   if (tag === 'Movie') return AnimeFilters.Type
   if (tag === 'Music') return AnimeFilters.Type
   if (haveNumbers(tag) && tag.length === 4) return AnimeFilters.Year
-  if (
-    tag.includes('+') ||
-    tag.includes('-') ||
-    tag.includes('R') ||
-    tag.includes('G') ||
-    tag.includes('E')
-  )
+  if (Object.values(AnimeRating).includes(tag as AnimeRating))
     return AnimeFilters.Rating
   return AnimeFilters.Genre
 }

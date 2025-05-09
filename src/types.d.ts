@@ -180,6 +180,14 @@ export enum AnimeFilters {
   Year = 'year_filter',
   Rating = 'rating_filter',
 }
+export enum AnimeRating {
+  G = 'g - all ages',
+  PG = 'pg - children',
+  PG_13 = 'pg-13 - teens 13 or older',
+  R = 'r - 17+ (violence & profanity)',
+  RN = 'r+ - mild nudity',
+  RX = 'rx+-+hentai',
+}
 
 export const genreOptions: FilterOption[] = Object.values(AnimeGenres).map(
   (genre) => ({ value: genre.toLowerCase(), label: genre })
@@ -193,11 +201,12 @@ export const yearOptions: FilterOption[] = Array.from(
   }
 )
 export const ratingOptions: FilterOption[] = [
-  { value: 'g - all ages', label: 'Everyone' },
-  { value: 'pg - children', label: 'Kids' },
-  { value: 'pg-13 - teens 13 or older', label: 'Teens' },
-  { value: 'r - 17+ (violence & profanity)', label: 'Adults' },
-  { value: 'rx+-+hentai', label: 'Hentai' },
+  { value: AnimeRating.G, label: 'Everyone' },
+  { value: AnimeRating.PG, label: 'Kids' },
+  { value: AnimeRating.PG_13, label: 'Teens' },
+  { value: AnimeRating.R, label: 'Adults' },
+  { value: AnimeRating.RN, label: 'Mild Nudity' },
+  { value: AnimeRating.RX, label: 'Hentai' },
 ]
 export const airedDayOptions: FilterOption[] = [
   { value: 'sunday', label: 'Sunday' },
