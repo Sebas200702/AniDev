@@ -7,9 +7,10 @@ import { InputUserImage } from './input-user-image'
 
 export const UserInfo = () => {
   const { userInfo } = useGlobalUserPreferences()
-  const { setImage, setType } = useUploadImageStore()
+  const { setImage, setType, showEditor } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
   const isEnabled = !!userInfo
+
   useEffect(() => {
     const original = HTMLCanvasElement.prototype.getContext as any
     HTMLCanvasElement.prototype.getContext = function (
@@ -31,11 +32,9 @@ export const UserInfo = () => {
       const reader = new FileReader()
       reader.onload = () => {
         setImage(reader.result as string)
+        showEditor()
       }
       reader.readAsDataURL(file)
-      const $imageEditor = document.querySelector('.image-editor')
-      $imageEditor?.classList.replace('opacity-0', 'opacity-100')
-      $imageEditor?.classList.remove('pointer-events-none')
 
       if (imageRef.current) {
         imageRef.current.classList.remove('opacity-10')
