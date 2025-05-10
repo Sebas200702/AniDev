@@ -216,11 +216,10 @@ export const SearchBar = (): JSX.Element => {
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, index) => (
             <div
-              key={index}
-              className="flex animate-pulse items-center gap-4 rounded-md bg-zinc-800 p-2"
+              key={i + 1}
+              className="bg-Complementary mx-auto flex aspect-[100/28] h-full w-full animate-pulse flex-row rounded-lg"
             >
-              <div className="aspect-[225/300] h-full w-full max-w-24 rounded-md bg-zinc-700"></div>
-              <div className="h-4 w-1/2 rounded-md bg-zinc-700"></div>
+              <div className="aspect-[225/330] h-full animate-pulse rounded-l-lg bg-zinc-800 object-cover object-center transition-all ease-in-out"></div>
             </div>
           ))}
 
