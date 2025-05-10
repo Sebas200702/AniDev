@@ -104,7 +104,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
       id="app"
       class="bg-Primary-950 text-Primary-50 no-scrollbar overflow-x-hidden overflow-y-scroll"
     >
-      <SearchBar location="main" client:load />
+      <SearchBar client:load />
       <LoadUserPrefences userInfo={userInfo} client:load />
       <LoadWindowWidth client:load />
       <header class="[grid-area:header]">
@@ -120,6 +120,17 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
           position="bottom-right"
           toastOptions={{
             animationOnClose: 'swipe',
+
+            classNames: {
+              toast: 'bg-Complementary ',
+              container: 'bg-Complementary ',
+              content: 'text-Primary-50',
+              actions: {
+                container: 'bg-Complementary ',
+                closeBtn: 'text-Primary-50',
+                actionBtn: 'text-Primary-50',
+              },
+            },
           }}
         />
       </main>
