@@ -92,7 +92,11 @@ export interface AnimeCollectionInfo
 export interface AnimeDetail
   extends Pick<
     Anime,
-    'mal_id' | 'title' | 'image_webp' | 'image_small_webp' | 'image_large_webp'
+    | 'mal_id'
+    | 'title'
+    | 'image_webp'
+    | 'image_small_webp'
+    | 'image_large_webp'
     | 'banner_image'
     | 'year'
     | 'type'
