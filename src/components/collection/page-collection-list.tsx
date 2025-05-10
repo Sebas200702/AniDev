@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { CollectionItem } from '@components/collection/page-collection-item'
+import { AnimeDetailCard } from '@components/anime-detail-card'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
 import type { Anime } from 'types'
 
@@ -72,7 +72,7 @@ export const PageColectionList = ({ title, id }: Props) => {
       </header>
       <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
         {animes.map((anime) => (
-          <CollectionItem key={anime.mal_id} anime={anime} />
+          <AnimeDetailCard key={anime.mal_id} anime={anime} />
         ))}
       </ul>
     </section>
