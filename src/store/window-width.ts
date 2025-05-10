@@ -30,11 +30,11 @@ import { create } from 'zustand'
  * }, [setWidth]);
  */
 interface WindowWidth {
-  width: number | null
-  setWidth: (width: number | null) => void
+  width: number
+  setWidth: (width: number) => void
 }
 
 export const useWindowWidth = create<WindowWidth>((set) => ({
-  width: null,
+  width: 0,
   setWidth: (width) => set({ width }),
 }))
