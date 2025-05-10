@@ -11,13 +11,10 @@ import { normalizeString } from '@utils/normalize-string'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { ToastType, shortCuts } from 'types'
 
-import type { AnimeCardInfo } from 'types'
+import { AnimeDetailCard } from '@components/anime-detail-card'
+import type { AnimeCardInfo, AnimeDetail } from 'types'
 
-interface Props {
-  location: string
-}
-
-export const SearchBar = ({ location }: Props): JSX.Element => {
+export const SearchBar = (): JSX.Element => {
   const {
     query,
     setQuery,
@@ -79,6 +76,14 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     url,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
+  const {
+    data: animesFull,
+    loading: isLoadingFull,
+    error: fetchErrorFull,
+  } = useFetch<AnimeDetail[]>({
+    url: `${url.replace('format=search', 'format=anime-detail').replace('30', '7')}`,
+    skip: !url || (!filtersToApply && !debouncedQuery),
+  })
   useEffect(() => {
     if (searchBarIsOpen && inputRef.current) {
       inputRef.current.focus()
@@ -106,14 +111,12 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
-      if (location.includes('search')) return
-
       if (query.trim()) {
         setSearchIsOpen(false)
         navigate(`/search?q=${encodeURIComponent(query.trim())}`)
       }
     },
-    [query, location]
+    [query]
   )
 
   const handleInput = useCallback(
@@ -157,11 +160,21 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         onSubmit={handleSubmit}
         className="relative mt-24 flex w-full max-w-xl flex-col gap-6 overflow-hidden shadow-lg"
       >
-        <div className="hidden gap-4 text-gray-300 select-none md:flex">
-          For quick access:{' '}
-          <kbd className="kbd bg-Primary-950 rounded-xs px-3">Ctrl</kbd> +{' '}
-          <kbd className="kbd bg-Primary-950 rounded-xs px-3">K</kbd>
-        </div>
+        <header className="flex items-center justify-between">
+          <div className="hidden gap-4 text-gray-300 select-none md:flex">
+            For quick access:{' '}
+            <kbd className="kbd bg-Primary-950 rounded-xs px-3">Ctrl</kbd> +{' '}
+            <kbd className="kbd bg-Primary-950 rounded-xs px-3">K</kbd>
+          </div>
+
+          {Object.keys(appliedFilters).length > 0 && (
+            <strong className="text-gray-300">
+              {Object.keys(appliedFilters).length}{' '}
+              {Object.keys(appliedFilters).length === 1 ? 'filter' : 'filters'}{' '}
+              applied
+            </strong>
+          )}
+        </header>
 
         <div className="bg-Complementary flex items-center rounded-md px-4 py-2">
           <input
@@ -200,14 +213,13 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
       <ul
         className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${isLoading || results ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Complementary flex flex-col gap-4 rounded-md p-4 shadow-lg`}
       >
-        {isLoading &&
-          Array.from({ length: 10 }, (_, index) => (
+        {isLoadingFull &&
+          Array.from({ length: 7 }, (_, index) => (
             <div
               key={index}
               className="flex animate-pulse items-center gap-4 rounded-md bg-zinc-800 p-2"
             >
               <div className="aspect-[225/300] h-full w-full max-w-24 rounded-md bg-zinc-700"></div>
-
               <div className="h-4 w-1/2 rounded-md bg-zinc-700"></div>
             </div>
           ))}
@@ -219,29 +231,15 @@ export const SearchBar = ({ location }: Props): JSX.Element => {
         )}
 
         {!isLoading &&
-          results?.slice(0, 10).map((result) => (
-            <a
+          animesFull?.map((result) => (
+            <AnimeDetailCard
               key={result.mal_id}
-              href={`/anime/${normalizeString(result.title)}_${result.mal_id}`}
-              onClick={() => setSearchIsOpen(false)}
-              className="hover:bg-Primary-900 flex items-center gap-4 rounded-md p-2"
-            >
-              <Picture
-                styles="relative h-full max-w-24 w-full"
-                image={result.image_small_webp}
-              >
-                <img
-                  src={result.image_webp}
-                  alt={result.title}
-                  className="relative aspect-[225/300] w-full rounded-md object-cover object-center"
-                  loading="lazy"
-                />
-              </Picture>
-
-              <h3 className="text-lg font-semibold">{result.title}</h3>
-            </a>
+              anime={{
+                ...result,
+              }}
+            />
           ))}
-        {results && results?.length > 10 && !isLoading && (
+        {results && results?.length > 7 && !isLoading && !isLoadingFull && (
           <a
             href={`/search?q=${encodeURIComponent(query)}`}
             onClick={() => setSearchIsOpen(false)}
