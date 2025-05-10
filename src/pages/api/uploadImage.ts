@@ -94,15 +94,7 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
   const { files } = await pinata.files.public.list()
 
   const existingFile = files.find((file) => {
-    const fileNameWithoutExtension = (file.name ?? '')
-      .split('.')
-      .slice(0, -1)
-      .join('.')
-    const inputFileNameWithoutExtension = (filename ?? '')
-      .split('.')
-      .slice(0, -1)
-      .join('.')
-    return fileNameWithoutExtension === inputFileNameWithoutExtension
+    return file.name === newFile.name
   })
 
   if (existingFile) {
