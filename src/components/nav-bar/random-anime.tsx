@@ -1,6 +1,7 @@
 import { navigate } from 'astro:transitions/client'
 import { RandomIcon } from '@components/icons/random-icon'
 import { normalizeString } from '@utils/normalize-string'
+import { useGlobalUserPreferences } from '@store/global-user'
 
 /**
  * RandomAnimeButton component provides a button to navigate to a random anime.
@@ -23,8 +24,11 @@ import { normalizeString } from '@utils/normalize-string'
  * <RandomAnimeButton />
  */
 export const RandomAnimeButton = () => {
+  const { parentalControl } = useGlobalUserPreferences()
   const handleClick = async () => {
-    const result = await fetch('/api/animes/random').then((res) => res.json())
+    const result = await fetch(
+      `/api/animes/random?parental_control=${parentalControl}`
+    ).then((res) => res.json())
 
     navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
   }
