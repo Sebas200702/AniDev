@@ -9,6 +9,6 @@ import Layout from '@layouts/base.astro'
     class="mx-4 mt-24 flex flex-col items-center overflow-hidden md:mx-20"
   >
     <CalendarList client:load />
-    <CalendarShowBox client:load />
+    <CalendarShowBox client:only />
   </section>
 </Layout>
