@@ -77,9 +77,6 @@ export const GET: APIRoute = rateLimit(
         })
       }
       const format = url.searchParams.get('format')
-      const [order_by, order_direction] = url.searchParams
-        .get('order_by')
-        ?.split(' ') ?? ['score', 'desc']
 
       const filters = getFilters(Filters, url)
 
@@ -88,16 +85,18 @@ export const GET: APIRoute = rateLimit(
         AnimeBanner = 'anime-banner',
         TopAnime = 'top-anime',
         AnimeCollection = 'anime-collection',
+        AnimeDetail = 'anime-detail',
         Search = 'search',
       }
       const getFormat = (format: string) => {
-        if (format === Formats.AnimeCard) return 'get_animes_order_by_score'
+        if (format === Formats.AnimeCard) return 'get_anime_summary_card'
         if (format === Formats.AnimeBanner) return 'get_animes_banner'
         if (format === Formats.TopAnime) return 'get_top_animes'
+        if (format === Formats.AnimeDetail) return 'get_anime_detail_card'
         if (format === Formats.AnimeCollection) return 'get_animes_collection'
-        if (format === Formats.Search)
-          return getFunctionToExecute(order_by, order_direction)
-        return 'get_animes_order_by_score'
+        if (format === Formats.Search) return 'get_anime_summary_card'
+
+        return 'get_anime_summary_card'
       }
       const formatFunction = getFormat(format ?? '')
 
