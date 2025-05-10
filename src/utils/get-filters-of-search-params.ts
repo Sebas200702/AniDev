@@ -43,6 +43,12 @@ export const getFilters = (filtersEnum: typeof Filters, url: URL) => {
         filter === Filters.search_query
       ) {
         filters[filter] = value ?? null
+      } else if (filter === Filters.order_by) {
+        if (value) {
+          const [column, direction] = value.split(' ')
+          filters['sort_column'] = column
+          filters['sort_direction'] = direction || 'desc'
+        }
       } else if (filter === Filters.aired_day_filter) {
         if (value) {
           filters[filter] = value.split('_')
