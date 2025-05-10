@@ -30,23 +30,18 @@
   border-radius: inherit;
   padding: var(--border-width);
   background: var(--border-color-normal);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   z-index: -1;
 }
 
 .dynamic-border.border-dynamic::before {
   background: conic-gradient(
-    from var(--angle),
-    var(--border-color-normal) 70deg,
-    var(--border-color-hover) 90deg,
-    var(--border-color-normal) 120deg,
+    from calc(var(--angle) - 90deg),
+    var(--border-color-normal) 0deg,
+    var(--border-color-hover) 180deg,
     var(--border-color-normal) 360deg
   );
 }
