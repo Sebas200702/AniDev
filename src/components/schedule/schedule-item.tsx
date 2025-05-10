@@ -13,6 +13,7 @@ interface CalendarItemProps {
   anime: AnimeCardInfo
   /** Whether the item should be positioned on the left side of the timeline */
   isLeft: boolean
+  isMobile: boolean
 }
 
 /**
@@ -49,7 +50,7 @@ interface CalendarItemProps {
  * @param {CalendarItemProps} props - The component props
  * @returns {JSX.Element} A timeline card displaying anime information
  */
-export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
+export const CalendarItem = ({ anime, isLeft, isMobile }: CalendarItemProps) => {
   const { enfasis } = useGlobalUserPreferences()
   const { elementRef, handleMouseMove, handleMouseLeave, handleMouseEnter } =
     useDynamicBorder<HTMLAnchorElement>({
@@ -58,7 +59,7 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
 
   return (
     <article
-      className={`relative flex items-center ${isLeft ? 'mr-auto flex-row pr-8' : 'ml-auto flex-row-reverse pl-8'} `}
+      className={`relative flex items-center ${isMobile ? '' : isLeft ? 'md:mr-auto md:flex-row md:pr-8' : 'md:ml-auto md:flex-row-reverse md:pl-8'} `}
     >
       <a
         ref={elementRef}
@@ -66,11 +67,11 @@ export const CalendarItem = ({ anime, isLeft }: CalendarItemProps) => {
         onMouseLeave={handleMouseLeave}
         onMouseEnter={handleMouseEnter}
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className={`group bg-Complementary/90 hover:bg-Complementary dynamic-border relative flex aspect-[120/40] h-full w-[calc(50%-1rem)] -translate-y-2 items-center gap-8 overflow-hidden rounded-lg transition-all duration-500 ease-out`}
+        className={`group bg-Complementary/90 hover:bg-Complementary dynamic-border relative flex aspect-[120/40] h-full md:w-[calc(50%-1rem)] w-full -translate-y-2 items-center gap-8 overflow-hidden rounded-lg transition-all duration-500 ease-out`}
         style={
           {
-            '--border-color-normal': `rgba(${colorToRGB(enfasis)}, 0.2)`,
-            '--border-color-hover': `rgba(${colorToRGB(enfasis)}, 0.8)`,
+            '--border-color-normal': `rgba(${colorToRGB(enfasis)}, 0)`,
+            '--border-color-hover': `rgba(${colorToRGB(enfasis)}, 0.5)`,
           } as React.CSSProperties
         }
         aria-label={`View details for ${anime.title}`}
