@@ -64,6 +64,7 @@ export enum Filters {
   banners_filter = 'banners_filter',
   season_filter = 'season_filter',
   aired_day_filter = 'aired_day_filter',
+  order_by = 'order_by',
 }
 
 export type Animes = {
@@ -88,6 +89,15 @@ export interface AnimeBannerInfo
 
 export interface AnimeCollectionInfo
   extends Pick<Anime, 'mal_id' | 'title' | 'image_webp' | 'image_small_webp'> {}
+export interface AnimeDetail
+  extends Pick<
+    Anime,
+    'mal_id' | 'title' | 'image_webp' | 'image_small_webp' | 'image_large_webp'
+    | 'banner_image'
+    | 'year'
+    | 'type'
+    | 'episodes'
+  > {}
 export interface AnimeTopInfo
   extends Pick<
     Anime,
