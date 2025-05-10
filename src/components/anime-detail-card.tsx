@@ -7,39 +7,40 @@ import { PlayIcon } from '@components/icons/play-icon'
 import { TypeIcon } from '@components/icons/type-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
+import { useSearchStoreResults } from '@store/search-results-store'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
-import type { Anime } from 'types'
+import type { AnimeDetail } from 'types'
 
 /**
- * CollectionItem component displays a collection item in a list, including its image, title, genres, synopsis, and score.
+ * AnimeDetailCard component displays a detailed view of an anime with a banner background and additional information.
  *
- * @description This component renders an individual anime item within a collection list.
- * It displays the anime's poster image, title, genres, synopsis, and score in a structured layout.
- * The component features a responsive design with hover effects on the image and provides
- * interactive elements for user engagement including watch, add to list, and share buttons.
+ * @description This component renders a detailed anime item with a horizontal layout featuring a banner background.
+ * It displays the anime's banner image, poster, title, type, episodes, and year in a structured layout.
+ * The component features a responsive design with hover effects and provides interactive elements
+ * including watch, add to list, and share buttons.
  *
- * The anime poster image is displayed on the left side with a hover scale effect for visual feedback.
- * The right section contains the anime's metadata organized in a vertical layout with appropriate
- * spacing and text truncation for longer content. The component handles missing data gracefully
- * by displaying fallback text for synopsis when unavailable.
- *
- * The footer section contains action buttons that allow users to watch the anime, add it to their list,
- * or share it with others, enhancing the overall user experience and engagement with the content.
+ * The banner image is displayed as a background with a gradient overlay for better text readability.
+ * The poster image is shown on the left side, while the right section contains the anime's metadata
+ * organized in a vertical layout. The component includes action buttons that appear on hover
+ * for enhanced user interaction.
  *
  * @param {Object} props - The component props
- * @param {Anime} props.anime - The anime object containing details to display including title, image, genres, synopsis, and score
- * @returns {JSX.Element} The rendered collection item with anime details and interactive elements
+ * @param {Anime} props.anime - The anime object containing details to display
+ * @returns {JSX.Element} The rendered detailed anime card with banner and interactive elements
  *
  * @example
- * <CollectionItem anime={animeData} />
+ * <AnimeDetailCard anime={animeData} />
  */
-export const CollectionItem = ({ anime }: { anime: Anime }) => {
+
+export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
+  const { setSearchIsOpen } = useSearchStoreResults()
   const shareText = `Watch ${anime.title} on AniDev`
   return (
     <li
       key={anime.mal_id}
       className="group relative transition-all duration-300 ease-in-out md:hover:translate-x-2"
+      onClick={() => setSearchIsOpen(false)}
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
