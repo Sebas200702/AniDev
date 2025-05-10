@@ -1,3 +1,5 @@
+import { useWindowWidth } from '@store/window-width'
+
 /**
  * ScheduleLoader component displays a loading state for the schedule section.
  *
@@ -18,15 +20,13 @@
  * <ScheduleLoader />
  */
 export const ScheduleLoader = () => {
+  const { width } = useWindowWidth()
+  const isMobile = width < 768
+
   return (
     <div className="relative mx-auto flex w-full max-w-7xl flex-col px-6 py-12">
-      <div className="mb-12 text-center">
-        <div className="mx-auto mb-3 h-10 w-64 animate-pulse rounded-lg bg-zinc-800" />
-        <div className="mx-auto h-6 w-96 animate-pulse rounded-lg bg-zinc-800/60" />
-      </div>
-
       <div className="relative min-h-[400px]">
-        <div className="via-Primary/20 absolute top-0 bottom-0 left-1/2 w-[1px] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent">
+        <div className="via-Primary-200 absolute top-0 bottom-0 left-1/2 w-[1px] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent">
           <div className="bg-Primary-50/10 absolute inset-0 backdrop-blur-sm" />
         </div>
 
@@ -42,7 +42,7 @@ export const ScheduleLoader = () => {
             .map((_, index) => (
               <div
                 key={index}
-                className={`relative flex items-center ${index % 2 === 0 ? 'mr-auto flex-row pr-8' : 'ml-auto flex-row-reverse pl-8'} `}
+                className={`relative flex items-center ${isMobile ? '' : index % 2 === 0 ? 'md:mr-auto md:flex-row md:pr-8' : 'md:ml-auto md:flex-row-reverse md:pl-8'} `}
               >
                 <div className="bg-Primary-800 absolute right-[calc(50%-0.5rem)] flex h-4 w-4 items-center justify-center rounded-full">
                   <div className="bg-Primary-700 h-2 w-2 animate-pulse rounded-full" />
