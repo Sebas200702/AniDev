@@ -3,6 +3,7 @@ import { ScheduleLoader } from '@components/schedule/schedule-loader'
 import { toast } from '@pheralb/toast'
 import { useCalendarListStore } from '@store/calendar-list-store'
 import { useGlobalUserPreferences } from '@store/global-user'
+import { useWindowWidth } from '@store/window-width'
 import { useEffect, useState } from 'react'
 import type { AnimeCardInfo } from 'types'
 
@@ -35,6 +36,8 @@ export const CalendarShowBox = () => {
   const [animeList, setAnimeList] = useState<AnimeCardInfo[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { width } = useWindowWidth()
+  const isMobile = width < 768
 
   const currentSelected = calendarList.find((item) => item.selected)
   const currentSelectedLabel = currentSelected?.label
@@ -106,39 +109,30 @@ export const CalendarShowBox = () => {
 
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-col px-6 py-12">
-      <header className="mb-12 text-center">
-        <h2 className="text-Primary mb-3 text-3xl font-bold">
-          {currentSelectedLabel}'s Schedule
-        </h2>
-        <p className="text-Primary/60 text-lg">
-          Upcoming anime releases for {currentSelectedLabel}
-        </p>
-      </header>
-
       <section
         aria-label="Anime schedule timeline"
         className="relative min-h-[400px]"
       >
         <div
           role="presentation"
-          className="via-Primary-950 absolute top-0 bottom-0 left-1/2 w-[1px] -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent"
+          className="via-Primary-950 absolute top-0 bottom-0 left-0 md:left-1/2 w-[1px] md:-translate-x-1/2 bg-gradient-to-r from-transparent to-transparent"
         >
           <div className="bg-Primary-50/90 absolute inset-0 backdrop-blur-sm" />
         </div>
 
-        <ol className="space-y-16">
+        <ol className="space-y-16 pl-8 md:pl-0">
           {animeList.map((anime, index) => (
             <li key={anime.mal_id} className="relative">
               {/* Timeline point */}
               <div
                 role="presentation"
                 aria-hidden="true"
-                className={`absolute ${index % 2 === 0 ? 'right-[calc(50%-0.5rem)]' : 'left-[calc(50%-0.5rem)]'} bg-Primary-50 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full transition-colors duration-300`}
+                className="absolute top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full bg-Primary-50 -left-10 md:left-1/2 md:-translate-x-1/2"
               >
                 <div className="bg-Primary group-hover:bg-Primary/90 h-2 w-2 rounded-full transition-colors duration-300" />
               </div>
 
-              <CalendarItem anime={anime} isLeft={index % 2 === 0} />
+              <CalendarItem anime={anime} isLeft={index % 2 === 0} isMobile={isMobile} />
             </li>
           ))}
         </ol>
