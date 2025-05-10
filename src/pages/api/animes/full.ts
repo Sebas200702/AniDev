@@ -76,16 +76,10 @@ export const GET: APIRoute = rateLimit(
           headers: { 'content-type': 'application/json' },
         })
       }
-      const [order_by, order_direction] = url.searchParams
-        .get('order_by')
-        ?.split(' ') ?? ['score', 'desc']
 
       const filters = getFilters(Filters, url)
-      const orderFunction = getFunctionToExecute(order_by, order_direction)
-      const { data, error } = await supabase.rpc(
-        `${orderFunction}_full`,
-        filters
-      )
+
+      const { data, error } = await supabase.rpc('get_animes_full', filters)
       if (error) {
         console.error('Error al obtener los animes:', error)
         throw new Error('Ocurrió un error al obtener los animes.')
