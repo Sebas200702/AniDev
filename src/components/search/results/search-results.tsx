@@ -36,11 +36,16 @@ export const SearchResults = () => {
     loading,
     query,
     appliedFilters,
+    totalResults,
   } = useSearchStoreResults()
 
   const renderLoadingCards = () => {
     if (!isLoadingMore) return null
-    return Array(10)
+
+    const remainingResults = totalResults - (animes?.length || 0)
+    const loadingCardsCount = Math.min(remainingResults, 10)
+
+    return Array(loadingCardsCount)
       .fill(0)
       .map((_, index) => <LoadingCard key={`loading-card-${index + 1}`} />)
   }
@@ -79,7 +84,7 @@ export const SearchResults = () => {
 
   return (
     <ul
-      className={`grid w-full grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-6 md:px-20 xl:grid-cols-8`}
+      className={`grid w-full grid-cols-2 md:gap-8 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 md:px-20 xl:px-30 xl:grid-cols-6`}
     >
       {animes?.map((anime) => (
         <AnimeCard context="search" key={anime.mal_id} anime={anime} />
