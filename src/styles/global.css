@@ -64,7 +64,7 @@
 }
 
 .title {
-  @apply text-[28px] font-bold md:text-start xl:text-[50px];
+  @apply text-[30px] font-bold md:text-start xl:text-[50px];
 }
 .subtitle {
   @apply text-[32px] font-bold;
