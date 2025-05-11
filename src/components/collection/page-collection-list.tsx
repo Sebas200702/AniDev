@@ -51,7 +51,7 @@ export const PageColectionList = ({ title, id }: Props) => {
     )
     if (!collection) return
 
-    setUrl(`/api/animes/full?${collection.query}&banners_filter=false`)
+    setUrl(`/api/animes?${collection.query}&banners_filter=false&format=anime-detail`)
 
     const getAnimes = async () => {
       if (!url) return
