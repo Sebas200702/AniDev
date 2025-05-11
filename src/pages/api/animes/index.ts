@@ -76,8 +76,15 @@ export const GET: APIRoute = rateLimit(
         })
       }
       const format = url.searchParams.get('format')
+      const CountFilters = Object.keys(Filters).filter(
+        (key) =>
+          key !== 'limit_count' && key !== 'page_number' && key !== 'order_by'
+      )
 
-      const filters = getFilters(Filters, url)
+      const limit = parseInt(url.searchParams.get('limit_count') ?? '10')
+      const page = url.searchParams.get('page_number')
+      const filters = getFilters(Object.values(Filters), url)
+      const countFilters = getFilters(CountFilters, url)
 
       enum Formats {
         AnimeCard = 'anime-card',
@@ -100,6 +107,16 @@ export const GET: APIRoute = rateLimit(
       const formatFunction = getFormat(format ?? '')
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
+      const { data: count, error: countError } = await supabase.rpc(
+        'get_anime_count',
+        countFilters
+      )
+      const response = {
+        total_items: count,
+        data,
+        current_page: page,
+        last_page: Math.ceil(count / limit),
+      }
 
       if (error) {
         console.error('Error al obtener los animes:', error)
@@ -107,13 +124,13 @@ export const GET: APIRoute = rateLimit(
       }
       await redis.set(
         `animes-partial:${url.searchParams}`,
-        JSON.stringify(data),
+        JSON.stringify(response),
         {
           EX: 24 * 60 * 60,
         }
       )
 
-      return new Response(JSON.stringify({ data }), {
+      return new Response(JSON.stringify(response), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
