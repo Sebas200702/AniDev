@@ -25,6 +25,7 @@ export const SearchBar = (): JSX.Element => {
     setUrl,
     searchBarIsOpen,
     setSearchIsOpen,
+    setTotalResults,
   } = useSearchStoreResults()
   const { parentalControl } = useGlobalUserPreferences()
   const debouncedQuery = useDebounce(query, 600)
@@ -71,6 +72,7 @@ export const SearchBar = (): JSX.Element => {
   const {
     data: animes,
     loading: isLoading,
+    total,
     error: fetchError,
   } = useFetch<AnimeCardInfo[]>({
     url,
@@ -144,8 +146,9 @@ export const SearchBar = (): JSX.Element => {
     setLoading(isLoading)
     if (!isLoading) {
       setResults(animes, false, fetchError)
+      setTotalResults(total)
     }
-  }, [animes, isLoading, fetchError, setResults, setLoading])
+  }, [animes, isLoading, fetchError, setResults, setLoading, setTotalResults])
 
   return (
     <div
