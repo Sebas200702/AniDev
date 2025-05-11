@@ -48,18 +48,11 @@ export const BannerInfo = ({
   mal_id,
   slug,
 }: BannerInfoProps): JSX.Element => {
-  const { width, setWidth } = useWindowWidth()
-  const isMobile = width && width < 768
 
-  useEffect(() => {
-    window.addEventListener('resize', () => setWidth(window.innerWidth))
-    return () =>
-      window.removeEventListener('resize', () => setWidth(window.innerWidth))
-  }, [])
 
   return (
     <div
-      className={`bg-Primary-950/50 absolute z-10 flex h-full w-full ${isMobile ? 'inset-0' : ''} flex-col items-center justify-between p-3 md:right-0 md:bottom-10 md:max-h-44 md:max-w-112 md:rounded-l-2xl md:p-4 md:pr-10 xl:max-h-52`}
+      className={`bg-Primary-950/50 absolute z-10 flex h-full w-full  flex-col items-center justify-between p-4 md:right-0 xl:bottom-10 bottom-0  xl:max-w-120 md:rounded-l-2xl md:p-6 xl:pr-10 xl:max-h-60`}
     >
       <a
         href={`/anime/${slug}_${mal_id}`}
