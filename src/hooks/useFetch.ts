@@ -40,6 +40,7 @@ type Error = string | null
  */
 export const useFetch = <T>({ url, options, skip }: Params) => {
   const [data, setData] = useState<T | null>(null)
+  const [total, setTotal] = useState<number>(0)
   const [error, setError] = useState<Error>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -56,8 +57,12 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
           throw new Error(errorMessage)
         }
 
-        const json: T = await response.json().then((data) => data.data)
+        const responseData = await response.json()
+        const json: T = responseData.data
+        const total = responseData.total_items
+
         setData(json)
+        setTotal(total)
       } catch (error: any) {
         const errorMessage =
           error instanceof Error ? error.message : 'An unknown error occurred'
@@ -70,5 +75,5 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
     fetchData()
   }, [url, options, skip])
 
-  return { data, error, loading }
+  return { data, total, error, loading }
 }
