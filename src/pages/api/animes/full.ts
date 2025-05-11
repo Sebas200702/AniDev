@@ -77,7 +77,7 @@ export const GET: APIRoute = rateLimit(
         })
       }
 
-      const filters = getFilters(Filters, url)
+      const filters = getFilters(Object.values(Filters), url)
 
       const { data, error } = await supabase.rpc('get_animes_full', filters)
       if (error) {
