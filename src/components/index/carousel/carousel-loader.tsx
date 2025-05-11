@@ -26,7 +26,7 @@ import { Overlay } from '@components/overlay'
  */
 export const LoadingCarousel = () => (
   <div className="carousel-anime-banner relative h-[85vh] animate-pulse bg-zinc-900 md:h-[650px] xl:h-[90vh]">
-    <div className="relative flex h-[85vh] w-full flex-shrink-0 flex-col items-center md:h-[650px] md:flex-row xl:h-[90vh]">
+    <div className="relative flex h-[40vh] w-full flex-shrink-0 flex-col items-center md:h-[650px] md:flex-row xl:h-[90vh]">
       <div className="z-10 mx-auto -mt-14 flex h-full w-full max-w-2xl flex-col items-center justify-center gap-4 p-6 text-white md:mr-16 md:ml-8 md:h-auto md:items-start md:justify-normal">
         <div className="z-30 h-20 w-full animate-pulse rounded-lg bg-zinc-800 md:mt-4 md:mb-4"></div>
         <div className="z-30 hidden h-12 w-full animate-pulse rounded-lg bg-zinc-800 md:flex"></div>
