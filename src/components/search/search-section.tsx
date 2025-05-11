@@ -45,11 +45,17 @@ import { useSearchStoreResults } from '@store/search-results-store'
  * <SearchComponent client:visible />
  */
 export const SearchComponent = () => {
-  const { setResults, url, results, setIsLoadingMore, isLoadingMore } =
-    useSearchStoreResults()
+  const {
+    setResults,
+    url,
+    results,
+    setIsLoadingMore,
+    isLoadingMore,
+    totalResults,
+  } = useSearchStoreResults()
 
   const [page, setPage] = useState(4)
-
+  
   const isFetching = useRef(false)
 
   const [isAllResults, setIsAllResults] = useState(false)
@@ -117,6 +123,10 @@ export const SearchComponent = () => {
       <div className="[grid-area:aside]">
         <FilterSection />
         <AppliedFiltersComponent />
+
+        <p className="text-gray-300 text-sm mt-16 w-full text-center">
+          {totalResults} results found
+        </p>
       </div>
 
       <div className="my-10 [grid-area:results] md:mt-16">
