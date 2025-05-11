@@ -129,7 +129,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
           </span>
         </footer>
       </a>
-      <div className="absolute top-2 -right-4">
+      <div className="absolute top-2 -right-3">
         <AnimeTag tag={year} type={year} />
       </div>
     </article>
