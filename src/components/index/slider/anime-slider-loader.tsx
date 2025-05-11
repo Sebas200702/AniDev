@@ -33,7 +33,7 @@ export const AnimeSliderLoader = () => {
         <div className="flex-1"></div>
       </header>
       <div className="relative overflow-hidden py-4 pl-4 md:pl-20">
-        <div className="anime-list flex w-full flex-row gap-5 overflow-x-auto md:gap-10">
+        <div className="anime-list flex w-full flex-row gap-6 overflow-x-auto md:gap-10">
           {Array(24)
             .fill(0)
             .map((_, i) => (
