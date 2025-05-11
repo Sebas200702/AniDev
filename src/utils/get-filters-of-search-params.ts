@@ -28,8 +28,8 @@ import { Filters } from 'types'
  * //   // ... other filters
  * // }
  */
-export const getFilters = (filtersEnum: typeof Filters, url: URL) => {
-  return Object.values(filtersEnum).reduce(
+export const getFilters = (filters: string[], url: URL) => {
+  return filters.reduce(
     (filters, filter) => {
       const value = url.searchParams.get(filter)
       if (
