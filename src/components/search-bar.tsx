@@ -176,7 +176,7 @@ export const SearchBar = (): JSX.Element => {
           )}
         </header>
 
-        <div className="bg-Complementary flex items-center rounded-md px-4 py-2">
+        <div className="bg-Primary-950 flex items-center rounded-md px-4 py-2">
           <input
             ref={inputRef}
             type="search"
@@ -211,7 +211,7 @@ export const SearchBar = (): JSX.Element => {
       </form>
 
       <ul
-        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${isLoading || results ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Complementary flex flex-col gap-4 rounded-md p-4 shadow-lg`}
+        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${isLoading || results ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Primary-950 flex flex-col gap-4 rounded-md p-4 shadow-lg`}
       >
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, i) => (
