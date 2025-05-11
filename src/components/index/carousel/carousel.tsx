@@ -142,20 +142,20 @@ export const Carousel = (): JSX.Element => {
 
   return (
     <section
-      className={`fade-out relative right-0 left-0 h-[85vh] md:h-[650px] xl:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`fade-out relative right-0 left-0 h-[70vh] md:h-[650px] xl:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
     >
       <div
-        className="anime-list relative h-full max-w-[100vw] overflow-x-hidden"
+        className="anime-list relative h-full w-full overflow-x-hidden"
         ref={bannerContainerRef}
         id="banner-container"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <ul className="flex h-full transition-transform duration-700 ease-in-out">
+        <ul className="flex h-full w-full transition-transform duration-700 ease-in-out">
           {banners.map((anime, index) => (
             <CarouselItem key={anime.mal_id} anime={anime} index={index} />
           ))}
@@ -171,7 +171,7 @@ export const Carousel = (): JSX.Element => {
           />
         ))}
       </nav>
-      <div className="absolute bottom-12 z-40 flex w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
+      <div className="absolute bottom-12 z-40 md:flex hidden w-full flex-row justify-between p-4 md:end-20 md:top-30 md:w-auto md:justify-items-center md:gap-5 md:p-0">
         <NexPrevBtnCarousel action={handlePrev} label="Previous" />
         <NexPrevBtnCarousel action={handleNext} label="Next" />
       </div>
