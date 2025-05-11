@@ -46,6 +46,7 @@ interface SearchStoreResults {
   loading: boolean
   completedSearch: boolean
   results: AnimeCardInfo[] | null
+  totalResults: number
   appliedFilters: AppliedFilters
   isLoadingMore: boolean
   setIsLoadingMore: (loadingMore: boolean) => void
@@ -62,6 +63,7 @@ interface SearchStoreResults {
   resetFilters: () => void
   setLoading: (loading: boolean) => void
   setCompletedSearch: (completedSearch: boolean) => void
+  setTotalResults: (totalResults: number) => void
   setUrl: (url: string) => void
 }
 
@@ -73,6 +75,7 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   loading: false,
   completedSearch: false,
   results: null,
+  totalResults: 0,
   appliedFilters: {},
   isLoadingMore: false,
   setCompletedSearch: (completedSearch) => {
@@ -112,5 +115,8 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   },
   setUrl(url) {
     set((state) => ({ ...state, url }))
+  },
+  setTotalResults: (totalResults) => {
+    set((state) => ({ ...state, totalResults }))
   },
 }))
