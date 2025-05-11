@@ -66,15 +66,6 @@ import { Filters } from 'types'
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cached = await redis.get(`animes-partial:${url.searchParams}`)
-      if (cached) {
-        return new Response(JSON.stringify({ data: JSON.parse(cached) }), {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      }
       const format = url.searchParams.get('format')
       const CountFilters = Object.keys(Filters).filter(
         (key) =>
@@ -111,6 +102,8 @@ export const GET: APIRoute = rateLimit(
         'get_anime_count',
         countFilters
       )
+      console.log(countError)
+      console.log(count)
       const response = {
         total_items: count,
         data,
