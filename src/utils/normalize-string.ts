@@ -20,10 +20,20 @@
  * normalizeString("My Hero Academia: Season 2") // returns "My-Hero-Academia-Season-2"
  * normalizeString("My Hero Academia: Season 2", false) // returns "My Hero Academia Season 2"
  */
-export const normalizeString = (str: string, removeSpace: boolean = true) => {
-  if (removeSpace)
+export const normalizeString = (str: string, removeSpace: boolean = true, lowerCase: boolean = false) => {
+  if (removeSpace && lowerCase)
     return str
       .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
       .replace(/\s/g, '-')
+      .toLowerCase()
+
+  if (removeSpace)
+    return str.replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
+      .replace(/\s/g, '-')
+
+  if (lowerCase)
+    return str.replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
+      .toLowerCase()
+
   return str.replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
 }
