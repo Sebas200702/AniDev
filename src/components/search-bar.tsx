@@ -1,5 +1,4 @@
 import { navigate } from 'astro:transitions/client'
-import { Picture } from '@components/picture'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
 import { useShortcuts } from '@hooks/useShortCuts'
@@ -26,6 +25,8 @@ export const SearchBar = (): JSX.Element => {
     searchBarIsOpen,
     setSearchIsOpen,
     setTotalResults,
+    addSearchHistory,
+    setSearchHistoryIsOpen,
   } = useSearchStoreResults()
   const { parentalControl } = useGlobalUserPreferences()
   const debouncedQuery = useDebounce(query, 600)
@@ -65,6 +66,12 @@ export const SearchBar = (): JSX.Element => {
         navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
       }
       handleClick()
+    },
+    'open-search-history': async () => {
+      if (window.location.pathname !== '/search') {
+        await navigate('/search')
+      }
+      setSearchHistoryIsOpen(true)
     },
   }
   useShortcuts(shortCuts, actionMap)
@@ -144,11 +151,25 @@ export const SearchBar = (): JSX.Element => {
 
   useEffect(() => {
     setLoading(isLoading)
-    if (!isLoading) {
+    if (!isLoading && query) {
       setResults(animes, false, fetchError)
       setTotalResults(total)
+      addSearchHistory({
+        query,
+        appliedFilters,
+        results: animes || [],
+        totalResults: total,
+      })
     }
-  }, [animes, isLoading, fetchError, setResults, setLoading, setTotalResults])
+  }, [
+    animes,
+    isLoading,
+    fetchError,
+    setResults,
+    setLoading,
+    setTotalResults,
+    addSearchHistory,
+  ])
 
   return (
     <div
