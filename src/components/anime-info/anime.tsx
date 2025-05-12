@@ -7,6 +7,7 @@ import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
+import { Overlay } from '@components/overlay'
 import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
 import type { Anime } from 'types'
@@ -64,7 +65,8 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10  mb-10 -mt-10 grid grid-cols-1 gap-10 px-4 md:-mt-54 md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <article className="z-10 relative mb-10 pt-[35dvh]   grid grid-cols-1 gap-10 px-4  md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+        <Overlay className="to-Primary-950/100 z-0 h-full via-[38dvh] md:via-[55dvh] via-Primary-950 w-full bg-gradient-to-b" />
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -73,7 +75,6 @@ export const AnimeInfo = ({ slug }: Props) => {
         />
 
         <AnimeHeader animeData={animeData} />
-
 
         <div className="row-span-2 flex h-full flex-col gap-4 md:col-span-2 xl:col-span-3">
           <AnimeNavBar />
