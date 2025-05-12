@@ -5,8 +5,9 @@ import { useEffect, useRef, useState } from 'react'
 
 import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'
+import { SearchHistoryModal } from '@components/search/history/search-history-modal'
 import { SearchResults } from '@components/search/results/search-results'
-import { AnimatedCounter } from '@components/search/ui/animated-counter'
+import { SearchStats } from '@components/search/search-stats'
 
 import { useUrlSync } from '@hooks/useUrlSync'
 
@@ -39,6 +40,7 @@ import { useSearchStoreResults } from '@store/search-results-store'
  * - Loading state management
  * - Debounced search queries
  * - Shareable search URLs
+ * - Search history tracking and display
  *
  * @returns {JSX.Element} The rendered search interface with filters and results sections
  *
@@ -53,9 +55,12 @@ export const SearchComponent = () => {
     setIsLoadingMore,
     isLoadingMore,
     totalResults,
+    setSearchHistoryIsOpen,
+    searchHistoryIsOpen,
   } = useSearchStoreResults()
 
   const [page, setPage] = useState(4)
+
 
   const isFetching = useRef(false)
 
@@ -121,21 +126,26 @@ export const SearchComponent = () => {
 
   return (
     <section id="search-section">
-      <div className="[grid-area:aside]">
+      <aside className="[grid-area:aside]">
         <FilterSection />
         <AppliedFiltersComponent />
+        <SearchStats
+          totalResults={totalResults}
+          isLoadingMore={isLoadingMore}
+          onHistoryClick={() => setSearchHistoryIsOpen(true)}
+        />
+      </aside>
 
-        <div className="text-gray-300 text-sm mt-16 self-center mx-auto text-center gap-2 flex justify-center items-center">
-          <AnimatedCounter value={totalResults} isLoading={isLoadingMore} />
-          results found
-        </div>
-      </div>
-
-      <div className="my-10 [grid-area:results] md:mt-16">
+      <main className="my-10 [grid-area:results] md:mt-16">
         <SearchResultsErrorBoundary>
           <SearchResults />
         </SearchResultsErrorBoundary>
-      </div>
+      </main>
+
+      <SearchHistoryModal
+        isOpen={searchHistoryIsOpen}
+        onClose={() => setSearchHistoryIsOpen(false)}
+      />
     </section>
   )
 }
