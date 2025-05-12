@@ -25,16 +25,16 @@
 export const AnimeLoader = () => {
   return (
     <div className="">
-      <div className="relative aspect-[1080/600] h-[60dvh] w-full animate-pulse bg-zinc-800 duration-300">
+      <div className="fixed aspect-[1080/600] h-[60dvh] w-full animate-pulse bg-zinc-800 duration-300">
         <div className="to-Primary-950/100 absolute right-0 bottom-0 left-0 h-full w-full bg-gradient-to-b from-transparent transition-all duration-300 ease-in-out" />
       </div>
-      <div className="z-10 -mt-[60vh] mb-10 grid grid-cols-1 gap-10 px-4 md:-mt-54 md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
-        <div className="row-span-2 mt-26 flex flex-col gap-6 px-8 md:mt-0 md:gap-8 md:p-0">
-          <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
-          <div className="h-8 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out xl:h-12"></div>
+      <div className="z-10 pt-[35dvh] mb-10 grid grid-cols-1 gap-10 px-4 md:-mt-54 md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+        <div className="row-span-2 row-start-2 flex flex-col gap-6  md:mt-0 md:gap-8 md:p-0">
+          <div className="aspect-[225/330] md:h-auto w-full h-0 px-8 animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
+          <div className="h-10 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out xl:h-12"></div>
         </div>
         <div className="flex h-full w-full flex-col justify-end gap-6 md:col-span-2 md:gap-8 xl:col-span-4">
-          <div className="mx-auto w-[80%] animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:mx-0 md:h-12 xl:h-20"></div>
+          <div className="mx-auto h-12 w-[80%] animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:mx-0 md:h-12 xl:h-20"></div>
 
           <div className="mx-auto h-10 w-90 animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:mx-0"></div>
         </div>
