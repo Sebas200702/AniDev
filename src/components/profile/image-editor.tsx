@@ -88,20 +88,6 @@ export const ImageEditor = ({ userName }: Props) => {
     },
   })
 
-  useEffect(() => {
-    if (isLoading) {
-      toast[ToastType.Loading]({
-        text: 'Uploading Image',
-        options: {
-          promise: getCropData(),
-          success: successMessage ?? 'Done',
-          error: errorMessage ?? 'Error',
-          autoDismiss: true,
-        },
-      })
-    }
-  }, [isLoading])
-
   const getCropData = async () => {
     if (!cropperRef.current?.cropper || !image) {
       toast[ToastType.Error]({ text: 'No image to crop' })
@@ -135,6 +121,20 @@ export const ImageEditor = ({ userName }: Props) => {
       hideEditor()
     }
   }
+
+  useEffect(() => {
+    if (isLoading) {
+      toast[ToastType.Loading]({
+        text: 'Uploading Image',
+        options: {
+          promise: getCropData(),
+          success: successMessage ?? 'Done',
+          error: errorMessage ?? 'Error',
+          autoDismiss: true,
+        },
+      })
+    }
+  }, [isLoading, successMessage, errorMessage])
 
   const uploadImage = async (payload: Payload) => {
     try {
