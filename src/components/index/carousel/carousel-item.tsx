@@ -44,7 +44,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
   return (
     <li
       key={anime.mal_id}
-      className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 pt-40 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+      className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 pt-36 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
       <div className="absolute md:h-full h-[40vh] inset-0 w-full overflow-hidden">
         <Picture
