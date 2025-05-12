@@ -74,7 +74,7 @@ export const AnimeTrailer = ({
   return (
     <>
       {trailer_url ? (
-        <div className="relative flex h-min w-full flex-col">
+        <div className="relative z-10 flex h-min w-full flex-col">
           {isLiteYouTubeLoaded && videoId ? (
             <lite-youtube
               videoid={videoId}
