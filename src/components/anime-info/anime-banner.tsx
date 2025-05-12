@@ -59,7 +59,7 @@ export const AnimeBanner = ({
               ? createImageUrlProxy(banner_image, '100', '0', 'webp')
               : createImageUrlProxy(image_large_webp, '100', '0', 'webp')
           }
-          styles="h-full object-cover object-center relative"
+          styles="h-full w-full object-cover object-center relative"
         >
           <img
             src={
@@ -69,7 +69,7 @@ export const AnimeBanner = ({
             }
             alt={`${title} banner`}
             loading="lazy"
-            className="relative h-full object-cover object-center"
+            className="relative h-full w-full object-cover object-center"
           />
         </Picture>
 
