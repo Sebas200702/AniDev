@@ -38,15 +38,24 @@ import { create } from 'zustand'
  * setQuery('dragon ball');
  * setAppliedFilters({ genre: 'action' });
  */
+
+interface SearchHistory {
+  query: string
+  appliedFilters: AppliedFilters
+  results: AnimeCardInfo[]
+  totalResults: number
+}
 interface SearchStoreResults {
   query: string
   error: string | null
   searchBarIsOpen: boolean
+  searchHistoryIsOpen: boolean
   url: string
   loading: boolean
   completedSearch: boolean
   results: AnimeCardInfo[] | null
   totalResults: number
+  searchHistory: SearchHistory[]
   appliedFilters: AppliedFilters
   isLoadingMore: boolean
   setIsLoadingMore: (loadingMore: boolean) => void
@@ -65,17 +74,21 @@ interface SearchStoreResults {
   setCompletedSearch: (completedSearch: boolean) => void
   setTotalResults: (totalResults: number) => void
   setUrl: (url: string) => void
+  addSearchHistory: (searchHistory: SearchHistory) => void
+  setSearchHistoryIsOpen: (searchHistoryIsOpen: boolean) => void
 }
 
 export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   query: '',
   error: null,
   searchBarIsOpen: false,
+  searchHistoryIsOpen: false,
   url: '',
   loading: false,
   completedSearch: false,
   results: null,
   totalResults: 0,
+  searchHistory: [],
   appliedFilters: {},
   isLoadingMore: false,
   setCompletedSearch: (completedSearch) => {
@@ -118,5 +131,27 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   },
   setTotalResults: (totalResults) => {
     set((state) => ({ ...state, totalResults }))
+  },
+  addSearchHistory: (searchHistory) => {
+    set((state) => {
+      const isDuplicate = state.searchHistory.some(
+        (item) =>
+          item.query === searchHistory.query &&
+          JSON.stringify(item.appliedFilters) ===
+            JSON.stringify(searchHistory.appliedFilters)
+      )
+
+      if (!isDuplicate) {
+        return {
+          ...state,
+          searchHistory: [...state.searchHistory, searchHistory],
+        }
+      }
+
+      return state
+    })
+  },
+  setSearchHistoryIsOpen: (searchHistoryIsOpen) => {
+    set((state) => ({ ...state, searchHistoryIsOpen }))
   },
 }))
