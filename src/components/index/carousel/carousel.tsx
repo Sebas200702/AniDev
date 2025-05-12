@@ -138,7 +138,7 @@ export const Carousel = (): JSX.Element => {
     }
   }, [banners, handleNext, handlePrev, resetInterval])
 
-  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
+  if (!loading || !banners || banners.length === 0) return <LoadingCarousel />
 
   return (
     <section
@@ -161,7 +161,7 @@ export const Carousel = (): JSX.Element => {
           ))}
         </ul>
       </div>
-      <nav className="absolute bottom-20 left-1/2 z-50 flex -translate-x-1/2 space-x-3 md:bottom-16">
+      <nav className="absolute bottom-21 left-1/2 z-50 flex -translate-x-1/2 space-x-3 md:bottom-16">
         {banners.map((anime, index) => (
           <Indicator
             key={anime.mal_id}
