@@ -69,7 +69,7 @@ export const AnimeBanner = ({
             }
             alt={`${title} banner`}
             loading="lazy"
-            className="relative w-full h- full object-cover object-center"
+            className="relative  h- full object-cover object-center"
           />
         </Picture>
 
