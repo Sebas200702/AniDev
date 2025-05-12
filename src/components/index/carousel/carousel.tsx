@@ -138,7 +138,7 @@ export const Carousel = (): JSX.Element => {
     }
   }, [banners, handleNext, handlePrev, resetInterval])
 
-  if (!loading || !banners || banners.length === 0) return <LoadingCarousel />
+  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
 
   return (
     <section
