@@ -317,4 +317,5 @@ export const shortCuts = [
   { keys: ['ctrl', 'h'], action: 'navigate-home' },
   { keys: ['ctrl', 'p'], action: 'navigate-profile' },
   { keys: ['ctrl', 'r'], action: 'random-anime' },
+  { keys: ['ctrl', 'shift', 'h'], action: 'open-search-history' },
 ]
