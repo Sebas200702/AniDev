@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { SearchResultsErrorBoundary } from '@components/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'
 import { SearchResults } from '@components/search/results/search-results'
+import { AnimatedCounter } from '@components/search/ui/animated-counter'
 
 import { useUrlSync } from '@hooks/useUrlSync'
 
@@ -55,7 +56,7 @@ export const SearchComponent = () => {
   } = useSearchStoreResults()
 
   const [page, setPage] = useState(4)
-  
+
   const isFetching = useRef(false)
 
   const [isAllResults, setIsAllResults] = useState(false)
@@ -124,9 +125,10 @@ export const SearchComponent = () => {
         <FilterSection />
         <AppliedFiltersComponent />
 
-        <p className="text-gray-300 text-sm mt-16 w-full text-center">
-          {totalResults} results found
-        </p>
+        <div className="text-gray-300 text-sm mt-16 self-center mx-auto text-center gap-2 flex justify-center items-center">
+          <AnimatedCounter value={totalResults} isLoading={isLoadingMore} />
+          results found
+        </div>
       </div>
 
       <div className="my-10 [grid-area:results] md:mt-16">
