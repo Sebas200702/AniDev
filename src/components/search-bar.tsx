@@ -1,16 +1,18 @@
 import { navigate } from 'astro:transitions/client'
+import { AnimeDetailCard } from '@components/anime-detail-card'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
 import { useShortcuts } from '@hooks/useShortCuts'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
+import { deleteSearchHistory } from '@utils/delete-search-history'
 import { createFiltersToApply } from '@utils/filters-to-apply'
+import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
+import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { ToastType, shortCuts } from 'types'
-
-import { AnimeDetailCard } from '@components/anime-detail-card'
 import type { AnimeCardInfo, AnimeDetail } from 'types'
 
 export const SearchBar = (): JSX.Element => {
@@ -27,8 +29,12 @@ export const SearchBar = (): JSX.Element => {
     setTotalResults,
     addSearchHistory,
     setSearchHistoryIsOpen,
+    searchHistory,
+    clearSearchHistory,
+    setSearchHistory,
   } = useSearchStoreResults()
-  const { parentalControl } = useGlobalUserPreferences()
+  const { parentalControl, userInfo, trackSearchHistory } =
+    useGlobalUserPreferences()
   const debouncedQuery = useDebounce(query, 600)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -43,6 +49,7 @@ export const SearchBar = (): JSX.Element => {
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
   }, [debouncedQuery, filtersToApply, parentalControl])
+
   const actionMap = {
     'close-search': () => setSearchIsOpen(false),
     'open-search': () => {
@@ -72,6 +79,15 @@ export const SearchBar = (): JSX.Element => {
         await navigate('/search')
       }
       setSearchHistoryIsOpen(true)
+    },
+    'clear-search-history': () => {
+      clearSearchHistory()
+
+      toast[ToastType.Success]({
+        text: 'Search history cleared successfully',
+      })
+      if (!trackSearchHistory) return
+      deleteSearchHistory(userInfo)
     },
   }
   useShortcuts(shortCuts, actionMap)
@@ -154,12 +170,13 @@ export const SearchBar = (): JSX.Element => {
     if (!isLoading && query) {
       setResults(animes, false, fetchError)
       setTotalResults(total)
-      addSearchHistory({
+      const newHistory = {
         query,
         appliedFilters,
         results: animes || [],
         totalResults: total,
-      })
+      }
+      addSearchHistory(newHistory)
     }
   }, [
     animes,
@@ -170,6 +187,19 @@ export const SearchBar = (): JSX.Element => {
     setTotalResults,
     addSearchHistory,
   ])
+
+  useEffect(() => {
+    if (!searchHistory || searchHistory.length === 0 || !trackSearchHistory)
+      return
+    saveSearchHistory(searchHistory, userInfo)
+  }, [searchHistory, userInfo, trackSearchHistory])
+
+  useEffect(() => {
+    if (!trackSearchHistory) return
+    loadSearchHistory(userInfo).then((history) => {
+      setSearchHistory(history)
+    })
+  }, [userInfo, trackSearchHistory])
 
   return (
     <div
