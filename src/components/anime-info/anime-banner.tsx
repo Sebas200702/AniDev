@@ -50,29 +50,26 @@ export const AnimeBanner = ({
   title,
 }: Props): JSX.Element => {
   return (
-    <div className="fixed aspect-[1080/600] md:h-[60vh] h-[40vh] w-full overflow-hidden">
-
-        <Picture
-          image={
+    <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
+      <Picture
+        image={
+          banner_image
+            ? createImageUrlProxy(banner_image, '100', '0', 'webp')
+            : createImageUrlProxy(image_large_webp, '100', '0', 'webp')
+        }
+        styles="h-full object-cover object-center relative"
+      >
+        <img
+          src={
             banner_image
-              ? createImageUrlProxy(banner_image, '100', '0', 'webp')
-              : createImageUrlProxy(image_large_webp, '100', '0', 'webp')
+              ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
+              : createImageUrlProxy(image_large_webp, '1920', '50', 'webp')
           }
-          styles="h-full object-cover object-center relative"
-        >
-          <img
-            src={
-              banner_image
-                ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
-                : createImageUrlProxy(image_large_webp, '1920', '50', 'webp')
-            }
-            alt={`${title} banner`}
-            loading="lazy"
-            className="relative w-full h-full object-cover object-center"
-          />
-        </Picture>
-
-      </div>
-
+          alt={`${title} banner`}
+          loading="lazy"
+          className="relative h-full w-full object-cover object-center"
+        />
+      </Picture>
+    </div>
   )
 }

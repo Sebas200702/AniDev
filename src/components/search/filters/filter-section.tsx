@@ -63,7 +63,7 @@ export const FilterSection = () => {
 
   return (
     <ul
-      className={`no-scrollbar col-span-5 md:mt-30 mt-20 grid w-full grid-cols-2 gap-4 border-zinc-300/10 px-4 md:grid-cols-5 md:px-20`}
+      className={`no-scrollbar col-span-5 mt-20 grid w-full grid-cols-2 gap-4 border-zinc-300/10 px-4 md:mt-30 md:grid-cols-5 md:px-20`}
     >
       <SearchBar />
       <FilterDropdown

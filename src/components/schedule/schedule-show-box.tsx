@@ -115,7 +115,7 @@ export const CalendarShowBox = () => {
       >
         <div
           role="presentation"
-          className="via-Primary-950 absolute top-0 bottom-0 left-0 md:left-1/2 w-[1px] md:-translate-x-1/2 bg-gradient-to-r from-transparent to-transparent"
+          className="via-Primary-950 absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-r from-transparent to-transparent md:left-1/2 md:-translate-x-1/2"
         >
           <div className="bg-Primary-50/90 absolute inset-0 backdrop-blur-sm" />
         </div>
@@ -127,12 +127,16 @@ export const CalendarShowBox = () => {
               <div
                 role="presentation"
                 aria-hidden="true"
-                className="absolute top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full bg-Primary-50 -left-10 md:left-1/2 md:-translate-x-1/2"
+                className="bg-Primary-50 absolute top-1/2 -left-10 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full md:left-1/2 md:-translate-x-1/2"
               >
                 <div className="bg-Primary group-hover:bg-Primary/90 h-2 w-2 rounded-full transition-colors duration-300" />
               </div>
 
-              <CalendarItem anime={anime} isLeft={index % 2 === 0} isMobile={isMobile} />
+              <CalendarItem
+                anime={anime}
+                isLeft={index % 2 === 0}
+                isMobile={isMobile}
+              />
             </li>
           ))}
         </ol>

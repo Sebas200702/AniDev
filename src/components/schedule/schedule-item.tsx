@@ -50,7 +50,11 @@ interface CalendarItemProps {
  * @param {CalendarItemProps} props - The component props
  * @returns {JSX.Element} A timeline card displaying anime information
  */
-export const CalendarItem = ({ anime, isLeft, isMobile }: CalendarItemProps) => {
+export const CalendarItem = ({
+  anime,
+  isLeft,
+  isMobile,
+}: CalendarItemProps) => {
   const { enfasis } = useGlobalUserPreferences()
   const { elementRef, handleMouseMove, handleMouseLeave, handleMouseEnter } =
     useDynamicBorder<HTMLAnchorElement>({
@@ -67,7 +71,7 @@ export const CalendarItem = ({ anime, isLeft, isMobile }: CalendarItemProps) => 
         onMouseLeave={handleMouseLeave}
         onMouseEnter={handleMouseEnter}
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className={`group bg-Complementary/90 hover:bg-Complementary dynamic-border relative flex aspect-[120/40] h-full md:w-[calc(50%-1rem)] w-full -translate-y-2 items-center gap-8 overflow-hidden rounded-lg transition-all duration-500 ease-out`}
+        className={`group bg-Complementary/90 hover:bg-Complementary dynamic-border relative flex aspect-[120/40] h-full w-full -translate-y-2 items-center gap-8 overflow-hidden rounded-lg transition-all duration-500 ease-out md:w-[calc(50%-1rem)]`}
         style={
           {
             '--border-color-normal': `rgba(${colorToRGB(enfasis)}, 0)`,

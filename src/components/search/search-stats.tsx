@@ -26,18 +26,18 @@ export const SearchStats = ({
   onHistoryClick,
 }: SearchStatsProps) => {
   return (
-    <footer className="flex items-center justify-between md:px-20 xl:px-30 p-4 mt-16">
-      <div className="text-gray-300 text-sm self-center text-center gap-2 flex justify-center items-center">
+    <footer className="mt-16 flex items-center justify-between p-4 md:px-20 xl:px-30">
+      <div className="flex items-center justify-center gap-2 self-center text-center text-sm text-gray-300">
         <AnimatedCounter value={totalResults} isLoading={isLoadingMore} />
         <span>results found</span>
       </div>
       <button
         onClick={onHistoryClick}
-        className="p-2 text-gray-400 cursor-pointer hover:text-enfasisColor transition-colors rounded-lg hover:bg-zinc-800"
+        className="hover:text-enfasisColor cursor-pointer rounded-lg p-2 text-gray-400 transition-colors hover:bg-zinc-800"
         title="View search history"
         aria-label="View search history"
       >
-        <HistoryIcon className="w-5 h-5" />
+        <HistoryIcon className="h-5 w-5" />
       </button>
     </footer>
   )

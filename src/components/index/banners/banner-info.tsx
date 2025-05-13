@@ -48,11 +48,9 @@ export const BannerInfo = ({
   mal_id,
   slug,
 }: BannerInfoProps): JSX.Element => {
-
-
   return (
     <div
-      className={`bg-Primary-950/50 absolute z-10 flex h-full w-full  flex-col items-center justify-between p-4 md:right-0 xl:bottom-10 bottom-0  xl:max-w-120 md:rounded-l-2xl md:p-6 xl:pr-10 xl:max-h-60`}
+      className={`bg-Primary-950/50 absolute bottom-0 z-10 flex h-full w-full flex-col items-center justify-between p-4 md:right-0 md:rounded-l-2xl md:p-6 xl:bottom-10 xl:max-h-60 xl:max-w-120 xl:pr-10`}
     >
       <a
         href={`/anime/${slug}_${mal_id}`}

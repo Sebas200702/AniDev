@@ -65,8 +65,8 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10 relative mb-10 pt-[35dvh]   grid grid-cols-1 gap-10 px-4  md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
-        <Overlay className="to-Primary-950/100 z-0 h-full via-[38dvh] md:via-[55dvh] via-Primary-950 w-full bg-gradient-to-b" />
+      <article className="relative z-10 mb-10 grid grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+        <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}

@@ -61,7 +61,6 @@ export const SearchComponent = () => {
 
   const [page, setPage] = useState(4)
 
-
   const isFetching = useRef(false)
 
   const [isAllResults, setIsAllResults] = useState(false)

@@ -46,7 +46,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       key={anime.mal_id}
       className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 pt-36 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
-      <div className="absolute md:h-full h-[40vh] inset-0 w-full overflow-hidden">
+      <div className="absolute inset-0 h-[40vh] w-full overflow-hidden md:h-full">
         <Picture
           image={createImageUrlProxy(anime.banner_image, '0', '0', 'webp')}
           styles="w-full h-full object-cover object-center relative"
@@ -65,12 +65,12 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       </div>
 
       <div
-        className={`z-10  flex max-w-[800px] flex-col items-center  text-white md:items-start md:justify-start gap-6 md:gap-4`}
+        className={`z-10 flex max-w-[800px] flex-col items-center gap-6 text-white md:items-start md:justify-start md:gap-4`}
       >
         <h2 className="title line-clamp-1 max-h-44 text-center drop-shadow-md md:mb-4">
           {anime.title}
         </h2>
-        <p className="text-l mb-4 line-clamp-2 text-center md:text-left drop-shadow ">
+        <p className="text-l mb-4 line-clamp-2 text-center drop-shadow md:text-left">
           {anime.synopsis ?? 'No description available'}
         </p>
         <div className="mx-auto flex w-full flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
@@ -87,7 +87,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           />
         </div>
       </div>
-      <Overlay className="to-Primary-950  via-Primary-950 md:via-Primary-950/10 h-full w-full bg-gradient-to-b" />
+      <Overlay className="to-Primary-950 via-Primary-950 md:via-Primary-950/10 h-full w-full bg-gradient-to-b" />
       <Overlay
         className={`md:to-Primary-950/90 md:via-Primary-950/60 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
       />

@@ -17,9 +17,9 @@ export const ParentalControl = () => {
         onChange={handleChange}
         className="peer sr-only"
       />
-      <div className="relative h-6 w-11 rounded-full bg-gray-600 transition-all duration-200 ease-in-out peer-checked:bg-enfasisColor">
+      <div className="peer-checked:bg-enfasisColor relative h-6 w-11 rounded-full bg-gray-600 transition-all duration-200 ease-in-out">
         <div
-          className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-all duration-200 ease-in-out ${
+          className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-all duration-200 ease-in-out ${
             parentalControl ? 'translate-x-5' : 'translate-x-0'
           }`}
         ></div>

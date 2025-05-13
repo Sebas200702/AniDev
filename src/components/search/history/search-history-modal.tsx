@@ -63,18 +63,18 @@ export const SearchHistoryModal = ({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div
         ref={modalRef}
-        className="bg-Complementary rounded-lg p-6 w-full max-w-md mx-4 max-h-[60vh] overflow-y-auto custom-scrollbar"
+        className="bg-Complementary custom-scrollbar mx-4 max-h-[60vh] w-full max-w-md overflow-y-auto rounded-lg p-6"
       >
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="text-lx">Search History</h2>
           </div>
           <button
             onClick={onClose}
-            className="hover:text-enfasisColor/70 transition-colors cursor-pointer p-2 rounded-lg"
+            className="hover:text-enfasisColor/70 cursor-pointer rounded-lg p-2 transition-colors"
           >
             ✕
           </button>
@@ -82,8 +82,8 @@ export const SearchHistoryModal = ({
 
         <div className="space-y-3">
           {searchHistory.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 gap-2">
-              <HistoryIcon className="w-12 h-12 text-Primary-100" />
+            <div className="flex flex-col items-center justify-center gap-2 py-8">
+              <HistoryIcon className="text-Primary-100 h-12 w-12" />
               <p className="text-Primary-200 text-m">No search history yet</p>
             </div>
           ) : (
@@ -93,18 +93,18 @@ export const SearchHistoryModal = ({
                 onClick={() =>
                   handleClick(history.query, history.appliedFilters)
                 }
-                className="bg-Primary-950 relative group rounded-lg p-4 w-full hover:bg-enfasisColor/20 border-Primary-950 hover:border-enfasisColor/40 border-1 transition-all duration-300 cursor-pointer"
+                className="bg-Primary-950 group hover:bg-enfasisColor/20 border-Primary-950 hover:border-enfasisColor/40 relative w-full cursor-pointer rounded-lg border-1 p-4 transition-all duration-300"
               >
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <p className="text-Primary-100 text-l font-medium">
                       {history.query}
                     </p>
-                    <span className="text-Primary-100 opacity-100 pointer-events-none group-hover:opacity-0 transition-all group-hover:pointer-events-none duration-300 text-s">
+                    <span className="text-Primary-100 text-s pointer-events-none opacity-100 transition-all duration-300 group-hover:pointer-events-none group-hover:opacity-0">
                       {history.totalResults} results
                     </span>
                     <button
-                      className="opacity-0 mx-2 absolute cursor-pointer hover:text-enfasisColor/70 right-2 pointer-events-none group-hover:opacity-100 transition-all group-hover:pointer-events-auto duration-300 text-Primary-100"
+                      className="hover:text-enfasisColor/70 text-Primary-100 pointer-events-none absolute right-2 mx-2 cursor-pointer opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:opacity-100"
                       onClick={(e) => {
                         e.stopPropagation()
                         const updatedHistory = searchHistory.filter(
@@ -115,7 +115,7 @@ export const SearchHistoryModal = ({
                         saveSearchHistory(updatedHistory, userInfo)
                       }}
                     >
-                      <DeleteIcon className="w-6 h-6 " />
+                      <DeleteIcon className="h-6 w-6" />
                     </button>
                   </div>
                   {Object.keys(history.appliedFilters).length > 0 && (
@@ -125,13 +125,13 @@ export const SearchHistoryModal = ({
                         .map(([key, value]) => (
                           <span
                             key={key}
-                            className="bg-Primary-800 text-Primary-100 text-s px-2 py-1 rounded-md"
+                            className="bg-Primary-800 text-Primary-100 text-s rounded-md px-2 py-1"
                           >
                             {key}: {formatFilterValue(value)}
                           </span>
                         ))}
                       {Object.keys(history.appliedFilters).length > 2 && (
-                        <span className="bg-Primary-800 text-Primary-100 text-s px-2 py-1 rounded-md flex items-center gap-1">
+                        <span className="bg-Primary-800 text-Primary-100 text-s flex items-center gap-1 rounded-md px-2 py-1">
                           +{Object.keys(history.appliedFilters).length - 2}
                         </span>
                       )}
@@ -148,7 +148,7 @@ export const SearchHistoryModal = ({
                 if (!trackSearchHistory) return
                 deleteSearchHistory(userInfo)
               }}
-              className="w-full button-primary"
+              className="button-primary w-full"
             >
               Clear History
             </button>

@@ -47,6 +47,14 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
-  }, [enfasis, setEnfasis, parentalControl, setParentalControl, setUserInfo, trackSearchHistory, setTrackSearchHistory])
+  }, [
+    enfasis,
+    setEnfasis,
+    parentalControl,
+    setParentalControl,
+    setUserInfo,
+    trackSearchHistory,
+    setTrackSearchHistory,
+  ])
   return null
 }

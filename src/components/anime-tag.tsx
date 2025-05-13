@@ -51,10 +51,10 @@ export const AnimeTag = ({ tag, type, style }: Props) => {
   return (
     <a
       href={`/search?${filter}=${type?.toLowerCase()}`}
-      className={`${style ?? 'w-min'} text-s h-min rounded-sm block transform px-3 -skew-x-8 py-1 font-medium transition-all duration-200 ease-in-out ${tagColor}`}
+      className={`${style ?? 'w-min'} text-s block h-min -skew-x-8 transform rounded-sm px-3 py-1 font-medium transition-all duration-200 ease-in-out ${tagColor}`}
       aria-label={`Tag: ${tag}`}
     >
-      <span className="skew-x-8 block transform">{tag}</span>
+      <span className="block skew-x-8 transform">{tag}</span>
     </a>
   )
 }

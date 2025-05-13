@@ -6,8 +6,8 @@ export const loadSearchHistory = async (
   if (!userInfo) {
     const stored = localStorage.getItem('searchHistory')
     return stored ? JSON.parse(stored) : []
- }
- const response = await fetch('/api/searchHistory', {
+  }
+  const response = await fetch('/api/searchHistory', {
     method: 'GET',
     credentials: 'include',
   })

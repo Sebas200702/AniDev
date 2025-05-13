@@ -32,7 +32,7 @@ const DigitFlip = ({ digit, isLoading }: DigitFlipProps) => {
   }, [isLoading])
 
   return (
-    <div className="relative w-6 h-8 overflow-hidden mx-0.5 bg-gray-800/20 rounded shadow-sm">
+    <div className="relative mx-0.5 h-8 w-6 overflow-hidden rounded bg-gray-800/20 shadow-sm">
       <div
         className="absolute w-full transition-all duration-500 ease-in-out"
         style={{
@@ -42,7 +42,7 @@ const DigitFlip = ({ digit, isLoading }: DigitFlipProps) => {
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
           <div
             key={num}
-            className="flex items-center justify-center w-full h-8 text-sm font-medium text-gray-300"
+            className="flex h-8 w-full items-center justify-center text-sm font-medium text-gray-300"
           >
             {num}
           </div>
@@ -126,7 +126,7 @@ export const AnimatedCounter = ({
         digit === '-' ? (
           <div
             key={index}
-            className="flex items-center justify-center w-6 h-8 mx-0.5 text-sm font-medium text-gray-300 bg-gray-800/20 rounded shadow-sm"
+            className="mx-0.5 flex h-8 w-6 items-center justify-center rounded bg-gray-800/20 text-sm font-medium text-gray-300 shadow-sm"
           >
             -
           </div>
