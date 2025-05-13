@@ -1,4 +1,4 @@
-import type { AnimeCardInfo, AppliedFilters } from 'types'
+import type { AnimeCardInfo, AppliedFilters, SearchHistory } from 'types'
 
 import { create } from 'zustand'
 
@@ -39,12 +39,6 @@ import { create } from 'zustand'
  * setAppliedFilters({ genre: 'action' });
  */
 
-interface SearchHistory {
-  query: string
-  appliedFilters: AppliedFilters
-  results: AnimeCardInfo[]
-  totalResults: number
-}
 interface SearchStoreResults {
   query: string
   error: string | null
@@ -75,7 +69,9 @@ interface SearchStoreResults {
   setTotalResults: (totalResults: number) => void
   setUrl: (url: string) => void
   addSearchHistory: (searchHistory: SearchHistory) => void
+  setSearchHistory: (searchHistory: SearchHistory[]) => void
   setSearchHistoryIsOpen: (searchHistoryIsOpen: boolean) => void
+  clearSearchHistory: () => void
 }
 
 export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
@@ -134,24 +130,32 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   },
   addSearchHistory: (searchHistory) => {
     set((state) => {
-      const isDuplicate = state.searchHistory.some(
+      // Remove any existing entry with the same query and filters
+      const filteredHistory = state.searchHistory.filter(
         (item) =>
-          item.query === searchHistory.query &&
-          JSON.stringify(item.appliedFilters) ===
-            JSON.stringify(searchHistory.appliedFilters)
+          !(
+            item.query === searchHistory.query &&
+            JSON.stringify(item.appliedFilters) ===
+              JSON.stringify(searchHistory.appliedFilters)
+          )
       )
 
-      if (!isDuplicate) {
-        return {
-          ...state,
-          searchHistory: [...state.searchHistory, searchHistory],
-        }
-      }
+      // Add the new history entry at the beginning of the array
+      const newHistory = [searchHistory, ...filteredHistory]
 
-      return state
+      return {
+        ...state,
+        searchHistory: newHistory,
+      }
     })
   },
   setSearchHistoryIsOpen: (searchHistoryIsOpen) => {
     set((state) => ({ ...state, searchHistoryIsOpen }))
+  },
+  clearSearchHistory: () => {
+    set((state) => ({ ...state, searchHistory: [] }))
+  },
+  setSearchHistory: (searchHistory) => {
+    set((state) => ({ ...state, searchHistory }))
   },
 }))
