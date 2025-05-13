@@ -16,7 +16,6 @@ import { StudioIcon } from '@icons/studio-icon'
 import { ThemesIcon } from '@icons/themes-icon'
 import { TitleJapaneseIcon } from '@icons/title-japanese-icon'
 import { TypeIcon } from '@icons/type-icon'
-import { useWindowWidth } from '@store/window-width'
 import { useState } from 'react'
 import type { Anime } from 'types'
 
