@@ -1,3 +1,4 @@
+import type { UserInfo } from 'types'
 import { create } from 'zustand'
 
 /**
@@ -26,12 +27,12 @@ import { create } from 'zustand'
  */
 interface GlobalUserPreferences {
   enfasis: string
-  userInfo: { name: string | null; avatar: string | null } | null
-  setUserInfo: (
-    user: { name: string | null; avatar: string | null } | null
-  ) => void
+  userInfo: UserInfo | null
+  setUserInfo: (user: UserInfo | null) => void
   parentalControl: boolean
+  trackSearchHistory: boolean
   setParentalControl: (value: boolean) => void
+  setTrackSearchHistory: (value: boolean) => void
   setEnfasis: (color: string) => void
 }
 
@@ -39,6 +40,9 @@ export const useGlobalUserPreferences = create<GlobalUserPreferences>(
   (set) => ({
     enfasis: '#0057E7',
     setEnfasis: (color: string) => set({ enfasis: color }),
+    trackSearchHistory: true,
+    setTrackSearchHistory: (value: boolean) =>
+      set({ trackSearchHistory: value }),
     userInfo: null,
     setUserInfo(user) {
       set({ userInfo: user })
