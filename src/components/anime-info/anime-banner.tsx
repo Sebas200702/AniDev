@@ -1,4 +1,3 @@
-import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 
@@ -69,7 +68,7 @@ export const AnimeBanner = ({
             }
             alt={`${title} banner`}
             loading="lazy"
-            className="relative  h-full object-cover object-center"
+            className="relative w-full h-full object-cover object-center"
           />
         </Picture>
 
