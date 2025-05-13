@@ -33,17 +33,20 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     parentalControl,
     setParentalControl,
     setUserInfo,
+    trackSearchHistory,
+    setTrackSearchHistory,
   } = useGlobalUserPreferences()
 
   useEffect(() => {
     const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
+    const savedTrackSearchHistory = localStorage.getItem('track_search_history')
 
     setEnfasis(savedEnfasis ?? '#0057E7')
     setUserInfo(userInfo)
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
-
+    setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
-  }, [enfasis, setEnfasis, parentalControl, setParentalControl, setUserInfo])
+  }, [enfasis, setEnfasis, parentalControl, setParentalControl, setUserInfo, trackSearchHistory, setTrackSearchHistory])
   return null
 }
