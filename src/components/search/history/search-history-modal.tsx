@@ -1,9 +1,11 @@
+import { DeleteIcon } from '@components/icons/delete-icon'
 import { HistoryIcon } from '@components/icons/history-icon'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
+import { deleteSearchHistory } from '@utils/delete-search-history'
+import { saveSearchHistory } from '@utils/save-search-history'
 import { useEffect, useRef } from 'react'
 import type { AppliedFilters } from 'types'
-import { deleteSearchHistory } from '@utils/delete-search-history'
-import { useGlobalUserPreferences } from '@store/global-user'
 
 interface SearchHistoryModalProps {
   isOpen: boolean
@@ -14,7 +16,13 @@ export const SearchHistoryModal = ({
   isOpen,
   onClose,
 }: SearchHistoryModalProps) => {
-  const { searchHistory, setQuery, setAppliedFilters, clearSearchHistory } = useSearchStoreResults()
+  const {
+    searchHistory,
+    setQuery,
+    setAppliedFilters,
+    clearSearchHistory,
+    setSearchHistory,
+  } = useSearchStoreResults()
   const modalRef = useRef<HTMLDivElement>(null)
   const { userInfo, trackSearchHistory } = useGlobalUserPreferences()
   const handleClick = (query: string, appliedFilters: AppliedFilters) => {
@@ -80,21 +88,35 @@ export const SearchHistoryModal = ({
             </div>
           ) : (
             searchHistory.map((history, index) => (
-              <button
+              <div
                 key={index}
                 onClick={() =>
                   handleClick(history.query, history.appliedFilters)
                 }
-                className="bg-Primary-950 rounded-lg p-4 w-full hover:bg-enfasisColor/20 border-Primary-950 hover:border-enfasisColor/40 border-1 transition-all duration-300 cursor-pointer"
+                className="bg-Primary-950 relative group rounded-lg p-4 w-full hover:bg-enfasisColor/20 border-Primary-950 hover:border-enfasisColor/40 border-1 transition-all duration-300 cursor-pointer"
               >
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <p className="text-Primary-100 text-l font-medium">
                       {history.query}
                     </p>
-                    <span className="text-Primary-100 text-s">
+                    <span className="text-Primary-100 opacity-100 pointer-events-none group-hover:opacity-0 transition-all group-hover:pointer-events-none duration-300 text-s">
                       {history.totalResults} results
                     </span>
+                    <button
+                      className="opacity-0 mx-2 absolute cursor-pointer hover:text-enfasisColor/70 right-2 pointer-events-none group-hover:opacity-100 transition-all group-hover:pointer-events-auto duration-300 text-Primary-100"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        const updatedHistory = searchHistory.filter(
+                          (_, i) => i !== index
+                        )
+                        setSearchHistory(updatedHistory)
+                        if (!trackSearchHistory) return
+                        saveSearchHistory(updatedHistory, userInfo)
+                      }}
+                    >
+                      <DeleteIcon className="w-6 h-6 " />
+                    </button>
                   </div>
                   {Object.keys(history.appliedFilters).length > 0 && (
                     <div className="flex flex-wrap gap-2">
@@ -116,15 +138,15 @@ export const SearchHistoryModal = ({
                     </div>
                   )}
                 </div>
-              </button>
+              </div>
             ))
           )}
           {searchHistory.length > 0 && (
             <button
               onClick={() => {
-                  clearSearchHistory()
-                  if(!trackSearchHistory) return
-                  deleteSearchHistory(userInfo)
+                clearSearchHistory()
+                if (!trackSearchHistory) return
+                deleteSearchHistory(userInfo)
               }}
               className="w-full button-primary"
             >
