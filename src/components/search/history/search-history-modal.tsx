@@ -16,7 +16,7 @@ export const SearchHistoryModal = ({
 }: SearchHistoryModalProps) => {
   const { searchHistory, setQuery, setAppliedFilters, clearSearchHistory } = useSearchStoreResults()
   const modalRef = useRef<HTMLDivElement>(null)
-  const { userInfo } = useGlobalUserPreferences()
+  const { userInfo, trackSearchHistory } = useGlobalUserPreferences()
   const handleClick = (query: string, appliedFilters: AppliedFilters) => {
     setQuery(query)
     setAppliedFilters(appliedFilters)
@@ -122,8 +122,9 @@ export const SearchHistoryModal = ({
           {searchHistory.length > 0 && (
             <button
               onClick={() => {
-                deleteSearchHistory(userInfo)
-                clearSearchHistory()
+                  clearSearchHistory()
+                  if(!trackSearchHistory) return
+                  deleteSearchHistory(userInfo)
               }}
               className="w-full button-primary"
             >
