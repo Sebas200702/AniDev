@@ -2,6 +2,8 @@ import { HistoryIcon } from '@components/icons/history-icon'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { useEffect, useRef } from 'react'
 import type { AppliedFilters } from 'types'
+import { deleteSearchHistory } from '@utils/delete-search-history'
+import { useGlobalUserPreferences } from '@store/global-user'
 
 interface SearchHistoryModalProps {
   isOpen: boolean
@@ -12,9 +14,9 @@ export const SearchHistoryModal = ({
   isOpen,
   onClose,
 }: SearchHistoryModalProps) => {
-  const { searchHistory, setQuery, setAppliedFilters } = useSearchStoreResults()
+  const { searchHistory, setQuery, setAppliedFilters, clearSearchHistory } = useSearchStoreResults()
   const modalRef = useRef<HTMLDivElement>(null)
-
+  const { userInfo } = useGlobalUserPreferences()
   const handleClick = (query: string, appliedFilters: AppliedFilters) => {
     setQuery(query)
     setAppliedFilters(appliedFilters)
@@ -60,7 +62,6 @@ export const SearchHistoryModal = ({
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <HistoryIcon className="w-7 h-7" />
             <h2 className="text-lx">Search History</h2>
           </div>
           <button
@@ -117,6 +118,17 @@ export const SearchHistoryModal = ({
                 </div>
               </button>
             ))
+          )}
+          {searchHistory.length > 0 && (
+            <button
+              onClick={() => {
+                deleteSearchHistory(userInfo)
+                clearSearchHistory()
+              }}
+              className="w-full button-primary"
+            >
+              Clear History
+            </button>
           )}
         </div>
       </div>
