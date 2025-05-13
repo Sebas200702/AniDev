@@ -1,6 +1,7 @@
 ---
 import { ParentalControl } from '@components/profile/settings/parental-control'
 import { SelectColor } from '@components/profile/settings/select-color'
+import { SearchHistory } from '@components/profile/settings/search-history'
 import Layout from '@layouts/base.astro'
 ---
 
@@ -29,6 +30,15 @@ import Layout from '@layouts/base.astro'
           >
         </div>
         <ParentalControl client:load />
+      </li>
+      <li class="flex flex-row items-center justify-between gap-4">
+        <div>
+          <p class="text-l text-pretty">Search History</p>
+          <small class="text-Primary-300 text-sx"
+            >Enable or disable save search history (Default enabled)</small
+          >
+        </div>
+        <SearchHistory client:load />
       </li>
     </ul>
   </section>
