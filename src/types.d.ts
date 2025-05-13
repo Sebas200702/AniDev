@@ -150,6 +150,16 @@ export interface AnimeEpisode {
 export interface AppliedFilters {
   [category: string]: string[]
 }
+export interface SearchHistory {
+  query: string
+  appliedFilters: AppliedFilters
+  results: AnimeCardInfo[]
+  totalResults: number
+}
+export interface UserInfo {
+  name: string | null
+  avatar: string | null
+}
 
 export enum AnimeTypes {
   CM = 'CM',
@@ -318,4 +328,5 @@ export const shortCuts = [
   { keys: ['ctrl', 'p'], action: 'navigate-profile' },
   { keys: ['ctrl', 'r'], action: 'random-anime' },
   { keys: ['ctrl', 'shift', 'h'], action: 'open-search-history' },
+  { keys: ['ctrl', 'shift', 'c'], action: 'clear-search-history' },
 ]
