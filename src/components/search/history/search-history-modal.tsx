@@ -98,7 +98,7 @@ export const SearchHistoryModal = ({
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <p className="text-Primary-100 text-l font-medium">
-                      {history.query}
+                      {history.query || 'No query'}
                     </p>
                     <span className="text-Primary-100 text-s pointer-events-none opacity-100 transition-all duration-300 group-hover:pointer-events-none group-hover:opacity-0">
                       {history.totalResults} results
