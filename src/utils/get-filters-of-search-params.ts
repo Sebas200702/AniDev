@@ -1,3 +1,4 @@
+import { normalizeString } from '@utils/normalize-string'
 import { Filters } from 'types'
 
 /**
@@ -51,10 +52,10 @@ export const getFilters = (filters: string[], url: URL) => {
         }
       } else if (filter === Filters.aired_day_filter) {
         if (value) {
-          filters[filter] = value.split('_')
+          filters[filter] = normalizeString(value).split('_')
         }
       } else {
-        filters[filter] = value ? value.split('_') : null
+        filters[filter] = value ? normalizeString(value).split('_') : null
       }
 
       return filters
