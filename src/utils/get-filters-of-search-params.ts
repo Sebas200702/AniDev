@@ -52,10 +52,10 @@ export const getFilters = (filters: string[], url: URL) => {
         }
       } else if (filter === Filters.aired_day_filter) {
         if (value) {
-          filters[filter] = normalizeString(value).split('_')
+          filters[filter] = value.split('_').map((item) => normalizeString(item))
         }
       } else {
-        filters[filter] = value ? normalizeString(value).split('_') : null
+        filters[filter] = value ? value.split('_').map((item) => normalizeString(item)) : null
       }
 
       return filters
