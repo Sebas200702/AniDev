@@ -22,16 +22,16 @@
  */
 export const normalizeString = (
   str: string,
-  removeSpace: boolean = true,
+  replaceSpace: boolean = true,
   lowerCase: boolean = false
 ) => {
-  if (removeSpace && lowerCase)
+  if (replaceSpace && lowerCase)
     return str
       .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
       .replace(/\s/g, '-')
       .toLowerCase()
 
-  if (removeSpace)
+  if (replaceSpace)
     return str
       .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
       .replace(/\s/g, '-')
@@ -41,5 +41,8 @@ export const normalizeString = (
       .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
       .toLowerCase()
 
-  return str.replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
+  return str
+    .replace(/[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g, '')
+    .replace(/\s/g, '')
+    .toLowerCase()
 }
