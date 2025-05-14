@@ -167,17 +167,16 @@ export const SearchBar = (): JSX.Element => {
 
   useEffect(() => {
     setLoading(isLoading)
-    if (!isLoading && (query || appliedFilters)) {
-      setResults(animes, false, fetchError)
-      setTotalResults(total)
-      const newHistory = {
-        query,
-        appliedFilters,
-        results: animes || [],
-        totalResults: total,
-      }
-      addSearchHistory(newHistory)
+    if (isLoading || (!query && !appliedFilters) || !animes) return
+    setResults(animes, false, fetchError)
+    setTotalResults(total)
+    const newHistory = {
+      query,
+      appliedFilters,
+      results: animes,
+      totalResults: total,
     }
+    addSearchHistory(newHistory)
   }, [
     animes,
     isLoading,
