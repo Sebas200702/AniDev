@@ -2,7 +2,7 @@ import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useWindowWidth } from '@store/window-width'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeBannerInfo } from 'types'
 
