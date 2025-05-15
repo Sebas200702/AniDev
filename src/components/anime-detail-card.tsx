@@ -8,7 +8,7 @@ import { TypeIcon } from '@components/icons/type-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useSearchStoreResults } from '@store/search-results-store'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeDetail } from 'types'
 
