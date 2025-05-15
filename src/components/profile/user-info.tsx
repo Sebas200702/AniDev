@@ -5,11 +5,11 @@ import { useEffect, useRef } from 'react'
 import { ImageEditor } from './image-editor'
 import { InputUserImage } from './input-user-image'
 
-export const UserInfo = () => {
+export const UserInfo = ({isSignUp, styles}: {isSignUp?: boolean, styles?: string}) => {
   const { userInfo } = useGlobalUserPreferences()
   const { setImage, setType, showEditor } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
-  const isEnabled = !!userInfo
+  const isEnabled = !!userInfo || isSignUp
 
   useEffect(() => {
     const original = HTMLCanvasElement.prototype.getContext as any
@@ -54,13 +54,13 @@ export const UserInfo = () => {
   }
 
   return (
-    <article className="z-10 mt-24 flex w-full flex-row items-center gap-6 text-white md:gap-8">
+    <article className={`z-10  flex w-full flex-row items-center ${isSignUp ? 'justify-center' : 'mt-24'} text-white md:gap-8 `}>
       <div
         {...dragDropProps}
         ref={(el) => {
           dropTargetRef.current = el
         }}
-        className="group relative flex h-full max-h-26 w-full max-w-26 items-center justify-center rounded-full md:max-h-40 md:max-w-40"
+        className={`group relative flex h-full  w-full  items-center justify-center rounded-full  ${isSignUp ? 'max-h-24 max-w-24' : 'max-h-26 max-w-26 md:max-w-40 md:max-h-40 '}`}
       >
         <div
           className={`bg-enfasisColor absolute inset-0 flex w-full items-center justify-center rounded-full transition-opacity duration-200 ${
@@ -79,13 +79,15 @@ export const UserInfo = () => {
           alt={`${userInfo?.name} Avatar`}
           className="h-full w-full rounded-full transition-all duration-200"
         />
-        {userInfo?.name && <InputUserImage />}
+        {(isSignUp || userInfo?.name) && <InputUserImage />}
       </div>
 
       <ImageEditor userName={userInfo?.name ?? ''} />
-      <span className="truncate text-lg font-bold md:text-4xl">
-        {userInfo?.name ?? 'Guest'}
-      </span>
+      {!isSignUp && (
+        <span className="truncate text-lg font-bold md:text-4xl">
+          { userInfo?.name ?? 'Guest'}
+        </span>
+      )}
     </article>
   )
 }
