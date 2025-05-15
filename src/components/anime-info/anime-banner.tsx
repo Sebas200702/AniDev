@@ -1,5 +1,5 @@
 import { Picture } from '@components/picture'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 
 /**
  * Props for the AnimeBanner component.
