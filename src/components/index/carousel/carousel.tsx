@@ -9,8 +9,8 @@ import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import { useFetch } from '@hooks/useFetch'
 import { useCarouselStore } from '@store/carousel-store'
 import { useWindowWidth } from '@store/window-width'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { AnimeBannerInfo } from 'types'
 
 /**
