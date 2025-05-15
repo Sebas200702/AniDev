@@ -9,24 +9,24 @@ import { create } from 'zustand'
  * including minimum/maximum length, lowercase/uppercase letters, numbers, and special characters.
  */
 const signInSchema = z.object({
-  email: z.string().email('Formato de email inválido'),
+  email: z.string().email('Invalid email format'),
   password: z
-    .string()
-    .min(6, 'La contraseña debe tener al menos 6 caracteres')
+        .string()
+        .min(6, 'The password must be at least 6 characters long')
     .regex(
       /(?=.*[a-z])/,
-      'La contraseña debe contener al menos una letra minúscula'
+      'The password must contain at least one lowercase letter'
     )
     .regex(
       /(?=.*[A-Z])/,
-      'La contraseña debe contener al menos una letra mayúscula'
+      'The password must contain at least one uppercase letter'
     )
-    .regex(/(?=.*\d)/, 'La contraseña debe contener al menos un número')
+    .regex(/(?=.*\d)/, 'The password must contain at least one number')
     .regex(
       /(?=.*[!@#$%^&*])/,
-      'La contraseña debe contener al menos un símbolo'
+      'The password must contain at least one symbol'
     )
-    .max(20, 'La contraseña no puede tener más de 20 caracteres'),
+    .max(20, 'The password cannot have more than 20 characters'),
 })
 
 /**
@@ -36,11 +36,11 @@ const signInSchema = z.object({
  * The username must be at least 3 characters long.
  */
 const signUpSchema = signInSchema.extend({
-  email: z.string().email('Formato de email inválido'),
+  email: z.string().email('Invalid email format'),
   password: z.string(),
   user_name: z
     .string()
-    .min(3, 'El nombre de usuario debe tener al menos 3 caracteres'),
+    .min(3, 'The username must be at least 3 characters long'),
 })
 
 export type FormValues = z.infer<typeof signUpSchema>
