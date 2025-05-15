@@ -1,7 +1,7 @@
 import { pinata } from '@libs/pinata'
 import { checkSession } from '@middlewares/auth'
-
 import type { APIRoute } from 'astro'
+import { getSession } from 'auth-astro/server'
 import sharp from 'sharp'
 
 /**
@@ -58,6 +58,13 @@ import sharp from 'sharp'
  */
 
 export const POST: APIRoute = checkSession(async ({ request }) => {
+  const session = await getSession(request)
+  const user = session?.user
+  if (!user) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+    })
+  }
   const { image, filename, type } = await request.json()
 
   if (!image) {
