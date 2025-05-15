@@ -25,7 +25,7 @@ export const createFiltersToApply = (appliedFilters: AppliedFilters) => {
   return Object.entries(appliedFilters)
     .filter(([_, values]) => values && values.length > 0)
     .map(([category, values]) => {
-      return `${category}=${values.map((value) => normalizeString(value, false , false, false)).join('_')}`
+      return `${category}=${values.map((value) => normalizeString(value, false, false, false)).join('_')}`
     })
     .join('&')
 }
