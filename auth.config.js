@@ -21,13 +21,7 @@ export default defineConfig({
         console.error(e1)
         return false
       }
-      if (!pub?.length) {
-        console.log(user)
-        await supabase.from('public_users').upsert({
-          name: user.name,
-          avatar_url: user.image,
-        })
-      }
+
       const { data: listRes, error: listErr } =
         await supabaseAdmin.auth.admin.listUsers({
           filter: `email.eq.${user.email}`,
@@ -43,7 +37,7 @@ export default defineConfig({
             email: user.email,
             email_confirm: true,
             user_metadata: {
-              name: user.name,
+              user_name: user.name,
               avatar_url: user.image,
             },
           })
