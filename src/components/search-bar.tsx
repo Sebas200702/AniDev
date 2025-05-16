@@ -188,17 +188,22 @@ export const SearchBar = (): JSX.Element => {
   ])
 
   useEffect(() => {
-    if (!searchHistory || searchHistory.length === 0 || !trackSearchHistory)
+    if (
+      !searchHistory ||
+      searchHistory.length === 0 ||
+      !trackSearchHistory ||
+      (!query && !appliedFilters)
+    )
       return
     saveSearchHistory(searchHistory, userInfo)
-  }, [searchHistory, userInfo, trackSearchHistory])
+  }, [searchHistory, trackSearchHistory, query, appliedFilters])
 
   useEffect(() => {
-    if (!trackSearchHistory) return
+    if (!trackSearchHistory || (!query && !appliedFilters)) return
     loadSearchHistory(userInfo).then((history) => {
       setSearchHistory(history)
     })
-  }, [userInfo, trackSearchHistory])
+  }, [trackSearchHistory, query, appliedFilters])
 
   return (
     <div
