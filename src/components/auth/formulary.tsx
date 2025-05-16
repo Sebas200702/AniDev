@@ -1,16 +1,8 @@
-import { GoogleBtn } from '@components/auth/google-btn'
-import { Input } from '@components/auth/input'
-import { EmailIcon } from '@components/icons/email-icon'
-import { Favicon } from '@components/icons/favicon'
-import { PasswordIcon } from '@components/icons/password-icon'
-import { UserIcon } from '@components/icons/user-icon'
-import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
+import { Aside } from '@components/auth/aside'
+import { Main } from '@components/auth/main'
 import { toast } from '@pheralb/toast'
 import { useAuthFormStore } from '@store/auth-form-store'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/craete-imageurl-proxy'
-import { parseResponse } from '@utils/parse-response'
+import { useStepsStore } from '@store/steps-store'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
 import type { ApiJsonResponse } from 'types'
@@ -28,6 +20,10 @@ interface Props {
    * The background image URL for the formulary.
    */
   bgImage?: string
+  /**
+   * The step of the formulary.
+   */
+  step?: string
 }
 
 enum RedirectionResult {
@@ -91,35 +87,40 @@ const handleResponseRedirection = (
  * @example
  * <Formulary title="Sign In" action="/api/auth/signin" bgImage="/sign-in.webp" />
  */
-export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
+export const Formulary = ({
+  title,
+  action,
+  bgImage,
+  step,
+}: Props): JSX.Element => {
   const {
     values,
-    validate,
+
     resetForm,
     isLoading,
     errorMessage,
     successMessage,
-    setIsLoading,
-    setErrorMessage,
-    setSuccessMessage,
-    clearMessages,
-    errors,
   } = useAuthFormStore()
-  useEffect(() => {
-    if (errorMessage) {
-      toast[ToastType.Error]({
-        text: errorMessage,
-      })
-    }
-  }, [errorMessage])
+
+  const { setCurrentStep } = useStepsStore()
 
   useEffect(() => {
-    if (successMessage) {
-      toast[ToastType.Success]({
-        text: successMessage,
-      })
+    if (step) {
+      setCurrentStep(parseInt(step))
     }
-  }, [successMessage])
+  }, [step])
+
+  if (errorMessage) {
+    toast[ToastType.Error]({
+      text: errorMessage,
+    })
+  }
+
+  if (successMessage) {
+    toast[ToastType.Success]({
+      text: successMessage,
+    })
+  }
 
   useEffect(() => {
     resetForm()
@@ -139,158 +140,12 @@ export const Formulary = ({ title, action, bgImage }: Props): JSX.Element => {
     return formData
   }
 
-  const onSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault()
-
-    const isValid = validate(isSignUp)
-
-    Object.values(errors).forEach((error) => {
-      if (error) {
-        setErrorMessage(error)
-      }
-    })
-
-    if (!isValid) return
-
-    clearMessages()
-    setIsLoading(true)
-
-    try {
-      const formData = prepareFormData()
-
-      const response = await fetch(action, {
-        method: 'POST',
-        body: formData,
-      })
-
-      const responseContent = await parseResponse(response)
-
-      if (!response.ok) {
-        let errorMessage: string
-
-        if (typeof responseContent === 'object' && responseContent.message) {
-          errorMessage = responseContent.message
-        } else if (typeof responseContent === 'string') {
-          errorMessage = responseContent
-        } else {
-          errorMessage = 'Error en la solicitud'
-        }
-
-        throw new Error(errorMessage)
-      }
-
-      const redirectionResult = handleResponseRedirection(
-        response,
-        responseContent,
-        isSignUp,
-        setSuccessMessage
-      )
-
-      if (redirectionResult === RedirectionResult.NO_REDIRECT) {
-        setSuccessMessage('Formulario enviado con éxito')
-      }
-    } catch (error) {
-      const errorMsg =
-        error instanceof Error ? error.message : 'Error en la solicitud'
-      setErrorMessage(errorMsg)
-      console.error('Form submission error:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
-    <section className="mt-8 flex h-full items-center justify-center p-4 text-white md:mt-0">
-      <div
-        className={`border-enfasisColor/50 relative h-136 w-full max-w-5xl overflow-hidden rounded-lg border-2 ${title === 'Sign Up' ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-      >
-        <Picture
-          image={
-            createImageUrlProxy(`${baseUrl}${bgImage}`, '100', '0', 'webp') ??
-            ''
-          }
-          styles="w-full"
-        >
-          <Favicon
-            className={`text-enfasisColor absolute top-2 right-4 z-20 h-8 w-8 md:h-16 md:w-16 ${title === 'Sign Up' ? 'md:left-4' : 'md:right-4'} `}
-          />
-
-          <Overlay
-            className={`to-Primary-950/40 z-10 h-full w-full ${title === 'Sign Up' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
-          />
-          <img
-            src={bgImage}
-            className="relative h-full w-full object-cover object-center"
-            alt=""
-          />
-        </Picture>
-        <div
-          className={`bg-Primary-950/70 absolute top-0 flex h-full flex-col justify-between backdrop-blur-xs ${title === 'Sign Up' ? 'right-0' : 'left-0'} w-full p-6 md:w-1/2 md:p-8`}
-        >
-          <h2 className="text-Primary-50 text-lx mb-6 font-bold">{title}</h2>
-
-          <form onSubmit={onSubmit} className="space-y-6">
-            {isSignUp && (
-              <Input
-                name="user_name"
-                type="text"
-                placeholder="Username"
-                required
-              >
-                <UserIcon className="h-5 w-5" />
-              </Input>
-            )}
-
-            <Input name="email" type="email" placeholder="Email" required>
-              <EmailIcon className="h-5 w-5" />
-            </Input>
-
-            <Input
-              name="password"
-              type="password"
-              placeholder="Password"
-              required
-            >
-              <PasswordIcon className="h-5 w-5" />
-            </Input>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="button-primary w-full focus:ring-2 focus:outline-none disabled:opacity-50"
-            >
-              {isLoading ? 'Procesando...' : title}
-            </button>
-
-            <div className="my-4 flex items-center">
-              <div className="flex-grow border-t border-gray-400"></div>
-              <span className="mx-4 text-gray-200">or</span>
-              <div className="flex-grow border-t border-gray-400"></div>
-            </div>
-          </form>
-          <div>
-            <GoogleBtn />
-          </div>
-
-          <div className="text-Primary-200 mt-6 text-center text-sm">
-            {title === 'Sign In' ? (
-              <p>
-                <span>Don&apos;t have an account?</span>{' '}
-                <a href="/signup" className="text-blue-500 hover:underline">
-                  Sign up
-                </a>
-              </p>
-            ) : (
-              <p>
-                Already have an account?{' '}
-                <a href="/signin" className="text-blue-500 hover:underline">
-                  Sign in
-                </a>
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+    <section className="flex h-full items-center justify-center p-4 text-white w-full md:p-20">
+      <article className="bg-Complementary border-1 border-enfasisColor/30 flex h-full max-h-[75vh] rounded-lg p-4 w-full max-w-7xl">
+        <Aside bgImage={bgImage ?? ''} isSignUp={isSignUp} />
+        <Main isLoading={isLoading} isSignUp={isSignUp} title={title} />
+      </article>
     </section>
   )
 }
