@@ -13,9 +13,10 @@ import { ToastType, type UserInfo } from 'types'
 interface Props {
   isLoading: boolean
   title: string
+  isSignUp: boolean
 }
 
-export const Step1 = ({ isLoading, title }: Props) => {
+export const Step1 = ({ isLoading, title, isSignUp }: Props) => {
   const {
     values,
     validate,
@@ -131,7 +132,7 @@ export const Step1 = ({ isLoading, title }: Props) => {
         <span className="mx-4 text-gray-200">or</span>
         <div className="flex-grow border-t border-gray-400"></div>
       </div>
-      <GoogleBtn />
+      <GoogleBtn isSignUp={isSignUp} />
     </form>
   )
 }
