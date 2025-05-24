@@ -1,4 +1,4 @@
-import { supabase } from '@libs/supabase'
+import { supabase, supabaseAdmin } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import type { APIRoute } from 'astro'
 
@@ -11,29 +11,29 @@ import type { APIRoute } from 'astro'
  * @description
  * This endpoint handles new user registration by creating a user account in Supabase.
  * It validates required fields, creates the user account with additional metadata,
- * and redirects to the sign-in page upon success. The endpoint includes rate limiting
- * to prevent abuse and implements proper error handling for various registration scenarios.
+ * automatically signs in the user, and sets secure HTTP-only cookies for session
+ * management. The endpoint includes rate limiting to prevent abuse and implements
+ * proper error handling for various registration scenarios.
  *
  * The endpoint creates a user with:
  * - Email and password authentication
  * - Username and empty avatar URL in metadata
- * - Automatic redirection to sign-in page
+ * - Automatic sign in after registration
+ * - Secure session cookies for maintaining authentication state
  *
  * @features
  * - Rate limiting: Prevents API abuse with configurable limits
  * - Input validation: Required fields checking
  * - User metadata: Stores additional user information
  * - Error handling: Comprehensive error handling
- * - Redirect handling: Automatic redirection after registration
+ * - Auto sign in: Automatically signs in user after registration
+ * - Session cookies: Secure HTTP-only cookies for token storage
  * - Security: Password hashing handled by Supabase
  *
  * @param {APIRoute} context - The API context containing request information
  * @param {Request} context.request - The HTTP request containing form data
- * @param {Function} context.redirect - Function to handle redirects
- * @param {string} context.request.formData.get('email') - User's email address
- * @param {string} context.request.formData.get('password') - User's password
- * @param {string} context.request.formData.get('user_name') - User's display name
- * @returns {Promise<Response>} A Response object for redirect or error message
+ * @param {Object} context.cookies - Cookie management object
+ * @returns {Promise<Response>} A Response object with session data and cookies
  *
  * @example
  * // Request
@@ -42,14 +42,17 @@ import type { APIRoute } from 'astro'
  *
  * email=user@example.com&password=securepassword&user_name=username
  *
- * // Success Response (302)
- * // Redirects to /signin
+ * // Success Response (200)
+ * {
+ *   "session": { ... },
+ *   "user": { ... }
+ * }
  *
  * // Error Response (400)
  * "Email, password and username are required"
  */
 
-export const POST: APIRoute = rateLimit(async ({ request, redirect }) => {
+export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
   const formData = await request.formData()
 
   const email = formData.get('email') as string
@@ -63,7 +66,21 @@ export const POST: APIRoute = rateLimit(async ({ request, redirect }) => {
   }
 
   try {
-    const { error } = await supabase.auth.signUp({
+    const { data: verifyData, error: verifyError } =
+      await supabaseAdmin.auth.admin.generateLink({
+        email,
+        type: 'signup',
+        password,
+      })
+
+    if (verifyError) {
+      console.error('Error en la verificación:', verifyError.message)
+      return new Response(JSON.stringify({ error: verifyError.message }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -74,13 +91,57 @@ export const POST: APIRoute = rateLimit(async ({ request, redirect }) => {
       },
     })
 
-    if (error) {
-      console.error('Error en el endpoint:', error.message)
-      return new Response(JSON.stringify({ error: error.message }), {
+    if (signUpError) {
+      console.error('Error en el registro:', signUpError.message)
+      return new Response(JSON.stringify({ error: signUpError.message }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       })
     }
+
+    const { data: signInData, error: signInError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+    if (signInError) {
+      console.error('Error en el inicio de sesión:', signInError.message)
+      return new Response(JSON.stringify({ error: signInError.message }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    const { access_token, refresh_token } = signInData.session
+    cookies.set('sb-access-token', access_token, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60,
+    })
+    cookies.set('sb-refresh-token', refresh_token, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60, // 7 días
+    })
+
+    return new Response(
+      JSON.stringify({
+        user: {
+          name: signInData.user.user_metadata.user_name,
+          avatar: signInData.user.user_metadata.avatar_url,
+        },
+        session: signInData.session,
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
   } catch (error) {
     console.error('Error en el endpoint:', error)
     return new Response(
@@ -91,6 +152,4 @@ export const POST: APIRoute = rateLimit(async ({ request, redirect }) => {
       }
     )
   }
-
-  return redirect('/signin')
 })
