@@ -21,10 +21,10 @@ import { signIn } from 'auth-astro/client'
  * @example
  * <GoogleBtn />
  */
-export const GoogleBtn = (): JSX.Element => {
+export const GoogleBtn = ({ isSignUp = false }: { isSignUp?: boolean }): JSX.Element => {
   const handleGoogleClick = async () => {
     signIn('google', {
-      callbackUrl: '/signup?step=2',
+      callbackUrl: isSignUp ? '/signup?step=2' : '/',
     })
   }
   return (
