@@ -42,7 +42,7 @@ export const InputUserImage = () => {
   }
 
   return (
-    <form id="image-form">
+    <div className="image-upload-container">
       <label
         htmlFor="file-upload"
         className="bg-Complementary border-Primary-300/20 absolute z-20 flex -translate-x-3/4 translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-1 p-2 transition-all duration-200 ease-in-out md:group-hover:opacity-95"
@@ -71,6 +71,6 @@ export const InputUserImage = () => {
           onChange={handleFileChange}
         />
       </label>
-    </form>
+    </div>
   )
 }
