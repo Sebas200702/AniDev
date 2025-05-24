@@ -1,4 +1,4 @@
-import { useAuthFormStore } from '@store/auth-form-store'
+import { useStepsStore } from '@store/steps-store'
 import { useEffect } from 'react'
 
 const stepsSignUp: {
@@ -40,6 +40,11 @@ const stepsSignUp: {
     description: 'Complete your profile to get started',
     fields: [
       {
+        name: 'avatar',
+        type: 'image',
+        placeholder: 'Profile Picture',
+      },
+      {
         name: 'name',
         type: 'text',
         placeholder: 'Name',
@@ -64,6 +69,13 @@ const stepsSignUp: {
           { label: 'Other', value: 'other' },
         ],
       },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Set your preferences',
+    description: 'Tell us about your anime preferences',
+    fields: [
       {
         name: 'favorite_animes',
         type: 'checkbox',
@@ -73,17 +85,52 @@ const stepsSignUp: {
           { label: 'Naruto', value: 'naruto' },
           { label: 'Dragon Ball', value: 'dragon_ball' },
           { label: 'Attack on Titan', value: 'attack_on_titan' },
+          { label: 'Death Note', value: 'death_note' },
+          { label: 'Fullmetal Alchemist', value: 'fullmetal_alchemist' },
+          { label: 'My Hero Academia', value: 'my_hero_academia' },
+          { label: 'Demon Slayer', value: 'demon_slayer' },
+          { label: 'Jujutsu Kaisen', value: 'jujutsu_kaisen' },
+          { label: 'Tokyo Ghoul', value: 'tokyo_ghoul' },
+          { label: 'Hunter x Hunter', value: 'hunter_x_hunter' },
+          { label: 'Bleach', value: 'bleach' },
+          { label: 'One Punch Man', value: 'one_punch_man' },
+          { label: 'Mob Psycho 100', value: 'mob_psycho_100' },
+          { label: 'Spirited Away', value: 'spirited_away' },
+          { label: 'Your Name', value: 'your_name' },
+          { label: 'Princess Mononoke', value: 'princess_mononoke' },
+          { label: 'Akira', value: 'akira' },
+          { label: 'Ghost in the Shell', value: 'ghost_in_the_shell' },
+          { label: 'Cowboy Bebop', value: 'cowboy_bebop' },
+          { label: 'Neon Genesis Evangelion', value: 'evangelion' },
+          { label: 'Code Geass', value: 'code_geass' },
+          { label: 'Steins;Gate', value: 'steins_gate' },
+          {
+            label: "JoJo's Bizarre Adventure",
+            value: 'jojo_bizarre_adventure',
+          },
+          { label: 'Chainsaw Man', value: 'chainsaw_man' },
+          { label: 'Spy x Family', value: 'spy_x_family' },
+          { label: 'Violet Evergarden', value: 'violet_evergarden' },
+          { label: 'Fairy Tail', value: 'fairy_tail' },
+          { label: 'Tokyo Revengers', value: 'tokyo_revengers' },
+          { label: 'Dr. Stone', value: 'dr_stone' },
+          { label: 'Black Clover', value: 'black_clover' },
+          { label: 'Fire Force', value: 'fire_force' },
+          { label: 'Haikyuu!!', value: 'haikyuu' },
+          { label: 'Kuroko no Basket', value: 'kuroko_no_basket' },
+          { label: 'Slam Dunk', value: 'slam_dunk' },
         ],
       },
       {
         name: 'frequency',
         type: 'select',
-        placeholder: 'Frequency',
+        placeholder: 'How often do you watch anime?',
         options: [
           { label: 'Daily', value: 'daily' },
           { label: 'Weekly', value: 'weekly' },
           { label: 'Monthly', value: 'monthly' },
-          { label: 'Yearly', value: 'yearly' },
+          { label: 'Occasionally', value: 'occasionally' },
+          { label: 'Rarely', value: 'rarely' },
         ],
       },
       {
@@ -91,9 +138,11 @@ const stepsSignUp: {
         type: 'select',
         placeholder: 'Fanatic Level',
         options: [
-          { label: 'Beginner', value: 'beginner' },
-          { label: 'Intermediate', value: 'intermediate' },
+          { label: 'Casual Viewer', value: 'casual' },
+          { label: 'Regular Fan', value: 'regular' },
+          { label: 'Dedicated Fan', value: 'dedicated' },
           { label: 'Otaku', value: 'otaku' },
+          { label: 'Hardcore Otaku', value: 'hardcore_otaku' },
         ],
       },
       {
@@ -101,19 +150,58 @@ const stepsSignUp: {
         type: 'select',
         placeholder: 'Preferred Format',
         options: [
-          { label: 'TV', value: 'tv' },
-          { label: 'Movie', value: 'movie' },
+          { label: 'TV Series', value: 'tv' },
+          { label: 'Movies', value: 'movie' },
           { label: 'OVA', value: 'ova' },
           { label: 'ONA', value: 'ona' },
-          { label: 'Special', value: 'special' },
-          { label: 'Other', value: 'other' },
+          { label: 'Specials', value: 'special' },
+          { label: 'No preference', value: 'no_preference' },
         ],
       },
       {
         name: 'watched_animes',
         type: 'checkbox',
-        placeholder: 'Watched Animes',
-        options: [{ label: 'One Piece', value: 'one_piece' }],
+        placeholder: 'Animes you have already watched',
+        options: [
+          { label: 'One Piece', value: 'one_piece' },
+          { label: 'Naruto', value: 'naruto' },
+          { label: 'Dragon Ball', value: 'dragon_ball' },
+          { label: 'Attack on Titan', value: 'attack_on_titan' },
+          { label: 'Death Note', value: 'death_note' },
+          { label: 'Fullmetal Alchemist', value: 'fullmetal_alchemist' },
+          { label: 'My Hero Academia', value: 'my_hero_academia' },
+          { label: 'Demon Slayer', value: 'demon_slayer' },
+          { label: 'Jujutsu Kaisen', value: 'jujutsu_kaisen' },
+          { label: 'Tokyo Ghoul', value: 'tokyo_ghoul' },
+          { label: 'Hunter x Hunter', value: 'hunter_x_hunter' },
+          { label: 'Bleach', value: 'bleach' },
+          { label: 'One Punch Man', value: 'one_punch_man' },
+          { label: 'Mob Psycho 100', value: 'mob_psycho_100' },
+          { label: 'Spirited Away', value: 'spirited_away' },
+          { label: 'Your Name', value: 'your_name' },
+          { label: 'Princess Mononoke', value: 'princess_mononoke' },
+          { label: 'Cowboy Bebop', value: 'cowboy_bebop' },
+          { label: 'Neon Genesis Evangelion', value: 'evangelion' },
+          { label: 'Code Geass', value: 'code_geass' },
+          { label: 'Steins;Gate', value: 'steins_gate' },
+          {
+            label: "JoJo's Bizarre Adventure",
+            value: 'jojo_bizarre_adventure',
+          },
+          { label: 'Chainsaw Man', value: 'chainsaw_man' },
+          { label: 'Spy x Family', value: 'spy_x_family' },
+          { label: 'Violet Evergarden', value: 'violet_evergarden' },
+          { label: 'Fairy Tail', value: 'fairy_tail' },
+          { label: 'Tokyo Revengers', value: 'tokyo_revengers' },
+          { label: 'Dr. Stone', value: 'dr_stone' },
+          { label: 'Black Clover', value: 'black_clover' },
+          { label: 'Fire Force', value: 'fire_force' },
+          { label: 'Haikyuu!!', value: 'haikyuu' },
+          { label: 'Kuroko no Basket', value: 'kuroko_no_basket' },
+          { label: 'Slam Dunk', value: 'slam_dunk' },
+          { label: 'Akira', value: 'akira' },
+          { label: 'Ghost in the Shell', value: 'ghost_in_the_shell' },
+        ],
       },
       {
         name: 'favorite_studios',
@@ -126,15 +214,50 @@ const stepsSignUp: {
           { label: 'Studio Bones', value: 'studio_bones' },
           { label: 'Studio Madhouse', value: 'studio_madhouse' },
           { label: 'Studio ufotable', value: 'studio_ufotable' },
+          { label: 'Toei Animation', value: 'toei_animation' },
+          { label: 'Mappa', value: 'mappa' },
+          { label: 'Wit Studio', value: 'wit_studio' },
+          { label: 'A-1 Pictures', value: 'a1_pictures' },
+          { label: 'Trigger', value: 'trigger' },
+          { label: 'Kyoto Animation', value: 'kyoto_animation' },
+          { label: 'Production I.G', value: 'production_ig' },
+          { label: 'Cloverworks', value: 'cloverworks' },
+          { label: 'Gainax', value: 'gainax' },
+          { label: 'Sunrise', value: 'sunrise' },
+        ],
+      },
+      {
+        name: 'favorite_genres',
+        type: 'checkbox',
+        placeholder: 'Favorite Genres',
+        options: [
+          { label: 'Action', value: 'action' },
+          { label: 'Adventure', value: 'adventure' },
+          { label: 'Comedy', value: 'comedy' },
+          { label: 'Drama', value: 'drama' },
+          { label: 'Fantasy', value: 'fantasy' },
+          { label: 'Horror', value: 'horror' },
+          { label: 'Mystery', value: 'mystery' },
+          { label: 'Romance', value: 'romance' },
+          { label: 'Sci-Fi', value: 'sci-fi' },
+          { label: 'Slice of Life', value: 'slice_of_life' },
+          { label: 'Sports', value: 'sports' },
+          { label: 'Supernatural', value: 'supernatural' },
+          { label: 'Thriller', value: 'thriller' },
+          { label: 'Mecha', value: 'mecha' },
+          { label: 'Psychological', value: 'psychological' },
+          { label: 'Historical', value: 'historical' },
+          { label: 'School', value: 'school' },
+          { label: 'Military', value: 'military' },
+          { label: 'Music', value: 'music' },
+          { label: 'Ecchi', value: 'ecchi' },
+          { label: 'Harem', value: 'harem' },
+          { label: 'Isekai', value: 'isekai' },
+          { label: 'Yaoi', value: 'yaoi' },
+          { label: 'Yuri', value: 'yuri' },
         ],
       },
     ],
-  },
-  {
-    id: 3,
-    title: 'Verify and setup',
-    description: 'Verify your email to get started',
-    fields: [],
   },
 ]
 
@@ -152,7 +275,7 @@ const stepsSignIn: {
   },
 ]
 export const StepsComponent = (isSignUp: boolean) => {
-  const { currentStep, setCurrentStep, setSteps } = useAuthFormStore()
+  const { currentStep, setCurrentStep, setSteps } = useStepsStore()
   const steps = isSignUp ? stepsSignUp : stepsSignIn
   useEffect(() => {
     setSteps(steps)
@@ -160,11 +283,10 @@ export const StepsComponent = (isSignUp: boolean) => {
   return steps.map((step, index) => (
     <div
       key={step.id}
-      onClick={() => setCurrentStep(step.id)}
-      className={`relative hover:bg-Primary-200/10 cursor-pointer transition-all duration-300 flex rounded-2xl h-36 justify-end p-4 w-full flex-col backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor/40' : ' bg-black/50'}`}
+      className={`relative  transition-all duration-300 flex rounded-2xl h-36 justify-end p-4 w-full flex-col backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor/40' : ' bg-black/50'}`}
     >
       <span
-        className={`absolute top-4 left-4 text-Primary-50  text-sm bg-Primary-200/30 rounded-full w-6 h-6 flex items-center justify-center p-2 backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor' : ''}`}
+        className={`absolute z-10 top-4 left-4 text-Primary-50  text-sm bg-Primary-200/30 rounded-full w-6 h-6 flex items-center justify-center p-2 backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor' : ''}`}
       >
         {step.id}
       </span>
