@@ -72,9 +72,17 @@ export const POST: APIRoute = rateLimit(
     const { access_token, refresh_token } = data.session
     cookies.set('sb-access-token', access_token, {
       path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60,
     })
     cookies.set('sb-refresh-token', refresh_token, {
       path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60, 
     })
 
     return redirect('/')
