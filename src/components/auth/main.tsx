@@ -21,7 +21,7 @@ export const Main = ({ isLoading, isSignUp, title }: Props) => {
             {steps[currentStep - 1].description}
           </p>
           {currentStep === 1 ? (
-            <Step1 isLoading={isLoading} title={title} />
+            <Step1 isLoading={isLoading} title={title} isSignUp={isSignUp} />
           ) : currentStep === 2 ? (
             <Step2 isSignUp={isSignUp} />
           ) : (
