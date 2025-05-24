@@ -271,7 +271,18 @@ const stepsSignIn: {
     id: 1,
     title: 'Sign in to your account',
     description: 'Enter your email and password to sign in',
-    fields: [],
+    fields: [
+      {
+        name: 'email',
+        type: 'email',
+        placeholder: 'Email',
+      },
+      {
+        name: 'password',
+        type: 'password',
+        placeholder: 'Password',
+      },
+    ],
   },
 ]
 export const StepsComponent = (isSignUp: boolean) => {
@@ -283,7 +294,7 @@ export const StepsComponent = (isSignUp: boolean) => {
   return steps.map((step, index) => (
     <div
       key={step.id}
-      className={`relative  transition-all duration-300 flex rounded-2xl h-36 justify-end p-4 w-full flex-col backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor/40' : ' bg-black/50'}`}
+      className={`relative ${!isSignUp ? 'hidden' : ''} transition-all duration-300 flex rounded-2xl h-36 justify-end p-4 w-full flex-col backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor/40' : ' bg-black/50'}`}
     >
       <span
         className={`absolute z-10 top-4 left-4 text-Primary-50  text-sm bg-Primary-200/30 rounded-full w-6 h-6 flex items-center justify-center p-2 backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor' : ''}`}
