@@ -82,7 +82,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
             loading="lazy"
           />
         </Picture>
-        <div className="z-20 flex h-full w-[80%] flex-col justify-between p-4 xl:p-6">
+        <div className="z-20 flex h-full w-[80%] flex-col px-2 py-4 justify-between md:p-4 xl:p-6">
           <h3 className="text-l line-clamp-1">{anime.title}</h3>
 
           <footer className="text-sx flex w-20 gap-3">
