@@ -75,17 +75,17 @@ export const UserInfo = ({isSignUp, styles}: {isSignUp?: boolean, styles?: strin
 
         <img
           ref={imageRef}
-          src={userInfo?.avatar ?? '/placeholder.webp'}
+          src={userInfo?.avatar || '/placeholder.webp'}
           alt={`${userInfo?.name} Avatar`}
           className="h-full w-full rounded-full transition-all duration-200"
         />
         {(isSignUp || userInfo?.name) && <InputUserImage />}
       </div>
 
-      <ImageEditor userName={userInfo?.name ?? ''} />
+      <ImageEditor userName={userInfo?.name || ''} />
       {!isSignUp && (
         <span className="truncate text-lg font-bold md:text-4xl">
-          { userInfo?.name ?? 'Guest'}
+          { userInfo?.name || 'Guest'}
         </span>
       )}
     </article>
