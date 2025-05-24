@@ -4,8 +4,9 @@ import Layout from '@layouts/base.astro'
 const title = 'Sign Up'
 const action = '/api/auth/signup'
 const bgImage = '/sign-up.webp'
+const step = Astro.url.searchParams.get('step') ?? ''
 ---
 
 <Layout title={title}>
-  <Formulary client:load title={title} action={action} bgImage={bgImage} />
+  <Formulary client:load title={title} action={action} bgImage={bgImage} step={step} />
 </Layout>
