@@ -128,17 +128,6 @@ export const Formulary = ({
 
   const isSignUp = title === 'Sign Up'
 
-  const prepareFormData = (): FormData => {
-    const formData = new FormData()
-    formData.append('provider', 'email')
-    formData.append('email', values.email)
-    formData.append('password', values.password)
-
-    if (isSignUp && values.user_name) {
-      formData.append('user_name', values.user_name)
-    }
-    return formData
-  }
 
   return (
     <section className="flex h-full items-center justify-center p-4 text-white w-full md:p-20">
