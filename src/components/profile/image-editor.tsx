@@ -230,11 +230,11 @@ export const ImageEditor = ({ userName }: Props) => {
   if (!isEditorVisible) return null
 
   return (
-    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-20 flex h-full w-full flex-col items-center justify-center transition-opacity duration-300">
+    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center transition-opacity duration-300">
       <h2 className="text-lx font-semibold">Edit your profile image</h2>
       <div className="img-preview z-20 h-full max-h-40 w-full max-w-40 translate-y-1/2 overflow-hidden rounded-full"></div>
 
-      <div className="bg-Complementary border-enfasisColor/40 relative flex flex-col items-center gap-10 rounded-xl border-2 p-8 pt-24">
+      <div className="bg-Complementary border-enfasisColor/30 relative flex flex-col items-center gap-10 rounded-xl border p-8 pt-24">
         <button
           className="absolute top-5 right-5 cursor-pointer transition-opacity hover:opacity-70"
           onClick={hideEditor}
@@ -259,7 +259,7 @@ export const ImageEditor = ({ userName }: Props) => {
           <Cropper
             preview=".img-preview"
             ref={cropperRef}
-            src={image ?? '/placeholder.webp'}
+            src={image || '/placeholder.webp'}
             className={`h-64 w-64 transition-opacity duration-200 md:h-96 md:w-96 ${isDragging ? 'opacity-30' : 'opacity-100'}`}
             initialAspectRatio={1}
             aspectRatio={1}
