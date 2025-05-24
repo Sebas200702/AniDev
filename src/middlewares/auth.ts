@@ -1,5 +1,5 @@
 import type { APIContext } from 'astro'
-import { getSession } from 'auth-astro/server'
+import { getSessionUserInfo } from '@utils/get_session_user_info'
 
 /**
  * Authentication middleware for API endpoints to ensure user session validity.
@@ -29,14 +29,18 @@ export const checkSession = (
 ) => {
   return async (context: APIContext): Promise<Response> => {
     try {
-      const session = await getSession(context.request)
-      if (!session?.user) {
+      const userInfo = await getSessionUserInfo({
+        request: context.request,
+        accessToken: context.cookies.get('sb-access-token')?.value,
+        refreshToken: context.cookies.get('sb-refresh-token')?.value,
+      })
+      if (!userInfo) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
           headers: { 'Content-Type': 'application/json' },
         })
       }
-      ;(context as any).locals.session = session
+      ;(context as any).locals.userInfo = userInfo
       return handler(context)
     } catch (error) {
       console.error('Error verifying session:', error)
