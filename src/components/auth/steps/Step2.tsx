@@ -192,7 +192,7 @@ export const Step2 = ({ isSignUp }: Props) => {
         type="submit"
         className="button-primary w-full focus:ring-2 focus:outline-none disabled:opacity-50 mt-4"
       >
-        Guardar y continuar
+        Save and continue
       </button>
     </form>
   )
