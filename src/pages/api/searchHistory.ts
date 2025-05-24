@@ -23,6 +23,8 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .select('id')
     .eq('name', userName)
 
+  console.log(userId)
+
 
   if (userIdError) {
     console.error(userIdError)
@@ -72,6 +74,8 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
     .select('id')
     .eq('name', userName)
 
+    console.log(userId)
+
 
   if (userIdError) {
     console.error(userIdError)
@@ -83,7 +87,7 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
   const { data, error } = await supabase
     .from('search_history')
     .select('search_history')
-    .eq('user_id', userId[0].id)
+    .eq('user_id', userId[0]?.id)
 
   if (!data || data.length === 0) {
     return new Response(JSON.stringify({ error: 'No search history found' }), {
@@ -136,7 +140,7 @@ export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
   const { error: deleteError } = await supabase
     .from('search_history')
     .delete()
-    .eq('user_id', userId[0].id)
+    .eq('user_id', userId[0]?.id)
 
   if (deleteError) {
     console.error(deleteError)
