@@ -13,11 +13,17 @@ import { useState } from 'react'
  * @property {ReactNode} [children] - The child elements to render inside the input field.
  */
 interface Props {
-  name: keyof FormValues
+  name: string
   type: string
-  placeholder?: string
+  placeholder: string
   required?: boolean
-  children?: ReactNode
+  children: ReactNode
+  value?: string | string[]
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  options?: {
+    label: string
+    value: string
+  }[]
 }
 
 /**
@@ -59,14 +65,14 @@ export const Input = ({
   placeholder,
   required = false,
   children,
+  value,
+  onChange,
 }: Props): JSX.Element => {
-  const { values, setValue, clearMessages } = useAuthFormStore()
+  const { setValue, clearMessages } = useAuthFormStore()
   const [inputType, setInputType] = useState(type)
 
-  const value = values[name] ?? ''
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue(name, e.target.value)
+    setValue(name as keyof FormValues, e.target.value)
     clearMessages()
   }
 
@@ -76,16 +82,17 @@ export const Input = ({
 
   return (
     <div className="relative">
-      <div className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         {children}
       </div>
       <input
-        value={value}
-        onChange={handleChange}
         type={inputType}
+        name={name}
+        value={value}
+        onChange={onChange || handleChange}
         placeholder={placeholder}
         required={required}
-        className="text-m focus:ring-enfasisColor w-full rounded bg-zinc-800 px-10 py-2 text-white placeholder-gray-400 focus:ring-2 focus:outline-none"
+        className="text-m focus:ring-enfasisColor  bg-Primary-950/70 px-10 py-2 text-white placeholder-Primary-300 hover:bg-enfasisColor/5 hover:border-enfasisColor/40 w-full rounded-md border border-gray-100/10 focus:outline-none focus:ring-1  transition-all duration-300 ease-in-out"
       />
       {type === 'password' && (
         <button
