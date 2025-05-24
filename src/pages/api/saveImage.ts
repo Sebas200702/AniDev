@@ -1,7 +1,7 @@
 import { supabase } from '@libs/supabase'
 import { checkSession } from '@middlewares/auth'
 import type { APIRoute } from 'astro'
-import { getSession } from 'auth-astro/server'
+import { getSessionUserInfo } from '@utils/get_session_user_info'
 
 /**
  * saveImage endpoint updates a user's avatar URL in the database.
@@ -53,8 +53,13 @@ import { getSession } from 'auth-astro/server'
  * }
  */
 
-export const POST: APIRoute = checkSession(async ({ request }) => {
-  const user = await getSession(request).then((res) => res?.user)
+export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
+  const userInfo = await getSessionUserInfo({
+    request,
+    accessToken: cookies.get('sb-access-token')?.value,
+    refreshToken: cookies.get('sb-refresh-token')?.value,
+  })
+  const user = userInfo?.name
 
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
