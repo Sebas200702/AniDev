@@ -15,6 +15,11 @@ import '@styles/fade-out.css'
 import '@styles/anime-banner.css'
 import '@pheralb/toast/dist/styles.css'
 
+const { cookies, redirect } = Astro
+
+const accessToken = cookies.get('sb-access-token')
+const refreshToken = cookies.get('sb-refresh-token')
+
 interface Props {
   animeId?: string
   title?: string
@@ -45,7 +50,11 @@ if (animeId) {
     console.error('Error al obtener metadatos pre-renderizados:', error)
   }
 }
-const userInfo = await getSessionUserInfo({ request: Astro.request })
+const userInfo = await getSessionUserInfo({
+  request: Astro.request,
+  accessToken: accessToken?.value,
+  refreshToken: refreshToken?.value,
+})
 ---
 
 <html lang="en">
@@ -73,7 +82,7 @@ const userInfo = await getSessionUserInfo({ request: Astro.request })
     frame-src 'self' https://www.youtube.com/;
     style-src 'self' 'unsafe-inline';
     font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-    img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud;
+    img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud https://lh3.googleusercontent.com/;
     worker-src  'self' blob:;
   "
     />
