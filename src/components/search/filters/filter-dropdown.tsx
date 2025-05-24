@@ -9,6 +9,7 @@ interface FilterDropdownProps {
   onClear: () => void
   options: FilterOption[]
   styles: string
+  singleSelect?: boolean
 }
 
 /**
@@ -63,6 +64,7 @@ export const FilterDropdown = ({
   onClear,
   options,
   styles,
+  singleSelect = false,
 }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
@@ -96,7 +98,7 @@ export const FilterDropdown = ({
   const toggleOption = (value: string) => {
     let newValues: string[]
 
-    if (label === 'Order By') {
+    if (singleSelect || label === 'Order By') {
       newValues = values.includes(value) ? [] : [value]
     } else {
       newValues = values.includes(value)
@@ -121,6 +123,7 @@ export const FilterDropdown = ({
       onClick={handleInputClick}
     >
       <button
+        type="button"
         className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
         onClick={handleInputClick}
       >
@@ -142,6 +145,7 @@ export const FilterDropdown = ({
       >
         {(values.length > 0 || search) && (
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
               onClear()
@@ -163,6 +167,7 @@ export const FilterDropdown = ({
           </button>
         )}
         <button
+          type="button"
           className={`h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
           onClick={() => setIsOpen(!isOpen)}
           aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} opciones`}
@@ -185,6 +190,7 @@ export const FilterDropdown = ({
       >
         {filteredOptions.map((option) => (
           <button
+            type="button"
             key={option.value}
             className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm"
             onClick={() => toggleOption(option.value)}
