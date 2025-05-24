@@ -1,12 +1,16 @@
 import { supabase } from '@libs/supabase'
 import { checkSession } from '@middlewares/auth'
+import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { APIRoute } from 'astro'
-import { getSession } from 'auth-astro/server'
 
-export const POST: APIRoute = checkSession(async ({ request }) => {
-  const session = await getSession(request)
-  const user = session?.user
-  if (!user) {
+export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
+  const userInfo = await getSessionUserInfo({
+    request,
+    accessToken: cookies.get('sb-access-token')?.value,
+    refreshToken: cookies.get('sb-refresh-token')?.value,
+  })
+  const userName = userInfo?.name
+  if (!userName) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
@@ -17,8 +21,8 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
   const { data: userId, error: userIdError } = await supabase
     .from('public_users')
     .select('id')
-    .eq('name', user.name)
-    .single()
+    .eq('name', userName)
+
 
   if (userIdError) {
     console.error(userIdError)
@@ -31,7 +35,7 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
   const { data, error } = await supabase.from('search_history').upsert(
     {
       search_history: JSON.stringify(formattedHistory),
-      user_id: userId.id,
+      user_id: userId[0].id,
     },
     {
       onConflict: 'user_id',
@@ -50,10 +54,14 @@ export const POST: APIRoute = checkSession(async ({ request }) => {
   })
 })
 
-export const GET: APIRoute = checkSession(async ({ request }) => {
-  const session = await getSession(request)
-  const user = session?.user
-  if (!user) {
+export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
+  const userInfo = await getSessionUserInfo({
+    request,
+    accessToken: cookies.get('sb-access-token')?.value,
+    refreshToken: cookies.get('sb-refresh-token')?.value,
+  })
+  const userName = userInfo?.name
+  if (!userName) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
@@ -62,8 +70,8 @@ export const GET: APIRoute = checkSession(async ({ request }) => {
   const { data: userId, error: userIdError } = await supabase
     .from('public_users')
     .select('id')
-    .eq('name', user.name)
-    .single()
+    .eq('name', userName)
+
 
   if (userIdError) {
     console.error(userIdError)
@@ -75,7 +83,7 @@ export const GET: APIRoute = checkSession(async ({ request }) => {
   const { data, error } = await supabase
     .from('search_history')
     .select('search_history')
-    .eq('user_id', userId.id)
+    .eq('user_id', userId[0].id)
 
   if (!data || data.length === 0) {
     return new Response(JSON.stringify({ error: 'No search history found' }), {
@@ -99,10 +107,14 @@ export const GET: APIRoute = checkSession(async ({ request }) => {
   })
 })
 
-export const DELETE: APIRoute = checkSession(async ({ request }) => {
-  const session = await getSession(request)
-  const user = session?.user
-  if (!user) {
+export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
+  const userInfo = await getSessionUserInfo({
+    request,
+    accessToken: cookies.get('sb-access-token')?.value,
+    refreshToken: cookies.get('sb-refresh-token')?.value,
+  })
+  const userName = userInfo?.name
+  if (!userName) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
@@ -111,8 +123,8 @@ export const DELETE: APIRoute = checkSession(async ({ request }) => {
   const { data: userId, error: userIdError } = await supabase
     .from('public_users')
     .select('id')
-    .eq('name', user.name)
-    .single()
+    .eq('name', userName)
+
 
   if (userIdError) {
     console.error(userIdError)
@@ -124,7 +136,7 @@ export const DELETE: APIRoute = checkSession(async ({ request }) => {
   const { error: deleteError } = await supabase
     .from('search_history')
     .delete()
-    .eq('user_id', userId.id)
+    .eq('user_id', userId[0].id)
 
   if (deleteError) {
     console.error(deleteError)
