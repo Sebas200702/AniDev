@@ -74,7 +74,7 @@ export const Step3 = () => {
       setSuccessMessage('Profile updated successfully')
       toast[ToastType.Success]({ text: 'Perfil actualizado con éxito' })
       nextStep()
-      navigate('/profile')
+      navigate('/')
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : 'Error en la solicitud'
@@ -246,7 +246,7 @@ export const Step3 = () => {
           type="submit"
           className="button-primary w-full focus:ring-2 focus:outline-none disabled:opacity-50 mt-4"
         >
-          Guardar y continuar
+          Save and continue
         </button>
       )}
     </form>
