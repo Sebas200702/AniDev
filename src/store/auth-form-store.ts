@@ -11,8 +11,8 @@ import { create } from 'zustand'
 const signInSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z
-        .string()
-        .min(6, 'The password must be at least 6 characters long')
+    .string()
+    .min(6, 'The password must be at least 6 characters long')
     .regex(
       /(?=.*[a-z])/,
       'The password must contain at least one lowercase letter'
@@ -22,10 +22,7 @@ const signInSchema = z.object({
       'The password must contain at least one uppercase letter'
     )
     .regex(/(?=.*\d)/, 'The password must contain at least one number')
-    .regex(
-      /(?=.*[!@#$%^&*])/,
-      'The password must contain at least one symbol'
-    )
+    .regex(/(?=.*[!@#$%^&*])/, 'The password must contain at least one symbol')
     .max(20, 'The password cannot have more than 20 characters'),
 })
 
@@ -37,7 +34,20 @@ const signInSchema = z.object({
  */
 const signUpSchema = signInSchema.extend({
   email: z.string().email('Invalid email format'),
-  password: z.string(),
+  password: z
+    .string()
+    .min(6, 'The password must be at least 6 characters long')
+    .regex(
+      /(?=.*[a-z])/,
+      'The password must contain at least one lowercase letter'
+    )
+    .regex(
+      /(?=.*[A-Z])/,
+      'The password must contain at least one uppercase letter'
+    )
+    .regex(/(?=.*\d)/, 'The password must contain at least one number')
+    .regex(/(?=.*[!@#$%^&*])/, 'The password must contain at least one symbol')
+    .max(20, 'The password cannot have more than 20 characters'),
   user_name: z
     .string()
     .min(3, 'The username must be at least 3 characters long'),
@@ -140,7 +150,6 @@ export const useAuthFormStore = create<AuthFormState>((set, get) => ({
           formattedErrors[path] = err.message
         }
       })
-
       set({ errors: formattedErrors })
       return false
     }
