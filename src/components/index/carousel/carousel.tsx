@@ -1,6 +1,6 @@
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useCallback, useEffect } from 'react'
-
+import { baseUrl } from '@utils/base-url'
 import { CarouselItem } from '@components/index/carousel/carousel-item'
 import { LoadingCarousel } from '@components/index/carousel/carousel-loader'
 import { Indicator } from '@components/index/carousel/indicator'
@@ -12,6 +12,7 @@ import { useWindowWidth } from '@store/window-width'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { AnimeBannerInfo } from 'types'
+import { Overlay } from '@components/overlay'
 
 /**
  * Carousel component displays a rotating banner of featured anime content.
@@ -87,12 +88,12 @@ export const Carousel = (): JSX.Element => {
     banners.forEach((anime) => {
       const image = new Image()
       if (isMobile) {
-        image.src = createImageUrlProxy(anime.banner_image, '720', '50', 'webp')
-        image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
+        image.src = createImageUrlProxy(anime.banner_image ?? `${baseUrl}/placeholder.webp`, '720', '50', 'webp')
+        image.src = createImageUrlProxy(anime.banner_image ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')
         return
       }
-      image.src = createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
-      image.src = createImageUrlProxy(anime.banner_image, '0', '0', 'webp')
+      image.src = createImageUrlProxy(anime.banner_image ?? `${baseUrl}/placeholder.webp`, '1920', '50', 'webp')
+      image.src = createImageUrlProxy(anime.banner_image ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')
     })
   }, [banners])
 
@@ -142,7 +143,7 @@ export const Carousel = (): JSX.Element => {
 
   return (
     <section
-      className={`fade-out relative right-0 left-0 h-[70vh] md:h-[650px] xl:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`fade-out  relative right-0 left-0 h-[70vh] md:h-[650px] xl:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
@@ -172,9 +173,11 @@ export const Carousel = (): JSX.Element => {
         ))}
       </nav>
       <div className="absolute bottom-12 z-40 hidden w-full flex-row justify-between p-4 md:end-20 md:top-30 md:flex md:w-auto md:justify-items-center md:gap-5 md:p-0">
+
         <NexPrevBtnCarousel action={handlePrev} label="Previous" />
         <NexPrevBtnCarousel action={handleNext} label="Next" />
       </div>
+      <Overlay  className="to-Primary-950  h-full w-1/3 bg-gradient-to-l pointer-events-none z-1" />
     </section>
   )
 }
