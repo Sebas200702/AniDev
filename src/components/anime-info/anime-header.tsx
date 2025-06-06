@@ -43,8 +43,11 @@ export const AnimeHeader = ({ animeData }: Props) => {
         className="flex flex-row flex-wrap items-center justify-center gap-3 md:justify-start"
         aria-label="Categorías y géneros"
       >
-        <AnimeTag tag={getAnimeType(animeData.type)} type={animeData.type} />
-        {animeData.genres.map((genre) => (
+        <AnimeTag
+          tag={getAnimeType(animeData.type ?? '')}
+          type={animeData.type ?? ''}
+        />
+        {animeData.genres?.map((genre) => (
           <AnimeTag key={genre} tag={genre} type={genre} style="w-auto" />
         ))}
         {animeData.rating && (
