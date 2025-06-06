@@ -40,7 +40,7 @@ export default defineConfig({
                     console.error('Error creando usuario admin:', createErr)
                     return false
                 }
-                console.log('Usuario admin creado:', createRes.user.id)
+                
             }
 
             return true
