@@ -6,6 +6,7 @@ import { Picture } from '@components/picture'
 import { useIndexStore } from '@store/index-store'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
+import { baseUrl } from '@utils/base-url'
 
 interface Props {
   /**
@@ -191,11 +192,11 @@ export const AnimeCollection = ({ id }: Props): JSX.Element => {
           {animes.map((anime, i) => (
             <Picture
               key={anime.mal_id}
-              image={anime.image_small_webp}
+              image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
               styles={`${getPosition(i)} w-full max-w-44 rounded-md relative`}
             >
               <img
-                src={anime.image_webp}
+                src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
                 alt={anime.title}
                 fetchPriority="high"
                 loading="lazy"
