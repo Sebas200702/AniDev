@@ -4,6 +4,7 @@ import { StarIcon } from '@components/icons/star-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { SeasonIcon } from '@icons/season-icon'
+import { baseUrl } from '@utils/base-url'
 import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
@@ -64,11 +65,11 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           title={anime.title}
         >
           <Picture
-            image={anime.image_small_webp}
+            image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
             styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
           >
             <img
-              src={anime.image_webp}
+              src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
               alt={anime.title}
               className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
               loading="lazy"
@@ -93,7 +94,7 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
                   title={`Score: ${anime.score ?? 'N/A'}`}
                 >
                   <StarIcon className="text-enfasisColor h-4 w-4" />
-                  {formatScore(anime.score)}
+                  {formatScore(anime.score ?? 0)}
                 </span>
                 <span
                   className="flex flex-row items-center justify-center gap-2"
