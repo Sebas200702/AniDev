@@ -21,6 +21,7 @@
     "@hookform/resolvers": "^4.1.3",
     "@justinribeiro/lite-youtube": "^1.7.1",
     "@pheralb/toast": "^1.0.0",
+    "@google/generative-ai": "0.21.0",
     "@supabase/supabase-js": "^2.46.1",
     "@tailwindcss/vite": "^4.0.4",
     "astro": "5.7.13",
