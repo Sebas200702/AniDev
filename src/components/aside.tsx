@@ -20,7 +20,7 @@ export const AsideNav = () => {
 
   return (
     <>
-      {/* Desktop - Sidebar vertical */}
+
       <aside className="hidden md:flex fixed top-0 left-0 z-50 w-20 h-full bg-Primary-950 flex-col border-r border-white/10">
         <nav className="flex flex-col mt-10 h-full w-full items-center mx-auto">
           <Logo />
@@ -44,7 +44,7 @@ export const AsideNav = () => {
         </nav>
       </aside>
 
-      {/* Mobile - Barra horizontal inferior */}
+
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-Primary-950 border-t border-white/10">
         <div className="flex justify-around items-center h-16 px-2">
           {menuItems.map((item) => (
