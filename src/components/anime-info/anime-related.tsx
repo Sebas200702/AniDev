@@ -10,13 +10,18 @@ export const AnimeRelated = ({ animeId }: { animeId: number }) => {
 
   if (loading)
     return (
-      <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <li key={index}>
-            <LoadingCard />
-          </li>
-        ))}
-      </ul>
+      <div className="z-10 bg-Complementary relative p-4 rounded-lg flex flex-col gap-4">
+        <header className="flex items-center justify-between px-10">
+          <h2 className="text-2xl font-bold">Related</h2>
+        </header>
+        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <li key={index}>
+              <LoadingCard />
+            </li>
+          ))}
+        </ul>
+      </div>
     )
 
   return (
