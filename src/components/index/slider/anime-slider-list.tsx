@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { AnimeCard } from '@components/anime-card'
 import { AnimeSliderLoader } from '@components/index/slider/anime-slider-loader'
@@ -9,7 +9,7 @@ import { useWindowWidth } from '@store/window-width'
 import type { AnimeCardInfo } from 'types'
 
 interface Props {
-  query: string
+  url: string
   title: string
 }
 
@@ -30,18 +30,19 @@ interface Props {
  * The navigation buttons automatically hide when scrolling reaches the beginning or end of the list.
  *
  * @param {Props} props - The component props
- * @param {string} props.query - The query string used to fetch anime data from the API
+ * @param {string} props.url - The full API url to fetch anime data from
  * @param {string} props.title - The title displayed at the top of the slider
  * @returns {JSX.Element} The rendered anime slider with title, navigation buttons, and scrollable anime cards
  *
  * @example
- * <AnimeSlider query="genre_filter=action" title="Action Anime" />
+ * <AnimeSlider url="/api/animes?limit_count=24&genre_filter=action&banners_filter=false" title="Action Anime" />
  */
-export const AnimeSlider = ({ query, title }: Props) => {
+export const AnimeSlider = ({ url, title }: Props) => {
   const [cachedAnimes, setCachedAnimes] = useState<AnimeCardInfo[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
+  const listRef = useRef<HTMLUListElement>(null)
 
-  const storageKey = `animes_${query}`
+  const storageKey = `animes_${url}`
 
   const getCachedAnimes = useCallback(() => {
     const storedAnimes = sessionStorage.getItem(storageKey)
@@ -54,9 +55,43 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }, [storageKey])
 
   const { data: animes, loading } = useFetch<AnimeCardInfo[]>({
-    url: `/api/animes?limit_count=24&${query}&banners_filter=false`,
+    url,
     skip: cachedAnimes.length > 0,
   })
+
+  const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
+
+  const createGroups = (animes: AnimeCardInfo[]) => {
+    let itemsPerGroup = 2
+
+    if (windowWidth && windowWidth > 1280) {
+      itemsPerGroup = 6
+    } else if (windowWidth && windowWidth > 768) {
+      itemsPerGroup = 4
+    }
+
+    return Array.from({ length: Math.ceil(animes.length / itemsPerGroup) }).map(
+      (_, groupIndex) => {
+        return animes.slice(
+          groupIndex * itemsPerGroup,
+          (groupIndex + 1) * itemsPerGroup
+        )
+      }
+    )
+  }
+
+  const groups = createGroups(displayAnimes)
+  const totalGroups = groups.length
+
+
+  const getPaddingAndGap = () => {
+    if (windowWidth && windowWidth < 768) {
+      return { padding: 'px-4', gap: 'gap-4' }
+    }
+    return { padding: 'px-20', gap: 'gap-10' }
+  }
+
+  const { padding, gap } = getPaddingAndGap()
 
   useEffect(() => {
     const storedAnimes = getCachedAnimes()
@@ -77,75 +112,101 @@ export const AnimeSlider = ({ query, title }: Props) => {
   }, [setWindowWidth])
 
   useEffect(() => {
-    const sliders = document.querySelectorAll('.anime-slider')
+    const ul = listRef.current
+    if (!ul) return
 
-    sliders.forEach((slider) => {
-      const sliderList = slider.querySelector('.anime-list') as HTMLUListElement
-      const prevButton = slider.querySelector(
-        '.prev-button'
-      ) as HTMLButtonElement
-      const nextButton = slider.querySelector(
-        '.next-button'
-      ) as HTMLButtonElement
+    const prevBtn = ul.parentElement?.querySelector(
+      '.prev-button'
+    ) as HTMLButtonElement
+    const nextBtn = ul.parentElement?.querySelector(
+      '.next-button'
+    ) as HTMLButtonElement
 
-      const updateButtonsVisibility = () => {
-        if (windowWidth && windowWidth < 768) {
-          prevButton.style.display = 'none'
-          nextButton.style.display = 'none'
-          return
-        }
-        const { scrollLeft, scrollWidth, clientWidth } = sliderList
-        prevButton.style.display = scrollLeft <= 0 ? 'none' : 'flex'
-        nextButton.style.display =
-          scrollLeft + clientWidth >= scrollWidth ? 'none' : 'flex'
+    if (!prevBtn || !nextBtn) return
+
+    const clientWidth = ul.clientWidth
+
+    const scrollPadding = windowWidth && windowWidth < 768 ? 32 : 120
+    const groupWidth = clientWidth - scrollPadding
+
+    const handleClick = (direction: 'next' | 'prev') => {
+      if (!ul) return
+      const scrollAmount = direction === 'next' ? groupWidth : -groupWidth
+      ul.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth',
+      })
+    }
+
+    const updateButtonsVisibility = () => {
+      if (windowWidth && windowWidth < 768) {
+        prevBtn.style.display = 'none'
+        nextBtn.style.display = 'none'
+        return
       }
 
-      const handleScroll = (direction: 'next' | 'prev') => {
-        if (!sliderList || windowWidth === null) return
+      const { scrollLeft, scrollWidth, clientWidth } = ul
+      prevBtn.style.display = scrollLeft <= 0 ? 'none' : 'flex'
 
-        const scrollAmount = windowWidth - 120
+      nextBtn.style.display =
+        scrollLeft >= scrollWidth - clientWidth - 10 ? 'none' : 'flex'
+    }
 
-        const scrollDistance =
-          direction === 'next' ? scrollAmount : -scrollAmount
+    prevBtn.addEventListener('click', () => handleClick('prev'))
+    nextBtn.addEventListener('click', () => handleClick('next'))
+    ul.addEventListener('scroll', updateButtonsVisibility)
 
-        sliderList.scrollBy({
-          left: scrollDistance,
-          behavior: 'smooth',
-        })
-      }
+    updateButtonsVisibility()
 
-      sliderList.addEventListener('scroll', updateButtonsVisibility)
-      prevButton.addEventListener('click', () => handleScroll('prev'))
-      nextButton.addEventListener('click', () => handleScroll('next'))
+    return () => {
+      prevBtn.removeEventListener('click', () => handleClick('prev'))
+      nextBtn.removeEventListener('click', () => handleClick('next'))
+      ul.removeEventListener('scroll', updateButtonsVisibility)
+    }
+  }, [windowWidth, totalGroups, displayAnimes])
 
-      updateButtonsVisibility()
-
-      return () => {
-        sliderList.removeEventListener('scroll', updateButtonsVisibility)
-        prevButton.removeEventListener('click', () => handleScroll('prev'))
-        nextButton.removeEventListener('click', () => handleScroll('next'))
-      }
-    })
-  }, [cachedAnimes, windowWidth, loading, setWindowWidth])
-
-  const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
-
-  if (loading || !cachedAnimes || !animes || !displayAnimes)
+  if (loading || !displayAnimes.length) {
     return <AnimeSliderLoader />
+  }
 
   return (
-    <section className="anime-slider fade-out relative mx-auto w-[100dvw]">
+    <section className="anime-slider fade-out relative mx-auto w-full">
       <SliderHeader title={title} />
 
       <div className="relative overflow-hidden">
-        <NexPrevBtnSlideList label="prev-button " styles="" />
-        <NexPrevBtnSlideList label="next-button" styles="right-0 rotate-180" />
+        <NexPrevBtnSlideList
+          label="prev-button"
+          styles="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+        />
+        <NexPrevBtnSlideList
+          label="next-button"
+          styles="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-180 z-10"
+        />
 
-        <ul className="anime-list mx-auto flex w-full flex-row gap-6 overflow-x-auto overflow-y-hidden scroll-smooth px-4 py-4 md:gap-10 md:px-20">
-          {displayAnimes.map((anime: AnimeCardInfo) => (
-            <li key={anime.mal_id}>
-              <AnimeCard anime={anime} context={title} />
-            </li>
+        <ul
+          ref={listRef}
+          className={`anime-list flex overflow-x-scroll scroll-smooth  py-4 md:px-20 px-4 md:gap-10 gap-6 no-scrollbar snap-x snap-mandatory`}
+        >
+          {groups.map((group, groupIndex) => (
+            <section
+              key={groupIndex}
+              className={`
+                grid flex-none md:gap-10 gap-6
+                ${
+                  windowWidth && windowWidth > 1280
+                    ? 'grid-cols-6 w-full'
+                    : windowWidth && windowWidth > 768
+                      ? 'grid-cols-4 w-full'
+                      : 'grid-cols-2 w-[90%]'
+                }
+              `}
+            >
+              {group.map((anime: AnimeCardInfo) => (
+                <li key={anime.mal_id}>
+                  <AnimeCard anime={anime} context={'index'} />
+                </li>
+              ))}
+            </section>
           ))}
         </ul>
       </div>
