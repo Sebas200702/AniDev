@@ -58,7 +58,7 @@ export const NexPrevBtnCarousel = ({
       className={`group h-12 w-12 cursor-pointer items-center justify-center rounded-lg backdrop-blur-sm focus:outline-none md:h-16 md:w-16 ${label === 'Next' ? 'rotate-180' : ''}`}
       onClick={action}
     >
-      <span className="bg-Primary-900/40 group-hover:bg-Primary-800/50 inline-flex h-full w-full items-center justify-center rounded-lg">
+      <span className="bg-Complementary/60 group-hover:bg-Complementary/80 inline-flex h-full w-full items-center justify-center rounded-lg">
         <NextPrevIcon className="h-4 w-4 md:h-5 md:w-5" />
         <span className="sr-only">{label}</span>
       </span>
