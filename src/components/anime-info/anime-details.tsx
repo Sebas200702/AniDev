@@ -59,7 +59,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
     themes,
     producers,
     season,
-    aired_day,
+    broadcast_day,
     episodes,
     scored_by,
     aired_to,
@@ -77,7 +77,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
     { name: 'Status', value: status, icon: StatusIcon },
     { name: 'Season', value: season, icon: SeasonIcon },
     { name: 'Type', value: type, icon: TypeIcon },
-    { name: 'Studios', value: studios.join(', '), icon: StudioIcon },
+    { name: 'Studios', value: studios?.join(', '), icon: StudioIcon },
     { name: 'Themes', value: themes?.join(', '), icon: ThemesIcon },
     { name: 'Duration', value: duration, icon: ClockIcon },
     { name: 'Score', value: score, icon: StarIcon },
@@ -88,7 +88,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
       icon: ProducerIcon,
     },
 
-    { name: 'Aired Day', value: aired_day, icon: AiredDayIcon },
+    { name: 'Broadcast Day', value: broadcast_day, icon: AiredDayIcon },
     { name: 'Episodes', value: episodes, icon: EpisodeIcon },
     { name: 'Scored By', value: scored_by, icon: ScoredByIcon },
     { name: 'Aired To', value: aired_to, icon: AiredToIcon },
@@ -96,7 +96,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
     { name: 'Title Japanese', value: title_japanese, icon: TitleJapaneseIcon },
     {
       name: 'Title Synonyms',
-      value: title_synonyms.slice(0, 3).join(', '),
+      value: title_synonyms?.slice(0, 3).join(', '),
       icon: OtherTitlesIcon,
     },
     { name: 'Mal ID', value: mal_id, icon: IdIcon },
@@ -105,7 +105,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
 
   return (
     <section
-      className={`z-10 flex h-min w-full flex-col items-center justify-center px-10 transition-all duration-300 md:col-span-1 md:px-0 ${isOpen ? '' : '-translate-y-10 transform delay-300 xl:translate-y-0'} `}
+      className={`z-10 flex h-min w-full flex-col items-center justify-center px-10 transition-all duration-300 md:col-span-1 md:px-0 ${isOpen ? '' : '-translate-y-10 transform delay-300 md:translate-y-0'} `}
     >
       <header
         className={`bg-enfasisColor w-[80%] items-center justify-center transition-all delay-300 duration-300 ease-in-out ${isOpen ? 'rounded-t-xl' : 'rounded-b-xl md:rounded-t-xl md:rounded-b-none'} flex flex-row gap-4 px-4 py-1.5`}
@@ -142,7 +142,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
                 className={`h-full max-h-5 w-full max-w-5 ${detail.name !== 'Status' && detail.name !== 'Type' && detail.name !== 'Season' ? 'text-enfasisColor' : ''}`}
                 season={season ?? ''}
                 status={status}
-                type={type}
+                type={type ?? 'unknown'}
               />
             )}
             <span className="text-s text-pretty capitalize">
