@@ -8,6 +8,7 @@ import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { Overlay } from '@components/overlay'
+import { baseUrl } from '@utils/base-url'
 import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
 import type { Anime } from 'types'
@@ -60,8 +61,10 @@ export const AnimeInfo = ({ slug }: Props) => {
   return (
     <>
       <AnimeBanner
-        banner_image={animeData.banner_image}
-        image_large_webp={animeData.image_large_webp}
+        banner_image={animeData.banner_image ?? ''}
+        image_large_webp={
+          animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
+        }
         title={animeData.title}
       />
 
@@ -79,11 +82,14 @@ export const AnimeInfo = ({ slug }: Props) => {
         <div className="row-span-2 flex h-full flex-col gap-4 md:col-span-2 xl:col-span-3">
           <AnimeNavBar />
           <AnimeShowBox
-            trailer_url={animeData.trailer_url}
-            banner_image={animeData.banner_image}
-            image_large_webp={animeData.image_large_webp}
+            animeId={animeData.mal_id}
+            trailer_url={animeData.trailer_url ?? ''}
+            banner_image={animeData.banner_image ?? ''}
+            image_large_webp={
+              animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
+            }
             title={animeData.title}
-            synopsis={animeData.synopsis}
+            synopsis={animeData.synopsis ?? 'No synopsis available'}
           />
         </div>
         <AnimeDetails animeData={animeData} />
