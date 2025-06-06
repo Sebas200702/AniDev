@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { Picture } from '@components/picture'
+import { baseUrl } from '@utils/base-url'
 
 /**
  * Props for the AnimeTrailer component.
@@ -88,11 +89,11 @@ export const AnimeTrailer = ({
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
           <Picture
-            image={banner_image ?? image_large_webp}
+            image={banner_image ?? image_large_webp ?? `${baseUrl}/placeholder.webp`}
             styles="aspect-video h-full relative w-full rounded-sm"
           >
             <img
-              src={banner_image ?? image_large_webp}
+              src={banner_image ?? image_large_webp ?? `${baseUrl}/placeholder.webp`}
               alt={title}
               className="aspect-video h-full w-full rounded-sm object-cover object-center transition-all ease-in-out"
               loading="lazy"
