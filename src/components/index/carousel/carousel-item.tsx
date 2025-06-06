@@ -5,6 +5,7 @@ import { useWindowWidth } from '@store/window-width'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeBannerInfo } from 'types'
+import { baseUrl } from '@utils/base-url'
 
 interface CarouselItemProps {
   anime: AnimeBannerInfo
@@ -48,15 +49,15 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
     >
       <div className="absolute inset-0 h-[40vh] w-full overflow-hidden md:h-full">
         <Picture
-          image={createImageUrlProxy(anime.banner_image, '0', '0', 'webp')}
+          image={createImageUrlProxy(anime.banner_image ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
           styles="w-full h-full object-cover object-center relative"
         >
           <img
             className="relative h-full w-full object-cover object-center"
             src={
               isMobile
-                ? createImageUrlProxy(anime.banner_image, '720', '50', 'webp')
-                : createImageUrlProxy(anime.banner_image, '1920', '50', 'webp')
+                ? createImageUrlProxy(anime.banner_image ?? '', '720', '50', 'webp')
+                : createImageUrlProxy(anime.banner_image ?? '', '1920', '50', 'webp')
             }
             alt="Anime Banner"
             loading="lazy"
@@ -87,6 +88,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
           />
         </div>
       </div>
+
       <Overlay className="to-Primary-950 via-Primary-950 md:via-Primary-950/10 h-full w-full bg-gradient-to-b" />
       <Overlay
         className={`md:to-Primary-950/90 md:via-Primary-950/60 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
