@@ -1,4 +1,5 @@
 import { Picture } from '@components/picture'
+import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 
 /**
@@ -54,16 +55,36 @@ export const AnimeBanner = ({
       <Picture
         image={
           banner_image
-            ? createImageUrlProxy(banner_image, '100', '0', 'webp')
-            : createImageUrlProxy(image_large_webp, '100', '0', 'webp')
+            ? createImageUrlProxy(
+                banner_image,
+                '100',
+                '0',
+                'webp'
+              )
+            : createImageUrlProxy(
+                image_large_webp ?? `${baseUrl}/placeholder.webp`,
+                '100',
+                '0',
+                'webp'
+              )
         }
         styles="h-full object-cover object-center relative"
       >
         <img
           src={
             banner_image
-              ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
-              : createImageUrlProxy(image_large_webp, '1920', '50', 'webp')
+              ? createImageUrlProxy(
+                  banner_image,
+                  '1920',
+                  '50',
+                  'webp'
+                )
+              : createImageUrlProxy(
+                  image_large_webp ?? `${baseUrl}/placeholder.webp`,
+                  '1920',
+                  '50',
+                  'webp'
+                )
           }
           alt={`${title} banner`}
           loading="lazy"
