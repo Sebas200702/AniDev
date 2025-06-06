@@ -34,7 +34,7 @@ export const AnimeTop = () => {
   if (loading || !anime) return <AnimeTopLoader />
 
   return (
-    <section className="fade-out relative mx-auto w-[100dvw] justify-center">
+    <section className="fade-out relative mx-auto w-full justify-center">
       <AnimeTopHeader />
       <ul className="mx-auto grid grid-cols-1 justify-around gap-y-4 px-4 py-4 md:px-20 xl:grid-cols-2 xl:gap-x-12">
         {anime.map((anime, index) => (
