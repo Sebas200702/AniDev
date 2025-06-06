@@ -1,37 +1,95 @@
 export type Anime = {
   readonly mal_id: number
+  readonly url: string | null
+  readonly image_url: string | null
+  readonly image_small_jpg: string | null
+  readonly image_large_jpg: string | null
+  readonly image_webp: string | null
+  readonly image_small_webp: string | null
+  readonly image_large_webp: string | null
+  readonly youtube_id: string | null
+  readonly trailer_url: string | null
+  readonly trailer_embed_url: string | null
+  readonly trailer_image_url: string | null
+  readonly approved: boolean | null
   readonly title: string
-  readonly title_japanese: string
-  readonly title_synonyms: string[]
-  readonly type: string
-  readonly source: string
-  readonly episodes: number
+  readonly title_english: string | null
+  readonly title_japanese: string | null
+  readonly type: string | null
+  readonly source: string | null
+  readonly episodes: number | null
   readonly status: string
-  readonly aired_from: string
-  readonly year: string
-  readonly aired_to?: string | null
-  readonly duration: string
-  readonly rating: string
-  readonly score: number
-  readonly scored_by: number
-  readonly synopsis: string
+  readonly airing: boolean | null
+  readonly aired_from: string | null
+  readonly aired_to: string | null
+  readonly duration: string | null
+  readonly rating: string | null
+  readonly score: number | null
+  readonly scored_by: number | null
+  readonly popularity: number | null
+  readonly members: number | null
+  readonly favorites: number | null
+  readonly synopsis: string | null
+  readonly background: string | null
+  readonly season: string | null
+  readonly year: number
+  readonly broadcast_day: string | null
+  readonly broadcast_time: string | null
+  readonly broadcast_timezone: string | null
+  readonly title_synonyms: string[] | null
+  readonly banner_image: string | null
   readonly genres: string[]
   readonly studios: string[]
-  readonly trailer_url: string
-  readonly image_url: string
-  readonly image_webp: string
-  readonly image_small_jpg: string
-  readonly image_small_webp: string
-  readonly image_large_jpg: string
-  readonly image_large_webp: string
-  readonly banner_image: string
-  readonly created_at: string
-  readonly aired: boolean | null
-  readonly themes: string[] | null
-  readonly producers: string[] | null
-  readonly season: string | null
-  readonly aired_day: string | null
+  readonly producers: string[]
+  readonly licensors: string[]
+  readonly themes: string[]
 }
+
+interface VoiceActor {
+  id: number
+  name: string
+  imageUrl: string
+}
+
+interface Character {
+  id: string
+  character_id: number
+  character_name: string
+  character_name_kanji: string
+  character_nicknames: string[]
+  character_about: string
+  character_image_url: string
+  character_small_image_url: string
+  character_url: string
+  role: string
+  voice_actor_id: number
+  voice_actor_name: string
+  voice_actor_alternative_names: string[]
+  voice_actor_family_name: string
+  voice_actor_given_name: string
+  voice_actor_birthday: string
+  voice_actor_about: string
+  voice_actor_image_url: string
+  voice_actor_language: string
+}
+
+interface CharacterListProps {
+  characters: Character[]
+}
+export interface AnimeSong {
+  anime_mal_id: number
+  song_title: string
+  type: string
+  video_url: string
+  audio_url: string
+  version: string
+  resolution: string
+  song_id: number
+  artist_name: string | null
+  episodes: string | null
+  sequence: number | null
+}
+
 export interface ApiJsonResponse {
   url?: string
   message?: string
@@ -153,7 +211,6 @@ export interface AppliedFilters {
 export interface SearchHistory {
   query: string
   appliedFilters: AppliedFilters
-  results: AnimeCardInfo[]
   totalResults: number
 }
 export interface UserInfo {
@@ -240,6 +297,19 @@ export const airedDayOptions: FilterOption[] = [
   { value: 'thursday', label: 'Thursday' },
   { value: 'friday', label: 'Friday' },
   { value: 'saturday', label: 'Saturday' },
+]
+export const languageOptions: FilterOption[] = [
+  { value: 'English', label: 'English' },
+  { value: 'French', label: 'French' },
+  { value: 'German', label: 'German' },
+  { value: 'Hebrew', label: 'Hebrew' },
+  { value: 'Hungarian', label: 'Hungarian' },
+  { value: 'Italian', label: 'Italian' },
+  { value: 'Japanese', label: 'Japanese' },
+  { value: 'Korean', label: 'Korean' },
+  { value: 'Mandarin', label: 'Mandarin' },
+  { value: 'Portuguese (BR)', label: 'Portuguese (BR)' },
+  { value: 'Spanish', label: 'Spanish' }
 ]
 
 export const statusOptions: FilterOption[] = [
