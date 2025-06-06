@@ -173,7 +173,6 @@ export const SearchBar = (): JSX.Element => {
     const newHistory = {
       query,
       appliedFilters,
-      results: animes,
       totalResults: total,
     }
     addSearchHistory(newHistory)
