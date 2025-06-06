@@ -3,6 +3,7 @@ import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { StatusPoint } from '@components/status-point'
 import { useWindowWidth } from '@store/window-width'
+import { baseUrl } from '@utils/base-url'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
@@ -40,10 +41,13 @@ interface Props {
   /**
    * Optional context for the component.
    */
+
   context?: string
+
+
 }
 
-export const AnimeCard = ({ anime, context }: Props) => {
+export const AnimeCard = ({ anime }: Props) => {
   const {
     title,
     image_large_webp,
@@ -54,9 +58,11 @@ export const AnimeCard = ({ anime, context }: Props) => {
     status,
     genres,
   } = anime
+
   const slug = normalizeString(title)
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
+
   let timer: NodeJS.Timeout
 
   /**
@@ -91,22 +97,28 @@ export const AnimeCard = ({ anime, context }: Props) => {
 
   return (
     <article
-      className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.02]"
+      className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.01]"
       title={title}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <a
         href={`/anime/${slug}_${mal_id}`}
-        className={`flex h-auto flex-col items-center rounded-lg ${context === 'search' ? '' : 'w-[calc((100dvw-32px)/2.4)] md:w-[calc((100dvw-280px)/4)] xl:w-[calc((100dvw-360px)/6)]'}`}
+        className={`flex h-auto flex-col items-center rounded-lg`}
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={image_small_webp}
+          image={
+            image_small_webp ?? `${baseUrl}/placeholder.webp`
+          }
           styles="relative h-full w-full rounded-lg"
         >
           <img
-            src={isMobile ? image_webp : image_large_webp}
+            src={
+              isMobile
+                ? (image_webp ?? `${baseUrl}/placeholder.webp`)
+                : (image_large_webp ?? `${baseUrl}/placeholder.webp`)
+            }
             alt={title}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
@@ -120,7 +132,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
             status={status}
           />
           <span
-            className={`${genreToColor(genres[0])} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
+            className={`${genreToColor(genres?.[0] ?? '')} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
             aria-hidden="true"
           >
             {title}
@@ -128,7 +140,7 @@ export const AnimeCard = ({ anime, context }: Props) => {
         </footer>
       </a>
       <div className="absolute top-2 -right-3">
-        <AnimeTag tag={year} type={year} />
+        <AnimeTag tag={year?.toString()} type={year?.toString()} />
       </div>
     </article>
   )
