@@ -11,6 +11,7 @@ import { useSearchStoreResults } from '@store/search-results-store'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeDetail } from 'types'
+import { baseUrl } from '@utils/base-url'
 
 /**
  * AnimeDetailCard component displays a detailed view of an anime with a banner background and additional information.
@@ -50,7 +51,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         <div className="absolute h-full w-full">
           <Picture
             image={createImageUrlProxy(
-              anime.banner_image ?? anime.image_large_webp,
+              anime.banner_image ?? anime.image_large_webp ?? `${baseUrl}/placeholder.webp`,
               '0',
               '0',
               'webp'
@@ -59,7 +60,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           >
             <img
               src={createImageUrlProxy(
-                anime.banner_image ?? anime.image_large_webp,
+                anime.banner_image ?? anime.image_large_webp ?? `${baseUrl}/placeholder.webp`,
                 '500',
                 '60',
                 'webp'
@@ -72,11 +73,11 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           </Picture>
         </div>
         <Picture
-          image={anime.image_small_webp}
+          image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
           styles="aspect-[225/330] h-full  overflow-hidden rounded-l-lg relative"
         >
           <img
-            src={anime.image_webp}
+            src={anime.image_webp ?? `${baseUrl}/placeholder.webp` }
             alt={anime.title}
             className="relative aspect-[225/330] h-full w-full rounded-l-lg object-cover object-center"
             loading="lazy"
@@ -87,7 +88,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
 
           <footer className="text-sx flex w-20 gap-3">
             <span className="flex flex-row items-center justify-center gap-2">
-              <TypeIcon className="h-4 w-4" type={anime.type} />
+              <TypeIcon className="h-4 w-4" type={anime.type ?? ''} />
               {anime.type === 'TV Special' ? 'Special' : anime.type}
             </span>
             <span className="flex flex-row items-center justify-center gap-2">
