@@ -36,10 +36,10 @@ import { UserList } from '@components/profile/user-tabs/user-list'
         className="to-Primary-950 absolute inset-0 h-full w-full bg-gradient-to-b"
       />
     </Picture>
-    <UserInfo client:visible />
+    <UserInfo client:load />
 
     <div class="relative">
-      <UserList client:visible />
+      <UserList client:only />
     </div>
   </section>
 </Layout>
