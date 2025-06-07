@@ -52,16 +52,16 @@ export const Profile = () => {
   }, [dropdownRef, buttonRef])
   return (
     <>
-      <article className="flex items-center justify-end gap-4">
+      <article className="flex items-center justify-end ">
         <button
-          className="cursor-pointer"
+          className="cursor-pointer flex flex-row items-center gap-2"
           title="Options"
           onClick={handleClick}
           ref={buttonRef}
         >
           <img
-            className="h-10 w-10 rounded-full"
-            src={userInfo?.avatar ?? '/placeholder.webp'}
+            className="w-10 h-10 rounded-full"
+            src={userInfo?.avatar ?? '/profile-picture-5.webp'}
             alt="Profile"
             loading="lazy"
             decoding="async"
