@@ -3,6 +3,7 @@ import { AnimeDescription } from '@components/anime-info/anime-description'
 import { AnimeTrailer } from '@components/anime-info/anime-trailer'
 import { useAnimeListsStore } from '@store/anime-list-store'
 import { AnimeRelated } from '@components/anime-info/anime-related'
+import { AnimeMusic } from './anime-music'
 
 /**
  * AnimeShowBox component displays content based on the selected tab for an anime.
@@ -42,6 +43,8 @@ interface Props {
   trailer_url: string
   banner_image: string
   image_large_webp: string
+  image_small_webp: string
+  image: string
   title: string
   synopsis: string
 }
@@ -50,6 +53,8 @@ export const AnimeShowBox = ({
   trailer_url,
   banner_image,
   image_large_webp,
+  image_small_webp,
+  image,
   title,
   synopsis,
 }: Props) => {
@@ -67,8 +72,12 @@ export const AnimeShowBox = ({
       />
     )
 
+
   if (currentSelectedLabel === 'Characters')
     return <CharacterSection animeId={animeId}  />
+
+  if (currentSelectedLabel === 'Music')
+    return <AnimeMusic animeId={animeId} image={image} placeholder={image_small_webp} anime_title={title} banner_image={banner_image} />
 
   if (currentSelectedLabel === 'Synopsis')
     return <AnimeDescription synopsis={synopsis} />
