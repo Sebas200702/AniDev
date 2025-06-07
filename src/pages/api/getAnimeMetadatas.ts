@@ -72,7 +72,7 @@ export const GET: APIRoute = rateLimit(
         })
       }
       const { data, error } = await supabase
-        .from('old_anime')
+        .from('anime')
         .select('title, synopsis, image_large_webp')
         .eq('mal_id', id)
         .single()
