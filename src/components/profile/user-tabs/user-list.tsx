@@ -54,26 +54,27 @@ export const UserList = () => {
       </nav>
       <ul className="grid grid-cols-2 md:gap-10 gap-6 p-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {!userInfo?.name && (
-          <div className="flex flex-col gap-4 items-center justify-center mt-20">
+          <div className="flex flex-col gap-4 items-center justify-center mt-20 col-span-6">
             <p className="text-l">Log in to see your lists</p>
-            <a href="/login" className="button-primary px-4 py-2">
-              Log in
+            <a href="/signin" className="button-primary px-4 py-2">
+              Sign in
             </a>
           </div>
         )}
-        {watchList
-          .filter((watch) => watch.type === currentSection?.label)
-          .map((watch) => (
-            <AnimeCard key={watch.id} anime={watch} />
-          ))}
+        {userInfo?.name &&
+          watchList
+            .filter((watch) => watch.type === currentSection?.label)
+            .map((watch) => <AnimeCard key={watch.id} anime={watch} />)}
 
         {isLoading &&
           !watchList.length &&
+          userInfo?.name &&
           Array.from({ length: 6 }).map((_, index) => (
             <LoadingCard key={index} />
           ))}
-        {watchList.filter((watch) => watch.type === currentSection?.label)
-          .length === 0 &&
+        {userInfo?.name &&
+          watchList.filter((watch) => watch.type === currentSection?.label)
+            .length === 0 &&
           !isLoading && (
             <div className="flex flex-col gap-4 items-center justify-center w-full mt-20 col-span-6">
               <p className="text-l text-center">No anime in this list</p>
