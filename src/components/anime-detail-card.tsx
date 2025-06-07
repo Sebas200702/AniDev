@@ -1,17 +1,16 @@
+import { AddToListButton } from '@components/add-to-list-button'
+import { ShareButton } from '@components/buttons/share-button'
 import { CalendarIcon } from '@components/icons/calendar-icon'
 import { EpisodeIcon } from '@components/icons/episode-icon'
-
-import { ShareButton } from '@components/buttons/share-button'
-import { AddToListIcon } from '@components/icons/add-to-list-icon'
 import { PlayIcon } from '@components/icons/play-icon'
 import { TypeIcon } from '@components/icons/type-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useSearchStoreResults } from '@store/search-results-store'
+import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeDetail } from 'types'
-import { baseUrl } from '@utils/base-url'
 
 /**
  * AnimeDetailCard component displays a detailed view of an anime with a banner background and additional information.
@@ -51,7 +50,9 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         <div className="absolute h-full w-full">
           <Picture
             image={createImageUrlProxy(
-              anime.banner_image ?? anime.image_large_webp ?? `${baseUrl}/placeholder.webp`,
+              anime.banner_image ??
+                anime.image_large_webp ??
+                `${baseUrl}/placeholder.webp`,
               '0',
               '0',
               'webp'
@@ -60,7 +61,9 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           >
             <img
               src={createImageUrlProxy(
-                anime.banner_image ?? anime.image_large_webp ?? `${baseUrl}/placeholder.webp`,
+                anime.banner_image ??
+                  anime.image_large_webp ??
+                  `${baseUrl}/placeholder.webp`,
                 '500',
                 '60',
                 'webp'
@@ -77,7 +80,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           styles="aspect-[225/330] h-full  overflow-hidden rounded-l-lg relative"
         >
           <img
-            src={anime.image_webp ?? `${baseUrl}/placeholder.webp` }
+            src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
             alt={anime.title}
             className="relative aspect-[225/330] h-full w-full rounded-l-lg object-cover object-center"
             loading="lazy"
@@ -102,13 +105,18 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           </footer>
         </div>
       </a>
-      <div className="absolute right-4 bottom-4 z-20 flex flex-row gap-1 transition-opacity duration-300 ease-in-out md:opacity-0 md:group-hover:opacity-100 xl:right-6 xl:bottom-6 xl:gap-2">
-        <a href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}>
+      <div className="absolute right-4 bottom-4 z-20 flex flex-row gap-1 bg-Primary-950/60 backdrop-blur-md rounded-md border-1 border-Primary-50/30 px-3 py-1.5 transition-opacity duration-300 ease-in-out md:opacity-0 md:group-hover:opacity-100 xl:right-6 xl:bottom-6 xl:gap-2">
+        <a
+          href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
+          title={`Watch ${anime.title}`}
+        >
           <PlayIcon className="md:hover:text-enfasisColor h-4 w-4 transition-all duration-300 ease-in-out xl:h-5 xl:w-5" />
         </a>
-        <span>
-          <AddToListIcon className="md:hover:text-enfasisColor h-4 w-4 cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5" />
-        </span>
+        <AddToListButton
+          animeId={anime.mal_id}
+          styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
+        />
+
         <ShareButton
           className="md:hover:text-enfasisColor cursor-pointer transition-all duration-300 ease-in-out"
           url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
