@@ -12,6 +12,7 @@ import { VolumeIcon } from '@icons/volume-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { TrailerIcon } from '@icons/trailer-icon'
 
 export const MusicPlayer = () => {
   const {
@@ -194,6 +195,11 @@ export const MusicPlayer = () => {
   const toggleRepeat = () => setRepeat(!repeat)
   const toggleShuffle = () => setShuffle(!shuffle)
   const toggleMinimize = () => setIsMinimized(!isMinimized)
+  const handleToggleFormat = () => {
+    setIsLoading(true)
+    setType(type === 'audio' ? 'video' : 'audio')
+    setIsLoading(false)
+  }
 
   const formatTime = (sec: number) => {
     if (!isFinite(sec)) return '0:00'
@@ -264,6 +270,9 @@ export const MusicPlayer = () => {
                   title="Repetir"
                 >
                   <RepeatIcon className="h-4 w-4" />
+                </button>
+                <button onClick={handleToggleFormat} className='rounded p-1 transition-colors text-white/70 hover:text-white'>
+                    <TrailerIcon className="h-4 w-4" />
                 </button>
               </div>
 
