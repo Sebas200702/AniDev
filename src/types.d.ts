@@ -50,6 +50,12 @@ interface VoiceActor {
   name: string
   imageUrl: string
 }
+export interface WatchList extends AnimeCardInfo {
+  id: string
+  user_id: string
+  anime_id: string
+  type: string
+}
 
 interface Character {
   id: string
@@ -309,7 +315,7 @@ export const languageOptions: FilterOption[] = [
   { value: 'Korean', label: 'Korean' },
   { value: 'Mandarin', label: 'Mandarin' },
   { value: 'Portuguese (BR)', label: 'Portuguese (BR)' },
-  { value: 'Spanish', label: 'Spanish' }
+  { value: 'Spanish', label: 'Spanish' },
 ]
 
 export const statusOptions: FilterOption[] = [
