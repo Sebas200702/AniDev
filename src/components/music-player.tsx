@@ -8,11 +8,11 @@ import { PlayIcon } from '@icons/play-icon'
 import { PreviousIcon } from '@icons/previous-icon'
 import { RandomIcon } from '@icons/random-icon'
 import { RepeatIcon } from '@icons/repeat-icon'
+import { TrailerIcon } from '@icons/trailer-icon'
 import { VolumeIcon } from '@icons/volume-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { TrailerIcon } from '@icons/trailer-icon'
 
 export const MusicPlayer = () => {
   const {
@@ -44,10 +44,15 @@ export const MusicPlayer = () => {
   } = useMusicPlayerStore()
 
   const audioRef = useRef<HTMLAudioElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
+  // Obtener la referencia del media actual según el tipo
+  const getMediaRef = () => {
+    return type === 'video' ? videoRef.current : audioRef.current
+  }
 
   useEffect(() => {
-    const media = audioRef.current
+    const media = getMediaRef()
     if (!media) return
 
     const onTimeUpdate = () => {
@@ -66,7 +71,7 @@ export const MusicPlayer = () => {
 
     const onError = () => {
       setIsLoading(false)
-      setError('Error al cargar el audio')
+      setError('Error al cargar el media')
       setIsPlaying(false)
     }
 
@@ -80,7 +85,6 @@ export const MusicPlayer = () => {
     }
 
     const onVolumeChange = () => setVolume(media.volume)
-
 
     media.addEventListener('timeupdate', onTimeUpdate)
     media.addEventListener('loadstart', onLoadStart)
@@ -97,14 +101,13 @@ export const MusicPlayer = () => {
       media.removeEventListener('ended', onEnded)
       media.removeEventListener('volumechange', onVolumeChange)
     }
-  }, [repeat, isDragging, setCurrentTime])
-
+  }, [repeat, isDragging, setCurrentTime, type])
 
   useEffect(() => {
-    const media = audioRef.current
+    const media = getMediaRef()
     if (!media || !currentSong) return
 
-    const playAudio = async () => {
+    const playMedia = async () => {
       try {
         setIsLoading(true)
         await media.play()
@@ -119,19 +122,18 @@ export const MusicPlayer = () => {
     }
 
     if (isPlaying) {
-      playAudio()
+      playMedia()
     } else {
       media.pause()
     }
-  }, [isPlaying, currentSong])
-
+  }, [isPlaying, currentSong, type])
 
   useEffect(() => {
-    const media = audioRef.current
+    const media = getMediaRef()
     if (media) {
       media.volume = volume
     }
-  }, [volume])
+  }, [volume, type])
 
   const handleTogglePlay = useCallback(() => {
     if (error) return
@@ -143,7 +145,6 @@ export const MusicPlayer = () => {
 
     let nextIdx: number
     if (shuffle) {
-
       do {
         nextIdx = Math.floor(Math.random() * list.length)
       } while (
@@ -173,12 +174,13 @@ export const MusicPlayer = () => {
   const handleSeek = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const time = Number(e.target.value)
-      if (audioRef.current) {
-        audioRef.current.currentTime = time
+      const media = getMediaRef()
+      if (media) {
+        media.currentTime = time
       }
       setCurrentTime(time)
     },
-    [setCurrentTime]
+    [setCurrentTime, type]
   )
 
   const handleSeekStart = () => setIsDragging(true)
@@ -244,71 +246,145 @@ export const MusicPlayer = () => {
 
       {!isMinimized && (
         <>
-          <Picture
-            image={createImageUrlProxy(currentSong.image, '100', '0', 'webp')}
-            styles="aspect-video w-full h-full relative overflow-hidden rounded-md"
-          >
-            <img
-              src={proxyUrl}
-              alt={currentSong.song_title}
-              className="relative aspect-video w-full object-cover transition-transform duration-300 hover:scale-105"
-            />
-            <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
+          {type === 'video' ? (
+            <div className="aspect-video w-full h-full relative overflow-hidden rounded-md">
+              {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
+              <video
+                ref={videoRef}
+                src={currentSong.video_url}
+                preload="metadata"
+                className="relative aspect-video w-full object-cover"
+                style={{ display: 'block' }}
+              />
+              <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
 
-            <div className="absolute right-0 bottom-0 left-0 z-50 flex items-center justify-between p-4">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={toggleShuffle}
-                  className={`rounded p-1 transition-colors ${shuffle ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
-                  title="Reproducción aleatoria"
-                >
-                  <RandomIcon className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={toggleRepeat}
-                  className={`rounded p-1 transition-colors ${repeat ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
-                  title="Repetir"
-                >
-                  <RepeatIcon className="h-4 w-4" />
-                </button>
-                <button onClick={handleToggleFormat} className='rounded p-1 transition-colors text-white/70 hover:text-white'>
+              <div className="absolute right-0 bottom-0 left-0 z-50 flex items-center justify-between p-4">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleShuffle}
+                    className={`rounded p-1 transition-colors ${shuffle ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
+                    title="Reproducción aleatoria"
+                  >
+                    <RandomIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={toggleRepeat}
+                    className={`rounded p-1 transition-colors ${repeat ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
+                    title="Repetir"
+                  >
+                    <RepeatIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={handleToggleFormat}
+                    className="rounded p-1 transition-colors text-white/70 hover:text-white"
+                  >
                     <TrailerIcon className="h-4 w-4" />
-                </button>
-              </div>
+                  </button>
+                </div>
 
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handlePrevious}
-                  className="p-1 text-white/80 transition-colors hover:text-white"
-                  disabled={!list.length}
-                >
-                  <PreviousIcon className="h-5 w-5" />
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handlePrevious}
+                    className="p-1 text-white/80 transition-colors hover:text-white"
+                    disabled={!list.length}
+                  >
+                    <PreviousIcon className="h-5 w-5" />
+                  </button>
 
-                <button
-                  onClick={handleTogglePlay}
-                  disabled={isLoading || !!error}
-                  className="rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isLoading ? (
-                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                  ) : isPlaying ? (
-                    <PauseIcon className="h-5 w-5" />
-                  ) : (
-                    <PlayIcon className="h-5 w-5" />
-                  )}
-                </button>
+                  <button
+                    onClick={handleTogglePlay}
+                    disabled={isLoading || !!error}
+                    className="rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    ) : isPlaying ? (
+                      <PauseIcon className="h-5 w-5" />
+                    ) : (
+                      <PlayIcon className="h-5 w-5" />
+                    )}
+                  </button>
 
-                <button
-                  onClick={handleNext}
-                  className="p-1 text-white/80 transition-colors hover:text-white"
-                  disabled={!list.length}
-                >
-                  <NextIcon className="h-5 w-5" />
-                </button>
+                  <button
+                    onClick={handleNext}
+                    className="p-1 text-white/80 transition-colors hover:text-white"
+                    disabled={!list.length}
+                  >
+                    <NextIcon className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
             </div>
-          </Picture>
+          ) : (
+            <Picture
+              image={createImageUrlProxy(currentSong.image, '100', '0', 'webp')}
+              styles="aspect-video w-full h-full relative overflow-hidden rounded-md"
+            >
+              <img
+                src={proxyUrl}
+                alt={currentSong.song_title}
+                className="relative aspect-video w-full object-cover transition-transform duration-300 hover:scale-105"
+              />
+              <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
+
+              <div className="absolute right-0 bottom-0 left-0 z-50 flex items-center justify-between p-4">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={toggleShuffle}
+                    className={`rounded p-1 transition-colors ${shuffle ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
+                    title="Reproducción aleatoria"
+                  >
+                    <RandomIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={toggleRepeat}
+                    className={`rounded p-1 transition-colors ${repeat ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
+                    title="Repetir"
+                  >
+                    <RepeatIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={handleToggleFormat}
+                    className="rounded p-1 transition-colors text-white/70 hover:text-white"
+                  >
+                    <TrailerIcon className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handlePrevious}
+                    className="p-1 text-white/80 transition-colors hover:text-white"
+                    disabled={!list.length}
+                  >
+                    <PreviousIcon className="h-5 w-5" />
+                  </button>
+
+                  <button
+                    onClick={handleTogglePlay}
+                    disabled={isLoading || !!error}
+                    className="rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    ) : isPlaying ? (
+                      <PauseIcon className="h-5 w-5" />
+                    ) : (
+                      <PlayIcon className="h-5 w-5" />
+                    )}
+                  </button>
+
+                  <button
+                    onClick={handleNext}
+                    className="p-1 text-white/80 transition-colors hover:text-white"
+                    disabled={!list.length}
+                  >
+                    <NextIcon className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            </Picture>
+          )}
 
           <div className="flex flex-col gap-1">
             <h3
@@ -416,15 +492,14 @@ export const MusicPlayer = () => {
         </div>
       )}
 
-      {type === 'audio' ? (
+      {/* Elementos de audio y video ocultos */}
+      {type === 'audio' && (
         // biome-ignore lint/a11y/useMediaCaption: <explanation>
-        <audio ref={audioRef} src={currentSong.audio_url} preload="metadata" />
-      ) : (
-        // biome-ignore lint/a11y/useMediaCaption: <explanation>
-        <video
-          ref={audioRef as any}
-          src={currentSong.video_url}
+        <audio
+          ref={audioRef}
+          src={currentSong.audio_url}
           preload="metadata"
+          style={{ display: 'none' }}
         />
       )}
     </div>
