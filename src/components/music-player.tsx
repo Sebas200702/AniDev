@@ -423,7 +423,7 @@ export const MusicPlayer = () => {
         // biome-ignore lint/a11y/useMediaCaption: <explanation>
         <video
           ref={audioRef as any}
-          src={currentSong.audio_url}
+          src={currentSong.video_url}
           preload="metadata"
         />
       )}
