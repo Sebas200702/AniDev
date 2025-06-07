@@ -1,3 +1,6 @@
+import { LoadingCard } from '@components/search/results/loading-card'
+import { useWindowWidth } from '@store/window-width'
+import type { AnimeCardInfo } from 'types'
 /**
  * AnimeSliderLoader component displays a loading state for anime sliders.
  *
@@ -25,26 +28,45 @@
  * <AnimeSliderLoader />
  */
 export const AnimeSliderLoader = () => {
+  const { width: windowWidth } = useWindowWidth()
+  const animes = Array.from({ length: 7 }, (_, index) => index)
+
+  const createGroups = (animes: number[]) => {
+    let itemsPerGroup = 2
+
+
+
+    return Array.from({ length: Math.ceil(animes.length / itemsPerGroup) }).map(
+      (_, groupIndex) => {
+        return animes.slice(
+          groupIndex * itemsPerGroup,
+          (groupIndex + 1) * itemsPerGroup
+        )
+      }
+    )
+  }
+
+  const groups = createGroups(animes)
+
   return (
-    <div className="relative flex w-[100dvw] flex-col">
+    <div className="relative flex flex-col">
       <header className="flex w-full flex-row items-center justify-center space-x-4 px-4 py-4 md:px-20">
         <span className="bg-enfasisColor h-8 w-2 rounded-lg xl:h-10"></span>
         <span className="inline-flex h-7.5 w-32 animate-pulse rounded-lg bg-zinc-800 xl:h-10.5"></span>
         <div className="flex-1"></div>
       </header>
-      <div className="relative overflow-hidden py-4 pl-4 md:pl-20">
-        <div className="anime-list flex w-full flex-row gap-6 overflow-x-auto md:gap-10">
-          {Array(24)
-            .fill(0)
-            .map((_, i) => (
-              <div
-                key={i + 1}
-                className="flex h-auto w-full min-w-[calc((100dvw-32px)/2.4)] flex-col items-center duration-200 md:min-w-[calc((100dvw-280px)/4)] xl:min-w-[calc((100dvw-360px)/6)]"
-              >
-                <div className="aspect-[225/330] h-auto w-full animate-pulse rounded-lg bg-zinc-800 md:aspect-[225/330]"></div>
-              </div>
+
+      <div className="anime-list flex overflow-x-scroll scroll-smooth w-full   py-4  px-4 md:px-20 md:gap-10 gap-6 no-scrollbar snap-x snap-mandatory">
+        {groups.map((group, groupIndex) => (
+          <section
+            key={groupIndex}
+            className=" grid flex-none md:gap-10 gap-6 md:w-[calc(50%-20px)] xl:w-[calc(33.33%-27px)] w-[90%] grid-cols-2 "
+          >
+            {group.map((_, index) => (
+              <LoadingCard key={index} />
             ))}
-        </div>
+          </section>
+        ))}
       </div>
     </div>
   )
