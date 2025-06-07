@@ -50,7 +50,7 @@ export const AnimeMusic = ({
           {Array.from({ length: 10 }).map((_, index) => (
             <div
               key={index}
-              className="bg-Primary-900 h-10 animate-pulse rounded-lg"
+              className="bg-zinc-700 h-28 animate-pulse rounded-lg"
             />
           ))}
         </ul>
@@ -61,6 +61,9 @@ export const AnimeMusic = ({
     <div className="bg-Complementary z-10 flex flex-col gap-4 rounded-lg p-4">
       <h2 className="text-2xl font-bold">Anime Music</h2>
       <ul className="flex flex-col gap-4">
+        {songs.length === 0 && !loading && (
+          <div className="text-center text-2xl font-bold">No music found</div>
+        )}
         {songs.map((song) => (
           <AnimeMusicItem
             key={song.song_id}
