@@ -2,7 +2,7 @@ import { CollectionIcon } from '@components/icons/collection-icon'
 import { CompletedIcon } from '@components/icons/completed-icon'
 import { ToWatchIcon } from '@components/icons/to-watch-icon'
 import { WatchingIcon } from '@components/icons/watch-icon'
-import type { Section } from 'types'
+import type { Section, WatchList } from 'types'
 import { create } from 'zustand'
 
 /**
@@ -37,24 +37,29 @@ import { create } from 'zustand'
  */
 interface UserListsStore {
   userList: Section[]
+  isLoading: boolean
+  watchList: WatchList[]
   setUserList: (userList: Section[]) => void
+  setWatchList: (watchList: WatchList[]) => void
+  setIsLoading: (isLoading: boolean) => void
 }
 
 export const useUserListsStore = create<UserListsStore>((set) => ({
+  isLoading: true,
   userList: [
+    {
+      label: 'To Watch',
+      icon: ToWatchIcon,
+      selected: true,
+    },
     {
       label: 'Collection',
       icon: CollectionIcon,
-      selected: true,
+      selected: false,
     },
     {
       label: 'Completed',
       icon: CompletedIcon,
-      selected: false,
-    },
-    {
-      label: 'To Watch',
-      icon: ToWatchIcon,
       selected: false,
     },
     {
@@ -63,7 +68,14 @@ export const useUserListsStore = create<UserListsStore>((set) => ({
       selected: false,
     },
   ],
+  watchList: [],
   setUserList: (userList) => {
     set({ userList })
+  },
+  setWatchList(watchList) {
+    set({ watchList })
+  },
+  setIsLoading: (isLoading) => {
+    set({ isLoading })
   },
 }))
