@@ -88,6 +88,10 @@ export const AnimeInfo = ({ slug }: Props) => {
             image_large_webp={
               animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
             }
+            image={animeData.image_webp ?? `${baseUrl}/placeholder.webp`}
+            image_small_webp={
+              animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`
+            }
             title={animeData.title}
             synopsis={animeData.synopsis ?? 'No synopsis available'}
           />
