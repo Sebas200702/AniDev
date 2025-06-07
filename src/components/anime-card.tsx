@@ -1,3 +1,4 @@
+import { AddToListButton } from '@components/add-to-list-button'
 import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
@@ -43,8 +44,6 @@ interface Props {
    */
 
   context?: string
-
-
 }
 
 export const AnimeCard = ({ anime }: Props) => {
@@ -102,15 +101,19 @@ export const AnimeCard = ({ anime }: Props) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <div className=" flex items-center justify-center md:group-hover:opacity-100 md:opacity-0 transition-all duration-200 ease-in-out absolute top-3 left-3 bg-Complementary/50 backdrop-blur-sm border-1 border-Primary-50/10 rounded-lg p-1 z-20">
+        <AddToListButton
+          animeId={mal_id}
+          styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
+        />
+      </div>
       <a
         href={`/anime/${slug}_${mal_id}`}
         className={`flex h-auto flex-col items-center rounded-lg`}
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={
-            image_small_webp ?? `${baseUrl}/placeholder.webp`
-          }
+          image={image_small_webp ?? `${baseUrl}/placeholder.webp`}
           styles="relative h-full w-full rounded-lg"
         >
           <img
