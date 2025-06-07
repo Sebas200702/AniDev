@@ -29,7 +29,7 @@ export const SearchButton = () => {
 
   return (
     <button
-      className="hover:text-enfasisColor cursor-pointer px-2 py-4 transition-all duration-300"
+      className="hover:text-enfasisColor cursor-pointer p-2 transition-all duration-300"
       onClick={handleClick}
     >
       <svg
