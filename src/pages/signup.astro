@@ -8,5 +8,7 @@ const step = Astro.url.searchParams.get('step') ?? ''
 ---
 
 <Layout title={title}>
-  <Formulary client:load title={title} action={action} bgImage={bgImage} step={step} />
+    <section class="md:mt-0 mt-20 h-full">
+  <Formulary client:only title={title} action={action} bgImage={bgImage} step={step} />
+</section>
 </Layout>
