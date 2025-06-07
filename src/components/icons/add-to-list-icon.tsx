@@ -31,6 +31,6 @@ export const AddToListIcon = ({ className }: IconProps): JSX.Element => (
     className={className}
   >
     <path stroke="none" d="M0 0h24v24H0z" />
-    <path d="M19 8H5M5 12h9M11 16H5M15 16h6M18 13v6" />
+    <path d="M12 5v14M5 12h14" />
   </svg>
 )
