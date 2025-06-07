@@ -130,7 +130,7 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   },
   addSearchHistory: (searchHistory) => {
     set((state) => {
-      // Remove any existing entry with the same query and filters
+
       const filteredHistory = state.searchHistory.filter(
         (item) =>
           !(
@@ -140,7 +140,6 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
           )
       )
 
-      // Add the new history entry at the beginning of the array
       const newHistory = [searchHistory, ...filteredHistory]
 
       return {
