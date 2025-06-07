@@ -52,9 +52,9 @@ export const UserList = () => {
         </ul>
         <UserListOptions />
       </nav>
-      <ul className="grid grid-cols-2 md:gap-10 gap-6 p-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <ul className="grid grid-cols-2 gap-6 p-4 md:grid-cols-3 md:gap-10 lg:grid-cols-4 xl:grid-cols-6">
         {!userInfo?.name && (
-          <div className="flex flex-col gap-4 items-center justify-center mt-20 col-span-6">
+          <div className="col-span-6 mt-20 flex flex-col items-center justify-center gap-4">
             <p className="text-l">Log in to see your lists</p>
             <a href="/signin" className="button-primary px-4 py-2">
               Sign in
@@ -76,7 +76,7 @@ export const UserList = () => {
           watchList.filter((watch) => watch.type === currentSection?.label)
             .length === 0 &&
           !isLoading && (
-            <div className="flex flex-col gap-4 items-center justify-center w-full mt-20 col-span-6">
+            <div className="col-span-6 mt-20 flex w-full flex-col items-center justify-center gap-4">
               <p className="text-l text-center">No anime in this list</p>
             </div>
           )}

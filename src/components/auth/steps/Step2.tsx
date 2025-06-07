@@ -174,7 +174,7 @@ export const Step2 = ({ isSignUp }: Props) => {
     <form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
       <div className="w-full">
         <div className="bg-Primary-50/5 rounded-lg p-6">
-          <h3 className="text-Primary-50 text-xl mb-6 font-semibold">
+          <h3 className="text-Primary-50 mb-6 text-xl font-semibold">
             Personal Information
           </h3>
           <div className="grid grid-cols-1 gap-4">
@@ -190,7 +190,7 @@ export const Step2 = ({ isSignUp }: Props) => {
 
       <button
         type="submit"
-        className="button-primary w-full focus:ring-2 focus:outline-none disabled:opacity-50 mt-4"
+        className="button-primary mt-4 w-full focus:ring-2 focus:outline-none disabled:opacity-50"
       >
         Save and continue
       </button>

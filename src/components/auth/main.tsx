@@ -11,13 +11,13 @@ export const Main = ({ isLoading, isSignUp, title }: Props) => {
   const { currentStep, steps } = useStepsStore()
 
   return (
-    <section className="flex w-full h-full flex-col items-center justify-center md:px-18 px-4 py-8 z-10 ">
+    <section className="z-10 flex h-full w-full flex-col items-center justify-center px-4 py-8 md:px-18">
       {steps[currentStep - 1] && (
         <>
           <h2 className="text-Primary-50 text-lx mb-4 font-bold">
             {steps[currentStep - 1].title}
           </h2>
-          <p className="text-Primary-100 text-sm mb-6">
+          <p className="text-Primary-100 mb-6 text-sm">
             {steps[currentStep - 1].description}
           </p>
           {currentStep === 1 ? (

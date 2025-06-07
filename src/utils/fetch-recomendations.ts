@@ -5,7 +5,8 @@ export const fetchRecomendations = async (mal_ids: string[]) => {
 
   const { data, error } = await supabase
     .from('anime')
-    .select(`
+    .select(
+      `
         mal_id,
         title,
         image_webp,
@@ -16,7 +17,8 @@ export const fetchRecomendations = async (mal_ids: string[]) => {
         anime_genres (
           genres ( name )
         )
-      `)
+      `
+    )
 
     .in('mal_id', numericIds)
 

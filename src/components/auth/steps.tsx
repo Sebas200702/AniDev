@@ -294,14 +294,14 @@ export const StepsComponent = (isSignUp: boolean) => {
   return steps.map((step, index) => (
     <div
       key={step.id}
-      className={`relative ${!isSignUp ? 'hidden' : ''} transition-all duration-300 flex rounded-2xl h-36 justify-end p-4 w-full flex-col backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor/40' : ' bg-black/50'}`}
+      className={`relative ${!isSignUp ? 'hidden' : ''} flex h-36 w-full flex-col justify-end rounded-2xl p-4 backdrop-blur-2xl transition-all duration-300 ${currentStep === step.id ? 'bg-enfasisColor/40' : 'bg-black/50'}`}
     >
       <span
-        className={`absolute z-10 top-4 left-4 text-Primary-50  text-sm bg-Primary-200/30 rounded-full w-6 h-6 flex items-center justify-center p-2 backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor' : ''}`}
+        className={`text-Primary-50 bg-Primary-200/30 absolute top-4 left-4 z-10 flex h-6 w-6 items-center justify-center rounded-full p-2 text-sm backdrop-blur-2xl ${currentStep === step.id ? 'bg-enfasisColor' : ''}`}
       >
         {step.id}
       </span>
-      <h5 className=" text-sm w-full  font-bold">{step.title}</h5>
+      <h5 className="w-full text-sm font-bold">{step.title}</h5>
     </div>
   ))
 }

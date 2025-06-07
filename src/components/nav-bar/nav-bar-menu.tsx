@@ -29,8 +29,8 @@ export const NavBarMenu = () => {
     setIsOpen(!isOpen)
   }
   return (
-    <div className="flex items-center justify-center mx-auto bg-Complementary/60  backdrop-blur-sm rounded-full z-50 px-2">
-      <button className="cursor-pointer md:hidden  " onClick={toggleMenu}>
+    <div className="bg-Complementary/60 z-50 mx-auto flex items-center justify-center rounded-full px-2 backdrop-blur-sm">
+      <button className="cursor-pointer md:hidden" onClick={toggleMenu}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

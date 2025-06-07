@@ -184,20 +184,20 @@ export const Step3 = () => {
 
   return (
     <form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
-      <div className="flex items-center justify-center gap-2 mb-4">
+      <div className="mb-4 flex items-center justify-center gap-2">
         {categoryEntries.map((_, index) => (
           <div key={index} className="flex items-center justify-center">
             <button
               type="button"
               onClick={() => setSubStep(index + 1)}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+              className={`flex h-8 w-8 items-center justify-center rounded-full transition-all ${
                 subStep === index + 1 ? 'bg-enfasisColor' : 'bg-Primary-50/10'
               }`}
             >
               {index + 1}
             </button>
             {index < categoryEntries.length - 1 && (
-              <div className="w-12 h-0.5 bg-Primary-50/30 ml-2"></div>
+              <div className="bg-Primary-50/30 ml-2 h-0.5 w-12"></div>
             )}
           </div>
         ))}
@@ -205,7 +205,7 @@ export const Step3 = () => {
 
       <div className="w-full">
         <div className="bg-Primary-50/5 rounded-lg p-6">
-          <h3 className="text-Primary-50 text-xl mb-6 font-semibold">
+          <h3 className="text-Primary-50 mb-6 text-xl font-semibold">
             {currentCategory[1].title}
           </h3>
           <div className="grid grid-cols-1 gap-4">
@@ -214,13 +214,13 @@ export const Step3 = () => {
         </div>
       </div>
 
-      <div className="flex justify-between w-full">
+      <div className="flex w-full justify-between">
         <button
           type="button"
           onClick={() => setSubStep(subStep - 1)}
-          className={`px-4 py-2 rounded-lg transition-all ${
+          className={`rounded-lg px-4 py-2 transition-all ${
             subStep === 1
-              ? 'opacity-50 cursor-not-allowed'
+              ? 'cursor-not-allowed opacity-50'
               : 'hover:bg-Primary-50/10'
           }`}
           disabled={subStep === 1}
@@ -230,9 +230,9 @@ export const Step3 = () => {
         <button
           type="button"
           onClick={() => setSubStep(subStep + 1)}
-          className={`px-4 py-2 rounded-lg transition-all ${
+          className={`rounded-lg px-4 py-2 transition-all ${
             subStep === categoryEntries.length
-              ? 'opacity-50 cursor-not-allowed'
+              ? 'cursor-not-allowed opacity-50'
               : 'hover:bg-Primary-50/10'
           }`}
           disabled={subStep === categoryEntries.length}
@@ -244,7 +244,7 @@ export const Step3 = () => {
       {subStep === 2 && (
         <button
           type="submit"
-          className="button-primary w-full focus:ring-2 focus:outline-none disabled:opacity-50 mt-4"
+          className="button-primary mt-4 w-full focus:ring-2 focus:outline-none disabled:opacity-50"
         >
           Save and continue
         </button>

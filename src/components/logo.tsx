@@ -2,7 +2,7 @@ export const Logo = () => {
   return (
     <a href="/" className="mb-10">
       <svg
-        className="w-12 h-12 text-enfasisColor"
+        className="text-enfasisColor h-12 w-12"
         viewBox="0 0 73 83"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

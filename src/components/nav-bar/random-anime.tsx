@@ -36,7 +36,7 @@ export const RandomAnimeButton = () => {
     <button
       onClick={handleClick}
       title="Random Anime"
-      className="flex items-center  p-2 rounded-lg transition-all duration-300 group hover:text-enfasisColor cursor-pointer"
+      className="group hover:text-enfasisColor flex cursor-pointer items-center rounded-lg p-2 transition-all duration-300"
     >
       <RandomIcon className="h-6 w-6" />
     </button>

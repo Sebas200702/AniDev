@@ -118,7 +118,7 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className={`relative  ${styles} hover:bg-enfasisColor/5 hover:border-enfasisColor/40 w-full rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
+      className={`relative ${styles} hover:bg-enfasisColor/5 hover:border-enfasisColor/40 w-full rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
       ref={dropdownRef}
       onClick={handleInputClick}
     >
