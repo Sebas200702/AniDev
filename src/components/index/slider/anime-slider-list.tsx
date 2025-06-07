@@ -83,7 +83,6 @@ export const AnimeSlider = ({ url, title }: Props) => {
   const groups = createGroups(displayAnimes)
   const totalGroups = groups.length
 
-
   const getPaddingAndGap = () => {
     if (windowWidth && windowWidth < 768) {
       return { padding: 'px-4', gap: 'gap-4' }
@@ -190,16 +189,7 @@ export const AnimeSlider = ({ url, title }: Props) => {
           {groups.map((group, groupIndex) => (
             <section
               key={groupIndex}
-              className={`
-                grid flex-none md:gap-10 gap-6
-                ${
-                  windowWidth && windowWidth > 1280
-                    ? 'grid-cols-6 w-full'
-                    : windowWidth && windowWidth > 768
-                      ? 'grid-cols-4 w-full'
-                      : 'grid-cols-2 w-[90%]'
-                }
-              `}
+              className="grid flex-none md:gap-10 gap-6 xl:grid-cols-6 md:w-full md:grid-cols-4 grid-cols-2 w-[90%]"
             >
               {group.map((anime: AnimeCardInfo) => (
                 <li key={anime.mal_id}>
