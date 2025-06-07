@@ -140,7 +140,7 @@ export const useDragAndDrop = ({
     const dropTarget = dropTargetRef.current
     if (!dropTarget || !enabled) return
 
-    // Se añaden los listeners directamente al elemento de drop
+
     dropTarget.addEventListener('dragenter', handleDragEnter)
     dropTarget.addEventListener('dragleave', handleDragLeave)
     dropTarget.addEventListener('dragover', handleDragOver)
@@ -156,7 +156,6 @@ export const useDragAndDrop = ({
 
   return {
     isDragging,
-    // Solo se asigna el ref; si no está habilitado, no se aplican los eventos
     dragDropProps: {
       ref: dropTargetRef,
     },
