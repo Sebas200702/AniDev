@@ -1,3 +1,4 @@
+import { AddToListButton } from '@components/add-to-list-button'
 import { ShareButton } from '@components/buttons/share-button'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { Picture } from '@components/picture'
@@ -77,6 +78,13 @@ export const AnimeAside = ({
 
       <div className="flex h-full w-full flex-row justify-end gap-4">
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
+
+        <div className="button-secondary flex items-center justify-center">
+          <AddToListButton
+            animeId={animeData.mal_id}
+            styles="h-4 w-4 xl:h-5 xl:w-5"
+          />
+        </div>
         <ShareButton
           title={animeData.title}
           url={url}
