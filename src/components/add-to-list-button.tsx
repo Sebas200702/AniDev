@@ -1,10 +1,10 @@
 import { AddToListIcon } from '@components/icons/add-to-list-icon'
 import { DeleteIcon } from '@icons/delete-icon'
 import { toast } from '@pheralb/toast'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useUserListsStore } from '@store/user-list-store'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
-import { useGlobalUserPreferences } from '@store/global-user'
 
 export const AddToListButton = ({
   animeId,
@@ -13,10 +13,8 @@ export const AddToListButton = ({
   animeId: number
   styles?: string
 }) => {
-  const { isLoading, setIsLoading } =
-    useUserListsStore()
+  const { isLoading, setIsLoading } = useUserListsStore()
   const { watchList, setWatchList, userInfo } = useGlobalUserPreferences()
-
 
   const isInWatchList = watchList.some((watch) => watch.mal_id === animeId)
   const handleAddToList = async () => {
@@ -51,7 +49,6 @@ export const AddToListButton = ({
       setIsLoading(false)
     }
   }
-
 
   const handleRemoveFromList = async () => {
     if (!userInfo?.name) {

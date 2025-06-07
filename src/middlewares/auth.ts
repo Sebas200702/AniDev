@@ -1,5 +1,5 @@
-import type { APIContext } from 'astro'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
+import type { APIContext } from 'astro'
 
 /**
  * Authentication middleware for API endpoints to ensure user session validity.

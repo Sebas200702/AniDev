@@ -140,7 +140,6 @@ export const useDragAndDrop = ({
     const dropTarget = dropTargetRef.current
     if (!dropTarget || !enabled) return
 
-
     dropTarget.addEventListener('dragenter', handleDragEnter)
     dropTarget.addEventListener('dragleave', handleDragLeave)
     dropTarget.addEventListener('dragover', handleDragOver)

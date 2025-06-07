@@ -86,7 +86,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
             loading="lazy"
           />
         </Picture>
-        <div className="z-20 flex h-full w-[80%] flex-col px-2 py-4 justify-between md:p-4 xl:p-6">
+        <div className="z-20 flex h-full w-[80%] flex-col justify-between px-2 py-4 md:p-4 xl:p-6">
           <h3 className="text-l line-clamp-1">{anime.title}</h3>
 
           <footer className="text-sx flex w-20 gap-3">
@@ -105,7 +105,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           </footer>
         </div>
       </a>
-      <div className="absolute right-4 bottom-4 z-20 flex flex-row gap-1 bg-Primary-950/60 backdrop-blur-md rounded-md border-1 border-Primary-50/30 px-3 py-1.5 transition-opacity duration-300 ease-in-out md:opacity-0 md:group-hover:opacity-100 xl:right-6 xl:bottom-6 xl:gap-2">
+      <div className="bg-Primary-950/60 border-Primary-50/30 absolute right-4 bottom-4 z-20 flex flex-row gap-1 rounded-md border-1 px-3 py-1.5 backdrop-blur-md transition-opacity duration-300 ease-in-out md:opacity-0 md:group-hover:opacity-100 xl:right-6 xl:bottom-6 xl:gap-2">
         <a
           href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           title={`Watch ${anime.title}`}

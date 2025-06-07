@@ -83,7 +83,6 @@ export const AnimeSlider = ({ url, title }: Props) => {
   const groups = createGroups(displayAnimes)
   const totalGroups = groups.length
 
-
   useEffect(() => {
     const storedAnimes = getCachedAnimes()
     if (!storedAnimes && animes) {
@@ -176,12 +175,12 @@ export const AnimeSlider = ({ url, title }: Props) => {
 
         <ul
           ref={listRef}
-          className={`anime-list flex overflow-x-scroll scroll-smooth  py-4 md:px-20 px-4 md:gap-10 gap-6 no-scrollbar snap-x snap-mandatory`}
+          className={`anime-list no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20`}
         >
           {groups.map((group, groupIndex) => (
             <section
               key={groupIndex}
-              className="grid flex-none md:gap-10 gap-6 xl:grid-cols-6 md:w-full md:grid-cols-4 grid-cols-2 w-[90%]"
+              className="grid w-[90%] flex-none grid-cols-2 gap-6 md:w-full md:grid-cols-4 md:gap-10 xl:grid-cols-6"
             >
               {group.map((anime: AnimeCardInfo) => (
                 <li key={anime.mal_id}>

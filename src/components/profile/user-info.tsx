@@ -8,8 +8,10 @@ import { InputUserImage } from './input-user-image'
 
 export const UserInfo = ({
   isSignUp,
-  
-}: { isSignUp?: boolean; styles?: string }) => {
+}: {
+  isSignUp?: boolean
+  styles?: string
+}) => {
   const { userInfo } = useGlobalUserPreferences()
   const { setImage, setType, showEditor } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
@@ -59,14 +61,14 @@ export const UserInfo = ({
 
   return (
     <article
-      className={`z-10  flex w-full flex-row items-center ${isSignUp ? 'justify-center' : 'mt-24'} text-white md:gap-8 gap-4`}
+      className={`z-10 flex w-full flex-row items-center ${isSignUp ? 'justify-center' : 'mt-24'} gap-4 text-white md:gap-8`}
     >
       <div
         {...dragDropProps}
         ref={(el) => {
           dropTargetRef.current = el
         }}
-        className={`group relative flex h-full  w-full  items-center justify-center rounded-full  ${isSignUp ? 'max-h-24 max-w-24' : 'max-h-26 max-w-26 md:max-w-40 md:max-h-40 '}`}
+        className={`group relative flex h-full w-full items-center justify-center rounded-full ${isSignUp ? 'max-h-24 max-w-24' : 'max-h-26 max-w-26 md:max-h-40 md:max-w-40'}`}
       >
         <div
           className={`bg-enfasisColor absolute inset-0 flex w-full items-center justify-center rounded-full transition-opacity duration-200 ${

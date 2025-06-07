@@ -28,14 +28,11 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
       status: 500,
     })
   }
-  const { data, error } = await supabase.from('watch_list').upsert(
-    {
-      anime_id: animeId,
-      user_id: userData.id,
-      type: type,
-    },
- 
-  )
+  const { data, error } = await supabase.from('watch_list').upsert({
+    anime_id: animeId,
+    user_id: userData.id,
+    type: type,
+  })
   if (error) {
     console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {

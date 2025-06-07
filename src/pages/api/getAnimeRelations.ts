@@ -18,10 +18,13 @@ export const GET: APIRoute = rateLimit(
       const cachedRelations = await redis.get(cacheKey)
 
       if (cachedRelations) {
-        return new Response(JSON.stringify({ data: JSON.parse(cachedRelations) }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        })
+        return new Response(
+          JSON.stringify({ data: JSON.parse(cachedRelations) }),
+          {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
       }
 
       const relations = await getAnimeRelations(animeId)

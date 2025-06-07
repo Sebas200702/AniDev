@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 
 import { SettingsIcon } from '@components/icons/settings-icon'
+import { UserIcon } from '@components/icons/user-icon'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { signOut } from 'auth-astro/client'
-import { UserIcon } from '@components/icons/user-icon'
 
 /**
  * Profile component renders the user's profile information and a dropdown menu.
@@ -54,15 +54,15 @@ export const Profile = () => {
   }, [dropdownRef, buttonRef])
   return (
     <>
-      <article className="flex items-center justify-end ">
+      <article className="flex items-center justify-end">
         <button
-          className="cursor-pointer flex flex-row items-center gap-2"
+          className="flex cursor-pointer flex-row items-center gap-2"
           title="Options"
           onClick={handleClick}
           ref={buttonRef}
         >
           <img
-            className="w-10 h-10 rounded-full"
+            className="h-10 w-10 rounded-full"
             src={userInfo?.avatar ?? '/profile-picture-5.webp'}
             alt="Profile"
             loading="lazy"
@@ -72,7 +72,7 @@ export const Profile = () => {
       </article>
       <div
         ref={dropdownRef}
-        className="bg-Primary-950/60 absolute top-16 right-0 z-50 hidden w-48 md:rounded-lg rounded-b-md p-4 text-base text-white shadow-lg backdrop-blur-sm md:right-4"
+        className="bg-Primary-950/60 absolute top-16 right-0 z-50 hidden w-48 rounded-b-md p-4 text-base text-white shadow-lg backdrop-blur-sm md:right-4 md:rounded-lg"
       >
         <ul className="space-y-6">
           <li>

@@ -45,7 +45,7 @@ export const AnimeMusicItem = ({
     <a
       href={`/music/${normalizeString(song.song_title)}`}
       onClick={handleClick}
-      className="flex flex-row gap-2 bg-zinc-800 hover:bg-Primary-900 transition-all duration-300 rounded-lg overflow-hidden border-l-2 border-enfasisColor  max-h-28 relative"
+      className="hover:bg-Primary-900 border-enfasisColor relative flex max-h-28 flex-row gap-2 overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-all duration-300"
     >
       <Picture
         image={placeholder}
@@ -54,14 +54,14 @@ export const AnimeMusicItem = ({
         <img
           src={image}
           alt={song.song_title}
-          className="w-full h-full  object-cover relative"
+          className="relative h-full w-full object-cover"
         />
-        <Overlay className="bg-gradient-to-b from-transparent to-Primary-950/60 h-full w-full" />
+        <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
       </Picture>
 
       {song.type && (
         <span
-          className={`px-2 py-1 text-xs absolute top-2 right-2 font-medium rounded-full border flex-shrink-0 ${getTypeColor(song.type)}`}
+          className={`absolute top-2 right-2 flex-shrink-0 rounded-full border px-2 py-1 text-xs font-medium ${getTypeColor(song.type)}`}
         >
           {song.type.toUpperCase()}
         </span>

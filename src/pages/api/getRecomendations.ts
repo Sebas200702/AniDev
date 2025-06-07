@@ -47,8 +47,6 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
       .select('id')
       .eq('name', userName)
 
-
-
     if (userIdError) {
       return new Response(JSON.stringify({ error: userIdError.message }), {
         status: 500,
@@ -155,7 +153,6 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
       let functionResult = await fetchRecomendations(
         Object.values(functionCall.args)?.[0] as string[]
       )
-      
 
       return new Response(JSON.stringify({ data: functionResult }), {
         status: 200,

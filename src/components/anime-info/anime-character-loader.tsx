@@ -3,9 +3,7 @@ import { useWindowWidth } from '@store/window-width'
 import { useEffect, useRef } from 'react'
 
 export const AnimeCharacterLoader = () => {
-    
   const characters = Array.from({ length: 12 }, (_, index) => index)
-
 
   const groups = Array.from({ length: Math.ceil(characters.length / 4) }).map(
     (_, groupIndex) => {
@@ -13,7 +11,6 @@ export const AnimeCharacterLoader = () => {
     }
   )
   const totalGroups = groups.length
-
 
   type GroupWithClone = {
     items: number[]
@@ -31,7 +28,6 @@ export const AnimeCharacterLoader = () => {
     })
   }
 
-
   const listRef = useRef<HTMLUListElement>(null)
   const { width: windowWidth } = useWindowWidth()
 
@@ -42,7 +38,6 @@ export const AnimeCharacterLoader = () => {
     const clientW = ul.clientWidth
     const groupWidth = clientW - 48
     const realBlockWidth = groupWidth * totalGroups
-
 
     ul.scrollLeft = realBlockWidth
 
@@ -64,9 +59,7 @@ export const AnimeCharacterLoader = () => {
 
       if (sl + 1 < groupWidth) {
         ul.scrollLeft = sl + realBlockWidth
-      }
-
-      else if (sl + clientW > realBlockWidth * 2 - 1 + clientW) {
+      } else if (sl + clientW > realBlockWidth * 2 - 1 + clientW) {
         ul.scrollLeft = sl - realBlockWidth
       }
     }
@@ -93,24 +86,22 @@ export const AnimeCharacterLoader = () => {
   return (
     <ul
       ref={listRef}
-      className=" flex overflow-x-scroll no-scrollbar px-8 py-4 gap-4"
+      className="no-scrollbar flex gap-4 overflow-x-scroll px-8 py-4"
     >
-
       <NexPrevBtnSlideList
         label="prev-button"
         styles="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
       />
 
-
       {extendedGroups.map((grp, idx) => (
         <section
           key={`${grp.cloneBlock}-${grp.originalIndex}-${idx}`}
-          className="grid xl:grid-cols-2 grid-cols-1 min-w-full gap-4"
+          className="grid min-w-full grid-cols-1 gap-4 xl:grid-cols-2"
         >
           {grp.items.map((character) => (
             <li key={`${grp.cloneBlock}-${grp.originalIndex}-${character}`}>
               {/* Cada placeholder es un div con animate-pulse */}
-              <div className="w-full md:h-28 h-20 rounded-xl bg-zinc-700 animate-pulse duration-300"></div>
+              <div className="h-20 w-full animate-pulse rounded-xl bg-zinc-700 duration-300 md:h-28"></div>
             </li>
           ))}
         </section>

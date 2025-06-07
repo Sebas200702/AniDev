@@ -19,8 +19,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
 
     const formData = await request.formData()
 
-
-
     const name = formData.get('name') as string
     const last_name = formData.get('last_name') as string
     const birthday = formData.get('birthday') as string
@@ -28,7 +26,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     const frequency = formData.get('frequency') as string
     const fanatic_level = formData.get('fanatic_level') as string
     const preferred_format = formData.get('preferred_format') as string
-
 
     const favorite_animes = Array.from(
       formData.getAll('favorite_animes')
@@ -59,7 +56,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
         status: 404,
       })
     }
-
 
     const { data: historyId, error: errorHistoryId } = await supabase
       .from('search_history')

@@ -204,25 +204,25 @@ export const MusicPlayer = () => {
 
   return (
     <div
-      className={`fixed w-full max-w-xs bottom-36 right-10 bg-Complementary rounded-lg shadow-2xl transition-all duration-300 ${
+      className={`bg-Complementary fixed right-10 bottom-36 w-full max-w-xs rounded-lg shadow-2xl transition-all duration-300 ${
         isMinimized ? 'p-2' : 'p-4'
-      } gap-4 flex flex-col border border-gray-700/30 `}
+      } flex flex-col gap-4 border border-gray-700/30`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {isLoading && (
-            <div className="w-2 h-2 bg-enfasisColor rounded-full animate-pulse" />
+            <div className="bg-enfasisColor h-2 w-2 animate-pulse rounded-full" />
           )}
-          {error && <div className="w-2 h-2 bg-red-500 rounded-full" />}
+          {error && <div className="h-2 w-2 rounded-full bg-red-500" />}
         </div>
         <button
           onClick={toggleMinimize}
-          className="text-gray-400 hover:text-white transition-colors p-1 z-10"
+          className="z-10 p-1 text-gray-400 transition-colors hover:text-white"
         >
           {isMinimized ? (
-            <ExpandIcon className="w-4 h-4" />
+            <ExpandIcon className="h-4 w-4" />
           ) : (
-            <MinimizeIcon className="w-4 h-4" />
+            <MinimizeIcon className="h-4 w-4" />
           )}
         </button>
       </div>
@@ -236,57 +236,57 @@ export const MusicPlayer = () => {
             <img
               src={proxyUrl}
               alt={currentSong.song_title}
-              className="aspect-video w-full object-cover relative transition-transform duration-300 hover:scale-105"
+              className="relative aspect-video w-full object-cover transition-transform duration-300 hover:scale-105"
             />
-            <Overlay className="bg-gradient-to-b from-transparent via-transparent to-Primary-950/80 h-full w-full" />
+            <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
 
-            <div className="absolute bottom-0 left-0 right-0 p-4 z-50 flex items-center justify-between">
+            <div className="absolute right-0 bottom-0 left-0 z-50 flex items-center justify-between p-4">
               <div className="flex items-center gap-2">
                 <button
                   onClick={toggleShuffle}
-                  className={`p-1 rounded transition-colors ${shuffle ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
+                  className={`rounded p-1 transition-colors ${shuffle ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
                   title="Reproducción aleatoria"
                 >
-                  <RandomIcon className="w-4 h-4" />
+                  <RandomIcon className="h-4 w-4" />
                 </button>
                 <button
                   onClick={toggleRepeat}
-                  className={`p-1 rounded transition-colors ${repeat ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
+                  className={`rounded p-1 transition-colors ${repeat ? 'text-enfasisColor bg-enfasisColor/20' : 'text-white/70 hover:text-white'}`}
                   title="Repetir"
                 >
-                  <RepeatIcon className="w-4 h-4" />
+                  <RepeatIcon className="h-4 w-4" />
                 </button>
               </div>
 
               <div className="flex items-center gap-3">
                 <button
                   onClick={handlePrevious}
-                  className="text-white/80 hover:text-white transition-colors p-1"
+                  className="p-1 text-white/80 transition-colors hover:text-white"
                   disabled={!list.length}
                 >
-                  <PreviousIcon className="w-5 h-5" />
+                  <PreviousIcon className="h-5 w-5" />
                 </button>
 
                 <button
                   onClick={handleTogglePlay}
                   disabled={isLoading || !!error}
-                  className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isLoading ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   ) : isPlaying ? (
-                    <PauseIcon className="w-5 h-5" />
+                    <PauseIcon className="h-5 w-5" />
                   ) : (
-                    <PlayIcon className="w-5 h-5" />
+                    <PlayIcon className="h-5 w-5" />
                   )}
                 </button>
 
                 <button
                   onClick={handleNext}
-                  className="text-white/80 hover:text-white transition-colors p-1"
+                  className="p-1 text-white/80 transition-colors hover:text-white"
                   disabled={!list.length}
                 >
-                  <NextIcon className="w-5 h-5" />
+                  <NextIcon className="h-5 w-5" />
                 </button>
               </div>
             </div>
@@ -294,19 +294,19 @@ export const MusicPlayer = () => {
 
           <div className="flex flex-col gap-1">
             <h3
-              className="text-lg font-bold text-white truncate"
+              className="truncate text-lg font-bold text-white"
               title={currentSong.song_title}
             >
               {currentSong.song_title}
             </h3>
             <p
-              className="text-sm text-gray-300 truncate"
+              className="truncate text-sm text-gray-300"
               title={currentSong.artist_name ?? ''}
             >
               {currentSong.artist_name}
             </p>
             <p
-              className="text-xs text-gray-400 italic truncate"
+              className="truncate text-xs text-gray-400 italic"
               title={currentSong.anime_title}
             >
               {currentSong.anime_title}
@@ -314,10 +314,10 @@ export const MusicPlayer = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 min-w-[35px]">
+            <span className="min-w-[35px] text-xs text-gray-400">
               {formatTime(currentTime)}
             </span>
-            <div className="flex-1 relative">
+            <div className="relative flex-1">
               <input
                 type="range"
                 min={0}
@@ -326,17 +326,17 @@ export const MusicPlayer = () => {
                 onChange={handleSeek}
                 onMouseDown={handleSeekStart}
                 onMouseUp={handleSeekEnd}
-                className="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
+                className="slider h-1 w-full cursor-pointer appearance-none rounded-lg bg-gray-600"
                 disabled={!duration}
               />
             </div>
-            <span className="text-xs text-gray-400 min-w-[35px]">
+            <span className="min-w-[35px] text-xs text-gray-400">
               {formatTime(duration)}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <VolumeIcon className="w-4 h-4 text-gray-400" />
+            <VolumeIcon className="h-4 w-4 text-gray-400" />
             <input
               type="range"
               min={0}
@@ -344,9 +344,9 @@ export const MusicPlayer = () => {
               step={0.1}
               value={volume}
               onChange={handleVolumeChange}
-              className="flex-1 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer slider"
+              className="slider h-1 flex-1 cursor-pointer appearance-none rounded-lg bg-gray-600"
             />
-            <span className="text-xs text-gray-400 min-w-[30px]">
+            <span className="min-w-[30px] text-xs text-gray-400">
               {Math.round(volume * 100)}%
             </span>
           </div>
@@ -362,30 +362,30 @@ export const MusicPlayer = () => {
             <img
               src={createImageUrlProxy(currentSong.image, '300', '70', 'webp')}
               alt={currentSong.song_title}
-              className="h-full object-cover rounded w-full inset-0 object-center absolute"
+              className="absolute inset-0 h-full w-full rounded object-cover object-center"
             />
-            <Overlay className="bg-gradient-to-b from-transparent via-transparent to-Primary-950/80 h-full w-full" />
+            <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
           </Picture>
 
-          <div className="flex-1 min-w-0 z-10">
-            <p className="text-sm font-medium text-white truncate">
+          <div className="z-10 min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-white">
               {currentSong.song_title}
             </p>
-            <p className="text-xs text-gray-400 truncate">
+            <p className="truncate text-xs text-gray-400">
               {currentSong.artist_name}
             </p>
           </div>
           <button
             onClick={handleTogglePlay}
             disabled={isLoading || !!error}
-            className="text-white hover:text-enfasisColor transition-colors z-10"
+            className="hover:text-enfasisColor z-10 text-white transition-colors"
           >
             {isLoading ? (
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
             ) : isPlaying ? (
-              <PauseIcon className="w-4 h-4" />
+              <PauseIcon className="h-4 w-4" />
             ) : (
-              <PlayIcon className="w-4 h-4" />
+              <PlayIcon className="h-4 w-4" />
             )}
           </button>
         </div>
@@ -393,7 +393,7 @@ export const MusicPlayer = () => {
 
       {/* Error message */}
       {error && !isMinimized && (
-        <div className="text-red-400 text-xs text-center bg-red-500/10 p-2 rounded">
+        <div className="rounded bg-red-500/10 p-2 text-center text-xs text-red-400">
           {error}
         </div>
       )}

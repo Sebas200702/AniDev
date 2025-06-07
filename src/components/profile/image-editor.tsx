@@ -10,8 +10,8 @@ import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 
-import { ToastType } from 'types'
 import { baseUrl } from '@utils/base-url'
+import { ToastType } from 'types'
 
 /**
  * Props interface for the ImageEditor component.

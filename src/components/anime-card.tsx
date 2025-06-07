@@ -101,7 +101,7 @@ export const AnimeCard = ({ anime }: Props) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className=" flex items-center justify-center md:group-hover:opacity-100 md:opacity-0 transition-all duration-200 ease-in-out absolute top-3 left-3 bg-Complementary/50 backdrop-blur-sm border-1 border-Primary-50/10 rounded-lg p-1 z-20">
+      <div className="bg-Complementary/50 border-Primary-50/10 absolute top-3 left-3 z-20 flex items-center justify-center rounded-lg border-1 p-1 backdrop-blur-sm transition-all duration-200 ease-in-out md:opacity-0 md:group-hover:opacity-100">
         <AddToListButton
           animeId={mal_id}
           styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"

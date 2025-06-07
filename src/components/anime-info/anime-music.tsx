@@ -44,13 +44,13 @@ export const AnimeMusic = ({
 
   if (loading)
     return (
-      <div className="flex flex-col gap-4 z-10 bg-Complementary p-4 rounded-lg">
+      <div className="bg-Complementary z-10 flex flex-col gap-4 rounded-lg p-4">
         <h2 className="text-2xl font-bold">Anime Music</h2>
         <ul className="flex flex-col gap-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <div
               key={index}
-              className="h-10 bg-Primary-900 rounded-lg animate-pulse"
+              className="bg-Primary-900 h-10 animate-pulse rounded-lg"
             />
           ))}
         </ul>
@@ -58,7 +58,7 @@ export const AnimeMusic = ({
     )
   if (error) return <div>Error: {error}</div>
   return (
-    <div className="flex flex-col gap-4 z-10 bg-Complementary p-4 rounded-lg">
+    <div className="bg-Complementary z-10 flex flex-col gap-4 rounded-lg p-4">
       <h2 className="text-2xl font-bold">Anime Music</h2>
       <ul className="flex flex-col gap-4">
         {songs.map((song) => (

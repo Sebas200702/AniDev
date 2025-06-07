@@ -23,9 +23,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .select('id')
     .eq('name', userName)
 
-
-
-
   if (userIdError) {
     console.error(userIdError)
     return new Response(JSON.stringify({ error: userIdError.message }), {
@@ -73,8 +70,6 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
     .from('public_users')
     .select('id')
     .eq('name', userName)
-
-
 
   if (userIdError) {
     console.error(userIdError)
@@ -127,7 +122,6 @@ export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
     .from('public_users')
     .select('id')
     .eq('name', userName)
-
 
   if (userIdError) {
     console.error(userIdError)

@@ -128,10 +128,9 @@ export const Formulary = ({
 
   const isSignUp = title === 'Sign Up'
 
-
   return (
-    <section className="flex items-center justify-center p-4 text-white w-full md:p-20 md:h-full h-auto">
-      <article className="bg-Complementary border-1 border-enfasisColor/30 flex h-full max-h-[75vh] rounded-lg p-4 w-full max-w-7xl relative">
+    <section className="flex h-auto w-full items-center justify-center p-4 text-white md:h-full md:p-20">
+      <article className="bg-Complementary border-enfasisColor/30 relative flex h-full max-h-[75vh] w-full max-w-7xl rounded-lg border-1 p-4">
         <Aside bgImage={bgImage ?? ''} isSignUp={isSignUp} />
         <Main isLoading={isLoading} isSignUp={isSignUp} title={title} />
       </article>

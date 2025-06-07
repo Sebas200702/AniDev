@@ -1,8 +1,8 @@
 import { CharacterSection } from '@components/anime-info/anime-characters'
 import { AnimeDescription } from '@components/anime-info/anime-description'
+import { AnimeRelated } from '@components/anime-info/anime-related'
 import { AnimeTrailer } from '@components/anime-info/anime-trailer'
 import { useAnimeListsStore } from '@store/anime-list-store'
-import { AnimeRelated } from '@components/anime-info/anime-related'
 import { AnimeMusic } from './anime-music'
 
 /**
@@ -72,12 +72,19 @@ export const AnimeShowBox = ({
       />
     )
 
-
   if (currentSelectedLabel === 'Characters')
-    return <CharacterSection animeId={animeId}  />
+    return <CharacterSection animeId={animeId} />
 
   if (currentSelectedLabel === 'Music')
-    return <AnimeMusic animeId={animeId} image={image} placeholder={image_small_webp} anime_title={title} banner_image={banner_image} />
+    return (
+      <AnimeMusic
+        animeId={animeId}
+        image={image}
+        placeholder={image_small_webp}
+        anime_title={title}
+        banner_image={banner_image}
+      />
+    )
 
   if (currentSelectedLabel === 'Synopsis')
     return <AnimeDescription synopsis={synopsis} />

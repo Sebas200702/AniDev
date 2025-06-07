@@ -21,7 +21,11 @@ import { signIn } from 'auth-astro/client'
  * @example
  * <GoogleBtn />
  */
-export const GoogleBtn = ({ isSignUp = false }: { isSignUp?: boolean }): JSX.Element => {
+export const GoogleBtn = ({
+  isSignUp = false,
+}: {
+  isSignUp?: boolean
+}): JSX.Element => {
   const handleGoogleClick = async () => {
     signIn('google', {
       callbackUrl: isSignUp ? '/signup?step=2' : '/',
@@ -30,7 +34,7 @@ export const GoogleBtn = ({ isSignUp = false }: { isSignUp?: boolean }): JSX.Ele
   return (
     <button
       type="button"
-      className="button-secondary flex w-full items-center justify-center gap-3 "
+      className="button-secondary flex w-full items-center justify-center gap-3"
       onClick={handleGoogleClick}
     >
       <GoogleIcon className="h-6 w-6" />

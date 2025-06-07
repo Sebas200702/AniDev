@@ -1,8 +1,8 @@
 import { CharacterIcon } from '@components/icons/character-icon'
+import { MusicIcon } from '@components/icons/music-icon'
 import { RelatedIcon } from '@components/icons/related-icon'
 import { SynopsisIcon } from '@components/icons/synopsis-icon'
 import { TrailerIcon } from '@components/icons/trailer-icon'
-import { MusicIcon } from '@components/icons/music-icon'
 import type { Section } from 'types'
 import { create } from 'zustand'
 

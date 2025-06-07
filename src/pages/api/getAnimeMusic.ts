@@ -20,7 +20,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   if (!animeId) {
-
     return new Response('Anime ID is required', { status: 400 })
   }
 

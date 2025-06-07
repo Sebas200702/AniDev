@@ -20,23 +20,22 @@ export const AsideNav = () => {
 
   return (
     <>
-
-      <aside className="hidden md:flex fixed top-0 left-0 z-50 w-20 h-full bg-Primary-950 flex-col border-r border-white/10">
-        <nav className="flex flex-col mt-10 h-full w-full items-center mx-auto">
+      <aside className="bg-Primary-950 fixed top-0 left-0 z-50 hidden h-full w-20 flex-col border-r border-white/10 md:flex">
+        <nav className="mx-auto mt-10 flex h-full w-full flex-col items-center">
           <Logo />
           {menuItems.map((item) => (
             <a
               key={item.id}
               href={item.href}
               onClick={() => setActiveItem(item.id)}
-              className={`flex items-center flex-col gap-3 p-2 w-full transition-all duration-200 hover:text-enfasisColor group ${
+              className={`hover:text-enfasisColor group flex w-full flex-col items-center gap-3 p-2 transition-all duration-200 ${
                 activeItem === item.id
-                  ? 'text-enfasisColor bg-enfasisColor/10 border-r-2 border-enfasisColor'
+                  ? 'text-enfasisColor bg-enfasisColor/10 border-enfasisColor border-r-2'
                   : 'text-Primary-100 border-transparent'
               }`}
             >
               <item.icon className="h-6 w-6" />
-              <span className="text-sm font-medium text-center">
+              <span className="text-center text-sm font-medium">
                 {item.label}
               </span>
             </a>
@@ -44,22 +43,21 @@ export const AsideNav = () => {
         </nav>
       </aside>
 
-
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-Primary-950 border-t border-white/10">
-        <div className="flex justify-around items-center h-16 px-2">
+      <nav className="bg-Primary-950 fixed right-0 bottom-0 left-0 z-50 border-t border-white/10 md:hidden">
+        <div className="flex h-16 items-center justify-around px-2">
           {menuItems.map((item) => (
             <a
               key={item.id}
               href={item.href}
               onClick={() => setActiveItem(item.id)}
-              className={`flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-lg transition-all duration-200 hover:text-enfasisColor group min-w-0 flex-1 ${
+              className={`hover:text-enfasisColor group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-3 py-1 transition-all duration-200 ${
                 activeItem === item.id
                   ? 'text-enfasisColor bg-enfasisColor/10'
                   : 'text-Primary-100'
               }`}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span className="text-xs font-medium text-center truncate w-full">
+              <span className="w-full truncate text-center text-xs font-medium">
                 {item.label}
               </span>
             </a>

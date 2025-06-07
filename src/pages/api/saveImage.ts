@@ -1,7 +1,7 @@
 import { supabase } from '@libs/supabase'
 import { checkSession } from '@middlewares/auth'
-import type { APIRoute } from 'astro'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
+import type { APIRoute } from 'astro'
 
 /**
  * saveImage endpoint updates a user's avatar URL in the database.
@@ -80,8 +80,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .from('public_users')
     .update({ avatar_url: avatar })
     .eq('name', user)
-
-
 
   if (error) {
     console.log(error)

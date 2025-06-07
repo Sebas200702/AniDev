@@ -55,12 +55,7 @@ export const AnimeBanner = ({
       <Picture
         image={
           banner_image
-            ? createImageUrlProxy(
-                banner_image,
-                '100',
-                '0',
-                'webp'
-              )
+            ? createImageUrlProxy(banner_image, '100', '0', 'webp')
             : createImageUrlProxy(
                 image_large_webp ?? `${baseUrl}/placeholder.webp`,
                 '100',
@@ -73,12 +68,7 @@ export const AnimeBanner = ({
         <img
           src={
             banner_image
-              ? createImageUrlProxy(
-                  banner_image,
-                  '1920',
-                  '50',
-                  'webp'
-                )
+              ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
               : createImageUrlProxy(
                   image_large_webp ?? `${baseUrl}/placeholder.webp`,
                   '1920',

@@ -9,7 +9,10 @@ import type { Character } from 'types'
 export const AnimeCaterList = ({
   animeId,
   language,
-}: { animeId: number; language: string }) => {
+}: {
+  animeId: number
+  language: string
+}) => {
   const listRef = useRef<HTMLUListElement>(null)
   const { width: windowWidth } = useWindowWidth()
   const { setCharacters, setIsLoading, isLoading, characters } =
@@ -121,19 +124,17 @@ export const AnimeCaterList = ({
   return (
     <ul
       ref={listRef}
-      className="flex overflow-x-scroll no-scrollbar px-8 py-4 gap-4"
+      className="no-scrollbar flex gap-4 overflow-x-scroll px-8 py-4"
     >
       <NexPrevBtnSlideList
         label="prev-button"
         styles="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
       />
 
-
-
       {extendedGroups.map((grp, idx) => (
         <section
           key={`${grp.cloneBlock}-${grp.originalIndex}-${idx}`}
-          className="grid xl:grid-cols-2 grid-cols-1 min-w-full gap-4"
+          className="grid min-w-full grid-cols-1 gap-4 xl:grid-cols-2"
         >
           {grp.items.map((character) => (
             <li key={character.id}>

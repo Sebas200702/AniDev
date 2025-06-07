@@ -1,7 +1,7 @@
 import { supabase } from '@libs/supabase'
 import { checkSession } from '@middlewares/auth'
-import type { APIRoute } from 'astro'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
+import type { APIRoute } from 'astro'
 
 export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   const userInfo = await getSessionUserInfo({
@@ -32,7 +32,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .from('public_users')
     .update({ enfasis_color: enfasiscolor, parental_control: parentalControl })
     .eq('name', user.name)
-  
+
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,

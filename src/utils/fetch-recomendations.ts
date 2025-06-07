@@ -31,6 +31,5 @@ export const fetchRecomendations = async (mal_ids: string[]) => {
     console.warn('Missing mal_ids:', missingIds)
   }
 
-
   return data
 }

@@ -34,8 +34,6 @@ export const AnimeSliderLoader = () => {
   const createGroups = (animes: number[]) => {
     let itemsPerGroup = 2
 
-
-
     return Array.from({ length: Math.ceil(animes.length / itemsPerGroup) }).map(
       (_, groupIndex) => {
         return animes.slice(
@@ -56,11 +54,11 @@ export const AnimeSliderLoader = () => {
         <div className="flex-1"></div>
       </header>
 
-      <div className="anime-list flex overflow-x-scroll scroll-smooth w-full   py-4  px-4 md:px-20 md:gap-10 gap-6 no-scrollbar snap-x snap-mandatory">
+      <div className="anime-list no-scrollbar flex w-full snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20">
         {groups.map((group, groupIndex) => (
           <section
             key={groupIndex}
-            className=" grid flex-none md:gap-10 gap-6 md:w-[calc(50%-20px)] xl:w-[calc(33.33%-27px)] w-[90%] grid-cols-2 "
+            className="grid w-[90%] flex-none grid-cols-2 gap-6 md:w-[calc(50%-20px)] md:gap-10 xl:w-[calc(33.33%-27px)]"
           >
             {group.map((_, index) => (
               <LoadingCard key={index} />

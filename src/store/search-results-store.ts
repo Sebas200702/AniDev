@@ -130,7 +130,6 @@ export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
   },
   addSearchHistory: (searchHistory) => {
     set((state) => {
-
       const filteredHistory = state.searchHistory.filter(
         (item) =>
           !(

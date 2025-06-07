@@ -107,7 +107,7 @@ export const GET: APIRoute = rateLimit(
       const formatFunction = getFormat(format ?? '')
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
-    
+
       const { data: count, error: countError } = await supabase.rpc(
         'get_anime_count',
         countFilters

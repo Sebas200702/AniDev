@@ -1,7 +1,7 @@
 import { pinata } from '@libs/pinata'
 import { checkSession } from '@middlewares/auth'
-import type { APIRoute } from 'astro'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
+import type { APIRoute } from 'astro'
 import sharp from 'sharp'
 
 /**

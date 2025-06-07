@@ -5,11 +5,11 @@ import { Picture } from '@components/picture'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useIndexStore } from '@store/index-store'
 import { useWindowWidth } from '@store/window-width'
+import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
-import { baseUrl } from '@utils/base-url'
 
 /**
  * AnimeBanner component displays a banner for an anime.
@@ -109,14 +109,29 @@ export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
           aria-label={`View details for ${title}`}
         >
           <Picture
-            image={createImageUrlProxy(imageUrl ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+            image={createImageUrlProxy(
+              imageUrl ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '0',
+              'webp'
+            )}
             styles="aspect-[1080/500] h-full w-full  md:aspect-[1080/300] object-cover object-center relative"
           >
             <img
               src={
                 isMobile
-                  ? createImageUrlProxy(imageUrl ?? `${baseUrl}/placeholder.webp`, '720', '50', 'webp')
-                  : createImageUrlProxy(imageUrl ?? `${baseUrl}/placeholder.webp`, '1920', '50', 'webp')
+                  ? createImageUrlProxy(
+                      imageUrl ?? `${baseUrl}/placeholder.webp`,
+                      '720',
+                      '50',
+                      'webp'
+                    )
+                  : createImageUrlProxy(
+                      imageUrl ?? `${baseUrl}/placeholder.webp`,
+                      '1920',
+                      '50',
+                      'webp'
+                    )
               }
               alt="Anime Banner"
               loading="lazy"
