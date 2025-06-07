@@ -1,6 +1,7 @@
 import { Picture } from '@components/picture'
 import { useDynamicBorder } from '@hooks/useDynamicBorder'
 import { useGlobalUserPreferences } from '@store/global-user'
+import { baseUrl } from '@utils/base-url'
 import { colorToRGB } from '@utils/color-to-rgb'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeCardInfo } from 'types'
@@ -81,11 +82,11 @@ export const CalendarItem = ({
         aria-label={`View details for ${anime.title}`}
       >
         <Picture
-          image={anime.image_webp}
+          image={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
           styles="relative overflow-hidden h-full w-full max-w-32 h-full transition-all duration-500 transform rounded-l-lg"
         >
           <img
-            src={anime.image_webp}
+            src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
             alt={anime.title}
             className="relative aspect-[225/330] h-full w-full max-w-32 transform object-cover object-center transition-all duration-500 will-change-transform group-hover:scale-105 group-hover:brightness-105 group-hover:contrast-110"
           />
