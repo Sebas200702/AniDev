@@ -38,7 +38,7 @@ export const getSessionUserInfo = async ({
 }) => {
   if (!request) return null
 
-  // Primero intentamos con los tokens de las cookies
+
   if (accessToken && refreshToken) {
     const { data, error } = await supabase.auth.setSession({
       refresh_token: refreshToken,
