@@ -12,21 +12,21 @@ export const Aside = ({bgImage, isSignUp}: {bgImage: string, isSignUp: boolean})
       createImageUrlProxy(`${baseUrl}${bgImage}`, '100', '0', 'webp') ??
       ''
     }
-    styles="w-full relative overflow-hidden rounded-md"
+    styles="w-full md:relative  absolute inset-0 z-0 overflow-hidden rounded-md"
   >
     <Favicon
       className={`text-enfasisColor absolute top-2 right-4 left-4 z-20 h-8 w-8 md:h-16 md:w-16`}
     />
 
     <Overlay
-      className={`to-black/90 z-10 h-full w-full bg-gradient-to-b`}
+      className={`to-black/90 z-10 h-full via-20% via-black/50  w-full bg-gradient-to-b`}
     />
     <img
       src={bgImage}
       className="relative h-full w-full object-cover object-center"
       alt=""
     />
-    <footer className="absolute bottom-0 left-0 right-0 z-10 flex  flex-col gap-10 p-4">
+    <footer className="absolute bottom-0 left-0 right-0  flex-col gap-10 p-4 md:flex hidden z-10">
       <header className="flex flex-col gap-2">
         <span className=" text-sm bg-Primary-50/10 backdrop-blur-2xl rounded-full px-4 py-2 w-fit">
           {isSignUp ? 'Join to enjoy' : 'Great to see you again!'}
