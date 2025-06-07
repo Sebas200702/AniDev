@@ -30,7 +30,7 @@ export const GoogleBtn = ({ isSignUp = false }: { isSignUp?: boolean }): JSX.Ele
   return (
     <button
       type="button"
-      className="button-secondary flex w-full items-center justify-center gap-3"
+      className="button-secondary flex w-full items-center justify-center gap-3 "
       onClick={handleGoogleClick}
     >
       <GoogleIcon className="h-6 w-6" />
