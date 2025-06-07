@@ -1,6 +1,7 @@
 import { useGlobalUserPreferences } from '@store/global-user'
-
+import { getWatchList } from '@utils/get-watch-list'
 import { useEffect } from 'react'
+
 
 /**
  * LoadTheme component applies user-specific theme colors based on global preferences.
@@ -35,17 +36,22 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     setUserInfo,
     trackSearchHistory,
     setTrackSearchHistory,
+    setWatchList,
   } = useGlobalUserPreferences()
 
   useEffect(() => {
     const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
     const savedTrackSearchHistory = localStorage.getItem('track_search_history')
-
     setEnfasis(savedEnfasis ?? '#0057E7')
     setUserInfo(userInfo)
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
+    const fetchWatchList = async () => {
+      const watchList = await getWatchList()
+      setWatchList(watchList)
+    }
+    fetchWatchList()
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
   }, [
     enfasis,
@@ -55,6 +61,7 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     setUserInfo,
     trackSearchHistory,
     setTrackSearchHistory,
+    setWatchList,
   ])
   return null
 }
