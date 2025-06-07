@@ -79,9 +79,12 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   const { data, error } = await supabase
     .from('public_users')
     .update({ avatar_url: avatar })
-    .eq('name', user.name)
+    .eq('name', user)
+
+
 
   if (error) {
+    console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
     })
