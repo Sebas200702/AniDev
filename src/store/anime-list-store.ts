@@ -2,6 +2,7 @@ import { CharacterIcon } from '@components/icons/character-icon'
 import { RelatedIcon } from '@components/icons/related-icon'
 import { SynopsisIcon } from '@components/icons/synopsis-icon'
 import { TrailerIcon } from '@components/icons/trailer-icon'
+import { MusicIcon } from '@components/icons/music-icon'
 import type { Section } from 'types'
 import { create } from 'zustand'
 
@@ -55,6 +56,11 @@ export const useAnimeListsStore = create<AnimeListsStore>((set) => ({
     {
       label: 'Related',
       icon: RelatedIcon,
+      selected: false,
+    },
+    {
+      label: 'Music',
+      icon: MusicIcon,
       selected: false,
     },
 
