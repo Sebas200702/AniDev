@@ -10,7 +10,7 @@ export const AppliedFiltersComponent = () => {
   )
   const removeFilter = useCallback(
     (category: keyof AppliedFilters, value: string) => {
-      console.log('FilterSection: Removing filter', { category, value })
+   
       setAppliedFilters((prev) => {
         const newFilters = { ...prev }
         newFilters[category] =
