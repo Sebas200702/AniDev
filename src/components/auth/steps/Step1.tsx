@@ -118,7 +118,7 @@ export const Step1 = ({ isLoading, title, isSignUp }: Props) => {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
+    <form onSubmit={onSubmit} className="flex w-full flex-col gap-4 ">
       {steps[0].fields.map(renderField)}
       <button
         type="submit"
