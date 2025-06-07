@@ -13,9 +13,9 @@ export const AddToListButton = ({
   animeId: number
   styles?: string
 }) => {
-  const { watchList, setWatchList, isLoading, setIsLoading } =
+  const { isLoading, setIsLoading } =
     useUserListsStore()
-  const { userInfo } = useGlobalUserPreferences()
+  const { watchList, setWatchList, userInfo } = useGlobalUserPreferences()
 
 
   const isInWatchList = watchList.some((watch) => watch.mal_id === animeId)
@@ -51,20 +51,7 @@ export const AddToListButton = ({
       setIsLoading(false)
     }
   }
-  useEffect(() => {
-    if (!userInfo?.name) {
-      return
-    }
-    const fetchWatchList = async () => {
-      const response = await fetch('/api/watchList', {
-        credentials: 'include',
-      })
-      const data = await response.json()
-      setWatchList(data)
-      setIsLoading(false)
-    }
-    fetchWatchList()
-  }, [isLoading])
+
 
   const handleRemoveFromList = async () => {
     if (!userInfo?.name) {
