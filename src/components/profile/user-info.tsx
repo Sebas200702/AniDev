@@ -1,11 +1,15 @@
 import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
+import { baseUrl } from '@utils/base-url'
 import { useEffect, useRef } from 'react'
 import { ImageEditor } from './image-editor'
 import { InputUserImage } from './input-user-image'
 
-export const UserInfo = ({isSignUp, styles}: {isSignUp?: boolean, styles?: string}) => {
+export const UserInfo = ({
+  isSignUp,
+  
+}: { isSignUp?: boolean; styles?: string }) => {
   const { userInfo } = useGlobalUserPreferences()
   const { setImage, setType, showEditor } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
@@ -54,7 +58,9 @@ export const UserInfo = ({isSignUp, styles}: {isSignUp?: boolean, styles?: strin
   }
 
   return (
-    <article className={`z-10  flex w-full flex-row items-center ${isSignUp ? 'justify-center' : 'mt-24'} text-white md:gap-8 `}>
+    <article
+      className={`z-10  flex w-full flex-row items-center ${isSignUp ? 'justify-center' : 'mt-24'} text-white md:gap-8 gap-4`}
+    >
       <div
         {...dragDropProps}
         ref={(el) => {
@@ -75,7 +81,7 @@ export const UserInfo = ({isSignUp, styles}: {isSignUp?: boolean, styles?: strin
 
         <img
           ref={imageRef}
-          src={userInfo?.avatar || '/placeholder.webp'}
+          src={userInfo?.avatar || `${baseUrl}/placeholder.webp`}
           alt={`${userInfo?.name} Avatar`}
           className="h-full w-full rounded-full transition-all duration-200"
         />
@@ -85,7 +91,7 @@ export const UserInfo = ({isSignUp, styles}: {isSignUp?: boolean, styles?: strin
       <ImageEditor userName={userInfo?.name || ''} />
       {!isSignUp && (
         <span className="truncate text-lg font-bold md:text-4xl">
-          { userInfo?.name || 'Guest'}
+          {userInfo?.name || 'Guest'}
         </span>
       )}
     </article>
