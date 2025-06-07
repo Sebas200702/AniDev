@@ -24,19 +24,27 @@ export const MusicPlayer = () => {
     setCurrentSong,
     type,
     setType,
+    setDuration,
+    setVolume,
+    setIsLoading,
+    volume,
+    duration,
+    isLoading,
+    repeat,
+    shuffle,
+    setRepeat,
+    setShuffle,
+    isMinimized,
+    setIsMinimized,
+    isDragging,
+    setIsDragging,
+    error,
+    setError,
   } = useMusicPlayerStore()
 
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [duration, setDuration] = useState(0)
-  const [repeat, setRepeat] = useState(false)
-  const [shuffle, setShuffle] = useState(false)
-  const [volume, setVolume] = useState(1)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
 
-  // Mejora en la gestión de eventos del audio
+
   useEffect(() => {
     const media = audioRef.current
     if (!media) return
@@ -51,7 +59,8 @@ export const MusicPlayer = () => {
     const onCanPlay = () => {
       setIsLoading(false)
       setError(null)
-      setDuration(media.duration || 0)
+      console.log(media.duration)
+      setDuration(media.duration)
     }
 
     const onError = () => {
@@ -71,7 +80,7 @@ export const MusicPlayer = () => {
 
     const onVolumeChange = () => setVolume(media.volume)
 
-    // Event listeners
+
     media.addEventListener('timeupdate', onTimeUpdate)
     media.addEventListener('loadstart', onLoadStart)
     media.addEventListener('canplay', onCanPlay)
@@ -89,7 +98,7 @@ export const MusicPlayer = () => {
     }
   }, [repeat, isDragging, setCurrentTime])
 
-  // Mejora en el control de reproducción
+
   useEffect(() => {
     const media = audioRef.current
     if (!media || !currentSong) return
@@ -115,7 +124,7 @@ export const MusicPlayer = () => {
     }
   }, [isPlaying, currentSong])
 
-  // Control de volumen
+
   useEffect(() => {
     const media = audioRef.current
     if (media) {
@@ -133,7 +142,7 @@ export const MusicPlayer = () => {
 
     let nextIdx: number
     if (shuffle) {
-      // Reproducción aleatoria
+
       do {
         nextIdx = Math.floor(Math.random() * list.length)
       } while (
@@ -182,9 +191,9 @@ export const MusicPlayer = () => {
     []
   )
 
-  const toggleRepeat = () => setRepeat((prev) => !prev)
-  const toggleShuffle = () => setShuffle((prev) => !prev)
-  const toggleMinimize = () => setIsMinimized((prev) => !prev)
+  const toggleRepeat = () => setRepeat(!repeat)
+  const toggleShuffle = () => setShuffle(!shuffle)
+  const toggleMinimize = () => setIsMinimized(!isMinimized)
 
   const formatTime = (sec: number) => {
     if (!isFinite(sec)) return '0:00'
@@ -206,7 +215,7 @@ export const MusicPlayer = () => {
     <div
       className={`bg-Complementary fixed right-10 bottom-36 w-full max-w-xs rounded-lg shadow-2xl transition-all duration-300 ${
         isMinimized ? 'p-2' : 'p-4'
-      } flex flex-col gap-4 border border-gray-700/30`}
+      } flex flex-col gap-4 border border-gray-700/30 z-50`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
