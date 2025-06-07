@@ -34,11 +34,9 @@ export const UserList = () => {
     setUserList,
     watchList,
     isLoading,
-
   } = useUserListsStore()
   const { userInfo } = useGlobalUserPreferences()
   const currentSection = sections.find((section) => section.selected)
-
 
   return (
     <section className="flex flex-col gap-4">
@@ -70,11 +68,11 @@ export const UserList = () => {
           ))}
 
         {isLoading &&
+          !watchList.length &&
           Array.from({ length: 6 }).map((_, index) => (
             <LoadingCard key={index} />
           ))}
-        {watchList
-          .filter((watch) => watch.type === currentSection?.label)
+        {watchList.filter((watch) => watch.type === currentSection?.label)
           .length === 0 &&
           !isLoading && (
             <div className="flex flex-col gap-4 items-center justify-center w-full mt-20 col-span-6">
