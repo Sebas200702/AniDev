@@ -1,4 +1,4 @@
-import type { UserInfo } from 'types'
+import type { UserInfo, WatchList } from 'types'
 import { create } from 'zustand'
 
 /**
@@ -28,17 +28,20 @@ import { create } from 'zustand'
 interface GlobalUserPreferences {
   enfasis: string
   userInfo: UserInfo | null
+  watchList: WatchList[]
   setUserInfo: (user: UserInfo | null) => void
   parentalControl: boolean
   trackSearchHistory: boolean
   setParentalControl: (value: boolean) => void
   setTrackSearchHistory: (value: boolean) => void
   setEnfasis: (color: string) => void
+  setWatchList: (watchList: WatchList[]) => void
 }
 
 export const useGlobalUserPreferences = create<GlobalUserPreferences>(
   (set) => ({
     enfasis: '#0057E7',
+    watchList: [],
     setEnfasis: (color: string) => set({ enfasis: color }),
     trackSearchHistory: true,
     setTrackSearchHistory: (value: boolean) =>
@@ -50,6 +53,9 @@ export const useGlobalUserPreferences = create<GlobalUserPreferences>(
     parentalControl: true,
     setParentalControl(value) {
       set({ parentalControl: value })
+    },
+    setWatchList(watchList) {
+      set({ watchList })
     },
   })
 )
