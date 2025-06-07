@@ -16,6 +16,8 @@ import '@styles/anime-banner.css'
 import '@pheralb/toast/dist/styles.css'
 import { AsideNav } from '@components/aside'
 
+import { MusicPlayer } from '@components/music-player'
+
 const { cookies } = Astro
 
 const accessToken = cookies.get('sb-access-token')
@@ -82,6 +84,7 @@ const userInfo = await getSessionUserInfo({
     script-src 'self' 'unsafe-inline';
     frame-src 'self' https://www.youtube.com/;
     style-src 'self' 'unsafe-inline';
+    media-src 'self' blob: https://a.animethemes.moe ;
     font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
     img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud https://lh3.googleusercontent.com/ https://ani-dev.vercel.app;
     worker-src  'self' blob:;
@@ -115,10 +118,10 @@ const userInfo = await getSessionUserInfo({
       id="app"
       class="bg-Primary-950 text-Primary-50 no-scrollbar max-w-[100dvw] overflow-x-hidden overflow-y-scroll"
     >
-      <aside class="[grid-area:aside] md:h-full h-16">
+      <aside class="h-16 [grid-area:aside] md:h-full">
         <AsideNav client:load />
       </aside>
-      <header class="relative [grid-area:header] h-full">
+      <header class="relative h-full [grid-area:header]">
         <NavBar />
         <ProgressBar client:load />
       </header>
@@ -154,6 +157,7 @@ const userInfo = await getSessionUserInfo({
       </main>
       <Footer />
     </div>
+    <MusicPlayer client:load transition:persist />
   </body>
 </html>
 <style is:global>
