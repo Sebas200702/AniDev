@@ -1,27 +1,20 @@
 ---
 import { Logo } from '@components/logo'
-import { NavBarMenu } from '@components/nav-bar/nav-bar-menu'
 import { Profile } from '@components/nav-bar/profile'
 import { RandomAnimeButton } from '@components/nav-bar/random-anime'
 import { SearchButton } from '@components/nav-bar/search-button'
-const url = Astro.url.pathname
 ---
 
 <nav
-  class="bg-Primary-950/40 navbar-animation fixed top-0 z-30 flex h-16 w-full items-center gap-6 px-4 md:gap-8 md:px-10"
+  class="bg-Complementary/60 fixed top-0 z-30 flex w-full flex-row items-center justify-between gap-2 px-4 py-2 backdrop-blur-sm md:top-4 md:right-10 md:w-auto md:rounded-full md:px-2"
 >
-  <ul class="flex w-full flex-row items-center justify-between">
-    <li
-      class="text-lx flex flex-row-reverse items-center gap-4 md:flex-row md:gap-8"
-    >
-      <Logo />
-      <NavBarMenu client:load />
-    </li>
-
-    <li class="flex flex-row gap-2">
-      <RandomAnimeButton client:load />
-      <SearchButton client:load />
-      <Profile client:load />
-    </li>
-  </ul>
+  <div class="md:hidden">
+    <Logo />
+  </div>
+  <div class="flex items-center gap-2">
+    <SearchButton client:load />
+    <RandomAnimeButton client:load />
+    <div class="bg-Primary-100/30 h-6 w-0.5 rounded-full"></div>
+    <Profile client:load />
+  </div>
 </nav>
