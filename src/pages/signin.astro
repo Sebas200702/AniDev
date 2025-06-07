@@ -7,5 +7,7 @@ const bgImage = '/sign-in.webp'
 ---
 
 <Layout title={title}>
-  <Formulary client:load title={title} action={action} bgImage={bgImage} />
+    <section class="md:mt-0 mt-20 h-full">
+  <Formulary client:only title={title} action={action} bgImage={bgImage} />
+</section>
 </Layout>
