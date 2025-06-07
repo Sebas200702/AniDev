@@ -2,8 +2,9 @@ import { AddToListIcon } from '@components/icons/add-to-list-icon'
 import { DeleteIcon } from '@icons/delete-icon'
 import { toast } from '@pheralb/toast'
 import { useUserListsStore } from '@store/user-list-store'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ToastType } from 'types'
+import { useGlobalUserPreferences } from '@store/global-user'
 
 export const AddToListButton = ({
   animeId,
@@ -14,12 +15,18 @@ export const AddToListButton = ({
 }) => {
   const { watchList, setWatchList, isLoading, setIsLoading } =
     useUserListsStore()
+  const { userInfo } = useGlobalUserPreferences()
+
 
   const isInWatchList = watchList.some((watch) => watch.mal_id === animeId)
   const handleAddToList = async () => {
+    if (!userInfo?.name) {
+      return
+    }
     const promise = fetch('/api/watchList', {
       method: 'POST',
       body: JSON.stringify({ animeId, type: 'To Watch' }),
+      credentials: 'include',
     }).then(async (res) => {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -45,8 +52,13 @@ export const AddToListButton = ({
     }
   }
   useEffect(() => {
+    if (!userInfo?.name) {
+      return
+    }
     const fetchWatchList = async () => {
-      const response = await fetch('/api/watchList')
+      const response = await fetch('/api/watchList', {
+        credentials: 'include',
+      })
       const data = await response.json()
       setWatchList(data)
       setIsLoading(false)
@@ -55,11 +67,15 @@ export const AddToListButton = ({
   }, [isLoading])
 
   const handleRemoveFromList = async () => {
+    if (!userInfo?.name) {
+      return
+    }
     const newWatchList = watchList.filter((watch) => watch.mal_id !== animeId)
     setWatchList(newWatchList)
     const promise = fetch('/api/watchList', {
       method: 'DELETE',
       body: JSON.stringify({ animeId }),
+      credentials: 'include',
     }).then((res) => {
       if (!res.ok) throw new Error('Error while removing from list')
     })
@@ -87,7 +103,7 @@ export const AddToListButton = ({
   return (
     <button
       onClick={isInWatchList ? handleRemoveFromList : handleAddToList}
-      disabled={isLoading}
+      disabled={isLoading || !userInfo?.name}
       title={isInWatchList ? 'Remove from list' : 'Add to list'}
     >
       {isInWatchList ? (
