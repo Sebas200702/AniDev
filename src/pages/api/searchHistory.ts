@@ -23,7 +23,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .select('id')
     .eq('name', userName)
 
-  console.log(userId)
+
 
 
   if (userIdError) {
@@ -74,7 +74,6 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
     .select('id')
     .eq('name', userName)
 
-    console.log(userId)
 
 
   if (userIdError) {
