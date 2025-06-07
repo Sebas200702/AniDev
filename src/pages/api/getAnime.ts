@@ -87,7 +87,9 @@ const fetchAnimeData = async (slug: string, id: number) => {
     return pendingRequests.get(cacheKey)!
   }
 
-  const fetchPromise = Promise.resolve(supabase.rpc('get_anime_by_id', { id }))
+  const fetchPromise = Promise.resolve(
+    supabase.rpc('get_anime_by_id', { p_mal_id: id })
+  )
     .then(async ({ data, error }) => {
       if (error || !data?.[0]) throw error || new Error('Data not found')
 
