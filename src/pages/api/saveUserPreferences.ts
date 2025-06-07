@@ -32,8 +32,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .from('public_users')
     .update({ enfasis_color: enfasiscolor, parental_control: parentalControl })
     .eq('name', user.name)
-  console.log(user.name)
-
+  
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
