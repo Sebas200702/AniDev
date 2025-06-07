@@ -83,14 +83,6 @@ export const AnimeSlider = ({ url, title }: Props) => {
   const groups = createGroups(displayAnimes)
   const totalGroups = groups.length
 
-  const getPaddingAndGap = () => {
-    if (windowWidth && windowWidth < 768) {
-      return { padding: 'px-4', gap: 'gap-4' }
-    }
-    return { padding: 'px-20', gap: 'gap-10' }
-  }
-
-  const { padding, gap } = getPaddingAndGap()
 
   useEffect(() => {
     const storedAnimes = getCachedAnimes()
