@@ -5,7 +5,6 @@ import { SectionList } from '@components/section-list'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUserListsStore } from '@store/user-list-store'
 import { useEffect } from 'react'
-
 /**
  * UserList component displays a navigation bar with user list sections and options.
  *
@@ -32,10 +31,9 @@ export const UserList = () => {
   const {
     userList: sections,
     setUserList,
-    watchList,
     isLoading,
   } = useUserListsStore()
-  const { userInfo } = useGlobalUserPreferences()
+  const { userInfo, watchList } = useGlobalUserPreferences()
   const currentSection = sections.find((section) => section.selected)
 
   return (
