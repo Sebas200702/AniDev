@@ -3,6 +3,7 @@ import { AnimeTag } from '@components/anime-tag'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { StatusPoint } from '@components/status-point'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { genreToColor } from '@utils/genre-to-color'
@@ -60,6 +61,7 @@ export const AnimeCard = ({ anime }: Props) => {
 
   const slug = normalizeString(title)
   const { width: windowWidth } = useWindowWidth()
+  const { userInfo } = useGlobalUserPreferences()
   const isMobile = windowWidth && windowWidth < 768
 
   let timer: NodeJS.Timeout
@@ -101,12 +103,16 @@ export const AnimeCard = ({ anime }: Props) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="bg-Complementary/50 border-Primary-50/10 absolute top-3 left-3 z-20 flex items-center justify-center rounded-lg border-1 p-1 backdrop-blur-sm transition-all duration-200 ease-in-out md:opacity-0 md:group-hover:opacity-100">
-        <AddToListButton
-          animeId={mal_id}
-          styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
-        />
-      </div>
+      {userInfo?.name && (
+        <div className="bg-Complementary/50 border-Primary-50/10 absolute  top-3 left-3 z-20 flex items-center justify-center rounded-lg border-1 p-1 backdrop-blur-sm transition-all duration-200 ease-in-out md:opacity-0 md:group-hover:opacity-100"
+
+        >
+          <AddToListButton
+            animeId={mal_id}
+            styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
+          />
+        </div>
+      )}
       <a
         href={`/anime/${slug}_${mal_id}`}
         className={`flex h-auto flex-col items-center rounded-lg`}
