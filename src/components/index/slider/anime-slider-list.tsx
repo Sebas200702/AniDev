@@ -5,6 +5,7 @@ import { AnimeSliderLoader } from '@components/index/slider/anime-slider-loader'
 import { NexPrevBtnSlideList } from '@components/index/slider/next-prev-btn-slider-list'
 import { SliderHeader } from '@components/index/slider/slider-header'
 import { useFetch } from '@hooks/useFetch'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
 import type { AnimeCardInfo } from 'types'
 
@@ -41,7 +42,7 @@ export const AnimeSlider = ({ url, title }: Props) => {
   const [cachedAnimes, setCachedAnimes] = useState<AnimeCardInfo[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
   const listRef = useRef<HTMLUListElement>(null)
-
+  const { userInfo, parentalControl } = useGlobalUserPreferences()
   const storageKey = `animes_${url}`
 
   const getCachedAnimes = useCallback(() => {
@@ -55,8 +56,10 @@ export const AnimeSlider = ({ url, title }: Props) => {
   }, [storageKey])
 
   const { data: animes, loading } = useFetch<AnimeCardInfo[]>({
-    url,
-    skip: cachedAnimes.length > 0,
+    url: url + (parentalControl ? '&parental_control=true' : ''),
+    skip:
+      cachedAnimes.length > 0 ||
+      (url === '/api/getRecomendations' && !userInfo?.name),
   })
 
   const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
