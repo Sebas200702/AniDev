@@ -62,7 +62,7 @@ export const UserList = () => {
         {userInfo?.name &&
           watchList
             .filter((watch) => watch.type === currentSection?.label)
-            .map((watch) => <AnimeCard key={watch.id} anime={watch} />)}
+            .map((watch) => <AnimeCard key={watch.mal_id} anime={watch} />)}
 
         {isLoading &&
           !watchList.length &&
