@@ -45,8 +45,10 @@ export const MusicPlayer = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  
+  const [savedTime, setSavedTime] = useState<number>(0)
+  const [isChangingFormat, setIsChangingFormat] = useState(false)
 
-  // Obtener la referencia del media actual según el tipo
   const getMediaRef = () => {
     return type === 'video' ? videoRef.current : audioRef.current
   }
@@ -62,11 +64,22 @@ export const MusicPlayer = () => {
     }
 
     const onLoadStart = () => setIsLoading(true)
+
     const onCanPlay = () => {
       setIsLoading(false)
       setError(null)
-      console.log(media.duration)
       setDuration(media.duration)
+
+      if (isChangingFormat && savedTime > 0) {
+        media.currentTime = savedTime
+        setCurrentTime(savedTime)
+        setIsChangingFormat(false)
+        setSavedTime(0)
+
+        if (isPlaying) {
+          media.play().catch(console.error)
+        }
+      }
     }
 
     const onError = () => {
@@ -101,7 +114,7 @@ export const MusicPlayer = () => {
       media.removeEventListener('ended', onEnded)
       media.removeEventListener('volumechange', onVolumeChange)
     }
-  }, [repeat, isDragging, setCurrentTime, type])
+  }, [repeat, isDragging, setCurrentTime, type, isChangingFormat, savedTime, isPlaying])
 
   useEffect(() => {
     const media = getMediaRef()
@@ -121,12 +134,15 @@ export const MusicPlayer = () => {
       }
     }
 
+
+    if (isChangingFormat) return
+
     if (isPlaying) {
       playMedia()
     } else {
       media.pause()
     }
-  }, [isPlaying, currentSong, type])
+  }, [isPlaying, currentSong, type, isChangingFormat])
 
   useEffect(() => {
     const media = getMediaRef()
@@ -197,10 +213,17 @@ export const MusicPlayer = () => {
   const toggleRepeat = () => setRepeat(!repeat)
   const toggleShuffle = () => setShuffle(!shuffle)
   const toggleMinimize = () => setIsMinimized(!isMinimized)
+
   const handleToggleFormat = () => {
+    const currentMedia = getMediaRef()
+    if (currentMedia) {
+      setSavedTime(currentMedia.currentTime)
+      setIsChangingFormat(true)
+    }
+
     setIsLoading(true)
     setType(type === 'audio' ? 'video' : 'audio')
-    setIsLoading(false)
+
   }
 
   const formatTime = (sec: number) => {
@@ -221,10 +244,27 @@ export const MusicPlayer = () => {
 
   return (
     <div
-      className={`bg-Complementary fixed right-10 bottom-36 w-full max-w-xs rounded-lg shadow-2xl transition-all duration-300 ${
+      className={`bg-Complementary fixed md:right-10 right-4 md:bottom-36 bottom-64 w-full max-w-xs rounded-lg shadow-2xl transition-all duration-300 ${
         isMinimized ? 'p-2' : 'p-4'
-      } flex flex-col gap-4 border border-gray-700/30 z-50`}
+      } flex flex-col gap-4 border border-enfasisColor/30 overflow-hidden z-20`}
     >
+
+      {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
+      <audio
+        ref={audioRef}
+        src={currentSong.audio_url}
+        preload="metadata"
+        style={{ display: 'none' }}
+      />
+
+      {/* biome-ignore lint/a11y/useMediaCaption: <explanation> */}
+      <video
+        ref={videoRef}
+        src={currentSong.video_url}
+        preload="metadata"
+        style={{ display: 'none' }}
+      />
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {isLoading && (
@@ -234,7 +274,7 @@ export const MusicPlayer = () => {
         </div>
         <button
           onClick={toggleMinimize}
-          className="z-10 p-1 text-gray-400 transition-colors hover:text-white"
+          className="z-10 p-1 text-Primary-50/70 transition-colors hover:text-white"
         >
           {isMinimized ? (
             <ExpandIcon className="h-4 w-4" />
@@ -256,7 +296,7 @@ export const MusicPlayer = () => {
                 className="relative aspect-video w-full object-cover"
                 style={{ display: 'block' }}
               />
-              <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
+              <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent  absolute inset-0" />
 
               <div className="absolute right-0 bottom-0 left-0 z-50 flex items-center justify-between p-4">
                 <div className="flex items-center gap-2">
@@ -277,6 +317,7 @@ export const MusicPlayer = () => {
                   <button
                     onClick={handleToggleFormat}
                     className="rounded p-1 transition-colors text-white/70 hover:text-white"
+                    disabled={isLoading}
                   >
                     <TrailerIcon className="h-4 w-4" />
                   </button>
@@ -323,7 +364,7 @@ export const MusicPlayer = () => {
               <img
                 src={proxyUrl}
                 alt={currentSong.song_title}
-                className="relative aspect-video w-full object-cover transition-transform duration-300 hover:scale-105"
+                className="relative aspect-video w-full object-cover transition-transform duration-300 "
               />
               <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
 
@@ -346,6 +387,7 @@ export const MusicPlayer = () => {
                   <button
                     onClick={handleToggleFormat}
                     className="rounded p-1 transition-colors text-white/70 hover:text-white"
+                    disabled={isLoading}
                   >
                     <TrailerIcon className="h-4 w-4" />
                   </button>
@@ -458,7 +500,7 @@ export const MusicPlayer = () => {
               alt={currentSong.song_title}
               className="absolute inset-0 h-full w-full rounded object-cover object-center"
             />
-            <Overlay className="to-Primary-950/80 h-full w-full bg-gradient-to-b from-transparent via-transparent" />
+            <Overlay className="to-Primary-950/80 via-5% via-Primary-950/50  h-full w-full bg-gradient-to-b from-transparent  absolute inset-0" />
           </Picture>
 
           <div className="z-10 min-w-0 flex-1">
@@ -485,22 +527,10 @@ export const MusicPlayer = () => {
         </div>
       )}
 
-      {/* Error message */}
       {error && !isMinimized && (
         <div className="rounded bg-red-500/10 p-2 text-center text-xs text-red-400">
           {error}
         </div>
-      )}
-
-      {/* Elementos de audio y video ocultos */}
-      {type === 'audio' && (
-        // biome-ignore lint/a11y/useMediaCaption: <explanation>
-        <audio
-          ref={audioRef}
-          src={currentSong.audio_url}
-          preload="metadata"
-          style={{ display: 'none' }}
-        />
       )}
     </div>
   )
