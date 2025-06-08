@@ -13,14 +13,21 @@ export const AddToListButton = ({
   animeId: number
   styles?: string
 }) => {
-  const { isLoading, setIsLoading } = useUserListsStore()
+  const { isLoading, setIsLoading, isInWatchList, setIsInWatchList } =
+    useUserListsStore()
   const { watchList, setWatchList, userInfo } = useGlobalUserPreferences()
 
-  const isInWatchList = watchList.some((watch) => watch.mal_id === animeId)
+  useEffect(() => {
+    if (watchList.length > 0) {
+      setIsInWatchList(watchList.some((watch) => watch.mal_id === animeId))
+    }
+  }, [watchList])
+
   const handleAddToList = async () => {
     if (!userInfo?.name) {
       return
     }
+    setIsLoading(true)
     const promise = fetch('/api/watchList', {
       method: 'POST',
       body: JSON.stringify({ animeId, type: 'To Watch' }),
@@ -40,9 +47,9 @@ export const AddToListButton = ({
       },
     })
 
-    setIsLoading(true)
     try {
       await promise
+      setIsInWatchList(true)
     } catch (error) {
       console.error(error)
     } finally {
@@ -56,6 +63,7 @@ export const AddToListButton = ({
     }
     const newWatchList = watchList.filter((watch) => watch.mal_id !== animeId)
     setWatchList(newWatchList)
+    setIsInWatchList(false)
     const promise = fetch('/api/watchList', {
       method: 'DELETE',
       body: JSON.stringify({ animeId }),
@@ -74,11 +82,11 @@ export const AddToListButton = ({
       },
     })
 
-    setIsLoading(true)
     try {
       await promise
     } catch (error) {
-      console.error(error)
+      setWatchList(watchList)
+      setIsInWatchList(true)
     } finally {
       setIsLoading(false)
     }
@@ -89,11 +97,12 @@ export const AddToListButton = ({
       onClick={isInWatchList ? handleRemoveFromList : handleAddToList}
       disabled={isLoading || !userInfo?.name}
       title={isInWatchList ? 'Remove from list' : 'Add to list'}
+      className={`${styles} w-full h-full flex items-center justify-center`}
     >
       {isInWatchList ? (
-        <DeleteIcon className={styles} />
+        <DeleteIcon className="h-4 w-4" />
       ) : (
-        <AddToListIcon className={styles} />
+        <AddToListIcon className="h-4 w-4" />
       )}
     </button>
   )
