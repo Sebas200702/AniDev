@@ -47,8 +47,10 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
     const fetchWatchList = async () => {
-      const watchList = await getWatchList()
-      setWatchList(watchList)
+      if (userInfo?.name) {
+        const watchList = await getWatchList()
+        setWatchList(watchList)
+      }
     }
     fetchWatchList()
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
