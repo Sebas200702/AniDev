@@ -38,12 +38,15 @@ import { create } from 'zustand'
 interface UserListsStore {
   userList: Section[]
   isLoading: boolean
+  isInWatchList: boolean
   setUserList: (userList: Section[]) => void
   setIsLoading: (isLoading: boolean) => void
+  setIsInWatchList: (isInWatchList: boolean) => void
 }
 
 export const useUserListsStore = create<UserListsStore>((set) => ({
-  isLoading: true,
+  isLoading: false,
+  isInWatchList: false,
   userList: [
     {
       label: 'To Watch',
@@ -69,7 +72,9 @@ export const useUserListsStore = create<UserListsStore>((set) => ({
   setUserList: (userList) => {
     set({ userList })
   },
-
+  setIsInWatchList: (isInWatchList) => {
+    set({ isInWatchList })
+  },
   setIsLoading: (isLoading) => {
     set({ isLoading })
   },
