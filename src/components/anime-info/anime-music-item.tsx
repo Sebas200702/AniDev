@@ -1,6 +1,5 @@
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
-import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeSong } from 'types'
 
@@ -8,25 +7,11 @@ export const AnimeMusicItem = ({
   song,
   image,
   placeholder,
-  banner_image,
-  anime_title,
 }: {
   song: AnimeSong
   image: string
   placeholder: string
-  anime_title: string
-  banner_image?: string
 }) => {
-  const { setCurrentSong, setIsPlaying } = useMusicPlayerStore()
-  const handleClick = () => {
-    setCurrentSong({
-      ...song,
-      image: banner_image ? banner_image : image,
-      placeholder,
-      anime_title,
-    })
-    setIsPlaying(true)
-  }
   const getTypeColor = (type: string) => {
     switch (type?.toLowerCase()) {
       case 'opening':
@@ -43,8 +28,8 @@ export const AnimeMusicItem = ({
   }
   return (
     <a
-      href={`/music/${normalizeString(song.song_title)}`}
-      onClick={handleClick}
+      href={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
+      data-theme-id={song.theme_id}
       className="hover:bg-Primary-900 border-enfasisColor relative flex max-h-28 flex-row gap-2 overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-all duration-300"
     >
       <Picture
