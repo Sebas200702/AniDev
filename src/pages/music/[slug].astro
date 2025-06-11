@@ -1,5 +1,10 @@
 ---
+import { Music } from '@components/music-info/music'
 import Layout from '@layouts/base.astro'
+const { slug } = Astro.params
+const [song_title, theme_id] = slug?.split('_') ?? ['', '']
 ---
 
-<Layout />
+<Layout title={`${song_title.replaceAll('-', ' ')} - AniDev`}>
+    <Music client:load themeId={theme_id} />
+</Layout>
