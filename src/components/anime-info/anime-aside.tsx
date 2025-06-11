@@ -63,7 +63,7 @@ export const AnimeAside = ({
   url,
 }: Props) => {
   return (
-    <aside className="anime-aside top-28 z-10 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
+    <aside className="anime-aside top-28 z-20 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
       <Picture
         image={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
         styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
@@ -79,12 +79,11 @@ export const AnimeAside = ({
       <div className="flex h-full w-full flex-row justify-end gap-4">
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
 
-        <div className="button-secondary flex items-center justify-center">
-          <AddToListButton
-            animeId={animeData.mal_id}
-            styles="h-4 w-4 xl:h-5 xl:w-5"
-          />
-        </div>
+        <AddToListButton
+          animeId={animeData.mal_id}
+          styles="button-secondary "
+        />
+
         <ShareButton
           title={animeData.title}
           url={url}
