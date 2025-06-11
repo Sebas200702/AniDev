@@ -1,10 +1,11 @@
 import { SchemaType } from '@google/generative-ai'
 import { model } from '@libs/gemini'
-import { supabase } from '@libs/supabase'
-import { checkSession } from '@middlewares/auth'
 import { fetchRecomendations } from '@utils/fetch-recomendations'
+import { generateContextualPrompt } from '@utils/get-recomendation-context'
+import { getUserDataToRecomendations } from '@utils/get-user-data-to-recomendations'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { APIRoute } from 'astro'
+import type { RecommendationContext } from 'types'
 
 const fetchRecomendationsFunctionDeclaration = {
   name: 'fetch_recommendations',
@@ -26,7 +27,7 @@ const fetchRecomendationsFunctionDeclaration = {
   },
 }
 
-export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
+export const GET: APIRoute = async ({ request, cookies, url }) => {
   try {
     const userInfo = await getSessionUserInfo({
       request,
@@ -36,92 +37,49 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
 
     const userName = userInfo?.name
 
-    if (!userName) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-      })
+    const isAuth = !!userName
+
+    const contextType =
+      (url.searchParams.get('context') as RecommendationContext['type']) ||
+      'general'
+    const searchQuery = url.searchParams.get('searchQuery') || undefined
+    const currentAnime = url.searchParams.get('currentAnime') || undefined
+    const mood = url.searchParams.get('mood') || undefined
+    const referenceAnime = url.searchParams.get('referenceAnime') || undefined
+    const season = url.searchParams.get('season') || undefined
+    const timeAvailable = url.searchParams.get('timeAvailable') || undefined
+    const count = parseInt(url.searchParams.get('count') || '24') || undefined
+    const focus = url.searchParams.get('focus') || undefined
+
+    const context: RecommendationContext = {
+      type: contextType,
+      data: {
+        searchQuery,
+        currentAnime,
+        mood,
+        referenceAnime,
+        season,
+        timeAvailable,
+      },
+      count,
+      focus: focus,
     }
 
-    const { data: userId, error: userIdError } = await supabase
-      .from('public_users')
-      .select('id')
-      .eq('name', userName)
+    const { userProfile, calculatedAge, error } =
+      await getUserDataToRecomendations(userName, isAuth)
 
-    if (userIdError) {
-      return new Response(JSON.stringify({ error: userIdError.message }), {
+    if (error || !userProfile || !calculatedAge) {
+      return new Response(JSON.stringify({ error: error }), {
         status: 500,
       })
     }
 
-    const { data: userProfile, error: userProfileError } = await supabase
-      .from('user_profiles')
-      .select(
-        'search_history(search_history), favorite_animes, favorite_genres, favorite_studios, frequency_of_watch, fanatic_level, gender, last_name, name, preferred_format, birthday, watched_animes'
-      )
-      .eq('user_id', userId?.[0]?.id)
-
-    if (userProfileError) {
-      return new Response(JSON.stringify({ error: userProfileError.message }), {
-        status: 500,
-      })
-    }
-
-    const calculatedAge =
-      new Date().getFullYear() - new Date(userProfile[0].birthday).getFullYear()
-
-    const prompt = `
-    Eres un especialista en anime con amplio conocimiento de la industria, géneros, estudios y tendencias. Tu objetivo es generar recomendaciones personalizadas y precisas basadas en el análisis detallado del perfil del usuario.
-
-    ## PERFIL DEL USUARIO:
-    **Información Personal:**
-    - Nombre: ${userProfile[0].name} ${userProfile[0].last_name}
-    - Género: ${userProfile[0].gender}
-    - Edad: ${calculatedAge} años (nacido el ${userProfile[0].birthday})
-
-    **Preferencias de Anime:**
-    - Animes Favoritos: ${userProfile[0].favorite_animes.join(', ')}
-    - Géneros Preferidos: ${userProfile[0].favorite_genres.join(', ')}
-    - Estudios Favoritos: ${userProfile[0].favorite_studios.join(', ')}
-    - Formato Preferido: ${userProfile[0].preferred_format}
-
-    **Hábitos de Consumo:**
-    - Frecuencia de Visualización: ${userProfile[0].frequency_of_watch}
-    - Nivel de Fanatismo: ${userProfile[0].fanatic_level}
-    - Historial de Búsqueda: ${userProfile[0].search_history}
-
-    **Anime Ya Consumido:**
-    - Animes Vistos: ${userProfile[0].watched_animes.join(', ')}
-
-    ## INSTRUCCIONES PARA LAS RECOMENDACIONES:
-
-    ### Criterios de Selección:
-    1. **EXCLUSIONES OBLIGATORIAS**: No incluir ningún anime de la lista de "Animes Vistos" o "Animes Favoritos"
-    2. **COMPATIBILIDAD DE GÉNEROS**: Priorizar animes que compartan al menos 60% de géneros con las preferencias del usuario
-    3. **ESTUDIOS PREFERIDOS**: Dar prioridad a animes de los estudios favoritos del usuario
-    4. **ANÁLISIS DEMOGRÁFICO**: Considerar la edad y género para recomendar contenido apropiado y atractivo
-    5. **PATRONES DE BÚSQUEDA**: Usar el historial de búsqueda para identificar tendencias e intereses emergentes
-
-    ### Estructura de Respuesta Requerida:
-    Para cada anime recomendado, proporciona unicamente:
-    - **Id de MAL**: Id de MAL del anime(MyAnimeList)
-
-
-    ### Calidad y Diversidad:
-    - Incluir animes de diferentes épocas (clásicos y recientes)
-    - Mezclar series populares con joyas ocultas
-    - Considerar diferentes formatos si es apropiado (series, películas, OVAs)
-    - Asegurar variedad en tonos y temáticas dentro de los géneros preferidos
-
-    ### Formato de Entrega:
-    - **EXACTAMENTE 24 recomendaciones ni mas ni menos**
-
-
-    ### Consideraciones Especiales:
-    - Si el usuario tiene nivel de fanatismo alto, incluye animes más específicos o de nicho
-    - Si ve anime frecuentemente, puede manejar series más largas o complejas
-    - Si es casual, prioriza animes más accesibles y populares
-
-    Genera las recomendaciones ahora, siguiendo estrictamente estas instrucciones.`
+    const prompt = generateContextualPrompt(
+      userProfile,
+      calculatedAge,
+      context,
+      currentAnime
+    )
 
     const initialResponse = await model.generateContent({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -150,18 +108,107 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
         ?.functionCall
 
     if (functionCall) {
+      const requestedIds = Object.values(functionCall.args)?.[0] as string[]
+      const targetCount = context.count || 24
       let functionResult = await fetchRecomendations(
-        Object.values(functionCall.args)?.[0] as string[]
+        requestedIds,
+        targetCount,
+        currentAnime
       )
+      let wasRetried = false
 
-      return new Response(JSON.stringify({ data: functionResult }), {
-        status: 200,
-      })
+      if (functionResult.length < targetCount * 0.95) {
+        wasRetried = true
+        console.log(
+          `Insufficient results (${functionResult.length}/${targetCount}). Retrying with fallback strategy.`
+        )
+
+        const retryPrompt = `Las recomendaciones anteriores solo retornaron ${functionResult.length} de ${targetCount} animes solicitados.
+        Esto indica que muchos mal_ids no existen en nuestra base de datos.
+
+        Por favor, genera ${targetCount} recomendaciones diferentes usando mal_ids de animes MÁS POPULARES Y CONOCIDOS
+        que probablemente estén en cualquier base de datos de anime (como los top 100 de MyAnimeList).
+
+        Contexto del usuario: ${JSON.stringify(context)}`
+
+        try {
+          const retry = await model.generateContent({
+            contents: [
+              {
+                role: 'user',
+                parts: [{ text: retryPrompt }],
+              },
+            ],
+            tools: [
+              {
+                functionDeclarations: [fetchRecomendationsFunctionDeclaration],
+              },
+            ],
+          })
+
+          const retryFunctionCall =
+            retry.response?.candidates?.[0]?.content?.parts?.[0]?.functionCall
+
+          if (retryFunctionCall) {
+            const retryIds = Object.values(
+              retryFunctionCall.args
+            )?.[0] as string[]
+            const retryResult = await fetchRecomendations(
+              retryIds,
+              targetCount,
+              currentAnime
+            )
+
+            const combinedResults = [...functionResult]
+            const existingIds = new Set(
+              functionResult.map((anime) => anime.mal_id)
+            )
+
+            for (const anime of retryResult) {
+              if (!existingIds.has(anime.mal_id)) {
+                combinedResults.push(anime)
+                if (combinedResults.length >= targetCount) break
+              }
+            }
+
+            functionResult = combinedResults
+            console.log(
+              `Retry completed. Final count: ${functionResult.length}`
+            )
+          }
+        } catch (retryError) {
+          console.error('Retry attempt failed:', retryError)
+        }
+
+        if (functionResult.length < targetCount) {
+          console.log(
+            `Still insufficient after retry (${functionResult.length}/${targetCount}). Forcing direct fallback.`
+          )
+          functionResult = await fetchRecomendations(
+            [],
+            targetCount,
+            currentAnime
+          )
+        }
+      }
+
+      return new Response(
+        JSON.stringify({
+          data: functionResult,
+          context: context,
+          totalRecommendations: functionResult?.length || 0,
+          wasRetried,
+        }),
+        {
+          status: 200,
+        }
+      )
     } else {
       return new Response(
         JSON.stringify({
           error: 'Could not generate recommendations. Please try again.',
           recommendations: [],
+          context: context,
         }),
         {
           status: 400,
@@ -174,4 +221,4 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
       status: 500,
     })
   }
-})
+}
