@@ -27,12 +27,26 @@ import type { AnimeCardInfo } from 'types'
  * @example
  * <AnimeSliderLoader />
  */
-export const AnimeSliderLoader = () => {
+export const AnimeSliderLoader = ({ context }: { context?: string }) => {
   const { width: windowWidth } = useWindowWidth()
   const animes = Array.from({ length: 7 }, (_, index) => index)
 
   const createGroups = (animes: number[]) => {
     let itemsPerGroup = 2
+
+    if (context === 'anime-info') {
+      if (windowWidth && windowWidth > 1280) {
+        itemsPerGroup = 4
+      } else if (windowWidth && windowWidth > 768) {
+        itemsPerGroup = 3
+      }
+    } else {
+      if (windowWidth && windowWidth > 1280) {
+        itemsPerGroup = 6
+      } else if (windowWidth && windowWidth > 768) {
+        itemsPerGroup = 4
+      }
+    }
 
     return Array.from({ length: Math.ceil(animes.length / itemsPerGroup) }).map(
       (_, groupIndex) => {
@@ -54,11 +68,17 @@ export const AnimeSliderLoader = () => {
         <div className="flex-1"></div>
       </header>
 
-      <div className="anime-list no-scrollbar flex w-full snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20">
+      <div
+        className={`anime-list no-scrollbar flex w-full snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20`}
+      >
         {groups.map((group, groupIndex) => (
           <section
             key={groupIndex}
-            className="grid w-[90%] flex-none grid-cols-2 gap-6 md:w-[calc(50%-20px)] md:gap-10 xl:w-[calc(33.33%-27px)]"
+            className={`grid w-[90%] flex-none grid-cols-2 gap-6 md:w-full md:gap-10 ${
+              context === 'anime-info'
+                ? 'md:grid-cols-3 xl:grid-cols-4'
+                : 'md:grid-cols-4 xl:grid-cols-6'
+            }`}
           >
             {group.map((_, index) => (
               <LoadingCard key={index} />
