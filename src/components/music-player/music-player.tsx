@@ -443,7 +443,7 @@ export const MusicPlayer = () => {
     return (
       <article
         ref={playerRef}
-        className={`fixed z-20 max-w-xs w-72 bg-Primary-950/60 backdrop-blur-md border border-gray-100/20 rounded-xl shadow-lg transition-all duration-200 ${
+        className={`bg-Primary-950/60 fixed z-20 w-72 max-w-xs rounded-xl border border-gray-100/20 shadow-lg backdrop-blur-md transition-all duration-200 ${
           isDraggingPlayer ? 'cursor-grabbing select-none' : 'cursor-grab'
         }`}
         style={{
@@ -456,28 +456,28 @@ export const MusicPlayer = () => {
         {/* Header ultra-compacto */}
         <div className="flex items-center gap-2 p-2">
           {/* Miniatura pequeña */}
-          <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 bg-Primary-800">
+          <div className="bg-Primary-800 h-9 w-9 flex-shrink-0 overflow-hidden rounded-lg">
             {currentSong.image && (
               <img
                 src={currentSong.image}
                 alt={currentSong.anime_title}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             )}
           </div>
 
           {/* Info ultra-compacta */}
-          <div className="flex-1 min-w-0">
-            <h4 className="text-xs font-medium text-white truncate leading-tight">
+          <div className="min-w-0 flex-1">
+            <h4 className="truncate text-xs leading-tight font-medium text-white">
               {currentSong.song_title}
             </h4>
-            <p className="text-xs text-gray-400 truncate leading-tight">
+            <p className="truncate text-xs leading-tight text-gray-400">
               {currentSong.anime_title}
             </p>
           </div>
 
           {/* Controles mínimos */}
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="flex flex-shrink-0 items-center gap-1">
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -492,11 +492,11 @@ export const MusicPlayer = () => {
                   }
                 }
               }}
-              className="w-7 h-7 rounded-full bg-enfasisColor text-Primary-950 flex items-center justify-center active:scale-95 transition-transform"
+              className="bg-enfasisColor text-Primary-950 flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-95"
             >
               {isPlaying ? (
                 <svg
-                  className="w-3 h-3"
+                  className="h-3 w-3"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -504,7 +504,7 @@ export const MusicPlayer = () => {
                 </svg>
               ) : (
                 <svg
-                  className="w-3 h-3 ml-0.5"
+                  className="ml-0.5 h-3 w-3"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -520,16 +520,16 @@ export const MusicPlayer = () => {
                   `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
                 )
               }}
-              className="w-6 h-6 rounded-full bg-Primary-800 text-enfasisColor flex items-center justify-center active:scale-95 transition-transform"
+              className="bg-Primary-800 text-enfasisColor flex h-6 w-6 items-center justify-center rounded-full transition-transform active:scale-95"
             >
-              <ExpandIcon className="w-3 h-3" />
+              <ExpandIcon className="h-3 w-3" />
             </button>
           </div>
         </div>
 
         {/* Barra de progreso ultra-fina */}
         <div className="px-2 pb-1">
-          <div className="w-full bg-Primary-800 rounded-full h-0.5">
+          <div className="bg-Primary-800 h-0.5 w-full rounded-full">
             <div
               className="bg-enfasisColor h-0.5 rounded-full transition-all duration-100"
               style={{
@@ -563,9 +563,9 @@ export const MusicPlayer = () => {
   return (
     <article
       ref={playerRef}
-      className={`group transition-all duration-300 rounded-xl ease-in-out ${isMinimized ? 'md:max-w-80 w-full shadow-lg from-Complementary/50 fixed z-20  to-Complementary/80 overflow-hidden  border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm ' : 'max-w-6xl my-20 md:mx-20 mx-4 bg-Complementary'}  ${
+      className={`group rounded-xl transition-all duration-300 ease-in-out ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm md:max-w-80' : 'bg-Complementary mx-4 my-20 max-w-6xl md:mx-20'} ${
         isDraggingPlayer && isMinimized
-          ? 'cursor-grabbing select-none music-player-dragging'
+          ? 'music-player-dragging cursor-grabbing select-none'
           : ''
       }`}
       style={
@@ -585,17 +585,17 @@ export const MusicPlayer = () => {
         className={`relative border-b border-gray-100/10 p-4 ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
       >
         <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <h3
               className={
                 isMinimized
-                  ? 'text-s font-medium text-white truncate mb-1 leading-tight'
-                  : 'text-2xl font-semibold mb-1  '
+                  ? 'text-s mb-1 truncate leading-tight font-medium text-white'
+                  : 'mb-1 text-2xl font-semibold'
               }
             >
               {currentSong.song_title}
             </h3>
-            <p className="text-sxx text-gray-400 truncate mb-1">
+            <p className="text-sxx mb-1 truncate text-gray-400">
               {currentSong.artist_name || 'Artista desconocido'}
             </p>
             <small className="text-sxx text-enfasisColor tracking-wider uppercase">
@@ -603,7 +603,7 @@ export const MusicPlayer = () => {
             </small>
           </div>
 
-          <div className="flex flex-col gap-2 items-end">
+          <div className="flex flex-col items-end gap-2">
             <span className="text-sxx text-enfasisColor tracking-wider uppercase">
               {type}
             </span>
@@ -614,14 +614,14 @@ export const MusicPlayer = () => {
                   `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
                 )
               }
-              className={`text-Primary-50 p-4 cursor-pointer ${isMinimized ? '' : 'hidden'}`}
+              className={`text-Primary-50 cursor-pointer p-4 ${isMinimized ? '' : 'hidden'}`}
             >
-              <ExpandIcon className="w-5 h-5" />
+              <ExpandIcon className="h-5 w-5" />
             </button>
           </div>
         </div>
         {isMinimized && (
-          <div className="from-enfasisColor/0 to-enfasisColor/20 absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 rounded-t-xl pointer-events-none" />
+          <div className="from-enfasisColor/0 to-enfasisColor/20 pointer-events-none absolute inset-0 rounded-t-xl bg-gradient-to-r opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
         )}
       </header>
 
@@ -635,14 +635,14 @@ export const MusicPlayer = () => {
         ref={videoRef}
         src={currentSong.video_url}
         preload="metadata"
-        className={type === 'video' ? 'opacity-100 w-full' : 'opacity-0 h-0'}
+        className={type === 'video' ? 'w-full opacity-100' : 'h-0 opacity-0'}
         controls={false}
         muted={type !== 'video'}
       >
         <track kind="captions" />
       </video>
 
-      <div className="bg-Primary-950/30 backdrop-blur-sm border-t border-gray-100/10 controls-area">
+      <div className="bg-Primary-950/30 controls-area border-t border-gray-100/10 backdrop-blur-sm">
         <Controls
           audioRef={audioRef}
           videoRef={videoRef}

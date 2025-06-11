@@ -183,17 +183,17 @@ export const Controls = ({
   }
 
   return (
-    <div className="p-4 space-y-3">
+    <div className="space-y-3 p-4">
       <div className="flex items-center space-x-3 text-sm">
-        <span className="text-gray-400 min-w-[3rem] text-sxx">
+        <span className="text-sxx min-w-[3rem] text-gray-400">
           {formatTime(isDragging ? dragPosition : currentTime)}
         </span>
-        <div className={`flex-1 group ${isDragging ? 'dragging' : ''}`}>
-          <div className="relative h-4 flex items-center">
-            <div className="w-full h-1 bg-gray-100/10 rounded-full" />
+        <div className={`group flex-1 ${isDragging ? 'dragging' : ''}`}>
+          <div className="relative flex h-4 items-center">
+            <div className="h-1 w-full rounded-full bg-gray-100/10" />
 
             <div
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-enfasisColor rounded-full transition-all duration-150 ease-out"
+              className="bg-enfasisColor absolute top-1/2 left-0 h-1 -translate-y-1/2 transform rounded-full transition-all duration-150 ease-out"
               style={{
                 width: `${((isDragging ? dragPosition : currentTime) / duration) * 100 || 0}%`,
               }}
@@ -201,7 +201,7 @@ export const Controls = ({
 
             {isDragging && (
               <div
-                className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-0.5 h-3 bg-white/60 rounded-full"
+                className="absolute top-1/2 h-3 w-0.5 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-white/60"
                 style={{ left: `${(dragPosition / duration) * 100 || 0}%` }}
               />
             )}
@@ -217,13 +217,13 @@ export const Controls = ({
               onMouseUp={handleSeekEnd}
               onTouchStart={handleSeekStart}
               onTouchEnd={handleSeekEnd}
-              className={`absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer slider-minimal ${
+              className={`slider-minimal absolute inset-0 h-full w-full cursor-pointer appearance-none bg-transparent ${
                 isDragging ? 'dragging-active' : ''
               }`}
             />
           </div>
         </div>
-        <span className="text-gray-400 min-w-[3rem] text-sxx">
+        <span className="text-sxx min-w-[3rem] text-gray-400">
           {formatTime(duration)}
         </span>
       </div>
@@ -231,72 +231,72 @@ export const Controls = ({
       <div className="flex items-center justify-center space-x-2">
         <button
           onClick={toggleShuffle}
-          className={`p-2 rounded-lg transition-all duration-300 ease-in-out ${
+          className={`rounded-lg p-2 transition-all duration-300 ease-in-out ${
             shuffle
               ? 'bg-enfasisColor/20 text-enfasisColor'
-              : 'text-gray-400 hover:text-enfasisColor hover:bg-gray-100/5'
+              : 'hover:text-enfasisColor text-gray-400 hover:bg-gray-100/5'
           }`}
           title="Aleatorio"
           disabled={isDragging}
         >
-          <RandomIcon className="w-4 h-4" />
+          <RandomIcon className="h-4 w-4" />
         </button>
 
         <button
           onClick={handlePrevious}
-          className="p-2 text-gray-400 rounded-lg hover:text-enfasisColor hover:bg-gray-100/5 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hover:text-enfasisColor rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!list.length || isDragging}
           title="Anterior"
         >
-          <PreviousIcon className="w-5 h-5" />
+          <PreviousIcon className="h-5 w-5" />
         </button>
 
         <button
           onClick={handleTogglePlay}
-          className="p-3 bg-enfasisColor text-white rounded-full hover:bg-enfasisColor/80 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-enfasisColor hover:bg-enfasisColor/80 rounded-full p-3 text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!!error || isDragging}
           title={isPlaying ? 'Pausar' : 'Reproducir'}
         >
           {isPlaying ? (
-            <PauseIcon className="w-5 h-5" />
+            <PauseIcon className="h-5 w-5" />
           ) : (
-            <PlayIcon className="w-5 h-5" />
+            <PlayIcon className="h-5 w-5" />
           )}
         </button>
 
         <button
           onClick={handleNext}
-          className="p-2 text-gray-400 rounded-lg hover:text-enfasisColor hover:bg-gray-100/5 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hover:text-enfasisColor rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!list.length || isDragging}
           title="Siguiente"
         >
-          <NextIcon className="w-5 h-5" />
+          <NextIcon className="h-5 w-5" />
         </button>
 
         <button
           onClick={toggleRepeat}
-          className={`p-2 rounded-lg transition-all duration-300 ease-in-out ${
+          className={`rounded-lg p-2 transition-all duration-300 ease-in-out ${
             repeat
               ? 'bg-enfasisColor/20 text-enfasisColor'
-              : 'text-gray-400 hover:text-enfasisColor hover:bg-gray-100/5'
+              : 'hover:text-enfasisColor text-gray-400 hover:bg-gray-100/5'
           }`}
           title="Repetir"
           disabled={isDragging}
         >
-          <RepeatIcon className="w-4 h-4" />
+          <RepeatIcon className="h-4 w-4" />
         </button>
       </div>
 
       <div className="flex items-center justify-between">
         <div
-          className={`flex items-center space-x-2 flex-1 max-w-32 group ${isVolumeDragging ? 'dragging' : ''}`}
+          className={`group flex max-w-32 flex-1 items-center space-x-2 ${isVolumeDragging ? 'dragging' : ''}`}
         >
-          <VolumeIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          <div className="flex-1 relative h-4 flex items-center">
-            <div className="w-full h-1 bg-gray-100/10 rounded-full" />
+          <VolumeIcon className="h-4 w-4 flex-shrink-0 text-gray-400" />
+          <div className="relative flex h-4 flex-1 items-center">
+            <div className="h-1 w-full rounded-full bg-gray-100/10" />
 
             <div
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-enfasisColor rounded-full transition-all duration-150 ease-out"
+              className="bg-enfasisColor absolute top-1/2 left-0 h-1 -translate-y-1/2 transform rounded-full transition-all duration-150 ease-out"
               style={{ width: `${volume * 100}%` }}
             />
 
@@ -311,29 +311,29 @@ export const Controls = ({
               onMouseUp={handleVolumeEnd}
               onTouchStart={handleVolumeStart}
               onTouchEnd={handleVolumeEnd}
-              className={`absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer slider-minimal ${
+              className={`slider-minimal absolute inset-0 h-full w-full cursor-pointer appearance-none bg-transparent ${
                 isVolumeDragging ? 'dragging-active' : ''
               }`}
               title={`Volumen: ${Math.round(volume * 100)}%`}
             />
           </div>
-          <span className="text-sxx text-gray-400 min-w-[2rem] text-center">
+          <span className="text-sxx min-w-[2rem] text-center text-gray-400">
             {Math.round(volume * 100)}%
           </span>
         </div>
 
         <button
           onClick={handleToggleFormat}
-          className="p-2 text-gray-400 rounded-lg hover:text-enfasisColor hover:bg-gray-100/5 transition-all duration-300 ease-in-out ml-4"
+          className="hover:text-enfasisColor ml-4 rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5"
           title={`Cambiar a ${type === 'audio' ? 'video' : 'audio'}`}
           disabled={isDragging || isVolumeDragging}
         >
-          <TrailerIcon className="w-4 h-4" />
+          <TrailerIcon className="h-4 w-4" />
         </button>
       </div>
 
       {error && (
-        <div className="text-red-400 text-sxx text-center bg-red-900/20 border border-red-500/20 p-2 rounded-lg">
+        <div className="text-sxx rounded-lg border border-red-500/20 bg-red-900/20 p-2 text-center text-red-400">
           {error}
         </div>
       )}

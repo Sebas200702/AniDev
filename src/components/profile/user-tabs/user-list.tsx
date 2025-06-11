@@ -28,11 +28,7 @@ import { useEffect } from 'react'
  * <UserList />
  */
 export const UserList = () => {
-  const {
-    userList: sections,
-    setUserList,
-    isLoading,
-  } = useUserListsStore()
+  const { userList: sections, setUserList, isLoading } = useUserListsStore()
   const { userInfo, watchList } = useGlobalUserPreferences()
   const currentSection = sections.find((section) => section.selected)
 

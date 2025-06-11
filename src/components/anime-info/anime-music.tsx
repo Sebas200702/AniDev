@@ -63,7 +63,7 @@ export const AnimeMusic = ({
           {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="bg-zinc-700 h-28 animate-pulse rounded-lg"
+              className="h-28 animate-pulse rounded-lg bg-zinc-700"
             />
           ))}
         </ul>

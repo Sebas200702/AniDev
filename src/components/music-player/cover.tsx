@@ -27,7 +27,7 @@ export const Cover = () => {
   }
   if (!isMinimized && type === 'audio') {
     return (
-      <div className="relative h-full aspect-video overflow-hidden">
+      <div className="relative aspect-video h-full overflow-hidden">
         <Picture
           image={createImageUrlProxy(
             currentSong.banner_image,
@@ -40,7 +40,7 @@ export const Cover = () => {
           <img
             src={proxyUrl}
             alt={currentSong.song_title}
-            className="object-cover  h-full  relative aspect-video w-full"
+            className="relative aspect-video h-full w-full object-cover"
           />
         </Picture>
       </div>
@@ -49,11 +49,11 @@ export const Cover = () => {
 
   return (
     <div
-      className={`mt-12 relative ${type === 'video' ? 'hidden' : 'block'} flex w-full h-full items-center justify-center p-4`}
+      className={`relative mt-12 ${type === 'video' ? 'hidden' : 'block'} flex h-full w-full items-center justify-center p-4`}
     >
-      <div className="flex items-center justify-center p-6 disk rounded-full">
+      <div className="disk flex items-center justify-center rounded-full p-6">
         <figure
-          className={`relative  rounded-full overflow-hidden shadow-lg border border-gray-100/20 transition-all duration-300 ease-in-out w-32 h-32 ${
+          className={`relative h-32 w-32 overflow-hidden rounded-full border border-gray-100/20 shadow-lg transition-all duration-300 ease-in-out ${
             isPlaying ? 'animate-spin-slow' : ''
           }`}
         >
@@ -69,7 +69,7 @@ export const Cover = () => {
             <img
               src={proxyUrl}
               alt={currentSong.song_title}
-              className="object-cover w-full h-full rounded-full relative"
+              className="relative h-full w-full rounded-full object-cover"
             />
           </Picture>
         </figure>

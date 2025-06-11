@@ -176,9 +176,9 @@ export const MusicPlayer = () => {
   }
 
   return (
-    <article className="bg-Complementary border-1 border-enfasisColor/30 absolute bottom-40 right-10 z-20 max-w-80 w-full overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out transform">
+    <article className="bg-Complementary border-enfasisColor/30 absolute right-10 bottom-40 z-20 w-full max-w-80 transform overflow-hidden rounded-lg border-1 shadow-lg transition-all duration-300 ease-in-out">
       <figure
-        className={`w-48 h-48 mx-auto my-4 aspect-square relative rounded-full overflow-hidden ${
+        className={`relative mx-auto my-4 aspect-square h-48 w-48 overflow-hidden rounded-full ${
           isPlaying ? 'animate-spin-slow' : ''
         }`}
       >
@@ -194,7 +194,7 @@ export const MusicPlayer = () => {
           <img
             src={proxyUrl}
             alt={currentSong.song_title}
-            className="object-cover relative w-full h-full rounded-full"
+            className="relative h-full w-full rounded-full object-cover"
           />
         </Picture>
       </figure>

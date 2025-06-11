@@ -6,5 +6,5 @@ const [song_title, theme_id] = slug?.split('_') ?? ['', '']
 ---
 
 <Layout title={`${song_title.replaceAll('-', ' ')} - AniDev`}>
-    <Music client:load themeId={theme_id} />
+  <Music client:load themeId={theme_id} />
 </Layout>

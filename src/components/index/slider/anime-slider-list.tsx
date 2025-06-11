@@ -192,7 +192,7 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
 
         <ul
           ref={listRef}
-          className={`anime-list no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20 `}
+          className={`anime-list no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20`}
         >
           {groups.map((group, groupIndex) => (
             <section

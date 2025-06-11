@@ -17,12 +17,9 @@ export const GET: APIRoute = redisConnection(async ({ request }) => {
     const cachedData = await redis.get(cacheKey)
 
     if (cachedData) {
-      return new Response(
-        JSON.stringify({ data: JSON.parse(cachedData) }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      )
+      return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     const { data, error } = await supabase
