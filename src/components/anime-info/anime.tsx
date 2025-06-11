@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import { AnimeAside } from '@components/anime-info/anime-aside'
 import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
@@ -7,10 +5,12 @@ import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
+import { AnimeSlider } from '@components/index/slider/anime-slider-list'
 import { Overlay } from '@components/overlay'
 import { baseUrl } from '@utils/base-url'
 import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
+import { useEffect, useState } from 'react'
 import type { Anime } from 'types'
 
 /**
@@ -94,6 +94,12 @@ export const AnimeInfo = ({ slug }: Props) => {
             }
             title={animeData.title}
             synopsis={animeData.synopsis ?? 'No synopsis available'}
+          />
+
+          <AnimeSlider
+            title="Similar to"
+            url={`/api/getRecomendations?similar_to=${animeData.title}&currentAnime=${animeData.mal_id}`}
+            context="anime-info"
           />
         </div>
         <AnimeDetails animeData={animeData} />
