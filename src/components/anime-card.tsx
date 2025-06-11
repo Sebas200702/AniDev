@@ -43,8 +43,6 @@ interface Props {
   /**
    * Optional context for the component.
    */
-
-  context?: string
 }
 
 export const AnimeCard = ({ anime }: Props) => {
