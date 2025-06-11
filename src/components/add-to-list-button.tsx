@@ -97,12 +97,12 @@ export const AddToListButton = ({
       onClick={isInWatchList ? handleRemoveFromList : handleAddToList}
       disabled={isLoading || !userInfo?.name}
       title={isInWatchList ? 'Remove from list' : 'Add to list'}
-      className={`${styles} w-full h-full flex items-center justify-center`}
+      className={`${styles}  flex items-center justify-center`}
     >
       {isInWatchList ? (
-        <DeleteIcon className="h-4 w-4" />
+        <DeleteIcon className="h-4 w-4 xl:h-5 xl:w-5" />
       ) : (
-        <AddToListIcon className="h-4 w-4" />
+        <AddToListIcon className="h-4 w-4 xl:h-5 xl:w-5" />
       )}
     </button>
   )
