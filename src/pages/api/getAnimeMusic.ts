@@ -5,7 +5,7 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   const animeId = url.searchParams.get('animeId')
-  const cacheKey = `anime_music_${animeId}`
+  const cacheKey = `AnimeMusic_${animeId}`
   console.log(animeId)
 
   const cachedData = await redis.get(cacheKey)
@@ -24,7 +24,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   const { data, error } = await supabase
-    .from('anime_music')
+    .from('music')
     .select('*')
     .eq('anime_id', animeId)
 
