@@ -59,7 +59,7 @@ export const MusicPlayer = () => {
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      // Solo permitir drag desde el header, no desde controles
+
       const target = e.target as HTMLElement
       if (
         target.closest('button') ||
@@ -151,7 +151,6 @@ export const MusicPlayer = () => {
     setIsDraggingPlayer(false)
   }, [setIsDraggingPlayer])
 
-  // Event listeners para el dragging
   useEffect(() => {
     if (isDraggingPlayer) {
       document.addEventListener('mousemove', handleMouseMove)
@@ -379,7 +378,7 @@ export const MusicPlayer = () => {
       window.removeEventListener('popstate', handleLocationChange)
       document.removeEventListener('astro:page-load', handleLocationChange)
 
-  
+
       history.pushState = originalPushState
       history.replaceState = originalReplaceState
     }
