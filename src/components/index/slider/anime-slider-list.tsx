@@ -12,6 +12,7 @@ import type { AnimeCardInfo } from 'types'
 interface Props {
   url: string
   title: string
+  context?: string
 }
 
 /**
@@ -38,7 +39,7 @@ interface Props {
  * @example
  * <AnimeSlider url="/api/animes?limit_count=24&genre_filter=action&banners_filter=false" title="Action Anime" />
  */
-export const AnimeSlider = ({ url, title }: Props) => {
+export const AnimeSlider = ({ url, title, context }: Props) => {
   const [cachedAnimes, setCachedAnimes] = useState<AnimeCardInfo[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
   const listRef = useRef<HTMLUListElement>(null)
@@ -46,6 +47,11 @@ export const AnimeSlider = ({ url, title }: Props) => {
   const storageKey = `animes_${url}`
 
   const getCachedAnimes = useCallback(() => {
+    // No usar cache si el contexto es anime-info
+    if (context === 'anime-info') {
+      return null
+    }
+
     const storedAnimes = sessionStorage.getItem(storageKey)
     if (storedAnimes) {
       const parsedAnimes = JSON.parse(storedAnimes)
@@ -53,13 +59,11 @@ export const AnimeSlider = ({ url, title }: Props) => {
       return parsedAnimes
     }
     return null
-  }, [storageKey])
+  }, [storageKey, context])
 
   const { data: animes, loading } = useFetch<AnimeCardInfo[]>({
-    url: url + (parentalControl ? '&parental_control=true' : ''),
-    skip:
-      cachedAnimes.length > 0 ||
-      (url === '/api/getRecomendations' && !userInfo?.name),
+    url,
+    skip: context !== 'anime-info' && cachedAnimes.length > 0,
   })
 
   const displayAnimes = cachedAnimes.length > 0 ? cachedAnimes : (animes ?? [])
@@ -67,10 +71,20 @@ export const AnimeSlider = ({ url, title }: Props) => {
   const createGroups = (animes: AnimeCardInfo[]) => {
     let itemsPerGroup = 2
 
-    if (windowWidth && windowWidth > 1280) {
-      itemsPerGroup = 6
-    } else if (windowWidth && windowWidth > 768) {
-      itemsPerGroup = 4
+    if (context === 'anime-info') {
+      // Configuración específica para anime-info
+      if (windowWidth && windowWidth > 1280) {
+        itemsPerGroup = 4 // XL: 4 en lugar de 6
+      } else if (windowWidth && windowWidth > 768) {
+        itemsPerGroup = 3 // MD: 3 en lugar de 4
+      }
+    } else {
+      // Configuración por defecto
+      if (windowWidth && windowWidth > 1280) {
+        itemsPerGroup = 6
+      } else if (windowWidth && windowWidth > 768) {
+        itemsPerGroup = 4
+      }
     }
 
     return Array.from({ length: Math.ceil(animes.length / itemsPerGroup) }).map(
@@ -88,11 +102,11 @@ export const AnimeSlider = ({ url, title }: Props) => {
 
   useEffect(() => {
     const storedAnimes = getCachedAnimes()
-    if (!storedAnimes && animes) {
+    if (!storedAnimes && animes && context !== 'anime-info') {
       sessionStorage.setItem(storageKey, JSON.stringify(animes))
       setCachedAnimes(animes)
     }
-  }, [animes, storageKey, getCachedAnimes])
+  }, [animes, storageKey, getCachedAnimes, context])
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -159,7 +173,7 @@ export const AnimeSlider = ({ url, title }: Props) => {
   }, [windowWidth, totalGroups, displayAnimes])
 
   if (loading || !displayAnimes.length) {
-    return <AnimeSliderLoader />
+    return <AnimeSliderLoader context={context} />
   }
 
   return (
@@ -178,16 +192,20 @@ export const AnimeSlider = ({ url, title }: Props) => {
 
         <ul
           ref={listRef}
-          className={`anime-list no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20`}
+          className={`anime-list no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20 `}
         >
           {groups.map((group, groupIndex) => (
             <section
               key={groupIndex}
-              className="grid w-[90%] flex-none grid-cols-2 gap-6 md:w-full md:grid-cols-4 md:gap-10 xl:grid-cols-6"
+              className={`grid w-[90%] flex-none grid-cols-2 gap-6 md:w-full md:gap-10 ${
+                context === 'anime-info'
+                  ? 'md:grid-cols-3 xl:grid-cols-4'
+                  : 'md:grid-cols-4 xl:grid-cols-6'
+              }`}
             >
               {group.map((anime: AnimeCardInfo) => (
                 <li key={anime.mal_id}>
-                  <AnimeCard anime={anime} context={'index'} />
+                  <AnimeCard anime={anime} />
                 </li>
               ))}
             </section>
