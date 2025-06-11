@@ -12,17 +12,16 @@ import Layout from '@layouts/base.astro'
   <section class="-mt-16 mb-10 flex flex-col gap-y-6 md:mb-20 md:gap-y-20">
     <AnimeSlider
       client:visible
+      url="/api/getRecomendations?count=24"
+      title="Special for you"
+    />
+    <AnimeTop client:visible />
+    <AnimeSlider
+      client:visible
       url="/api/animes?limit_count=24&year_filter=2025&type_filter=tv&banners_filter=false"
       title="Top 2025"
     />
-    <AnimeTop client:visible />
     <ColectionList client:visible id={1} />
-    <AnimeSlider
-      client:visible
-      url="/api/getRecomendations"
-      title="Special for you"
-    />
-
     <AnimeBanner id={1} client:visible />
     <AnimeSlider
       client:visible
