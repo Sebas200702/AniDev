@@ -5,7 +5,7 @@ import { ExpandIcon } from '@icons/expand-icon'
 import { normalizeString } from '@utils/normalize-string'
 
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export const MusicPlayer = () => {
   const {
@@ -39,6 +39,7 @@ export const MusicPlayer = () => {
     setPosition,
   } = useMusicPlayerStore()
 
+  const [isMobile, setIsMobile] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const playerRef = useRef<HTMLElement>(null)
@@ -59,7 +60,6 @@ export const MusicPlayer = () => {
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-
       const target = e.target as HTMLElement
       if (
         target.closest('button') ||
@@ -336,6 +336,25 @@ export const MusicPlayer = () => {
     }
   }, [volume, type])
 
+  // Detectar dispositivos móviles
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const userAgent =
+        navigator.userAgent || navigator.vendor || (window as any).opera
+      const mobileRegex =
+        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i
+      const isSmallScreen = window.innerWidth <= 768
+      setIsMobile(mobileRegex.test(userAgent.toLowerCase()) || isSmallScreen)
+    }
+
+    checkIfMobile()
+    window.addEventListener('resize', checkIfMobile)
+
+    return () => {
+      window.removeEventListener('resize', checkIfMobile)
+    }
+  }, [])
+
   useEffect(() => {
     // Función para actualizar el estado según la ruta actual
     const updateMinimizedState = () => {
@@ -357,9 +376,7 @@ export const MusicPlayer = () => {
     // Event listeners para detectar cambios de navegación
     window.addEventListener('popstate', handleLocationChange)
 
-
     document.addEventListener('astro:page-load', handleLocationChange)
-
 
     const originalPushState = history.pushState
     const originalReplaceState = history.replaceState
@@ -377,7 +394,6 @@ export const MusicPlayer = () => {
     return () => {
       window.removeEventListener('popstate', handleLocationChange)
       document.removeEventListener('astro:page-load', handleLocationChange)
-
 
       history.pushState = originalPushState
       history.replaceState = originalReplaceState
@@ -422,10 +438,132 @@ export const MusicPlayer = () => {
 
   if (!currentSong) return null
 
+  // Versión móvil compacta con drag and drop
+  if (isMinimized && isMobile) {
+    return (
+      <article
+        ref={playerRef}
+        className={`fixed z-20 max-w-xs w-72 bg-Primary-950/60 backdrop-blur-md border border-gray-100/20 rounded-xl shadow-lg transition-all duration-200 ${
+          isDraggingPlayer ? 'cursor-grabbing select-none' : 'cursor-grab'
+        }`}
+        style={{
+          bottom: `${position.y}px`,
+          right: `${position.x}px`,
+        }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+      >
+        {/* Header ultra-compacto */}
+        <div className="flex items-center gap-2 p-2">
+          {/* Miniatura pequeña */}
+          <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 bg-Primary-800">
+            {currentSong.image && (
+              <img
+                src={currentSong.image}
+                alt={currentSong.anime_title}
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
+
+          {/* Info ultra-compacta */}
+          <div className="flex-1 min-w-0">
+            <h4 className="text-xs font-medium text-white truncate leading-tight">
+              {currentSong.song_title}
+            </h4>
+            <p className="text-xs text-gray-400 truncate leading-tight">
+              {currentSong.anime_title}
+            </p>
+          </div>
+
+          {/* Controles mínimos */}
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                const media = getMediaRef()
+                if (media) {
+                  if (isPlaying) {
+                    media.pause()
+                    setIsPlaying(false)
+                  } else {
+                    media.play().catch(() => setIsPlaying(false))
+                    setIsPlaying(true)
+                  }
+                }
+              }}
+              className="w-7 h-7 rounded-full bg-enfasisColor text-Primary-950 flex items-center justify-center active:scale-95 transition-transform"
+            >
+              {isPlaying ? (
+                <svg
+                  className="w-3 h-3"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                </svg>
+              ) : (
+                <svg
+                  className="w-3 h-3 ml-0.5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                navigate(
+                  `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
+                )
+              }}
+              className="w-6 h-6 rounded-full bg-Primary-800 text-enfasisColor flex items-center justify-center active:scale-95 transition-transform"
+            >
+              <ExpandIcon className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        {/* Barra de progreso ultra-fina */}
+        <div className="px-2 pb-1">
+          <div className="w-full bg-Primary-800 rounded-full h-0.5">
+            <div
+              className="bg-enfasisColor h-0.5 rounded-full transition-all duration-100"
+              style={{
+                width:
+                  durationLocal > 0
+                    ? `${(currentTimeLocal / durationLocal) * 100}%`
+                    : '0%',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Audio/Video elements ocultos */}
+        <audio ref={audioRef} src={currentSong.audio_url} preload="metadata">
+          <track kind="captions" />
+        </audio>
+        <video
+          ref={videoRef}
+          src={currentSong.video_url}
+          preload="metadata"
+          className="hidden"
+          controls={false}
+          muted={type !== 'video'}
+        >
+          <track kind="captions" />
+        </video>
+      </article>
+    )
+  }
+
   return (
     <article
       ref={playerRef}
-      className={`group transition-all duration-300 rounded-xl ease-in-out ${isMinimized ? 'max-w-80 w-full shadow-lg from-Complementary/50 fixed z-20  to-Complementary/80 overflow-hidden  border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm ' : 'max-w-6xl my-20 md:mx-20 mx-4 bg-Complementary'}  ${
+      className={`group transition-all duration-300 rounded-xl ease-in-out ${isMinimized ? 'md:max-w-80 w-full shadow-lg from-Complementary/50 fixed z-20  to-Complementary/80 overflow-hidden  border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm ' : 'max-w-6xl my-20 md:mx-20 mx-4 bg-Complementary'}  ${
         isDraggingPlayer && isMinimized
           ? 'cursor-grabbing select-none music-player-dragging'
           : ''
