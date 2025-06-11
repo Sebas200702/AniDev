@@ -25,7 +25,20 @@ export const AnimeMusic = ({
         songMap.set(song.song_title, song)
       }
     })
-    return Array.from(songMap.values())
+    const uniqueSongs = Array.from(songMap.values())
+
+    return uniqueSongs.sort((a, b) => {
+      if (a.type.startsWith('OP') && !b.type.startsWith('OP')) {
+        return -1
+      }
+      if (!a.type.startsWith('OP') && b.type.startsWith('OP')) {
+        return 1
+      }
+      if (a.sequence && b.sequence) {
+        return a.sequence - b.sequence
+      }
+      return 0
+    })
   }
 
   useEffect(() => {
@@ -47,7 +60,7 @@ export const AnimeMusic = ({
       <div className="bg-Complementary z-10 flex flex-col gap-4 rounded-lg p-4">
         <h2 className="text-2xl font-bold">Anime Music</h2>
         <ul className="flex flex-col gap-4">
-          {Array.from({ length: 10 }).map((_, index) => (
+          {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
               className="bg-zinc-700 h-28 animate-pulse rounded-lg"
@@ -70,8 +83,6 @@ export const AnimeMusic = ({
             song={song}
             image={image}
             placeholder={placeholder}
-            anime_title={anime_title}
-            banner_image={banner_image}
           />
         ))}
       </ul>
