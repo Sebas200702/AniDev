@@ -82,6 +82,13 @@ interface Character {
 interface CharacterListProps {
   characters: Character[]
 }
+
+export interface AnimeSongWithImage extends AnimeSong {
+  image: string
+  placeholder: string
+  banner_image: string
+  anime_title: string
+}
 export interface AnimeSong {
   anime_mal_id: number
   song_title: string
@@ -94,6 +101,29 @@ export interface AnimeSong {
   artist_name: string | null
   episodes: string | null
   sequence: number | null
+  theme_id: number | null
+}
+export interface RecommendationContext {
+  type:
+    | 'general'
+    | 'current_search'
+    | 'currently_watching'
+    | 'mood_based'
+    | 'similar_to'
+    | 'seasonal'
+    | 'marathon'
+    | 'quick_watch'
+  data?: {
+    searchQuery?: string
+    currentAnime?: string
+    mood?: string
+    referenceAnime?: string
+    season?: string
+    timeAvailable?: string
+    preferredLength?: string
+  }
+  count?: number
+  focus?: string
 }
 
 export interface ApiJsonResponse {
