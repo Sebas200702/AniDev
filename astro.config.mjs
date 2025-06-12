@@ -6,12 +6,16 @@ import { defineConfig } from 'astro/config'
 import auth from 'auth-astro'
 
 export default defineConfig({
-  output: 'server',
-  site: 'https://ani-dev.vercel.app',
-  adapter: vercel(),
-  integrations: [react(), sitemap(), auth()],
+    output: 'server',
+    site: 'https://ani-dev.vercel.app',
+    adapter: vercel(),
+    integrations: [react(), sitemap(), auth()],
 
-  vite: {
-    plugins: [tailwindcss()],
-  },
+    experimental: {
+        viewTransitions: true,
+    },
+
+    vite: {
+        plugins: [tailwindcss()],
+    },
 })
