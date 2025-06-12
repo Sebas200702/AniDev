@@ -183,7 +183,7 @@ export const Controls = ({
   }
 
   return (
-    <div className="space-y-3 p-4" id="music-player-controls">
+    <div className="space-y-3 p-4 w-full" id="music-player-controls">
       <div className="flex items-center space-x-3 text-sm">
         <span className="text-sxx min-w-[3rem] text-gray-400">
           {formatTime(isDragging ? dragPosition : currentTime)}
