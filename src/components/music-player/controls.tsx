@@ -183,7 +183,7 @@ export const Controls = ({
   }
 
   return (
-    <div className="space-y-3 p-4">
+    <div className="space-y-3 p-4" id="music-player-controls">
       <div className="flex items-center space-x-3 text-sm">
         <span className="text-sxx min-w-[3rem] text-gray-400">
           {formatTime(isDragging ? dragPosition : currentTime)}
@@ -230,7 +230,10 @@ export const Controls = ({
 
       <div className="flex items-center justify-center space-x-2">
         <button
-          onClick={toggleShuffle}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleShuffle()
+          }}
           className={`rounded-lg p-2 transition-all duration-300 ease-in-out ${
             shuffle
               ? 'bg-enfasisColor/20 text-enfasisColor'
@@ -243,7 +246,10 @@ export const Controls = ({
         </button>
 
         <button
-          onClick={handlePrevious}
+          onClick={(e) => {
+            e.stopPropagation()
+            handlePrevious()
+          }}
           className="hover:text-enfasisColor rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!list.length || isDragging}
           title="Anterior"
@@ -252,7 +258,10 @@ export const Controls = ({
         </button>
 
         <button
-          onClick={handleTogglePlay}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleTogglePlay()
+          }}
           className="bg-enfasisColor hover:bg-enfasisColor/80 rounded-full p-3 text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!!error || isDragging}
           title={isPlaying ? 'Pausar' : 'Reproducir'}
@@ -265,7 +274,10 @@ export const Controls = ({
         </button>
 
         <button
-          onClick={handleNext}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleNext()
+          }}
           className="hover:text-enfasisColor rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!list.length || isDragging}
           title="Siguiente"
@@ -274,7 +286,10 @@ export const Controls = ({
         </button>
 
         <button
-          onClick={toggleRepeat}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleRepeat()
+          }}
           className={`rounded-lg p-2 transition-all duration-300 ease-in-out ${
             repeat
               ? 'bg-enfasisColor/20 text-enfasisColor'
@@ -323,7 +338,10 @@ export const Controls = ({
         </div>
 
         <button
-          onClick={handleToggleFormat}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleToggleFormat()
+          }}
           className="hover:text-enfasisColor ml-4 rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5"
           title={`Cambiar a ${type === 'audio' ? 'video' : 'audio'}`}
           disabled={isDragging || isVolumeDragging}
