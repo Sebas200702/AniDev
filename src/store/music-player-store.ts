@@ -20,7 +20,7 @@ interface MusicPlayerStore {
   currentTime: number
   setCurrentTime: (currentTime: number) => void
   currentSong: AnimeSongWithImage | null
-  setCurrentSong: (currentSong: AnimeSongWithImage) => void
+  setCurrentSong: (currentSong: AnimeSongWithImage | null) => void
   type: 'video' | 'audio'
   setType: (type: 'video' | 'audio') => void
   isLoading: boolean
@@ -53,8 +53,9 @@ interface MusicPlayerStore {
   setDragOffset: (dragOffset: { x: number; y: number }) => void
   position: { x: number; y: number }
   setPosition: (position: { x: number; y: number }) => void
+  isHidden: boolean
+  setIsHidden: (isHidden: boolean) => void
 
-  // Estados del Controls
   isVolumeDragging: boolean
   setIsVolumeDragging: (isVolumeDragging: boolean) => void
   dragPosition: number
@@ -77,7 +78,8 @@ export const useMusicPlayerStore = create<MusicPlayerStore>((set) => ({
   currentTime: 0,
   setCurrentTime: (currentTime: number) => set({ currentTime }),
   currentSong: null,
-  setCurrentSong: (currentSong: AnimeSongWithImage) => set({ currentSong }),
+  setCurrentSong: (currentSong: AnimeSongWithImage | null) =>
+    set({ currentSong }),
   isLoading: false,
   setIsLoading: (isLoading: boolean) => set({ isLoading }),
   repeat: false,
@@ -106,8 +108,8 @@ export const useMusicPlayerStore = create<MusicPlayerStore>((set) => ({
   setDragOffset: (dragOffset: { x: number; y: number }) => set({ dragOffset }),
   position: { x: 40, y: 160 },
   setPosition: (position: { x: number; y: number }) => set({ position }),
-
-  // Estados del Controls
+  isHidden: false,
+  setIsHidden: (isHidden: boolean) => set({ isHidden }),
   isVolumeDragging: false,
   setIsVolumeDragging: (isVolumeDragging: boolean) => set({ isVolumeDragging }),
   dragPosition: 0,
