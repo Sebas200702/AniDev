@@ -62,7 +62,6 @@ if (themeId) {
     )
     if (response.ok) {
       const metadata = await response.json()
-      console.log('Data from getMusicInfo:', metadata)
       metaTitle = `${metadata[0].song_title} - ${baseTitle}` || metaTitle
       metaDesc =
         `${metadata[0].song_title} performed by ${metadata[0].artist_name}${metadata[0].anime_title ? ` for the anime ${metadata[0].anime_title}` : ''}. Listen now on AniDev!` ||
