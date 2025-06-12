@@ -28,9 +28,10 @@ interface Props {
   title?: string
   description?: string
   image?: string
+  themeId?: string
 }
 
-const { animeId, title, description, image } = Astro.props
+const { animeId, title, description, image, themeId } = Astro.props
 
 let metaTitle = title || `${baseTitle}`
 let metaDesc =
@@ -51,6 +52,25 @@ if (animeId) {
     }
   } catch (error) {
     console.error('Error al obtener metadatos pre-renderizados:', error)
+  }
+}
+
+if (themeId) {
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/getMusicInfo?themeId=${themeId}`
+    )
+    if (response.ok) {
+      const metadata = await response.json()
+      console.log('Data from getMusicInfo:', metadata)
+      metaTitle = `${metadata[0].song_title} - ${baseTitle}` || metaTitle
+      metaDesc =
+        `${metadata[0].song_title} performed by ${metadata[0].artist_name}${metadata[0].anime_title ? ` for the anime ${metadata[0].anime_title}` : ''}. Listen now on AniDev!` ||
+        metaDesc
+      metaImage = metadata[0].image || metaImage
+    }
+  } catch (error) {
+    console.error('Error al obtener metadatos de la canción:', error)
   }
 }
 const userInfo = await getSessionUserInfo({
