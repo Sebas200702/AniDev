@@ -295,9 +295,6 @@ ${currentAnime ? `- ❌ EXCLUIR anime actual (MAL_ID ${currentAnime})` : ''}
 ## 🎯 INSTRUCCIONES FINALES
 Actúa como experto curador creando una selección de ${recommendationCount} animes perfectamente personalizada para ${userProfile.name} usando la estrategia "${selectedStrategy.title}" en este contexto específico de ${timeContext.period}.
 
-**FORMATO DE RESPUESTA:**
-Solo MAL_IDs numéricos, uno por línea:
-
-[Tus ${recommendationCount} selecciones cuidadosamente curadas]
+**IMPORTANTE:** Selecciona exactamente ${recommendationCount} MAL_IDs de animes que cumplan con todos los criterios establecidos. Usa la función disponible para procesar las recomendaciones.
     `
 }
