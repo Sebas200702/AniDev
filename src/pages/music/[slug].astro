@@ -1,10 +1,9 @@
 ---
 import { Music } from '@components/music-info/music'
 import Layout from '@layouts/base.astro'
-import { baseUrl } from '@utils/base-url'
 
 const { slug } = Astro.params
-const [song_title, theme_id] = slug?.split('_') ?? ['', '']
+const [_, theme_id] = slug?.split('_') ?? ['', '']
 ---
 
 <Layout themeId={theme_id}>
