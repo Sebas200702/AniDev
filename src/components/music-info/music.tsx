@@ -9,6 +9,8 @@ export const Music = ({ themeId }: { themeId: string }) => {
     setDuration,
     setIsLoading,
     setError,
+    setIsHidden,
+    setIsMinimized,
   } = useMusicPlayerStore()
   useEffect(() => {
     setIsPlaying(false)
@@ -20,6 +22,8 @@ export const Music = ({ themeId }: { themeId: string }) => {
         console.log('song is the same')
         return
       }
+      setIsHidden(false)
+      setIsMinimized(false)
 
       setCurrentSong(data[0])
 
