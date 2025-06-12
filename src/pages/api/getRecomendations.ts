@@ -81,9 +81,10 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       currentAnime
     )
 
-    const initialResponse = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    })
+    // Instrucción específica para usar la función
+    const functionPrompt = `${prompt}
+
+INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
 
     const getRecomendations = await model.generateContent({
       contents: [
@@ -91,9 +92,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
           role: 'user',
           parts: [
             {
-              text:
-                initialResponse.response.candidates?.[0]?.content?.parts?.[0]
-                  ?.text || '',
+              text: functionPrompt,
             },
           ],
         },
@@ -204,11 +203,53 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }
       )
     } else {
+      const responseText =
+        getRecomendations.response?.candidates?.[0]?.content?.parts?.[0]?.text
+      console.error(
+        '❌ Model did not use function tool. Response type:',
+        typeof responseText
+      )
+      console.error('❌ Raw response:', responseText?.substring(0, 200) + '...')
+
+      // Intentar extraer MAL_IDs del texto plano como fallback
+      if (responseText) {
+        const malIdMatches = responseText.match(/\b\d{4,6}\b/g)
+        if (malIdMatches && malIdMatches.length >= 10) {
+          console.log(
+            `🔄 Attempting fallback with extracted IDs: ${malIdMatches.slice(0, 5).join(', ')}...`
+          )
+          const fallbackResult = await fetchRecomendations(
+            malIdMatches.slice(0, context.count || 24),
+            context.count || 24,
+            currentAnime
+          )
+
+          if (fallbackResult.length > 0) {
+            return new Response(
+              JSON.stringify({
+                data: fallbackResult,
+                context: context,
+                totalRecommendations: fallbackResult.length,
+                wasRetried: false,
+                fallbackUsed: true,
+              }),
+              { status: 200 }
+            )
+          }
+        }
+      }
+
       return new Response(
         JSON.stringify({
-          error: 'Could not generate recommendations. Please try again.',
+          error:
+            'Model failed to use function tool correctly. Please try again.',
           recommendations: [],
           context: context,
+          debugInfo: {
+            responseType: typeof responseText,
+            hasText: !!responseText,
+            textLength: responseText?.length || 0,
+          },
         }),
         {
           status: 400,
