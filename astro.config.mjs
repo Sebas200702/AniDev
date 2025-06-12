@@ -11,10 +11,6 @@ export default defineConfig({
     adapter: vercel(),
     integrations: [react(), sitemap(), auth()],
 
-    experimental: {
-        viewTransitions: true,
-    },
-
     vite: {
         plugins: [tailwindcss()],
     },
