@@ -50,6 +50,7 @@ export const Cover = () => {
   return (
     <div
       className={`relative mt-12 ${type === 'video' ? 'hidden' : 'block'} flex h-full w-full items-center justify-center p-4`}
+      id="music-player-cover"
     >
       <div className="disk flex items-center justify-center rounded-full p-6">
         <figure
