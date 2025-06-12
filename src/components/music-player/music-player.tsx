@@ -41,9 +41,7 @@ export const MusicPlayer = () => {
     position,
     setPosition,
   } = useMusicPlayerStore()
-  const { width } = useWindowWidth()
 
-  const isMobile = width < 640
 
   const audioRef = useRef<HTMLAudioElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -484,10 +482,10 @@ export const MusicPlayer = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50" />
 
       <header
-        className={`relative ${isMinimized && isMobile ? 'border-none p-2' : 'border-b border-gray-100/10'} ${isMinimized && !isMobile ? 'p-4' : !isMinimized ? 'p-4' : ''} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
+        className={`relative ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'p-4'}   ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
       >
-        {isMinimized && isMobile ? (
-          <div className="flex items-center gap-2">
+
+          <div className={` items-center gap-2 ${isMinimized ? 'md:hidden flex' : 'hidden'}`}>
             <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-Primary-800 animate-spin-slow">
               {currentSong.image && (
                 <img
@@ -586,9 +584,9 @@ export const MusicPlayer = () => {
               </button>
             </div>
           </div>
-        ) : (
+
           <div
-            className={`flex ${isMinimized ? 'items-start justify-between gap-3' : 'items-start justify-between gap-3'}`}
+            className={`flex ${isMinimized ? 'items-start justify-between gap-3 md:flex hidden' : 'items-start justify-between gap-3'}`}
           >
             <div className="min-w-0 flex-1">
               <h3
@@ -660,13 +658,13 @@ export const MusicPlayer = () => {
               </div>
             </div>
           </div>
-        )}
-        {isMinimized && !isMobile && (
+
+        {isMinimized  && (
           <div className="from-enfasisColor/0 to-enfasisColor/20 pointer-events-none absolute inset-0 rounded-t-xl bg-gradient-to-r opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
         )}
       </header>
 
-      {!(isMinimized && isMobile) && <Cover />}
+      <Cover />
 
       <audio ref={audioRef} src={currentSong.audio_url} preload="metadata">
         <track kind="captions" />
@@ -683,8 +681,8 @@ export const MusicPlayer = () => {
         <track kind="captions" />
       </video>
 
-      {!(isMinimized && isMobile) && (
-        <div className="bg-Primary-950/30 controls-area border-t border-gray-100/10 backdrop-blur-sm">
+
+        <div className={`w-full bg-Primary-950/30 controls-area border-t border-gray-100/10 backdrop-blur-sm ${isMinimized ? 'hidden md:flex' : 'flex'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}>
           <Controls
             audioRef={audioRef}
             videoRef={videoRef}
@@ -694,7 +692,7 @@ export const MusicPlayer = () => {
             setIsChangingFormat={setIsChangingFormat}
           />
         </div>
-      )}
+
     </article>
   )
 }
