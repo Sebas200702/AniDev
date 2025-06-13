@@ -73,10 +73,12 @@ export const GET: APIRoute = rateLimit(
         })
       }
 
-      const { data, error } = await supabase.rpc('get_music_by_theme_id', {
-        p_theme_id: id,
-      })
-      console.log('Data from get_music_by_theme_id:', data)
+           const { data, error } = await supabase
+        .from('anime')
+        .select('title, synopsis, image_large_webp')
+        .eq('mal_id', id)
+        .single()
+
 
       if (error) {
         console.error('Error al obtener metadatos del anime:', error)
