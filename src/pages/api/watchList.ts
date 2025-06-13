@@ -23,7 +23,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .eq('name', user)
     .single()
   if (userError) {
-    console.log(userError)
+
     return new Response(JSON.stringify({ error: userError.message }), {
       status: 500,
     })
@@ -34,7 +34,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     type: type,
   })
   if (error) {
-    console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
     })
