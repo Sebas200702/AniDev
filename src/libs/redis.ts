@@ -58,11 +58,4 @@ redis.on('error', (err) => {
  *   console.error('Failed to connect to Redis:', error);
  * }
  */
-export const connectRedis = async () => {
-  try {
-    await redis.connect()
-    console.log('Conectado a Redis')
-  } catch (err) {
-    console.error('Error al conectar con Redis:', err)
-  }
-}
+
