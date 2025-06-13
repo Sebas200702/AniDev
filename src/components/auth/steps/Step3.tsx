@@ -9,6 +9,39 @@ import { parseResponse } from '@utils/parse-response'
 import { useState } from 'react'
 import { ToastType } from 'types'
 
+/**
+ * Step3 component handles user preferences and favorites collection.
+ *
+ * @description This component represents the final step in the user onboarding process,
+ * implementing a two-category form system: watching preferences and favorites selection.
+ * Features a sub-step navigation system with progress indicators and multiple input types.
+ *
+ * Key features:
+ * - Two-category form system (Watching Preferences and Favorites)
+ * - Visual progress indicator
+ * - Multiple input types (text, date, single-select, multi-select)
+ * - Navigation between sub-steps
+ * - Form validation and error handling
+ * - Automatic redirect on completion
+ *
+ * Categories:
+ * 1. Watching Preferences
+ *    - Frequency
+ *    - Fanatic level
+ *    - Preferred format
+ * 2. Favorites
+ *    - Favorite animes
+ *    - Favorite studios
+ *    - Watched animes
+ *    - Favorite genres
+ *
+ * Uses usePreferencesFormStore for form state management and useStepsStore
+ * for navigation control. Implements toast notifications for user feedback
+ * and FormData preparation for submission.
+ *
+ * @returns {JSX.Element} A multi-step preferences collection form
+ */
+
 export const Step3 = () => {
   const [subStep, setSubStep] = useState(1)
   const {
