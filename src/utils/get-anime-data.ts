@@ -36,7 +36,6 @@ export const getAnimeData = async (
 
     return animeData
   } catch (error) {
-    console.log(error)
     return
   }
 }
