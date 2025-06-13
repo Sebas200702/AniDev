@@ -6,7 +6,6 @@ import type { APIRoute } from 'astro'
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   const themeId = url.searchParams.get('themeId')
   const cacheKey = `MusicInfo_${themeId}`
-  console.log(themeId)
 
   const cachedData = await redis.get(cacheKey)
   if (cachedData) {
@@ -28,7 +27,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   })
 
   if (error) {
-    console.log(error)
     return new Response(error.message, { status: 500 })
   }
 
