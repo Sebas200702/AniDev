@@ -48,7 +48,7 @@ export const fetchRecomendations = async (
   // Si no tenemos suficientes resultados, completar con animes populares
   if (data && data.length < minResults) {
     let additionalNeeded = minResults - data.length
-    const existingIds = data.map((anime) => anime.mal_id)
+    const _existingIds = data.map((anime) => anime.mal_id)
 
     console.log(
       `Insufficient results (${data.length}/${minResults}). Fetching ${additionalNeeded} additional animes.`

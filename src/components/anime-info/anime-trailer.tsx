@@ -55,7 +55,7 @@ export const AnimeTrailer = ({
   banner_image,
   image_large_webp,
   title,
-}: Props): JSX.Element => {
+}: Props) => {
   const [isLiteYouTubeLoaded, setIsLiteYouTubeLoaded] = useState(false)
   const videoId = trailer_url?.split('v=')[1]?.split('&')[0]
 

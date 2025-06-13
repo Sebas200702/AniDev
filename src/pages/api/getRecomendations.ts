@@ -1,4 +1,4 @@
-import { SchemaType } from '@google/generative-ai'
+import { SchemaType, type Tool } from '@google/generative-ai'
 import { model } from '@libs/gemini'
 import { fetchRecomendations } from '@utils/fetch-recomendations'
 import { generateContextualPrompt } from '@utils/get-recomendation-context'
@@ -7,24 +7,28 @@ import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { APIRoute } from 'astro'
 import type { RecommendationContext } from 'types'
 
-const fetchRecomendationsFunctionDeclaration = {
-  name: 'fetch_recommendations',
-  description:
-    'Usa las recomendaciones generadas por el modelo para obtener los anime que se encuentren en la base de datos.',
-  parameters: {
-    type: SchemaType.OBJECT,
-    properties: {
-      mal_ids: {
-        type: SchemaType.ARRAY,
-        items: {
-          type: SchemaType.STRING,
+const functionTool: Tool = {
+  functionDeclarations: [
+    {
+      name: 'fetch_recommendations',
+      description:
+        'Usa las recomendaciones generadas por el modelo para obtener los anime que se encuentren en la base de datos.',
+      parameters: {
+        type: SchemaType.OBJECT,
+        properties: {
+          mal_ids: {
+            type: SchemaType.ARRAY,
+            items: {
+              type: SchemaType.STRING,
+            },
+            description:
+              'Usa las recomendaciones generadas por el modelo para obtener los anime que se encuentren en la base de datos.',
+          },
         },
-        description:
-          'Usa las recomendaciones generadas por el modelo para obtener los anime que se encuentren en la base de datos.',
+        required: ['mal_ids'],
       },
     },
-    required: ['mal_ids'],
-  },
+  ],
 }
 
 export const GET: APIRoute = async ({ request, cookies, url }) => {
@@ -82,9 +86,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
     )
 
     // Instrucción específica para usar la función
-    const functionPrompt = `${prompt}
-
-INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
+    const functionPrompt = `${prompt} INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
 
     const getRecomendations = await model.generateContent({
       contents: [
@@ -97,9 +99,7 @@ INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendat
           ],
         },
       ],
-      tools: [
-        { functionDeclarations: [fetchRecomendationsFunctionDeclaration] },
-      ],
+      tools: [functionTool],
     })
 
     const functionCall =
@@ -138,11 +138,7 @@ INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendat
                 parts: [{ text: retryPrompt }],
               },
             ],
-            tools: [
-              {
-                functionDeclarations: [fetchRecomendationsFunctionDeclaration],
-              },
-            ],
+            tools: [functionTool],
           })
 
           const retryFunctionCall =

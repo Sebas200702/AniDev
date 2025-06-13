@@ -58,7 +58,7 @@ export class SearchResultsErrorBoundary extends Component<
    * @param {Error} error - The error that was caught
    * @returns {ErrorBoundaryState} The new state indicating an error has occurred
    */
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(_error: Error): ErrorBoundaryState {
     return { hasError: true }
   }
 

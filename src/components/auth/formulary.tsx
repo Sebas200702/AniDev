@@ -34,7 +34,7 @@ enum RedirectionResult {
   NO_REDIRECT,
 }
 
-const handleResponseRedirection = (
+const _handleResponseRedirection = (
   response: Response,
   responseContent: ApiJsonResponse | string,
   isSignUp: boolean,
@@ -87,20 +87,9 @@ const handleResponseRedirection = (
  * @example
  * <Formulary title="Sign In" action="/api/auth/signin" bgImage="/sign-in.webp" />
  */
-export const Formulary = ({
-  title,
-  action,
-  bgImage,
-  step,
-}: Props): JSX.Element => {
-  const {
-    values,
-
-    resetForm,
-    isLoading,
-    errorMessage,
-    successMessage,
-  } = useAuthFormStore()
+export const Formulary = ({ title, bgImage, step }: Props) => {
+  const { resetForm, isLoading, errorMessage, successMessage } =
+    useAuthFormStore()
 
   const { setCurrentStep } = useStepsStore()
 

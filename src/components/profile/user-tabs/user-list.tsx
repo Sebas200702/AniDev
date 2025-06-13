@@ -4,7 +4,6 @@ import { LoadingCard } from '@components/search/results/loading-card'
 import { SectionList } from '@components/section-list'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUserListsStore } from '@store/user-list-store'
-import { useEffect } from 'react'
 /**
  * UserList component displays a navigation bar with user list sections and options.
  *

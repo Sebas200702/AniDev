@@ -1,6 +1,4 @@
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
-import { useWindowWidth } from '@store/window-width'
-import { useEffect } from 'react'
 interface BannerInfoProps {
   title: string
   synopsis: string
@@ -47,7 +45,7 @@ export const BannerInfo = ({
   synopsis,
   mal_id,
   slug,
-}: BannerInfoProps): JSX.Element => {
+}: BannerInfoProps) => {
   return (
     <div
       className={`bg-Primary-950/50 absolute bottom-0 z-10 flex h-full w-full flex-col items-center justify-between p-4 md:right-0 md:rounded-l-2xl md:p-6 xl:bottom-10 xl:max-h-60 xl:max-w-120 xl:pr-10`}

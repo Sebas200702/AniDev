@@ -15,7 +15,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { ToastType, shortCuts } from 'types'
 import type { AnimeCardInfo, AnimeDetail } from 'types'
 
-export const SearchBar = (): JSX.Element => {
+export const SearchBar = () => {
   const {
     query,
     setQuery,

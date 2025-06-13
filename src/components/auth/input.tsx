@@ -67,7 +67,7 @@ export const Input = ({
   children,
   value,
   onChange,
-}: Props): JSX.Element => {
+}: Props) => {
   const { setValue, clearMessages } = useAuthFormStore()
   const [inputType, setInputType] = useState(type)
 

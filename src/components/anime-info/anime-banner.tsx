@@ -49,7 +49,7 @@ export const AnimeBanner = ({
   banner_image,
   image_large_webp,
   title,
-}: Props): JSX.Element => {
+}: Props) => {
   return (
     <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
       <Picture

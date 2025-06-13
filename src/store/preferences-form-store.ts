@@ -17,7 +17,7 @@ const preferencesSchema = z.object({
   favorite_genres: z.array(z.string()).optional(),
 })
 
-export type PreferencesFormValues = z.infer<typeof preferencesSchema>
+type PreferencesFormValues = z.infer<typeof preferencesSchema>
 type PreferencesFormErrors = Partial<
   Record<keyof PreferencesFormValues, string>
 >

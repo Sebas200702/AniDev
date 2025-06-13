@@ -22,7 +22,7 @@ import type { IconProps } from 'types'
  * @example
  * <AiredToIcon className="w-6 h-6 text-gray-500" />
  */
-export const AiredToIcon = ({ className }: IconProps): JSX.Element => {
+export const AiredToIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

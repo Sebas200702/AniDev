@@ -1,6 +1,5 @@
 import { LoadingCard } from '@components/search/results/loading-card'
 import { useWindowWidth } from '@store/window-width'
-import type { AnimeCardInfo } from 'types'
 /**
  * AnimeSliderLoader component displays a loading state for anime sliders.
  *

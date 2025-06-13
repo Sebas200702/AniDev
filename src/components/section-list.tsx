@@ -54,7 +54,7 @@ export const SectionList = ({ section, sections, context }: Props) => {
 
   const isNotDefault = context !== 'default' && context
   const handleClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
+    _e: React.MouseEvent<HTMLButtonElement>,
     label: string
   ) => {
     if (isSelected) return

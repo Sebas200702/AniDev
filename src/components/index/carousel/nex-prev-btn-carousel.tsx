@@ -51,7 +51,7 @@ interface NexPrevBtnCarouselProps {
 export const NexPrevBtnCarousel = ({
   action,
   label,
-}: NexPrevBtnCarouselProps): JSX.Element => {
+}: NexPrevBtnCarouselProps) => {
   return (
     <button
       type="button"

@@ -84,7 +84,7 @@ export const AddToListButton = ({
 
     try {
       await promise
-    } catch (error) {
+    } catch (_error) {
       setWatchList(watchList)
       setIsInWatchList(true)
     } finally {

@@ -21,7 +21,7 @@ export const deleteSearchHistory = async (userInfo: UserInfo | null) => {
         text: 'Failed to delete search history',
       })
     }
-  } catch (error) {
+  } catch (_error) {
     console.error('Failed to delete search history')
   }
 }

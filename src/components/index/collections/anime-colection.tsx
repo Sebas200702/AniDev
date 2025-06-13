@@ -51,13 +51,13 @@ interface Props {
  * @example
  * <AnimeCollection id="collection-1" />
  */
-export const AnimeCollection = ({ id }: Props): JSX.Element => {
+export const AnimeCollection = ({ id }: Props) => {
   const { parentalControl } = useGlobalUserPreferences()
   const { collections, setCollections } = useIndexStore()
   const [loading, setLoading] = useState(true)
   const [animes, setAnimes] = useState<AnimeCollectionInfo[]>([])
   const [title, setTitle] = useState('')
-  const [query, setQuery] = useState('')
+  const [_query, setQuery] = useState('')
 
   /**
    * Checks if a collection is unique by comparing the IDs of the anime entries.

@@ -13,7 +13,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
         'Content-Type': 'application/json',
       },
     })
-  } catch (error) {
+  } catch (_error) {
     return new Response(
       JSON.stringify({ error: 'Ocurrió un error en el servidor.' }),
       {

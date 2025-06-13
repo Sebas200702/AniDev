@@ -33,7 +33,7 @@ import { useEffect, useState } from 'react'
  * @example
  * <AnimeBanner id={1} />
  */
-export const AnimeBanner = ({ id }: { id: number }): JSX.Element => {
+export const AnimeBanner = ({ id }: { id: number }) => {
   const [bannerData, setBannerData] = useState<{
     imageUrl: string
     title: string

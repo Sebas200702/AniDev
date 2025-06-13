@@ -33,7 +33,7 @@ export const AnimeRelated = ({ animeId }: { animeId: number }) => {
       <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {data?.map((anime) => (
           <li key={anime.mal_id}>
-            <AnimeCard anime={anime}  />
+            <AnimeCard anime={anime} />
           </li>
         ))}
       </ul>

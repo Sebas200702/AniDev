@@ -10,8 +10,8 @@ import { useMusicPlayerStore } from '@store/music-player-store'
 import { useCallback } from 'react'
 
 interface ControlsProps {
-  audioRef: React.RefObject<HTMLAudioElement>
-  videoRef: React.RefObject<HTMLVideoElement>
+  audioRef: React.RefObject<HTMLAudioElement | null>
+  videoRef: React.RefObject<HTMLVideoElement | null>
   currentTime: number
   duration: number
   setSavedTime: (time: number) => void
@@ -183,7 +183,7 @@ export const Controls = ({
   }
 
   return (
-    <div className="space-y-3 p-4 w-full" id="music-player-controls">
+    <div className="w-full space-y-3 p-4" id="music-player-controls">
       <div className="flex items-center space-x-3 text-sm">
         <span className="text-sxx min-w-[3rem] text-gray-400">
           {formatTime(isDragging ? dragPosition : currentTime)}

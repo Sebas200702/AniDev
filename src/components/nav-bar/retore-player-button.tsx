@@ -2,7 +2,6 @@ import { MusicIcon } from '@components/icons/music-icon'
 import { Picture } from '@components/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
 
-
 export const RestorePlayerButton = () => {
   const { isHidden, setIsHidden, isPlaying, currentSong } =
     useMusicPlayerStore()
@@ -17,27 +16,27 @@ export const RestorePlayerButton = () => {
       <button
         onClick={handleClick}
         id="restore-player-button"
-        className={`w-10 h-10 rounded-full bg-enfasisColor  ${isPlaying ? 'animate-pulse' : ''} backdrop-blur-sm border border-Primary-900/10 flex items-center group justify-center `}
+        className={`bg-enfasisColor h-10 w-10 rounded-full ${isPlaying ? 'animate-pulse' : ''} border-Primary-900/10 group flex items-center justify-center border backdrop-blur-sm`}
         title={`Playing ${currentSong?.song_title}`}
       >
-        <MusicIcon className="w-5 h-5" />
+        <MusicIcon className="h-5 w-5" />
         <div
-          className={`absolute bg-Complementary/50 backdrop-blur-lg rounded-xl border border-gray-100/10 shadow-2xl p-3 z-50 translate-y-full  gap-3 min-w-72   group-hover:flex hidden  transition-all duration-300 ease-out`}
+          className={`bg-Complementary/50 absolute z-50 hidden min-w-72 translate-y-full gap-3 rounded-xl border border-gray-100/10 p-3 shadow-2xl backdrop-blur-lg transition-all duration-300 ease-out group-hover:flex`}
         >
           <figure
-            className={`max-w-12 max-h-12 rounded-full overflow-hidden relative ${isPlaying ? 'animate-spin-slow' : ''}`}
+            className={`relative max-h-12 max-w-12 overflow-hidden rounded-full ${isPlaying ? 'animate-spin-slow' : ''}`}
           >
             <Picture image={currentSong.placeholder} styles="relative">
               <img
                 src={currentSong.image}
                 alt={currentSong?.song_title}
-                className="relative h-full aspect-square rounded-lg object-cover"
+                className="relative aspect-square h-full rounded-lg object-cover"
               />
             </Picture>
           </figure>
           <div className="flex flex-col gap-1">
             <p className="text-sm font-bold">{currentSong?.song_title}</p>
-            <p className="text-xs text-enfasisColor/90">
+            <p className="text-enfasisColor/90 text-xs">
               {currentSong?.anime_title}
             </p>
           </div>

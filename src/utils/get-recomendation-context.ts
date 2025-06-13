@@ -6,7 +6,7 @@ export const generateContextualPrompt = (
   context: RecommendationContext,
   currentAnime?: string
 ): string => {
-  const baseProfile = `
+  const _baseProfile = `
       ## PERFIL DEL USUARIO:
       **Información Personal:**
       - Nombre: ${userProfile.name} ${userProfile.last_name}

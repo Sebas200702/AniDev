@@ -8,7 +8,7 @@ export const saveSearchHistory = async (
     localStorage.setItem('searchHistory', JSON.stringify(history))
     return
   }
-  const response = await fetch('/api/searchHistory', {
+  const _response = await fetch('/api/searchHistory', {
     method: 'POST',
     body: JSON.stringify(history),
     credentials: 'include',

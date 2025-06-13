@@ -1,7 +1,6 @@
 import { AnimeCaterList } from '@components/anime-info/anime-chatcater-list'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useCharacterStore } from '@store/character-store'
-import { useState } from 'react'
 import { languageOptions } from 'types'
 
 interface Props {

@@ -21,7 +21,7 @@ import type { IconProps } from 'types'
  * @example
  * <CharacterIcon className="w-6 h-6 text-gray-500" />
  */
-export const CharacterIcon = ({ className }: IconProps): JSX.Element => (
+export const CharacterIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

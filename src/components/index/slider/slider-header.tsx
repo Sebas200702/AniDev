@@ -25,10 +25,7 @@ interface SliderHeaderProps {
  * @example
  * <SliderHeader title="Popular Anime" />
  */
-export const SliderHeader = ({
-  title,
-  context,
-}: SliderHeaderProps): JSX.Element => {
+export const SliderHeader = ({ title, context }: SliderHeaderProps) => {
   return (
     <header
       className={`flex items-center space-x-4 px-4 py-4 ${context === 'anime-info' ? 'md:px-0' : 'md:px-20'}`}

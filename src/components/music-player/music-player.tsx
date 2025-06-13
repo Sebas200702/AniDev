@@ -3,7 +3,6 @@ import { Controls } from '@components/music-player/controls'
 import { Cover } from '@components/music-player/cover'
 import { ExpandIcon } from '@icons/expand-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useWindowWidth } from '@store/window-width'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback, useEffect, useRef } from 'react'
 
@@ -20,7 +19,7 @@ export const MusicPlayer = () => {
     isDragging,
     isMinimized,
     setIsMinimized,
-    error,
+
     setError,
     volume,
     savedTime,
@@ -41,7 +40,6 @@ export const MusicPlayer = () => {
     position,
     setPosition,
   } = useMusicPlayerStore()
-
 
   const audioRef = useRef<HTMLAudioElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -462,7 +460,7 @@ export const MusicPlayer = () => {
     <article
       ref={playerRef}
       data-music-player="true"
-      className={`group rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full max-w-60 sm:max-w-sm md:max-w-80 overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm' : 'bg-Complementary/50 mx-4 my-20 max-w-6xl md:mx-20'} ${
+      className={`group rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full max-w-60 overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 mx-4 my-20 max-w-6xl md:mx-20'} ${
         isDraggingPlayer && isMinimized
           ? 'music-player-dragging cursor-grabbing select-none'
           : ''
@@ -482,65 +480,139 @@ export const MusicPlayer = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50" />
 
       <header
-        className={`relative ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'p-4'}   ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
+        className={`relative ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'p-4'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
       >
+        <div
+          className={`items-center gap-2 ${isMinimized ? 'flex md:hidden' : 'hidden'}`}
+        >
+          <div className="bg-Primary-800 animate-spin-slow h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
+            {currentSong.image && (
+              <img
+                src={currentSong.image}
+                alt={currentSong.anime_title}
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
 
-          <div className={` items-center gap-2 ${isMinimized ? 'md:hidden flex' : 'hidden'}`}>
-            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-Primary-800 animate-spin-slow">
-              {currentSong.image && (
-                <img
-                  src={currentSong.image}
-                  alt={currentSong.anime_title}
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
+          <div className="min-w-0 flex-1">
+            <h4 className="truncate text-xs leading-tight font-medium text-white">
+              {currentSong.song_title}
+            </h4>
+            <p className="text-enfasisColor truncate text-xs leading-tight">
+              {currentSong.anime_title}
+            </p>
+          </div>
 
-            <div className="flex-1 min-w-0">
-              <h4 className="text-xs font-medium text-white truncate leading-tight">
-                {currentSong.song_title}
-              </h4>
-              <p className="text-xs text-enfasisColor truncate leading-tight">
-                {currentSong.anime_title}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-1 flex-shrink-0">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  const media = getMediaRef()
-                  if (media) {
-                    if (isPlaying) {
-                      media.pause()
-                      setIsPlaying(false)
-                    } else {
-                      media.play().catch(() => setIsPlaying(false))
-                      setIsPlaying(true)
-                    }
+          <div className="flex flex-shrink-0 items-center gap-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                const media = getMediaRef()
+                if (media) {
+                  if (isPlaying) {
+                    media.pause()
+                    setIsPlaying(false)
+                  } else {
+                    media.play().catch(() => setIsPlaying(false))
+                    setIsPlaying(true)
                   }
-                }}
-                className="w-8 h-8 rounded-full bg-enfasisColor text-Primary-950 flex items-center justify-center active:scale-95 transition-transform"
-              >
-                {isPlaying ? (
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-3 h-3 ml-0.5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                )}
-              </button>
+                }
+              }}
+              className="bg-enfasisColor text-Primary-950 flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-95"
+            >
+              {isPlaying ? (
+                <svg
+                  className="h-3 w-3"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                </svg>
+              ) : (
+                <svg
+                  className="ml-0.5 h-3 w-3"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
 
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                navigate(
+                  `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
+                )
+              }}
+              className="bg-Primary-800 text-enfasisColor flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-95"
+            >
+              <ExpandIcon className="h-3 w-3" />
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                const media = getMediaRef()
+                if (media) {
+                  media.pause()
+                }
+
+                setCurrentSong(null)
+                setIsPlaying(false)
+                setCurrentTime(0)
+                setDuration(0)
+              }}
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white transition-transform active:scale-95"
+            >
+              <svg
+                className="h-3 w-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div
+          className={`flex ${isMinimized ? 'hidden items-start justify-between gap-3 md:flex' : 'items-start justify-between gap-3'}`}
+        >
+          <div className="min-w-0 flex-1">
+            <h3
+              className={
+                isMinimized
+                  ? 'text-s mb-1 truncate leading-tight font-medium text-white'
+                  : 'mb-1 text-2xl font-semibold'
+              }
+            >
+              {currentSong.song_title}
+            </h3>
+            <p className="text-sxx mb-1 truncate text-gray-400">
+              {currentSong.artist_name || 'Artista desconocido'}
+            </p>
+            <small className="text-sxx text-enfasisColor tracking-wider uppercase">
+              {currentSong.anime_title}
+            </small>
+          </div>
+
+          <div className="flex flex-col items-end gap-2">
+            <span className="text-sxx text-enfasisColor tracking-wider uppercase">
+              {type}
+            </span>
+
+            <div
+              className={`flex items-center gap-2 ${isMinimized ? '' : 'hidden'}`}
+            >
               <button
                 onClick={(e) => {
                   e.stopPropagation()
@@ -548,9 +620,9 @@ export const MusicPlayer = () => {
                     `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
                   )
                 }}
-                className="w-7 h-7 rounded-full bg-Primary-800 text-enfasisColor flex items-center justify-center active:scale-95 transition-transform"
+                className="text-Primary-50 cursor-pointer p-4"
               >
-                <ExpandIcon className="w-3 h-3" />
+                <ExpandIcon className="h-5 w-5" />
               </button>
 
               <button
@@ -566,10 +638,10 @@ export const MusicPlayer = () => {
                   setCurrentTime(0)
                   setDuration(0)
                 }}
-                className="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center active:scale-95 transition-transform"
+                className="cursor-pointer p-4 text-red-500 transition-colors hover:text-red-400"
               >
                 <svg
-                  className="w-3 h-3"
+                  className="h-4 w-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -584,82 +656,9 @@ export const MusicPlayer = () => {
               </button>
             </div>
           </div>
+        </div>
 
-          <div
-            className={`flex ${isMinimized ? 'items-start justify-between gap-3 md:flex hidden' : 'items-start justify-between gap-3'}`}
-          >
-            <div className="min-w-0 flex-1">
-              <h3
-                className={
-                  isMinimized
-                    ? 'text-s mb-1 truncate leading-tight font-medium text-white'
-                    : 'mb-1 text-2xl font-semibold'
-                }
-              >
-                {currentSong.song_title}
-              </h3>
-              <p className="text-sxx mb-1 truncate text-gray-400">
-                {currentSong.artist_name || 'Artista desconocido'}
-              </p>
-              <small className="text-sxx text-enfasisColor tracking-wider uppercase">
-                {currentSong.anime_title}
-              </small>
-            </div>
-
-            <div className="flex flex-col items-end gap-2">
-              <span className="text-sxx text-enfasisColor tracking-wider uppercase">
-                {type}
-              </span>
-
-              <div
-                className={`flex items-center gap-2 ${isMinimized ? '' : 'hidden'}`}
-              >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    navigate(
-                      `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
-                    )
-                  }}
-                  className="text-Primary-50 cursor-pointer p-4"
-                >
-                  <ExpandIcon className="h-5 w-5" />
-                </button>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    const media = getMediaRef()
-                    if (media) {
-                      media.pause()
-                    }
-
-                    setCurrentSong(null)
-                    setIsPlaying(false)
-                    setCurrentTime(0)
-                    setDuration(0)
-                  }}
-                  className="text-red-500 cursor-pointer p-4 hover:text-red-400 transition-colors"
-                >
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-        {isMinimized  && (
+        {isMinimized && (
           <div className="from-enfasisColor/0 to-enfasisColor/20 pointer-events-none absolute inset-0 rounded-t-xl bg-gradient-to-r opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
         )}
       </header>
@@ -681,18 +680,18 @@ export const MusicPlayer = () => {
         <track kind="captions" />
       </video>
 
-
-        <div className={`w-full bg-Primary-950/30 controls-area border-t border-gray-100/10 backdrop-blur-sm ${isMinimized ? 'hidden md:flex' : 'flex'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}>
-          <Controls
-            audioRef={audioRef}
-            videoRef={videoRef}
-            currentTime={currentTimeLocal}
-            duration={durationLocal}
-            setSavedTime={setSavedTime}
-            setIsChangingFormat={setIsChangingFormat}
-          />
-        </div>
-
+      <div
+        className={`bg-Primary-950/30 controls-area w-full border-t border-gray-100/10 backdrop-blur-sm ${isMinimized ? 'hidden md:flex' : 'flex'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
+      >
+        <Controls
+          audioRef={audioRef}
+          videoRef={videoRef}
+          currentTime={currentTimeLocal}
+          duration={durationLocal}
+          setSavedTime={setSavedTime}
+          setIsChangingFormat={setIsChangingFormat}
+        />
+      </div>
     </article>
   )
 }

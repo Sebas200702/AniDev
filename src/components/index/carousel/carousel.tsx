@@ -36,7 +36,7 @@ import type { AnimeBannerInfo } from 'types'
  * @example
  * <Carousel />
  */
-export const Carousel = (): JSX.Element => {
+export const Carousel = () => {
   const {
     url,
     setUrl,

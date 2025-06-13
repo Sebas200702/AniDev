@@ -291,7 +291,7 @@ export const StepsComponent = (isSignUp: boolean) => {
   useEffect(() => {
     setSteps(steps)
   }, [steps])
-  return steps.map((step, index) => (
+  return steps.map((step, _index) => (
     <div
       key={step.id}
       className={`relative ${!isSignUp ? 'hidden' : ''} flex h-36 w-full flex-col justify-end rounded-2xl p-4 backdrop-blur-2xl transition-all duration-300 ${currentStep === step.id ? 'bg-enfasisColor/40' : 'bg-black/50'}`}
