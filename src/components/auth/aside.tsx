@@ -5,6 +5,45 @@ import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { StepsComponent } from './steps'
 
+/**
+ * Aside component for authentication pages.
+ *
+ * @description This component creates a visually appealing sidebar for authentication
+ * pages (sign up and sign in). It features a full-height background image with
+ * overlay effects, branding elements, and contextual messaging that changes based
+ * on the authentication mode.
+ *
+ * Key features:
+ * - Responsive design (mobile and desktop layouts)
+ * - Dynamic background image with optimized loading
+ * - Gradient overlay for better text readability
+ * - Contextual messaging based on auth mode
+ * - Integration with steps indicator
+ * - Branded elements (Favicon)
+ *
+ * Visual elements:
+ * - Background image with gradient overlay
+ * - Favicon in prominent position
+ * - Welcome message and description
+ * - Steps indicator (desktop only)
+ *
+ * The component uses several utility components:
+ * - Picture: For optimized image loading
+ * - Overlay: For gradient effects
+ * - createImageUrlProxy: For image optimization
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.bgImage - URL of the background image to display
+ * @param {boolean} props.isSignUp - Whether this is being used in signup (true) or signin (false) mode
+ * @returns {JSX.Element} A sidebar component with background image and authentication context
+ *
+ * @example
+ * <Aside
+ *   bgImage="/images/auth-bg.webp"
+ *   isSignUp={true}
+ * />
+ */
+
 export const Aside = ({
   bgImage,
   isSignUp,
