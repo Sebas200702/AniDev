@@ -3,6 +3,41 @@ import { Picture } from '@components/picture'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeSong } from 'types'
 
+/**
+ * AnimeMusicItem component displays a music track item for an anime series.
+ *
+ * @description This component renders a clickable card that showcases an anime song or theme.
+ * It provides a consistent and visually appealing way to display music tracks with their
+ * associated metadata, including the song title, artist name, and type (Opening, Ending, or Insert).
+ *
+ * The component features a responsive design with hover animations and visual feedback. It includes
+ * a thumbnail image that scales slightly on hover, a type indicator badge with color coding based
+ * on the song type (blue for openings, purple for endings, green for inserts), and the song's
+ * basic information.
+ *
+ * The component uses the Picture component for optimized image loading and includes an overlay
+ * gradient for better text visibility. The layout adjusts based on screen size, providing
+ * appropriate spacing and text sizes for both mobile and desktop views.
+ *
+ * @param {Props} props - The component props
+ * @param {AnimeSong} props.song - The song object containing details like title, artist, and type
+ * @param {string} props.image - The URL of the song's associated image (usually anime cover)
+ * @param {string} props.placeholder - The URL of the placeholder image to show while loading
+ * @returns {JSX.Element} A card-style element displaying the song information
+ *
+ * @example
+ * <AnimeMusicItem
+ *   song={{
+ *     song_title: "Cruel Angel's Thesis",
+ *     artist_name: "Yoko Takahashi",
+ *     type: "opening",
+ *     theme_id: "123"
+ *   }}
+ *   image="/path/to/image.webp"
+ *   placeholder="/path/to/placeholder.webp"
+ * />
+ */
+
 export const AnimeMusicItem = ({
   song,
   image,
