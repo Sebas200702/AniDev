@@ -81,8 +81,6 @@ export const AnimeShowBox = ({
         animeId={animeId}
         image={image}
         placeholder={image_small_webp}
-        anime_title={title}
-        banner_image={banner_image}
       />
     )
 
