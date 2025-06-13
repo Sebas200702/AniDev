@@ -7,6 +7,49 @@ interface Props {
   title: string
 }
 
+/**
+ * Main authentication component orchestrating the multi-step auth flow.
+ *
+ * @description This component serves as the primary container for the authentication
+ * process, managing the display and transitions between different authentication steps.
+ * It provides a consistent layout and navigation structure for both signup and signin flows.
+ *
+ * Key features:
+ * - Multi-step form management (3 steps)
+ * - Dynamic content based on current step
+ * - Consistent header structure per step
+ * - Conditional footer with auth toggle
+ * - Responsive layout and spacing
+ *
+ * Step structure:
+ * 1. Step1: Initial authentication (email/password or Google)
+ * 2. Step2: Profile information collection
+ * 3. Step3: User preferences setup
+ *
+ * The component integrates with useStepsStore for:
+ * - Current step tracking
+ * - Step configuration access
+ * - Step navigation management
+ *
+ * Footer features:
+ * - Only shown on Step1
+ * - Toggle between signup/signin
+ * - Context-aware messaging
+ *
+ * @param {Props} props - The component props
+ * @param {boolean} props.isLoading - Controls loading state
+ * @param {boolean} props.isSignUp - Determines if in signup or signin mode
+ * @param {string} props.title - The title text for the current auth mode
+ * @returns {JSX.Element} The main authentication interface
+ *
+ * @example
+ * <Main
+ *   isLoading={false}
+ *   isSignUp={true}
+ *   title="Sign Up"
+ * />
+ */
+
 export const Main = ({ isLoading, isSignUp, title }: Props) => {
   const { currentStep, steps } = useStepsStore()
 
