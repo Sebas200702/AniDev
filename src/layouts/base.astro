@@ -17,7 +17,7 @@ import '@pheralb/toast/dist/styles.css'
 import { AsideNav } from '@components/aside'
 import { MusicPlayer } from '@components/music-player/music-player'
 import SpeedInsights from '@vercel/speed-insights/astro'
-import '@styles/global.css'
+
 
 const { cookies } = Astro
 const accessToken = cookies.get('sb-access-token')
@@ -83,18 +83,7 @@ const userInfo = await getSessionUserInfo({
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- 1️⃣ SCRIPT INLINE: Aplica el tema antes del render para evitar flash -->
-    <script is:inline>
-      function setTheme() {
-        const t = localStorage.theme
-          ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', t === 'dark');
-        document.documentElement.dataset.theme = t;
-      }
-      setTheme();
-    </script>
-    <!-- 2️⃣ CSS INLINE: Fondo base para evitar parpadeo blanco al cargar CSS -->
-    <style>html{background-color:#0a0a0a}</style>
+
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -134,18 +123,9 @@ const userInfo = await getSessionUserInfo({
     <SpeedInsights />
   </head>
 
-  <body style="visibility:hidden">
+  <body>
     <!-- 3️⃣ REAPLICAR tema y mostrar contenido tras carga o cambio de ruta -->
-    <script is:inline>
-      document.addEventListener('astro:page-load', () => {
-        setTheme();
-        document.body.style.visibility = 'visible';
-      });
-      document.addEventListener('astro:after-swap', () => {
-        setTheme();
-        document.body.style.visibility = 'visible';
-      });
-    </script>
+
 
     <div
       id="app"
