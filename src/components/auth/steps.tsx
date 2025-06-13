@@ -1,3 +1,19 @@
+/**
+ * @typedef {Object} Field
+ * @property {string} name - The name/identifier of the field
+ * @property {string} type - The input type (e.g., 'email', 'password', 'text', 'image', 'select', 'checkbox')
+ * @property {string} placeholder - Placeholder text for the field
+ * @property {Array<{label: string, value: string}>} [options] - Optional array of options for select/checkbox fields
+ */
+
+/**
+ * @typedef {Object} Step
+ * @property {number} id - Unique identifier for the step
+ * @property {string} title - Title text displayed at the top of the step
+ * @property {string} description - Descriptive text explaining the purpose of the step
+ * @property {Field[]} fields - Array of form fields included in this step
+ */
+
 import { useStepsStore } from '@store/steps-store'
 import { useEffect } from 'react'
 
@@ -285,6 +301,36 @@ const stepsSignIn: {
     ],
   },
 ]
+/**
+ * Renders a visual representation of authentication steps (either sign-up or sign-in flow)
+ *
+ * @component
+ * @param {boolean} isSignUp - Determines whether to show sign-up steps (true) or sign-in steps (false)
+ *
+ * @example
+ * ```tsx
+ * // Sign-up flow with multiple steps
+ * <StepsComponent isSignUp={true} />
+ *
+ * // Sign-in flow with single step
+ * <StepsComponent isSignUp={false} />
+ * ```
+ *
+ * @features
+ * - Dynamically renders step indicators based on current authentication flow
+ * - Highlights current active step with enfasis color
+ * - Displays step numbers and titles
+ * - Uses backdrop blur for modern glass-morphism effect
+ * - Integrates with steps store for state management
+ *
+ * @cssProperties
+ * - Uses Tailwind classes for styling
+ * - Implements responsive design
+ * - Supports dark mode through opacity variations
+ * - Includes smooth transitions for step changes
+ *
+ * @returns {JSX.Element} A list of step indicators showing progress through the auth flow
+ */
 export const StepsComponent = (isSignUp: boolean) => {
   const { currentStep, setCurrentStep, setSteps } = useStepsStore()
   const steps = isSignUp ? stepsSignUp : stepsSignIn
