@@ -6,7 +6,9 @@ export const fetchRecomendations = async (
   currentAnimeId?: string
 ) => {
   const numericIds = mal_ids.map((id) => Number(id))
+  const excludedIds = new Set<number>()
 
+  // Obtener datos iniciales
   const { data: initialData, error } = await supabase
     .from('anime')
     .select(
@@ -18,9 +20,8 @@ export const fetchRecomendations = async (
         image_large_webp,
         year,
         status,
-        anime_genres (
-          genres ( name )
-        )
+        score,
+        anime_genres ( genres ( name ) )
       `
     )
     .in('mal_id', numericIds)
@@ -30,82 +31,116 @@ export const fetchRecomendations = async (
     return []
   }
 
+  let results = initialData || []
 
-  let data = initialData
-  if (currentAnimeId && data) {
-    const currentAnimeIdNum = Number(currentAnimeId)
-    data = data.filter((anime) => anime.mal_id !== currentAnimeIdNum)
+  // Filtrar anime actual si existe
+  if (currentAnimeId) {
+    const currentIdNum = Number(currentAnimeId)
+    results = results.filter((anime) => anime.mal_id !== currentIdNum)
+    excludedIds.add(currentIdNum)
   }
 
-  const receivedIds = new Set(data?.map((a) => a.mal_id))
-  const missingIds = numericIds.filter((id) => !receivedIds.has(id))
+  // Registrar IDs recibidos y faltantes
+  results.forEach(anime => excludedIds.add(anime.mal_id))
+  const missingIds = numericIds.filter(id => !excludedIds.has(id))
 
   if (missingIds.length > 0) {
     console.warn('Missing mal_ids:', missingIds)
   }
 
-
-  if (data && data.length < minResults) {
-    let additionalNeeded = minResults - data.length
-
-
-
-    let attempts = 0
-    const maxAttempts = 3
-
-    while (data.length < minResults && attempts < maxAttempts) {
-      attempts++
-      const currentLimit = Math.min(additionalNeeded * 2, 50)
-
-
-
-      let query = supabase
-        .from('anime')
-        .select(
-          `
-            mal_id,
-            title,
-            image_webp,
-            image_small_webp,
-            image_large_webp,
-            year,
-            status,
-            anime_genres (
-              genres ( name )
-            )
-          `
-        )
-        .not('mal_id', 'in', `(${data.map((a) => a.mal_id).join(',')})`)
-        .not('score', 'is', null)
-        .order('score', { ascending: false })
-        .limit(currentLimit)
-
-      if (currentAnimeId) {
-        query = query.neq('mal_id', Number(currentAnimeId))
+  // Función para obtener recomendaciones alternativas
+  const getAlternativeRecommendations = async (needed: number) => {
+    // Estrategias de búsqueda alternativas
+    const strategies = [
+      {
+        name: 'high_score',
+        query: (q: any) =>
+          q.order('score', { ascending: false })
+           .gt('score', 7.5)
+      },
+      {
+        name: 'popular',
+        query: (q: any) =>
+          q.order('members', { ascending: false })
+           .gt('members', 50000)
+      },
+      {
+        name: 'recent',
+        query: (q: any) =>
+          q.order('year', { ascending: false })
+           .gt('year', 2020)
+      },
+      {
+        name: 'hidden_gems',
+        query: (q: any) =>
+          q.order('score', { ascending: false })
+           .lt('members', 30000)
+           .gt('score', 7.0)
       }
+    ]
 
-      const { data: fallbackData, error: fallbackError } = await query
+    // Seleccionar estrategia aleatoria
+    const strategy = strategies[Math.floor(Math.random() * strategies.length)]
+    console.log(`Using fallback strategy: ${strategy.name}`)
 
-      if (!fallbackError && fallbackData && fallbackData.length > 0) {
-        const toAdd = fallbackData.slice(0, additionalNeeded)
-        data.push(...toAdd)
-        additionalNeeded = minResults - data.length
+    const baseQuery = supabase
+      .from('anime')
+      .select(
+        `
+          mal_id,
+          title,
+          image_webp,
+          image_small_webp,
+          image_large_webp,
+          year,
+          status,
+          score,
+          anime_genres ( genres ( name ) )
+        `
+      )
+      .not('mal_id', 'in', `(${[...excludedIds].join(',')})`)
+      .not('score', 'is', null)
+      .gt('score', 6.8)
+      .limit(Math.min(needed * 3, 50))
 
-        if (data.length >= minResults) {
-          break
-        }
-      } else {
-        console.warn(`Fallback attempt ${attempts} failed or returned no data`)
-        break
-      }
+    const { data, error } = await strategy.query(baseQuery)
+
+    if (error || !data) {
+      console.error('Fallback query error:', error)
+      return []
     }
 
-    if (data.length < minResults) {
-      console.warn(
-        `Warning: Could only fetch ${data.length}/${minResults} recommendations after ${attempts} attempts`
-      )
+    // Mezclar resultados para mayor variedad
+    return shuffleArray([...data]).slice(0, needed)
+  }
+
+  // Completar resultados si faltan
+  if (results.length < minResults) {
+    const needed = minResults - results.length
+    const fallbackResults = await getAlternativeRecommendations(needed)
+
+    // Filtrar duplicados y añadir a resultados
+    fallbackResults.forEach(item => {
+      if (!excludedIds.has(item.mal_id)) {
+        results.push(item)
+        excludedIds.add(item.mal_id)
+      }
+    })
+
+    if (results.length < minResults) {
+      console.warn(`Only found ${results.length}/${minResults} recommendations`)
     }
   }
 
-  return data || []
+  return shuffleArray(results)
+}
+
+
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled
 }
