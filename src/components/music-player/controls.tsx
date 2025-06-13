@@ -107,7 +107,9 @@ export const Controls = ({
     [isDragging, setCurrentTime, type, setDragPosition]
   )
 
-  const handleSeekStart = () => {
+  // Manejo unificado para eventos táctiles y de ratón
+  const handleSeekStart = (e: React.TouchEvent | React.MouseEvent) => {
+    e.stopPropagation()
     setIsDragging(true)
     setDragPosition(currentTime)
 
@@ -119,14 +121,14 @@ export const Controls = ({
     }
   }
 
-  const handleSeekEnd = () => {
+  const handleSeekEnd = (e: React.TouchEvent | React.MouseEvent) => {
+    e.stopPropagation()
     const media = getMediaRef()
 
     if (media) {
       media.currentTime = dragPosition
     }
     setCurrentTime(dragPosition)
-
     setIsDragging(false)
 
     if (isPlaying && media) {
@@ -146,8 +148,16 @@ export const Controls = ({
     [setVolume]
   )
 
-  const handleVolumeStart = () => setIsVolumeDragging(true)
-  const handleVolumeEnd = () => setIsVolumeDragging(false)
+  // Manejo unificado para eventos de volumen
+  const handleVolumeStart = (e: React.TouchEvent | React.MouseEvent) => {
+    e.stopPropagation()
+    setIsVolumeDragging(true)
+  }
+  
+  const handleVolumeEnd = (e: React.TouchEvent | React.MouseEvent) => {
+    e.stopPropagation()
+    setIsVolumeDragging(false)
+  }
 
   const toggleRepeat = () => setRepeat(!repeat)
   const toggleShuffle = () => setShuffle(!shuffle)
@@ -241,6 +251,7 @@ export const Controls = ({
           }`}
           title="Aleatorio"
           disabled={isDragging}
+          aria-label={shuffle ? "Desactivar aleatorio" : "Activar aleatorio"}
         >
           <RandomIcon className="h-4 w-4" />
         </button>
@@ -253,17 +264,20 @@ export const Controls = ({
           className="hover:text-enfasisColor rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!list.length || isDragging}
           title="Anterior"
+          aria-label="Canción anterior"
         >
           <PreviousIcon className="h-5 w-5" />
         </button>
 
         <button
           onClick={(e) => {
+            e.stopPropagation()
             handleTogglePlay()
           }}
           className="bg-enfasisColor hover:bg-enfasisColor/80 rounded-full p-3 text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!!error || isDragging}
           title={isPlaying ? 'Pausar' : 'Reproducir'}
+          aria-label={isPlaying ? 'Pausar' : 'Reproducir'}
         >
           {isPlaying ? (
             <PauseIcon className="h-5 w-5" />
@@ -280,12 +294,14 @@ export const Controls = ({
           className="hover:text-enfasisColor rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={!list.length || isDragging}
           title="Siguiente"
+          aria-label="Siguiente canción"
         >
           <NextIcon className="h-5 w-5" />
         </button>
 
         <button
           onClick={(e) => {
+            e.stopPropagation()
             toggleRepeat()
           }}
           className={`rounded-lg p-2 transition-all duration-300 ease-in-out ${
@@ -295,6 +311,7 @@ export const Controls = ({
           }`}
           title="Repetir"
           disabled={isDragging}
+          aria-label={repeat ? "Desactivar repetición" : "Activar repetición"}
         >
           <RepeatIcon className="h-5 w-5" />
         </button>
@@ -328,6 +345,7 @@ export const Controls = ({
                 isVolumeDragging ? 'dragging-active' : ''
               }`}
               title={`Volumen: ${Math.round(volume * 100)}%`}
+              aria-label="Control de volumen"
             />
           </div>
           <span className="text-sxx min-w-[2rem] text-center text-gray-400">
@@ -343,6 +361,7 @@ export const Controls = ({
           className="hover:text-enfasisColor ml-4 rounded-lg p-4 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5"
           title={`Cambiar a ${type === 'audio' ? 'video' : 'audio'}`}
           disabled={isDragging || isVolumeDragging}
+          aria-label={`Cambiar a formato ${type === 'audio' ? 'video' : 'audio'}`}
         >
           <TrailerIcon className="h-5 w-5" />
         </button>
