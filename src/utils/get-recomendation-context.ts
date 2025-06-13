@@ -6,27 +6,7 @@ export const generateContextualPrompt = (
   context: RecommendationContext,
   currentAnime?: string
 ): string => {
-  const _baseProfile = `
-      ## PERFIL DEL USUARIO:
-      **Información Personal:**
-      - Nombre: ${userProfile.name} ${userProfile.last_name}
-      - Género: ${userProfile.gender}
-      - Edad: ${calculatedAge} años (nacido el ${userProfile.birthday})
 
-      **Preferencias de Anime:**
-      - Animes Favoritos: ${userProfile.favorite_animes.join(', ')}
-      - Géneros Preferidos: ${userProfile.favorite_genres.join(', ')}
-      - Estudios Favoritos: ${userProfile.favorite_studios.join(', ')}
-      - Formato Preferido: ${userProfile.preferred_format}
-
-      **Hábitos de Consumo:**
-      - Frecuencia de Visualización: ${userProfile.frequency_of_watch}
-      - Nivel de Fanatismo: ${userProfile.fanatic_level}
-      - Historial de Búsqueda: ${userProfile.search_history}
-
-      **Anime Ya Consumido:**
-      - Animes Vistos: ${userProfile.watched_animes.join(', ')}
-    `
 
   let contextualInstructions = ''
   let recommendationCount = context.count || 12
@@ -148,7 +128,7 @@ export const generateContextualPrompt = (
   const dayOfWeek = currentDate.getDay()
   const sessionId = Math.floor(Math.random() * 1000)
 
-  // Factores contextuales dinámicos
+
   const timeContext = {
     mood:
       hourOfDay < 12
@@ -232,7 +212,7 @@ export const generateContextualPrompt = (
     explorationStrategies[sessionId % explorationStrategies.length]
 
   return `
-# 🎯 SISTEMA DE CURACIÓN INTELIGENTE v2.0
+# 🎯 SISTEMA DE RECOMENDACIONES INTELIGENTE v2.0
 
 ## 👤 PERFIL COMPLETO DEL USUARIO
 **${userProfile.name}** (${calculatedAge} años, ${userProfile.gender})
