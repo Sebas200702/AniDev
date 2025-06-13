@@ -118,9 +118,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
 
       if (functionResult.length < targetCount * 0.95) {
         wasRetried = true
-        console.log(
-          `Insufficient results (${functionResult.length}/${targetCount}). Retrying with fallback strategy.`
-        )
+
 
         const retryPrompt = `Las recomendaciones anteriores solo retornaron ${functionResult.length} de ${targetCount} animes solicitados.
         Esto indica que muchos mal_ids no existen en nuestra base de datos.
@@ -167,18 +165,14 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
             }
 
             functionResult = combinedResults
-            console.log(
-              `Retry completed. Final count: ${functionResult.length}`
-            )
+
           }
         } catch (retryError) {
           console.error('Retry attempt failed:', retryError)
         }
 
         if (functionResult.length < targetCount) {
-          console.log(
-            `Still insufficient after retry (${functionResult.length}/${targetCount}). Forcing direct fallback.`
-          )
+
           functionResult = await fetchRecomendations(
             [],
             targetCount,
@@ -211,9 +205,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       if (responseText) {
         const malIdMatches = responseText.match(/\b\d{4,6}\b/g)
         if (malIdMatches && malIdMatches.length >= 10) {
-          console.log(
-            `🔄 Attempting fallback with extracted IDs: ${malIdMatches.slice(0, 5).join(', ')}...`
-          )
+     
           const fallbackResult = await fetchRecomendations(
             malIdMatches.slice(0, context.count || 24),
             context.count || 24,
