@@ -20,7 +20,6 @@ import SpeedInsights from '@vercel/speed-insights/astro'
 import '@styles/global.css'
 
 const { cookies } = Astro
-
 const accessToken = cookies.get('sb-access-token')
 const refreshToken = cookies.get('sb-refresh-token')
 
@@ -65,8 +64,9 @@ if (themeId) {
       const metadata = await response.json()
       metaTitle = `${metadata[0].song_title} - ${baseTitle}` || metaTitle
       metaDesc =
-        `${metadata[0].song_title} performed by ${metadata[0].artist_name}${metadata[0].anime_title ? ` for the anime ${metadata[0].anime_title}` : ''}. Listen now on AniDev!` ||
-        metaDesc
+        `${metadata[0].song_title} performed by ${metadata[0].artist_name}${
+          metadata[0].anime_title ? ` for the anime ${metadata[0].anime_title}` : ''
+        }. Listen now on AniDev!` || metaDesc
       metaImage = metadata[0].image || metaImage
     }
   } catch (error) {
@@ -83,6 +83,19 @@ const userInfo = await getSessionUserInfo({
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!-- 1️⃣ SCRIPT INLINE: Aplica el tema antes del render para evitar flash -->
+    <script is:inline>
+      function setTheme() {
+        const t = localStorage.theme
+          ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', t === 'dark');
+        document.documentElement.dataset.theme = t;
+      }
+      setTheme();
+    </script>
+    <!-- 2️⃣ CSS INLINE: Fondo base para evitar parpadeo blanco al cargar CSS -->
+    <style>html{background-color:#0a0a0a}</style>
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -96,32 +109,7 @@ const userInfo = await getSessionUserInfo({
     <meta name="twitter:title" content={metaTitle} />
     <meta name="twitter:image" content={metaImage} />
     <meta name="twitter:site" content={baseUrl} />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="
-    default-src 'self';
-    connect-src 'self' data:;
-    script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com/;
-    frame-src 'self' https://www.youtube.com/;
-    style-src 'self' 'unsafe-inline';
-    media-src 'self' blob: https://a.animethemes.moe https://v.animethemes.moe;
-    font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-    img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud https://lh3.googleusercontent.com/ https://ani-dev.vercel.app;
-    worker-src  'self' blob:;
-  "
-    />
-    <script is:inline>
-      const theme =
-        localStorage.theme ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light')
-      document.documentElement.classList.toggle('dark', theme === 'dark')
-      localStorage.theme = theme
-      document.documentElement.dataset.theme = theme
-      document.body.style.visibility = 'hidden'
-    </script>
-
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' data:; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com/; frame-src 'self' https://www.youtube.com/; style-src 'self' 'unsafe-inline'; media-src 'self' blob: https://a.animethemes.moe https://v.animethemes.moe; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud https://lh3.googleusercontent.com/ https://ani-dev.vercel.app; worker-src  'self' blob:;">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     {userInfo && <link rel="preload" href={userInfo?.avatar} as="image" />}
@@ -145,13 +133,20 @@ const userInfo = await getSessionUserInfo({
     <ClientRouter />
     <SpeedInsights />
   </head>
-  <body>
+
+  <body style="visibility:hidden">
+    <!-- 3️⃣ REAPLICAR tema y mostrar contenido tras carga o cambio de ruta -->
     <script is:inline>
-      const show = () => (document.body.style.visibility = 'visible')
-      if (document.readyState === 'complete') show()
-      else window.addEventListener('load', show)
-      document.addEventListener('astro:after-swap', show)
+      document.addEventListener('astro:page-load', () => {
+        setTheme();
+        document.body.style.visibility = 'visible';
+      });
+      document.addEventListener('astro:after-swap', () => {
+        setTheme();
+        document.body.style.visibility = 'visible';
+      });
     </script>
+
     <div
       id="app"
       class="bg-Primary-950 text-Primary-50 no-scrollbar max-w-[100dvw] overflow-x-hidden overflow-y-scroll"
@@ -179,7 +174,6 @@ const userInfo = await getSessionUserInfo({
           position="bottom-right"
           toastOptions={{
             animationOnClose: 'swipe',
-
             classNames: {
               toast: 'bg-Complementary ',
               container: 'bg-Complementary ',
