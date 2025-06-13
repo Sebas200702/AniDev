@@ -29,31 +29,33 @@ export const AnimeMusicItem = ({
   return (
     <a
       href={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
-      data-theme-id={song.theme_id}
-      className="hover:bg-Primary-900 border-enfasisColor relative flex max-h-28 flex-row gap-2 overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-all duration-300"
+      title={song.song_title}
+      className="hover:bg-Primary-900 border-enfasisColor relative group flex max-h-28 flex-row md:gap-2 overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out"
     >
       <Picture
         image={placeholder}
-        styles="aspect-[225/330]  relative overflow-hidden"
+        styles="aspect-[225/330] w-full  overflow-hidden  relative max-w-20"
       >
         <img
           src={image}
           alt={song.song_title}
-          className="relative h-full w-full object-cover"
+          className="relative aspect-[225/330] h-full w-full  object-cover object-center transition-all ease-in-out group-hover:scale-105"
         />
         <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
       </Picture>
 
       {song.type && (
         <span
-          className={`absolute top-2 right-2 flex-shrink-0 rounded-full border px-2 py-1 text-xs font-medium ${getTypeColor(song.type)}`}
+          className={`absolute top-2 right-2 flex-shrink-0 rounded-full border md:px-2 md:py-1 p-1 text-xs font-medium ${getTypeColor(song.type)}`}
         >
           {song.type.toUpperCase()}
         </span>
       )}
-      <footer className="flex flex-col gap-2 p-4">
-        <h3 className="text-lg font-bold">{song.song_title}</h3>
-        <p className="text-sm text-gray-500">{song.artist_name}</p>
+      <footer className="flex flex-col gap-2 md:p-4 p-2 max-w-[60%] w-full">
+        <h3 className="md:text-lg text-md font-bold text-pretty  group-hover:text-enfasisColor/80 transition-colors duration-300 ease-in-out">
+          {song.song_title}
+        </h3>
+        <p className="md:text-sm text-xs text-gray-500">{song.artist_name}</p>
       </footer>
     </a>
   )
