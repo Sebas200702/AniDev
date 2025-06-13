@@ -28,6 +28,7 @@
     "astro-font": "^1.1.0",
     "auth-astro": "4.2.0",
     "cropperjs": "^2.0.0",
+    "next-auth": "^4.24.11",
     "pinata": "^2.4.8",
     "rate-limiter-flexible": "^7.1.1",
     "react": "^19.1.0",
