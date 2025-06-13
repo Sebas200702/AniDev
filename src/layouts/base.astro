@@ -110,6 +110,17 @@ const userInfo = await getSessionUserInfo({
     worker-src  'self' blob:;
   "
     />
+    <script is:inline>
+      const theme =
+        localStorage.theme ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light')
+      document.documentElement.classList.toggle('dark', theme === 'dark')
+      localStorage.theme = theme
+      document.documentElement.dataset.theme = theme
+      document.body.style.visibility = 'hidden'
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -135,6 +146,12 @@ const userInfo = await getSessionUserInfo({
     <SpeedInsights />
   </head>
   <body>
+    <script is:inline>
+      const show = () => (document.body.style.visibility = 'visible')
+      if (document.readyState === 'complete') show()
+      else window.addEventListener('load', show)
+      document.addEventListener('astro:after-swap', show)
+    </script>
     <div
       id="app"
       class="bg-Primary-950 text-Primary-50 no-scrollbar max-w-[100dvw] overflow-x-hidden overflow-y-scroll"
