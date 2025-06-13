@@ -259,7 +259,6 @@ export const Controls = ({
 
         <button
           onClick={(e) => {
-            e.stopPropagation()
             handleTogglePlay()
           }}
           className="bg-enfasisColor hover:bg-enfasisColor/80 rounded-full p-3 text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-50"
@@ -287,7 +286,6 @@ export const Controls = ({
 
         <button
           onClick={(e) => {
-            e.stopPropagation()
             toggleRepeat()
           }}
           className={`rounded-lg p-2 transition-all duration-300 ease-in-out ${
@@ -298,7 +296,7 @@ export const Controls = ({
           title="Repetir"
           disabled={isDragging}
         >
-          <RepeatIcon className="h-4 w-4" />
+          <RepeatIcon className="h-5 w-5" />
         </button>
       </div>
 
@@ -306,8 +304,8 @@ export const Controls = ({
         <div
           className={`group flex max-w-32 flex-1 items-center space-x-2 ${isVolumeDragging ? 'dragging' : ''}`}
         >
-          <VolumeIcon className="h-4 w-4 flex-shrink-0 text-gray-400" />
-          <div className="relative flex h-4 flex-1 items-center">
+          <VolumeIcon className="h-5 w-5 flex-shrink-0 text-gray-400" />
+          <div className="relative flex h-5 flex-1 items-center">
             <div className="h-1 w-full rounded-full bg-gray-100/10" />
 
             <div
@@ -342,11 +340,11 @@ export const Controls = ({
             e.stopPropagation()
             handleToggleFormat()
           }}
-          className="hover:text-enfasisColor ml-4 rounded-lg p-2 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5"
+          className="hover:text-enfasisColor ml-4 rounded-lg p-4 text-gray-400 transition-all duration-300 ease-in-out hover:bg-gray-100/5"
           title={`Cambiar a ${type === 'audio' ? 'video' : 'audio'}`}
           disabled={isDragging || isVolumeDragging}
         >
-          <TrailerIcon className="h-4 w-4" />
+          <TrailerIcon className="h-5 w-5" />
         </button>
       </div>
 
