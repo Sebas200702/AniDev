@@ -16,7 +16,7 @@ import '@styles/anime-banner.css'
 import '@pheralb/toast/dist/styles.css'
 import { AsideNav } from '@components/aside'
 import { MusicPlayer } from '@components/music-player/music-player'
-import SpeedInsights from '@vercel/speed-insights/astro'
+
 
 
 const { cookies } = Astro
@@ -120,7 +120,6 @@ const userInfo = await getSessionUserInfo({
     <link rel="canonical" href={baseUrl} />
     <title>{metaTitle}</title>
     <ClientRouter />
-    <SpeedInsights />
   </head>
 
   <body>
