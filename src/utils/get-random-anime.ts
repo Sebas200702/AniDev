@@ -10,7 +10,6 @@ export const getRandomAnime = async (
   const randomAnime = data[0] as RandomAnime
 
   if (error || !data) {
-    console.log('Error al obtener el anime aleatorio:', error)
     return await getRandomAnime(parentalControl)
   }
 
