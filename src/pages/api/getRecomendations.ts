@@ -7,6 +7,15 @@ import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { APIRoute } from 'astro'
 import type { RecommendationContext } from 'types'
 
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
 const functionTool: Tool = {
   functionDeclarations: [
     {
@@ -85,7 +94,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       currentAnime
     )
 
-    // Instrucción específica para usar la función
+
     const functionPrompt = `${prompt} INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
 
     const getRecomendations = await model.generateContent({
@@ -118,7 +127,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
 
       if (functionResult.length < targetCount * 0.95) {
         wasRetried = true
-
 
         const retryPrompt = `Las recomendaciones anteriores solo retornaron ${functionResult.length} de ${targetCount} animes solicitados.
         Esto indica que muchos mal_ids no existen en nuestra base de datos.
@@ -165,14 +173,12 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
             }
 
             functionResult = combinedResults
-
           }
         } catch (retryError) {
           console.error('Retry attempt failed:', retryError)
         }
 
         if (functionResult.length < targetCount) {
-
           functionResult = await fetchRecomendations(
             [],
             targetCount,
@@ -181,11 +187,12 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }
       }
 
+      const shuffledResults = shuffleArray(functionResult)
       return new Response(
         JSON.stringify({
-          data: functionResult,
+          data: shuffledResults,
           context: context,
-          totalRecommendations: functionResult?.length || 0,
+          totalRecommendations: shuffledResults?.length || 0,
           wasRetried,
         }),
         {
@@ -201,11 +208,9 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       )
       console.error('❌ Raw response:', responseText?.substring(0, 200) + '...')
 
-      // Intentar extraer MAL_IDs del texto plano como fallback
       if (responseText) {
         const malIdMatches = responseText.match(/\b\d{4,6}\b/g)
         if (malIdMatches && malIdMatches.length >= 10) {
-     
           const fallbackResult = await fetchRecomendations(
             malIdMatches.slice(0, context.count || 24),
             context.count || 24,
@@ -213,11 +218,12 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
           )
 
           if (fallbackResult.length > 0) {
+            const shuffledFallback = shuffleArray(fallbackResult)
             return new Response(
               JSON.stringify({
-                data: fallbackResult,
+                data: shuffledFallback,
                 context: context,
-                totalRecommendations: fallbackResult.length,
+                totalRecommendations: shuffledFallback.length,
                 wasRetried: false,
                 fallbackUsed: true,
               }),
