@@ -13,6 +13,47 @@ interface Props {
   isSignUp: boolean
 }
 
+/**
+ * Step2 component handles the user profile information collection step.
+ *
+ * @description This component renders a comprehensive form for collecting user profile
+ * information as part of the registration or profile update process. It supports
+ * multiple field types including text inputs, date inputs, dropdowns, and image upload.
+ *
+ * Key features:
+ * - Dynamic form field rendering based on field type
+ * - Support for various input types:
+ *   - Text inputs for name and last name
+ *   - Date input for birthday
+ *   - Select dropdown for gender
+ *   - Image upload for avatar
+ * - Form validation with immediate feedback
+ * - Toast notifications for success/error states
+ * - Organized layout with personal information section
+ * - Responsive grid layout for form fields
+ * - Integrated with profile management stores
+ *
+ * The component uses several stores and utilities:
+ * - useProfileFormStore: Manages form state, validation, and submission
+ * - useStepsStore: Handles multi-step form navigation
+ * - FilterDropdown: For select-type inputs
+ * - UserInfo: For avatar management
+ *
+ * Form submission process:
+ * - Client-side validation
+ * - FormData preparation with support for arrays and single values
+ * - Error handling with user-friendly messages
+ * - Success handling with navigation to next step
+ * - Loading state management
+ *
+ * @param {Props} props - The component props
+ * @param {boolean} props.isSignUp - Indicates if this is part of the signup flow
+ * @returns {JSX.Element} A form for collecting user profile information
+ *
+ * @example
+ * <Step2 isSignUp={true} />
+ */
+
 export const Step2 = ({ isSignUp }: Props) => {
   const {
     values,
