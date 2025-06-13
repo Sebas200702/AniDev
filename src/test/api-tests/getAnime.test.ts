@@ -11,7 +11,6 @@ describe('Endpoint test get anime with slug', () => {
       .then((res) => res.json())
       .then((data) => data.anime)
     expect(anime).toBeDefined()
-    console.log(anime)
     expect(anime?.title).toBe(
       'Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen'
     )
