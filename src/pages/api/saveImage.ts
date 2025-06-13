@@ -82,7 +82,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     .eq('name', user)
 
   if (error) {
-    console.log(error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
     })
