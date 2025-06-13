@@ -16,6 +16,49 @@ interface Props {
   isSignUp: boolean
 }
 
+/**
+ * Step1 component handles the first step of the authentication process.
+ *
+ * @description This component renders a form for user authentication, supporting both
+ * email/password and Google authentication methods. It's part of a multi-step
+ * authentication flow and handles form validation, submission, and error management.
+ *
+ * Key features:
+ * - Dynamic form field rendering based on step configuration
+ * - Form validation with immediate feedback
+ * - Multiple authentication methods (Email/Password and Google)
+ * - Toast notifications for success/error states
+ * - Loading state management
+ * - Error handling and display
+ * - Integration with global user preferences
+ * - Support for both signup and login flows
+ *
+ * The component uses several stores for state management:
+ * - useAuthFormStore: Manages form values, validation, and messages
+ * - useGlobalUserPreferences: Handles user information persistence
+ * - useStepsStore: Controls multi-step form navigation
+ *
+ * Form submission includes:
+ * - Client-side validation
+ * - FormData preparation
+ * - Error handling with user-friendly messages
+ * - Success flow with user data persistence
+ * - Loading state indication
+ *
+ * @param {Props} props - The component props
+ * @param {boolean} props.isLoading - Controls loading state of the form
+ * @param {string} props.title - The title/action text for the submit button
+ * @param {boolean} props.isSignUp - Determines if this is a signup or login flow
+ * @returns {JSX.Element} A form with authentication fields and submit button
+ *
+ * @example
+ * <Step1
+ *   isLoading={false}
+ *   title="Sign Up"
+ *   isSignUp={true}
+ * />
+ */
+
 export const Step1 = ({ isLoading, title, isSignUp }: Props) => {
   const {
     values,
