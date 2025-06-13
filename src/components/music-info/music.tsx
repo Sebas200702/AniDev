@@ -19,7 +19,6 @@ export const Music = ({ themeId }: { themeId: string }) => {
       const data = await response.json()
 
       if (data[0].song_id === currentSong?.song_id) {
-        console.log('song is the same')
         return
       }
       setIsHidden(false)
