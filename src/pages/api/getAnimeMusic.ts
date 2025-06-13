@@ -6,7 +6,6 @@ import type { APIRoute } from 'astro'
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   const animeId = url.searchParams.get('animeId')
   const cacheKey = `AnimeMusic_${animeId}`
-  console.log(animeId)
 
   const cachedData = await redis.get(cacheKey)
   if (cachedData) {
