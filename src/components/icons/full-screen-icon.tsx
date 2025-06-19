@@ -7,13 +7,13 @@ export const FullScreenIcon = ({ className }: IconProps) => {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
       className={className}
     >
       <path stroke="none" d="M0 0h24v24H0z" />
-      <path d="M16 4h4v4M14 10l6-6M8 20H4v-4M4 20l6-6M16 20h4v-4M14 14l6 6M8 4H4v4M4 4l6 6" />
+      <path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M16 4h2a2 2 0 0 1 2 2v2M16 20h2a2 2 0 0 0 2-2v-2" />
     </svg>
   )
 }
