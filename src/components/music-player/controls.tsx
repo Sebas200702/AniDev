@@ -25,7 +25,7 @@ export const CustomControls = ({ muted, volume }: Props) => {
   const { isPlaying, currentSong } = useMusicPlayerStore()
   if (!currentSong) return
   return (
-    <Controls.Root className="mt-4 flex w-full flex-col gap-2 p-4">
+    <Controls.Root className="mt-4 w-full flex-col gap-2 p-4 md:flex hidden">
       <Controls.Group className="flex items-center justify-center gap-4">
         <button
           className="hover:text-enfasisColor text-Primary-50-400 rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-zinc-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
