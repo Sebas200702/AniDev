@@ -47,7 +47,6 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
   const storageKey = `animes_${url}`
 
   const getCachedAnimes = useCallback(() => {
-
     if (context === 'anime-info') {
       return null
     }
@@ -62,7 +61,7 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
   }, [storageKey, context])
 
   const { data: animes, loading } = useFetch<AnimeCardInfo[]>({
-    url : url +`&parental_control=${parentalControl}`,
+    url: url + `&parental_control=${parentalControl}`,
     skip: context !== 'anime-info' && cachedAnimes.length > 0,
   })
 
@@ -72,14 +71,13 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
     let itemsPerGroup = 2
 
     if (context === 'anime-info') {
-
       if (windowWidth && windowWidth > 1280) {
-        itemsPerGroup = 4 
+        itemsPerGroup = 4
       } else if (windowWidth && windowWidth > 768) {
         itemsPerGroup = 3
       }
     } else {
-      // Configuración por defecto
+
       if (windowWidth && windowWidth > 1280) {
         itemsPerGroup = 6
       } else if (windowWidth && windowWidth > 768) {
