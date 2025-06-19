@@ -8,71 +8,73 @@ import Layout from '@layouts/base.astro'
 ---
 
 <Layout>
-  <Carousel client:load />
-  <section class="-mt-16 mb-10 flex flex-col gap-y-6 md:mb-20 md:gap-y-20">
-    <AnimeSlider
-      client:visible
-      url="/api/getRecomendations?count=24"
-      title="Special for you"
-    />
-    <AnimeTop client:visible />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&year_filter=2025&type_filter=tv&banners_filter=false"
-      title="Top 2025"
-    />
-    <ColectionList client:visible id={1} />
-    <AnimeBanner id={1} client:visible />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=action&banners_filter=false"
-      title="Action"
-    />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&type_filter=movie&banners_filter=false"
-      title="Top Movies"
-    />
-    <AnimeBanner id={2} client:visible />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=comedy&banners_filter=false"
-      title="Comedy"
-    />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=drama&banners_filter=false"
-      title="Drama"
-    />
-    <ColectionList client:visible id={2} />
-    <AnimeBanner id={3} client:visible />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=girlslove&banners_filter=false"
-      title="Girls Love"
-    />
-    <AnimeBanner id={4} client:visible />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=horror&banners_filter=false"
-      title="Horror"
-    />
-    <ColectionList client:visible id={3} />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=mystery&banners_filter=false"
-      title="Mystery"
-    />
-    <AnimeBanner id={5} client:visible />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=romance&banners_filter=false"
-      title="Romance"
-    />
-    <AnimeSlider
-      client:visible
-      url="/api/animes?limit_count=24&genre_filter=sliceoflife&banners_filter=false"
-      title="Slice of Life"
-    />
+  <section class="max-w-[100dvw] [grid-area:main] md:max-w-[calc(100dvw-80px)]">
+    <Carousel client:load />
+    <article class="-mt-16 mb-10 flex flex-col gap-y-6 md:mb-20 md:gap-y-20">
+      <AnimeSlider
+        client:visible
+        url="/api/getRecomendations?count=24"
+        title="Special for you"
+      />
+      <AnimeTop client:visible />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&year_filter=2025&type_filter=tv&banners_filter=false"
+        title="Top 2025"
+      />
+      <ColectionList client:visible id={1} />
+      <AnimeBanner id={1} client:visible />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=action&banners_filter=false"
+        title="Action"
+      />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&type_filter=movie&banners_filter=false"
+        title="Top Movies"
+      />
+      <AnimeBanner id={2} client:visible />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=comedy&banners_filter=false"
+        title="Comedy"
+      />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=drama&banners_filter=false"
+        title="Drama"
+      />
+      <ColectionList client:visible id={2} />
+      <AnimeBanner id={3} client:visible />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=girlslove&banners_filter=false"
+        title="Girls Love"
+      />
+      <AnimeBanner id={4} client:visible />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=horror&banners_filter=false"
+        title="Horror"
+      />
+      <ColectionList client:visible id={3} />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=mystery&banners_filter=false"
+        title="Mystery"
+      />
+      <AnimeBanner id={5} client:visible />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=romance&banners_filter=false"
+        title="Romance"
+      />
+      <AnimeSlider
+        client:visible
+        url="/api/animes?limit_count=24&genre_filter=sliceoflife&banners_filter=false"
+        title="Slice of Life"
+      />
+    </article>
   </section>
 </Layout>
