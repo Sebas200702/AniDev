@@ -69,6 +69,7 @@ export const MusicPlayer = () => {
         streamType="on-demand"
         logLevel="warn"
         playsInline
+    
         title={currentSong.song_title}
         onCanPlay={() => {
           if (player.current && savedTime > 0) {
