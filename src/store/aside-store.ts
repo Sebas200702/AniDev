@@ -1,6 +1,8 @@
 import { CalendarIcon } from '@icons/calendar-icon'
 import { HomeIcon } from '@icons/home-icon'
 import { UserIcon } from '@icons/user-icon'
+
+import { MusicIcon } from '@components/icons/music-icon'
 import { create } from 'zustand'
 
 interface AsideStore {
@@ -26,6 +28,12 @@ export const useAsideStore = create<AsideStore>((set) => ({
       icon: UserIcon,
       label: 'Profile',
       href: '/profile',
+    },
+    {
+      id: 'music',
+      icon: MusicIcon,
+      label: 'Music',
+      href: '/music',
     },
   ],
   setActiveItem: (activeItem) => set({ activeItem }),
