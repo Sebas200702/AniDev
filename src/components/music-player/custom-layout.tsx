@@ -1,10 +1,9 @@
+import { NextPrevButton } from '@components/music-player/next-prev-button'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { Menu } from '@vidstack/react'
-import {
-  DefaultVideoLayout,
-  defaultLayoutIcons,
-} from '@vidstack/react/player/layouts/default'
+import { DefaultVideoLayout } from '@vidstack/react/player/layouts/default'
 import type { AnimeSongWithImage } from 'types'
+import { customIcons } from './custom-icons'
 
 export const CustomLayout = () => {
   const { variants, src, setSrc, type } = useMusicPlayerStore()
@@ -20,8 +19,10 @@ export const CustomLayout = () => {
   }
   return (
     <DefaultVideoLayout
-      icons={defaultLayoutIcons}
+      icons={customIcons}
       slots={{
+        beforePlayButton: <NextPrevButton direction="Prev" />,
+        afterPlayButton: <NextPrevButton direction="Next" />,
         pipButton: <></>,
         settingsMenuItemsStart: (
           <Menu.Root className="vds-menu relative ">
