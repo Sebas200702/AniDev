@@ -7,6 +7,7 @@ export const Music = ({ themeId }: { themeId: string }) => {
     setError,
     setIsHidden,
     setIsMinimized,
+    setVariants,
     list,
     setList,
     currentSong,
@@ -43,6 +44,7 @@ export const Music = ({ themeId }: { themeId: string }) => {
           updatedList = [newSong, ...list]
         }
         setList(updatedList)
+        setVariants(data)
         if (!currentSong || currentSong.song_id !== newSong.song_id) {
           setCurrentSong(newSong)
         }
