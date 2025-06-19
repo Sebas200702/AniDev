@@ -17,8 +17,6 @@ import '@pheralb/toast/dist/styles.css'
 import { AsideNav } from '@components/aside'
 import { MusicPlayer } from '@components/music-player/music-player'
 
-
-
 const { cookies } = Astro
 const accessToken = cookies.get('sb-access-token')
 const refreshToken = cookies.get('sb-refresh-token')
@@ -65,7 +63,9 @@ if (themeId) {
       metaTitle = `${metadata[0].song_title} - ${baseTitle}` || metaTitle
       metaDesc =
         `${metadata[0].song_title} performed by ${metadata[0].artist_name}${
-          metadata[0].anime_title ? ` for the anime ${metadata[0].anime_title}` : ''
+          metadata[0].anime_title
+            ? ` for the anime ${metadata[0].anime_title}`
+            : ''
         }. Listen now on AniDev!` || metaDesc
       metaImage = metadata[0].image || metaImage
     }
@@ -84,7 +84,6 @@ const userInfo = await getSessionUserInfo({
   <head>
     <meta charset="utf-8" />
 
-
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -98,7 +97,10 @@ const userInfo = await getSessionUserInfo({
     <meta name="twitter:title" content={metaTitle} />
     <meta name="twitter:image" content={metaImage} />
     <meta name="twitter:site" content={baseUrl} />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' data:; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com/; frame-src 'self' https://www.youtube.com/; style-src 'self' 'unsafe-inline'; media-src 'self' blob: https://a.animethemes.moe https://v.animethemes.moe; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud https://lh3.googleusercontent.com/ https://ani-dev.vercel.app; worker-src  'self' blob:;">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' data:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com ; frame-src 'self' https://www.youtube.com/; style-src 'self' 'unsafe-inline'; media-src 'self' blob: https://a.animethemes.moe https://v.animethemes.moe; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://cdn.myanimelist.net https://coffee-advanced-tern-335.mypinata.cloud https://lh3.googleusercontent.com/ https://ani-dev.vercel.app; worker-src  'self' blob:;"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     {userInfo && <link rel="preload" href={userInfo?.avatar} as="image" />}
@@ -140,9 +142,12 @@ const userInfo = await getSessionUserInfo({
       <LoadWindowWidth client:load />
 
       <main
-        class="relative max-w-[100dvw] [grid-area:main] md:max-w-[calc(100dvw-80px)]"
+        class="relative max-w-[100dvw] [grid-area:main] md:max-w-[calc(100dvw-80px)] flex xl:flex-row flex-col "
       >
-        <slot />
+
+          <MusicPlayer client:only transition:persist />
+          <slot />
+
 
         <Toaster
           client:load
@@ -162,7 +167,6 @@ const userInfo = await getSessionUserInfo({
             },
           }}
         />
-        <MusicPlayer client:only transition:persist />
       </main>
       <Footer />
     </div>
