@@ -1,23 +1,23 @@
-import type { AnimeSong } from 'types'
+import { type MediaPlayerInstance } from '@vidstack/react'
+import type { AnimeSongWithImage } from 'types'
 import { create } from 'zustand'
-
-interface AnimeSongWithImage extends AnimeSong {
-  image: string
-  placeholder: string
-  banner_image: string
-  anime_title: string
-}
 
 interface MusicPlayerStore {
   list: AnimeSongWithImage[]
   duration: number
   volume: number
+  isControlsVisible: boolean
+  src: string
+  canPlay: boolean
+  setCanPlay: (canPlay: boolean) => void
+  setIsControlsVisible: (isVisible: boolean) => void
   setDuration: (duration: number) => void
   setVolume: (volume: number) => void
   setList: (list: AnimeSongWithImage[]) => void
   isPlaying: boolean
   setIsPlaying: (isPlaying: boolean) => void
   currentTime: number
+  playerRef: React.RefObject<MediaPlayerInstance | null>
   setCurrentTime: (currentTime: number) => void
   currentSong: AnimeSongWithImage | null
   setCurrentSong: (currentSong: AnimeSongWithImage | null) => void
@@ -37,8 +37,7 @@ interface MusicPlayerStore {
   setError: (error: string | null) => void
   variants: AnimeSongWithImage[]
   setVariants: (variants: AnimeSongWithImage[]) => void
-
-  // Nuevos estados del componente
+  setSrc: (src: string) => void
   savedTime: number
   setSavedTime: (savedTime: number) => void
   isChangingFormat: boolean
@@ -55,11 +54,11 @@ interface MusicPlayerStore {
   setPosition: (position: { x: number; y: number }) => void
   isHidden: boolean
   setIsHidden: (isHidden: boolean) => void
-
   isVolumeDragging: boolean
   setIsVolumeDragging: (isVolumeDragging: boolean) => void
   dragPosition: number
   setDragPosition: (dragPosition: number) => void
+  setPlayerRef: (playerRef: React.RefObject<MediaPlayerInstance | null>) => void
 }
 
 export const useMusicPlayerStore = create<MusicPlayerStore>((set) => ({
@@ -67,6 +66,15 @@ export const useMusicPlayerStore = create<MusicPlayerStore>((set) => ({
   duration: 0,
   volume: 1,
   variants: [],
+  canPlay: false,
+  setCanPlay(canPlay) {
+    set({ canPlay })
+  },
+  src: '',
+  playerRef: { current: null } as React.RefObject<MediaPlayerInstance | null>,
+  isControlsVisible: true,
+  setIsControlsVisible: (isVisible: boolean) =>
+    set({ isControlsVisible: isVisible }),
   setVariants: (variants: AnimeSongWithImage[]) => set({ variants }),
   setDuration: (duration: number) => set({ duration }),
   setVolume: (volume: number) => set({ volume }),
@@ -92,8 +100,9 @@ export const useMusicPlayerStore = create<MusicPlayerStore>((set) => ({
   setIsDragging: (isDragging: boolean) => set({ isDragging }),
   error: null,
   setError: (error: string | null) => set({ error }),
-
-  // Nuevos estados
+  setSrc(src: string) {
+    set({ src })
+  },
   savedTime: 0,
   setSavedTime: (savedTime: number) => set({ savedTime }),
   isChangingFormat: false,
@@ -114,4 +123,7 @@ export const useMusicPlayerStore = create<MusicPlayerStore>((set) => ({
   setIsVolumeDragging: (isVolumeDragging: boolean) => set({ isVolumeDragging }),
   dragPosition: 0,
   setDragPosition: (dragPosition: number) => set({ dragPosition }),
+  setPlayerRef(playerRef) {
+    set({ playerRef })
+  },
 }))
