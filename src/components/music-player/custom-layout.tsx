@@ -22,9 +22,13 @@ export const CustomLayout = () => {
     <DefaultVideoLayout
       icons={defaultLayoutIcons}
       slots={{
+        pipButton: <></>,
         settingsMenuItemsStart: (
-          <Menu.Root className="vds-menu relative">
-            <Menu.Button className="vds-menu-item" aria-label="quality">
+          <Menu.Root className="vds-menu relative ">
+            <Menu.Button
+              className={`${type === 'audio' ? 'hidden' : 'vds-menu-item '} `}
+              aria-label="quality"
+            >
               <svg
                 viewBox="0 0 32 32"
                 className="vds-menu-close-icon vds-icon"
