@@ -1,9 +1,12 @@
 import { navigate } from 'astro:transitions/client'
 import { ExpandIcon } from '@icons/expand-icon'
+import { MuteIcon } from '@icons/muted-icon'
 import { NextIcon } from '@icons/next-icon'
 import { PauseIcon } from '@icons/pause-icon'
 import { PlayIcon } from '@icons/play-icon'
 import { PreviousIcon } from '@icons/previous-icon'
+import { VolumeHighIcon } from '@icons/volumen-high-icon'
+import { VolumeLowIcon } from '@icons/volumen-low-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
 import {
@@ -14,7 +17,6 @@ import {
   TimeSlider,
   VolumeSlider,
 } from '@vidstack/react'
-import { MuteIcon, VolumeHighIcon, VolumeLowIcon } from '@vidstack/react/icons'
 
 interface Props {
   muted: boolean
