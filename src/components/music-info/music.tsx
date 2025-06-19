@@ -8,6 +8,7 @@ export const Music = ({ themeId }: { themeId: string }) => {
     setIsHidden,
     setIsMinimized,
     setVariants,
+    setSavedTime,
     list,
     setList,
     currentSong,
@@ -32,22 +33,16 @@ export const Music = ({ themeId }: { themeId: string }) => {
         const existingSongIndex = list.findIndex(
           (song) => song.song_id === newSong.song_id
         )
-
-        let updatedList
-
-        if (existingSongIndex !== -1) {
-          updatedList = [
-            list[existingSongIndex],
-            ...list.filter((_, index) => index !== existingSongIndex),
-          ]
-        } else {
-          updatedList = [newSong, ...list]
-        }
-        setList(updatedList)
         setVariants(data)
+
         if (!currentSong || currentSong.song_id !== newSong.song_id) {
           setCurrentSong(newSong)
+          setSavedTime(0)
         }
+        if (existingSongIndex !== -1) return
+
+        const updatedList = [newSong, ...list]
+        setList(updatedList)
 
         setError(null)
       } catch (error) {
