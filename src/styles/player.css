@@ -1,0 +1,104 @@
+.vds-audio-layout {
+  --audio-brand: #f5f5f5;
+  --audio-controls-color: #f5f5f5;
+  --audio-focus-ring-color: rgb(78 156 246);
+  --audio-focus-ring: 0 0 0 3px var(--media-focus-ring-color);
+  --audio-font-family: sans-serif;
+
+  --audio-bg: black;
+  --audio-border-radius: 6px;
+  --audio-border: 1px solid rgb(255 255 255 / 0.1);
+
+  /* Buttons. */
+  --audio-button-size: 40px;
+
+  --audio-play-button-size: 43px;
+  --audio-play-button-color: rgb(0 0 0 / 0.8);
+  --audio-play-button-bg: var(--media-brand);
+  --audio-play-button-border-radius: 100%;
+  --audio-caption-button-off-opacity: 0.64;
+
+  /* Sliders. */
+  --audio-slider-chapter-title-color: black;
+  --audio-slider-value-border: 1px solid rgb(255 255 255 / 0.1);
+
+  --audio-volume-height: 96px;
+  --audio-volume-bg: var(--media-menu-bg, rgb(10 10 10));
+  --audio-volume-border-radius: 8px;
+
+  /* Menus. */
+  --audio-menu-max-height: 320px;
+
+  /* Buffering. */
+  --audio-buffering-stripe-color: rgb(0 0 0 / 0.25);
+  --audio-buffering-stripe-size: 30px;
+  --audio-buffering-stripe-speed: 2s;
+
+  /* Captions. */
+  --audio-captions-offset: 4px;
+  --audio-captions-bg: transparent;
+  --audio-cue-font-size: 14px;
+  --audio-cue-color: white;
+  --audio-cue-border: 1px solid rgb(255 255 255 / 0.1);
+  --audio-cue-bg: black;
+
+  /* Time */
+  --audio-time-font-size: 15px;
+}
+.vds-video-layout {
+  --video-brand: var(--color-enfasisColor);
+  --video-controls-color: var(--color-enfasisColor);
+  --video-focus-ring-color: rgb(78 156 246);
+  --video-focus-ring: 0 0 0 3px var(--media-focus-ring-color);
+  --video-font-family: Nunito;
+
+  --video-bg: black;
+  --video-border-radius: 6px;
+  --video-border: 1px solid rgb(255 255 255 / 0.1);
+
+  --video-fullscreen-chapter-title-font-size: 20px;
+  --video-gesture-seek-width: 20%;
+
+  /* Load. */
+  --video-load-button-size: 56px;
+  --video-load-button-border: var(--color);
+  --video-load-button-bg: var(--media-brand);
+  --video-load-button-border-radius: 100%;
+
+  --video-sm-load-button-size: 48px;
+
+  /* Buttons. */
+  --video-sm-button-size: 32px;
+  --video-sm-play-button-size: 40px;
+  --video-sm-play-button-transform: translateY(25%);
+  --video-sm-play-button-bg: rgba(0 0 0 / 0.6);
+
+  /* Sliders. */
+  --video-slider-thumbnail-border: 1px solid #f5f5f5;
+  --video-slider-thumbnail-border-radius: 2px;
+  --video-volume-slider-max-width: 72px;
+--media-slider-track-fill-bg: var(--color-enfasisColor);
+  --video-sm-slider-focus-track-height: 12px;
+
+  /* Time. */
+  --video-time-bg: unset;
+  --video-fullscreen-time-font-size: 16px;
+
+  --video-sm-time-font-size: 14px;
+  --video-sm-start-duration-bg: rgba(0 0 0 / 0.64);
+  --video-sm-start-duration-padding: 3px 6px;
+  --video-sm-start-duration-color: var(--video-controls-color);
+
+  /* Captions. */
+  --video-captions-offset: 78px;
+  --video-captions-transition: bottom 0.15s linear;
+
+  --video-sm-captions-offset: 48px;
+  --video-lg-fullscreen-captions-offset: 54px;
+
+  --video-sm-captions-offset: 48px;
+}
+.vds-poster{
+    object-fit: cover;
+    object-position: center;
+}
