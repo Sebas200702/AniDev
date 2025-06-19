@@ -1,466 +1,52 @@
-import { navigate } from 'astro:transitions/client'
-import { Controls } from '@components/music-player/controls'
+import '@vidstack/react/player/styles/default/theme.css'
+import '@vidstack/react/player/styles/default/layouts/audio.css'
+import '@styles/video.css'
+import '@styles/player.css'
+import { CustomControls } from '@components/music-player/controls'
 import { Cover } from '@components/music-player/cover'
-import { ExpandIcon } from '@icons/expand-icon'
+import { CustomLayout } from '@components/music-player/custom-layout'
+import { Header } from '@components/music-player/header'
+import { useMusicPlayerSync } from '@hooks/useMusicPlayerSync'
+import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
+import { usePlayerDragging } from '@hooks/usePlayerDragging'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { normalizeString } from '@utils/normalize-string'
-import { useCallback, useEffect, useRef } from 'react'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import {
+  MediaPlayer,
+  type MediaPlayerInstance,
+  MediaProvider,
+  Poster,
+  Spinner,
+  useMediaStore,
+} from '@vidstack/react'
+import { useRef } from 'react'
 
 export const MusicPlayer = () => {
   const {
-    isPlaying,
     currentSong,
-    setIsPlaying,
-    setCurrentTime,
-    type,
-    setDuration,
-    setIsLoading,
-    repeat,
-    isDragging,
-    isMinimized,
-    setIsMinimized,
-
-    setError,
-    volume,
     savedTime,
-    setSavedTime,
-    isChangingFormat,
-    setIsChangingFormat,
-    currentTimeLocal,
-    setCurrentTimeLocal,
-    durationLocal,
-    setDurationLocal,
-    isDraggingPlayer,
-    setIsDraggingPlayer,
     isHidden,
-    dragOffset,
-    setDragOffset,
-    setCurrentSong,
-    setIsHidden,
+    isMinimized,
+    isDraggingPlayer,
     position,
-    setPosition,
+    type,
+    src,
   } = useMusicPlayerStore()
 
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const playerRef = useRef<HTMLElement>(null)
+  const player = useRef<MediaPlayerInstance>(null)
+  const playerContainerRef = useRef<HTMLDivElement>(null)
+  const { currentTime, playing, muted, volume , canPlay} = useMediaStore(player)
 
-  const getMediaRef = () => {
-    return type === 'video' ? videoRef.current : audioRef.current
-  }
+  useMusicPlayerSync(currentTime, playing , player , canPlay)
+  usePlayerDragging(playerContainerRef)
+  usePlayerBehavior(playerContainerRef)
 
-  const handleNext = useCallback(() => {
-    const media = getMediaRef()
-    if (!media) return
-
-    if (repeat) {
-      media.currentTime = 0
-      media.play()
-    }
-  }, [repeat])
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (
-        target.closest('button') ||
-        target.closest('input') ||
-        target.closest('.controls-area')
-      ) {
-        return
-      }
-
-      const rect = playerRef.current?.getBoundingClientRect()
-      if (rect) {
-        setDragOffset({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        })
-        setIsDraggingPlayer(true)
-      }
-    },
-    [setDragOffset, setIsDraggingPlayer]
-  )
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDraggingPlayer) return
-
-      const playerWidth = playerRef.current?.offsetWidth || 320
-      const playerHeight = playerRef.current?.offsetHeight || 400
-      const margin = window.innerWidth < 640 ? 5 : 1
-
-      const newX = window.innerWidth - (e.clientX - dragOffset.x + playerWidth)
-      const newY =
-        window.innerHeight - (e.clientY - dragOffset.y + playerHeight)
-
-      const limitedX = Math.max(
-        margin,
-        Math.min(newX, window.innerWidth - playerWidth - margin)
-      )
-      const limitedY = Math.max(margin, Math.min(newY, window.innerHeight - 50))
-
-      setPosition({ x: limitedX, y: limitedY })
-    },
-    [isDraggingPlayer, dragOffset, setPosition]
-  )
-
-  const handleMouseUp = useCallback(() => {
-    setIsDraggingPlayer(false)
-  }, [setIsDraggingPlayer])
-
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      const target = e.target as HTMLElement
-      if (
-        target.closest('button') ||
-        target.closest('input') ||
-        target.closest('.controls-area')
-      ) {
-        return
-      }
-
-      const touch = e.touches[0]
-      const rect = playerRef.current?.getBoundingClientRect()
-      if (rect) {
-        setDragOffset({
-          x: touch.clientX - rect.left,
-          y: touch.clientY - rect.top,
-        })
-        setIsDraggingPlayer(true)
-      }
-    },
-    [setDragOffset, setIsDraggingPlayer]
-  )
-
-  const handleTouchMove = useCallback(
-    (e: TouchEvent) => {
-      if (!isDraggingPlayer) return
-      e.preventDefault()
-
-      const touch = e.touches[0]
-      const playerWidth = playerRef.current?.offsetWidth || 320
-      const playerHeight = playerRef.current?.offsetHeight || 400
-      const margin = window.innerWidth < 640 ? 5 : 10
-
-      const newX =
-        window.innerWidth - (touch.clientX - dragOffset.x + playerWidth)
-      const newY =
-        window.innerHeight - (touch.clientY - dragOffset.y + playerHeight)
-
-      const limitedX = Math.max(
-        margin,
-        Math.min(newX, window.innerWidth - playerWidth - margin)
-      )
-      const limitedY = Math.max(margin, Math.min(newY, window.innerHeight - 50))
-
-      setPosition({ x: limitedX, y: limitedY })
-    },
-    [isDraggingPlayer, dragOffset, setPosition]
-  )
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDraggingPlayer(false)
-  }, [setIsDraggingPlayer])
-
-  useEffect(() => {
-    if (isDraggingPlayer) {
-      document.addEventListener('mousemove', handleMouseMove)
-      document.addEventListener('mouseup', handleMouseUp)
-      document.addEventListener('touchmove', handleTouchMove, {
-        passive: false,
-      })
-      document.addEventListener('touchend', handleTouchEnd)
-
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove)
-        document.removeEventListener('mouseup', handleMouseUp)
-        document.removeEventListener('touchmove', handleTouchMove)
-        document.removeEventListener('touchend', handleTouchEnd)
-      }
-    }
-  }, [
-    isDraggingPlayer,
-    handleMouseMove,
-    handleMouseUp,
-    handleTouchMove,
-    handleTouchEnd,
-  ])
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-
-      if (!playerRef.current) return
-
-      if (playerRef.current.contains(target)) return
-
-      if (
-        target.closest('[data-music-player]') ||
-        target.closest('.music-player') ||
-        target.closest('#restore-player-button') ||
-        target.classList.contains('music-player-related')
-      ) {
-        return
-      }
-
-      if (isMinimized) {
-        setIsHidden(true)
-      }
-    }
-
-    if (isMinimized) {
-      document.addEventListener('click', handleClickOutside, true)
-      return () =>
-        document.removeEventListener('click', handleClickOutside, true)
-    }
-  }, [isMinimized, setIsHidden])
-
-  useEffect(() => {
-    const media = getMediaRef()
-    if (!media) return
-
-    const onTimeUpdate = () => {
-      if (!isDragging) {
-        const time = media.currentTime
-        setCurrentTimeLocal(time)
-        setCurrentTime(time)
-      }
-    }
-
-    const onLoadStart = () => setIsLoading(true)
-
-    const onCanPlay = () => {
-      setIsLoading(false)
-      setError(null)
-      const mediaDuration = media.duration
-      setDurationLocal(mediaDuration)
-      setDuration(mediaDuration)
-
-      if (isChangingFormat && savedTime > 0) {
-        media.currentTime = savedTime
-        setCurrentTimeLocal(savedTime)
-        setCurrentTime(savedTime)
-
-        setIsChangingFormat(false)
-        setSavedTime(0)
-
-        if (isPlaying) {
-          setTimeout(() => {
-            media.play().catch((err) => {
-              console.error(
-                'Error al reproducir después del cambio de formato:',
-                err
-              )
-              setError('Error al cambiar formato')
-              setIsPlaying(false)
-            })
-          }, 50)
-        }
-      }
-    }
-
-    const onLoadedData = () => {
-      if (isChangingFormat && savedTime > 0) {
-        media.currentTime = savedTime
-        setCurrentTimeLocal(savedTime)
-        setCurrentTime(savedTime)
-      }
-    }
-
-    const onSeeked = () => {
-      if (isChangingFormat && isPlaying) {
-        media.play().catch((err) => {
-          console.error('Error al reproducir después del seek:', err)
-          setError('Error al sincronizar')
-        })
-      }
-    }
-
-    const onError = () => {
-      setIsLoading(false)
-      setError('Error al cargar el media')
-      setIsPlaying(false)
-    }
-
-    const onEnded = () => {
-      handleNext()
-    }
-
-    media.addEventListener('timeupdate', onTimeUpdate)
-    media.addEventListener('loadstart', onLoadStart)
-    media.addEventListener('canplay', onCanPlay)
-    media.addEventListener('loadeddata', onLoadedData)
-    media.addEventListener('seeked', onSeeked)
-    media.addEventListener('error', onError)
-    media.addEventListener('ended', onEnded)
-
-    return () => {
-      media.removeEventListener('timeupdate', onTimeUpdate)
-      media.removeEventListener('loadstart', onLoadStart)
-      media.removeEventListener('canplay', onCanPlay)
-      media.removeEventListener('loadeddata', onLoadedData)
-      media.removeEventListener('seeked', onSeeked)
-      media.removeEventListener('error', onError)
-      media.removeEventListener('ended', onEnded)
-    }
-  }, [
-    repeat,
-    isDragging,
-    setCurrentTime,
-    type,
-    isChangingFormat,
-    savedTime,
-    isPlaying,
-    handleNext,
-    setDuration,
-    setIsLoading,
-    setError,
-    setIsPlaying,
-    setCurrentTimeLocal,
-    setDurationLocal,
-    setIsChangingFormat,
-    setSavedTime,
-  ])
-
-  useEffect(() => {
-    const media = getMediaRef()
-    if (!media || !currentSong) return
-
-    const playMedia = async () => {
-      try {
-        setIsLoading(true)
-        await media.play()
-        setError(null)
-      } catch (err) {
-        console.error('Playback failed:', err)
-        setError('Error al reproducir')
-        setIsPlaying(false)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (isChangingFormat) return
-
-    if (isPlaying) {
-      if (media.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-        playMedia()
-      } else {
-        const onCanPlayThrough = () => {
-          media.removeEventListener('canplaythrough', onCanPlayThrough)
-          playMedia()
-        }
-        media.addEventListener('canplaythrough', onCanPlayThrough)
-
-        return () => {
-          media.removeEventListener('canplaythrough', onCanPlayThrough)
-        }
-      }
-    } else {
-      media.pause()
-    }
-  }, [
-    isPlaying,
-    currentSong,
-    type,
-    isChangingFormat,
-    setIsLoading,
-    setError,
-    setIsPlaying,
-  ])
-
-  useEffect(() => {
-    const media = getMediaRef()
-    if (media) {
-      media.volume = volume
-    }
-  }, [volume, type])
-
-  useEffect(() => {
-    const updateMinimizedState = () => {
-      if (window.location.pathname.includes('/music')) {
-        setIsMinimized(false)
-      } else {
-        setIsMinimized(true)
-      }
-    }
-
-    updateMinimizedState()
-
-    const handleLocationChange = () => {
-      updateMinimizedState()
-    }
-
-    window.addEventListener('popstate', handleLocationChange)
-
-    document.addEventListener('astro:page-load', handleLocationChange)
-
-    const originalPushState = history.pushState
-    const originalReplaceState = history.replaceState
-
-    history.pushState = function (...args) {
-      originalPushState.apply(history, args)
-      setTimeout(handleLocationChange, 0)
-    }
-
-    history.replaceState = function (...args) {
-      originalReplaceState.apply(history, args)
-      setTimeout(handleLocationChange, 0)
-    }
-
-    return () => {
-      window.removeEventListener('popstate', handleLocationChange)
-      document.removeEventListener('astro:page-load', handleLocationChange)
-
-      history.pushState = originalPushState
-      history.replaceState = originalReplaceState
-    }
-  }, [setIsMinimized])
-
-  useEffect(() => {
-    if (currentSong && !isChangingFormat) {
-      const audioElement = audioRef.current
-      const videoElement = videoRef.current
-
-      if (audioElement && videoElement) {
-        const activeElement = getMediaRef()
-        const inactiveElement = type === 'video' ? audioElement : videoElement
-
-        if (activeElement && inactiveElement) {
-          const timeDifference = Math.abs(
-            activeElement.currentTime - inactiveElement.currentTime
-          )
-          if (timeDifference > 0.5) {
-            inactiveElement.currentTime = activeElement.currentTime
-          }
-        }
-      }
-    }
-  }, [currentSong, type, isChangingFormat, currentTimeLocal])
-
-  useEffect(() => {
-    if (isChangingFormat && savedTime > 0) {
-      const audioElement = audioRef.current
-      const videoElement = videoRef.current
-      const targetElement = type === 'video' ? videoElement : audioElement
-
-      if (
-        targetElement &&
-        targetElement.readyState >= HTMLMediaElement.HAVE_METADATA
-      ) {
-        targetElement.currentTime = savedTime
-      }
-    }
-  }, [isChangingFormat, savedTime, type])
-
-  if (!currentSong) return null
+  if (!currentSong) return
 
   return (
     <article
-      ref={playerRef}
-      data-music-player="true"
-      className={`group rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full max-w-60 overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 mx-4 my-20 max-w-6xl md:mx-20'} ${
+      ref={playerContainerRef}
+      className={`group rounded-xl transition-all duration-300 ease-in-out flex    ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full  max-w-60 overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80 flex-col' : 'bg-Complementary/50 mx-4 mt-30 xl:mb-20 xl:w-[65%]  h-min  md:mx-20 flex-col-reverse'} ${
         isDraggingPlayer && isMinimized
           ? 'music-player-dragging cursor-grabbing select-none'
           : ''
@@ -473,225 +59,61 @@ export const MusicPlayer = () => {
             }
           : {}
       }
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
-      onClick={(e) => e.stopPropagation()}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50" />
+      <Header playerRef={playerContainerRef} />
+      <MediaPlayer
+        ref={player}
+        src={src ?? ''}
+        aspectRatio={isMinimized ? 'auto' : 'video'}
+        viewType="video"
+        streamType="on-demand"
+        logLevel="warn"
+        playsInline
 
-      <header
-        className={`relative ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'p-4'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
-      >
-        <div
-          className={`items-center gap-2 ${isMinimized ? 'flex md:hidden' : 'hidden'}`}
-        >
-          <div className="bg-Primary-800 animate-spin-slow h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
-            {currentSong.image && (
-              <img
-                src={currentSong.image}
-                alt={currentSong.anime_title}
-                className="h-full w-full object-cover"
-              />
-            )}
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <h4 className="truncate text-xs leading-tight font-medium text-white">
-              {currentSong.song_title}
-            </h4>
-            <p className="text-enfasisColor truncate text-xs leading-tight">
-              {currentSong.anime_title}
-            </p>
-          </div>
-
-          <div className="flex flex-shrink-0 items-center gap-1">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                const media = getMediaRef()
-                if (media) {
-                  if (isPlaying) {
-                    media.pause()
-                    setIsPlaying(false)
-                  } else {
-                    media.play().catch(() => setIsPlaying(false))
-                    setIsPlaying(true)
-                  }
-                }
-              }}
-              className="bg-enfasisColor text-Primary-950 flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-95"
-            >
-              {isPlaying ? (
-                <svg
-                  className="h-3 w-3"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                </svg>
-              ) : (
-                <svg
-                  className="ml-0.5 h-3 w-3"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-            </button>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                navigate(
-                  `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
-                )
-              }}
-              className="bg-Primary-800 text-enfasisColor flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-95"
-            >
-              <ExpandIcon className="h-3 w-3" />
-            </button>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                const media = getMediaRef()
-                if (media) {
-                  media.pause()
-                }
-
-                setCurrentSong(null)
-                setIsPlaying(false)
-                setCurrentTime(0)
-                setDuration(0)
-              }}
-              className="flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white transition-transform active:scale-95"
-            >
-              <svg
-                className="h-3 w-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div
-          className={`flex ${isMinimized ? 'hidden items-start justify-between gap-3 md:flex' : 'items-start justify-between gap-3'}`}
-        >
-          <div className="min-w-0 flex-1">
-            <h3
-              className={
-                isMinimized
-                  ? 'text-s mb-1 truncate leading-tight font-medium text-white'
-                  : 'mb-1 text-2xl font-semibold'
-              }
-            >
-              {currentSong.song_title}
-            </h3>
-            <p className="text-sxx mb-1 truncate text-gray-400">
-              {currentSong.artist_name || 'Artista desconocido'}
-            </p>
-            <small className="text-sxx text-enfasisColor tracking-wider uppercase">
-              {currentSong.anime_title}
-            </small>
-          </div>
-
-          <div className="flex flex-col items-end gap-2">
-            <span className="text-sxx text-enfasisColor tracking-wider uppercase">
-              {type}
-            </span>
-
-            <div
-              className={`flex items-center gap-2 ${isMinimized ? '' : 'hidden'}`}
-            >
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  navigate(
-                    `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
-                  )
-                }}
-                className="text-Primary-50 cursor-pointer p-4"
-              >
-                <ExpandIcon className="h-5 w-5" />
-              </button>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  const media = getMediaRef()
-                  if (media) {
-                    media.pause()
-                  }
-
-                  setCurrentSong(null)
-                  setIsPlaying(false)
-                  setCurrentTime(0)
-                  setDuration(0)
-                }}
-                className="cursor-pointer p-4 text-red-500 transition-colors hover:text-red-400"
-              >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {isMinimized && (
-          <div className="from-enfasisColor/0 to-enfasisColor/20 pointer-events-none absolute inset-0 rounded-t-xl bg-gradient-to-r opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
+        title={currentSong.song_title}
+        onCanPlay={() => {
+          if (player.current && savedTime > 0) {
+            player.current.currentTime = savedTime
+            player.current.play()
+          }
+        }}
+        poster={createImageUrlProxy(
+          currentSong.banner_image ?? '',
+          '1080',
+          '70',
+          'webp'
         )}
-      </header>
-
-      <Cover />
-
-      <audio ref={audioRef} src={currentSong.audio_url} preload="metadata">
-        <track kind="captions" />
-      </audio>
-
-      <video
-        ref={videoRef}
-        src={currentSong.video_url}
-        preload="metadata"
-        className={type === 'video' ? 'w-full opacity-100' : 'h-0 opacity-0'}
-        controls={false}
-        muted={type !== 'video'}
+        className={` flex flex-col `}
       >
-        <track kind="captions" />
-      </video>
+        <MediaProvider
+          className={`${type === 'audio' && isMinimized ? 'mt-12' : ' aspect-video'}`}
+        >
+          {type === 'audio' && !isMinimized && (
+            <Poster className=" absolute aspect-[16/9]  h-full w-full object-cover object-center " />
+          )}
+          {type === 'audio' && isMinimized && (
+            <div className="h-full w-full absolute">
+              <Cover />
+            </div>
+          )}
+          <Poster className="vds-poster" />
 
-      <div
-        className={`bg-Primary-950/30 controls-area w-full border-t border-gray-100/10 backdrop-blur-sm ${isMinimized ? 'hidden md:flex' : 'flex'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
-      >
-        <Controls
-          audioRef={audioRef}
-          videoRef={videoRef}
-          currentTime={currentTimeLocal}
-          duration={durationLocal}
-          setSavedTime={setSavedTime}
-          setIsChangingFormat={setIsChangingFormat}
-        />
-      </div>
+          {isMinimized && (
+            <div className="vds-buffering-indicator">
+              <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
+                <Spinner.Track className="vds-buffering-track" />
+                <Spinner.TrackFill className="vds-buffering-track-fill" />
+              </Spinner.Root>
+            </div>
+          )}
+        </MediaProvider>
+
+        {!isMinimized ? (
+          <CustomLayout />
+        ) : (
+          <CustomControls volume={volume} muted={muted} />
+        )}
+      </MediaPlayer>
     </article>
   )
 }
