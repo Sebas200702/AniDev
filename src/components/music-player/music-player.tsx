@@ -35,9 +35,10 @@ export const MusicPlayer = () => {
 
   const player = useRef<MediaPlayerInstance>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
-  const { currentTime, playing, muted, volume, canPlay } = useMediaStore(player)
+  const { currentTime, playing, muted, volume, canPlay, duration } =
+    useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing, player, canPlay)
+  useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
@@ -69,6 +70,7 @@ export const MusicPlayer = () => {
         streamType="on-demand"
         logLevel="warn"
         playsInline
+        autoPlay
     
         title={currentSong.song_title}
         onCanPlay={() => {
