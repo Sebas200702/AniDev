@@ -203,7 +203,7 @@ export const FilterDropdown = ({
               id={`option-${option.value}`}
             />
 
-            <span className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 cursor-pointer items-center justify-center rounded-md border-2 border-gray-500 transition-all duration-200 ease-in-out">
+            <span className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm border-1 border-gray-400 transition-all duration-200 ease-in-out">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out"
