@@ -6,8 +6,6 @@ export const generateContextualPrompt = (
   context: RecommendationContext,
   currentAnime?: string
 ): string => {
-
-
   let contextualInstructions = ''
   let recommendationCount = context.count || 12
 
@@ -122,12 +120,11 @@ export const generateContextualPrompt = (
       break
   }
 
-  // Sistema de variabilidad dinámica mejorado
+
   const currentDate = new Date()
   const hourOfDay = currentDate.getHours()
   const dayOfWeek = currentDate.getDay()
   const sessionId = Math.floor(Math.random() * 1000)
-
 
   const timeContext = {
     mood:
