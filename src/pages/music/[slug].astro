@@ -12,7 +12,7 @@ const [_, theme_id] = slug?.split('_') ?? ['', '']
     class="mx-4 mt-30 mb-20 md:mx-20 xl:mx-0 xl:mr-20 xl:w-[35%]"
     id="music-player-container"
   >
-    <Music client:load themeId={theme_id} />
-    <MusicPlayList client:load />
+    <Music client:only themeId={theme_id} />
+    <MusicPlayList client:only />
   </section>
 </Layout>
