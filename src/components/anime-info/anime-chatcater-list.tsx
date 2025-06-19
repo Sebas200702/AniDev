@@ -124,7 +124,7 @@ export const AnimeCaterList = ({
   return (
     <ul
       ref={listRef}
-      className="no-scrollbar flex gap-4 overflow-x-scroll px-8 py-4"
+      className="no-scrollbar flex gap-4 overflow-x-scroll md:px-8 py-4 px-4"
     >
       <NexPrevBtnSlideList
         label="prev-button"
