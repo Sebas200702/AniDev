@@ -1,10 +1,11 @@
 import { navigate } from 'astro:transitions/client'
+import { NextPrevButton } from '@components/music-player/next-prev-button'
 import { ExpandIcon } from '@icons/expand-icon'
 import { MuteIcon } from '@icons/muted-icon'
-import { NextIcon } from '@icons/next-icon'
+
 import { PauseIcon } from '@icons/pause-icon'
 import { PlayIcon } from '@icons/play-icon'
-import { PreviousIcon } from '@icons/previous-icon'
+
 import { VolumeHighIcon } from '@icons/volumen-high-icon'
 import { VolumeLowIcon } from '@icons/volumen-low-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
@@ -25,17 +26,14 @@ interface Props {
 
 export const CustomControls = ({ muted, volume }: Props) => {
   const { isPlaying, currentSong } = useMusicPlayerStore()
-  if (!currentSong) return
+
+  if (!currentSong) return null
+
   return (
     <Controls.Root className="mt-4 w-full flex-col gap-2 p-4 md:flex hidden">
       <Controls.Group className="flex items-center justify-center gap-4">
-        <button
-          className="hover:text-enfasisColor text-Primary-50-400 rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-zinc-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-          title="Prev"
-          aria-label="Canción anterior"
-        >
-          <PreviousIcon className="h-5 w-5" />
-        </button>
+        <NextPrevButton direction="Prev" />
+
         <PlayButton className="bg-enfasisColor cursor-pointer rounded-full p-3">
           {!isPlaying ? (
             <PlayIcon className="h-5 w-5" />
@@ -43,14 +41,9 @@ export const CustomControls = ({ muted, volume }: Props) => {
             <PauseIcon className="h-5 w-5" />
           )}
         </PlayButton>
-        <button
-          className="hover:text-enfasisColor text-Primary-50 rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-zinc-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-          title="Next"
-          aria-label="Siguiente canción"
-        >
-          <NextIcon className="h-5 w-5" />
-        </button>
+        <NextPrevButton direction="Next" />
       </Controls.Group>
+
       <Controls.Group className="flex w-full flex-row items-center justify-between gap-4">
         <Time type="current" className="text-s text-Primary-200" />
         <TimeSlider.Root className="group relative mx-[7.5px] inline-flex h-10 w-full cursor-pointer touch-none items-center outline-none select-none aria-hidden:hidden">
@@ -62,6 +55,7 @@ export const CustomControls = ({ muted, volume }: Props) => {
         </TimeSlider.Root>
         <Time type="duration" className="text-s text-Primary-200" />
       </Controls.Group>
+
       <Controls.Group className="flex flex-row justify-between">
         <div className="flex w-full max-w-32 flex-row">
           <MuteButton className="cursor-pointer p-2">
