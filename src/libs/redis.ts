@@ -58,4 +58,3 @@ redis.on('error', (err) => {
  *   console.error('Failed to connect to Redis:', error);
  * }
  */
-
