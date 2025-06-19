@@ -5,7 +5,7 @@ export const MusicPlayList = () => {
   const { list } = useMusicPlayerStore()
 
   return (
-    <ul className="w-full  grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-4">
+    <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
       {list.map((song) => (
         <AnimeMusicItem
           key={song.song_id}

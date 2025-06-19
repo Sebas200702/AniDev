@@ -24,7 +24,7 @@ export const CustomLayout = () => {
       slots={{
         settingsMenuItemsStart: (
           <Menu.Root className="vds-menu relative">
-            <Menu.Button className=" vds-menu-item " aria-label="quality">
+            <Menu.Button className="vds-menu-item" aria-label="quality">
               <svg
                 viewBox="0 0 32 32"
                 className="vds-menu-close-icon vds-icon"
@@ -74,7 +74,7 @@ export const CustomLayout = () => {
                   <button
                     onClick={() => handleQualityChange(variant)}
                     key={variant.song_id}
-                    className={`flex max-h-10 w-full gap-4 p-2 cursor-pointer hover:bg-Complementary transition-colors duration-300 ${(variant.video_url || variant.audio_url) === src ? 'text-enfasisColor' : 'text-Primary-50'}`}
+                    className={`hover:bg-Complementary flex max-h-10 w-full cursor-pointer gap-4 p-2 transition-colors duration-300 ${(variant.video_url || variant.audio_url) === src ? 'text-enfasisColor' : 'text-Primary-50'}`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +84,7 @@ export const CustomLayout = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      className="w-6 h-6"
+                      className="h-6 w-6"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" />
                       <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />

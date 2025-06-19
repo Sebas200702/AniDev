@@ -13,8 +13,6 @@ export const Music = ({ themeId }: { themeId: string }) => {
   } = useMusicPlayerStore()
 
   useEffect(() => {
-
-
     const fetchMusic = async () => {
       setIsHidden(false)
       setIsMinimized(false)

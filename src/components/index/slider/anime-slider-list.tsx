@@ -77,7 +77,6 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
         itemsPerGroup = 3
       }
     } else {
-
       if (windowWidth && windowWidth > 1280) {
         itemsPerGroup = 6
       } else if (windowWidth && windowWidth > 768) {

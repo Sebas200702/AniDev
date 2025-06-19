@@ -137,31 +137,31 @@ export const AnimeMusicItem = ({
     <article
       onClick={() => handleClick()}
       title={song.song_title}
-      className="hover:bg-Primary-900 cursor-pointer group border-enfasisColor group relative flex max-h-28 flex-row overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2 items-start"
+      className="hover:bg-Primary-900 group border-enfasisColor group relative flex max-h-28 cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2"
     >
       <Picture
         image={placeholder}
         styles="aspect-[225/330] w-full  overflow-hidden  relative max-w-20"
       >
         {isCurrentSong && (
-          <div className="absolute inset-0 z-10 flex items-center gap-[3px] justify-center bg-Complementary/30">
+          <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
             {heights.map((height, index) => (
               <div
                 key={index}
-                className="w-[3px] group-hover:opacity-0 bg-enfasisColor transition-all duration-150 ease-out rounded-md"
+                className="bg-enfasisColor w-[3px] rounded-md transition-all duration-150 ease-out group-hover:opacity-0"
                 style={{ height: `${height}px` }}
               />
             ))}
 
             <button
-              className="absolute inset-0 opacity-0 pointer-events-none z-20 flex p-4 cursor-pointer group-hover:pointer-events-auto group-hover:opacity-90 transition-all disabled:pointer-events-none  duration-150 w-full h-full items-center justify-center mx-auto"
+              className="pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none"
               onClick={(e) => handlePlay(e)}
               disabled={!canPlay}
             >
               {isPlaying ? (
-                <PauseIcon className="w-6 h-6" />
+                <PauseIcon className="h-6 w-6" />
               ) : (
-                <PlayIcon className="w-6 h-6" />
+                <PlayIcon className="h-6 w-6" />
               )}
             </button>
           </div>
@@ -184,7 +184,7 @@ export const AnimeMusicItem = ({
       )}
 
       <button
-        className="absolute bottom-2 right-2 flex-shrink-0 p-2 cursor-pointer hover:bg-Primary-950 rounded-full transition-colors duration-300 z-10"
+        className="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
         title={`Add to playlist ${song.song_title}`}
         onClick={(e) => {
           e.stopPropagation()
@@ -192,16 +192,18 @@ export const AnimeMusicItem = ({
         }}
       >
         {isInPlaylist ? (
-          <DeleteIcon className="w-6 h-6" />
+          <DeleteIcon className="h-6 w-6" />
         ) : (
-          <AddToPlayList className="w-6 h-6" />
+          <AddToPlayList className="h-6 w-6" />
         )}
       </button>
-      <footer className="flex w-full max-w-[60%] flex-col gap-2 p-2 md:p-4 items-start">
-        <h3 className="text-md group-hover:text-enfasisColor/80 font-bold text-pretty select-none transition-colors duration-300 ease-in-out md:text-lg">
+      <footer className="flex w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
+        <h3 className="text-md group-hover:text-enfasisColor/80 font-bold text-pretty transition-colors duration-300 ease-in-out select-none md:text-lg">
           {song.song_title}
         </h3>
-        <p className="text-xs text-gray-500 md:text-sm select-none">{song.artist_name}</p>
+        <p className="text-xs text-gray-500 select-none md:text-sm">
+          {song.artist_name}
+        </p>
       </footer>
     </article>
   )

@@ -28,7 +28,7 @@ export const AnimeLoader = () => {
       <div className="fixed aspect-[1080/600] h-[60dvh] w-full animate-pulse bg-zinc-800 duration-300">
         <div className="to-Primary-950/100 absolute right-0 bottom-0 left-0 h-full w-full bg-gradient-to-b from-transparent transition-all duration-300 ease-in-out" />
       </div>
-      <div className="w-[calc(100dvw-80px)] z-10 mb-10 grid grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <div className="z-10 mb-10 grid w-[calc(100dvw-80px)] grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
         <div className="row-span-2 row-start-2 -mt-4 flex flex-col gap-6 md:row-start-1 md:mt-0 md:gap-8 md:p-0">
           <div className="aspect-[225/330] h-0 w-full animate-pulse rounded-lg bg-zinc-800 px-8 duration-300 ease-in-out md:h-auto"></div>
           <div className="h-10 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out xl:h-12"></div>

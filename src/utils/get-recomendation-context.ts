@@ -120,7 +120,6 @@ export const generateContextualPrompt = (
       break
   }
 
-
   const currentDate = new Date()
   const hourOfDay = currentDate.getHours()
   const dayOfWeek = currentDate.getDay()

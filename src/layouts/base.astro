@@ -142,12 +142,10 @@ const userInfo = await getSessionUserInfo({
       <LoadWindowWidth client:load />
 
       <main
-        class="relative max-w-[100dvw] [grid-area:main] md:max-w-[calc(100dvw-80px)] flex xl:flex-row flex-col "
+        class="relative flex max-w-[100dvw] flex-col [grid-area:main] md:max-w-[calc(100dvw-80px)] xl:flex-row"
       >
-
-          <MusicPlayer client:only transition:persist />
-          <slot />
-
+        <MusicPlayer client:only transition:persist />
+        <slot />
 
         <Toaster
           client:load

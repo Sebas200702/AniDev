@@ -41,12 +41,12 @@ export const AnimeMusic = ({
   image,
   placeholder,
   banner_image,
-  anime_title
+  anime_title,
 }: {
   animeId: number
   image: string
   placeholder: string
-  banner_image : string
+  banner_image: string
   anime_title: string
 }) => {
   const [songs, setSongs] = useState<AnimeSong[]>([])

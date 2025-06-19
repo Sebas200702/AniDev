@@ -124,7 +124,7 @@ export const SearchComponent = () => {
   }, [url])
 
   return (
-    <section id="search-section" className='w-full'>
+    <section id="search-section" className="w-full">
       <aside className="[grid-area:aside]">
         <FilterSection />
         <AppliedFiltersComponent />

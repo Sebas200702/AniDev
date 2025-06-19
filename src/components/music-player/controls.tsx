@@ -25,8 +25,8 @@ export const CustomControls = ({ muted, volume }: Props) => {
   const { isPlaying, currentSong } = useMusicPlayerStore()
   if (!currentSong) return
   return (
-    <Controls.Root className="w-full flex flex-col p-4 gap-2 mt-4">
-      <Controls.Group className=" flex items-center justify-center gap-4 ">
+    <Controls.Root className="mt-4 flex w-full flex-col gap-2 p-4">
+      <Controls.Group className="flex items-center justify-center gap-4">
         <button
           className="hover:text-enfasisColor text-Primary-50-400 rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-zinc-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           title="Prev"
@@ -34,9 +34,9 @@ export const CustomControls = ({ muted, volume }: Props) => {
         >
           <PreviousIcon className="h-5 w-5" />
         </button>
-        <PlayButton className="p-3 bg-enfasisColor rounded-full cursor-pointer">
+        <PlayButton className="bg-enfasisColor cursor-pointer rounded-full p-3">
           {!isPlaying ? (
-            <PlayIcon className="h-5 w-5 " />
+            <PlayIcon className="h-5 w-5" />
           ) : (
             <PauseIcon className="h-5 w-5" />
           )}
@@ -49,36 +49,36 @@ export const CustomControls = ({ muted, volume }: Props) => {
           <NextIcon className="h-5 w-5" />
         </button>
       </Controls.Group>
-      <Controls.Group className="flex flex-row w-full justify-between items-center gap-4">
+      <Controls.Group className="flex w-full flex-row items-center justify-between gap-4">
         <Time type="current" className="text-s text-Primary-200" />
-        <TimeSlider.Root className="group relative mx-[7.5px] inline-flex h-10 w-full cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
-          <TimeSlider.Track className="relative  z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-            <TimeSlider.TrackFill className="bg-enfasisColor z-10 absolute h-full w-[var(--slider-fill)] rounded-sm will-change-[width]" />
-            <TimeSlider.Progress className="absolute  h-full w-[var(--slider-progress)] rounded-sm bg-white/50 will-change-[width]" />
+        <TimeSlider.Root className="group relative mx-[7.5px] inline-flex h-10 w-full cursor-pointer touch-none items-center outline-none select-none aria-hidden:hidden">
+          <TimeSlider.Track className="relative z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
+            <TimeSlider.TrackFill className="bg-enfasisColor absolute z-10 h-full w-[var(--slider-fill)] rounded-sm will-change-[width]" />
+            <TimeSlider.Progress className="absolute h-full w-[var(--slider-progress)] rounded-sm bg-white/50 will-change-[width]" />
           </TimeSlider.Track>
-          <TimeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:ring-4 will-change-[left]" />
+          <TimeSlider.Thumb className="absolute top-1/2 left-[var(--slider-fill)] z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-[active]:opacity-100 group-data-[dragging]:ring-4" />
         </TimeSlider.Root>
         <Time type="duration" className="text-s text-Primary-200" />
       </Controls.Group>
-      <Controls.Group className="flex flex-row justify-between ">
-        <div className="flex flex-row w-full max-w-32">
-          <MuteButton className="p-2 cursor-pointer">
+      <Controls.Group className="flex flex-row justify-between">
+        <div className="flex w-full max-w-32 flex-row">
+          <MuteButton className="cursor-pointer p-2">
             {muted || volume === 0 ? (
-              <MuteIcon className="h-6 w-6 " />
+              <MuteIcon className="h-6 w-6" />
             ) : volume < 0.5 ? (
-              <VolumeLowIcon className="h-6 w-6 text-enfasisColor" />
+              <VolumeLowIcon className="text-enfasisColor h-6 w-6" />
             ) : (
-              <VolumeHighIcon className="h-6 w-6 text-enfasisColor" />
+              <VolumeHighIcon className="text-enfasisColor h-6 w-6" />
             )}
           </MuteButton>
-          <VolumeSlider.Root className="group relative mx-[7.5px] inline-flex h-10 w-full max-w-[80px] cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
+          <VolumeSlider.Root className="group relative mx-[7.5px] inline-flex h-10 w-full max-w-[80px] cursor-pointer touch-none items-center outline-none select-none aria-hidden:hidden">
             <VolumeSlider.Track className="relative z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-              <VolumeSlider.Preview className="text-sx opacity-0 px-2 py-1  rounded-md bg-Primary-800 transition-opacity group-data-[hover]:opacity-100  ">
+              <VolumeSlider.Preview className="text-sx bg-Primary-800 rounded-md px-2 py-1 opacity-0 transition-opacity group-data-[hover]:opacity-100">
                 <VolumeSlider.Value />
               </VolumeSlider.Preview>
               <VolumeSlider.TrackFill className="bg-enfasisColor absolute h-full w-[var(--slider-fill)] rounded-sm will-change-[width]" />
             </VolumeSlider.Track>
-            <VolumeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:ring-4 will-change-[left]" />
+            <VolumeSlider.Thumb className="absolute top-1/2 left-[var(--slider-fill)] z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-[active]:opacity-100 group-data-[dragging]:ring-4" />
           </VolumeSlider.Root>
         </div>
         <button
@@ -87,9 +87,9 @@ export const CustomControls = ({ muted, volume }: Props) => {
               `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
             )
           }
-          className="p-2 cursor-pointer "
+          className="cursor-pointer p-2"
         >
-          <ExpandIcon className="w-5 h-5" />
+          <ExpandIcon className="h-5 w-5" />
         </button>
       </Controls.Group>
     </Controls.Root>

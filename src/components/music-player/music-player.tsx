@@ -35,9 +35,9 @@ export const MusicPlayer = () => {
 
   const player = useRef<MediaPlayerInstance>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
-  const { currentTime, playing, muted, volume , canPlay} = useMediaStore(player)
+  const { currentTime, playing, muted, volume, canPlay } = useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing , player , canPlay)
+  useMusicPlayerSync(currentTime, playing, player, canPlay)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
@@ -46,7 +46,7 @@ export const MusicPlayer = () => {
   return (
     <article
       ref={playerContainerRef}
-      className={`group rounded-xl transition-all duration-300 ease-in-out flex    ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full  max-w-60 overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80 flex-col' : 'bg-Complementary/50 mx-4 mt-30 xl:mb-20 xl:w-[65%]  h-min  md:mx-20 flex-col-reverse'} ${
+      className={`group flex rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-20 w-full max-w-60 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 mx-4 mt-30 h-min flex-col-reverse md:mx-20 xl:mb-20 xl:w-[65%]'} ${
         isDraggingPlayer && isMinimized
           ? 'music-player-dragging cursor-grabbing select-none'
           : ''
@@ -69,7 +69,6 @@ export const MusicPlayer = () => {
         streamType="on-demand"
         logLevel="warn"
         playsInline
-
         title={currentSong.song_title}
         onCanPlay={() => {
           if (player.current && savedTime > 0) {
@@ -83,16 +82,16 @@ export const MusicPlayer = () => {
           '70',
           'webp'
         )}
-        className={` flex flex-col `}
+        className={`flex flex-col`}
       >
         <MediaProvider
-          className={`${type === 'audio' && isMinimized ? 'mt-12' : ' aspect-video'}`}
+          className={`${type === 'audio' && isMinimized ? 'mt-12' : 'aspect-video'}`}
         >
           {type === 'audio' && !isMinimized && (
-            <Poster className=" absolute aspect-[16/9]  h-full w-full object-cover object-center " />
+            <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
           )}
           {type === 'audio' && isMinimized && (
-            <div className="h-full w-full absolute">
+            <div className="absolute h-full w-full">
               <Cover />
             </div>
           )}

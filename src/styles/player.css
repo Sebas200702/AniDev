@@ -77,7 +77,7 @@
   --video-slider-thumbnail-border: 1px solid #f5f5f5;
   --video-slider-thumbnail-border-radius: 2px;
   --video-volume-slider-max-width: 72px;
---media-slider-track-fill-bg: var(--color-enfasisColor);
+  --media-slider-track-fill-bg: var(--color-enfasisColor);
   --video-sm-slider-focus-track-height: 12px;
 
   /* Time. */
@@ -98,7 +98,7 @@
 
   --video-sm-captions-offset: 48px;
 }
-.vds-poster{
-    object-fit: cover;
-    object-position: center;
+.vds-poster {
+  object-fit: cover;
+  object-position: center;
 }

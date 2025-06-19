@@ -81,9 +81,9 @@ export const Header = ({ playerRef }: Props) => {
       onTouchStart={handleTouchStart}
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="items-center gap-2 w-full flex flex-row">
+      <div className="flex w-full flex-row items-center gap-2">
         <div
-          className={`bg-Primary-800  ${isMinimized ? 'flex md:hidden' : 'hidden'} animate-spin-slow h-10 w-10 flex-shrink-0 overflow-hidden rounded-full`}
+          className={`bg-Primary-800 ${isMinimized ? 'flex md:hidden' : 'hidden'} animate-spin-slow h-10 w-10 flex-shrink-0 overflow-hidden rounded-full`}
         >
           {currentSong.image && (
             <img
@@ -94,26 +94,26 @@ export const Header = ({ playerRef }: Props) => {
           )}
         </div>
 
-        <div className="flex-col w-full flex gap-2">
+        <div className="flex w-full flex-col gap-2">
           <span
-            className={`line-clamp-1  text-xs ${isMinimized ? 'text-xs font-medium' : 'text-l  '} leading-tight  text-white`}
+            className={`line-clamp-1 text-xs ${isMinimized ? 'text-xs font-medium' : 'text-l'} leading-tight text-white`}
           >
             {currentSong.song_title}
           </span>
           <span
-            className={`text-Primary-400 line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-s  '} leading-tight`}
+            className={`text-Primary-400 line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-s'} leading-tight`}
           >
             {currentSong.artist_name}
           </span>
           <span
-            className={`text-enfasisColor line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-m  '} leading-tight`}
+            className={`text-enfasisColor line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-m'} leading-tight`}
           >
             {currentSong.anime_title}
           </span>
         </div>
         <div className="flex flex-col items-center gap-2">
           <button
-            className="text-sxx button-primary h-min rounded-sm p-4 cursor-pointer "
+            className="text-sxx button-primary h-min cursor-pointer rounded-sm p-4"
             onClick={handleChangeType}
           >
             {type.toUpperCase()}
