@@ -41,8 +41,8 @@ export const fetchRecomendations = async (
   }
 
   // Registrar IDs recibidos y faltantes
-  results.forEach(anime => excludedIds.add(anime.mal_id))
-  const missingIds = numericIds.filter(id => !excludedIds.has(id))
+  results.forEach((anime) => excludedIds.add(anime.mal_id))
+  const missingIds = numericIds.filter((id) => !excludedIds.has(id))
 
   if (missingIds.length > 0) {
     console.warn('Missing mal_ids:', missingIds)
@@ -55,28 +55,26 @@ export const fetchRecomendations = async (
       {
         name: 'high_score',
         query: (q: any) =>
-          q.order('score', { ascending: false })
-           .gt('score', 7.5)
+          q.order('score', { ascending: false }).gt('score', 7.5),
       },
       {
         name: 'popular',
         query: (q: any) =>
-          q.order('members', { ascending: false })
-           .gt('members', 50000)
+          q.order('members', { ascending: false }).gt('members', 50000),
       },
       {
         name: 'recent',
         query: (q: any) =>
-          q.order('year', { ascending: false })
-           .gt('year', 2020)
+          q.order('year', { ascending: false }).gt('year', 2020),
       },
       {
         name: 'hidden_gems',
         query: (q: any) =>
-          q.order('score', { ascending: false })
-           .lt('members', 30000)
-           .gt('score', 7.0)
-      }
+          q
+            .order('score', { ascending: false })
+            .lt('members', 30000)
+            .gt('score', 7.0),
+      },
     ]
 
     // Seleccionar estrategia aleatoria
@@ -120,7 +118,7 @@ export const fetchRecomendations = async (
     const fallbackResults = await getAlternativeRecommendations(needed)
 
     // Filtrar duplicados y añadir a resultados
-    fallbackResults.forEach(item => {
+    fallbackResults.forEach((item) => {
       if (!excludedIds.has(item.mal_id)) {
         results.push(item)
         excludedIds.add(item.mal_id)
@@ -135,12 +133,11 @@ export const fetchRecomendations = async (
   return shuffleArray(results)
 }
 
-
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
 }
