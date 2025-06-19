@@ -7,7 +7,7 @@ import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
-import { type PointerEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { AnimeSong, AnimeSongWithImage } from 'types'
 
 /**
