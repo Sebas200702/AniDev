@@ -73,12 +73,11 @@ export const GET: APIRoute = rateLimit(
         })
       }
 
-           const { data, error } = await supabase
+      const { data, error } = await supabase
         .from('anime')
         .select('title, synopsis, image_large_webp')
         .eq('mal_id', id)
         .single()
-
 
       if (error) {
         console.error('Error al obtener metadatos del anime:', error)
