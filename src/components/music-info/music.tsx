@@ -1,39 +1,63 @@
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { useEffect } from 'react'
+
 export const Music = ({ themeId }: { themeId: string }) => {
   const {
-    currentSong,
     setCurrentSong,
-    setIsPlaying,
-    setCurrentTime,
-    setDuration,
-    setIsLoading,
     setError,
     setIsHidden,
     setIsMinimized,
+    list,
+    setList,
+    currentSong,
   } = useMusicPlayerStore()
-  useEffect(() => {
-    setIsPlaying(false)
-    const fetchMusic = async () => {
-      const response = await fetch(`/api/getMusicInfo?themeId=${themeId}`)
-      const data = await response.json()
 
-      if (data[0].song_id === currentSong?.song_id) {
-        return
-      }
+  useEffect(() => {
+
+
+    const fetchMusic = async () => {
       setIsHidden(false)
       setIsMinimized(false)
 
-      setCurrentSong(data[0])
+      try {
+        const response = await fetch(`/api/getMusicInfo?themeId=${themeId}`)
+        const data = await response.json()
 
-      setCurrentTime(0)
-      setDuration(0)
-      setIsLoading(false)
-      setError(null)
-      setIsPlaying(true)
+        if (!data || !Array.isArray(data) || data.length === 0) {
+          setError('No se encontró música para este tema')
+          return
+        }
+
+        const newSong = data[0]
+
+        const existingSongIndex = list.findIndex(
+          (song) => song.song_id === newSong.song_id
+        )
+
+        let updatedList
+
+        if (existingSongIndex !== -1) {
+          updatedList = [
+            list[existingSongIndex],
+            ...list.filter((_, index) => index !== existingSongIndex),
+          ]
+        } else {
+          updatedList = [newSong, ...list]
+        }
+        setList(updatedList)
+        if (!currentSong || currentSong.song_id !== newSong.song_id) {
+          setCurrentSong(newSong)
+        }
+
+        setError(null)
+      } catch (error) {
+        console.error('Error fetching music:', error)
+        setError('Error al cargar la música')
+      }
     }
+
     fetchMusic()
-  }, [])
+  }, [themeId])
 
   return null
 }
