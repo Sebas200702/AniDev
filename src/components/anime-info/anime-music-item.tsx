@@ -185,7 +185,7 @@ export const AnimeMusicItem = ({
 
       <button
         className="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
-        title={`Add to playlist ${song.song_title}`}
+        title={`${isInPlaylist ? 'Remove' : 'Add'} to playlist ${song.song_title}`}
         onClick={(e) => {
           e.stopPropagation()
           handleClickList()
