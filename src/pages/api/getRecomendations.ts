@@ -94,7 +94,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       currentAnime
     )
 
-
     const functionPrompt = `${prompt} INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
 
     const getRecomendations = await model.generateContent({
