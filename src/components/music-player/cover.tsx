@@ -49,12 +49,12 @@ export const Cover = () => {
 
   return (
     <div
-      className={`relative mt-12 ${type === 'video' ? 'hidden' : 'flex'} ${isMinimized ? 'hidden md:flex' : ''} h-full w-full items-center justify-center p-4`}
+      className={`relative  ${type === 'video' ? 'hidden' : ''} ${isMinimized ? 'hidden md:flex' : ''} h-full w-full items-center justify-center p-4`}
       id="music-player-cover"
     >
       <div className="disk flex items-center justify-center rounded-full p-6">
         <figure
-          className={`relative h-32 w-32 overflow-hidden rounded-full border border-gray-100/20 shadow-lg transition-all duration-300 ease-in-out ${
+          className={`relative h-32 w-32  overflow-hidden rounded-full border border-gray-100/20 shadow-lg transition-all duration-300 ease-in-out ${
             isPlaying ? 'animate-spin-slow' : ''
           }`}
         >
