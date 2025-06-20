@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client'
 import { AnimeDetailCard } from '@components/anime-detail-card'
+import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
@@ -13,9 +14,8 @@ import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { ToastType, shortCuts, type AnimeSongWithImage } from 'types'
+import { type AnimeSongWithImage, ToastType, shortCuts } from 'types'
 import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
-import { AnimeMusicItem } from '@components/anime-info/anime-music-item'
 
 export const SearchBar = () => {
   const {
@@ -205,15 +205,12 @@ export const SearchBar = () => {
     saveSearchHistory(searchHistory, userInfo)
   }, [searchHistory, trackSearchHistory, query, appliedFilters])
 
-
   useEffect(() => {
     if (!trackSearchHistory || (!query && !appliedFilters)) return
     loadSearchHistory(userInfo).then((history) => {
       setSearchHistory(history)
     })
   }, [trackSearchHistory, query, appliedFilters])
-
-
 
   return (
     <div
@@ -309,34 +306,33 @@ export const SearchBar = () => {
           </div>
         )}
 
-        {!isLoading && type === 'animes' ? (
-          (animesFull as AnimeDetail[])?.map((result) => (
-            <AnimeDetailCard
-              key={result.mal_id}
-              anime={result}
-            />
-          ))
-        ) : (
-          (animesFull as AnimeSongWithImage[])?.map((result) => (
-            <AnimeMusicItem
-              key={result.song_id}
-              song={result}
-              image={result.image}
-              placeholder={result.placeholder}
-              banner_image={result.banner_image}
-              anime_title={result.anime_title}
-            />
-          ))
-        )}
-        {results && results?.length > 7 && !isLoading && !isLoadingFull && query && (
-          <a
-            href={`/search?q=${encodeURIComponent(query)}`}
-            onClick={() => setSearchIsOpen(false)}
-            className="button-primary flex items-center justify-center"
-          >
-            <h3 className="text-lg font-semibold">See all results</h3>
-          </a>
-        )}
+        {!isLoading && type === 'animes'
+          ? (animesFull as AnimeDetail[])?.map((result) => (
+              <AnimeDetailCard key={result.mal_id} anime={result} />
+            ))
+          : (animesFull as AnimeSongWithImage[])?.map((result) => (
+              <AnimeMusicItem
+                key={result.song_id}
+                song={result}
+                image={result.image}
+                placeholder={result.placeholder}
+                banner_image={result.banner_image}
+                anime_title={result.anime_title}
+              />
+            ))}
+        {results &&
+          results?.length > 7 &&
+          !isLoading &&
+          !isLoadingFull &&
+          query && (
+            <a
+              href={`/search?q=${encodeURIComponent(query)}`}
+              onClick={() => setSearchIsOpen(false)}
+              className="button-primary flex items-center justify-center"
+            >
+              <h3 className="text-lg font-semibold">See all results</h3>
+            </a>
+          )}
       </ul>
     </div>
   )
