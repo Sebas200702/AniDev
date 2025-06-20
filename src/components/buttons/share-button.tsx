@@ -13,6 +13,7 @@ interface Props {
    */
   text: string
   className: string
+  label?: string
 }
 
 /**
@@ -45,7 +46,7 @@ interface Props {
  *   text="Check out this amazing anime!"
  * />
  */
-export const ShareButton = ({ title, url, text, className }: Props) => {
+export const ShareButton = ({ title, url, text, className, label }: Props) => {
   const handleClick = () => {
     navigator.share({
       title,
@@ -57,6 +58,7 @@ export const ShareButton = ({ title, url, text, className }: Props) => {
   return (
     <button onClick={handleClick} className={className} title="Share">
       <ShareIcon className="h-4 w-4 xl:h-5 xl:w-5" />
+      {label && <span className="font-medium">Share</span>}
     </button>
   )
 }
