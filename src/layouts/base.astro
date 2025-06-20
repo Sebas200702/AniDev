@@ -101,7 +101,7 @@ const userInfo = await getSessionUserInfo({
       http-equiv="Content-Security-Policy"
       content="
     default-src 'self';
-    connect-src 'self' data:;
+    connect-src 'self' data: https://a.animethemes.moe https://v.animethemes.moe;
     script-src
       'self'
       'unsafe-inline'
@@ -164,7 +164,8 @@ const userInfo = await getSessionUserInfo({
       <LoadUserPrefences userInfo={userInfo} client:load />
       <LoadWindowWidth client:load />
 
-      <main id="layout-player-container"
+      <main
+        id="layout-player-container"
         class="relative flex max-w-[100dvw] flex-col [grid-area:main] md:max-w-[calc(100dvw-80px)] xl:flex-row"
       >
         <MusicPlayer client:only transition:persist />
