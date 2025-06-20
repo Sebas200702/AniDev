@@ -29,7 +29,7 @@ export const useMusicPlayerSync = (
     savedTime,
   } = useMusicPlayerStore()
 
-  // Referencia para trackear cambios de canción
+
   const previousSongId = useRef<string | null>(null)
   const isChangingSong = useRef(false)
 
@@ -64,7 +64,6 @@ export const useMusicPlayerSync = (
       setSavedTime(0)
       setCurrentSong(song)
 
-      // Resetear el tiempo del player inmediatamente
       if (player.current) {
         player.current.currentTime = 0
       }
