@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
-
 import { AnimeCard } from '@components/anime-card'
+import { MusicCard } from '@components/music/music-card'
 import { LoadingCard } from '@components/search/results/loading-card'
 import { SearchResultsLoader } from '@components/search/results/serch-results-loader'
 import { toast } from '@pheralb/toast'
 import { useSearchStoreResults } from '@store/search-results-store'
-import { ToastType } from 'types'
+import { useEffect } from 'react'
+import { type AnimeCardInfo, type AnimeSongWithImage, ToastType } from 'types'
 import { NotResultsFound } from './not-results-found'
 
 /**
@@ -31,18 +31,19 @@ import { NotResultsFound } from './not-results-found'
  */
 export const SearchResults = () => {
   const {
-    results: animes,
+    results,
     isLoadingMore,
     loading,
     query,
     appliedFilters,
     totalResults,
+    type,
   } = useSearchStoreResults()
 
   const renderLoadingCards = () => {
     if (!isLoadingMore) return null
 
-    const remainingResults = totalResults - (animes?.length || 0)
+    const remainingResults = totalResults - (results?.length || 0)
     const loadingCardsCount = Math.min(remainingResults, 10)
 
     return Array(loadingCardsCount)
@@ -51,15 +52,15 @@ export const SearchResults = () => {
   }
 
   useEffect(() => {
-    if (animes?.length === 0 && (query || appliedFilters) && !loading) {
+    if (results?.length === 0 && (query || appliedFilters) && !loading) {
       toast[ToastType.Warning]({
         text: `No results found for "${query}" with the selected filters.`,
       })
     }
-  }, [animes, query, appliedFilters, loading])
+  }, [results, query, appliedFilters, loading])
 
   useEffect(() => {
-    if (animes?.length || (!animes?.length && !loading)) {
+    if (results?.length || (!results?.length && !loading)) {
       const $animeCards = document.querySelectorAll('.anime-card')
       $animeCards.forEach((card) => {
         card.animate([{ opacity: 0 }, { opacity: 1 }], {
@@ -73,20 +74,26 @@ export const SearchResults = () => {
         }, 700)
       })
     }
-  }, [animes, loading])
+  }, [results, loading])
 
-  if ((!animes && loading) || loading) {
+  if ((!results && loading) || loading) {
     return <SearchResultsLoader />
   }
 
-  if (animes?.length === 0 && (query || appliedFilters) && !loading)
+  if (results?.length === 0 && (query || appliedFilters) && !loading)
     return <NotResultsFound />
 
   return (
     <ul
       className={`grid w-full grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 md:gap-8 md:px-20 xl:grid-cols-6 xl:px-30`}
     >
-      {animes?.map((anime) => <AnimeCard key={anime.mal_id} anime={anime} />)}
+      {type === 'music'
+        ? (results as AnimeSongWithImage[])?.map((song) => (
+            <MusicCard key={song.song_id} song={song} />
+          ))
+        : (results as AnimeCardInfo[])?.map((anime) => (
+            <AnimeCard key={anime.mal_id} anime={anime} />
+          ))}
       {isLoadingMore && renderLoadingCards()}
     </ul>
   )
