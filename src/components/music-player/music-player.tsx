@@ -71,7 +71,6 @@ export const MusicPlayer = () => {
         logLevel="warn"
         playsInline
         autoPlay
-    
         title={currentSong.song_title}
         onCanPlay={() => {
           if (player.current && savedTime > 0) {
@@ -80,7 +79,7 @@ export const MusicPlayer = () => {
           }
         }}
         poster={createImageUrlProxy(
-          currentSong.banner_image ?? '',
+          currentSong.banner_image ?? currentSong.image,
           '1080',
           '70',
           'webp'
