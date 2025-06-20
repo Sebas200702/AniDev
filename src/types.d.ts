@@ -160,10 +160,18 @@ export enum Filters {
   aired_day_filter = 'aired_day_filter',
   order_by = 'order_by',
 }
+export enum MusicFilters {
+  limit_count = 'limit_count',
+  type_music = 'type_music',
+  search_query = 'search_query',
+  order_by = 'order_by',
+  page_number = 'page_number',
+}
 
 export type Animes = {
   animes: Anime[]
 }
+
 
 export interface AnimeCardInfo
   extends Pick<
@@ -296,6 +304,7 @@ export enum AnimeFilters {
   Status = 'status_filter',
   Year = 'year_filter',
   Rating = 'rating_filter',
+  SearcType = 'type',
 }
 export enum AnimeRating {
   G = 'g - all ages',
@@ -317,6 +326,10 @@ export const yearOptions: FilterOption[] = Array.from(
     return { value: year.toString(), label: year.toString() }
   }
 )
+export const typeMusic: FilterOption[] = [
+  { value: 'OP', label: 'Opening' },
+  { value: 'ED', label: 'Ending' },
+]
 export const ratingOptions: FilterOption[] = [
   { value: AnimeRating.G, label: 'Everyone' },
   { value: AnimeRating.PG, label: 'Kids' },
@@ -324,6 +337,10 @@ export const ratingOptions: FilterOption[] = [
   { value: AnimeRating.R, label: 'Adults' },
   { value: AnimeRating.RN, label: 'Mild Nudity' },
   { value: AnimeRating.RX, label: 'Hentai' },
+]
+export const typeSearchOptions: FilterOption[] = [
+  { value: 'animes', label: 'Anime' },
+  { value: 'music', label: 'Music' },
 ]
 export const airedDayOptions: FilterOption[] = [
   { value: 'sunday', label: 'Sunday' },
