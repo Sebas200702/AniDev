@@ -11,13 +11,13 @@ export const Cover = () => {
   try {
     isMinimized
       ? (proxyUrl = createImageUrlProxy(
-          currentSong.banner_image,
+          currentSong.banner_image ?? currentSong.image,
           '400',
           '70',
           'webp'
         ))
       : (proxyUrl = createImageUrlProxy(
-          currentSong.banner_image,
+          currentSong.banner_image ?? currentSong.image ,
           '1920',
           '50',
           'webp'
