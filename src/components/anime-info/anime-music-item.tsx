@@ -6,29 +6,10 @@ import { PlayIcon } from '@components/icons/play-icon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { useSearchStoreResults } from '@store/search-results-store'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
 import type { AnimeSong, AnimeSongWithImage } from 'types'
-
-// Componente para el icono de drag handle
-const DragIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="9" cy="12" r="1"/>
-    <circle cx="9" cy="5" r="1"/>
-    <circle cx="9" cy="19" r="1"/>
-    <circle cx="15" cy="12" r="1"/>
-    <circle cx="15" cy="5" r="1"/>
-    <circle cx="15" cy="19" r="1"/>
-  </svg>
-)
 
 export const AnimeMusicItem = ({
   song,
@@ -46,8 +27,15 @@ export const AnimeMusicItem = ({
 }) => {
   const [heights, setHeights] = useState([0, 0, 0, 0])
 
-  const { isPlaying, currentSong, list, setList, playerRef, canPlay } =
-    useMusicPlayerStore()
+  const {
+    isPlaying,
+    currentSong,
+    list,
+    setList,
+    playerRef,
+    canPlay,
+    isMinimized,
+  } = useMusicPlayerStore()
   const isInPlaylist = list.find(
     (songList) => songList.song_id === song.song_id
   )
@@ -61,7 +49,8 @@ export const AnimeMusicItem = ({
   }
 
   const handleClick = () => {
-    if (isCurrentSong) return
+    if (isCurrentSong && isMinimized) return
+    setSearchIsOpen(false)
     navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
   }
 
@@ -120,16 +109,17 @@ export const AnimeMusicItem = ({
         return 'bg-gray-500/20 text-gray-300 border-gray-500/30'
     }
   }
+  const { setSearchIsOpen } = useSearchStoreResults()
 
   return (
     <article
       onClick={() => handleClick()}
       title={song.song_title}
-      className="hover:bg-Primary-900 group border-enfasisColor group relative flex max-h-28 cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2"
+      className="hover:bg-Primary-900 group border-enfasisColor group relative flex  max-h-32 h-full w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2 min-h-32 aspect-[100/28] "
     >
       <Picture
         image={placeholder}
-        styles="aspect-[225/330] w-full  overflow-hidden  relative max-w-20"
+        styles="aspect-[225/330] h-32 overflow-hidden rounded-l-lg relative"
       >
         {isCurrentSong && (
           <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
@@ -142,7 +132,7 @@ export const AnimeMusicItem = ({
             ))}
 
             <button
-              className="pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none"
+              className="pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 text-enfasisColor disabled:pointer-events-none"
               onClick={(e) => handlePlay(e)}
               disabled={!canPlay}
             >
@@ -158,7 +148,7 @@ export const AnimeMusicItem = ({
         <img
           src={image}
           alt={song.song_title}
-          className="relative aspect-[225/330] h-full w-full object-cover object-center transition-all ease-in-out group-hover:scale-105"
+          className="relative aspect-[225/330] h-full rounded-l-lg object-cover object-center"
         />
         <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
       </Picture>
@@ -185,7 +175,7 @@ export const AnimeMusicItem = ({
           <AddToPlayList className="h-6 w-6" />
         )}
       </button>
-      <footer className="flex w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
+      <footer className="flex w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4 h-full">
         <h3 className="text-md group-hover:text-enfasisColor/80 font-bold text-pretty transition-colors duration-300 ease-in-out select-none md:text-lg">
           {song.song_title}
         </h3>
