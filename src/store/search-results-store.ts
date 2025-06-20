@@ -1,6 +1,12 @@
-import type { AnimeCardInfo, AppliedFilters, SearchHistory } from 'types'
+import type {
+  AnimeCardInfo,
+  AnimeSongWithImage,
+  AppliedFilters,
+  SearchHistory,
+} from 'types'
 
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 /**
  * SearchStoreResults provides state management for anime search functionality.
@@ -45,9 +51,11 @@ interface SearchStoreResults {
   searchBarIsOpen: boolean
   searchHistoryIsOpen: boolean
   url: string
+  type: 'animes' | 'music'
+  setType: (type: 'animes' | 'music') => void
   loading: boolean
   completedSearch: boolean
-  results: AnimeCardInfo[] | null
+  results: AnimeCardInfo[] | null | AnimeSongWithImage[]
   totalResults: number
   searchHistory: SearchHistory[]
   appliedFilters: AppliedFilters
@@ -56,7 +64,7 @@ interface SearchStoreResults {
   setQuery: (query: string) => void
   setSearchIsOpen: (isOpen: boolean) => void
   setResults: (
-    results: AnimeCardInfo[] | null,
+    results: AnimeCardInfo[] | null | AnimeSongWithImage[],
     loading: boolean,
     error: string | null
   ) => void
@@ -74,86 +82,109 @@ interface SearchStoreResults {
   clearSearchHistory: () => void
 }
 
-export const useSearchStoreResults = create<SearchStoreResults>((set) => ({
-  query: '',
-  error: null,
-  searchBarIsOpen: false,
-  searchHistoryIsOpen: false,
-  url: '',
-  loading: false,
-  completedSearch: false,
-  results: null,
-  totalResults: 0,
-  searchHistory: [],
-  appliedFilters: {},
-  isLoadingMore: false,
-  setCompletedSearch: (completedSearch) => {
-    set((state) => ({ ...state, completedSearch }))
-  },
-  setIsLoadingMore: (isLoadingMore) => {
-    set((state) => ({ ...state, isLoadingMore }))
-  },
+export const useSearchStoreResults = create<SearchStoreResults>()(
+  persist(
+    (set) => ({
+      query: '',
+      error: null,
+      searchBarIsOpen: false,
+      searchHistoryIsOpen: false,
+      type: 'animes',
+      setType: (type) => {
+        set({ type })
+      },
+      url: '',
+      loading: false,
+      completedSearch: false,
+      results: null,
+      totalResults: 0,
+      searchHistory: [],
+      appliedFilters: {},
+      isLoadingMore: false,
+      setCompletedSearch: (completedSearch) => {
+        set((state) => ({ ...state, completedSearch }))
+      },
+      setIsLoadingMore: (isLoadingMore) => {
+        set((state) => ({ ...state, isLoadingMore }))
+      },
 
-  setQuery: (query) => {
-    set((state) => ({ ...state, query }))
-  },
-  setSearchIsOpen: (isOpen) => {
-    set((state) => ({ ...state, searchBarIsOpen: isOpen }))
-  },
+      setQuery: (query) => {
+        set((state) => ({ ...state, query }))
+      },
+      setSearchIsOpen: (isOpen) => {
+        set((state) => ({ ...state, searchBarIsOpen: isOpen }))
+      },
 
-  setResults: (results, loading, error) => {
-    set((state) => ({ ...state, results, loading, error }))
-  },
+      setResults: (results, loading, error) => {
+        set((state) => ({ ...state, results, loading, error }))
+      },
 
-  setAppliedFilters: (appliedFilters) => {
-    set((state) => ({
-      ...state,
-      appliedFilters:
-        typeof appliedFilters === 'function'
-          ? appliedFilters(state.appliedFilters)
-          : appliedFilters,
-    }))
-  },
+      setAppliedFilters: (appliedFilters) => {
+        set((state) => ({
+          ...state,
+          appliedFilters:
+            typeof appliedFilters === 'function'
+              ? appliedFilters(state.appliedFilters)
+              : appliedFilters,
+        }))
+      },
 
-  resetFilters: () => {
-    set((state) => ({ ...state, appliedFilters: {} }))
-  },
+      resetFilters: () => {
+        set((state) => ({ ...state, appliedFilters: {} }))
+      },
 
-  setLoading: (loading) => {
-    set((state) => ({ ...state, loading }))
-  },
-  setUrl(url) {
-    set((state) => ({ ...state, url }))
-  },
-  setTotalResults: (totalResults) => {
-    set((state) => ({ ...state, totalResults }))
-  },
-  addSearchHistory: (searchHistory) => {
-    set((state) => {
-      const filteredHistory = state.searchHistory.filter(
-        (item) =>
-          !(
-            item.query === searchHistory.query &&
-            JSON.stringify(item.appliedFilters) ===
-              JSON.stringify(searchHistory.appliedFilters)
+      setLoading: (loading) => {
+        set((state) => ({ ...state, loading }))
+      },
+      setUrl(url) {
+        set((state) => ({ ...state, url }))
+      },
+      setTotalResults: (totalResults) => {
+        set((state) => ({ ...state, totalResults }))
+      },
+      addSearchHistory: (searchHistory) => {
+        set((state) => {
+          const filteredHistory = state.searchHistory.filter(
+            (item) =>
+              !(
+                item.query === searchHistory.query &&
+                JSON.stringify(item.appliedFilters) ===
+                  JSON.stringify(searchHistory.appliedFilters)
+              )
           )
-      )
 
-      const newHistory = [searchHistory, ...filteredHistory]
+          const newHistory = [searchHistory, ...filteredHistory]
 
-      return {
-        ...state,
-        searchHistory: newHistory,
-      }
-    })
-  },
-  setSearchHistoryIsOpen: (searchHistoryIsOpen) => {
-    set((state) => ({ ...state, searchHistoryIsOpen }))
-  },
-  clearSearchHistory: () => {
-    set((state) => ({ ...state, searchHistory: [] }))
-  },
-  setSearchHistory: (searchHistory) => {
-    set((state) => ({ ...state, searchHistory }))
-  },
-}))
+          return {
+            ...state,
+            searchHistory: newHistory,
+          }
+        })
+      },
+      setSearchHistoryIsOpen: (searchHistoryIsOpen) => {
+        set((state) => ({ ...state, searchHistoryIsOpen }))
+      },
+      clearSearchHistory: () => {
+        set((state) => ({ ...state, searchHistory: [] }))
+      },
+      setSearchHistory: (searchHistory) => {
+        set((state) => ({ ...state, searchHistory }))
+      },
+    }),
+    {
+      name: 'search-store-results',
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({
+        query: state.query,
+        type: state.type,
+        searchHistory: state.searchHistory,
+        appliedFilters: state.appliedFilters,
+        url: state.url,
+        totalResults: state.totalResults,
+        completedSearch: state.completedSearch,
+      }),
+
+
+    }
+  )
+)
