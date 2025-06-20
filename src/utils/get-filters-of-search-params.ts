@@ -1,5 +1,5 @@
 import { normalizeString } from '@utils/normalize-string'
-import { Filters } from 'types'
+import { Filters  } from 'types'
 
 /**
  * Processes URL search parameters to extract and format filter values.
