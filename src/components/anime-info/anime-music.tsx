@@ -52,12 +52,12 @@ export const AnimeMusic = ({
   const [songs, setSongs] = useState<AnimeSong[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const formatCharacters = (songs: AnimeSong[]) => {
+  const formatSongs = (songs: AnimeSong[]) => {
     const songMap = new Map<string, AnimeSong>()
     songs.forEach((song) => {
-      const existing = songMap.get(song.song_title)
+      const existing = songMap.get(`${song.song_title}_${song.theme_id}`)
       if (!existing) {
-        songMap.set(song.song_title, song)
+        songMap.set(`${song.song_title}_${song.theme_id}`, song)
       }
     })
     const uniqueSongs = Array.from(songMap.values())
@@ -81,7 +81,7 @@ export const AnimeMusic = ({
       try {
         const response = await fetch(`/api/getAnimeMusic?animeId=${animeId}`)
         const data = await response.json()
-        setSongs(formatCharacters(data))
+        setSongs(formatSongs(data))
         setLoading(false)
       } catch (error) {
         setError(error as string)
