@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { AnimeSong } from 'types'
-import { AnimeMusicItem } from './anime-music-item'
+import { AnimeMusicItem } from '../music/anime-music-item'
 
 /**
  * AnimeMusic component displays a list of music tracks associated with an anime.
