@@ -172,7 +172,6 @@ export type Animes = {
   animes: Anime[]
 }
 
-
 export interface AnimeCardInfo
   extends Pick<
     Anime,
@@ -452,4 +451,6 @@ export const shortCuts = [
   { keys: ['ctrl', 'r'], action: 'random-anime' },
   { keys: ['ctrl', 'shift', 'h'], action: 'open-search-history' },
   { keys: ['ctrl', 'shift', 'c'], action: 'clear-search-history' },
+  { keys: ['ctrl', 'k', 'a'], action: 'open-anime-search' },
+  { keys: ['ctrl', 'k', 'm'], action: 'open-music-search' },
 ]
