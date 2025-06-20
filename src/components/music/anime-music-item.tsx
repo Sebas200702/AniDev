@@ -1,6 +1,5 @@
 import { navigate } from 'astro:transitions/client'
-import { AddToPlayList } from '@components/icons/add-to-play-list-icon'
-import { DeleteIcon } from '@components/icons/delete-icon'
+import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
 import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
 import { Overlay } from '@components/overlay'
@@ -31,12 +30,11 @@ export const AnimeMusicItem = ({
     isPlaying,
     currentSong,
     list,
-    setList,
     playerRef,
     canPlay,
     isMinimized,
   } = useMusicPlayerStore()
-  const isInPlaylist = list.find(
+  const isInPlaylist = list.some(
     (songList) => songList.song_id === song.song_id
   )
 
@@ -52,29 +50,6 @@ export const AnimeMusicItem = ({
     if (isCurrentSong && isMinimized) return
     setSearchIsOpen(false)
     navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
-  }
-
-  const handleAddTolist = (newSong: AnimeSongWithImage) => {
-    setList([...list, newSong])
-  }
-  const handleClickList = () => {
-    if (!isInPlaylist) {
-      const newSong = {
-        image,
-        placeholder,
-        banner_image,
-        anime_title,
-        ...song,
-      }
-      handleAddTolist(newSong)
-      return
-    }
-    const index = list.findIndex((item) => item.song_id === song.song_id)
-
-    handleRemoveTolist(index)
-  }
-  const handleRemoveTolist = (indexToDelete: number) => {
-    setList([...list].filter((_, index) => index !== indexToDelete))
   }
 
   useEffect(() => {
@@ -161,20 +136,18 @@ export const AnimeMusicItem = ({
         </span>
       )}
 
-      <button
-        className="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
-        title={`${isInPlaylist ? 'Remove' : 'Add'} to playlist ${song.song_title}`}
-        onClick={(e) => {
-          e.stopPropagation()
-          handleClickList()
+      <AddToPlayListButton
+        song={{
+          image,
+          banner_image,
+          anime_title,
+          placeholder,
+          ...song,
         }}
-      >
-        {isInPlaylist ? (
-          <DeleteIcon className="h-6 w-6" />
-        ) : (
-          <AddToPlayList className="h-6 w-6" />
-        )}
-      </button>
+        isInPlayList={isInPlaylist}
+        clasName="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
+      />
+
       <footer className="flex w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4 h-full">
         <h3 className="text-md group-hover:text-enfasisColor/80 font-bold text-pretty transition-colors duration-300 ease-in-out select-none md:text-lg">
           {song.song_title}
