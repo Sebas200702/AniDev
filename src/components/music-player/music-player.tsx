@@ -47,7 +47,7 @@ export const MusicPlayer = () => {
   return (
     <article
       ref={playerContainerRef}
-      className={`group flex rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-60 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 mx-4 mt-30 h-min flex-col-reverse md:mx-20 xl:mb-20 xl:w-[65%]'} ${
+      className={`group flex rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 mx-4 mt-30 h-min flex-col-reverse md:mx-20 xl:mb-20 xl:w-[65%]'} ${
         isDraggingPlayer && isMinimized
           ? 'music-player-dragging cursor-grabbing select-none'
           : ''
@@ -61,7 +61,7 @@ export const MusicPlayer = () => {
           : {}
       }
     >
-      <Header playerRef={playerContainerRef} />
+      <Header playerContainerRef={playerContainerRef} />
       <MediaPlayer
         ref={player}
         src={src ?? ''}
@@ -84,10 +84,10 @@ export const MusicPlayer = () => {
           '70',
           'webp'
         )}
-        className={`flex flex-col`}
+        className={`flex flex-col ${type === 'audio' && isMinimized && 'md:h-auto h-0'} `}
       >
         <MediaProvider
-          className={`${type === 'audio' && isMinimized ? 'mt-12' : 'aspect-video'}`}
+          className={`${type === 'audio' && isMinimized ? 'mt-12 md:flex hidden' : 'aspect-video'}`}
         >
           {type === 'audio' && !isMinimized && (
             <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
