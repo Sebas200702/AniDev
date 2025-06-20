@@ -14,6 +14,7 @@ import {
   seasonOptions,
   statusOptions,
   yearOptions,
+  typeMusic,
 } from 'types'
 import type { AppliedFilters } from 'types'
 
@@ -38,7 +39,7 @@ import type { AppliedFilters } from 'types'
  * <FilterSection />
  */
 export const FilterSection = () => {
-  const { appliedFilters, setAppliedFilters, resetFilters } =
+  const { appliedFilters, setAppliedFilters, resetFilters, type } =
     useSearchStoreResults()
   const { width } = useWindowWidth()
   const isMobile = width && width < 768
@@ -66,76 +67,91 @@ export const FilterSection = () => {
       className={`no-scrollbar col-span-5 mt-20 grid w-full grid-cols-2 gap-4 border-zinc-300/10 px-4 md:mt-30 md:grid-cols-5 md:px-20`}
     >
       <SearchBar />
-      <FilterDropdown
-        label="Genres"
-        values={appliedFilters.genre_filter ?? []}
-        onChange={(values) => updateFilter('genre_filter', values)}
-        onClear={() => updateFilter('genre_filter', [])}
-        options={genreOptions}
-        styles={'flex'}
-      />
-      <FilterDropdown
-        label="Year"
-        values={appliedFilters.year_filter ?? []}
-        onChange={(values) => updateFilter('year_filter', values)}
-        onClear={() => updateFilter('year_filter', [])}
-        options={yearOptions}
-        styles={'flex'}
-      />
-      <FilterDropdown
-        label="Status"
-        values={appliedFilters.status_filter ?? []}
-        onChange={(values) => updateFilter('status_filter', values)}
-        onClear={() => updateFilter('status_filter', [])}
-        options={statusOptions}
-        styles={'flex'}
-      />
+      {type === 'music' ? (
+        <FilterDropdown
+          label="Type"
+          values={appliedFilters.type_music ?? []}
+          onChange={(values) => updateFilter('type_music', values)}
+          onClear={() => updateFilter('type_music', [])}
+          options={typeMusic}
+          styles={'flex'}
+        />
+      ) : (
+        <>
+          <FilterDropdown
+            label="Genres"
+            values={appliedFilters.genre_filter ?? []}
+            onChange={(values) => updateFilter('genre_filter', values)}
+            onClear={() => updateFilter('genre_filter', [])}
+            options={genreOptions}
+            styles={'flex'}
+          />
+          <FilterDropdown
+            label="Year"
+            values={appliedFilters.year_filter ?? []}
+            onChange={(values) => updateFilter('year_filter', values)}
+            onClear={() => updateFilter('year_filter', [])}
+            options={yearOptions}
+            styles={'flex'}
+          />
+          <FilterDropdown
+            label="Status"
+            values={appliedFilters.status_filter ?? []}
+            onChange={(values) => updateFilter('status_filter', values)}
+            onClear={() => updateFilter('status_filter', [])}
+            options={statusOptions}
+            styles={'flex'}
+          />
 
-      <FilterDropdown
-        label="Format"
-        values={appliedFilters.type_filter ?? []}
-        onChange={(values) => updateFilter('type_filter', values)}
-        onClear={() => updateFilter('type_filter', [])}
-        options={formatOptions}
-        styles={`flex`}
-      />
+          <FilterDropdown
+            label="Format"
+            values={appliedFilters.type_filter ?? []}
+            onChange={(values) => updateFilter('type_filter', values)}
+            onClear={() => updateFilter('type_filter', [])}
+            options={formatOptions}
+            styles={`flex`}
+          />
 
-      <FilterDropdown
-        label="Studio"
-        values={appliedFilters.studio_filter ?? []}
-        onChange={(values) => updateFilter('studio_filter', values)}
-        onClear={() => updateFilter('studio_filter', [])}
-        options={studioOptions}
-        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
-      />
-      <FilterDropdown
-        label="Season"
-        values={appliedFilters.season_filter ?? []}
-        onChange={(values) => updateFilter('season_filter', values)}
-        onClear={() => updateFilter('season_filter', [])}
-        options={seasonOptions}
-        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
-      />
-      <FilterDropdown
-        label="Day"
-        values={appliedFilters.aired_day_filter ?? []}
-        onChange={(values) => updateFilter('aired_day_filter', values)}
-        onClear={() => updateFilter('aired_day_filter', [])}
-        options={airedDayOptions}
-        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
-      />
-      <FilterDropdown
-        label="Rating"
-        values={appliedFilters.rating_filter ?? []}
-        onChange={(values) => updateFilter('rating_filter', values)}
-        onClear={() => updateFilter('rating_filter', [])}
-        options={
-          parentalControl
-            ? ratingOptions.filter((option) => option.value !== restritedAnimes)
-            : ratingOptions
-        }
-        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
-      />
+          <FilterDropdown
+            label="Studio"
+            values={appliedFilters.studio_filter ?? []}
+            onChange={(values) => updateFilter('studio_filter', values)}
+            onClear={() => updateFilter('studio_filter', [])}
+            options={studioOptions}
+            styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+          />
+          <FilterDropdown
+            label="Season"
+            values={appliedFilters.season_filter ?? []}
+            onChange={(values) => updateFilter('season_filter', values)}
+            onClear={() => updateFilter('season_filter', [])}
+            options={seasonOptions}
+            styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+          />
+          <FilterDropdown
+            label="Day"
+            values={appliedFilters.aired_day_filter ?? []}
+            onChange={(values) => updateFilter('aired_day_filter', values)}
+            onClear={() => updateFilter('aired_day_filter', [])}
+            options={airedDayOptions}
+            styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+          />
+          <FilterDropdown
+            label="Rating"
+            values={appliedFilters.rating_filter ?? []}
+            onChange={(values) => updateFilter('rating_filter', values)}
+            onClear={() => updateFilter('rating_filter', [])}
+            options={
+              parentalControl
+                ? ratingOptions.filter(
+                    (option) => option.value !== restritedAnimes
+                  )
+                : ratingOptions
+            }
+            styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+          />
+        </>
+      )}
       <FilterDropdown
         label="Order By"
         values={appliedFilters.order_by ?? []}
@@ -144,6 +160,7 @@ export const FilterSection = () => {
         options={orderByOptions}
         styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
       />
+
       <li className="flex items-center justify-center">
         <button
           type="button"
