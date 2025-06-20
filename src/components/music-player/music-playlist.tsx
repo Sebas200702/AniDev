@@ -1,4 +1,4 @@
-import { AnimeMusicItem } from '@components/anime-info/anime-music-item'
+import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { useRef, useState } from 'react'
 import type { AnimeSongWithImage } from 'types'
@@ -72,7 +72,6 @@ export const MusicPlayList = () => {
   }
 
   const handleDragLeave = (e: React.DragEvent, index: number) => {
-
     const rect = e.currentTarget.getBoundingClientRect()
     if (
       e.clientX < rect.left ||
@@ -115,8 +114,8 @@ export const MusicPlayList = () => {
 
   return (
     <section>
-      <header className='mb-6'>
-        <h2 className='text-xl'>Currently Playing</h2>
+      <header className="mb-6">
+        <h2 className="text-xl">Currently Playing</h2>
       </header>
       <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
         {filteredList.map((song, index) => {
