@@ -251,7 +251,7 @@ export const SearchBar = () => {
               setType(values[0] as 'animes' | 'music')
             }}
             onClear={() => {}}
-            styles="max-w-32"
+            styles="max-w-32 bg-Complementary hover:bg-enfasisColor/10"
             singleSelect={true}
           />
         </header>
