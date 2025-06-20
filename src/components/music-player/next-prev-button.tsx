@@ -32,7 +32,7 @@ export const NextPrevButton = ({ direction }: Props) => {
   }
   return (
     <button
-      className="hover:text-enfasisColor text-Primary-50-400 rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-zinc-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 vds-button"
+      className="hover:text-enfasisColor text-Primary-50-400 rounded-lg p-2 transition-all duration-300 ease-in-out hover:bg-zinc-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 vds-button next-prev md:translate-y-0 translate-y-[25%]"
       title={direction}
       aria-label={`${direction} Song`}
       disabled={!(direction === 'Next' ? hasNext : hasPrev)}
