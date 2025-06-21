@@ -57,7 +57,7 @@ export const MusicPlayer = () => {
       toast[ToastType.Info]({
         text: `${nextSong.song_title} - ${nextSong.artist_name}`,
         description: 'Up Next',
-        delayDuration: timeRemaining * 1000,
+        delayDuration: 7000,
         icon: (
           <Picture
             image={nextSong.placeholder}
