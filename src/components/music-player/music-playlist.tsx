@@ -1,7 +1,6 @@
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useRef, useState } from 'react'
-
+import { useRef, useState, useEffect } from 'react'
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
@@ -9,9 +8,85 @@ export const MusicPlayList = () => {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+  const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+  const draggedItemRef = useRef<HTMLDivElement | null>(null)
 
   const filteredList = [...list].filter((_, index) => index >= currentSongIndex)
 
+  // Función para manejar el inicio del touch
+  const handleTouchStart = (e: React.TouchEvent, index: number) => {
+    const touch = e.touches[0]
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY }
+    draggedItemRef.current = e.currentTarget as HTMLDivElement
+  }
+
+  // Función para manejar el movimiento del touch
+  const handleTouchMove = (e: React.TouchEvent, index: number) => {
+    if (!draggedItemRef.current) return
+
+    const touch = e.touches[0]
+    const deltaY = touch.clientY - touchStartPos.current.y
+
+    // Solo iniciar el drag si el movimiento vertical es significativo
+    if (!isDragging && Math.abs(deltaY) > 10) {
+      setIsDragging(true)
+      setDraggedIndex(index)
+      draggedItemRef.current.style.transform = `translateY(${deltaY}px)`
+      draggedItemRef.current.style.opacity = '0.5'
+    }
+
+    if (isDragging) {
+      e.preventDefault() // Prevenir scroll mientras se arrastra
+      draggedItemRef.current.style.transform = `translateY(${deltaY}px)`
+
+      // Encontrar el elemento sobre el que estamos
+      const elements = document.elementsFromPoint(touch.clientX, touch.clientY)
+      const droppableElement = elements.find(el => 
+        el.hasAttribute('data-index') && el !== draggedItemRef.current
+      ) as HTMLElement
+
+      if (droppableElement) {
+        const newIndex = parseInt(droppableElement.getAttribute('data-index') || '-1')
+        if (newIndex !== -1 && newIndex !== dragOverIndex) {
+          setDragOverIndex(newIndex)
+        }
+      }
+    }
+  }
+
+  // Función para manejar el fin del touch
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isDragging || draggedIndex === null || dragOverIndex === null) {
+      resetDragState()
+      return
+    }
+
+    const newList = [...list]
+    const realDraggedIndex = currentSongIndex + draggedIndex
+    const realDropIndex = currentSongIndex + dragOverIndex
+
+    const draggedItem = newList.splice(realDraggedIndex, 1)[0]
+    const adjustedDropIndex =
+      realDraggedIndex < realDropIndex ? realDropIndex - 1 : realDropIndex
+    newList.splice(adjustedDropIndex, 0, draggedItem)
+
+    setList(newList)
+    resetDragState()
+  }
+
+  // Función para resetear el estado del drag
+  const resetDragState = () => {
+    if (draggedItemRef.current) {
+      draggedItemRef.current.style.transform = ''
+      draggedItemRef.current.style.opacity = ''
+    }
+    setIsDragging(false)
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+    draggedItemRef.current = null
+  }
+
+  // Mantener el código existente para desktop
   const handleDragStart = (e: React.DragEvent, index: number) => {
     setDraggedIndex(index)
     setIsDragging(true)
@@ -51,12 +126,8 @@ export const MusicPlayList = () => {
     }
   }
 
-  const handleDragEnd = (e: React.DragEvent) => {
-    setDraggedIndex(null)
-    setDragOverIndex(null)
-    setIsDragging(false)
-  }
-
+  // Mantener los manejadores existentes
+  const handleDragEnd = handleTouchEnd
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
@@ -78,37 +149,10 @@ export const MusicPlayList = () => {
     }
   }
 
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault()
-
-    if (draggedIndex === null || draggedIndex === dropIndex) return
-
-    const newList = [...list]
-
-    const realDraggedIndex = currentSongIndex + draggedIndex
-    const realDropIndex = currentSongIndex + dropIndex
-
-    const draggedItem = newList.splice(realDraggedIndex, 1)[0]
-
-    const adjustedDropIndex =
-      realDraggedIndex < realDropIndex ? realDropIndex - 1 : realDropIndex
-    newList.splice(adjustedDropIndex, 0, draggedItem)
-
-    setList(newList)
-    setDraggedIndex(null)
-    setDragOverIndex(null)
-    setIsDragging(false)
-  }
-
-  const handleMouseDown = (e: React.MouseEvent, index: number) => {
-    if ((e.target as HTMLElement).closest('button')) {
-      return
-    }
-    dragStartPos.current = { x: e.clientX, y: e.clientY }
-  }
+  const handleDrop = handleTouchEnd
 
   return (
-    <section className=" overflow-y-auto overflow-x-hidden p-2">
+    <section className="overflow-y-auto overflow-x-hidden p-2">
       <header className="mb-6">
         <h2 className="text-xl">Currently Playing</h2>
       </header>
@@ -123,18 +167,22 @@ export const MusicPlayList = () => {
           return (
             <div
               key={song.song_id}
+              data-index={index}
               draggable
               onDragStart={(e) => handleDragStart(e, index)}
               onDragEnd={handleDragEnd}
               onDragOver={(e) => handleDragOver(e, index)}
               onDragLeave={(e) => handleDragLeave(e, index)}
-              onDrop={(e) => handleDrop(e, index)}
-              onMouseDown={(e) => handleMouseDown(e, index)}
+              onDrop={(e) => handleDrop(e as any, index)}
+              onTouchStart={(e) => handleTouchStart(e, index)}
+              onTouchMove={(e) => handleTouchMove(e, index)}
+              onTouchEnd={handleTouchEnd}
               className={`
-              relative transition-all duration-200 ease-in-out
-              ${isDraggedItem ? 'opacity-50 scale-98' : ''}
-              ${isDropTarget ? 'transform translate-y-1' : ''}
-            `}
+                relative transition-all duration-200 ease-in-out
+                ${isDraggedItem ? 'opacity-50 scale-98' : ''}
+                ${isDropTarget ? 'transform translate-y-1' : ''}
+                touch-none
+              `}
               style={{
                 cursor: isDraggedItem ? 'grabbing' : 'grab',
               }}
