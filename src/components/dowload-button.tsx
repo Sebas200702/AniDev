@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@icons/download-icon'
 import { toast } from '@pheralb/toast'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ToastType } from 'types'
 
 interface AudioMetadata {
@@ -45,6 +45,7 @@ interface Props {
   metadata?: FileMetadata
   showMetadata?: boolean
 }
+
 /**
  * DownloadButton component provides functionality to download a file from a given URL using a proxy endpoint.
  * Now supports file metadata including artist, album cover, and other audio/video information.
@@ -108,7 +109,6 @@ export const DownloadButton = ({
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
-
   const generateFilename = (
     originalTitle: string,
     metadata?: FileMetadata
@@ -134,9 +134,7 @@ export const DownloadButton = ({
     switch (metadata.type) {
       case 'audio':
         if (metadata.artist) tooltip += `\nArtista: ${metadata.artist}`
-
         if (metadata.duration) tooltip += `\nDuración: ${metadata.duration}`
-
         break
 
       case 'video':
@@ -160,82 +158,77 @@ export const DownloadButton = ({
     return tooltip
   }
 
+  const performDownload = async () => {
+    const filename = generateFilename(title, metadata)
+
+    const proxyUrl = `/api/download?url=${encodeURIComponent(url)}&download=true&filename=${encodeURIComponent(filename)}`
+
+    const response = await fetch(proxyUrl, {
+      method: 'GET',
+      headers: {
+        Accept: '*/*',
+      },
+      redirect: 'follow',
+    })
+
+    if (!response.ok) {
+      let errorMessage = 'Failed to download file'
+      try {
+        const errorData = await response.json()
+        errorMessage = errorData.error || errorMessage
+      } catch {
+        errorMessage = `HTTP ${response.status}: ${response.statusText}`
+      }
+      throw new Error(errorMessage)
+    }
+
+    const blob = await response.blob()
+
+    if (!blob || blob.size === 0) {
+      throw new Error('Empty file received')
+    }
+
+    const downloadUrl = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.style.display = 'none'
+    link.href = downloadUrl
+    link.download = filename
+
+    link.setAttribute('target', '_blank')
+    link.setAttribute('rel', 'noopener noreferrer')
+
+    document.body.appendChild(link)
+
+    link.click()
+
+    setTimeout(() => {
+      document.body.removeChild(link)
+      URL.revokeObjectURL(downloadUrl)
+    }, 100)
+  }
+
   const handleDownload = async () => {
+    if (isLoading) return // Prevenir múltiples descargas simultáneas
+
     setIsLoading(true)
 
     try {
-      const filename = generateFilename(title, metadata)
-
-      const proxyUrl = `/api/download?url=${encodeURIComponent(url)}&download=true&filename=${encodeURIComponent(filename)}`
-
-      const response = await fetch(proxyUrl, {
-        method: 'GET',
-        headers: {
-          Accept: '*/*',
+      await toast[ToastType.Loading]({
+        text: 'Downloading',
+        options: {
+          promise: performDownload(),
+          success: 'Download completed!',
+          error: 'Download failed',
+          autoDismiss: true,
         },
-        redirect: 'follow',
       })
-
-      if (!response.ok) {
-        let errorMessage = 'Failed to download file'
-        try {
-          const errorData = await response.json()
-          errorMessage = errorData.error || errorMessage
-        } catch {
-          errorMessage = `HTTP ${response.status}: ${response.statusText}`
-        }
-        throw new Error(errorMessage)
-      }
-
-      const blob = await response.blob()
-
-      if (!blob || blob.size === 0) {
-        throw new Error('Empty file received')
-      }
-
-      const downloadUrl = URL.createObjectURL(blob)
-
-      const link = document.createElement('a')
-      link.style.display = 'none'
-      link.href = downloadUrl
-      link.download = filename
-
-      link.setAttribute('target', '_blank')
-      link.setAttribute('rel', 'noopener noreferrer')
-
-      document.body.appendChild(link)
-
-      link.click()
-
-      setTimeout(() => {
-        document.body.removeChild(link)
-        URL.revokeObjectURL(downloadUrl)
-      }, 100)
-
-
     } catch (error) {
       console.error('Error downloading file:', error)
-
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error occurred'
     } finally {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    if (isLoading) {
-      toast[ToastType.Loading]({
-        text: 'Downloading',
-        options: {
-          promise: handleDownload(),
-          success: 'Done',
-          error: 'Error',
-          autoDismiss: true,
-        },
-      })
-    }
-  }, [isLoading ])
 
   return (
     <div className={showMetadata ? 'download-button-container' : ''}>
