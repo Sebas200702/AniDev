@@ -44,7 +44,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className="bg-Complementary relative mx-auto flex aspect-[100/28] overflow-hidden rounded-lg"
+        className="bg-Complementary relative mx-auto flex aspect-[100/28] h-full w-full overflow-hidden rounded-lg"
         title={anime.title}
       >
         <div className="absolute h-full w-full">
@@ -57,7 +57,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
               '0',
               'webp'
             )}
-            styles=" w-full h-full object-cover object-center relative grayscale-100 md:group-hover:grayscale-40 transition-all ease-in-out duration-300"
+            styles="w-full h-full object-cover object-center relative grayscale-100 md:group-hover:grayscale-40 transition-all ease-in-out duration-300"
           >
             <img
               src={createImageUrlProxy(
@@ -77,7 +77,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         </div>
         <Picture
           image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
-          styles="aspect-[225/330] h-full  overflow-hidden rounded-l-lg relative"
+          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
         >
           <img
             src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
