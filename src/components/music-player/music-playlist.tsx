@@ -144,7 +144,7 @@ export const MusicPlayList = () => {
               )}
 
               {isDropTarget && (
-                <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 pointer-events-none aspect-[100/28]" />
+                <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none aspect-[100/28]" />
               )}
 
               <div className={`${isDraggedItem ? 'pointer-events-none' : ''}`}>
