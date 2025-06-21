@@ -1,8 +1,9 @@
 import { AddToPlayList } from '@components/icons/add-to-play-list-icon'
 import { DeleteIcon } from '@components/icons/delete-icon'
+import { toast } from '@pheralb/toast'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import type { AnimeSongWithImage } from 'types'
-
+import { ToastType } from 'types'
 interface Props {
   song: AnimeSongWithImage
   isInPlayList: boolean
@@ -18,6 +19,9 @@ export const AddToPlayListButton = ({
 }: Props) => {
   const handleAddTolist = (newSong: AnimeSongWithImage) => {
     setList([...list, newSong])
+      toast[ToastType.Success]({
+      text: `${song.song_title} added to playlist`,
+    })
   }
   const { list, setList } = useMusicPlayerStore()
   const handleClickList = () => {
@@ -31,6 +35,10 @@ export const AddToPlayListButton = ({
   }
   const handleRemoveTolist = (indexToDelete: number) => {
     setList([...list].filter((_, index) => index !== indexToDelete))
+
+    toast[ToastType.Success]({
+      text: `${song.song_title} removed to playlist`,
+    })
   }
   return (
     <button
@@ -47,7 +55,7 @@ export const AddToPlayListButton = ({
         <AddToPlayList className="h-4 w-4 xl:h-5 xl:w-5" />
       )}
 
-      {label && <span className='font-medium' >{label}</span>}
+      {label && <span className="font-medium">{label}</span>}
     </button>
   )
 }
