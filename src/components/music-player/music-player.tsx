@@ -6,9 +6,11 @@ import { CustomControls } from '@components/music-player/controls'
 import { Cover } from '@components/music-player/cover'
 import { CustomLayout } from '@components/music-player/custom-layout'
 import { Header } from '@components/music-player/header'
+import { Picture } from '@components/picture'
 import { useMusicPlayerSync } from '@hooks/useMusicPlayerSync'
 import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
 import { usePlayerDragging } from '@hooks/usePlayerDragging'
+import { toast } from '@pheralb/toast'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import {
@@ -19,7 +21,8 @@ import {
   Spinner,
   useMediaStore,
 } from '@vidstack/react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { ToastType } from 'types'
 
 export const MusicPlayer = () => {
   const {
@@ -30,6 +33,8 @@ export const MusicPlayer = () => {
     isDraggingPlayer,
     position,
     type,
+    list,
+    currentSongIndex,
     src,
   } = useMusicPlayerStore()
 
@@ -41,6 +46,37 @@ export const MusicPlayer = () => {
   useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
+
+  const [toastShown, setToastShown] = useState(false)
+
+  useEffect(() => {
+    const nextSong = list[currentSongIndex + 1]
+    const timeRemaining = duration - currentTime
+
+    if (timeRemaining <= 10 && timeRemaining > 0 && nextSong && !toastShown) {
+      toast[ToastType.Info]({
+        text: `${nextSong.song_title} - ${nextSong.artist_name}`,
+        description: 'Up Next',
+        icon: (
+          <Picture
+            image={nextSong.placeholder}
+            styles="relative w-12 aspect-[225/330] rounded-sm"
+          >
+            <img
+              src={nextSong.image}
+              alt={nextSong.song_title}
+              className="aspect-[225/330] relative w-12 rounded-sm"
+            />
+          </Picture>
+        ),
+      })
+      setToastShown(true)
+    }
+  }, [currentTime, duration, currentSong, list, currentSongIndex, toastShown])
+
+  useEffect(() => {
+    setToastShown(false)
+  }, [currentSong?.song_id])
 
   if (!currentSong) return
 
