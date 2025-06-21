@@ -172,19 +172,22 @@ const userInfo = await getSessionUserInfo({
         <slot />
 
         <Toaster
-          client:load
+          client:only
+          transition:persist
           theme="dark"
           position="top-right"
           toastOptions={{
+
+            font: 'Nunito',
             animationOnClose: 'swipe',
             classNames: {
-              toast: 'bg-Complementary ',
-              container: 'bg-Complementary ',
-              content: 'text-Primary-50',
+              toast: ' flex !bg-Complementary/50  rounded-lg ',
+              container: '!bg-Complementary/50   ',
+              content: '!text-Primary-50',
               actions: {
-                container: 'bg-Complementary ',
-                closeBtn: 'text-Primary-50',
-                actionBtn: 'text-Primary-50',
+                container: '!bg-Complementary/50  ',
+                closeBtn: '!text-Primary-50',
+                actionBtn: '!text-Primary-50',
               },
             },
           }}
