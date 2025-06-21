@@ -1,4 +1,50 @@
 import { DownloadIcon } from '@icons/download-icon'
+import { toast } from '@pheralb/toast'
+import { useEffect, useState } from 'react'
+import { ToastType } from 'types'
+
+interface AudioMetadata {
+  type: 'audio'
+  artist?: string
+  coverUrl?: string
+  duration?: string
+}
+
+interface VideoMetadata {
+  type: 'video'
+  thumbnailUrl?: string
+  duration?: string
+  resolution?: string
+  fps?: number
+}
+
+interface DocumentMetadata {
+  type: 'document'
+  author?: string
+  pages?: number
+  size?: string
+}
+
+interface ImageMetadata {
+  type: 'image'
+  dimensions?: string
+  size?: string
+  format?: string
+}
+
+type FileMetadata =
+  | AudioMetadata
+  | VideoMetadata
+  | DocumentMetadata
+  | ImageMetadata
+
+interface Props {
+  url: string
+  title: string
+  styles: string
+  metadata?: FileMetadata
+  showMetadata?: boolean
+}
 /**
  * DownloadButton component provides functionality to download a file from a given URL using a proxy endpoint.
  * Now supports file metadata including artist, album cover, and other audio/video information.
@@ -52,52 +98,6 @@ import { DownloadIcon } from '@icons/download-icon'
  *   }}
  * />
  */
-import { useState } from 'react'
-
-// Definir tipos de metadatos específicos
-interface AudioMetadata {
-  type: 'audio'
-  artist?: string
-  coverUrl?: string
-  duration?: string
-}
-
-interface VideoMetadata {
-  type: 'video'
-  thumbnailUrl?: string
-  duration?: string
-  resolution?: string
-  fps?: number
-}
-
-interface DocumentMetadata {
-  type: 'document'
-  author?: string
-  pages?: number
-  size?: string
-}
-
-interface ImageMetadata {
-  type: 'image'
-  dimensions?: string
-  size?: string
-  format?: string
-}
-
-// Union type para todos los metadatos
-type FileMetadata =
-  | AudioMetadata
-  | VideoMetadata
-  | DocumentMetadata
-  | ImageMetadata
-
-interface Props {
-  url: string
-  title: string
-  styles: string
-  metadata?: FileMetadata
-  showMetadata?: boolean
-}
 
 export const DownloadButton = ({
   url,
@@ -108,7 +108,7 @@ export const DownloadButton = ({
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  // Función para generar nombre de archivo basado en metadatos
+
   const generateFilename = (
     originalTitle: string,
     metadata?: FileMetadata
@@ -116,7 +116,6 @@ export const DownloadButton = ({
     const fileExtension = url.split('.').pop()?.toLowerCase() || ''
 
     if (metadata?.type === 'audio' && metadata.artist) {
-      // Para música: "Artista - Título"
       const cleanTitle = originalTitle.replace(/[<>:"/\\|?*]/g, '_')
       const cleanArtist = metadata.artist.replace(/[<>:"/\\|?*]/g, '_')
       return fileExtension
@@ -124,11 +123,9 @@ export const DownloadButton = ({
         : `${cleanArtist} - ${cleanTitle}`
     }
 
-    // Fallback al comportamiento original
     return fileExtension ? `${originalTitle}.${fileExtension}` : originalTitle
   }
 
-  // Función para generar tooltip con metadatos
   const generateTooltip = (): string => {
     if (!metadata) return `Download ${title}`
 
@@ -163,17 +160,14 @@ export const DownloadButton = ({
     return tooltip
   }
 
-  const handleDownload = async (e: React.MouseEvent) => {
-    e.stopPropagation()
+  const handleDownload = async () => {
     setIsLoading(true)
 
     try {
       const filename = generateFilename(title, metadata)
 
-      // Use the download proxy endpoint
       const proxyUrl = `/api/download?url=${encodeURIComponent(url)}&download=true&filename=${encodeURIComponent(filename)}`
 
-      // Fetch the file through the proxy with proper headers
       const response = await fetch(proxyUrl, {
         method: 'GET',
         headers: {
@@ -193,53 +187,58 @@ export const DownloadButton = ({
         throw new Error(errorMessage)
       }
 
-      // Convert response to blob
       const blob = await response.blob()
 
-      // Ensure we have a valid blob
       if (!blob || blob.size === 0) {
         throw new Error('Empty file received')
       }
 
-      // Create download using blob URL (this prevents navigation)
       const downloadUrl = URL.createObjectURL(blob)
 
-      // Create a temporary anchor element
       const link = document.createElement('a')
       link.style.display = 'none'
       link.href = downloadUrl
       link.download = filename
 
-      // Prevent default behavior and ensure download
       link.setAttribute('target', '_blank')
       link.setAttribute('rel', 'noopener noreferrer')
 
-      // Add to DOM temporarily
       document.body.appendChild(link)
 
-      // Trigger download programmatically
       link.click()
 
-      // Clean up immediately
       setTimeout(() => {
         document.body.removeChild(link)
         URL.revokeObjectURL(downloadUrl)
       }, 100)
+
+
     } catch (error) {
       console.error('Error downloading file:', error)
 
-      // Show user-friendly error message
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error occurred'
-      alert(`Download failed: ${errorMessage}`)
     } finally {
       setIsLoading(false)
     }
   }
 
+  useEffect(() => {
+    if (isLoading) {
+      toast[ToastType.Loading]({
+        text: 'Downloading',
+        options: {
+          promise: handleDownload(),
+          success: 'Done',
+          error: 'Error',
+          autoDismiss: true,
+        },
+      })
+    }
+  }, [isLoading ])
+
   return (
     <div className={showMetadata ? 'download-button-container' : ''}>
-      {/* Mostrar metadatos si está habilitado */}
       {showMetadata && metadata && (
         <div
           className="metadata-preview"
@@ -302,7 +301,10 @@ export const DownloadButton = ({
 
       <button
         className={`${styles} ${isLoading ? 'button-loading' : ''}`}
-        onClick={handleDownload}
+        onClick={(e) => {
+          e.stopPropagation()
+          handleDownload()
+        }}
         disabled={isLoading}
         title={generateTooltip()}
       >
