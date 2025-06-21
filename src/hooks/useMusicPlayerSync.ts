@@ -31,6 +31,48 @@ export const useMusicPlayerSync = (
 
   const previousSongId = useRef<string | null>(null)
   const isChangingSong = useRef(false)
+  const mediaUpdateInterval = useRef<number | null>(null)
+
+  // Efecto para manejar la actualización continua de la MediaSession
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !currentSong || !playing) {
+      // Limpiar el intervalo si existe y no debería estar ejecutándose
+      if (mediaUpdateInterval.current) {
+        window.clearInterval(mediaUpdateInterval.current)
+        mediaUpdateInterval.current = null
+      }
+      return
+    }
+
+    // Función para actualizar el estado de la MediaSession
+    const updateMediaPosition = () => {
+      if (duration > 0 && player.current) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration,
+            position: player.current.currentTime,
+            playbackRate: player.current.playbackRate || 1.0,
+          })
+        } catch (error) {
+          console.warn('Error updating media session position:', error)
+        }
+      }
+    }
+
+    // Iniciar intervalo de actualización cuando está reproduciendo
+    if (playing) {
+      updateMediaPosition() // Actualización inicial
+      mediaUpdateInterval.current = window.setInterval(updateMediaPosition, 1000)
+    }
+
+    // Cleanup
+    return () => {
+      if (mediaUpdateInterval.current) {
+        window.clearInterval(mediaUpdateInterval.current)
+        mediaUpdateInterval.current = null
+      }
+    }
+  }, [playing, currentSong, duration, player])
 
   useEffect(() => {
     const songIndex = list.findIndex(
@@ -38,21 +80,6 @@ export const useMusicPlayerSync = (
     )
     setCurrentSongIndex(songIndex)
   }, [currentSong, setCurrentSongIndex, list])
-
-  // Separamos la actualización del estado de posición en su propio useEffect
-  useEffect(() => {
-    if (!('mediaSession' in navigator) || !currentSong || !duration) return
-
-    try {
-      navigator.mediaSession.setPositionState({
-        duration: duration,
-        playbackRate: 1.0,
-        position: Math.min(currentTime || 0, duration),
-      })
-    } catch (error) {
-      console.warn('Error setting media session position state:', error)
-    }
-  }, [currentTime, duration, currentSong])
 
   useEffect(() => {
     if (!('mediaSession' in navigator) || !currentSong) return
@@ -118,6 +145,7 @@ export const useMusicPlayerSync = (
       }
     })
 
+    // Cleanup
     return () => {
       mediaSession.setActionHandler('previoustrack', null)
       mediaSession.setActionHandler('nexttrack', null)
@@ -136,6 +164,8 @@ export const useMusicPlayerSync = (
     player,
   ])
 
+  // Resto del código sin cambios...
+  
   useEffect(() => {
     if (!currentSong) return
 
