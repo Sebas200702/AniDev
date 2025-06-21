@@ -53,10 +53,7 @@ export const SectionList = ({ section, sections, context }: Props) => {
     sections.list.find((s) => s.label === section.label)?.selected || false
 
   const isNotDefault = context !== 'default' && context
-  const handleClick = (
-    _e: React.MouseEvent<HTMLButtonElement>,
-    label: string
-  ) => {
+  const handleClick = (label: string) => {
     if (isSelected) return
     sections.set(
       sections.list.map((s) => ({ ...s, selected: s.label === label }))
@@ -69,7 +66,7 @@ export const SectionList = ({ section, sections, context }: Props) => {
     <li key={section.label} title={section.label}>
       <button
         className={`group relative flex h-full max-h-10 cursor-pointer items-center justify-center overflow-hidden p-2 transition-colors duration-200 ease-in-out hover:bg-zinc-800/50 md:max-h-12 md:p-5 ${isSelected ? 'text-enfasisColor' : 'text-gray-400'} after:bg-enfasisColor after:absolute after:bottom-0 after:left-0 after:h-[2px] after:transition-all after:duration-300 after:ease-in-out ${isSelected ? 'after:w-full' : 'after:w-0'}`}
-        onClick={(e) => handleClick(e, section.label)}
+        onClick={() => handleClick(section.label)}
       >
         {section.icon && (
           <div className="flex h-5 w-5 items-center justify-center md:h-6 md:w-6">
