@@ -29,7 +29,6 @@ export const useMusicPlayerSync = (
     savedTime,
   } = useMusicPlayerStore()
 
-
   const previousSongId = useRef<string | null>(null)
   const isChangingSong = useRef(false)
 
@@ -59,6 +58,18 @@ export const useMusicPlayerSync = (
 
     mediaSession.playbackState = playing ? 'playing' : 'paused'
 
+    if (duration > 0) {
+      try {
+        mediaSession.setPositionState({
+          duration: duration,
+          playbackRate: 1.0,
+          position: Math.min(currentTime || 0, duration),
+        })
+      } catch (error) {
+        console.warn('Error setting media session position state:', error)
+      }
+    }
+
     const navigateToSong = (song: AnimeSongWithImage) => {
       isChangingSong.current = true
       setSavedTime(0)
@@ -85,14 +96,38 @@ export const useMusicPlayerSync = (
       hasNextSong ? () => navigateToSong(list[currentSongIndex + 1]) : null
     )
 
+    mediaSession.setActionHandler('play', () => {
+      if (player.current) {
+        player.current.play()
+      }
+    })
+
+    mediaSession.setActionHandler('pause', () => {
+      if (player.current) {
+        player.current.pause()
+      }
+    })
+
+    mediaSession.setActionHandler('seekto', (details) => {
+      if (player.current && details.seekTime !== undefined) {
+        player.current.currentTime = details.seekTime
+        setSavedTime(details.seekTime)
+      }
+    })
+
     return () => {
       mediaSession.setActionHandler('previoustrack', null)
       mediaSession.setActionHandler('nexttrack', null)
+      mediaSession.setActionHandler('play', null)
+      mediaSession.setActionHandler('pause', null)
+      mediaSession.setActionHandler('seekto', null)
     }
   }, [
     currentSong,
     currentSongIndex,
     playing,
+    currentTime,
+    duration,
     list,
     isMinimized,
     setCurrentSong,
@@ -100,12 +135,10 @@ export const useMusicPlayerSync = (
     player,
   ])
 
-
   useEffect(() => {
     if (!currentSong) return
 
     const currentSongId = currentSong.song_id
-
 
     if (
       previousSongId.current &&
@@ -120,7 +153,6 @@ export const useMusicPlayerSync = (
     }
 
     previousSongId.current = currentSongId.toString()
-
 
     if (type === 'audio') {
       setSrc(currentSong.audio_url)
@@ -165,14 +197,13 @@ export const useMusicPlayerSync = (
     list,
     setCurrentSong,
     setSavedTime,
+    isMinimized,
   ])
-
 
   useEffect(() => {
     if (currentTime && !isChangingSong.current) {
       setSavedTime(currentTime)
     } else if (isChangingSong.current && currentTime === 0) {
-
       isChangingSong.current = false
     }
   }, [currentTime, setSavedTime])
