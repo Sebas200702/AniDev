@@ -80,7 +80,7 @@ export const useMusicPlayerSync = (
       }
 
       if (!isMinimized) {
-        navigate(`/music/${normalizeString(song.anime_title)}_${song.theme_id}`)
+        navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }
     }
 
