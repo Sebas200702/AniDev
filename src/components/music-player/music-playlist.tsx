@@ -1,6 +1,6 @@
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
@@ -13,21 +13,19 @@ export const MusicPlayList = () => {
 
   const filteredList = [...list].filter((_, index) => index >= currentSongIndex)
 
-  // Función para manejar el inicio del touch
+  // Manejadores para eventos touch
   const handleTouchStart = (e: React.TouchEvent, index: number) => {
     const touch = e.touches[0]
     touchStartPos.current = { x: touch.clientX, y: touch.clientY }
     draggedItemRef.current = e.currentTarget as HTMLDivElement
   }
 
-  // Función para manejar el movimiento del touch
   const handleTouchMove = (e: React.TouchEvent, index: number) => {
     if (!draggedItemRef.current) return
 
     const touch = e.touches[0]
     const deltaY = touch.clientY - touchStartPos.current.y
 
-    // Solo iniciar el drag si el movimiento vertical es significativo
     if (!isDragging && Math.abs(deltaY) > 10) {
       setIsDragging(true)
       setDraggedIndex(index)
@@ -36,10 +34,9 @@ export const MusicPlayList = () => {
     }
 
     if (isDragging) {
-      e.preventDefault() // Prevenir scroll mientras se arrastra
+      e.preventDefault()
       draggedItemRef.current.style.transform = `translateY(${deltaY}px)`
 
-      // Encontrar el elemento sobre el que estamos
       const elements = document.elementsFromPoint(touch.clientX, touch.clientY)
       const droppableElement = elements.find(el => 
         el.hasAttribute('data-index') && el !== draggedItemRef.current
@@ -54,39 +51,12 @@ export const MusicPlayList = () => {
     }
   }
 
-  // Función para manejar el fin del touch
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!isDragging || draggedIndex === null || dragOverIndex === null) {
-      resetDragState()
-      return
-    }
-
-    const newList = [...list]
-    const realDraggedIndex = currentSongIndex + draggedIndex
-    const realDropIndex = currentSongIndex + dragOverIndex
-
-    const draggedItem = newList.splice(realDraggedIndex, 1)[0]
-    const adjustedDropIndex =
-      realDraggedIndex < realDropIndex ? realDropIndex - 1 : realDropIndex
-    newList.splice(adjustedDropIndex, 0, draggedItem)
-
-    setList(newList)
+    handleReorder(draggedIndex, dragOverIndex)
     resetDragState()
   }
 
-  // Función para resetear el estado del drag
-  const resetDragState = () => {
-    if (draggedItemRef.current) {
-      draggedItemRef.current.style.transform = ''
-      draggedItemRef.current.style.opacity = ''
-    }
-    setIsDragging(false)
-    setDraggedIndex(null)
-    setDragOverIndex(null)
-    draggedItemRef.current = null
-  }
-
-  // Mantener el código existente para desktop
+  // Manejadores para eventos drag
   const handleDragStart = (e: React.DragEvent, index: number) => {
     setDraggedIndex(index)
     setIsDragging(true)
@@ -126,8 +96,11 @@ export const MusicPlayList = () => {
     }
   }
 
-  // Mantener los manejadores existentes
-  const handleDragEnd = handleTouchEnd
+  const handleDragEnd = (e: React.DragEvent) => {
+    handleReorder(draggedIndex, dragOverIndex)
+    resetDragState()
+  }
+
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
@@ -149,7 +122,39 @@ export const MusicPlayList = () => {
     }
   }
 
-  const handleDrop = handleTouchEnd
+  const handleDrop = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    handleReorder(draggedIndex, dragOverIndex)
+    resetDragState()
+  }
+
+  // Función auxiliar para reordenar la lista
+  const handleReorder = (fromIndex: number | null, toIndex: number | null) => {
+    if (fromIndex === null || toIndex === null || fromIndex === toIndex) return
+
+    const newList = [...list]
+    const realFromIndex = currentSongIndex + fromIndex
+    const realToIndex = currentSongIndex + toIndex
+
+    const [draggedItem] = newList.splice(realFromIndex, 1)
+    const adjustedToIndex =
+      realFromIndex < realToIndex ? realToIndex - 1 : realToIndex
+    newList.splice(adjustedToIndex, 0, draggedItem)
+
+    setList(newList)
+  }
+
+  // Función para resetear el estado
+  const resetDragState = () => {
+    if (draggedItemRef.current) {
+      draggedItemRef.current.style.transform = ''
+      draggedItemRef.current.style.opacity = ''
+    }
+    setIsDragging(false)
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+    draggedItemRef.current = null
+  }
 
   return (
     <section className="overflow-y-auto overflow-x-hidden p-2">
@@ -173,7 +178,7 @@ export const MusicPlayList = () => {
               onDragEnd={handleDragEnd}
               onDragOver={(e) => handleDragOver(e, index)}
               onDragLeave={(e) => handleDragLeave(e, index)}
-              onDrop={(e) => handleDrop(e as any, index)}
+              onDrop={(e) => handleDrop(e, index)}
               onTouchStart={(e) => handleTouchStart(e, index)}
               onTouchMove={(e) => handleTouchMove(e, index)}
               onTouchEnd={handleTouchEnd}
