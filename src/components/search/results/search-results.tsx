@@ -83,15 +83,25 @@ export const SearchResults = () => {
   if (results?.length === 0 && (query || appliedFilters) && !loading)
     return <NotResultsFound />
 
+  const isAnimeData = (data: any[]): data is AnimeCardInfo[] => {
+    return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
+  }
+
+  const isMusicData = (data: any[]): data is AnimeSongWithImage[] => {
+    return data.length > 0 && 'song_id' in data[0]
+  }
+
   return (
     <ul
       className={`grid w-full grid-cols-2 gap-6 p-4 transition-opacity duration-500 md:grid-cols-4 md:gap-8 md:px-20 xl:grid-cols-6 xl:px-30`}
     >
-      {type === 'music'
+      {type === 'music' && results && isMusicData(results)
         ? (results as AnimeSongWithImage[])?.map((song) => (
             <MusicCard key={song.song_id} song={song} />
           ))
-        : (results as AnimeCardInfo[])?.map((anime) => (
+        : results &&
+          isAnimeData(results) &&
+          (results as AnimeCardInfo[])?.map((anime) => (
             <AnimeCard key={anime.mal_id} anime={anime} />
           ))}
       {isLoadingMore && renderLoadingCards()}
