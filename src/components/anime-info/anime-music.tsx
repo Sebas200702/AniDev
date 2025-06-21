@@ -95,11 +95,13 @@ export const AnimeMusic = ({
       <div className="bg-Complementary z-10 flex flex-col gap-4 rounded-lg p-4">
         <h2 className="text-2xl font-bold">Anime Music</h2>
         <ul className="flex flex-col gap-4">
-          {Array.from({ length: 4 }).map((_, index) => (
+          {Array.from({ length: 4 }, (_, i) => (
             <div
-              key={index}
-              className="h-28 animate-pulse rounded-lg bg-zinc-700"
-            />
+              key={i + 1}
+              className="bg-Complementary mx-auto flex aspect-[100/28] h-full w-full animate-pulse flex-row rounded-lg"
+            >
+              <div className="aspect-[225/330] h-full animate-pulse rounded-l-lg bg-zinc-800 object-cover object-center transition-all ease-in-out"></div>
+            </div>
           ))}
         </ul>
       </div>
