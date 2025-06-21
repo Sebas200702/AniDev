@@ -25,6 +25,7 @@ export const AnimeMusicItem = ({
   showDragHandle?: boolean
 }) => {
   const [heights, setHeights] = useState([0, 0, 0, 0])
+  const { setSearchIsOpen } = useSearchStoreResults()
 
   const { isPlaying, currentSong, list, playerRef, canPlay, isMinimized } =
     useMusicPlayerStore()
@@ -78,14 +79,13 @@ export const AnimeMusicItem = ({
         return 'bg-gray-500/20 text-gray-300 border-gray-500/30'
     }
   }
-  const { setSearchIsOpen } = useSearchStoreResults()
 
   return (
     <li className="group relative transition-all duration-300 ease-in-out md:hover:translate-x-2">
       <article
         onClick={() => handleClick()}
         title={song.song_title}
-        className="hover:bg-Primary-900 group border-enfasisColor group relative flex aspect-[100/28] h-full w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2"
+        className="hover:bg-Primary-900 group border-enfasisColor group relative flex w-full h-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2 aspect-[100/28] md:max-h-36"
       >
         <Picture
           image={placeholder}
