@@ -141,7 +141,7 @@ export const MusicPlayList = () => {
 
                 {/* Contenedor del AnimeMusicItem con padding para el drag handle */}
                 <div className={`
-                  w-full pl-10 md:pl-0
+                  w-full pl-4 md:pl-0
                   ${isDraggedItem ? 'pointer-events-none' : ''}
                 `}>
                   <AnimeMusicItem
