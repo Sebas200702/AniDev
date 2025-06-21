@@ -53,10 +53,11 @@ export const MusicPlayer = () => {
     const nextSong = list[currentSongIndex + 1]
     const timeRemaining = duration - currentTime
 
-    if (timeRemaining <= 10 && timeRemaining > 0 && nextSong && !toastShown) {
+    if (timeRemaining <= 8 && timeRemaining > 0 && nextSong && !toastShown) {
       toast[ToastType.Info]({
         text: `${nextSong.song_title} - ${nextSong.artist_name}`,
         description: 'Up Next',
+        delayDuration: timeRemaining * 1000,
         icon: (
           <Picture
             image={nextSong.placeholder}
