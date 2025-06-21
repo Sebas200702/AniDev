@@ -100,13 +100,13 @@ export const useMusicPlayerSync = (
     player,
   ])
 
-  // Detectar cambio de canción y resetear tiempo
+
   useEffect(() => {
     if (!currentSong) return
 
     const currentSongId = currentSong.song_id
 
-    // Si cambió la canción, resetear tiempo
+
     if (
       previousSongId.current &&
       previousSongId.current !== currentSongId.toString()
@@ -114,7 +114,6 @@ export const useMusicPlayerSync = (
       isChangingSong.current = true
       setSavedTime(0)
 
-      // Resetear el tiempo del player
       if (player.current) {
         player.current.currentTime = 0
       }
@@ -122,7 +121,7 @@ export const useMusicPlayerSync = (
 
     previousSongId.current = currentSongId.toString()
 
-    // Actualizar src según el tipo
+
     if (type === 'audio') {
       setSrc(currentSong.audio_url)
     }
@@ -139,7 +138,6 @@ export const useMusicPlayerSync = (
     setCanPlay(canPlay)
   }, [canPlay, setCanPlay])
 
-  // Auto-avanzar a la siguiente canción cuando termine
   useEffect(() => {
     if (
       savedTime !== duration ||
@@ -169,12 +167,12 @@ export const useMusicPlayerSync = (
     setSavedTime,
   ])
 
-  // Sincronizar currentTime con savedTime (solo si no estamos cambiando canción)
+
   useEffect(() => {
     if (currentTime && !isChangingSong.current) {
       setSavedTime(currentTime)
     } else if (isChangingSong.current && currentTime === 0) {
-      // Resetear la bandera cuando efectivamente el tiempo sea 0
+
       isChangingSong.current = false
     }
   }, [currentTime, setSavedTime])
