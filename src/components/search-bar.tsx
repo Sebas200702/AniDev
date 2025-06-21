@@ -212,6 +212,15 @@ export const SearchBar = () => {
     })
   }, [trackSearchHistory, query, appliedFilters])
 
+  // Función helper para verificar si los datos son del tipo correcto
+  const isAnimeData = (data: any[]): data is AnimeDetail[] => {
+    return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
+  }
+
+  const isMusicData = (data: any[]): data is AnimeSongWithImage[] => {
+    return data.length > 0 && 'song_id' in data[0]
+  }
+
   return (
     <div
       id="search-bar-container"
@@ -306,20 +315,31 @@ export const SearchBar = () => {
           </div>
         )}
 
-        {!isLoading && type === 'animes'
-          ? (animesFull as AnimeDetail[])?.map((result) => (
+        {!isLoading &&
+        !isLoadingFull &&
+        animesFull &&
+        type === 'animes' &&
+        isAnimeData(animesFull)
+          ? animesFull.map((result) => (
               <AnimeDetailCard key={result.mal_id} anime={result} />
             ))
-          : (animesFull as AnimeSongWithImage[])?.map((result) => (
-              <AnimeMusicItem
-                key={result.song_id}
-                song={result}
-                image={result.image}
-                placeholder={result.placeholder}
-                banner_image={result.banner_image}
-                anime_title={result.anime_title}
-              />
-            ))}
+          : !isLoading &&
+              !isLoadingFull &&
+              animesFull &&
+              type === 'music' &&
+              isMusicData(animesFull)
+            ? animesFull.map((result) => (
+                <AnimeMusicItem
+                  key={result.song_id}
+                  song={result}
+                  image={result.image}
+                  placeholder={result.placeholder}
+                  banner_image={result.banner_image}
+                  anime_title={result.anime_title}
+                />
+              ))
+            : null}
+
         {results &&
           results?.length > 7 &&
           !isLoading &&
