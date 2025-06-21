@@ -40,12 +40,14 @@ export const MusicPlayList = () => {
       draggedItemRef.current.style.transform = `translateY(${deltaY}px)`
 
       const elements = document.elementsFromPoint(touch.clientX, touch.clientY)
-      const droppableElement = elements.find(el => 
-        el.hasAttribute('data-index') && el !== draggedItemRef.current
+      const droppableElement = elements.find(
+        (el) => el.hasAttribute('data-index') && el !== draggedItemRef.current
       ) as HTMLElement
 
       if (droppableElement) {
-        const newIndex = parseInt(droppableElement.getAttribute('data-index') || '-1')
+        const newIndex = parseInt(
+          droppableElement.getAttribute('data-index') || '-1'
+        )
         if (newIndex !== -1 && newIndex !== dragOverIndex) {
           setDragOverIndex(newIndex)
         }
@@ -54,7 +56,11 @@ export const MusicPlayList = () => {
   }
 
   const handleTouchEnd = () => {
-    if (draggedIndex === null || dragOverIndex === null || draggedIndex === dragOverIndex) {
+    if (
+      draggedIndex === null ||
+      dragOverIndex === null ||
+      draggedIndex === dragOverIndex
+    ) {
       resetDragState()
       return
     }
@@ -84,7 +90,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="overflow-y-auto overflow-x-hidden p-2">
+    <section className="overflow-y-auto overflow-x-hidden p-2 max-h-96 xl:max-h-[80%] no-scrollbar">
       <header className="mb-6">
         <h2 className="text-xl">Currently Playing</h2>
       </header>
@@ -112,8 +118,8 @@ export const MusicPlayList = () => {
                 onTouchMove={(e) => handleTouchMove(e, index)}
                 onTouchEnd={handleTouchEnd}
               >
-                {/* Drag Handle Icon */}
-                <div className="drag-handle md:hidden absolute left-2 z-20 touch-none flex items-center justify-center w-8 h-full cursor-grab active:cursor-grabbing">
+
+                <div className="drag-handle md:hidden absolute left-0 z-20 touch-none flex items-center justify-center w-8 h-full cursor-grab active:cursor-grabbing">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -130,20 +136,18 @@ export const MusicPlayList = () => {
                     <circle cx="15" cy="18" r="2" />
                   </svg>
                 </div>
-
-                {/* Indicador visual para el drop target */}
                 {isDropTarget && (
                   <>
                     <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
-                    <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none aspect-[100/28]" />
+                    <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none aspect-[100/28] ml-8 md:ml-0" />
                   </>
                 )}
-
-                {/* Contenedor del AnimeMusicItem con padding para el drag handle */}
-                <div className={`
-                  w-full pl-4 md:pl-0
+                <div
+                  className={`
+                  w-full pl-8 md:pl-0
                   ${isDraggedItem ? 'pointer-events-none' : ''}
-                `}>
+                `}
+                >
                   <AnimeMusicItem
                     song={song}
                     anime_title={song.anime_title}
