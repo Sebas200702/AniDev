@@ -11,6 +11,7 @@ export const Music = ({ themeId }: { themeId: string }) => {
     setSavedTime,
     list,
     setList,
+    currentSongIndex,
     currentSong,
   } = useMusicPlayerStore()
 
@@ -33,16 +34,32 @@ export const Music = ({ themeId }: { themeId: string }) => {
         const existingSongIndex = list.findIndex(
           (song) => song.song_id === newSong.song_id
         )
-        setVariants(data)
 
-        if (!currentSong || currentSong.song_id !== newSong.song_id) {
+        if (existingSongIndex !== -1) {
           setCurrentSong(newSong)
           setSavedTime(0)
+          setVariants(data)
+          setError(null)
+          return
         }
-        if (existingSongIndex !== -1) return
 
-        const updatedList = [newSong, ...list]
+        let updatedList
+
+        if (list.length === 0) {
+          updatedList = [newSong]
+        } else {
+          const playedSongs = list.slice(0, currentSongIndex + 1)
+
+          const remainingSongs = list.slice(currentSongIndex + 1)
+
+          updatedList = [...playedSongs, newSong, ...remainingSongs]
+        }
+
         setList(updatedList)
+        setVariants(data)
+
+        setCurrentSong(newSong)
+        setSavedTime(0)
 
         setError(null)
       } catch (error) {
