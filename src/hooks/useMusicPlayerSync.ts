@@ -39,6 +39,21 @@ export const useMusicPlayerSync = (
     setCurrentSongIndex(songIndex)
   }, [currentSong, setCurrentSongIndex, list])
 
+  // Separamos la actualización del estado de posición en su propio useEffect
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !currentSong || !duration) return
+
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: duration,
+        playbackRate: 1.0,
+        position: Math.min(currentTime || 0, duration),
+      })
+    } catch (error) {
+      console.warn('Error setting media session position state:', error)
+    }
+  }, [currentTime, duration, currentSong])
+
   useEffect(() => {
     if (!('mediaSession' in navigator) || !currentSong) return
 
@@ -57,18 +72,6 @@ export const useMusicPlayerSync = (
     })
 
     mediaSession.playbackState = playing ? 'playing' : 'paused'
-
-    if (duration > 0) {
-      try {
-        mediaSession.setPositionState({
-          duration: duration,
-          playbackRate: 1.0,
-          position: Math.min(currentTime || 0, duration),
-        })
-      } catch (error) {
-        console.warn('Error setting media session position state:', error)
-      }
-    }
 
     const navigateToSong = (song: AnimeSongWithImage) => {
       isChangingSong.current = true
@@ -126,8 +129,6 @@ export const useMusicPlayerSync = (
     currentSong,
     currentSongIndex,
     playing,
-    currentTime,
-    duration,
     list,
     isMinimized,
     setCurrentSong,
