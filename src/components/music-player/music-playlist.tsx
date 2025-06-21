@@ -126,7 +126,7 @@ export const MusicPlayList = () => {
             draggedIndex !== index
 
           return (
-            <li
+            <div
               key={song.song_id}
               draggable
               onDragStart={(e) => handleDragStart(e, index)}
@@ -148,7 +148,7 @@ export const MusicPlayList = () => {
                 <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
               )}
 
-              {/* Overlay durante el drag */}
+
               {isDropTarget && (
                 <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 pointer-events-none" />
               )}
@@ -163,7 +163,7 @@ export const MusicPlayList = () => {
                   showDragHandle={true}
                 />
               </div>
-            </li>
+            </div>
           )
         })}
       </ul>
