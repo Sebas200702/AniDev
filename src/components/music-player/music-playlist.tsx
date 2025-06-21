@@ -7,17 +7,19 @@ export const MusicPlayList = () => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const draggedItemRef = useRef<HTMLDivElement | null>(null)
 
   const filteredList = [...list].filter((_, index) => index >= currentSongIndex)
 
-  // Manejadores para eventos touch
   const handleTouchStart = (e: React.TouchEvent, index: number) => {
+    // Solo iniciar si el touch comenzó en el drag handle
+    if (!(e.target as HTMLElement).closest('.drag-handle')) return
+
     const touch = e.touches[0]
     touchStartPos.current = { x: touch.clientX, y: touch.clientY }
     draggedItemRef.current = e.currentTarget as HTMLDivElement
+    e.stopPropagation()
   }
 
   const handleTouchMove = (e: React.TouchEvent, index: number) => {
@@ -51,100 +53,25 @@ export const MusicPlayList = () => {
     }
   }
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    handleReorder(draggedIndex, dragOverIndex)
-    resetDragState()
-  }
-
-  // Manejadores para eventos drag
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggedIndex(index)
-    setIsDragging(true)
-    dragStartPos.current = { x: e.clientX, y: e.clientY }
-    e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/plain', index.toString())
-
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    if (ctx) {
-      canvas.width = 300
-      canvas.height = 80
-
-      ctx.fillStyle = 'rgba(39, 39, 42, 0.95)'
-      ctx.fillRect(0, 0, 300, 80)
-
-      ctx.strokeStyle = 'rgb(59, 130, 246)'
-      ctx.lineWidth = 2
-      ctx.strokeRect(1, 1, 298, 78)
-
-      ctx.fillStyle = 'white'
-      ctx.font = '14px sans-serif'
-      ctx.fillText(
-        filteredList[index].song_title.substring(0, 30) + '...',
-        10,
-        30
-      )
-      ctx.fillStyle = 'rgb(156, 163, 175)'
-      ctx.font = '12px sans-serif'
-      ctx.fillText(
-        (filteredList[index].artist_name ?? '').substring(0, 35) + '...',
-        10,
-        50
-      )
-
-      e.dataTransfer.setDragImage(canvas, 150, 40)
+  const handleTouchEnd = () => {
+    if (draggedIndex === null || dragOverIndex === null || draggedIndex === dragOverIndex) {
+      resetDragState()
+      return
     }
-  }
-
-  const handleDragEnd = (e: React.DragEvent) => {
-    handleReorder(draggedIndex, dragOverIndex)
-    resetDragState()
-  }
-
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-
-    if (draggedIndex !== null && draggedIndex !== index) {
-      setDragOverIndex(index)
-    }
-  }
-
-  const handleDragLeave = (e: React.DragEvent, index: number) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    if (
-      e.clientX < rect.left ||
-      e.clientX > rect.right ||
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom
-    ) {
-      setDragOverIndex(null)
-    }
-  }
-
-  const handleDrop = (e: React.DragEvent, index: number) => {
-    e.preventDefault()
-    handleReorder(draggedIndex, dragOverIndex)
-    resetDragState()
-  }
-
-  // Función auxiliar para reordenar la lista
-  const handleReorder = (fromIndex: number | null, toIndex: number | null) => {
-    if (fromIndex === null || toIndex === null || fromIndex === toIndex) return
 
     const newList = [...list]
-    const realFromIndex = currentSongIndex + fromIndex
-    const realToIndex = currentSongIndex + toIndex
+    const realDraggedIndex = currentSongIndex + draggedIndex
+    const realDropIndex = currentSongIndex + dragOverIndex
 
-    const [draggedItem] = newList.splice(realFromIndex, 1)
-    const adjustedToIndex =
-      realFromIndex < realToIndex ? realToIndex - 1 : realToIndex
-    newList.splice(adjustedToIndex, 0, draggedItem)
+    const draggedItem = newList.splice(realDraggedIndex, 1)[0]
+    const adjustedDropIndex =
+      realDraggedIndex < realDropIndex ? realDropIndex - 1 : realDropIndex
+    newList.splice(adjustedDropIndex, 0, draggedItem)
 
     setList(newList)
+    resetDragState()
   }
 
-  // Función para resetear el estado
   const resetDragState = () => {
     if (draggedItemRef.current) {
       draggedItemRef.current.style.transform = ''
@@ -173,42 +100,58 @@ export const MusicPlayList = () => {
             <div
               key={song.song_id}
               data-index={index}
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragEnd={handleDragEnd}
-              onDragOver={(e) => handleDragOver(e, index)}
-              onDragLeave={(e) => handleDragLeave(e, index)}
-              onDrop={(e) => handleDrop(e, index)}
-              onTouchStart={(e) => handleTouchStart(e, index)}
-              onTouchMove={(e) => handleTouchMove(e, index)}
-              onTouchEnd={handleTouchEnd}
               className={`
                 relative transition-all duration-200 ease-in-out
                 ${isDraggedItem ? 'opacity-50 scale-98' : ''}
                 ${isDropTarget ? 'transform translate-y-1' : ''}
-                touch-none
               `}
-              style={{
-                cursor: isDraggedItem ? 'grabbing' : 'grab',
-              }}
             >
-              {isDropTarget && (
-                <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
-              )}
+              <div
+                className="relative flex items-center"
+                onTouchStart={(e) => handleTouchStart(e, index)}
+                onTouchMove={(e) => handleTouchMove(e, index)}
+                onTouchEnd={handleTouchEnd}
+              >
+                {/* Drag Handle Icon */}
+                <div className="drag-handle md:hidden absolute left-2 z-20 touch-none flex items-center justify-center w-8 h-full cursor-grab active:cursor-grabbing">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="text-gray-400"
+                  >
+                    <circle cx="9" cy="6" r="2" />
+                    <circle cx="9" cy="12" r="2" />
+                    <circle cx="9" cy="18" r="2" />
+                    <circle cx="15" cy="6" r="2" />
+                    <circle cx="15" cy="12" r="2" />
+                    <circle cx="15" cy="18" r="2" />
+                  </svg>
+                </div>
 
-              {isDropTarget && (
-                <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none aspect-[100/28]" />
-              )}
+                {/* Indicador visual para el drop target */}
+                {isDropTarget && (
+                  <>
+                    <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
+                    <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none aspect-[100/28]" />
+                  </>
+                )}
 
-              <div className={`${isDraggedItem ? 'pointer-events-none' : ''}`}>
-                <AnimeMusicItem
-                  song={song}
-                  anime_title={song.anime_title}
-                  banner_image={song.banner_image}
-                  image={song.image}
-                  placeholder={song.placeholder}
-                  showDragHandle={true}
-                />
+                {/* Contenedor del AnimeMusicItem con padding para el drag handle */}
+                <div className={`
+                  w-full pl-10 md:pl-0
+                  ${isDraggedItem ? 'pointer-events-none' : ''}
+                `}>
+                  <AnimeMusicItem
+                    song={song}
+                    anime_title={song.anime_title}
+                    banner_image={song.banner_image}
+                    image={song.image}
+                    placeholder={song.placeholder}
+                  />
+                </div>
               </div>
             </div>
           )
