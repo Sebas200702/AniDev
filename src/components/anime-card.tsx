@@ -136,12 +136,12 @@ export const AnimeCard = ({ anime }: Props) => {
             class={`h-3 w-full max-w-3 rounded-full ${statusColors(status)} relative`}
             status={status}
           />
-          <span
+          <h3
             className={`${genreToColor(genres?.[0] ?? '')} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
-            aria-hidden="true"
+
           >
             {title}
-          </span>
+          </h3>
         </footer>
       </a>
       <div className="absolute top-2 -right-3">
