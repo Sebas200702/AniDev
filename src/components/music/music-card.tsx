@@ -79,10 +79,10 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
       </div>
 
       <footer className="space-y-2 mt-2 w-full">
-        <h3 className="font-semibold text-white text-lg line-clamp-2 group-hover:underline">
+        <h3 className="font-semibold text-white md:text-md   line-clamp-1 group-hover:underline">
           {song.song_title}
         </h3>
-        <p className="text-neutral-400 text-sm line-clamp-1">
+        <p className="text-neutral-400 md:text-sm text-xs line-clamp-1">
           {song.artist_name || 'Unknown Artist'}
         </p>
         <button
@@ -95,7 +95,7 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
 
       <div
         ref={menuRef}
-        className="absolute z-50 bg-zinc-900/95 backdrop-blur-md shadow-2xl border border-zinc-700/50 rounded-lg min-w-[180px] max-w-[220px] p-1 right-8 translate-y-1/2 translate-x-full flex-col hidden transition-all duration-200 ease-out"
+        className="absolute z-50 bg-zinc-900/95 backdrop-blur-md shadow-2xl border border-zinc-700/50 rounded-lg md:min-w-[180px] md:max-w-[220px] p-1 right-8 md:translate-y-1/2 md:translate-x-full  flex-col hidden transition-all duration-200 ease-out"
       >
 
         <AddToPlayListButton song={song} isInPlayList={isInPlaylist} clasName='w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group' label={`${!isInPlaylist ? 'Add' : 'Remove'} `}/>
