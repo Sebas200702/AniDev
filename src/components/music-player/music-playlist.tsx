@@ -1,7 +1,7 @@
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { useRef, useState } from 'react'
-import type { AnimeSongWithImage } from 'types'
+
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
@@ -10,7 +10,6 @@ export const MusicPlayList = () => {
   const [isDragging, setIsDragging] = useState(false)
   const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
-  // Filtrar la lista desde el índice actual
   const filteredList = [...list].filter((_, index) => index >= currentSongIndex)
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -20,23 +19,19 @@ export const MusicPlayList = () => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', index.toString())
 
-    // Crear una imagen de drag más simple y controlada
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
     if (ctx) {
       canvas.width = 300
       canvas.height = 80
 
-      // Fondo
       ctx.fillStyle = 'rgba(39, 39, 42, 0.95)'
       ctx.fillRect(0, 0, 300, 80)
 
-      // Borde
       ctx.strokeStyle = 'rgb(59, 130, 246)'
       ctx.lineWidth = 2
       ctx.strokeRect(1, 1, 298, 78)
 
-      // Texto
       ctx.fillStyle = 'white'
       ctx.font = '14px sans-serif'
       ctx.fillText(
@@ -113,7 +108,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section>
+    <section className=" overflow-y-auto overflow-x-hidden p-2">
       <header className="mb-6">
         <h2 className="text-xl">Currently Playing</h2>
       </header>
@@ -148,9 +143,8 @@ export const MusicPlayList = () => {
                 <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
               )}
 
-
               {isDropTarget && (
-                <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 pointer-events-none" />
+                <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 pointer-events-none aspect-[100/28]" />
               )}
 
               <div className={`${isDraggedItem ? 'pointer-events-none' : ''}`}>
