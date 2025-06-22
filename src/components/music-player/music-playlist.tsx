@@ -25,7 +25,6 @@ export const MusicPlayList = () => {
   }
 
   const handlePointerDown = (e: React.PointerEvent, index: number) => {
-    // En móviles (touch), solo iniciar si el toque es en el handler
     if (e.pointerType === 'touch' && !(e.target as HTMLElement).closest('.drag-handle')) {
       return
     }
@@ -67,8 +66,7 @@ export const MusicPlayList = () => {
     const realDragged = currentSongIndex + draggedIndex
     const realDrop = currentSongIndex + dragOverIndex
     const [item] = newList.splice(realDragged, 1)
-    const dropIdx = realDragged < realDrop ? realDrop - 1 : realDrop
-    newList.splice(dropIdx, 0, item)
+    newList.splice(realDrop, 0, item)
     setList(newList)
     resetDragState()
   }
@@ -106,20 +104,24 @@ export const MusicPlayList = () => {
       {upcomingList.length > 0 && (
         <>
           <h3 className="text-lg mb-2">Up next</h3>
-          <ul ref={listRef} className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
+          <ul ref={listRef} className="flex flex-col gap-4">
             {upcomingList.map((song, i) => {
               const index = i + 1
               const isDragged = draggedIndex === index
               const isDrop = dragOverIndex === index && draggedIndex !== null && draggedIndex !== index
+
               return (
-                <div key={song.song_id} data-index={index}
-                  className={`relative transition-all duration-200 ease-in-out ${isDragged ? 'touch-none' : ''} ${isDrop ? 'transform translate-y-4' : ''}`}
+                <div
+                  key={song.song_id}
+                  data-index={index}
+                  className={`relative transition-all duration-200 ease-in-out flex items-center ${isDragged ? 'touch-none' : ''} ${isDrop ? 'translate-y-4' : ''}`}
                   onPointerDown={e => handlePointerDown(e, index)}
                   onPointerMove={handlePointerMove}
                   onPointerUp={handlePointerUp}
                 >
-                  <div className="drag-handle absolute left-0 z-20 flex items-center justify-center w-12 h-full md:hidden">
-                    <div className="w-8 h-12 flex items-center justify-center bg-zinc-800/50 rounded-l-lg">
+                  {/* Drag handle outside of the item */}
+                  <div className="drag-handle mr-2 md:hidden flex items-center justify-center">
+                    <div className="w-8 h-12 flex items-center justify-center bg-zinc-800/50 rounded-lg">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-400">
                         <circle cx="9" cy="6" r="2" />
                         <circle cx="9" cy="12" r="2" />
@@ -130,12 +132,16 @@ export const MusicPlayList = () => {
                       </svg>
                     </div>
                   </div>
+
+                  {/* Drop indicator overlay */}
                   {isDrop && (
                     <>
                       <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
                       <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 pointer-events-none" />
                     </>
                   )}
+
+                  {/* Item content */}
                   <div className={`w-full ${isDragging ? 'touch-none' : ''}`}>
                     <AnimeMusicItem
                       song={song}
@@ -146,7 +152,7 @@ export const MusicPlayList = () => {
                     />
                   </div>
                 </div>
-              )
+              )}
             })}
           </ul>
         </>
