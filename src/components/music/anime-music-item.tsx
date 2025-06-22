@@ -81,7 +81,7 @@ export const AnimeMusicItem = ({
   }
 
   return (
-    <li className="group relative transition-all duration-300 ease-in-out md:hover:translate-x-2">
+    <li className="group relative transition-all duration-300 ease-in-out marker:hidden md:hover:translate-x-2">
       <article
         onClick={() => handleClick()}
         title={song.song_title}

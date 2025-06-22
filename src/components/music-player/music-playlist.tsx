@@ -221,7 +221,7 @@ export const MusicPlayList = () => {
           <div className="flex items-center gap-4 mb-4">
             <div className="flex-1 h-px bg-gray-600/30"></div>
             <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-              A Continuación
+            Up next
             </h3>
             <div className="flex-1 h-px bg-gray-600/30"></div>
           </div>
