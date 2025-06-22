@@ -1,74 +1,72 @@
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useRef, useState, useMemo } from 'react'
+import { useRef, useState } from 'react'
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
-  const draggedItemRef = useRef<HTMLLIElement | null>(null)
+  const draggedItemRef = useRef<HTMLDivElement | null>(null)
 
   const currentSong = list[currentSongIndex]
-  const upcomingSongs = list.slice(currentSongIndex + 1)
+  const upcomingSongs = [...list].filter((_, index) => index > currentSongIndex)
 
-  // Memoizar detección de móvil
-  const isMobile = useMemo(() => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-      .test(navigator.userAgent)
-  }, [])
-
-  // Al tocar el handle
-  const handleTouchStartOnHandle = (
-    e: React.TouchEvent,
-    index: number
-  ) => {
-    e.stopPropagation()
-    const { clientX: x, clientY: y } = e.touches[0]
-    touchStartPos.current = { x, y }
-    const li = e.currentTarget.closest('li[data-index]') as HTMLLIElement
-    draggedItemRef.current = li
+  // Detectar si es dispositivo móvil
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768
   }
 
-  const handleTouchMoveOnHandle = (
-    e: React.TouchEvent,
-    index: number
-  ) => {
-    // parar scroll desde el primer momento
+  // Variables para manejar el drag en móvil
+  const [mobileDragActive, setMobileDragActive] = useState(false)
+  const mobileDragIndex = useRef<number | null>(null)
+
+  // Función para manejar el inicio del touch en el drag handle (solo móvil)
+  const handleTouchStartOnHandle = (e: React.TouchEvent, index: number) => {
     e.stopPropagation()
-    e.preventDefault()
+    const touch = e.touches[0]
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY }
+    mobileDragIndex.current = index
+    setMobileDragActive(true)
+    setDraggedIndex(index)
+  }
 
-    if (!draggedItemRef.current) return
+  // Función para manejar el movimiento del touch en el drag handle (solo móvil)
+  const handleTouchMoveOnHandle = (e: React.TouchEvent, index: number) => {
+    if (!mobileDragActive || mobileDragIndex.current !== index) return
 
-    const { clientY } = e.touches[0]
-    const deltaY = clientY - touchStartPos.current.y
+    const touch = e.touches[0]
+    const deltaY = touch.clientY - touchStartPos.current.y
 
-    if (!isDragging && Math.abs(deltaY) > 10) {
+    // Solo iniciar el drag visual si el movimiento vertical es significativo
+    if (!isDragging && Math.abs(deltaY) > 15) {
       setIsDragging(true)
-      setDraggedIndex(index)
-      // deshabilitar touch-action para que no scrollée
-      draggedItemRef.current.classList.add('touch-none')
-      draggedItemRef.current.style.opacity = '0.5'
+      // Encontrar el elemento li que contiene este drag handle
+      const liElement = e.currentTarget.closest('li[data-index]') as HTMLLIElement
+      if (liElement) {
+        draggedItemRef.current = liElement
+        liElement.style.transform = `translateY(${deltaY}px)`
+        liElement.style.opacity = '0.5'
+        liElement.style.zIndex = '50'
+      }
     }
 
-    if (isDragging) {
+    if (isDragging && draggedItemRef.current) {
+      e.preventDefault()
       draggedItemRef.current.style.transform = `translateY(${deltaY}px)`
 
-      // identificar elemento bajo el dedo
-      const elems = document.elementsFromPoint(
-        e.touches[0].clientX,
-        e.touches[0].clientY
-      )
-      const over = elems.find(
-        (el) => el instanceof HTMLElement
-          && el.hasAttribute('data-index')
-          && el !== draggedItemRef.current
-      ) as HTMLElement | undefined
+      // Encontrar el elemento sobre el que estamos
+      const elements = document.elementsFromPoint(touch.clientX, touch.clientY)
+      const droppableElement = elements.find(
+        (el) => el.tagName === 'LI' && el.hasAttribute('data-index') && el !== draggedItemRef.current
+      ) as HTMLElement
 
-      if (over) {
-        const newIndex = Number(over.getAttribute('data-index'))
-        if (newIndex !== dragOverIndex) {
+      if (droppableElement) {
+        const newIndex = parseInt(droppableElement.getAttribute('data-index') || '-1')
+        if (newIndex !== -1 && newIndex !== dragOverIndex) {
           setDragOverIndex(newIndex)
         }
       } else {
@@ -77,35 +75,36 @@ export const MusicPlayList = () => {
     }
   }
 
+  // Función para manejar el fin del touch en el drag handle (solo móvil)
   const handleTouchEndOnHandle = () => {
-    if (
-      !isDragging ||
-      draggedIndex === null ||
-      dragOverIndex === null ||
-      draggedIndex === dragOverIndex
-    ) {
-      cleanup()
-      return
+    if (mobileDragIndex.current === null) return
+
+    const draggedIdx = mobileDragIndex.current
+    
+    if (isDragging && dragOverIndex !== null && draggedIdx !== dragOverIndex) {
+      const newList = [...list]
+      const realDraggedIndex = currentSongIndex + 1 + draggedIdx
+      const realDropIndex = currentSongIndex + 1 + dragOverIndex
+
+      const draggedItem = newList.splice(realDraggedIndex, 1)[0]
+      const adjustedDropIndex = realDraggedIndex < realDropIndex ? realDropIndex - 1 : realDropIndex
+      newList.splice(adjustedDropIndex, 0, draggedItem)
+
+      setList(newList)
     }
 
-    // recalcular índices en la lista completa
-    const realFrom = currentSongIndex + 1 + draggedIndex
-    const realTo = currentSongIndex + 1 + dragOverIndex
-    const newList = [...list]
-    const [moved] = newList.splice(realFrom, 1)
-    // ajustar si baja
-    const insertAt = realFrom < realTo ? realTo - 1 : realTo
-    newList.splice(insertAt, 0, moved)
-
-    setList(newList)
-    cleanup()
+    // Reset todo el estado
+    setMobileDragActive(false)
+    mobileDragIndex.current = null
+    resetDragState()
   }
 
-  const cleanup = () => {
+  // Función para resetear el estado del drag
+  const resetDragState = () => {
     if (draggedItemRef.current) {
       draggedItemRef.current.style.transform = ''
       draggedItemRef.current.style.opacity = ''
-      draggedItemRef.current.classList.remove('touch-none')
+      draggedItemRef.current.style.zIndex = ''
     }
     setIsDragging(false)
     setDraggedIndex(null)
@@ -113,50 +112,228 @@ export const MusicPlayList = () => {
     draggedItemRef.current = null
   }
 
+  // Función para manejar el inicio del drag en desktop
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index)
+    setIsDragging(true)
+    dragStartPos.current = { x: e.clientX, y: e.clientY }
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', index.toString())
+
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      canvas.width = 300
+      canvas.height = 80
+
+      ctx.fillStyle = 'rgba(39, 39, 42, 0.95)'
+      ctx.fillRect(0, 0, 300, 80)
+
+      ctx.strokeStyle = 'rgb(59, 130, 246)'
+      ctx.lineWidth = 2
+      ctx.strokeRect(1, 1, 298, 78)
+
+      ctx.fillStyle = 'white'
+      ctx.font = '14px sans-serif'
+      ctx.fillText(
+        upcomingSongs[index].song_title.substring(0, 30) + '...',
+        10,
+        30
+      )
+      ctx.fillStyle = 'rgb(156, 163, 175)'
+      ctx.font = '12px sans-serif'
+      ctx.fillText(
+        (upcomingSongs[index].artist_name ?? '').substring(0, 35) + '...',
+        10,
+        50
+      )
+
+      e.dataTransfer.setDragImage(canvas, 150, 40)
+    }
+  }
+
+  // Función para manejar el dragover en desktop
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+
+    if (draggedIndex !== null && draggedIndex !== index) {
+      setDragOverIndex(index)
+    }
+  }
+
+  // Función para manejar el dragleave en desktop
+  const handleDragLeave = (e: React.DragEvent, index: number) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    if (
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      setDragOverIndex(null)
+    }
+  }
+
+  // Función para manejar el drop en desktop
+  const handleDrop = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+
+    if (
+      !isDragging ||
+      draggedIndex === null ||
+      dragOverIndex === null ||
+      draggedIndex === dragOverIndex
+    ) {
+      resetDragState()
+      return
+    }
+
+    const newList = [...list]
+    // Ajustar índices para las canciones siguientes (saltamos la actual)
+    const realDraggedIndex = currentSongIndex + 1 + draggedIndex
+    const realDropIndex = currentSongIndex + 1 + dragOverIndex
+
+    const draggedItem = newList.splice(realDraggedIndex, 1)[0]
+    const adjustedDropIndex =
+      realDraggedIndex < realDropIndex ? realDropIndex - 1 : realDropIndex
+    newList.splice(adjustedDropIndex, 0, draggedItem)
+
+    setList(newList)
+    resetDragState()
+  }
+
+  // Función para manejar el fin del drag en desktop
+  const handleDragEnd = () => {
+    resetDragState()
+  }
+
+  // Componente del icono de drag handle
   const DragHandle = ({ index }: { index: number }) => (
     <div
       className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 cursor-grab active:cursor-grabbing md:hidden touch-none"
       onTouchStart={(e) => handleTouchStartOnHandle(e, index)}
       onTouchMove={(e) => handleTouchMoveOnHandle(e, index)}
       onTouchEnd={handleTouchEndOnHandle}
+      style={{ touchAction: 'none' }}
     >
-      {/* icono… */}
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="text-gray-400"
+      >
+        <circle cx="9" cy="12" r="1" />
+        <circle cx="9" cy="5" r="1" />
+        <circle cx="9" cy="19" r="1" />
+        <circle cx="15" cy="12" r="1" />
+        <circle cx="15" cy="5" r="1" />
+        <circle cx="15" cy="19" r="1" />
+      </svg>
     </div>
   )
 
   return (
-    <section className="overflow-y-auto overflow-x-hidden p-2 max-h-96 no-scrollbar">
-      {/* … “Currently Playing” … */}
-      <ul className="grid grid-cols-1 gap-4 list-none">
-        {upcomingSongs.map((song, idx) => {
-          const isDragged = draggedIndex === idx
-          const isDropTarget = dragOverIndex === idx && draggedIndex !== null
+    <section className="overflow-y-auto overflow-x-hidden p-2 max-h-96 h-full xl:max-h-[700px] no-scrollbar">
+      <header className="mb-6">
+        <h2 className="text-xl">Currently Playing</h2>
+      </header>
 
-          return (
-            <li
-              key={song.song_id}
-              data-index={idx}
-              className={`
-                relative transition-all duration-200
-                ${isDragged ? 'opacity-50 scale-95' : ''}
-                ${isDropTarget ? 'translate-y-1' : ''}
-              `}
-            >
-              {isMobile && <DragHandle index={idx} />}
-              <div className={isMobile ? 'ml-8' : ''}>
-                <AnimeMusicItem
-                  song={song}
-                  anime_title={song.anime_title}
-                  banner_image={song.banner_image}
-                  image={song.image}
-                  placeholder={song.placeholder}
-                  showDragHandle={true}
-                />
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+      {currentSong && (
+        <div className="mb-8">
+          <div className="relative">
+            <AnimeMusicItem
+              song={currentSong}
+              anime_title={currentSong.anime_title}
+              banner_image={currentSong.banner_image}
+              image={currentSong.image}
+              placeholder={currentSong.placeholder}
+              showDragHandle={false}
+            />
+          </div>
+        </div>
+      )}
+
+      {upcomingSongs.length > 0 && (
+        <div className="mb-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="flex-1 h-px bg-gray-600/30"></div>
+            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+              Up next
+            </h3>
+            <div className="flex-1 h-px bg-gray-600/30"></div>
+          </div>
+        </div>
+      )}
+
+      {upcomingSongs.length > 0 && (
+        <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1 list-none">
+          {upcomingSongs.map((song, index) => {
+            const isDraggedItem = draggedIndex === index
+            const isDropTarget =
+              dragOverIndex === index &&
+              draggedIndex !== null &&
+              draggedIndex !== index
+
+            return (
+              <li
+                key={song.song_id}
+                data-index={index}
+                draggable={!isMobile()} // Solo draggable en desktop
+                onDragStart={!isMobile() ? (e) => handleDragStart(e, index) : undefined}
+                onDragEnd={!isMobile() ? handleDragEnd : undefined}
+                onDragOver={!isMobile() ? (e) => handleDragOver(e, index) : undefined}
+                onDragLeave={!isMobile() ? (e) => handleDragLeave(e, index) : undefined}
+                onDrop={!isMobile() ? (e) => handleDrop(e, index) : undefined}
+                className={`
+                  relative transition-all duration-200 ease-in-out
+                  ${isDraggedItem ? 'opacity-50 scale-98' : ''}
+                  ${isDropTarget ? 'transform translate-y-1' : ''}
+                  ${!isMobile() ? 'touch-none' : ''}
+                `}
+                style={{
+                  cursor: !isMobile() ? (isDraggedItem ? 'grabbing' : 'grab') : 'default',
+                }}
+              >
+                {isDropTarget && (
+                  <>
+                    {draggedIndex !== null && draggedIndex > index && (
+                      <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
+                    )}
+
+                    {draggedIndex !== null && draggedIndex < index && (
+                      <div className="absolute -bottom-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
+                    )}
+
+                    <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none" />
+                  </>
+                )}
+
+                {/* Drag Handle para móvil */}
+                {isMobile() && <DragHandle index={index} />}
+
+                <div
+                  className={`${isDraggedItem ? 'pointer-events-none' : ''} ${isMobile() ? 'ml-8' : ''}`}
+                >
+                  <AnimeMusicItem
+                    song={song}
+                    anime_title={song.anime_title}
+                    banner_image={song.banner_image}
+                    image={song.image}
+                    placeholder={song.placeholder}
+                    showDragHandle={true}
+                  />
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      )}
     </section>
   )
 }
