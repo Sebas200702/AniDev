@@ -199,7 +199,6 @@ export const MusicPlayList = () => {
         <h2 className="text-xl">Currently Playing</h2>
       </header>
 
-      {/* Canción Actual */}
       {currentSong && (
         <div className="mb-8">
           <div className="relative">
@@ -215,7 +214,7 @@ export const MusicPlayList = () => {
         </div>
       )}
 
-      {/* Separador y Subtítulo */}
+
       {upcomingSongs.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center gap-4 mb-4">
@@ -228,7 +227,6 @@ export const MusicPlayList = () => {
         </div>
       )}
 
-      {/* Lista de Canciones Siguientes */}
       {upcomingSongs.length > 0 && (
         <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
           {upcomingSongs.map((song, index) => {
@@ -263,17 +261,17 @@ export const MusicPlayList = () => {
               >
                 {isDropTarget && (
                   <>
-                    {/* Indicador superior - cuando se arrastra hacia arriba */}
+
                     {draggedIndex !== null && draggedIndex > index && (
                       <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
                     )}
 
-                    {/* Indicador inferior - cuando se arrastra hacia abajo */}
+            
                     {draggedIndex !== null && draggedIndex < index && (
                       <div className="absolute -bottom-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
                     )}
 
-                    {/* Overlay de fondo */}
+
                     <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none" />
                   </>
                 )}
