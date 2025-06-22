@@ -14,15 +14,22 @@ export const MusicPlayList = () => {
   const currentSong = list[currentSongIndex]
   const upcomingSongs = [...list].filter((_, index) => index > currentSongIndex)
 
-  // Función para manejar el inicio del touch
-  const handleTouchStart = (e: React.TouchEvent, index: number) => {
-    const touch = e.touches[0]
-    touchStartPos.current = { x: touch.clientX, y: touch.clientY }
-    draggedItemRef.current = e.currentTarget as HTMLDivElement
+  // Detectar si es dispositivo móvil
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768
   }
 
-  // Función para manejar el movimiento del touch
-  const handleTouchMove = (e: React.TouchEvent, index: number) => {
+  // Función para manejar el inicio del touch en el drag handle (solo móvil)
+  const handleTouchStartOnHandle = (e: React.TouchEvent, index: number) => {
+    e.stopPropagation() // Evitar que se propague al contenedor
+    const touch = e.touches[0]
+    touchStartPos.current = { x: touch.clientX, y: touch.clientY }
+    draggedItemRef.current = e.currentTarget.closest('[data-index]') as HTMLDivElement
+  }
+
+  // Función para manejar el movimiento del touch en el drag handle (solo móvil)
+  const handleTouchMoveOnHandle = (e: React.TouchEvent, index: number) => {
     if (!draggedItemRef.current) return
 
     const touch = e.touches[0]
@@ -59,8 +66,8 @@ export const MusicPlayList = () => {
     }
   }
 
-  // Función para manejar el fin del touch
-  const handleTouchEnd = () => {
+  // Función para manejar el fin del touch en el drag handle (solo móvil)
+  const handleTouchEndOnHandle = () => {
     if (
       !isDragging ||
       draggedIndex === null ||
@@ -193,6 +200,35 @@ export const MusicPlayList = () => {
     resetDragState()
   }
 
+  // Componente del icono de drag handle
+  const DragHandle = ({ index }: { index: number }) => (
+    <div
+      className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 cursor-grab active:cursor-grabbing md:hidden"
+      onTouchStart={(e) => handleTouchStartOnHandle(e, index)}
+      onTouchMove={(e) => handleTouchMoveOnHandle(e, index)}
+      onTouchEnd={handleTouchEndOnHandle}
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="text-gray-400"
+      >
+        <circle cx="9" cy="12" r="1" />
+        <circle cx="9" cy="5" r="1" />
+        <circle cx="9" cy="19" r="1" />
+        <circle cx="15" cy="12" r="1" />
+        <circle cx="15" cy="5" r="1" />
+        <circle cx="15" cy="19" r="1" />
+      </svg>
+    </div>
+  )
+
   return (
     <section className="overflow-y-auto overflow-x-hidden p-2 max-h-96 h-full xl:max-h-[700px] no-scrollbar">
       <header className="mb-6">
@@ -214,13 +250,12 @@ export const MusicPlayList = () => {
         </div>
       )}
 
-
       {upcomingSongs.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="flex-1 h-px bg-gray-600/30"></div>
             <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-            Up next
+              Up next
             </h3>
             <div className="flex-1 h-px bg-gray-600/30"></div>
           </div>
@@ -228,7 +263,7 @@ export const MusicPlayList = () => {
       )}
 
       {upcomingSongs.length > 0 && (
-        <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
+        <ul className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1 list-none">
           {upcomingSongs.map((song, index) => {
             const isDraggedItem = draggedIndex === index
             const isDropTarget =
@@ -237,47 +272,44 @@ export const MusicPlayList = () => {
               draggedIndex !== index
 
             return (
-              <div
+              <li
                 key={song.song_id}
                 data-index={index}
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragEnd={handleDragEnd}
-                onDragOver={(e) => handleDragOver(e, index)}
-                onDragLeave={(e) => handleDragLeave(e, index)}
-                onDrop={(e) => handleDrop(e, index)}
-                onTouchStart={(e) => handleTouchStart(e, index)}
-                onTouchMove={(e) => handleTouchMove(e, index)}
-                onTouchEnd={handleTouchEnd}
+                draggable={!isMobile()} // Solo draggable en desktop
+                onDragStart={!isMobile() ? (e) => handleDragStart(e, index) : undefined}
+                onDragEnd={!isMobile() ? handleDragEnd : undefined}
+                onDragOver={!isMobile() ? (e) => handleDragOver(e, index) : undefined}
+                onDragLeave={!isMobile() ? (e) => handleDragLeave(e, index) : undefined}
+                onDrop={!isMobile() ? (e) => handleDrop(e, index) : undefined}
                 className={`
                   relative transition-all duration-200 ease-in-out
                   ${isDraggedItem ? 'opacity-50 scale-98' : ''}
                   ${isDropTarget ? 'transform translate-y-1' : ''}
-                  touch-none
+                  ${!isMobile() ? 'touch-none' : ''}
                 `}
                 style={{
-                  cursor: isDraggedItem ? 'grabbing' : 'grab',
+                  cursor: !isMobile() ? (isDraggedItem ? 'grabbing' : 'grab') : 'default',
                 }}
               >
                 {isDropTarget && (
                   <>
-
                     {draggedIndex !== null && draggedIndex > index && (
                       <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
                     )}
 
-            
                     {draggedIndex !== null && draggedIndex < index && (
                       <div className="absolute -bottom-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
                     )}
-
 
                     <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 md:max-h-36 pointer-events-none" />
                   </>
                 )}
 
+                {/* Drag Handle para móvil */}
+                {isMobile() && <DragHandle index={index} />}
+
                 <div
-                  className={`${isDraggedItem ? 'pointer-events-none' : ''}`}
+                  className={`${isDraggedItem ? 'pointer-events-none' : ''} ${isMobile() ? 'ml-8' : ''}`}
                 >
                   <AnimeMusicItem
                     song={song}
@@ -288,7 +320,7 @@ export const MusicPlayList = () => {
                     showDragHandle={true}
                   />
                 </div>
-              </div>
+              </li>
             )
           })}
         </ul>
