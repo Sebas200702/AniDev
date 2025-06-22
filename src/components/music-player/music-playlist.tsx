@@ -25,6 +25,10 @@ export const MusicPlayList = () => {
   }
 
   const handlePointerDown = (e: React.PointerEvent, index: number) => {
+    // En móviles (touch), solo iniciar si el toque es en el handler
+    if (e.pointerType === 'touch' && !(e.target as HTMLElement).closest('.drag-handle')) {
+      return
+    }
     initiateDrag(e.clientX, e.clientY, index, e.currentTarget as HTMLElement)
     e.currentTarget.setPointerCapture(e.pointerId)
     e.preventDefault()
@@ -114,6 +118,18 @@ export const MusicPlayList = () => {
                   onPointerMove={handlePointerMove}
                   onPointerUp={handlePointerUp}
                 >
+                  <div className="drag-handle absolute left-0 z-20 flex items-center justify-center w-12 h-full md:hidden">
+                    <div className="w-8 h-12 flex items-center justify-center bg-zinc-800/50 rounded-l-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-400">
+                        <circle cx="9" cy="6" r="2" />
+                        <circle cx="9" cy="12" r="2" />
+                        <circle cx="9" cy="18" r="2" />
+                        <circle cx="15" cy="6" r="2" />
+                        <circle cx="15" cy="12" r="2" />
+                        <circle cx="15" cy="18" r="2" />
+                      </svg>
+                    </div>
+                  </div>
                   {isDrop && (
                     <>
                       <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
