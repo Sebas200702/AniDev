@@ -25,11 +25,13 @@ export const MusicPlayList = () => {
   }
 
   const handlePointerDown = (e: React.PointerEvent, index: number) => {
-    if (e.pointerType === 'touch' && !(e.target as HTMLElement).closest('.drag-handle')) {
-      return
-    }
+    const isTouch = e.pointerType === 'touch'
+    if (isTouch && !(e.target as HTMLElement).closest('.drag-handle')) return
     initiateDrag(e.clientX, e.clientY, index, e.currentTarget as HTMLElement)
     e.currentTarget.setPointerCapture(e.pointerId)
+    if (isTouch) {
+      document.body.style.overflow = 'hidden'
+    }
     e.preventDefault()
   }
 
@@ -58,6 +60,7 @@ export const MusicPlayList = () => {
 
   const handlePointerUp = (e: React.PointerEvent) => {
     if (draggedItemRef.current) e.currentTarget.releasePointerCapture(e.pointerId)
+    document.body.style.overflow = ''
     if (!isDragging || draggedIndex === null || dragOverIndex === null) {
       resetDragState()
       return
@@ -79,6 +82,7 @@ export const MusicPlayList = () => {
       draggedItemRef.current.style.opacity = ''
       draggedItemRef.current.style.zIndex = ''
     }
+    document.body.style.overflow = ''
     setIsDragging(false)
     setDraggedIndex(null)
     setDragOverIndex(null)
