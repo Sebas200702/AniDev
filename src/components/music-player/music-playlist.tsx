@@ -66,7 +66,8 @@ export const MusicPlayList = () => {
     const realDragged = currentSongIndex + draggedIndex
     const realDrop = currentSongIndex + dragOverIndex
     const [item] = newList.splice(realDragged, 1)
-    newList.splice(realDrop, 0, item)
+    const adjustedDropIndex = realDragged < realDrop ? realDrop - 1 : realDrop
+    newList.splice(adjustedDropIndex, 0, item)
     setList(newList)
     resetDragState()
   }
@@ -152,7 +153,7 @@ export const MusicPlayList = () => {
                     />
                   </div>
                 </div>
-              )}
+              )
             })}
           </ul>
         </>
