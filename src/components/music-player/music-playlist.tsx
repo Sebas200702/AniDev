@@ -90,7 +90,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="overflow-y-auto overflow-x-hidden p-2 max-h-96 xl:max-h-[80%] no-scrollbar">
+    <section className="overflow-y-auto overflow-x-hidden p-2 max-h-96 h-full xl:max-h-[700px] no-scrollbar">
       <header className="mb-6">
         <h2 className="text-xl">Currently Playing</h2>
       </header>
