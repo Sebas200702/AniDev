@@ -177,15 +177,15 @@ const userInfo = await getSessionUserInfo({
           theme="dark"
           position="top-right"
           toastOptions={{
-
             font: 'Nunito',
             animationOnClose: 'swipe',
             classNames: {
-              toast: ' flex !bg-Complementary/50  rounded-lg ',
-              container: '!bg-Complementary/50   ',
+              toast:
+                ' flex !bg-Complementary/50 !backdrop-blur-sm  rounded-lg !z-50 ',
+              container: '!bg-Complementary/50 !backdrop-blur-sm  !z-50 ',
               content: '!text-Primary-50',
               actions: {
-                container: '!bg-Complementary/50  ',
+                container: '!bg-Complementary/50 !backdrop-blur-sm  !z-50',
                 closeBtn: '!text-Primary-50',
                 actionBtn: '!text-Primary-50',
               },
