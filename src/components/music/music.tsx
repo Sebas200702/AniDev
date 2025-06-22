@@ -37,7 +37,6 @@ export const Music = ({ themeId }: { themeId: string }) => {
 
         if (existingSongIndex !== -1) {
           setCurrentSong(newSong)
-          setSavedTime(0)
           setVariants(data)
           setError(null)
           return
@@ -59,7 +58,6 @@ export const Music = ({ themeId }: { themeId: string }) => {
         setVariants(data)
 
         setCurrentSong(newSong)
-        setSavedTime(0)
 
         setError(null)
       } catch (error) {
