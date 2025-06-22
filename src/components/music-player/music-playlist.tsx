@@ -9,7 +9,8 @@ export const MusicPlayList = () => {
   const [isDragging, setIsDragging] = useState(false)
   const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
-  const draggedItemRef = useRef<HTMLDivElement | null>(null)
+  // Fix: Change the ref type to accept both HTMLDivElement and HTMLLIElement
+  const draggedItemRef = useRef<HTMLDivElement | HTMLLIElement | null>(null)
 
   const currentSong = list[currentSongIndex]
   const upcomingSongs = [...list].filter((_, index) => index > currentSongIndex)
