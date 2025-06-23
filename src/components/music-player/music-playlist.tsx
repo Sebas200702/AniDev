@@ -157,13 +157,13 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="overflow-y-auto overflow-x-hidden p-4">
+    <section className="overflow-y-auto overflow-x-hidden p-4 md:max-h-[700px] max-h-96 no-scrollbar">
       <header className="mb-6">
         <h2 className="text-2xl font-semibold text-zinc-100">Currently Playing</h2>
       </header>
 
       {currentSong && (
-        <div className="mb-8 p-3 bg-enfasisColor/30 rounded-xl border border-enfasisColor/50">
+        <div className="mb-8 ">
           <AnimeMusicItem
             song={currentSong}
             anime_title={currentSong.anime_title}
