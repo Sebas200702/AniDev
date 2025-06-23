@@ -84,7 +84,7 @@ export const AnimeMusicItem = ({
       <article
         onClick={handleClick}
         title={song.song_title}
-        className="hover:bg-Primary-900 group border-enfasisColor group relative flex aspect-[100/28] h-full w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:max-h-36 md:gap-2"
+        className="hover:bg-Primary-900 group border-enfasisColor group relative flex aspect-[100/32] h-full w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:max-h-36 md:gap-2"
       >
         <Picture
           image={placeholder}
@@ -143,10 +143,10 @@ export const AnimeMusicItem = ({
         />
 
         <footer className="flex h-full w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
-          <h3 className="text-md group-hover:text-enfasisColor/80 line-clamp-1 font-bold text-pretty transition-colors duration-300 ease-in-out select-none md:text-lg">
+          <h3 className="text-l group-hover:text-enfasisColor/80   text-pretty transition-colors duration-300 text-white ease-in-out select-none g">
             {song.song_title}
           </h3>
-          <p className="text-xs text-gray-500 select-none md:text-sm">
+          <p className="text-s text-gray-400 select-none line-clamp-1 ">
             {song.artist_name}
           </p>
         </footer>
