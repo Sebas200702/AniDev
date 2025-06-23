@@ -71,15 +71,15 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
     let itemsPerGroup = 2
 
     if (context === 'anime-info') {
-      if (windowWidth && windowWidth > 1280) {
+      if (windowWidth && windowWidth >= 1280) {
         itemsPerGroup = 4
-      } else if (windowWidth && windowWidth > 768) {
+      } else if (windowWidth && windowWidth >= 768) {
         itemsPerGroup = 3
       }
     } else {
-      if (windowWidth && windowWidth > 1280) {
+      if (windowWidth && windowWidth >= 1280) {
         itemsPerGroup = 6
-      } else if (windowWidth && windowWidth > 768) {
+      } else if (windowWidth && windowWidth >= 768) {
         itemsPerGroup = 4
       }
     }
