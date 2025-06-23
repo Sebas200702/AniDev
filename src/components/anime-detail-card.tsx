@@ -114,6 +114,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         </a>
         <AddToListButton
           animeId={anime.mal_id}
+          anime_title={anime.title}
           styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
         />
 
