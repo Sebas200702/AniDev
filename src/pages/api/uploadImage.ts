@@ -65,48 +65,55 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   })
   const user = userInfo?.name
   if (!user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-    })
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
   }
+
   const { image, filename, type } = await request.json()
 
   if (!image) {
-    return new Response(JSON.stringify({ message: 'Missing image data' }), {
-      status: 400,
-    })
+    return new Response(JSON.stringify({ message: 'Missing image data' }), { status: 400 })
   }
 
   const base64Pattern = /^data:([A-Za-z-+/]+);base64,(.+)$/
   let base64String = image
+  let mimeType = type
+
   const matches = image.match(base64Pattern)
   if (matches) {
+    mimeType = matches[1]
     base64String = matches[2]
   }
 
   const buffer = Buffer.from(base64String, 'base64')
 
-  const optimizedBuffer =
-    type === 'image/gif'
-      ? buffer
-      : await sharp(buffer).resize({ width: 150 }).toBuffer()
+  let optimizedBuffer: Buffer
+  let outputFilename = filename ?? 'image.webp'
+  let outputMime = 'image/webp'
 
-  if (!optimizedBuffer) {
-    return new Response(
-      JSON.stringify({ error: 'Error processing image (empty buffer)' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    )
+  if (mimeType === 'image/gif') {
+    optimizedBuffer = buffer
+    outputFilename = filename ?? 'image.gif'
+    outputMime = 'image/gif'
+  } else {
+    optimizedBuffer = await sharp(buffer)
+      .resize({ width: 150 })
+      .webp({ quality: 75 })
+      .toBuffer()
   }
 
-  const newFile = new File([optimizedBuffer], filename ?? 'image.webp', {
-    type: type ?? 'image/webp',
+  if (!optimizedBuffer) {
+    return new Response(JSON.stringify({ error: 'Error processing image' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const newFile = new File([optimizedBuffer], outputFilename, {
+    type: outputMime,
   })
 
   const { files } = await pinata.files.public.list()
-
-  const existingFile = files.find((file) => {
-    return file.name === newFile.name
-  })
+  const existingFile = files.find((file) => file.name === newFile.name)
 
   if (existingFile) {
     await pinata.files.public.delete([existingFile.id])
