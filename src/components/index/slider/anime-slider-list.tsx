@@ -187,12 +187,12 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
           styles="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-180 z-10"
         />
 
-        <ul
+        <section
           ref={listRef}
           className={`anime-list no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-scroll scroll-smooth px-4 py-4 md:gap-10 md:px-20`}
         >
           {groups.map((group, groupIndex) => (
-            <section
+            <ul
               key={groupIndex}
               className={`grid w-[90%] flex-none grid-cols-2 gap-6 md:w-full md:gap-10 ${
                 context === 'anime-info'
@@ -201,13 +201,13 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
               }`}
             >
               {group.map((anime: AnimeCardInfo) => (
-                <li key={anime.mal_id}>
-                  <AnimeCard anime={anime} />
-                </li>
+
+                  <AnimeCard anime={anime} key={anime.mal_id} />
+
               ))}
-            </section>
+            </ul>
           ))}
-        </ul>
+        </section>
       </div>
     </section>
   )

@@ -9,6 +9,7 @@ import { baseUrl } from '@utils/base-url'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { AnimeCardInfo } from 'types'
 
 /**
@@ -95,7 +96,7 @@ export const AnimeCard = ({ anime }: Props) => {
   }
 
   return (
-    <article
+    <li
       className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.01]"
       title={title}
       onMouseEnter={handleMouseEnter}
@@ -122,10 +123,10 @@ export const AnimeCard = ({ anime }: Props) => {
           <img
             src={
               isMobile
-                ? (image_webp ?? `${baseUrl}/placeholder.webp`)
-                : (image_large_webp ?? `${baseUrl}/placeholder.webp`)
+                ? (createImageUrlProxy(image_webp ?? `${baseUrl}/placeholder.webp`))
+                : (createImageUrlProxy(image_large_webp ?? `${baseUrl}/placeholder.webp` , '400' , '75'))
             }
-            alt={title}
+            alt={`Cover of ${title}`}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
           />
@@ -147,6 +148,6 @@ export const AnimeCard = ({ anime }: Props) => {
       <div className="absolute top-2 -right-3">
         <AnimeTag tag={year?.toString()} type={year?.toString()} />
       </div>
-    </article>
+    </li>
   )
 }

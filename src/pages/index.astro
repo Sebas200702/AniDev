@@ -12,7 +12,7 @@ import Layout from '@layouts/base.astro'
     <Carousel client:load />
     <article class="-mt-16 mb-10 flex flex-col gap-y-6 md:mb-20 md:gap-y-20">
       <AnimeSlider
-        client:visible
+        client:load
         url="/api/getRecomendations?count=24"
         title="Special for you"
       />

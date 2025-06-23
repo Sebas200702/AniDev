@@ -31,6 +31,7 @@ export const SearchButton = () => {
     <button
       className="hover:text-enfasisColor cursor-pointer p-2 transition-all duration-300"
       onClick={handleClick}
+      title='Search'
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
