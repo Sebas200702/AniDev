@@ -1,8 +1,8 @@
-import { navigate } from 'astro:transitions/client'
 import { NextIcon } from '@icons/next-icon'
 import { PreviousIcon } from '@icons/previous-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
+import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
 
 interface Props {
   direction: 'Next' | 'Prev'
@@ -29,7 +29,10 @@ export const NextPrevButton = ({ direction }: Props) => {
     setCurrentSong(newCurrentSong)
     if (!isMinimized) {
       const newUrl = `/music/${normalizeString(newCurrentSong.song_title)}_${newCurrentSong.theme_id}`
-      window.history.replaceState(null, '', newUrl)
+      SyncronizePlayerMetadata({
+        title: newCurrentSong.song_title,
+        url: newUrl,
+      })
     }
   }
   return (
