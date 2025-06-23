@@ -61,7 +61,7 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
         icon: (
           <Picture
             image={nextSong.placeholder}
-            styles="relative md:w-12 aspect-[225/330] w-10 rounded-sm"
+            styles="relative md:w-12 aspect-[225/330] w-10 mr-2 rounded-sm"
           >
             <img
               src={nextSong.image}
