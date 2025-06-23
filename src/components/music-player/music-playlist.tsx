@@ -1,101 +1,169 @@
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useRef, useState } from 'react'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type
+  DragEndEvent,
+  DragOverlay,
+} from '@dnd-kit/core'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import {
+  useSortable,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { useState, useEffect } from 'react'
+import type { AnimeSongWithImage } from 'types'
+
+const SortableMusicItem = ({ song, index, isMobile }: { song: AnimeSongWithImage, index: number, isMobile: boolean }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: song.song_id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? .9 : 1,
+  }
+
+
+  const dragProps = isMobile ? {} : { ...attributes, ...listeners }
+  const handleProps = isMobile ? { ...attributes, ...listeners } : {}
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      {...dragProps}
+      className={`
+        relative transition-all duration-200 ease-out
+        ${isDragging ? 'z-50 ' : ''}
+        rounded-xl md:p-2
+        ${!isMobile ? 'cursor-grab active:cursor-grabbing' : ''}
+        border border-transparent
+      `}
+    >
+
+      {isMobile && (
+        <div
+          {...handleProps}
+          className="absolute -right-2 top-1/2 -translate-y-1/2 z-10
+                   w-6 h-6 flex items-center justify-center
+                   bg-zinc-800/90 rounded-md cursor-grab active:cursor-grabbing
+                   hover:bg-zinc-700/90 transition-all duration-200 backdrop-blur-sm
+                   border border-zinc-600/30 hover:border-zinc-500/50
+                   shadow-lg touch-none select-none"
+          style={{ touchAction: 'none' }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-4 h-4 text-zinc-400 pointer-events-none"
+          >
+            <circle cx="8" cy="6" r="1.5" />
+            <circle cx="8" cy="12" r="1.5" />
+            <circle cx="8" cy="18" r="1.5" />
+            <circle cx="16" cy="6" r="1.5" />
+            <circle cx="16" cy="12" r="1.5" />
+            <circle cx="16" cy="18" r="1.5" />
+          </svg>
+        </div>
+      )}
+
+      <div className={`transition-all duration-200 ${isMobile ? "pr-6" : ""}`}>
+        <AnimeMusicItem
+          song={song}
+          anime_title={song.anime_title}
+          banner_image={song.banner_image}
+          image={song.image}
+          placeholder={song.placeholder}
+        />
+      </div>
+    </li>
+  )
+}
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const startPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
-  const draggedItemRef = useRef<HTMLDivElement | null>(null)
-  const listRef = useRef<HTMLUListElement>(null)
+  const [activeId, setActiveId] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
-  const filteredList = [...list].filter((_, index) => index >= currentSongIndex)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: isMobile ? 5 : 8,
+        delay: isMobile ? 150 : 0,
+        tolerance: isMobile ? 5 : 0,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const filteredList = list.slice(currentSongIndex)
   const currentSong = filteredList[0]
   const upcomingList = filteredList.slice(1)
 
-  const initiateDrag = (clientX: number, clientY: number, index: number, element: HTMLElement) => {
-    startPos.current = { x: clientX, y: clientY }
-    draggedItemRef.current = element.closest('[data-index]') as HTMLDivElement
-    if (draggedItemRef.current) {
-      draggedItemRef.current.style.zIndex = '50'
-      setDraggedIndex(index)
-    }
+  const handleDragStart = (event: any) => {
+    setActiveId(event.active.id)
   }
 
-  const handlePointerDown = (e: React.PointerEvent, index: number) => {
-    const isTouch = e.pointerType === 'touch'
-    if (isTouch && !(e.target as HTMLElement).closest('.drag-handle')) return
-    initiateDrag(e.clientX, e.clientY, index, e.currentTarget as HTMLElement)
-    e.currentTarget.setPointerCapture(e.pointerId)
-    if (isTouch) {
-      document.body.style.overflow = 'hidden'
-    }
-    e.preventDefault()
-  }
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    setActiveId(null)
 
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!draggedItemRef.current || draggedIndex === null) return
-    const deltaY = e.clientY - startPos.current.y
-    if (!isDragging && Math.abs(deltaY) > 5) {
-      setIsDragging(true)
-      draggedItemRef.current.style.position = 'relative'
-      draggedItemRef.current.style.opacity = '0.9'
-    }
-    if (isDragging) {
-      draggedItemRef.current.style.transform = `translateY(${deltaY}px)`
-      const elements = document.elementsFromPoint(e.clientX, e.clientY)
-      const dropTarget = elements.find(el => {
-        const itemEl = el.closest('[data-index]') as HTMLElement
-        return itemEl && itemEl !== draggedItemRef.current
-      })
-      if (dropTarget) {
-        const itemEl = dropTarget.closest('[data-index]') as HTMLElement
-        const newIndex = parseInt(itemEl.getAttribute('data-index') || '-1')
-        if (newIndex >= 1 && newIndex !== dragOverIndex) setDragOverIndex(newIndex)
-      }
-    }
-  }
+    if (!over || active.id === over.id) return
 
-  const handlePointerUp = (e: React.PointerEvent) => {
-    if (draggedItemRef.current) e.currentTarget.releasePointerCapture(e.pointerId)
-    document.body.style.overflow = ''
-    if (!isDragging || draggedIndex === null || dragOverIndex === null) {
-      resetDragState()
-      return
-    }
-    const newList = [...list]
-    const realDragged = currentSongIndex + draggedIndex
-    const realDrop = currentSongIndex + dragOverIndex
-    const [item] = newList.splice(realDragged, 1)
-    const adjustedDropIndex = realDragged < realDrop ? realDrop - 1 : realDrop
-    newList.splice(adjustedDropIndex, 0, item)
-    setList(newList)
-    resetDragState()
-  }
+    const oldIndex = upcomingList.findIndex(song => song.song_id === active.id)
+    const newIndex = upcomingList.findIndex(song => song.song_id === over.id)
 
-  const resetDragState = () => {
-    if (draggedItemRef.current) {
-      draggedItemRef.current.style.position = ''
-      draggedItemRef.current.style.transform = ''
-      draggedItemRef.current.style.opacity = ''
-      draggedItemRef.current.style.zIndex = ''
-    }
-    document.body.style.overflow = ''
-    setIsDragging(false)
-    setDraggedIndex(null)
-    setDragOverIndex(null)
-    draggedItemRef.current = null
+    if (oldIndex === -1 || newIndex === -1) return
+
+    const newUpcomingList = arrayMove(upcomingList, oldIndex, newIndex)
+    const newCompleteList = [
+      ...list.slice(0, currentSongIndex),
+      currentSong,
+      ...newUpcomingList
+    ]
+
+    setList(newCompleteList)
   }
 
   return (
-    <section className="overflow-y-auto overflow-x-hidden p-2">
-      <header className="mb-4">
-        <h2 className="text-xl">Currently Playing</h2>
+    <section className="overflow-y-auto overflow-x-hidden p-4">
+      <header className="mb-6">
+        <h2 className="text-2xl font-semibold text-zinc-100">Currently Playing</h2>
       </header>
+
       {currentSong && (
-        <div className="mb-6">
+        <div className="mb-8 p-3 bg-enfasisColor/30 rounded-xl border border-enfasisColor/50">
           <AnimeMusicItem
             song={currentSong}
             anime_title={currentSong.anime_title}
@@ -108,58 +176,38 @@ export const MusicPlayList = () => {
 
       {upcomingList.length > 0 && (
         <>
-          <h3 className="text-lg mb-2">Up next</h3>
-          <ul ref={listRef} className="flex flex-col gap-4">
-            {upcomingList.map((song, i) => {
-              const index = i + 1
-              const isDragged = draggedIndex === index
-              const isDrop = dragOverIndex === index && draggedIndex !== null && draggedIndex !== index
-
-              return (
-                <div
-                  key={song.song_id}
-                  data-index={index}
-                  className={`relative transition-all duration-200 ease-in-out flex items-center ${isDragged ? 'touch-none' : ''} ${isDrop ? 'translate-y-4' : ''}`}
-                  onPointerDown={e => handlePointerDown(e, index)}
-                  onPointerMove={handlePointerMove}
-                  onPointerUp={handlePointerUp}
-                >
-                  {/* Drag handle outside of the item */}
-                  <div className="drag-handle mr-2 md:hidden flex items-center justify-center">
-                    <div className="w-8 h-12 flex items-center justify-center bg-zinc-800/50 rounded-lg">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-400">
-                        <circle cx="9" cy="6" r="2" />
-                        <circle cx="9" cy="12" r="2" />
-                        <circle cx="9" cy="18" r="2" />
-                        <circle cx="15" cy="6" r="2" />
-                        <circle cx="15" cy="12" r="2" />
-                        <circle cx="15" cy="18" r="2" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Drop indicator overlay */}
-                  {isDrop && (
-                    <>
-                      <div className="absolute -top-2 left-0 right-0 h-1 bg-enfasisColor rounded-full z-10 shadow-lg shadow-blue-500/50" />
-                      <div className="absolute inset-0 bg-enfasisColor/10 rounded-lg border-2 border-enfasisColor/30 z-10 pointer-events-none" />
-                    </>
-                  )}
-
-                  {/* Item content */}
-                  <div className={`w-full ${isDragging ? 'touch-none' : ''}`}>
-                    <AnimeMusicItem
-                      song={song}
-                      anime_title={song.anime_title}
-                      banner_image={song.banner_image}
-                      image={song.image}
-                      placeholder={song.placeholder}
-                    />
-                  </div>
-                </div>
-              )
-            })}
-          </ul>
+          <header className="mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex-1 h-px bg-gray-600/30"></div>
+              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
+               Up Next
+              </h3>
+              <div className="flex-1 h-px bg-gray-600/30"></div>
+            </div>
+          </header>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            modifiers={[restrictToVerticalAxis]}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={upcomingList.map(song => song.song_id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <ul className="flex flex-col gap-3">
+                {upcomingList.map((song, index) => (
+                  <SortableMusicItem
+                    key={song.song_id}
+                    song={song}
+                    index={index}
+                    isMobile={isMobile}
+                  />
+                ))}
+              </ul>
+            </SortableContext>
+          </DndContext>
         </>
       )}
     </section>
