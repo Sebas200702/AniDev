@@ -105,6 +105,7 @@ export const AnimeCard = ({ anime }: Props) => {
         <div className="bg-Complementary/50 border-Primary-50/10 absolute top-3 left-3 z-10 flex items-center justify-center rounded-lg border-1 p-1 backdrop-blur-sm transition-all duration-200 ease-in-out md:opacity-0 md:group-hover:opacity-100">
           <AddToListButton
             animeId={mal_id}
+            anime_title={title}
             styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
           />
         </div>
@@ -138,7 +139,6 @@ export const AnimeCard = ({ anime }: Props) => {
           />
           <h3
             className={`${genreToColor(genres?.[0] ?? '')} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
-
           >
             {title}
           </h3>
