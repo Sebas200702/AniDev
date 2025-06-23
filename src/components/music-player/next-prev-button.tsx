@@ -2,6 +2,7 @@ import { navigate } from 'astro:transitions/client'
 import { NextIcon } from '@icons/next-icon'
 import { PreviousIcon } from '@icons/previous-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { normalizeString } from '@utils/normalize-string'
 
 interface Props {
   direction: 'Next' | 'Prev'
@@ -27,7 +28,8 @@ export const NextPrevButton = ({ direction }: Props) => {
     setSavedTime(0)
     setCurrentSong(newCurrentSong)
     if (!isMinimized) {
-      navigate(`/music/${newCurrentSong.song_title}_${newCurrentSong.theme_id}`)
+      const newUrl = `/music/${normalizeString(newCurrentSong.song_title)}_${newCurrentSong.theme_id}`
+      window.history.replaceState(null, '', newUrl)
     }
   }
   return (
