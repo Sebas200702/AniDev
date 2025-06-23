@@ -22,7 +22,6 @@ export const AnimeMusicItem = ({
   placeholder: string
   banner_image: string
   anime_title: string
-  showDragHandle?: boolean
 }) => {
   const [heights, setHeights] = useState([0, 0, 0, 0])
   const { setSearchIsOpen } = useSearchStoreResults()
@@ -83,7 +82,7 @@ export const AnimeMusicItem = ({
   return (
     <div className="group relative transition-all duration-300 ease-in-out  md:hover:translate-x-2">
       <article
-        onClick={() => handleClick()}
+        onClick={handleClick}
         title={song.song_title}
         className="hover:bg-Primary-900 group border-enfasisColor group relative flex w-full h-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2 aspect-[100/28] md:max-h-36"
       >
