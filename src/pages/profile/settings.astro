@@ -3,9 +3,10 @@ import { ParentalControl } from '@components/profile/settings/parental-control'
 import { SearchHistory } from '@components/profile/settings/search-history'
 import { SelectColor } from '@components/profile/settings/select-color'
 import Layout from '@layouts/base.astro'
+import { baseTitle } from '@utils/base-url'
 ---
 
-<Layout title="Settings">
+<Layout title={`Settings - ${baseTitle}`}>
   <section
     class="mx-auto mt-16 flex w-full flex-col gap-8 p-4 text-white xl:max-w-7xl"
   >

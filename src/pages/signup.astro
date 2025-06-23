@@ -1,7 +1,8 @@
 ---
 import { Formulary } from '@components/auth/formulary'
+import { baseTitle } from '@utils/base-url'
 import Layout from '@layouts/base.astro'
-const title = 'Sign Up'
+const title = `Sign Up - ${baseTitle}`
 const action = '/api/auth/signup'
 const bgImage = '/sign-up.webp'
 const step = Astro.url.searchParams.get('step') ?? ''

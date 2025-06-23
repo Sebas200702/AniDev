@@ -110,11 +110,11 @@ export const Header = ({ playerContainerRef }: Props) => {
         </div>
 
         <div className="flex w-full flex-col gap-2">
-          <span
+          <h1
             className={`line-clamp-1 text-xs ${isMinimized ? 'text-xs font-medium' : 'text-l'} leading-tight text-white`}
           >
             {currentSong.song_title}
-          </span>
+          </h1>
           <span
             className={`text-Primary-400 line-clamp-1 hidden md:flex ${isMinimized ? 'text-xs font-medium' : 'text-s'} leading-tight`}
           >

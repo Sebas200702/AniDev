@@ -4,11 +4,11 @@ import { Picture } from '@components/picture'
 import { UserInfo } from '@components/profile/user-info'
 import Layout from '@layouts/base.astro'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
-
 import { UserList } from '@components/profile/user-tabs/user-list'
+import { baseTitle } from '@utils/base-url'
 ---
 
-<Layout title="Profile">
+<Layout title={`Profile - ${baseTitle}`}>
   <section
     class="p-y mx-auto mt-16 flex w-full flex-col gap-24 px-4 text-white md:gap-16 md:px-20"
   >
