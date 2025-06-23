@@ -7,16 +7,15 @@ import { LoadWindowWidth } from '@components/load-window-width'
 import NavBar from '@components/nav-bar/nav-bar.astro'
 import { ProgressBar } from '@components/progres-bar'
 import { SearchBar } from '@components/search-bar'
-import { Toaster } from '@pheralb/toast'
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import { AstroFont } from 'astro-font'
 import '@styles/fade-out.css'
 import '@styles/anime-banner.css'
+import { CustomToaster } from '@components/custom-toaster'
 import '@pheralb/toast/dist/styles.css'
 import { AsideNav } from '@components/aside'
 import { MusicPlayer } from '@components/music-player/music-player'
-
 const { cookies } = Astro
 const accessToken = cookies.get('sb-access-token')
 const refreshToken = cookies.get('sb-refresh-token')
@@ -170,28 +169,7 @@ const userInfo = await getSessionUserInfo({
       >
         <MusicPlayer client:only transition:persist />
         <slot />
-
-        <Toaster
-          client:only
-          transition:persist
-          theme="dark"
-          position="top-right"
-          toastOptions={{
-            font: 'Nunito',
-            animationOnClose: 'swipe',
-            classNames: {
-              toast:
-                ' flex !bg-Complementary/50 !backdrop-blur-sm  rounded-lg !z-50 ',
-              container: '!bg-Complementary/50 !backdrop-blur-sm  !z-50 ',
-              content: '!text-Primary-50',
-              actions: {
-                container: '!bg-Complementary/50 !backdrop-blur-sm  !z-50',
-                closeBtn: '!text-Primary-50',
-                actionBtn: '!text-Primary-50',
-              },
-            },
-          }}
-        />
+        <CustomToaster client:load />
       </main>
       <Footer />
     </div>
