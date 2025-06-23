@@ -9,8 +9,10 @@ import { ToastType } from 'types'
 export const AddToListButton = ({
   animeId,
   styles,
+  anime_title
 }: {
   animeId: number
+  anime_title: string
   styles?: string
 }) => {
   const { isLoading, setIsLoading, isInWatchList, setIsInWatchList } =
@@ -23,78 +25,130 @@ export const AddToListButton = ({
     }
   }, [watchList])
 
-  const handleAddToList = async () => {
+  type Action = {
+    type: 'ADD' | 'REMOVE'
+    animeId: number
+    previousWatchList: any[]
+    wasInList: boolean
+  }
+
+  const executeAction = async (action: Action) => {
     if (!userInfo?.name) {
       return
     }
-    setIsLoading(true)
-    const promise = fetch('/api/watchList', {
-      method: 'POST',
-      body: JSON.stringify({ animeId, type: 'To Watch' }),
-      credentials: 'include',
-    }).then(async (res) => {
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
-    })
 
-    toast[ToastType.Loading]({
-      text: 'Adding to list',
-      options: {
-        promise,
-        success: 'Anime added to list',
-        error: 'Error while adding to list',
-        autoDismiss: true,
-      },
-    })
+    setIsLoading(true)
 
     try {
-      await promise
-      setIsInWatchList(true)
+      if (action.type === 'ADD') {
+        setIsInWatchList(true)
+
+        await fetch('/api/watchList', {
+          method: 'POST',
+          body: JSON.stringify({ animeId: action.animeId, type: 'To Watch' }),
+          credentials: 'include',
+        }).then(async (res) => {
+          const data = await res.json()
+          if (!res.ok) throw new Error(data.error)
+        })
+      } else {
+        const newWatchList = action.previousWatchList.filter(
+          (watch) => watch.mal_id !== action.animeId
+        )
+        setWatchList(newWatchList)
+        setIsInWatchList(false)
+
+        try {
+          await fetch('/api/watchList', {
+            method: 'DELETE',
+            body: JSON.stringify({ animeId: action.animeId }),
+            credentials: 'include',
+          }).then((res) => {
+            if (!res.ok) throw new Error('Error while removing from list')
+          })
+        } catch (_error) {
+          setWatchList(action.previousWatchList)
+          setIsInWatchList(action.wasInList)
+          throw _error
+        }
+      }
     } catch (error) {
       console.error(error)
+      if (action.type === 'ADD') {
+        setIsInWatchList(action.wasInList)
+      }
+      throw error
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleRemoveFromList = async () => {
-    if (!userInfo?.name) {
-      return
+  const createUndoAction = (originalAction: Action): Action => {
+    if (originalAction.type === 'ADD') {
+      return {
+        type: 'REMOVE',
+        animeId: originalAction.animeId,
+        previousWatchList: watchList,
+        wasInList: true,
+      }
+    } else {
+      return {
+        type: 'ADD',
+        animeId: originalAction.animeId,
+        previousWatchList: originalAction.previousWatchList,
+        wasInList: false,
+      }
     }
-    const newWatchList = watchList.filter((watch) => watch.mal_id !== animeId)
-    setWatchList(newWatchList)
-    setIsInWatchList(false)
-    const promise = fetch('/api/watchList', {
-      method: 'DELETE',
-      body: JSON.stringify({ animeId }),
-      credentials: 'include',
-    }).then((res) => {
-      if (!res.ok) throw new Error('Error while removing from list')
-    })
+  }
+
+  const handleActionWithSingleToast = async (action: Action) => {
+    const loadingText =
+      action.type === 'ADD' ? 'Adding to list' : 'Removing from list'
+    const successText = action.type === 'ADD' ? 'added to' : 'removed from'
+    const errorText = action.type === 'ADD' ? 'adding to' : 'removing from'
+
+    const undoAction = createUndoAction(action)
 
     toast[ToastType.Loading]({
-      text: 'Removing from list',
+      text: loadingText,
       options: {
-        promise,
-        success: 'Anime removed from list',
-        error: 'Error while removing from list',
+        promise: executeAction(action),
+        success: `${anime_title} ${successText} list`,
+        error: `Error while ${errorText} list`,
         autoDismiss: true,
       },
+      action: {
+        content: 'Undo',
+        onClick: () => {
+          handleActionWithSingleToast(undoAction)
+        },
+      },
     })
+  }
 
-    try {
-      await promise
-    } catch (_error) {
-      setWatchList(watchList)
-      setIsInWatchList(true)
-    } finally {
-      setIsLoading(false)
+  const handleClick = () => {
+    if (isInWatchList) {
+      const action: Action = {
+        type: 'REMOVE',
+        animeId,
+        previousWatchList: [...watchList],
+        wasInList: true,
+      }
+      handleActionWithSingleToast(action)
+    } else {
+      const action: Action = {
+        type: 'ADD',
+        animeId,
+        previousWatchList: [...watchList],
+        wasInList: false,
+      }
+      handleActionWithSingleToast(action)
     }
   }
 
   return (
     <button
-      onClick={isInWatchList ? handleRemoveFromList : handleAddToList}
+      onClick={handleClick}
       disabled={isLoading || !userInfo?.name}
       title={isInWatchList ? 'Remove from list' : 'Add to list'}
       className={`${styles} flex items-center justify-center`}
