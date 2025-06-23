@@ -80,11 +80,11 @@ export const AnimeMusicItem = ({
   }
 
   return (
-    <div className="group relative transition-all duration-300 ease-in-out  md:hover:translate-x-2">
+    <div className="group relative transition-all duration-300 ease-in-out md:hover:translate-x-2">
       <article
         onClick={handleClick}
         title={song.song_title}
-        className="hover:bg-Primary-900 group border-enfasisColor group relative flex w-full h-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:gap-2 aspect-[100/28] md:max-h-36"
+        className="hover:bg-Primary-900 group border-enfasisColor group relative flex aspect-[100/28] h-full w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:max-h-36 md:gap-2"
       >
         <Picture
           image={placeholder}
@@ -101,7 +101,7 @@ export const AnimeMusicItem = ({
               ))}
 
               <button
-                className="pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 text-enfasisColor disabled:pointer-events-none"
+                className="text-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none"
                 onClick={(e) => handlePlay(e)}
                 disabled={!canPlay}
               >
@@ -142,8 +142,8 @@ export const AnimeMusicItem = ({
           clasName="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
         />
 
-        <footer className="flex w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4 h-full">
-          <h3 className="text-md group-hover:text-enfasisColor/80 font-bold text-pretty transition-colors duration-300 ease-in-out select-none md:text-lg line-clamp-1">
+        <footer className="flex h-full w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
+          <h3 className="text-md group-hover:text-enfasisColor/80 line-clamp-1 font-bold text-pretty transition-colors duration-300 ease-in-out select-none md:text-lg">
             {song.song_title}
           </h3>
           <p className="text-xs text-gray-500 select-none md:text-sm">

@@ -66,7 +66,7 @@ export const MusicPlayer = () => {
             <img
               src={nextSong.image}
               alt={nextSong.song_title}
-              className="aspect-[225/330] relative w-12 rounded-sm"
+              className="relative aspect-[225/330] w-12 rounded-sm"
             />
           </Picture>
         ),
@@ -121,10 +121,10 @@ export const MusicPlayer = () => {
           '70',
           'webp'
         )}
-        className={`flex flex-col ${type === 'audio' && isMinimized && 'md:h-auto h-0'} `}
+        className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
       >
         <MediaProvider
-          className={`${type === 'audio' && isMinimized ? 'mt-12 md:flex hidden' : 'aspect-video'}`}
+          className={`${type === 'audio' && isMinimized ? 'mt-12 hidden md:flex' : 'aspect-video'}`}
         >
           {type === 'audio' && !isMinimized && (
             <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />

@@ -62,7 +62,10 @@ export const useMusicPlayerSync = (
     // Iniciar intervalo de actualización cuando está reproduciendo
     if (playing) {
       updateMediaPosition() // Actualización inicial
-      mediaUpdateInterval.current = window.setInterval(updateMediaPosition, 1000)
+      mediaUpdateInterval.current = window.setInterval(
+        updateMediaPosition,
+        1000
+      )
     }
 
     // Cleanup
@@ -165,7 +168,7 @@ export const useMusicPlayerSync = (
   ])
 
   // Resto del código sin cambios...
-  
+
   useEffect(() => {
     if (!currentSong) return
 

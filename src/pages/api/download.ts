@@ -211,8 +211,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     })
 
     if (!response.ok) {
-
-
       return new Response(
         JSON.stringify({
           error: `Failed to fetch file: ${response.status} ${response.statusText}`,
@@ -262,7 +260,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
-   
     if (buffer.length > MAX_FILE_SIZE) {
       return new Response(
         JSON.stringify({ error: 'File too large (max 50MB)' }),

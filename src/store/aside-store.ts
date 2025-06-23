@@ -24,16 +24,16 @@ export const useAsideStore = create<AsideStore>((set) => ({
       href: '/schedule',
     },
     {
-      id: 'profile',
-      icon: UserIcon,
-      label: 'Profile',
-      href: '/profile',
-    },
-    {
       id: 'music',
       icon: MusicIcon,
       label: 'Music',
       href: '/music',
+    },
+    {
+      id: 'profile',
+      icon: UserIcon,
+      label: 'Profile',
+      href: '/profile',
     },
   ],
   setActiveItem: (activeItem) => set({ activeItem }),

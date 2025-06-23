@@ -32,14 +32,14 @@ export const NextPrevButton = ({ direction }: Props) => {
   }
   return (
     <button
-      className="disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 vds-play-button vds-button  next-prev !bg-transparent"
+      className="vds-play-button vds-button next-prev !bg-transparent disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
       title={direction}
       aria-label={`${direction} Song`}
       disabled={!(direction === 'Next' ? hasNext : hasPrev)}
       onClick={() => handleClick(direction)}
     >
       {direction === 'Prev' ? (
-        <PreviousIcon className="vds-icon " />
+        <PreviousIcon className="vds-icon" />
       ) : (
         <NextIcon className="vds-icon" />
       )}

@@ -25,9 +25,9 @@ export const CustomLayout = () => {
         afterPlayButton: <NextPrevButton direction="Next" />,
         pipButton: <></>,
         settingsMenuItemsStart: (
-          <Menu.Root className="vds-menu relative ">
+          <Menu.Root className="vds-menu relative">
             <Menu.Button
-              className={`${type === 'audio' ? 'hidden' : 'vds-menu-item '} `}
+              className={`${type === 'audio' ? 'hidden' : 'vds-menu-item'} `}
               aria-label="quality"
             >
               <svg

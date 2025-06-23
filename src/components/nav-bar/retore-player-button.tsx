@@ -16,12 +16,12 @@ export const RestorePlayerButton = () => {
       <button
         onClick={handleClick}
         id="restore-player-button"
-        className={`bg-enfasisColor h-10 w-10 cursor-pointer rounded-full  border-Primary-900/10 group flex items-center justify-center border backdrop-blur-sm`}
+        className={`bg-enfasisColor border-Primary-900/10 group flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border backdrop-blur-sm`}
         title={`Playing ${currentSong?.song_title}`}
       >
         <MusicIcon className="h-5 w-5" />
         <div
-          className={`bg-Complementary/60 absolute z-50 hidden min-w-72 translate-y-full backdrop-blur-sm gap-3 rounded-xl border border-gray-100/10 p-3 shadow-2xl  transition-all duration-300 ease-out group-hover:flex`}
+          className={`bg-Complementary/60 absolute z-50 hidden min-w-72 translate-y-full gap-3 rounded-xl border border-gray-100/10 p-3 shadow-2xl backdrop-blur-sm transition-all duration-300 ease-out group-hover:flex`}
         >
           <figure
             className={`relative max-h-12 max-w-12 overflow-hidden rounded-full ${isPlaying ? 'animate-spin-slow' : ''}`}

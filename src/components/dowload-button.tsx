@@ -209,7 +209,7 @@ export const DownloadButton = ({
   }
 
   const handleDownload = async () => {
-    if (isLoading) return 
+    if (isLoading) return
 
     setIsLoading(true)
 

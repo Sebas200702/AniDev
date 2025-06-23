@@ -1,13 +1,14 @@
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useEffect, useLayoutEffect, useCallback } from 'react'
+import { useCallback, useEffect, useLayoutEffect } from 'react'
 
-type ViewTransitionEvent = Event & { viewTransition?: { finished: Promise<void> } }
+type ViewTransitionEvent = Event & {
+  viewTransition?: { finished: Promise<void> }
+}
 
 export const usePlayerBehavior = (
   playerRef: React.RefObject<HTMLDivElement | null>
 ) => {
   const { setIsMinimized, isMinimized, setIsHidden } = useMusicPlayerStore()
-
 
   const updateMinimizedState = useCallback(() => {
     const shouldMinimize = !window.location.pathname.includes('/music')
@@ -83,7 +84,8 @@ export const usePlayerBehavior = (
 
     if (isMinimized) {
       document.addEventListener('click', handleClickOutside, true)
-      return () => document.removeEventListener('click', handleClickOutside, true)
+      return () =>
+        document.removeEventListener('click', handleClickOutside, true)
     }
   }, [isMinimized, setIsHidden, playerRef])
 }

@@ -38,7 +38,7 @@ export const CharacterSection = ({ animeId }: Props) => {
         />
       </header>
       {characters.length === 0 && currentLanguage && !isLoading && (
-        <div className="rounded-lg h-full w-full p-6 text-white">
+        <div className="h-full w-full rounded-lg p-6 text-white">
           <p>Do not have characters for this anime on this language</p>
         </div>
       )}

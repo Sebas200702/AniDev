@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { CheckIcon } from '@icons/check-icon'
 import type { FilterOption } from 'types'
 
 interface FilterDropdownProps {
@@ -10,6 +11,7 @@ interface FilterDropdownProps {
   options: FilterOption[]
   styles: string
   singleSelect?: boolean
+  ImputText?: boolean
 }
 
 /**
@@ -65,6 +67,7 @@ export const FilterDropdown = ({
   options,
   styles,
   singleSelect = false,
+  ImputText = true,
 }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
@@ -118,7 +121,7 @@ export const FilterDropdown = ({
 
   return (
     <div
-      className={`relative ${styles} hover:bg-enfasisColor/5 hover:border-enfasisColor/40 w-full rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
+      className={`relative ${styles} hover:border-enfasisColor/50 hover:bg-enfasisColor/20 w-full rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
       ref={dropdownRef}
       onClick={handleInputClick}
     >
@@ -127,23 +130,27 @@ export const FilterDropdown = ({
         className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
         onClick={handleInputClick}
       >
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder={placeholder}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="h-full w-full flex-grow cursor-pointer bg-transparent focus:outline-none"
-          aria-autocomplete="list"
-          aria-controls="dropdown-options"
-        />
+        {ImputText ? (
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder={placeholder}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-full w-full flex-grow cursor-pointer bg-transparent focus:outline-none"
+            aria-autocomplete="list"
+            aria-controls="dropdown-options"
+          />
+        ) : (
+          <span className="cursor-pointer capitalize">{values}</span>
+        )}
       </button>
 
       <nav
         className="absolute top-1/2 right-6 flex max-w-60 -translate-y-1/2 items-center space-x-1"
         aria-label="Controls of selector"
       >
-        {(values.length > 0 || search) && (
+        {(values.length > 0 || search) && ImputText && (
           <button
             type="button"
             onClick={(e) => {
@@ -151,11 +158,11 @@ export const FilterDropdown = ({
               onClear()
               setSearch('')
             }}
-            className="hover:bg-enfasisColor/80 rounded p-1"
+            className=""
             aria-label="Clear selection"
           >
             <svg
-              className="h-3 w-3 text-gray-300"
+              className="h-3 w-3 text-gray-300 hover:text-gray-100"
               fill="none"
               strokeWidth="2"
               stroke="currentColor"
@@ -184,49 +191,26 @@ export const FilterDropdown = ({
         </button>
       </nav>
 
-      <ul
+      <div
         id="dropdown-options"
-        className={`custom-scrollbar bg-Primary-950 absolute -bottom-3 z-50 max-h-60 w-full translate-y-full gap-4 overflow-auto rounded-md border border-gray-100/10 py-4 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
+        className={`absolute -bottom-[1px] z-50 w-full translate-y-full px-1 ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
       >
-        {filteredOptions.map((option) => (
-          <button
-            type="button"
-            key={option.value}
-            className="hover:bg-Complementary flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm"
-            onClick={() => toggleOption(option.value)}
-          >
-            <input
-              type="checkbox"
-              checked={values.includes(option.value)}
-              readOnly
-              className="peer hidden"
-              id={`option-${option.value}`}
-            />
-
-            <span className="peer-checked:border-enfasisColor peer-checked:bg-enfasisColor flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm border-1 border-gray-400 transition-all duration-200 ease-in-out">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out"
-                style={{ opacity: values.includes(option.value) ? 1 : 0 }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </span>
-
-            <span className="text-gray-400 peer-checked:text-white">
-              {option.label}
-            </span>
-          </button>
-        ))}
-      </ul>
+        <ul className="custom-scrollbar bg-Complementary flex max-h-60 flex-col gap-2 overflow-auto rounded-b-md border-x border-b border-gray-100/10 px-2 py-4 shadow-lg transition-all duration-300 ease-in-out">
+          {filteredOptions.map((option) => (
+            <button
+              type="button"
+              key={option.value}
+              className={`flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 text-sm transition-colors duration-300 ease-in-out ${values.includes(option.value) ? 'bg-enfasisColor/20 hover:bg-enfasisColor/40' : 'hover:bg-Primary-900'}`}
+              onClick={() => toggleOption(option.value)}
+            >
+              <CheckIcon
+                className={`h-4 w-4 transition-opacity ${values.includes(option.value) ? 'opacity-100' : 'opacity-0'}`}
+              />
+              <span className="text-white">{option.label}</span>
+            </button>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }

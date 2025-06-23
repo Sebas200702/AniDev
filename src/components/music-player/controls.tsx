@@ -30,7 +30,7 @@ export const CustomControls = ({ muted, volume }: Props) => {
   if (!currentSong) return null
 
   return (
-    <Controls.Root className="mt-4 w-full flex-col gap-2 p-4 md:flex hidden">
+    <Controls.Root className="mt-4 hidden w-full flex-col gap-2 p-4 md:flex">
       <Controls.Group className="flex items-center justify-center gap-4">
         <NextPrevButton direction="Prev" />
 

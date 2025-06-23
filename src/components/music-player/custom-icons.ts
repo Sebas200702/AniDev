@@ -1,13 +1,13 @@
-import { FullScreenIcon } from '@components/icons/full-screen-icon'
 import { FullScreenExitIcon } from '@components/icons/full-screen-exit-icon'
+import { FullScreenIcon } from '@components/icons/full-screen-icon'
+import { GoogleCastIcon } from '@components/icons/google-cast-icon'
 import { MuteIcon } from '@components/icons/muted-icon'
 import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
+import { ReplayIcon } from '@components/icons/replay-icon'
 import { SettingsIcon } from '@components/icons/settings-icon'
 import { VolumeHighIcon } from '@components/icons/volumen-high-icon'
 import { VolumeLowIcon } from '@components/icons/volumen-low-icon'
-import { GoogleCastIcon } from '@components/icons/google-cast-icon'
-import { ReplayIcon } from '@components/icons/replay-icon'
 import {
   type DefaultLayoutIcons,
   defaultLayoutIcons,
@@ -47,5 +47,4 @@ export const customIcons: DefaultLayoutIcons = {
     Enter: FullScreenIcon,
     Exit: FullScreenExitIcon,
   },
-
 }

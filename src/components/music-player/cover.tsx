@@ -17,7 +17,7 @@ export const Cover = () => {
           'webp'
         ))
       : (proxyUrl = createImageUrlProxy(
-          currentSong.banner_image ?? currentSong.image ,
+          currentSong.banner_image ?? currentSong.image,
           '1920',
           '50',
           'webp'

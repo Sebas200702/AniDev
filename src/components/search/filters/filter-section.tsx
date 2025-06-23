@@ -13,8 +13,8 @@ import {
   ratingOptions,
   seasonOptions,
   statusOptions,
-  yearOptions,
   typeMusic,
+  yearOptions,
 } from 'types'
 import type { AppliedFilters } from 'types'
 

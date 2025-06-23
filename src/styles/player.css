@@ -108,7 +108,7 @@
   /* Shared. */
   --media-brand: var(--color-enfasisColor);
   --media-controls-color: var(--color-enfasisColor);
-  --media-font-family:'Nunito';
+  --media-font-family: 'Nunito';
 
   /* Buffering. */
   --media-buffering-animation: vds-buffering-spin 1s linear infinite;
@@ -194,9 +194,13 @@
   --media-thumbnail-border: 1px solid white;
   --media-thumbnail-aspect-ratio: 16 / 9;
   --media-thumbnail-min-width: 120px;
-  --media-thumbnail-min-height: calc(var(--media-thumbnail-min-width) / var(--aspect-ratio));
+  --media-thumbnail-min-height: calc(
+    var(--media-thumbnail-min-width) / var(--aspect-ratio)
+  );
   --media-thumbnail-max-width: 180px;
-  --media-thumbnail-max-height: calc(var(--media-thumbnail-max-width) / var(--aspect-ratio));
+  --media-thumbnail-max-height: calc(
+    var(--media-thumbnail-max-width) / var(--aspect-ratio)
+  );
 
   /* Time. */
   --media-time-bg: unset;
@@ -241,7 +245,8 @@
 
   /* Slider Chapter. */
   --media-slider-chapter-hover-transform: scaleY(2);
-  --media-slider-chapter-hover-transition: transform 0.1s cubic-bezier(0.4, 0, 1, 1);
+  --media-slider-chapter-hover-transition: transform 0.1s
+    cubic-bezier(0.4, 0, 1, 1);
 
   /* Slider Preview. */
   --media-slider-preview-bg: unset;
@@ -260,6 +265,4 @@
   --media-slider-value-color: white;
   --media-slider-value-gap: 0px;
   --media-slider-value-padding: 1px 10px;
-
-  
 }

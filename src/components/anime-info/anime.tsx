@@ -79,7 +79,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className="row-span-2 flex h-full flex-col gap-4 md:col-span-2 xl:col-span-3 w-full">
+        <div className="row-span-2 flex h-full w-full flex-col gap-4 md:col-span-2 xl:col-span-3">
           <AnimeNavBar />
           <AnimeShowBox
             animeId={animeData.mal_id}

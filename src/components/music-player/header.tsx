@@ -116,7 +116,7 @@ export const Header = ({ playerContainerRef }: Props) => {
             {currentSong.song_title}
           </span>
           <span
-            className={`text-Primary-400 md:flex hidden line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-s'} leading-tight`}
+            className={`text-Primary-400 line-clamp-1 hidden md:flex ${isMinimized ? 'text-xs font-medium' : 'text-s'} leading-tight`}
           >
             {currentSong.artist_name}
           </span>
@@ -136,10 +136,10 @@ export const Header = ({ playerContainerRef }: Props) => {
           </button>
           {isMinimized && (
             <>
-              <div className="flex flex-row gap-2 md:hidden ">
-                <button className="p-1 " onClick={(e) => handlePlay(e)}>
+              <div className="flex flex-row gap-2 md:hidden">
+                <button className="p-1" onClick={(e) => handlePlay(e)}>
                   {isPlaying ? (
-                    <PauseIcon className="h-4 w-4 " />
+                    <PauseIcon className="h-4 w-4" />
                   ) : (
                     <PlayIcon className="h-4 w-4" />
                   )}

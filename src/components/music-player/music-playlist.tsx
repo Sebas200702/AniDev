@@ -1,31 +1,36 @@
 import { AnimeMusicItem } from '@components/music/anime-music-item'
-import { useMusicPlayerStore } from '@store/music-player-store'
 import {
   DndContext,
-  closestCenter,
+  type DragEndEvent,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
-  type
-  DragEndEvent,
-  DragOverlay,
 } from '@dnd-kit/core'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import {
-  arrayMove,
   SortableContext,
+  arrayMove,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import {
-  useSortable,
-} from '@dnd-kit/sortable'
+import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useState, useEffect } from 'react'
+import { useMusicPlayerStore } from '@store/music-player-store'
+import { useEffect, useState } from 'react'
 import type { AnimeSongWithImage } from 'types'
 
-const SortableMusicItem = ({ song, index, isMobile }: { song: AnimeSongWithImage, index: number, isMobile: boolean }) => {
+const SortableMusicItem = ({
+  song,
+  index,
+  isMobile,
+}: {
+  song: AnimeSongWithImage
+  index: number
+  isMobile: boolean
+}) => {
   const {
     attributes,
     listeners,
@@ -38,55 +43,40 @@ const SortableMusicItem = ({ song, index, isMobile }: { song: AnimeSongWithImage
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? .9 : 1,
+    opacity: isDragging ? 0.9 : 1,
   }
 
 
-  const dragProps = isMobile ? {} : { ...attributes, ...listeners }
-  const handleProps = isMobile ? { ...attributes, ...listeners } : {}
+  const handleProps = { ...attributes, ...listeners }
 
   return (
     <li
       ref={setNodeRef}
       style={style}
-      {...dragProps}
-      className={`
-        relative transition-all duration-200 ease-out
-        ${isDragging ? 'z-50 ' : ''}
-        rounded-xl md:p-2
-        ${!isMobile ? 'cursor-grab active:cursor-grabbing' : ''}
-        border border-transparent
-      `}
+      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl md:p-2 border border-transparent`}
     >
-
-      {isMobile && (
-        <div
-          {...handleProps}
-          className="absolute -right-2 top-1/2 -translate-y-1/2 z-10
-                   w-6 h-6 flex items-center justify-center
-                   bg-zinc-800/90 rounded-md cursor-grab active:cursor-grabbing
-                   hover:bg-zinc-700/90 transition-all duration-200 backdrop-blur-sm
-                   border border-zinc-600/30 hover:border-zinc-500/50
-                   shadow-lg touch-none select-none"
-          style={{ touchAction: 'none' }}
+      <div
+        {...handleProps}
+        className="absolute top-1/2 -right-2 z-10 flex h-6 w-6 -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-md border border-zinc-600/30 bg-zinc-800/90 shadow-lg backdrop-blur-sm transition-all duration-200 select-none hover:border-zinc-500/50 hover:bg-zinc-700/90 active:cursor-grabbing"
+        style={{ touchAction: 'none' }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="pointer-events-none h-4 w-4 text-zinc-400"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-4 h-4 text-zinc-400 pointer-events-none"
-          >
-            <circle cx="8" cy="6" r="1.5" />
-            <circle cx="8" cy="12" r="1.5" />
-            <circle cx="8" cy="18" r="1.5" />
-            <circle cx="16" cy="6" r="1.5" />
-            <circle cx="16" cy="12" r="1.5" />
-            <circle cx="16" cy="18" r="1.5" />
-          </svg>
-        </div>
-      )}
+          <circle cx="8" cy="6" r="1.5" />
+          <circle cx="8" cy="12" r="1.5" />
+          <circle cx="8" cy="18" r="1.5" />
+          <circle cx="16" cy="6" r="1.5" />
+          <circle cx="16" cy="12" r="1.5" />
+          <circle cx="16" cy="18" r="1.5" />
+        </svg>
+      </div>
 
-      <div className={`transition-all duration-200 ${isMobile ? "pr-6" : ""}`}>
+
+      <div className="pr-6 transition-all duration-200">
         <AnimeMusicItem
           song={song}
           anime_title={song.anime_title}
@@ -117,9 +107,10 @@ export const MusicPlayList = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: isMobile ? 5 : 8,
-        delay: isMobile ? 150 : 0,
-        tolerance: isMobile ? 5 : 0,
+
+        distance: isMobile ? 8 : 10,
+        delay: isMobile ? 200 : 100,
+        tolerance: isMobile ? 8 : 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -141,8 +132,10 @@ export const MusicPlayList = () => {
 
     if (!over || active.id === over.id) return
 
-    const oldIndex = upcomingList.findIndex(song => song.song_id === active.id)
-    const newIndex = upcomingList.findIndex(song => song.song_id === over.id)
+    const oldIndex = upcomingList.findIndex(
+      (song) => song.song_id === active.id
+    )
+    const newIndex = upcomingList.findIndex((song) => song.song_id === over.id)
 
     if (oldIndex === -1 || newIndex === -1) return
 
@@ -150,20 +143,24 @@ export const MusicPlayList = () => {
     const newCompleteList = [
       ...list.slice(0, currentSongIndex),
       currentSong,
-      ...newUpcomingList
+      ...newUpcomingList,
     ]
 
     setList(newCompleteList)
   }
 
+
+
   return (
-    <section className="overflow-y-auto overflow-x-hidden p-4 md:max-h-[700px] max-h-96 no-scrollbar">
+    <section className="no-scrollbar max-h-96 overflow-x-hidden overflow-y-auto p-4 md:max-h-[700px]">
       <header className="mb-6">
-        <h2 className="text-2xl font-semibold text-zinc-100">Currently Playing</h2>
+        <h2 className="text-2xl font-semibold text-zinc-100">
+          Currently Playing
+        </h2>
       </header>
 
       {currentSong && (
-        <div className="mb-8 ">
+        <div className="mb-8">
           <AnimeMusicItem
             song={currentSong}
             anime_title={currentSong.anime_title}
@@ -177,12 +174,12 @@ export const MusicPlayList = () => {
       {upcomingList.length > 0 && (
         <>
           <header className="mb-6">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="flex-1 h-px bg-gray-600/30"></div>
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-               Up Next
+            <div className="mb-4 flex items-center gap-4">
+              <div className="h-px flex-1 bg-gray-600/30"></div>
+              <h3 className="text-sm font-medium tracking-wider text-gray-400 uppercase">
+                Up Next
               </h3>
-              <div className="flex-1 h-px bg-gray-600/30"></div>
+              <div className="h-px flex-1 bg-gray-600/30"></div>
             </div>
           </header>
           <DndContext
@@ -193,7 +190,7 @@ export const MusicPlayList = () => {
             onDragEnd={handleDragEnd}
           >
             <SortableContext
-              items={upcomingList.map(song => song.song_id)}
+              items={upcomingList.map((song) => song.song_id)}
               strategy={verticalListSortingStrategy}
             >
               <ul className="flex flex-col gap-3">
@@ -207,6 +204,8 @@ export const MusicPlayList = () => {
                 ))}
               </ul>
             </SortableContext>
+
+
           </DndContext>
         </>
       )}

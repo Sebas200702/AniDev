@@ -98,9 +98,9 @@ export const AnimeMusic = ({
           {Array.from({ length: 4 }, (_, i) => (
             <div
               key={i + 1}
-              className="bg-zinc-700 mx-auto flex aspect-[100/28] md:max-h-36  h-full w-full animate-pulse flex-row rounded-lg"
+              className="mx-auto flex aspect-[100/28] h-full w-full animate-pulse flex-row rounded-lg bg-zinc-700 md:max-h-36"
             >
-              <div className="aspect-[225/330] md:max-h-36 h-full animate-pulse rounded-l-lg bg-zinc-800 object-cover object-center transition-all ease-in-out"></div>
+              <div className="aspect-[225/330] h-full animate-pulse rounded-l-lg bg-zinc-800 object-cover object-center transition-all ease-in-out md:max-h-36"></div>
             </div>
           ))}
         </ul>
