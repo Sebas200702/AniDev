@@ -1,8 +1,10 @@
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { baseTitle } from '@utils/base-url'
+import { normalizeString } from '@utils/normalize-string'
+import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
 import type { MediaPlayerInstance } from '@vidstack/react'
 import { useEffect, useRef } from 'react'
 import type { AnimeSongWithImage } from 'types'
-import { normalizeString } from '@utils/normalize-string'
 
 export const useMusicPlayerSync = (
   currentTime: number,
@@ -37,11 +39,6 @@ export const useMusicPlayerSync = (
   const previousSongId = useRef<string | null>(null)
   const isChangingSong = useRef(false)
   const mediaUpdateInterval = useRef<number | null>(null)
-
-  const updateUrl = (song: AnimeSongWithImage) => {
-    const newUrl = `/music/${normalizeString(song.song_title)}_${song.theme_id}`
-    window.history.replaceState(null, '', newUrl)
-  }
 
   useEffect(() => {
     const fetchMusic = async () => {
@@ -172,7 +169,8 @@ export const useMusicPlayerSync = (
       }
 
       if (!isMinimized) {
-        updateUrl(song)
+        const newUrl = `/music/${normalizeString(song.song_title)}_${song.theme_id}`
+        SyncronizePlayerMetadata({ title: song.song_title, url: newUrl })
       }
     }
 
@@ -206,7 +204,6 @@ export const useMusicPlayerSync = (
         setSavedTime(details.seekTime)
       }
     })
-
 
     return () => {
       mediaSession.setActionHandler('previoustrack', null)
@@ -276,9 +273,9 @@ export const useMusicPlayerSync = (
     setCurrentSong(nextSong)
     setSavedTime(0)
 
-    // Update URL without navigation
     if (!isMinimized) {
-      updateUrl(nextSong)
+      const newUrl = `/music/${normalizeString(nextSong.song_title)}_${nextSong.theme_id}`
+      SyncronizePlayerMetadata({ title: nextSong.song_title, url: newUrl })
     }
   }, [
     savedTime,
