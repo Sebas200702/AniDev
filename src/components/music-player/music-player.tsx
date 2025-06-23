@@ -66,7 +66,7 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
             <img
               src={nextSong.image}
               alt={nextSong.song_title}
-              className="relative aspect-[225/330] md:w-12  w-10 mr-2 rounded-sm"
+              className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12"
             />
           </Picture>
         ),
