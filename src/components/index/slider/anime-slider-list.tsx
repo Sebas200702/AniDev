@@ -201,9 +201,7 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
               }`}
             >
               {group.map((anime: AnimeCardInfo) => (
-
-                  <AnimeCard anime={anime} key={anime.mal_id} />
-
+                <AnimeCard anime={anime} key={anime.mal_id} />
               ))}
             </ul>
           ))}

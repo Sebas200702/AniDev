@@ -6,10 +6,10 @@ import { StatusPoint } from '@components/status-point'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { AnimeCardInfo } from 'types'
 
 /**
@@ -121,11 +121,9 @@ export const AnimeCard = ({ anime }: Props) => {
           styles="relative h-full w-full rounded-lg"
         >
           <img
-            src={
-
-                (createImageUrlProxy(image_webp ?? `${baseUrl}/placeholder.webp`))
-
-            }
+            src={createImageUrlProxy(
+              image_webp ?? `${baseUrl}/placeholder.webp`
+            )}
             alt={`Cover of ${title}`}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"

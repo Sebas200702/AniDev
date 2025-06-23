@@ -65,13 +65,17 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   })
   const user = userInfo?.name
   if (!user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+    })
   }
 
   const { image, filename, type } = await request.json()
 
   if (!image) {
-    return new Response(JSON.stringify({ message: 'Missing image data' }), { status: 400 })
+    return new Response(JSON.stringify({ message: 'Missing image data' }), {
+      status: 400,
+    })
   }
 
   const base64Pattern = /^data:([A-Za-z-+/]+);base64,(.+)$/
