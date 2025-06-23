@@ -122,9 +122,9 @@ export const AnimeCard = ({ anime }: Props) => {
         >
           <img
             src={
-              isMobile
-                ? (createImageUrlProxy(image_webp ?? `${baseUrl}/placeholder.webp`))
-                : (createImageUrlProxy(image_large_webp ?? `${baseUrl}/placeholder.webp` , '400' , '75'))
+
+                (createImageUrlProxy(image_webp ?? `${baseUrl}/placeholder.webp`))
+
             }
             alt={`Cover of ${title}`}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
