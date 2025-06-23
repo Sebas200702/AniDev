@@ -81,6 +81,7 @@ export const AnimeAside = ({
 
         <AddToListButton
           animeId={animeData.mal_id}
+          anime_title={animeData.title}
           styles="button-secondary "
         />
 
