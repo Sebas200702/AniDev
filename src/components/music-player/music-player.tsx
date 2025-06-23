@@ -43,7 +43,7 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
   const { currentTime, playing, muted, volume, canPlay, duration } =
     useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing, player, canPlay, duration , themeId)
+  useMusicPlayerSync(currentTime, playing, player, canPlay, duration, themeId)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
@@ -61,12 +61,12 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
         icon: (
           <Picture
             image={nextSong.placeholder}
-            styles="relative w-12 aspect-[225/330] rounded-sm"
+            styles="relative md:w-12 aspect-[225/330] w-10 rounded-sm"
           >
             <img
               src={nextSong.image}
               alt={nextSong.song_title}
-              className="relative aspect-[225/330] w-12 rounded-sm"
+              className="relative aspect-[225/330] md:w-12  w-10 mr-2 rounded-sm"
             />
           </Picture>
         ),
