@@ -9,7 +9,7 @@ import { ToastType } from 'types'
 export const AddToListButton = ({
   animeId,
   styles,
-  anime_title
+  anime_title,
 }: {
   animeId: number
   anime_title: string
