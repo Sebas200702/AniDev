@@ -25,7 +25,7 @@ export const CustomToaster = () => {
           icon: 'flex-shrink-0 mr-1',
         },
 
-        defaultCloseContent: <CloseIcon className='w-3 h-3' />,
+        defaultCloseContent: <CloseIcon className="h-3 w-3" />,
       }}
     />
   )
