@@ -92,9 +92,9 @@ export const UserInfo = ({
 
       <ImageEditor userName={userInfo?.name || ''} />
       {!isSignUp && (
-        <span className="truncate text-lg font-bold md:text-4xl">
+        <h1 className="truncate text-lg font-bold md:text-4xl">
           {userInfo?.name || 'Guest'}
-        </span>
+        </h1>
       )}
     </article>
   )
