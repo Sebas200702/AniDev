@@ -12,8 +12,8 @@ export const CustomToaster = () => {
         headless: true,
         classNames: {
           toast:
-            'font-sans text-sm font-medium z-50 bg-zinc-100/90 dark:bg-zinc-800/90 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-md relative flex items-center',
-          container: 'flex items-center p-2 space-x-2 w-full',
+            'font-sans text-sm font-medium z-50 bg-zinc-100/90 dark:bg-zinc-800/90 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-md relative flex items-center justify-center',
+          container: 'flex items-center p-2 space-x-2 w-full justify-center',
           content: 'flex flex-col space-y-0.5 mr-2',
           actions: {
             container: 'flex flex-col px-3',
