@@ -46,14 +46,13 @@ const SortableMusicItem = ({
     opacity: isDragging ? 0.9 : 1,
   }
 
-
   const handleProps = { ...attributes, ...listeners }
 
   return (
     <li
       ref={setNodeRef}
       style={style}
-      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl md:p-2 border border-transparent`}
+      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl border border-transparent md:p-2`}
     >
       <div
         {...handleProps}
@@ -74,7 +73,6 @@ const SortableMusicItem = ({
           <circle cx="16" cy="18" r="1.5" />
         </svg>
       </div>
-
 
       <div className="pr-6 transition-all duration-200">
         <AnimeMusicItem
@@ -107,7 +105,6 @@ export const MusicPlayList = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-
         distance: isMobile ? 8 : 10,
         delay: isMobile ? 200 : 100,
         tolerance: isMobile ? 8 : 5,
@@ -148,8 +145,6 @@ export const MusicPlayList = () => {
 
     setList(newCompleteList)
   }
-
-
 
   return (
     <section className="no-scrollbar max-h-96 overflow-x-hidden overflow-y-auto p-4 md:max-h-[700px]">
@@ -204,8 +199,6 @@ export const MusicPlayList = () => {
                 ))}
               </ul>
             </SortableContext>
-
-
           </DndContext>
         </>
       )}
