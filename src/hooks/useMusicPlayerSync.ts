@@ -44,6 +44,7 @@ export const useMusicPlayerSync = (
     const fetchMusic = async () => {
       setIsHidden(false)
       setIsMinimized(false)
+      if (!themeId) return
 
       try {
         const response = await fetch(`/api/getMusicInfo?themeId=${themeId}`)
