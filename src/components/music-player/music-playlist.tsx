@@ -52,18 +52,18 @@ const SortableMusicItem = ({
     <li
       ref={setNodeRef}
       style={style}
-      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl border border-transparent md:p-2`}
+      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl border border-transparent `}
     >
       <div
         {...handleProps}
-        className="absolute top-1/2 -right-2 z-10 flex h-6 w-6 -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-md border border-zinc-600/30 bg-zinc-800/90 shadow-lg backdrop-blur-sm transition-all duration-200 select-none hover:border-zinc-500/50 hover:bg-zinc-700/90 active:cursor-grabbing"
+        className="absolute top-1/2 right-0 z-10 flex h-full  -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-sm  bg-enfasisColor/50 shadow-lg backdrop-blur-sm transition-all duration-200 select-none  hover:bg-enfasisColor/60 active:cursor-grabbing"
         style={{ touchAction: 'none' }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="pointer-events-none h-4 w-4 text-zinc-400"
+          className="pointer-events-none h-4 w-4 text-white"
         >
           <circle cx="8" cy="6" r="1.5" />
           <circle cx="8" cy="12" r="1.5" />
@@ -147,7 +147,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar max-h-96 overflow-x-hidden overflow-y-auto p-4 md:max-h-[700px]">
+    <section className="no-scrollbar max-h-96  overflow-y-auto md:max-h-[700px] md:pr-20 md:pl-15 px-4">
       <header className="mb-6">
         <h2 className="text-2xl font-semibold text-zinc-100">
           Currently Playing
