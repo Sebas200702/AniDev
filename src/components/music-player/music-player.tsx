@@ -59,16 +59,13 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
         description: 'Up Next',
         delayDuration: 7000,
         icon: (
-          <Picture
-            image={nextSong.placeholder}
-            styles="relative md:w-12 aspect-[225/330] w-10 mr-2 rounded-sm"
-          >
+
             <img
               src={nextSong.image}
               alt={nextSong.song_title}
-              className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12"
+              className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12 "
             />
-          </Picture>
+
         ),
       })
       setToastShown(true)
