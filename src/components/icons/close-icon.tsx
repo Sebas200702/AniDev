@@ -20,10 +20,10 @@ import type { IconProps } from 'types'
  * @example
  * <CloseIcon className="w-6 h-6 text-red-500" />
  */
-interface Props extends IconProps{
-styles?: string
+interface Props extends IconProps {
+  styles?: string
 }
-export const CloseIcon = ({ className , styles} :Props) => {
+export const CloseIcon = ({ className, styles }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
