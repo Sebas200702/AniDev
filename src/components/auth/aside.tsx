@@ -75,9 +75,9 @@ export const Aside = ({
           <span className="bg-Primary-50/10 w-fit rounded-full px-4 py-2 text-sm backdrop-blur-2xl">
             {isSignUp ? 'Join to enjoy' : 'Great to see you again!'}
           </span>
-          <h3 className="text-Primary-50 text-4xl font-bold text-pretty">
+          <h1 className="text-Primary-50 text-4xl font-bold text-pretty">
             {isSignUp ? 'Start your journey with us' : 'Welcome back again!'}
-          </h3>
+          </h1>
           <p className="text-Primary-100 text-sm">
             {isSignUp
               ? 'Follow the steps to create your account'
