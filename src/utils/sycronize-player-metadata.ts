@@ -6,5 +6,5 @@ interface Props {
 }
 export const SyncronizePlayerMetadata = ({ url, title }: Props) => {
   window.history.replaceState(null, '', url)
-  document.title = `${title}e} - ${baseTitle}`
+  document.title = `${title} - ${baseTitle}`
 }
