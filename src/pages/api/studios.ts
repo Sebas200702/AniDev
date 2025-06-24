@@ -56,7 +56,11 @@ export const GET: APIRoute = rateLimit(async () => {
     if (cachedData) {
       return new Response(JSON.stringify(JSON.parse(cachedData)), {
         status: 200,
-        headers: { 'content-type': 'application/json' },
+        headers: {
+          'content-type': 'application/json',
+          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+        },
       })
     }
 
@@ -85,7 +89,8 @@ export const GET: APIRoute = rateLimit(async () => {
       status: 200,
       headers: {
         'content-type': 'application/json',
-        'Cache-Control': 'max-age=31536000',
+        'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+        Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
       },
     })
   } catch (error) {
