@@ -117,15 +117,24 @@ export const AnimeCard = ({ anime }: Props) => {
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={
-            createImageUrlProxy(image_small_webp ?? `${baseUrl}/placeholder.webp`)
-          }
+          image={createImageUrlProxy(
+            image_small_webp ?? `${baseUrl}/placeholder.webp`
+          )}
           styles="relative h-full w-full rounded-lg"
         >
           <img
-            src={createImageUrlProxy(
-              image_webp ?? `${baseUrl}/placeholder.webp`
-            )}
+            src={
+              isMobile
+                ? createImageUrlProxy(
+                    image_webp ?? `${baseUrl}/placeholder.webp`
+                  )
+                : createImageUrlProxy(
+                    image_large_webp ?? `${baseUrl}/placeholder.webp`,
+                    '0',
+                    '75',
+                    'webp'
+                  )
+            }
             alt={`Cover of ${title}`}
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
             loading="lazy"
