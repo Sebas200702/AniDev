@@ -3,12 +3,14 @@ import { Formulary } from '@components/auth/formulary'
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
 const title = `Sign Up - ${baseTitle}`
+const description =
+  'Join AniDev today and unlock access to thousands of anime series and movies. Get personalized recommendations, create watchlists, and connect with fellow anime enthusiasts.'
 const action = '/api/auth/signup'
 const bgImage = '/sign-up.webp'
 const step = Astro.url.searchParams.get('step') ?? ''
 ---
 
-<Layout title={title}>
+<Layout title={title} description={description}>
   <section class="mt-20 h-full w-full md:mt-0">
     <Formulary
       client:load
