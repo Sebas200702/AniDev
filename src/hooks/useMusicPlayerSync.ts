@@ -42,8 +42,6 @@ export const useMusicPlayerSync = (
 
   useEffect(() => {
     const fetchMusic = async () => {
-      setIsHidden(false)
-      setIsMinimized(false)
       if (!themeId) return
 
       try {
