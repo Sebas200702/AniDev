@@ -143,10 +143,10 @@ export const AnimeMusicItem = ({
         />
 
         <footer className="flex h-full w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
-          <h3 className="text-l group-hover:text-enfasisColor/80   text-pretty transition-colors duration-300 text-white ease-in-out select-none g">
+          <h3 className="text-l group-hover:text-enfasisColor/80 g text-pretty text-white transition-colors duration-300 ease-in-out select-none">
             {song.song_title}
           </h3>
-          <p className="text-s text-gray-400 select-none line-clamp-1 ">
+          <p className="text-s line-clamp-1 text-gray-400 select-none">
             {song.artist_name}
           </p>
         </footer>
