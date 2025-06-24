@@ -7,10 +7,7 @@ const [_, theme_id] = slug?.split('_') ?? ['', '']
 ---
 
 <Layout themeId={theme_id}>
-  <section
-    class="xl:w-[40%] xl:mt-30 my-20"
-    id="music-player-container"
-  >
+  <section class="my-20 xl:mt-30 xl:w-[40%]" id="music-player-container">
     <MusicPlayList client:only />
   </section>
 </Layout>
