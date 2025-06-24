@@ -13,7 +13,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600',
+        'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+        Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
       },
     })
   }
@@ -36,7 +37,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=3600',
+      'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+      Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
     },
   })
 })
