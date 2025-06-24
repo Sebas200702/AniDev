@@ -30,7 +30,7 @@ export const AsideNav = () => {
               onClick={() => setActiveItem(item.id)}
               className={`hover:text-enfasisColor group flex w-full flex-col items-center gap-3 p-2 transition-all duration-200 ${
                 activeItem === item.id
-                  ? 'text-enfasisColor bg-enfasisColor/10 border-enfasisColor border-r-2'
+                  ? 'text-enfasisColor   border-enfasisColor border-r-2'
                   : 'text-Primary-100 border-transparent'
               }`}
             >
@@ -52,12 +52,12 @@ export const AsideNav = () => {
               onClick={() => setActiveItem(item.id)}
               className={`hover:text-enfasisColor group flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-3 py-1 transition-all duration-200 ${
                 activeItem === item.id
-                  ? 'text-enfasisColor bg-enfasisColor/10'
+                  ? 'text-enfasisColor'
                   : 'text-Primary-100'
               }`}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span className="w-full truncate text-center text-xs font-medium">
+              <span className="w-full truncate text-center text-xs font-medium ">
                 {item.label}
               </span>
             </a>
