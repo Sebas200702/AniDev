@@ -2,9 +2,14 @@
 import { CalendarList } from '@components/schedule/schedule-list'
 import { CalendarShowBox } from '@components/schedule/schedule-show-box'
 import Layout from '@layouts/base.astro'
+import { baseTitle } from '@utils/base-url'
+
+const title = `Anime Schedule - ${baseTitle}`
+const description =
+  'Stay up-to-date with the latest anime releases and airing schedules. Never miss an episode of your favorite series with our comprehensive anime calendar.'
 ---
 
-<Layout>
+<Layout title={title} description={description}>
   <section
     class="mx-4 mt-24 flex w-full flex-col items-center overflow-hidden md:mx-20"
   >
