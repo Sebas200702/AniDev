@@ -11,9 +11,12 @@ export const usePlayerBehavior = (
   const { setIsMinimized, isMinimized, setIsHidden } = useMusicPlayerStore()
 
   const updateMinimizedState = useCallback(() => {
-    const shouldMinimize = !window.location.pathname.includes('/music')
-    setIsMinimized(shouldMinimize)
-  }, [setIsMinimized])
+    if (!window.location.pathname.includes('/music')) {
+      setIsMinimized(true)
+    } else {
+      setIsMinimized(false)
+    }
+  }, [setIsMinimized, window.location.pathname])
 
   useLayoutEffect(() => {
     updateMinimizedState()
