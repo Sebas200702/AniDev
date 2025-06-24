@@ -19,8 +19,7 @@ import { type RedisClientType, createClient } from 'redis'
  */
 
 declare global {
-  // For environments with hot-reload or serverless, prevent recreating instances
-  var __redisClient: RedisClientType | undefined
+  const __redisClient: RedisClientType | undefined
 }
 
 const DEFAULT_REDIS_URL = {
@@ -32,11 +31,9 @@ const DEFAULT_REDIS_URL = {
   },
 }
 
-// Use existing global instance if available, otherwise create a new client
 export const redis: RedisClientType =
   global.__redisClient ?? createClient(DEFAULT_REDIS_URL)
 
-// Store the client globally to enforce a singleton
 if (!global.__redisClient) {
   global.__redisClient = redis
   redis.on('error', (err) => {
