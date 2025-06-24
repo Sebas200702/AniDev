@@ -6,9 +6,13 @@ import { UserList } from '@components/profile/user-tabs/user-list'
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+
+const title = `Profile - ${baseTitle}`
+const description =
+  'Manage your AniDev profile, track your anime watchlist, view your watching history, and customize your preferences for the ultimate anime streaming experience.'
 ---
 
-<Layout title={`Profile - ${baseTitle}`}>
+<Layout title={title} description={description}>
   <section
     class="p-y mx-auto mt-16 flex w-full flex-col gap-24 px-4 text-white md:gap-16 md:px-20"
   >
