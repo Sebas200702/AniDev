@@ -77,7 +77,8 @@ export const GET: APIRoute = rateLimit(async ({ request, url }) => {
         status: 200,
         headers: {
           'Content-Type': 'application/vnd.apple.mpegurl',
-          'Cache-Control': 'max-age=31536000',
+          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+          Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
         },
       })
     }
@@ -108,7 +109,11 @@ export const GET: APIRoute = rateLimit(async ({ request, url }) => {
 
       return new Response(stream, {
         status: response.status,
-        headers: { 'Content-Type': contentType },
+        headers: {
+          'Content-Type': contentType,
+          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+          Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
+        },
       })
     }
 
