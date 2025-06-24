@@ -24,7 +24,11 @@ export const GET: APIRoute = rateLimit(
       if (cachedCharacters) {
         return new Response(cachedCharacters, {
           status: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+          },
         })
       }
 
@@ -43,7 +47,11 @@ export const GET: APIRoute = rateLimit(
 
       return new Response(JSON.stringify(characters), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+        },
       })
     } catch (error) {
       console.error('Error fetching anime characters:', error)
