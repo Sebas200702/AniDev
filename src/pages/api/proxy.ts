@@ -73,7 +73,12 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       const response = Buffer.from(JSON.parse(cachedData).data)
       return new Response(response, {
         status: 200,
-        headers: { 'Content-Type': mimeType },
+        headers: {
+          'Content-Type': mimeType,
+          'Content-Length': response.length.toString(),
+          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+          Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
+        },
       })
     }
     const response = await fetch(imageUrl)
@@ -128,6 +133,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=86400, s-maxage=86400',
+        Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
       },
     })
   } catch (error) {
