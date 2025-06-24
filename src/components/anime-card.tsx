@@ -117,7 +117,9 @@ export const AnimeCard = ({ anime }: Props) => {
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={image_small_webp ?? `${baseUrl}/placeholder.webp`}
+          image={
+            createImageUrlProxy(image_small_webp ?? `${baseUrl}/placeholder.webp`)
+          }
           styles="relative h-full w-full rounded-lg"
         >
           <img
