@@ -68,7 +68,8 @@ export const GET: APIRoute = rateLimit(
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=3600',
+            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
           },
         })
       }
@@ -102,8 +103,9 @@ export const GET: APIRoute = rateLimit(
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-          'CDN-Cache-Control': 'max-age=86400',
+          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+          'CDN-Cache-Control': 'max-age=7200',
           Vary: 'Accept-Encoding',
         },
       })
