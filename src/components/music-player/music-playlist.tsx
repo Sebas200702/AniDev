@@ -52,11 +52,11 @@ const SortableMusicItem = ({
     <li
       ref={setNodeRef}
       style={style}
-      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl border border-transparent `}
+      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl border border-transparent`}
     >
       <div
         {...handleProps}
-        className="absolute top-1/2 right-0 z-10 flex h-full  -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-sm  bg-enfasisColor/50 shadow-lg backdrop-blur-sm transition-all duration-200 select-none  hover:bg-enfasisColor/60 active:cursor-grabbing"
+        className="bg-enfasisColor/50 hover:bg-enfasisColor/60 absolute top-1/2 right-0 z-10 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-sm shadow-lg backdrop-blur-sm transition-all duration-200 select-none active:cursor-grabbing"
         style={{ touchAction: 'none' }}
       >
         <svg
@@ -147,7 +147,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar max-h-96  overflow-y-auto md:max-h-[700px] md:pr-20 md:pl-15 px-4">
+    <section className="no-scrollbar max-h-96 overflow-y-auto px-4 md:max-h-[700px] md:pr-20 md:pl-15">
       <header className="mb-6">
         <h2 className="text-2xl font-semibold text-zinc-100">
           Currently Playing
