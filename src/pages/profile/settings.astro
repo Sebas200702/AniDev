@@ -4,9 +4,13 @@ import { SearchHistory } from '@components/profile/settings/search-history'
 import { SelectColor } from '@components/profile/settings/select-color'
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
+
+const title = `Settings - ${baseTitle}`
+const description =
+  'Customize your AniDev experience with personalized settings. Adjust theme colors, parental controls, search history preferences, and more to make the platform truly yours.'
 ---
 
-<Layout title={`Settings - ${baseTitle}`}>
+<Layout title={title} description={description}>
   <section
     class="mx-auto mt-16 flex w-full flex-col gap-8 p-4 text-white xl:max-w-7xl"
   >
