@@ -140,13 +140,4 @@ export const usePlayerBehavior = (
     }
   }, [isMinimized, setIsHidden, playerRef])
 
-  // Debug: Log para verificar cambios de estado (remover en producción)
-  useEffect(() => {
-    console.log('Player state updated:', {
-      pathname: window.location.pathname,
-      isMinimized,
-      shouldBeMinimized: !window.location.pathname.includes('/music'),
-      isHidden: useMusicPlayerStore.getState().isHidden
-    })
-  }, [isMinimized])
 }
