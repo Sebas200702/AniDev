@@ -1,5 +1,10 @@
 ---
 import Layout from '@layouts/base.astro'
+import { baseTitle } from '@utils/base-url'
+
+const title = `Anime Music - ${baseTitle}`
+const description =
+  'Discover and stream anime opening themes, ending songs, and soundtracks from your favorite series. Explore our extensive collection of anime music on AniDev.'
 ---
 
-<Layout />
+<Layout title={title} description={description} />
