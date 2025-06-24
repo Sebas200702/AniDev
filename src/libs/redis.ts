@@ -19,7 +19,9 @@ import { type RedisClientType, createClient } from 'redis'
  */
 
 declare global {
-  const __redisClient: RedisClientType | undefined
+  // Extend NodeJS.Global to include __redisClient
+  // eslint-disable-next-line no-var
+  var __redisClient: RedisClientType | undefined
 }
 
 const DEFAULT_REDIS_URL = {
