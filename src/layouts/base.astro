@@ -141,7 +141,7 @@ const userInfo = await getSessionUserInfo({
       ]}
     />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-    <link rel="canonical" href={baseUrl} />
+    <link rel="canonical" href={Astro.url.href} />
     <title>{metaTitle}</title>
     <ClientRouter />
   </head>
