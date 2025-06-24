@@ -11,8 +11,8 @@ const step = Astro.url.searchParams.get('step') ?? ''
 <Layout title={title}>
   <section class="mt-20 h-full w-full md:mt-0">
     <Formulary
-      client:only
-      title={title}
+      client:load
+      title={'Sign Up'}
       action={action}
       bgImage={bgImage}
       step={step}
