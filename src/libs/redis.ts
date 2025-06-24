@@ -1,4 +1,4 @@
-import { createClient } from 'redis'
+import { type RedisClientType, createClient } from 'redis'
 
 /**
  * Redis client instance for caching and session management.
@@ -13,48 +13,55 @@ import { createClient } from 'redis'
  * - Error handling for connection issues
  *
  * The module includes:
- * - A configured Redis client instance
+ * - A configured Redis client singleton instance
  * - Error event handler for client errors
- * - Connection function to establish Redis connection
- *
- * @example
- * // Connect to Redis
- * await connectRedis();
- *
- * // Set a value
- * await redis.set('key', 'value');
- *
- * // Get a value
- * const value = await redis.get('key');
+ * - connectRedis function to establish Redis connection
  */
-export const redis = createClient({
+
+declare global {
+  // For environments with hot-reload or serverless, prevent recreating instances
+  var __redisClient: RedisClientType | undefined
+}
+
+const DEFAULT_REDIS_URL = {
   username: 'default',
   password: import.meta.env.REDIS_PASSWORD,
   socket: {
     host: 'redis-14957.crce181.sa-east-1-2.ec2.redns.redis-cloud.com',
     port: 14957,
   },
-})
+}
 
-redis.on('error', (err) => {
-  console.error('Redis Client Error', err)
-})
+// Use existing global instance if available, otherwise create a new client
+export const redis: RedisClientType =
+  global.__redisClient ?? createClient(DEFAULT_REDIS_URL)
+
+// Store the client globally to enforce a singleton
+if (!global.__redisClient) {
+  global.__redisClient = redis
+  redis.on('error', (err) => {
+    console.error('Redis Client Error', err)
+  })
+}
 
 /**
  * Establishes connection to the Redis server.
  *
  * @description This function attempts to connect to the Redis server using the configured
- * client instance. It includes proper error handling and logging for both successful
+ * client singleton. It includes proper error handling and logging for both successful
  * connections and connection failures.
  *
  * @returns {Promise<void>} A promise that resolves when the connection is established
  * or rejects if the connection fails
- *
- * @example
- * try {
- *   await connectRedis();
- *   console.log('Successfully connected to Redis');
- * } catch (error) {
- *   console.error('Failed to connect to Redis:', error);
- * }
  */
+export async function connectRedis(): Promise<void> {
+  try {
+    if (!redis.isReady) {
+      await redis.connect()
+      console.log('Connected to Redis successfully')
+    }
+  } catch (error) {
+    console.error('Failed to connect to Redis:', error)
+    throw error
+  }
+}
