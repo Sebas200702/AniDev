@@ -4,6 +4,7 @@ import { SettingsIcon } from '@components/icons/settings-icon'
 import { UserIcon } from '@components/icons/user-icon'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { signOut } from 'auth-astro/client'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 
 /**
  * Profile component renders the user's profile information and a dropdown menu.
@@ -63,7 +64,7 @@ export const Profile = () => {
         >
           <img
             className="h-10 w-10 rounded-full"
-            src={userInfo?.avatar ?? '/profile-picture-5.webp'}
+            src={createImageUrlProxy(userInfo?.avatar ?? '/profile-picture-5.webp')}
             alt="Profile"
             loading="lazy"
             decoding="async"
