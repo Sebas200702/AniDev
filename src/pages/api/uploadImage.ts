@@ -126,5 +126,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   const { cid } = await pinata.upload.public.file(newFile)
   const url = await pinata.gateways.public.convert(cid)
 
-  return new Response(JSON.stringify({ data: url }), { status: 200 })
+  return new Response(JSON.stringify({ data: url }), {
+    status: 200,
+  })
 })
