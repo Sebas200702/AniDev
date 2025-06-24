@@ -186,7 +186,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       const headers: Record<string, string> = {
         'Content-Type': cached.contentType,
         'Content-Length': buffer.length.toString(),
-        'Cache-Control': `public, max-age=${cacheSeconds}`,
+        'Cache-Control': `public, max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
+        Expires: new Date(Date.now() + cacheSeconds * 1000).toUTCString(),
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -284,7 +285,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     const headers: Record<string, string> = {
       'Content-Type': contentType,
       'Content-Length': buffer.length.toString(),
-      'Cache-Control': `public, max-age=${cacheSeconds}`,
+      'Cache-Control': `public, max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
+      Expires: new Date(Date.now() + cacheSeconds * 1000).toUTCString(),
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Allow-Headers': 'Content-Type',
