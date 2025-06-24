@@ -1,10 +1,13 @@
 ---
 import Layout from '@layouts/base.astro'
-const pageTitle = 'Page Not Found'
-const description = 'The page you are looking for does not exist'
+import { baseTitle } from '@utils/base-url'
+
+const pageTitle = `404 - Page Not Found | ${baseTitle}`
+const description =
+  'The page you are looking for does not exist. Return to AniDev homepage to discover amazing anime content and find what you were searching for.'
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description={description}>
   <section
     class="mt-16 flex h-full w-full flex-col items-center justify-center gap-4 p-4 text-white"
   >
