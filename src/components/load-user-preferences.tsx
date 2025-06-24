@@ -42,7 +42,7 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
     const savedTrackSearchHistory = localStorage.getItem('track_search_history')
-    setEnfasis(savedEnfasis ?? '#0057E7')
+    setEnfasis(savedEnfasis ?? '#1d6cff')
     setUserInfo(userInfo)
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
