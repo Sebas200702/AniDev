@@ -139,7 +139,9 @@ export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
       }),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     )
   } catch (error) {
