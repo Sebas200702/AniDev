@@ -20,8 +20,13 @@ export const usePlayerBehavior = (
     if (currentPathRef.current !== currentPath || shouldMinimize !== isMinimized) {
       currentPathRef.current = currentPath
       setIsMinimized(shouldMinimize)
+
+      // Si estamos en /music, quitar el estado hidden para mostrar el reproductor
+      if (!shouldMinimize) {
+        setIsHidden(false)
+      }
     }
-  }, [setIsMinimized, isMinimized])
+  }, [setIsMinimized, isMinimized, setIsHidden])
 
   // Estado inicial
   useLayoutEffect(() => {
@@ -140,7 +145,8 @@ export const usePlayerBehavior = (
     console.log('Player state updated:', {
       pathname: window.location.pathname,
       isMinimized,
-      shouldBeMinimized: !window.location.pathname.includes('/music')
+      shouldBeMinimized: !window.location.pathname.includes('/music'),
+      isHidden: useMusicPlayerStore.getState().isHidden
     })
   }, [isMinimized])
 }
