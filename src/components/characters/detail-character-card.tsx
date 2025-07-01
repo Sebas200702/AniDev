@@ -5,7 +5,7 @@ import type { Character } from 'types'
 
 export const AnimeCharacterCard = ({ character }: { character: Character }) => {
   return (
-    <article className="group from-Primary-950/50 to-Primary-950/80 hover:border-enfasisColor/60 relative h-full aspect-[100/32] min-h-32 transform overflow-hidden rounded-xl border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 ease-in-out hover:-translate-y-1 md:h-28">
+    <article className="group from-Primary-950/50 to-Primary-950/80 hover:border-enfasisColor/60 relative h-full aspect-[100/32] md:min-h-32 transform overflow-hidden rounded-xl border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 ease-in-out hover:-translate-y-1 md:h-28">
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50 aspect" />
 
       <a
