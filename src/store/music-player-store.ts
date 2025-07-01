@@ -11,6 +11,10 @@ interface MusicPlayerStore {
   isControlsVisible: boolean
   src: string
   canPlay: boolean
+  versionNumber: number
+  versions: AnimeSongWithImage[]
+  setVersions: (versions: AnimeSongWithImage[]) => void
+  setVersionNumber: (versionNumber: number) => void
   setCanPlay: (canPlay: boolean) => void
   setIsControlsVisible: (isVisible: boolean) => void
   setDuration: (duration: number) => void
@@ -67,6 +71,10 @@ interface MusicPlayerStore {
 export const useMusicPlayerStore = create<MusicPlayerStore>()(
   persist(
     (set) => ({
+      versionNumber: 1,
+      setVersionNumber: (versionNumber: number) => set({ versionNumber }),
+      versions: [],
+      setVersions: (versions: AnimeSongWithImage[]) => set({ versions }),
       list: [],
       duration: 0,
       currentSongIndex: 0,
