@@ -29,8 +29,8 @@ import { Filters } from 'types'
  * //   // ... other filters
  * // }
  */
-export const getFilters = (filters: string[], url: URL) => {
-  return filters.reduce(
+export const getFilters = (filters: string[], url: URL, includeSortParams: boolean = true) => {
+  const result = filters.reduce(
     (filters, filter) => {
       const value = url.searchParams.get(filter)
       if (
@@ -45,17 +45,12 @@ export const getFilters = (filters: string[], url: URL) => {
       ) {
         filters[filter] = value ?? null
       } else if (filter === Filters.order_by) {
-        if (value) {
+        if (includeSortParams && value) {
           const [column, direction] = value.split(' ')
-          filters['sort_column'] = column
+          filters['sort_column'] = column || 'score'
           filters['sort_direction'] = direction || 'desc'
         }
-      } else if (filter === Filters.aired_day_filter) {
-        if (value) {
-          filters[filter] = value
-            .split('_')
-            .map((item) => normalizeString(item))
-        }
+    
       } else {
         filters[filter] = value
           ? value.split('_').map((item) => normalizeString(item))
@@ -66,4 +61,15 @@ export const getFilters = (filters: string[], url: URL) => {
     },
     {} as Record<string, string | number | boolean | string[] | null>
   )
+
+  if (includeSortParams) {
+    if (!result.sort_column) {
+      result.sort_column = 'score'
+    }
+    if (!result.sort_direction) {
+      result.sort_direction = 'desc'
+    }
+  }
+
+  return result
 }
