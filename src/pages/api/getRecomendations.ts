@@ -108,6 +108,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         },
       ],
       tools: [functionTool],
+
     })
 
     const functionCall =
@@ -196,10 +197,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }),
         {
           status: 200,
-          headers: {
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-          },
+
         }
       )
     } else {
@@ -232,10 +230,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
               }),
               {
                 status: 200,
-                headers: {
-                  'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-                  Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-                },
+               
               }
             )
           }
