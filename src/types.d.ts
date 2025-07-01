@@ -56,6 +56,14 @@ export interface WatchList extends AnimeCardInfo {
   anime_id: string
   type: string
 }
+export enum CharacterFilters {
+  limit_count = 'limit_count',
+  role_filter = 'role_filter',
+  search_query = 'search_query',
+  order_by = 'order_by',
+  page_number = 'page_number',
+  language_filter = 'language_filter',
+}
 
 interface Character {
   id: string
@@ -95,13 +103,14 @@ export interface AnimeSong {
   type: string
   video_url: string
   audio_url: string
-  version: string
+  version: number
   resolution: string
   song_id: number
   artist_name: string | null
   episodes: string | null
   sequence: number | null
   theme_id: number | null
+  version_id: number | null
 }
 export interface RecommendationContext {
   type:
@@ -340,6 +349,7 @@ export const ratingOptions: FilterOption[] = [
 export const typeSearchOptions: FilterOption[] = [
   { value: 'animes', label: 'Anime' },
   { value: 'music', label: 'Music' },
+  { value: 'characters', label: 'Characters' },
 ]
 export const airedDayOptions: FilterOption[] = [
   { value: 'sunday', label: 'Sunday' },
