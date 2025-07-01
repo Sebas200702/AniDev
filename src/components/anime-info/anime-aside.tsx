@@ -73,6 +73,9 @@ export const AnimeAside = ({
           src={animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`}
           alt={animeData.title}
           loading="lazy"
+          style={{
+            viewTransitionName: `anime-card-${animeData.mal_id}`,
+          }}
         />
       </Picture>
 
