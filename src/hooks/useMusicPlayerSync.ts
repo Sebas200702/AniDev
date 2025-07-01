@@ -1,9 +1,8 @@
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { baseTitle } from '@utils/base-url'
 import { normalizeString } from '@utils/normalize-string'
 import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
 import type { MediaPlayerInstance } from '@vidstack/react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, version } from 'react'
 import type { AnimeSongWithImage } from 'types'
 
 export const useMusicPlayerSync = (
@@ -28,11 +27,14 @@ export const useMusicPlayerSync = (
     setCurrentSongIndex,
     currentSongIndex,
     isMinimized,
-    setIsHidden,
-    setIsMinimized,
+    setVersions,
+    setVersionNumber,
+    versionNumber,
     setError,
     setVariants,
     setList,
+    versions,
+
     savedTime,
   } = useMusicPlayerStore()
 
@@ -47,6 +49,7 @@ export const useMusicPlayerSync = (
       try {
         const response = await fetch(`/api/getMusicInfo?themeId=${themeId}`)
         const data = await response.json()
+        console.log('Fetched music data:', data)
 
         if (!data || !Array.isArray(data) || data.length === 0) {
           setError('No se encontró música para este tema')
@@ -61,7 +64,18 @@ export const useMusicPlayerSync = (
 
         if (existingSongIndex !== -1) {
           setCurrentSong(newSong)
-          setVariants(data)
+          setVariants(
+            data.filter((song) => song.version_id === newSong.version_id)
+          )
+          setVersionNumber(newSong.version)
+
+          const uniqueVersions = data.filter(
+            (song, index, self) =>
+              self.findIndex((s) => s.version_id === song.version_id) === index
+          )
+
+          setVersions(uniqueVersions)
+
           setError(null)
           return
         }
@@ -79,9 +93,19 @@ export const useMusicPlayerSync = (
         }
 
         setList(updatedList)
-        setVariants(data)
 
         setCurrentSong(newSong)
+        setVariants(
+          data.filter((song) => song.version_id === newSong.version_id)
+        )
+        setVersionNumber(newSong.version)
+
+        const uniqueVersions = data.filter(
+          (song, index, self) =>
+            self.findIndex((s) => s.version_id === song.version_id) === index
+        )
+
+        setVersions(uniqueVersions)
 
         setError(null)
       } catch (error) {
@@ -301,4 +325,19 @@ export const useMusicPlayerSync = (
   useEffect(() => {
     setDuration(duration)
   }, [duration, setDuration])
+
+  useEffect(() => {
+    if (!currentSong) return
+
+    const newVersion = versions.find(
+      (version) => version.version === versionNumber
+    )
+
+    if (newVersion) {
+      setCurrentSong(newVersion)
+      setVariants(
+        versions.filter((song) => song.version_id === newVersion.version_id)
+      )
+    }
+  }, [versionNumber, currentSong])
 }
