@@ -14,8 +14,14 @@ import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { type AnimeSongWithImage, ToastType, shortCuts } from 'types'
+import {
+  type AnimeSongWithImage,
+  type Character,
+  ToastType,
+  shortCuts,
+} from 'types'
 import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
+import { AnimeCharacterCard } from '@components/characters/detail-character-card'
 
 export const SearchBar = () => {
   const {
@@ -47,16 +53,26 @@ export const SearchBar = () => {
     [appliedFilters]
   )
 
+  const defaultFiltersAnimes =
+    `limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
+  const defaultFiltersMusic = 'limit_count=30'
+  const defaultFiltersCharacters = 'limit_count=30&language_filter=japanese'
+
+
   const url = useMemo(() => {
     const defautlFilters =
       type === 'animes'
-        ? 'limit_count=30&banners_filter=false&format=search&parental_control=false'
-        : 'limit_count=30'
+        ? defaultFiltersAnimes
+        : type === 'music'
+          ? defaultFiltersMusic
+          : defaultFiltersCharacters
+
     const baseQuery = `/api/${type}?${defautlFilters}`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
   }, [debouncedQuery, filtersToApply, parentalControl, type])
+
 
   const actionMap = {
     'close-search': () => setSearchIsOpen(false),
@@ -105,7 +121,7 @@ export const SearchBar = () => {
     loading: isLoading,
     total,
     error: fetchError,
-  } = useFetch<AnimeCardInfo[] | AnimeSongWithImage[]>({
+  } = useFetch<AnimeCardInfo[] | AnimeSongWithImage[] | Character[]>({
     url,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
@@ -113,7 +129,7 @@ export const SearchBar = () => {
     data: animesFull,
     loading: isLoadingFull,
     error: fetchErrorFull,
-  } = useFetch<AnimeDetail[] | AnimeSongWithImage[]>({
+  } = useFetch<AnimeDetail[] | AnimeSongWithImage[] | Character[]>({
     url: `${url.replace('format=search', 'format=anime-detail').replace('30', '7')}`,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
@@ -177,6 +193,7 @@ export const SearchBar = () => {
     setLoading(isLoading)
     if (isLoading || (!query && !appliedFilters) || !data) return
     setResults(data, false, fetchError)
+
     setTotalResults(total)
     const newHistory = {
       query,
@@ -212,9 +229,12 @@ export const SearchBar = () => {
     })
   }, [trackSearchHistory, query, appliedFilters])
 
-  // Función helper para verificar si los datos son del tipo correcto
   const isAnimeData = (data: any[]): data is AnimeDetail[] => {
     return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
+  }
+
+  const isCharacterData = (data: any[]): data is Character[] => {
+    return data.length > 0 && 'id' in data[0]
   }
 
   const isMusicData = (data: any[]): data is AnimeSongWithImage[] => {
@@ -254,7 +274,7 @@ export const SearchBar = () => {
             label="Type"
             values={[type]}
             onChange={(values) => {
-              setType(values[0] as 'animes' | 'music')
+              setType(values[0] as 'animes' | 'music' | 'characters')
             }}
             onClear={() => {}}
             styles="max-w-32 bg-Complementary hover:bg-enfasisColor/10"
@@ -339,7 +359,18 @@ export const SearchBar = () => {
                   anime_title={result.anime_title}
                 />
               ))
-            : null}
+            : !isLoading &&
+                !isLoadingFull &&
+                animesFull &&
+                type === 'characters' &&
+                isCharacterData(animesFull)
+              ? animesFull.map((result) => (
+                  <AnimeCharacterCard
+                    key={`${result.character_id}_${result.voice_actor_id}`}
+                    character={result}
+                  />
+                ))
+              : null}
 
         {results &&
           results?.length > 7 &&
