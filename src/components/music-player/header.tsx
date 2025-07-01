@@ -2,6 +2,7 @@ import { navigate } from 'astro:transitions/client'
 import { ExpandIcon } from '@components/icons/expand-icon'
 import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
+import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
@@ -22,6 +23,9 @@ export const Header = ({ playerContainerRef }: Props) => {
     playerRef,
     setDragOffset,
     setIsDraggingPlayer,
+    versions,
+    versionNumber,
+    setVersionNumber,
   } = useMusicPlayerStore()
 
   if (!currentSong || !playerContainerRef) return
@@ -96,7 +100,7 @@ export const Header = ({ playerContainerRef }: Props) => {
       onTouchStart={handleTouchStart}
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="flex w-full flex-row items-center gap-2">
+      <div className="flex w-full flex-row items-center justify-between gap-2">
         <div
           className={`bg-Primary-800 ${isMinimized ? 'flex md:hidden' : 'hidden'} animate-spin-slow h-12 w-12 flex-shrink-0 overflow-hidden rounded-full`}
         >
@@ -109,7 +113,7 @@ export const Header = ({ playerContainerRef }: Props) => {
           )}
         </div>
 
-        <div className="flex w-full flex-col gap-2">
+        <div className="flex  flex-col gap-2">
           <h1
             className={`line-clamp-1 text-xs ${isMinimized ? 'text-xs font-medium' : 'text-l'} leading-tight text-white`}
           >
@@ -127,13 +131,34 @@ export const Header = ({ playerContainerRef }: Props) => {
           </span>
         </div>
 
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col  items-center gap-4">
           <button
             className="text-sxx button-primary h-min cursor-pointer rounded-sm p-1 md:p-4"
             onClick={handleChangeType}
           >
             {type.toUpperCase()}
           </button>
+
+        {
+            versions.length > 1 && !isMinimized && (
+                <FilterDropdown
+            label="Version"
+            values={[versionNumber.toString()]}
+            onChange={(value) => setVersionNumber(parseInt(value[0]))}
+            options={
+              versions.map((version) => ({
+                label: `${version.version}`,
+                value: version.version.toString(),
+              })) ?? []
+            }
+            onClear={() => setVersionNumber(1)}
+            styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  min-w-24`}
+            singleSelect
+            ImputText={false}
+          />
+            )
+        }
+
           {isMinimized && (
             <>
               <div className="flex flex-row gap-2 md:hidden">
