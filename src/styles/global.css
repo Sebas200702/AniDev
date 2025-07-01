@@ -23,6 +23,7 @@
   padding: var(--border-width);
 }
 
+
 .dynamic-border::before {
   content: '';
   position: absolute;
