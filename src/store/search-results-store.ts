@@ -2,6 +2,7 @@ import type {
   AnimeCardInfo,
   AnimeSongWithImage,
   AppliedFilters,
+  Character,
   SearchHistory,
 } from 'types'
 
@@ -51,11 +52,11 @@ interface SearchStoreResults {
   searchBarIsOpen: boolean
   searchHistoryIsOpen: boolean
   url: string
-  type: 'animes' | 'music'
-  setType: (type: 'animes' | 'music') => void
+  type: 'animes' | 'music' | 'characters'
+  setType: (type: 'animes' | 'music' | 'characters') => void
   loading: boolean
   completedSearch: boolean
-  results: AnimeCardInfo[] | null | AnimeSongWithImage[]
+  results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[]
   totalResults: number
   searchHistory: SearchHistory[]
   appliedFilters: AppliedFilters
@@ -64,7 +65,7 @@ interface SearchStoreResults {
   setQuery: (query: string) => void
   setSearchIsOpen: (isOpen: boolean) => void
   setResults: (
-    results: AnimeCardInfo[] | null | AnimeSongWithImage[],
+    results: AnimeCardInfo[] | null | AnimeSongWithImage[] |Character[],
     loading: boolean,
     error: string | null
   ) => void
