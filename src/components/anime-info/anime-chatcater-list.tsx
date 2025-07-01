@@ -1,4 +1,4 @@
-import { AnimeCharacterCard } from '@components/anime-info/anime-character-card'
+import { AnimeCharacterCard } from '@components/characters/detail-character-card'
 import { AnimeCharacterLoader } from '@components/anime-info/anime-character-loader'
 import { NexPrevBtnSlideList } from '@components/index/slider/next-prev-btn-slider-list'
 import { useCharacterStore } from '@store/character-store'
