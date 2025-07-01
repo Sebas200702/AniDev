@@ -35,11 +35,7 @@ import Layout from '@layouts/base.astro'
         title="Top Movies"
       />
       <AnimeBanner id={2} client:visible />
-      <AnimeSlider
-        client:visible
-        url="/api/animes?limit_count=24&genre_filter=girlslove&banners_filter=false"
-        title="Girls Love"
-      />
+    
       <AnimeSlider
         client:visible
         url="/api/animes?limit_count=24&genre_filter=comedy&banners_filter=false"
