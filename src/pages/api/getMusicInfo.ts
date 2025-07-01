@@ -28,7 +28,9 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   })
 
   if (error) {
+    console.error('Error fetching music info:', error)
     return new Response(error.message, { status: 500 })
+
   }
 
   await redis.set(cacheKey, JSON.stringify(data), { EX: 60 * 60 * 24 })
