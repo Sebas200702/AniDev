@@ -112,8 +112,8 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
         }}
         poster={createImageUrlProxy(
           currentSong.banner_image ?? currentSong.image,
-          '1080',
-          '70',
+          '1980',
+          '75',
           'webp'
         )}
         className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
