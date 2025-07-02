@@ -174,10 +174,9 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   try {
-    // Generate cache key
+
     const cacheKey = `download-${Buffer.from(fileUrl).toString('base64')}`
 
-    // Check cache first
     const cachedData = await redis.get(cacheKey)
     if (cachedData) {
       const cached = JSON.parse(cachedData)
@@ -186,8 +185,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       const headers: Record<string, string> = {
         'Content-Type': cached.contentType,
         'Content-Length': buffer.length.toString(),
-        'Cache-Control': `public, max-age=${cacheSeconds}, s-maxage=${cacheSeconds}`,
-        Expires: new Date(Date.now() + cacheSeconds * 1000).toUTCString(),
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -204,7 +201,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       })
     }
 
-    // Fetch the file
+
     const response = await fetch(fileUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; DownloadProxy/1.0)',
@@ -223,7 +220,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-    // Check content length
+
     const contentLength = response.headers.get('content-length')
     if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
       return new Response(
@@ -235,11 +232,11 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-    // Get content type
+
     let contentType =
       response.headers.get('content-type') || getMimeTypeFromUrl(fileUrl)
 
-    // Get filename from URL or Content-Disposition header
+
     let filename = customFilename
     if (!filename) {
       const contentDisposition = response.headers.get('content-disposition')
@@ -257,7 +254,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       }
     }
 
-    // Read the file content
+
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
@@ -271,7 +268,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-    // Cache the file (store as base64 to handle binary data)
+
     const cacheData = {
       data: buffer.toString('base64'),
       contentType,
@@ -281,7 +278,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 
     await redis.set(cacheKey, JSON.stringify(cacheData), { EX: cacheSeconds })
 
-    // Prepare response headers
+    
     const headers: Record<string, string> = {
       'Content-Type': contentType,
       'Content-Length': buffer.length.toString(),
