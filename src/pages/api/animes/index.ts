@@ -87,7 +87,6 @@ export const GET: APIRoute = rateLimit(
       const page = url.searchParams.get('page_number')
       const filters = getFilters(Object.values(Filters), url)
       const countFilters = getFilters(CountFilters, url, false)
-      console.log(filters)
 
       enum Formats {
         AnimeCard = 'anime-card',
