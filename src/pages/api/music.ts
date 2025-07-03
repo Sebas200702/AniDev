@@ -28,8 +28,8 @@ export const GET: APIRoute = rateLimit(
 
       const limit = parseInt(url.searchParams.get('limit_count') ?? '10')
       const page = url.searchParams.get('page_number')
-      const filters = getFilters(Object.values(MusicFilters), url)
-      const countFilters = getFilters(CountFilters, url)
+      const filters = getFilters(Object.values(MusicFilters), url, false)
+      const countFilters = getFilters(CountFilters, url, false)
 
       const { data, error } = await supabase.rpc('get_music', filters)
 
