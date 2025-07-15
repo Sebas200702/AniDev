@@ -1,45 +1,67 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
-  const animeId = url.searchParams.get('animeId')
-  const cacheKey = `AnimeMusic_${animeId}`
+  try {
+    const animeId = url.searchParams.get('animeId')
+    const cacheKey = `AnimeMusic_${animeId}`
 
-  const cachedData = await redis.get(cacheKey)
-  if (cachedData) {
-    return new Response(cachedData, {
+    // Intentar obtener desde cache de forma segura
+    const cachedData = await safeRedisOperation(async (redis) => {
+      return await redis.get(cacheKey)
+    })
+
+    if (cachedData) {
+      return new Response(JSON.stringify(JSON.parse(cachedData)), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+
+        },
+      })
+    }
+
+    if (!animeId) {
+      return new Response(JSON.stringify({ error: 'Anime ID is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    const { data, error } = await supabase
+      .from('music')
+      .select('*')
+      .eq('anime_id', animeId)
+
+    if (error) {
+      console.error('Supabase error:', error)
+      return new Response(JSON.stringify({ error: 'Database error' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    const responseData = JSON.stringify(data)
+
+    // Guardar en cache de forma segura
+    await safeRedisOperation(async (redis) => {
+      return await redis.set(cacheKey, responseData, { EX: 60 * 60 * 24 })
+    })
+
+    return new Response(responseData, {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-        Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+  
       },
     })
+  } catch (error) {
+    console.error('getAnimeMusic error:', error)
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
-
-  if (!animeId) {
-    return new Response('Anime ID is required', { status: 400 })
-  }
-
-  const { data, error } = await supabase
-    .from('music')
-    .select('*')
-    .eq('anime_id', animeId)
-
-  if (error) {
-    return new Response(error.message, { status: 500 })
-  }
-
-  await redis.set(cacheKey, JSON.stringify(data), { EX: 60 * 60 * 24 })
-
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-      Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-    },
-  })
 })
