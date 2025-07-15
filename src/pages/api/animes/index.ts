@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -66,17 +66,22 @@ import { Filters } from 'types'
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cached = await redis.get(`animes-partial:${url.searchParams}`)
+      const cacheKey = `animes-partial:${url.searchParams}`
+
+      // Intentar obtener desde cache de forma segura
+      const cached = await safeRedisOperation(async (redis) => {
+        return await redis.get(cacheKey)
+      })
+
       if (cached) {
         return new Response(JSON.stringify(JSON.parse(cached)), {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
           },
         })
       }
+
       const format = url.searchParams.get('format')
       const CountFilters = Object.keys(Filters).filter(
         (key) =>
@@ -110,6 +115,16 @@ export const GET: APIRoute = rateLimit(
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
 
+      if (error) {
+        console.error('Supabase error:', error)
+        return new Response(
+          JSON.stringify({ error: 'Ocurrió un error en el servidor.' }),
+          {
+            status: 500,
+          }
+        )
+      }
+
       const { data: count, error: countError } = await supabase.rpc(
         'get_anime_count',
         countFilters
@@ -125,24 +140,15 @@ export const GET: APIRoute = rateLimit(
         last_page: Math.ceil(count / limit),
       }
 
-      if (error) {
-        console.error('Error al obtener los animes:', error)
-        throw new Error('Ocurrió un error al obtener los animes.')
-      }
-      await redis.set(
-        `animes-partial:${url.searchParams}`,
-        JSON.stringify(response),
-        {
-          EX: 24 * 60 * 60,
-        }
-      )
+      // Guardar en cache de forma segura
+      await safeRedisOperation(async (redis) => {
+        return await redis.set(cacheKey, JSON.stringify(response), { EX: 7200 })
+      })
 
       return new Response(JSON.stringify(response), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
         },
       })
     } catch (error) {
@@ -151,7 +157,6 @@ export const GET: APIRoute = rateLimit(
         JSON.stringify({ error: 'Ocurrió un error en el servidor.' }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' },
         }
       )
     }
