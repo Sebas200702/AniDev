@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import type { APIRoute } from 'astro'
@@ -51,15 +51,15 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async () => {
   try {
-    const cachedData = await redis.get('studios')
+    const cachedData = await safeRedisOperation((client) =>
+      client.get('studios')
+    )
 
     if (cachedData) {
       return new Response(JSON.stringify(JSON.parse(cachedData)), {
         status: 200,
         headers: {
           'content-type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
         },
       })
     }
@@ -83,14 +83,14 @@ export const GET: APIRoute = rateLimit(async () => {
       })
     }
 
-    await redis.set('studios', JSON.stringify(data))
+    await safeRedisOperation((client) =>
+      client.set('studios', JSON.stringify(data), { EX: 60 * 60 * 24 * 365 })
+    )
 
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
         'content-type': 'application/json',
-        'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-        Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
       },
     })
   } catch (error) {
