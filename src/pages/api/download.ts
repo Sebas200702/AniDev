@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
 
@@ -176,7 +176,9 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {
     const cacheKey = `download-${Buffer.from(fileUrl).toString('base64')}`
 
-    const cachedData = await redis.get(cacheKey)
+    const cachedData = await safeRedisOperation((client) =>
+      client.get(cacheKey)
+    )
     if (cachedData) {
       const cached = JSON.parse(cachedData)
       const buffer = Buffer.from(cached.data, 'base64')
@@ -269,7 +271,9 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       forceDownload,
     }
 
-    await redis.set(cacheKey, JSON.stringify(cacheData), { EX: cacheSeconds })
+    await safeRedisOperation((client) =>
+      client.set(cacheKey, JSON.stringify(cacheData), { EX: cacheSeconds })
+    )
 
     const headers: Record<string, string> = {
       'Content-Type': contentType,
