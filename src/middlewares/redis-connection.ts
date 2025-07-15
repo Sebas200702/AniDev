@@ -1,6 +1,6 @@
+import { redis } from '@libs/redis'
 // src/middleware/redisConnection.ts
 import type { APIContext, APIRoute } from 'astro'
-import { redis } from '@libs/redis'
 
 /**
  * Middleware que asegura que sólo haya
@@ -14,8 +14,6 @@ export const redisConnection = (handler: APIRoute) => {
       }
     } catch (err) {
       console.error('Error conectando a Redis:', err)
-
-
     }
     return handler(context)
   }
