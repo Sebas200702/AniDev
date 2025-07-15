@@ -55,9 +55,27 @@ if (!global.__redisClient) {
  */
 export async function connectRedis(): Promise<void> {
   try {
-    if (!redis.isReady) {
+    // Verificar si Redis no está conectado Y no está en proceso de conexión
+    if (!redis.isOpen && !redis.isReady) {
       await redis.connect()
       console.log('Connected to Redis successfully')
+    }
+    // Si está abierto pero no listo, esperar a que esté listo
+    else if (redis.isOpen && !redis.isReady) {
+      console.log('Redis socket open, waiting for ready state...')
+      // Esperar hasta que esté listo (máximo 5 segundos)
+      const timeout = 5000
+      const startTime = Date.now()
+      while (!redis.isReady && Date.now() - startTime < timeout) {
+        await new Promise((resolve) => setTimeout(resolve, 10))
+      }
+      if (redis.isReady) {
+        console.log('Redis is now ready')
+      } else {
+        console.warn('Redis connection timeout - connection may be unstable')
+      }
+    } else if (redis.isReady) {
+      console.log('Redis already connected and ready')
     }
   } catch (error) {
     console.error('Failed to connect to Redis:', error)
