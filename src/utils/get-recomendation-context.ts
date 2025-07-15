@@ -4,7 +4,13 @@ export const generateContextualPrompt = (
   userProfile: any,
   calculatedAge: number,
   context: RecommendationContext,
-  currentAnime?: string
+  currentAnime?: string,
+  jikanRecommendations?: {
+    mal_ids: number[]
+    titles: string[]
+    error?: string
+  } | null,
+  favoriteAnimeId?: string
 ): string => {
   let contextualInstructions = ''
   let recommendationCount = context.count || 12
@@ -207,8 +213,31 @@ export const generateContextualPrompt = (
   const selectedStrategy =
     explorationStrategies[sessionId % explorationStrategies.length]
 
+
+  const jikanSection =
+    jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+      ? `
+
+## 🎯 RECOMENDACIONES OFICIALES DE JIKAN
+**Anime base (MAL_ID ${favoriteAnimeId || currentAnime}):**
+${favoriteAnimeId ? `- 🎲 **Basado en anime favorito aleatorio** (no hay anime actual)` : `- 🎬 **Basado en anime actual**`}
+- 📊 **${jikanRecommendations.mal_ids.length} recomendaciones oficiales** obtenidas de MyAnimeList
+- 🏆 **MAL_IDs más recomendados:** ${jikanRecommendations.mal_ids.slice(0, 10).join(', ')}
+- 📝 **Títulos principales:** ${jikanRecommendations.titles.slice(0, 5).join(', ')}
+
+**🔥 INSTRUCCIONES ESPECIALES PARA JIKAN - ALTA PRIORIDAD:**
+- ✅ **PRIORIZA estos MAL_IDs** de Jikan en tus recomendaciones (${Math.ceil(recommendationCount * 0.6)} de ${recommendationCount} - 60% PRIORIDAD)
+- 🎨 Úsalos como **base temática principal** para encontrar animes similares
+- 📚 Analiza los **patrones comunes** entre estas recomendaciones oficiales
+- 🔍 Si alguno no está en nuestra base de datos, busca animes **temáticamente similares**
+- ⚖️ Balancea con el perfil del usuario pero **PRIORIZA las sugerencias de Jikan**
+${favoriteAnimeId ? `- 🎯 **Considera que es un anime favorito** del usuario, así que las recomendaciones deben ser de alta calidad` : ''}
+
+`
+      : ''
+
   return `
-# 🎯 SISTEMA DE RECOMENDACIONES INTELIGENTE v2.0
+# 🎯 SISTEMA DE RECOMENDACIONES INTELIGENTE v2.1
 
 ## 👤 PERFIL COMPLETO DEL USUARIO
 **${userProfile.name}** (${calculatedAge} años, ${userProfile.gender})
@@ -221,7 +250,7 @@ export const generateContextualPrompt = (
 - ✅ Vistos: ${userProfile.watched_animes.slice(0, 6).join(', ')}${userProfile.watched_animes.length > 6 ? ` (+${userProfile.watched_animes.length - 6} más)` : ''}
 - ⭐ Favoritos: ${userProfile.favorite_animes.join(', ')}
 ${currentAnime ? `- 🎬 Viendo actualmente: MAL_ID ${currentAnime}` : ''}
-
+${jikanSection}
 ## 🌟 CONTEXTO DE SESIÓN
 **📋 Tipo de recomendación:** ${context.type.toUpperCase()}
 ${contextualInstructions}
@@ -245,10 +274,21 @@ ${currentAnime ? `- ❌ EXCLUIR anime actual (MAL_ID ${currentAnime})` : ''}
 - ❌ NO repetir IDs en la lista final
 
 ## 📊 COMPOSICIÓN INTELIGENTE
+${
+  jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+    ? `
+**Por fuente de recomendación (PRIORIDAD JIKAN):**
+- 🎯 ${Math.ceil(recommendationCount * 0.6)} animes basados en recomendaciones oficiales de Jikan (60% PRIORIDAD ALTA)
+- 👤 ${Math.floor(recommendationCount * 0.25)} animes alineados con preferencias del usuario (25%)
+- 🔍 ${recommendationCount - Math.ceil(recommendationCount * 0.6) - Math.floor(recommendationCount * 0.25)} animes de exploración sorpresa (15%)
+`
+    : `
 **Por relevancia al perfil:**
 - 🎯 ${Math.floor(recommendationCount * 0.65)} animes alineados con preferencias conocidas
 - 🔍 ${Math.floor(recommendationCount * 0.25)} animes de exploración guiada
 - ⚡ ${recommendationCount - Math.floor(recommendationCount * 0.65) - Math.floor(recommendationCount * 0.25)} animes sorpresa estratégicos
+`
+}
 
 **Por época (flexible según estrategia):**
 - 🆕 30-50% modernos (2018-2024)
@@ -270,6 +310,14 @@ ${currentAnime ? `- ❌ EXCLUIR anime actual (MAL_ID ${currentAnime})` : ''}
 
 ## 🎯 INSTRUCCIONES FINALES
 Actúa como experto curador creando una selección de ${recommendationCount} animes perfectamente personalizada para ${userProfile.name} usando la estrategia "${selectedStrategy.title}" en este contexto específico de ${timeContext.period}.
+
+${
+  jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+    ? `
+**🔥 PRIORIDAD MÁXIMA (60%):** Incorpora las recomendaciones oficiales de Jikan como base principal. Dedica ${Math.ceil(recommendationCount * 0.6)} de ${recommendationCount} recomendaciones a animes similares o directamente de la lista de Jikan, personalizándolas según el perfil del usuario.
+`
+    : ''
+}
 
 **IMPORTANTE:** Selecciona exactamente ${recommendationCount} MAL_IDs de animes que cumplan con todos los criterios establecidos. Usa la función disponible para procesar las recomendaciones.
     `
