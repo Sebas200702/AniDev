@@ -1,35 +1,40 @@
-import { redis } from '@libs/redis'
+import { ensureRedisConnection } from '@libs/redis'
 // src/middleware/redisConnection.ts
 import type { APIContext, APIRoute } from 'astro'
 
 /**
- * Middleware que asegura que sólo haya
- * UNA conexión Redis por proceso.
+ * Middleware que gestiona conexiones Redis de forma segura.
+ *
+ * @description Middleware mejorado que maneja conexiones Redis con mejor
+ * gestión de errores, prevención de conexiones múltiples y recuperación
+ * automática de errores de "max clients reached".
  */
 export const redisConnection = (handler: APIRoute) => {
   return async (context: APIContext): Promise<Response> => {
     try {
-      // Verificar si Redis no está conectado Y no está en proceso de conexión
-      if (!redis.isOpen && !redis.isReady) {
-        await redis.connect()
+      // Intentar asegurar la conexión Redis
+      const isConnected = await ensureRedisConnection()
+
+      if (!isConnected) {
+        console.warn(
+          'Redis: Connection not available, proceeding without cache'
+        )
+        // Continuar sin Redis - la aplicación debe funcionar sin cache
       }
-      // Si está abierto pero no listo, esperar a que esté listo
-      else if (redis.isOpen && !redis.isReady) {
-        // Esperar hasta que esté listo (máximo 5 segundos)
-        const timeout = 5000
-        const startTime = Date.now()
-        while (!redis.isReady && Date.now() - startTime < timeout) {
-          await new Promise((resolve) => setTimeout(resolve, 10))
-        }
-        if (!redis.isReady) {
-          console.warn('Redis connection timeout - proceeding anyway')
-        }
+    } catch (err: any) {
+      console.error('Redis middleware error:', err.message)
+
+      // Manejar específicamente errores de max clients
+      if (err.message.includes('max number of clients reached')) {
+        console.error(
+          'Redis: Max clients error in middleware, proceeding without cache'
+        )
       }
-    } catch (err) {
-      console.error('Error conectando a Redis:', err)
-      // No lanzar el error para evitar que la API falle
-      // El handler puede manejar el caso donde Redis no esté disponible
+
+      // No lanzar error para evitar que la API falle completamente
+      // Las APIs individuales pueden verificar si Redis está disponible
     }
+
     return handler(context)
   }
 }
