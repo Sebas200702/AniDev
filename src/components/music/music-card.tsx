@@ -29,7 +29,7 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
 
   return (
     <article
-      className="group bg-Complementary border-enfasisColor/30 relative aspect-[225/330] rounded-lg border-1 p-4 transition-all duration-300 hover:bg-zinc-800 hover:shadow-xl"
+      className="group bg-Complementary hover:border-enfasisColor/40 hover:cursor-pointer border-enfasisColor/5 relative aspect-[225/330] rounded-lg border-1 p-4 transition-all duration-300 hover:bg-zinc-800 hover:shadow-xl"
       onClick={() =>
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }
