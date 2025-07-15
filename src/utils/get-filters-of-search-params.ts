@@ -29,7 +29,11 @@ import { Filters } from 'types'
  * //   // ... other filters
  * // }
  */
-export const getFilters = (filters: string[], url: URL, includeSortParams: boolean = true) => {
+export const getFilters = (
+  filters: string[],
+  url: URL,
+  includeSortParams: boolean = true
+) => {
   const result = filters.reduce(
     (filters, filter) => {
       const value = url.searchParams.get(filter)
@@ -50,7 +54,6 @@ export const getFilters = (filters: string[], url: URL, includeSortParams: boole
           filters['sort_column'] = column || 'score'
           filters['sort_direction'] = direction || 'desc'
         }
-    
       } else {
         filters[filter] = value
           ? value.split('_').map((item) => normalizeString(item))
