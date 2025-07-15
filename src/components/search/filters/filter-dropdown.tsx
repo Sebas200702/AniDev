@@ -195,12 +195,12 @@ export const FilterDropdown = ({
         id="dropdown-options"
         className={`absolute -bottom-[1px] z-50 w-full translate-y-full px-1 ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
       >
-        <ul className="custom-scrollbar bg-Complementary flex max-h-60 flex-col gap-2 overflow-auto rounded-b-md border-x border-b border-gray-100/10 px-2 py-4 shadow-lg transition-all duration-300 ease-in-out">
+        <ul className="custom-scrollbar bg-Complementary flex max-h-60 flex-col gap-2 overflow-auto rounded-b-md border-x border-b border-gray-100/10 shadow-lg transition-all duration-300 ease-in-out md:px-2 md:py-4">
           {filteredOptions.map((option) => (
             <button
               type="button"
               key={option.value}
-              className={`flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 text-sm transition-colors duration-300 ease-in-out ${values.includes(option.value) ? 'bg-enfasisColor/20 hover:bg-enfasisColor/40' : 'hover:bg-Primary-900'}`}
+              className={`text-s flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 transition-colors duration-300 ease-in-out md:text-sm ${values.includes(option.value) ? 'bg-enfasisColor/20 hover:bg-enfasisColor/40' : 'hover:bg-Primary-900'}`}
               onClick={() => toggleOption(option.value)}
             >
               <CheckIcon
