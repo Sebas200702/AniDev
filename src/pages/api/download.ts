@@ -174,7 +174,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   try {
-
     const cacheKey = `download-${Buffer.from(fileUrl).toString('base64')}`
 
     const cachedData = await redis.get(cacheKey)
@@ -201,7 +200,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       })
     }
 
-
     const response = await fetch(fileUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; DownloadProxy/1.0)',
@@ -220,7 +218,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-
     const contentLength = response.headers.get('content-length')
     if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
       return new Response(
@@ -232,10 +229,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-
     let contentType =
       response.headers.get('content-type') || getMimeTypeFromUrl(fileUrl)
-
 
     let filename = customFilename
     if (!filename) {
@@ -254,7 +249,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       }
     }
 
-
     const arrayBuffer = await response.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
@@ -268,7 +262,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-
     const cacheData = {
       data: buffer.toString('base64'),
       contentType,
@@ -278,7 +271,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 
     await redis.set(cacheKey, JSON.stringify(cacheData), { EX: cacheSeconds })
 
-    
     const headers: Record<string, string> = {
       'Content-Type': contentType,
       'Content-Length': buffer.length.toString(),
