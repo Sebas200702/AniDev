@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
 import { AnimeDetailCard } from '@components/anime-detail-card'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
+import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { useEffect, useState } from 'react'
 import type { Anime } from 'types'
 
 /**
@@ -88,7 +89,9 @@ export const PageColectionList = ({ title, id }: Props) => {
             resolve()
           }
           img.src = createImageUrlProxy(
-            anime.banner_image ?? '',
+            anime.banner_image ??
+              anime.image_large_webp ??
+              `${baseUrl}/placeholder.webp`,
             '1920',
             '50',
             'webp'
@@ -137,7 +140,9 @@ export const PageColectionList = ({ title, id }: Props) => {
         >
           <Picture
             image={createImageUrlProxy(
-              currentAnime.banner_image ?? '',
+              currentAnime.banner_image ??
+                currentAnime.image_small_webp ??
+                `${baseUrl}/placeholder.webp`,
               '100',
               '0',
               'webp'
@@ -146,7 +151,9 @@ export const PageColectionList = ({ title, id }: Props) => {
           >
             <img
               src={createImageUrlProxy(
-                currentAnime.banner_image ?? '',
+                currentAnime.banner_image ??
+                  currentAnime.image_large_webp ??
+                  `${baseUrl}/placeholder.webp`,
                 '1920',
                 '50',
                 'webp'
@@ -160,7 +167,6 @@ export const PageColectionList = ({ title, id }: Props) => {
 
       <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
       <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
-
 
       <section className="relative z-10 flex flex-col gap-10 px-4 pt-[35dvh] md:px-20 md:pt-[45dvh] mb-20">
         <h2 className="subtitle text-balance">{title}</h2>
