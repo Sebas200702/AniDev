@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -29,15 +29,16 @@ export const GET: APIRoute = rateLimit(
         )
       }
 
-      const cached = await redis.get(`episodes:${id}-${page}`)
+      const cached = await safeRedisOperation((client) =>
+        client.get(`episodes:${id}-${page}`)
+      )
 
       if (cached) {
         return new Response(JSON.stringify({ data: JSON.parse(cached) }), {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
           },
         })
       }
@@ -61,15 +62,14 @@ export const GET: APIRoute = rateLimit(
           }
         )
       }
-      await redis.set(`episodes:${id}-${page}`, JSON.stringify(data), {
-        EX: 3600,
-      })
+      await safeRedisOperation((client) =>
+        client.set(`episodes:${id}-${page}`, JSON.stringify(data), { EX: 3600 })
+      )
       return new Response(JSON.stringify({ data }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+ 
         },
       })
     } catch (error) {
