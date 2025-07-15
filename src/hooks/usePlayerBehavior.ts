@@ -17,7 +17,10 @@ export const usePlayerBehavior = (
     const shouldMinimize = !currentPath.includes('/music')
 
     // Solo actualizar si el path cambió o el estado es diferente
-    if (currentPathRef.current !== currentPath || shouldMinimize !== isMinimized) {
+    if (
+      currentPathRef.current !== currentPath ||
+      shouldMinimize !== isMinimized
+    ) {
       currentPathRef.current = currentPath
       setIsMinimized(shouldMinimize)
 
@@ -118,11 +121,11 @@ export const usePlayerBehavior = (
         '[data-music-player]',
         '.music-player',
         '#restore-player-button',
-        '.music-player-related'
+        '.music-player-related',
       ]
 
-      const isAllowedClick = allowedSelectors.some(selector =>
-        target.closest(selector) || target.matches(selector)
+      const isAllowedClick = allowedSelectors.some(
+        (selector) => target.closest(selector) || target.matches(selector)
       )
 
       if (!isAllowedClick) {
@@ -132,12 +135,13 @@ export const usePlayerBehavior = (
 
     document.addEventListener('click', handleClickOutside, {
       capture: true,
-      passive: true
+      passive: true,
     })
 
     return () => {
-      document.removeEventListener('click', handleClickOutside, { capture: true })
+      document.removeEventListener('click', handleClickOutside, {
+        capture: true,
+      })
     }
   }, [isMinimized, setIsHidden, playerRef])
-
 }
