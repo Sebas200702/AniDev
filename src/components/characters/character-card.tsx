@@ -48,7 +48,7 @@ export const CharacterCard = ({ character }: Props) => {
     voice_actor_image_url,
   } = character
 
-  const slug = normalizeString(character_name)
+  const slug = normalizeString(character_name, true, false, true)
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
@@ -86,33 +86,33 @@ export const CharacterCard = ({ character }: Props) => {
   const getRoleColor = (role: string) => {
     switch (role.toLowerCase()) {
       case 'main':
-        return 'text-yellow-400'
+        return 'bg-yellow-400'
       case 'supporting':
-        return 'text-blue-400'
+        return 'bg-blue-400'
       case 'background':
-        return 'text-gray-400'
+        return 'bg-gray-400'
       default:
-        return 'text-green-400'
+        return 'bg-green-400'
     }
   }
 
   return (
     <li
-      className="group character-card relative transition-all  rounded-lg duration-200 ease-in-out md:hover:scale-[1.01]"
-      title={character_name}
+      className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl"
+      title={`View details for ${character_name}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <a
         href={`/character/${slug}_${character_id}`}
-        className={`  flex flex-col  items-center rounded-lg   aspect-[225/330]  relative group md:hover:z-10`}
+        className="group relative block aspect-[225/330]"
         aria-label={`View details for ${character_name}`}
       >
         <Picture
           image={createImageUrlProxy(
             character_small_image_url ?? `${baseUrl}/placeholder.webp`
           )}
-          styles=" absolute bottom-0 [clip-path:polygon(0%_100%,33%_100%,100%_33%,100%_100%)]left-0 w-full h-full object-cover   rounded-lg"
+          styles="w-full h-full"
         >
           <img
             src={createImageUrlProxy(
@@ -122,60 +122,34 @@ export const CharacterCard = ({ character }: Props) => {
               'webp'
             )}
             alt={`${character_name} character`}
-            className="relative w-full h-full rounded-lg object-cover object-center transition-all ease-in-out"
+            className="relative h-full w-full transform object-cover object-center transition-transform duration-500 group-hover:scale-110"
             loading="lazy"
           />
           <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </Picture>
 
-        <Picture
-          image={createImageUrlProxy(
-            character_small_image_url ?? `${baseUrl}/placeholder.webp`
-          )}
-          styles=" absolute bottom-0 [clip-path:polygon(0%_100%,0%_66%,100%_33%,100%_100%)] left-0 w-full h-full object-cover   rounded-lg"
-        >
-          <img
-            src={createImageUrlProxy(
-              character_image_url ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '75',
-              'webp'
-            )}
-            alt={`${character_name} character`}
-            className="relative w-full h-full rounded-lg object-cover object-center transition-all ease-in-out"
-            loading="lazy"
-          />
-          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
-        </Picture>
-
-        <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-col gap-1 px-4 py-2">
-          <div className="flex flex-row items-center gap-2">
-            <div
-              className={`h-2 w-2 rounded-full ${getRoleColor(role ?? '')} flex-shrink-0`}
-            />
-            <h3 className="text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm">
-              {character_name}
-            </h3>
-          </div>
-
-          {voice_actor_name && (
-            <p className="text-xs text-gray-300 truncate">
-              CV: {voice_actor_name}
-            </p>
-          )}
+        <footer className="absolute inset-0 flex translate-y-2 transform flex-col justify-end p-4 transition-transform duration-300 group-hover:translate-y-0">
+          <h3 className="group-hover:text-enfasisColor mb-4 truncate text-lg font-bold text-white transition-colors">
+            {character_name}
+          </h3>
         </footer>
+
+        {voice_actor_language && (
+          <div className="absolute top-3 left-3">
+            <span className="bg-Primary-900/80 scale-90 transform rounded-full px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition-transform duration-300 group-hover:scale-100">
+              {voice_actor_language}
+            </span>
+          </div>
+        )}
       </a>
-
-      <div className="absolute top-2 -right-3">
-        <AnimeTag tag={role ?? ''} type={role?.toLowerCase()} />
-      </div>
-
-      {voice_actor_language && (
-        <div className="absolute top-2 left-2">
-          <span className="bg-Primary-900/80 text-xs text-white px-2 py-1 rounded-md backdrop-blur-sm">
-            {voice_actor_language}
-          </span>
-        </div>
+      {voice_actor_name && (
+        <a
+          title={`View voice actor ${voice_actor_name}`}
+          href={`/voice-actor/${normalizeString(character.voice_actor_name, true, false, true)}-${character.voice_actor_id}`}
+          className="hover:text-Primary-50 group absolute bottom-3 left-4 flex items-center gap-2 truncate text-sm text-gray-300 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:underline"
+        >
+          {voice_actor_name}
+        </a>
       )}
     </li>
   )
