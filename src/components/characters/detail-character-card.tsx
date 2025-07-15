@@ -1,12 +1,13 @@
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
+import { normalizeString } from '@utils/normalize-string'
 import type { Character } from 'types'
 
 export const AnimeCharacterCard = ({ character }: { character: Character }) => {
   return (
-    <article className="group from-Primary-950/50 to-Primary-950/80 hover:border-enfasisColor/60 relative  aspect-[100/32] md:min-h-32 transform overflow-hidden rounded-xl border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 ease-in-out hover:-translate-y-1 md:h-28">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50 aspect" />
+    <article className="group from-Primary-950/50 to-Primary-950/80 hover:border-enfasisColor/60 relative aspect-[100/32] min-h-20 transform overflow-hidden rounded-xl border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 ease-in-out hover:-translate-y-1 md:min-h-32">
+      <div className="aspect absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50" />
 
       <a
         href={`/character/${character.character_name}-${character.character_id}`}
@@ -48,7 +49,7 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       </a>
 
       <a
-        href={`/voice-actor/${character.voice_actor_name}-${character.voice_actor_id}`}
+        href={`/voice-actor/${normalizeString(character.voice_actor_name, true, false, true)}-${character.voice_actor_id}`}
         className="group/actor absolute top-0 right-0 bottom-0 flex w-1/2 flex-row-reverse hover:z-10"
         aria-label={`About ${character.voice_actor_name}`}
       >
