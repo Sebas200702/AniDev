@@ -24,9 +24,9 @@
  */
 export const PageCollectionLoader = () => {
   return (
-    <div className="mx-auto flex h-full w-full flex-col gap-4">
-      <div className="mb-6 h-20 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:h-10 md:w-96"></div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
+    <div className="px-20 flex h-full pt-[35dvh] w-full md:pt-[45dvh] flex-col gap-4 mb-20">
+      <div className="mb-6 h-24 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:h-14 md:w-96"></div>
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
         {Array(20)
           .fill(0)
           .map((_, i) => (
