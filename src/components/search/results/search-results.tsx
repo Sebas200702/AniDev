@@ -125,7 +125,10 @@ export const SearchResults = () => {
 
     if (type === 'characters' && isCharacterData(results)) {
       return (results as Character[]).map((character) => (
-        <CharacterCard key={`${character.character_id}_${character.voice_actor_id}` } character={character} />
+        <CharacterCard
+          key={`${character.character_id}_${character.voice_actor_id}`}
+          character={character}
+        />
       ))
     }
 
