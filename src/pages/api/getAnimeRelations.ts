@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { getAnimeRelations } from '@utils/get-anime-relations'
@@ -15,7 +15,9 @@ export const GET: APIRoute = rateLimit(
         })
       }
       const cacheKey = `anime-relations-${animeId}`
-      const cachedRelations = await redis.get(cacheKey)
+      const cachedRelations = await safeRedisOperation((client) =>
+        client.get(cacheKey)
+      )
 
       if (cachedRelations) {
         return new Response(
@@ -24,8 +26,7 @@ export const GET: APIRoute = rateLimit(
             status: 200,
             headers: {
               'Content-Type': 'application/json',
-              'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-              Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
             },
           }
         )
@@ -33,16 +34,15 @@ export const GET: APIRoute = rateLimit(
 
       const relations = await getAnimeRelations(animeId)
 
-      await redis.set(cacheKey, JSON.stringify(relations), {
-        EX: 60 * 60 * 24,
-      })
+      await safeRedisOperation((client) =>
+        client.set(cacheKey, JSON.stringify(relations), { EX: 60 * 60 * 24 })
+      )
 
       return new Response(JSON.stringify({ data: relations }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
         },
       })
     } catch (error) {
