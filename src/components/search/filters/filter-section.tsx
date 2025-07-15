@@ -150,16 +150,16 @@ export const FilterSection = () => {
             }
             styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
           />
+          <FilterDropdown
+            label="Order By"
+            values={appliedFilters.order_by ?? []}
+            onChange={(values) => updateFilter('order_by', values)}
+            onClear={() => updateFilter('order_by', [])}
+            options={orderByOptions}
+            styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
+          />
         </>
       )}
-      <FilterDropdown
-        label="Order By"
-        values={appliedFilters.order_by ?? []}
-        onChange={(values) => updateFilter('order_by', values)}
-        onClear={() => updateFilter('order_by', [])}
-        options={orderByOptions}
-        styles={`${(isMobile && isOpen) || (!isMobile && isOpen) ? 'flex' : 'hidden'}`}
-      />
 
       <li className="flex items-center justify-center">
         <button
