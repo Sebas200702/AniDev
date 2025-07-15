@@ -137,6 +137,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
       <MoreOptions
         containerIsHovered={isHovered}
         onMenuStateChange={(isOpen) => setIsMenuOpen(isOpen)}
+        className="md:-translate-y-4"
       >
         <a
           href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
