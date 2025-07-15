@@ -113,7 +113,7 @@ export const Header = ({ playerContainerRef }: Props) => {
           )}
         </div>
 
-        <div className="flex  flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <h1
             className={`line-clamp-1 text-xs ${isMinimized ? 'text-xs font-medium' : 'text-l'} leading-tight text-white`}
           >
@@ -131,7 +131,7 @@ export const Header = ({ playerContainerRef }: Props) => {
           </span>
         </div>
 
-        <div className="flex flex-col  items-center gap-4">
+        <div className="flex flex-col items-center gap-4">
           <button
             className="text-sxx button-primary h-min cursor-pointer rounded-sm p-1 md:p-4"
             onClick={handleChangeType}
@@ -139,25 +139,23 @@ export const Header = ({ playerContainerRef }: Props) => {
             {type.toUpperCase()}
           </button>
 
-        {
-            versions.length > 1 && !isMinimized && (
-                <FilterDropdown
-            label="Version"
-            values={[versionNumber.toString()]}
-            onChange={(value) => setVersionNumber(parseInt(value[0]))}
-            options={
-              versions.map((version) => ({
-                label: `${version.version}`,
-                value: version.version.toString(),
-              })) ?? []
-            }
-            onClear={() => setVersionNumber(1)}
-            styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  min-w-24`}
-            singleSelect
-            ImputText={false}
-          />
-            )
-        }
+          {versions.length > 1 && !isMinimized && (
+            <FilterDropdown
+              label="Version"
+              values={[versionNumber.toString()]}
+              onChange={(value) => setVersionNumber(parseInt(value[0]))}
+              options={
+                versions.map((version) => ({
+                  label: `${version.version}`,
+                  value: version.version.toString(),
+                })) ?? []
+              }
+              onClear={() => setVersionNumber(1)}
+              styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  min-w-24`}
+              singleSelect
+              ImputText={false}
+            />
+          )}
 
           {isMinimized && (
             <>
