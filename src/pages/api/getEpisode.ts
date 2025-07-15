@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -56,8 +56,8 @@ import type { APIRoute } from 'astro'
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cachedData = await redis.get(
-        `episode:${url.searchParams.toString()}`
+      const cachedData = await safeRedisOperation((client) =>
+        client.get(`episode:${url.searchParams.toString()}`)
       )
 
       if (cachedData) {
@@ -67,8 +67,7 @@ export const GET: APIRoute = rateLimit(
             status: 200,
             headers: {
               'content-type': 'application/json',
-              'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-              Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
             },
           }
         )
@@ -113,9 +112,12 @@ export const GET: APIRoute = rateLimit(
         .eq('episode_id', ep)
         .single()
 
-      await redis.set(
-        `episode:${url.searchParams.toString()}`,
-        JSON.stringify(data)
+      await safeRedisOperation((client) =>
+        client.set(
+          `episode:${url.searchParams.toString()}`,
+          JSON.stringify(data),
+          { EX: 3600 }
+        )
       )
 
       if (error) {
@@ -142,8 +144,7 @@ export const GET: APIRoute = rateLimit(
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
         },
       })
     } catch (err) {
