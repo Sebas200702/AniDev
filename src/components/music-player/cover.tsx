@@ -54,8 +54,8 @@ export const Cover = () => {
     >
       <div className="disk flex items-center justify-center rounded-full p-6">
         <figure
-          className={`relative h-32 w-32 overflow-hidden rounded-full border border-gray-100/20 shadow-lg transition-all duration-300 ease-in-out ${
-            isPlaying ? 'animate-spin-slow' : ''
+          className={`relative h-32 w-32 overflow-hidden rounded-full border border-gray-100/20 shadow-lg transition-all duration-300 ease-in-out animate-spin-slow ${
+            isPlaying ? '' : 'animate-[animation-play-state: paused;]'
           }`}
         >
           <Picture
