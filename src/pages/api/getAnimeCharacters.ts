@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { getAnimeCharacters } from '@utils/get-anime-characters'
@@ -19,15 +19,16 @@ export const GET: APIRoute = rateLimit(
         )
       }
       const cacheKey = `anime-characters-${animeId}-${language}`
-      const cachedCharacters = await redis.get(cacheKey)
+      const cachedCharacters = await safeRedisOperation((client) =>
+        client.get(cacheKey)
+      )
 
       if (cachedCharacters) {
-        return new Response(cachedCharacters, {
+        return new Response(JSON.stringify(JSON.parse(cachedCharacters)), {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
           },
         })
       }
@@ -41,16 +42,15 @@ export const GET: APIRoute = rateLimit(
         })
       }
 
-      await redis.set(cacheKey, JSON.stringify(characters), {
-        EX: 60 * 60 * 24,
-      })
+      await safeRedisOperation((client) =>
+        client.set(cacheKey, JSON.stringify(characters), { EX: 60 * 60 * 24 })
+      )
 
       return new Response(JSON.stringify(characters), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
         },
       })
     } catch (error) {
