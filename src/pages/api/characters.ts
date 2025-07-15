@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -10,11 +10,14 @@ export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
       const cacheKey = `characters:${url.searchParams}`
-      const cached = await redis.get(cacheKey)
+      const cached = await safeRedisOperation((client) => client.get(cacheKey))
       if (cached) {
-        return new Response(cached, {
+        return new Response(JSON.stringify(JSON.parse(cached)), {
           status: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+
+          },
         })
       }
 
@@ -54,9 +57,9 @@ export const GET: APIRoute = rateLimit(
         last_page: Math.ceil((count ?? 0) / limit),
       }
 
-      await redis.set(cacheKey, JSON.stringify(response), {
-        EX: 24 * 60 * 60,
-      })
+      await safeRedisOperation((client) =>
+        client.set(cacheKey, JSON.stringify(response), { EX: 24 * 60 * 60 })
+      )
 
       return new Response(JSON.stringify(response), {
         status: 200,
