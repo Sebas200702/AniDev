@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { AnimeDetailCard } from '@components/anime-detail-card'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
+import { Overlay } from '@components/overlay'
+import { Picture } from '@components/picture'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { Anime } from 'types'
 
 /**
@@ -66,17 +69,41 @@ export const PageColectionList = ({ title, id }: Props) => {
   if (!animes) return <PageCollectionLoader />
 
   return (
-    <section className="mx-auto mb-10 flex flex-col gap-4 md:mb-20">
-      <header className="flex flex-row justify-between">
-        <h2 className="mb-6 h-20 overflow-hidden text-xl font-bold text-white md:h-auto md:text-3xl">
-          {title}
-        </h2>
-      </header>
-      <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
-        {animes.map((anime) => (
-          <AnimeDetailCard key={anime.mal_id} anime={anime} />
-        ))}
-      </ul>
-    </section>
+    <>
+      <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden">
+        <Picture
+          image={createImageUrlProxy(
+            animes[0].banner_image ?? '',
+            '100',
+            '0',
+            'webp'
+          )}
+          styles="w-full object-cover object-center h-full relative "
+        >
+          <img
+            src={createImageUrlProxy(
+              animes[0].banner_image ?? '',
+              '1920',
+              '50',
+              'webp'
+            )}
+            alt=""
+            className="relative h-full w-full object-cover object-center"
+          />
+        </Picture>
+      </div>
+
+      <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh]" />
+      <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
+      <section className="relative z-10 flex flex-col gap-10 px-4 pt-[35dvh] md:px-20">
+        <h2 className="subtitle text-balance">{title}</h2>
+
+        <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
+          {animes.map((anime) => (
+            <AnimeDetailCard key={anime.mal_id} anime={anime} />
+          ))}
+        </ul>
+      </section>
+    </>
   )
 }
