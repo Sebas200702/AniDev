@@ -65,7 +65,7 @@ interface SearchStoreResults {
   setQuery: (query: string) => void
   setSearchIsOpen: (isOpen: boolean) => void
   setResults: (
-    results: AnimeCardInfo[] | null | AnimeSongWithImage[] |Character[],
+    results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[],
     loading: boolean,
     error: string | null
   ) => void
