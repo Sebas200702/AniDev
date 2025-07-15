@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import type { APIRoute } from 'astro'
@@ -57,30 +57,40 @@ interface ValidationResult {
   id?: number
 }
 
+const CACHE_PREFIX = 'anime_'
+const CACHE_TTL = 60 * 60 // 1 hour
+
+// Mapa en memoria para prevenir peticiones duplicadas
 const pendingRequests = new Map<string, Promise<any>>()
-const CACHE_TTL = 3600
-const CACHE_PREFIX = 'anime:'
 
 const validateSlug = (slug: string | null): ValidationResult => {
-  if (!slug) return { valid: false, error: 'No title query provided' }
+  if (!slug) {
+    return { valid: false, error: 'Slug is required' }
+  }
 
-  const [_, id] = slug.split('_')
-  if (!id || !/^\d+$/.test(id)) {
+  const lastUnderscoreIndex = slug.lastIndexOf('_')
+  if (lastUnderscoreIndex === -1) {
     return { valid: false, error: 'Invalid slug format' }
   }
 
-  const numericId = parseInt(id)
-  if (isNaN(numericId)) {
-    return { valid: false, error: 'Invalid numeric ID' }
+  const idStr = slug.slice(lastUnderscoreIndex + 1)
+  const id = parseInt(idStr)
+
+  if (isNaN(id) || id <= 0) {
+    return { valid: false, error: 'Invalid anime ID' }
   }
 
-  return { valid: true, id: numericId }
+  return { valid: true, id }
 }
 
 const fetchAnimeData = async (slug: string, id: number) => {
   const cacheKey = `${CACHE_PREFIX}${slug}`
 
-  const cached = await redis.get(cacheKey)
+  // Intentar obtener desde cache de forma segura
+  const cached = await safeRedisOperation(async (redis) => {
+    return await redis.get(cacheKey)
+  })
+
   if (cached) return JSON.parse(cached)
 
   if (pendingRequests.has(cacheKey)) {
@@ -94,7 +104,14 @@ const fetchAnimeData = async (slug: string, id: number) => {
       if (error || !data?.[0]) throw error || new Error('Data not found')
 
       const result = data[0]
-      await redis.set(cacheKey, JSON.stringify(result), { EX: CACHE_TTL })
+
+      // Guardar en cache de forma segura
+      await safeRedisOperation(async (redis) => {
+        return await redis.set(cacheKey, JSON.stringify(result), {
+          EX: CACHE_TTL,
+        })
+      })
+
       return result
     })
     .finally(() => {
@@ -107,36 +124,35 @@ const fetchAnimeData = async (slug: string, id: number) => {
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    const slug = url.searchParams.get('slug') ?? ''
+    const slug = url.searchParams.get('slug')
     const validation = validateSlug(slug)
 
     if (!validation.valid) {
       return new Response(JSON.stringify({ error: validation.error }), {
-        status: 404,
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       })
     }
 
-    if (typeof validation.id !== 'number') {
-      throw new Error('Invalid ID type')
-    }
+    const anime = await fetchAnimeData(slug!, validation.id!)
 
-    const data = await fetchAnimeData(slug, validation.id)
-
-    return new Response(JSON.stringify({ anime: data }), {
+    return new Response(JSON.stringify({ anime }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-        Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-        'CDN-Cache-Control': 'max-age=7200',
-        Vary: 'Accept-Encoding',
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        Expires: new Date(Date.now() + 3600 * 1000).toUTCString(),
       },
     })
-  } catch (error) {
-    console.error('Endpoint error:', error)
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
+  } catch (error: any) {
+    console.error('getAnime error:', error)
+
+    const isNotFound = error.message === 'Data not found'
+    const status = isNotFound ? 404 : 500
+    const message = isNotFound ? 'Anime not found' : 'Internal server error'
+
+    return new Response(JSON.stringify({ error: message }), {
+      status,
       headers: { 'Content-Type': 'application/json' },
     })
   }
