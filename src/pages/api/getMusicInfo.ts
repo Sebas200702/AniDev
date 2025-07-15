@@ -13,8 +13,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-        Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
       },
     })
   }
@@ -30,7 +28,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   if (error) {
     console.error('Error fetching music info:', error)
     return new Response(error.message, { status: 500 })
-
   }
 
   await redis.set(cacheKey, JSON.stringify(data), { EX: 60 * 60 * 24 })
@@ -39,8 +36,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-      Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
     },
   })
 })
