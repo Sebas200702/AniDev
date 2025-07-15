@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -62,14 +62,15 @@ export const GET: APIRoute = rateLimit(
         return new Response('Not found', { status: 404 })
       }
 
-      const cached = await redis.get(`anime-metadatas:${id}`)
+      const cached = await safeRedisOperation((client) =>
+        client.get(`anime-metadatas:${id}`)
+      )
       if (cached) {
-        return new Response(cached, {
+        return new Response(JSON.stringify(JSON.parse(cached)), {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
           },
         })
       }
@@ -98,14 +99,16 @@ export const GET: APIRoute = rateLimit(
         description: data.synopsis,
         image: data.image_large_webp,
       }
-      await redis.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas))
+      await safeRedisOperation((client) =>
+        client.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas), {
+          EX: 60 * 60 * 24,
+        })
+      )
       return new Response(JSON.stringify(animeMetadatas), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-          'CDN-Cache-Control': 'max-age=7200',
+
           Vary: 'Accept-Encoding',
         },
       })
