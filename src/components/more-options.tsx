@@ -46,7 +46,7 @@ export const MoreOptions = ({
   return (
     <>
       <button
-        className={`absolute right-3 bottom-2 z-20 cursor-pointer p-2 ${
+        className={`absolute right-3 bottom-2 z-20 cursor-pointer p-2 anchor  ${
           containerIsHovered
             ? 'md:pointer-events-auto md:opacity-100'
             : 'md:pointer-events-none md:opacity-0'
@@ -58,7 +58,7 @@ export const MoreOptions = ({
 
       <div
         ref={menuRef}
-        className={`absolute right-8 z-50 hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px] md:translate-x-full  ${className ? className : 'md:translate-y-1/2'}`}
+        className={`absolute z-20 target hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px]  `}
         onClick={(e) => {
           e.stopPropagation()
           setIsMenuOpen(false)
