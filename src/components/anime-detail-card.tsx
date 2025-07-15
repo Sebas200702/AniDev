@@ -4,12 +4,14 @@ import { CalendarIcon } from '@components/icons/calendar-icon'
 import { EpisodeIcon } from '@components/icons/episode-icon'
 import { PlayIcon } from '@components/icons/play-icon'
 import { TypeIcon } from '@components/icons/type-icon'
+import { MoreOptions } from '@components/more-options'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { normalizeString } from '@utils/normalize-string'
+import { useState } from 'react'
 import type { AnimeDetail } from 'types'
 
 /**
@@ -36,11 +38,40 @@ import type { AnimeDetail } from 'types'
 export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   const { setSearchIsOpen } = useSearchStoreResults()
   const shareText = `Watch ${anime.title} on AniDev`
+  const [isHovered, setIsHovered] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const animeMetadata = [
+    {
+      icon: (
+        <TypeIcon
+          className="h-4 w-4 flex-shrink-0 md:h-5 md:w-5"
+          type={anime.type ?? ''}
+        />
+      ),
+      value: anime.type === 'TV Special' ? 'Special' : anime.type,
+    },
+    {
+      icon: (
+        <EpisodeIcon className="text-enfasisColor h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
+      ),
+      value: anime.episodes ?? '-',
+    },
+    {
+      icon: (
+        <CalendarIcon className="text-enfasisColor h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
+      ),
+      value: anime.year,
+    },
+  ]
+
   return (
     <li
       key={anime.mal_id}
-      className="group relative transition-all duration-300 ease-in-out md:hover:translate-x-2"
+      className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-2'}`}
       onClick={() => setSearchIsOpen(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
@@ -89,42 +120,50 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         <div className="z-20 flex h-full w-[80%] flex-col justify-between px-2 py-4 md:p-4 xl:p-6">
           <h3 className="text-l line-clamp-1">{anime.title}</h3>
 
-          <footer className="text-sx flex w-20 gap-3">
-            <span className="flex flex-row items-center justify-center gap-2">
-              <TypeIcon className="h-4 w-4" type={anime.type ?? ''} />
-              {anime.type === 'TV Special' ? 'Special' : anime.type}
-            </span>
-            <span className="flex flex-row items-center justify-center gap-2">
-              <EpisodeIcon className="text-enfasisColor h-4 w-4" />
-              {anime.episodes ?? '-'}
-            </span>
-            <span className="flex flex-row items-center justify-center gap-2">
-              <CalendarIcon className="text-enfasisColor h-4 w-4" />
-              {anime.year}
-            </span>
+          <footer className="flex flex-wrap items-center gap-4 text-xs text-gray-200 md:text-sm">
+            {animeMetadata.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 whitespace-nowrap"
+              >
+                {item.icon}
+                <span className="">{item.value}</span>
+              </div>
+            ))}
           </footer>
         </div>
       </a>
-      <div className="bg-Primary-950/60 border-Primary-50/30 absolute right-4 bottom-4 z-20 flex flex-row gap-1 rounded-md border-1 px-3 py-1.5 backdrop-blur-md transition-opacity duration-300 ease-in-out md:opacity-0 md:group-hover:opacity-100 xl:right-6 xl:bottom-6 xl:gap-2">
+
+      <MoreOptions
+        containerIsHovered={isHovered}
+        onMenuStateChange={(isOpen) => setIsMenuOpen(isOpen)}
+      >
         <a
           href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           title={`Watch ${anime.title}`}
+          className="hover:text-enfasisColor group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80"
         >
-          <PlayIcon className="md:hover:text-enfasisColor h-4 w-4 transition-all duration-300 ease-in-out xl:h-5 xl:w-5" />
+          <PlayIcon className="h-4 w-4 xl:h-5 xl:w-5" />
+          <span className="text-sm">Watch Now</span>
         </a>
-        <AddToListButton
-          animeId={anime.mal_id}
-          anime_title={anime.title}
-          styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
-        />
+
+        <div className="hover:text-enfasisColor group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50">
+          <AddToListButton
+            animeId={anime.mal_id}
+            anime_title={anime.title}
+            styles="h-4 w-4  xl:h-5 xl:w-5"
+          />
+          <span className="text-sm">Add to List</span>
+        </div>
 
         <ShareButton
-          className="md:hover:text-enfasisColor cursor-pointer transition-all duration-300 ease-in-out"
+          className="hover:text-enfasisColor group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80"
           url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
           title={anime.title}
           text={shareText}
+          label="Share"
         />
-      </div>
+      </MoreOptions>
     </li>
   )
 }
