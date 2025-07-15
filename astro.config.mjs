@@ -6,18 +6,18 @@ import { defineConfig } from 'astro/config'
 import auth from 'auth-astro'
 
 export default defineConfig({
-    output: 'server',
-    site: 'https://ani-dev.vercel.app',
-    adapter: vercel(),
-    integrations: [react(), sitemap(), auth()],
-    compressHTML: true,
-    compressStaticAssets: true,
-    compressPublicAssets: true,
-    prefetch: {
-        prefetchAll: true
-    },
+  output: 'server',
+  site: 'https://ani-dev.vercel.app',
+  adapter: vercel(),
+  integrations: [react(), sitemap(), auth()],
+  compressHTML: true,
+  compressStaticAssets: true,
+  compressPublicAssets: true,
+  prefetch: {
+    prefetchAll: true,
+  },
 
-    vite: {
-        plugins: [tailwindcss()],
-    },
+  vite: {
+    plugins: [tailwindcss()],
+  },
 })
