@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -9,14 +9,15 @@ import { MusicFilters } from 'types'
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cached = await redis.get(`music:${url.searchParams}`)
+      const cached = await safeRedisOperation((client) =>
+        client.get(`music:${url.searchParams}`)
+      )
       if (cached) {
         return new Response(JSON.stringify(JSON.parse(cached)), {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+
           },
         })
       }
@@ -52,9 +53,9 @@ export const GET: APIRoute = rateLimit(
         console.error('Error al obtener los animes:', error)
         throw new Error('Ocurrió un error al obtener los musicas.')
       }
-      await redis.set(`music:${url.searchParams}`, JSON.stringify(response), {
-        EX: 24 * 60 * 60,
-      })
+      await safeRedisOperation((client) =>
+        client.set(`music:${url.searchParams}`, JSON.stringify(response), { EX: 24 * 60 * 60 })
+      )
 
       return new Response(JSON.stringify(response), {
         status: 200,
