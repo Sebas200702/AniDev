@@ -5,11 +5,13 @@ interface MoreOptionsProps {
   children: React.ReactNode
   containerIsHovered?: boolean
   onMenuStateChange?: (isOpen: boolean) => void
+  className?: string
 }
 
 export const MoreOptions = ({
   children,
   containerIsHovered,
+  className,
   onMenuStateChange,
 }: MoreOptionsProps) => {
   const menuRef = useRef<HTMLDivElement>(null)
@@ -56,7 +58,7 @@ export const MoreOptions = ({
 
       <div
         ref={menuRef}
-        className="absolute right-8 z-50 hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px] md:translate-x-full md:translate-y-1/2"
+        className={`absolute right-8 z-50 hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px] md:translate-x-full  ${className ? className : 'md:translate-y-1/2'}`}
         onClick={(e) => {
           e.stopPropagation()
           setIsMenuOpen(false)
