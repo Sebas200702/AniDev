@@ -23,7 +23,6 @@
   padding: var(--border-width);
 }
 
-
 .dynamic-border::before {
   content: '';
   position: absolute;
@@ -72,7 +71,7 @@
   @apply text-[30px] font-bold md:text-start xl:text-[50px];
 }
 .subtitle {
-  @apply text-[32px] font-bold;
+  @apply text-[32px] font-bold md:text-[40px];
 }
 .text-lxx {
   @apply text-[20px] font-bold xl:text-[28px];
