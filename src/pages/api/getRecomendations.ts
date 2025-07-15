@@ -108,7 +108,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         },
       ],
       tools: [functionTool],
-
     })
 
     const functionCall =
@@ -197,7 +196,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }),
         {
           status: 200,
-
         }
       )
     } else {
@@ -230,7 +228,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
               }),
               {
                 status: 200,
-               
               }
             )
           }
