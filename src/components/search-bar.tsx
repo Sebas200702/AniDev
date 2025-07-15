@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client'
 import { AnimeDetailCard } from '@components/anime-detail-card'
+import { AnimeCharacterCard } from '@components/characters/detail-character-card'
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useDebounce } from '@hooks/useDebounce'
@@ -21,7 +22,6 @@ import {
   shortCuts,
 } from 'types'
 import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
-import { AnimeCharacterCard } from '@components/characters/detail-character-card'
 
 export const SearchBar = () => {
   const {
@@ -53,11 +53,9 @@ export const SearchBar = () => {
     [appliedFilters]
   )
 
-  const defaultFiltersAnimes =
-    `limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
+  const defaultFiltersAnimes = `limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
   const defaultFiltersMusic = 'limit_count=30'
   const defaultFiltersCharacters = 'limit_count=30&language_filter=japanese'
-
 
   const url = useMemo(() => {
     const defautlFilters =
@@ -72,7 +70,6 @@ export const SearchBar = () => {
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
   }, [debouncedQuery, filtersToApply, parentalControl, type])
-
 
   const actionMap = {
     'close-search': () => setSearchIsOpen(false),
@@ -244,7 +241,7 @@ export const SearchBar = () => {
   return (
     <div
       id="search-bar-container"
-      className={`fixed z-50 flex h-full w-full flex-col items-center justify-center gap-8 bg-black/60 p-4 backdrop-blur-sm ${
+      className={`fixed z-50 flex h-full w-full flex-col items-center justify-center gap-8 bg-black/60 p-3 backdrop-blur-sm ${
         searchBarIsOpen ? 'block' : 'hidden'
       }`}
     >
@@ -277,7 +274,7 @@ export const SearchBar = () => {
               setType(values[0] as 'animes' | 'music' | 'characters')
             }}
             onClear={() => {}}
-            styles="max-w-32 bg-Complementary hover:bg-enfasisColor/10"
+            styles="max-w-40 bg-Complementary hover:bg-enfasisColor/10"
             singleSelect={true}
             ImputText={false}
           />
@@ -318,7 +315,7 @@ export const SearchBar = () => {
       </form>
 
       <ul
-        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Primary-950 flex flex-col gap-4 rounded-md p-4 shadow-lg`}
+        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Primary-950 flex flex-col gap-4 rounded-md p-2 shadow-lg`}
       >
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, i) => (
