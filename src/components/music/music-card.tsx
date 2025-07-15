@@ -1,21 +1,19 @@
 import { navigate } from 'astro:transitions/client'
 import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
+import { ShareButton } from '@components/buttons/share-button'
 import { DownloadButton } from '@components/dowload-button'
+import { MoreOptions } from '@components/more-options'
 import { Picture } from '@components/picture'
-import { MoreOptionsIcon } from '@icons/more-options-icon'
 import { PauseIcon } from '@icons/pause-icon'
 import { PlayIcon } from '@icons/play-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
-import { useRef } from 'react'
-import { useEffect } from 'react'
 import type { AnimeSongWithImage } from 'types'
 
 export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
   const { currentSong, setCurrentSong, playerRef, isPlaying, list } =
     useMusicPlayerStore()
 
-  const menuRef = useRef<HTMLDivElement>(null)
   const isInPlaylist = list.some(
     (songList) => songList.song_id === song.song_id
   )
@@ -28,26 +26,10 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
 
     isPlaying ? playerRef.current?.pause() : playerRef.current?.play()
   }
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        menuRef.current.classList.replace('flex', 'hidden')
-      }
-    }
 
-    document.addEventListener('mousedown', handleOutsideClick)
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick)
-    }
-  }, [])
-
-  const handleMenuClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    menuRef.current?.classList.replace('hidden', 'flex')
-  }
   return (
     <article
-      className="group bg-Complementary relative aspect-[225/330] rounded-lg p-4 transition-all duration-300 hover:bg-zinc-800 hover:shadow-xl"
+      className="group bg-Complementary border-enfasisColor/30 relative aspect-[225/330] rounded-lg border-1 p-4 transition-all duration-300 hover:bg-zinc-800 hover:shadow-xl"
       onClick={() =>
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }
@@ -60,7 +42,7 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
           <img
             src={song.image}
             alt={song.song_title}
-            className="aspect-square w-full rounded-md object-cover transition-transform duration-300"
+            className="aspect-square w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
           />
         </Picture>
 
@@ -79,32 +61,22 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
       </div>
 
       <footer className="mt-2 w-full space-y-2">
-        <h3 className="md:text-md line-clamp-1 font-semibold text-white group-hover:underline">
+        <h3 className="md:text-md text-enfasisColor line-clamp-1 font-semibold group-hover:underline">
           {song.song_title}
         </h3>
-        <p className="line-clamp-1 text-xs text-neutral-400 md:text-sm">
+        <p className="line-clamp-1 text-xs text-white md:text-sm">
           {song.artist_name || 'Unknown Artist'}
         </p>
-        <button
-          className="cursor-poiter absolute right-3 bottom-2 z-10 p-2"
-          onClick={(e) => handleMenuClick(e)}
-        >
-          <MoreOptionsIcon className="h-4 w-4" />
-        </button>
       </footer>
-
-      <div
-        ref={menuRef}
-        className="absolute right-8 z-50 hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px] md:translate-x-full md:translate-y-1/2"
-      >
+      <MoreOptions containerIsHovered={true}>
         <AddToPlayListButton
           song={song}
           isInPlayList={isInPlaylist}
-          clasName="w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group"
+          clasName="w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group cursor-pointer"
           label={`${!isInPlaylist ? 'Add' : 'Remove'} `}
         />
         <DownloadButton
-          styles="w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group"
+          styles="w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group cursor-pointer"
           url={song.audio_url}
           title={song.song_title}
           metadata={{
@@ -113,7 +85,14 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
             artist: song.artist_name ?? 'Unknown Artist',
           }}
         />
-      </div>
+        <ShareButton
+          className="hover:text-enfasisColor group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80"
+          url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
+          title={song.song_title}
+          text={`Listen to ${song.song_title} by ${song.artist_name}`}
+          label="Share"
+        />
+      </MoreOptions>
     </article>
   )
 }
