@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -68,7 +68,9 @@ import { Filters } from 'types'
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cachedData = await redis.get(`animes:${url.searchParams}`)
+      const cachedData = await safeRedisOperation((client) =>
+        client.get(`animes:${url.searchParams}`)
+      )
       if (cachedData) {
         return new Response(JSON.stringify(JSON.parse(cachedData)), {
           status: 200,
@@ -88,16 +90,16 @@ export const GET: APIRoute = rateLimit(
         throw new Error('Ocurrió un error al obtener los animes.')
       }
 
-      await redis.set(`animes:${url.searchParams}`, JSON.stringify({ data }), {
-        EX: 3600,
-      })
+      await safeRedisOperation((client) =>
+        client.set(`animes:${url.searchParams}`, JSON.stringify({ data }), {
+          EX: 3600,
+        })
+      )
       return new Response(JSON.stringify({ data }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-          'CDN-Cache-Control': 'max-age=7200',
+
           Vary: 'Accept-Encoding',
         },
       })
