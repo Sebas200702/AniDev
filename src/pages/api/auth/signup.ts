@@ -126,7 +126,7 @@ export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60, 
+      maxAge: 7 * 24 * 60 * 60,
     })
 
     return new Response(
