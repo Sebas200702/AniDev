@@ -1,5 +1,6 @@
 import { SchemaType, type Tool } from '@google/generative-ai'
 import { model } from '@libs/gemini'
+import { safeRedisOperation } from '@libs/redis'
 import { fetchRecomendations } from '@utils/fetch-recomendations'
 import { getFavoriteAnimeIds } from '@utils/get-favorite-anime-ids'
 import { getJikanRecommendations } from '@utils/get-jikan-recommendations'
@@ -16,6 +17,100 @@ function shuffleArray<T>(array: T[]): T[] {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
+}
+
+// Sistema de monitoreo de cuota Gemini
+class GeminiQuotaManager {
+  private static readonly QUOTA_KEY = 'gemini_quota_usage'
+  private static readonly DAILY_LIMIT = 180 // Dejamos margen de seguridad (200 - 20)
+  private static readonly RESET_HOUR = 0 // UTC
+
+  static async canMakeRequest(): Promise<boolean> {
+    const today = new Date().toISOString().split('T')[0]
+    const quotaKey = `${this.QUOTA_KEY}:${today}`
+
+    const currentUsage = await safeRedisOperation((client) =>
+      client.get(quotaKey)
+    )
+
+    const usage = currentUsage ? parseInt(currentUsage) : 0
+    return usage < this.DAILY_LIMIT
+  }
+
+  static async incrementUsage(): Promise<void> {
+    const today = new Date().toISOString().split('T')[0]
+    const quotaKey = `${this.QUOTA_KEY}:${today}`
+
+    await safeRedisOperation((client) => client.incr(quotaKey))
+
+    // Establecer expiración a final del día UTC
+    const tomorrow = new Date()
+    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1)
+    tomorrow.setUTCHours(0, 0, 0, 0)
+    const secondsUntilReset = Math.floor(
+      (tomorrow.getTime() - Date.now()) / 1000
+    )
+
+    await safeRedisOperation((client) =>
+      client.expire(quotaKey, secondsUntilReset)
+    )
+  }
+
+  static async getCurrentUsage(): Promise<number> {
+    const today = new Date().toISOString().split('T')[0]
+    const quotaKey = `${this.QUOTA_KEY}:${today}`
+
+    const currentUsage = await safeRedisOperation((client) =>
+      client.get(quotaKey)
+    )
+
+    return currentUsage ? parseInt(currentUsage) : 0
+  }
+}
+
+// Fallback inteligente sin Gemini
+async function createJikanBasedRecommendations(
+  jikanRecommendations: { mal_ids: number[]; titles: string[] } | null,
+  targetCount: number,
+  currentAnime?: string
+): Promise<any[]> {
+  if (!jikanRecommendations || jikanRecommendations.mal_ids.length === 0) {
+    // Si no hay Jikan, usar popular fallback
+    return await fetchRecomendations([], targetCount, currentAnime, null)
+  }
+
+  // Usar recomendaciones de Jikan como base
+  const jikanIds = jikanRecommendations.mal_ids.map((id) => id.toString())
+  const jikanResult = await fetchRecomendations(
+    jikanIds,
+    targetCount,
+    currentAnime,
+    jikanRecommendations
+  )
+
+  if (jikanResult.length >= targetCount * 0.8) {
+    return jikanResult
+  }
+
+  // Si necesitamos más, agregar populares
+  const additionalResult = await fetchRecomendations(
+    [],
+    targetCount,
+    currentAnime,
+    jikanRecommendations
+  )
+
+  const combined = [...jikanResult]
+  const existingIds = new Set(jikanResult.map((anime) => anime.mal_id))
+
+  for (const anime of additionalResult) {
+    if (!existingIds.has(anime.mal_id)) {
+      combined.push(anime)
+      if (combined.length >= targetCount) break
+    }
+  }
+
+  return combined
 }
 
 const functionTool: Tool = {
@@ -44,6 +139,25 @@ const functionTool: Tool = {
 
 export const GET: APIRoute = async ({ request, cookies, url }) => {
   try {
+    // Crear clave de cache para recomendaciones
+    const cacheKey = `recommendations:${url.searchParams.toString()}`
+
+    // Intentar obtener desde cache (cache de 6 horas para recomendaciones)
+    const cachedRecommendations = await safeRedisOperation((client) =>
+      client.get(cacheKey)
+    )
+
+    if (cachedRecommendations) {
+      console.log('Returning cached recommendations')
+      return new Response(JSON.stringify(JSON.parse(cachedRecommendations)), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Cache': 'HIT',
+        },
+      })
+    }
+
     const userInfo = await getSessionUserInfo({
       request,
       accessToken: cookies.get('sb-access-token')?.value,
@@ -75,11 +189,9 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       })
     }
 
-
     let animeForJikan = currentAnime
     let isFromFavorites = false
     let selectedFavoriteTitle = ''
-
 
     if (
       !animeForJikan &&
@@ -119,7 +231,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       }
     }
 
-
     let jikanRecommendations: {
       mal_ids: number[]
       titles: string[]
@@ -157,19 +268,129 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
 
     const functionPrompt = `${prompt} INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
 
-    const getRecomendations = await model.generateContent({
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: functionPrompt,
-            },
-          ],
+    // Verificar si podemos usar Gemini
+    const canUseGemini = await GeminiQuotaManager.canMakeRequest()
+    const currentUsage = await GeminiQuotaManager.getCurrentUsage()
+
+    console.log(
+      `Gemini quota status: ${currentUsage}/180 requests used today. Can make request: ${canUseGemini}`
+    )
+
+    if (!canUseGemini) {
+      console.log('Gemini quota exhausted, using Jikan-based fallback')
+      const fallbackResult = await createJikanBasedRecommendations(
+        jikanRecommendations,
+        context.count || 24,
+        currentAnime
+      )
+
+      const response = {
+        data: shuffleArray(fallbackResult),
+        context: context,
+        totalRecommendations: fallbackResult.length,
+        wasRetried: false,
+        quotaExhausted: true,
+        fallbackUsed: 'jikan',
+        jikanRecommendations:
+          jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+            ? {
+                count: jikanRecommendations.mal_ids.length,
+                titles: jikanRecommendations.titles.slice(0, 5),
+                basedOn: isFromFavorites
+                  ? `favorite_anime_${animeForJikan}`
+                  : `current_anime_${animeForJikan}`,
+                isFromFavorites,
+                favoriteTitle: isFromFavorites
+                  ? selectedFavoriteTitle
+                  : undefined,
+              }
+            : null,
+      }
+
+      // Cachear la respuesta de fallback por menos tiempo (2 horas)
+      await safeRedisOperation((client) =>
+        client.set(cacheKey, JSON.stringify(response), { EX: 7200 })
+      )
+
+      return new Response(JSON.stringify(response), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Cache': 'MISS',
+          'X-Fallback': 'quota-exhausted',
         },
-      ],
-      tools: [functionTool],
-    })
+      })
+    }
+
+    let getRecomendations
+    try {
+      await GeminiQuotaManager.incrementUsage()
+      getRecomendations = await model.generateContent({
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              {
+                text: functionPrompt,
+              },
+            ],
+          },
+        ],
+        tools: [functionTool],
+      })
+    } catch (error: any) {
+      console.error('Gemini API error:', error.message)
+
+      // Si es error de cuota, usar fallback
+      if (error.status === 429) {
+        console.log('Gemini quota error detected, using Jikan-based fallback')
+        const fallbackResult = await createJikanBasedRecommendations(
+          jikanRecommendations,
+          context.count || 24,
+          currentAnime
+        )
+
+        const response = {
+          data: shuffleArray(fallbackResult),
+          context: context,
+          totalRecommendations: fallbackResult.length,
+          wasRetried: false,
+          quotaExhausted: true,
+          fallbackUsed: 'quota-error',
+          jikanRecommendations:
+            jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+              ? {
+                  count: jikanRecommendations.mal_ids.length,
+                  titles: jikanRecommendations.titles.slice(0, 5),
+                  basedOn: isFromFavorites
+                    ? `favorite_anime_${animeForJikan}`
+                    : `current_anime_${animeForJikan}`,
+                  isFromFavorites,
+                  favoriteTitle: isFromFavorites
+                    ? selectedFavoriteTitle
+                    : undefined,
+                }
+              : null,
+        }
+
+        // Cachear la respuesta de fallback por menos tiempo (2 horas)
+        await safeRedisOperation((client) =>
+          client.set(cacheKey, JSON.stringify(response), { EX: 7200 })
+        )
+
+        return new Response(JSON.stringify(response), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Cache': 'MISS',
+            'X-Fallback': 'api-error',
+          },
+        })
+      }
+
+      // Para otros errores, re-lanzar
+      throw error
+    }
 
     const functionCall =
       getRecomendations.response?.candidates?.[0]?.content?.parts?.[0]
@@ -207,6 +428,14 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }`
 
         try {
+          // Verificar cuota antes del retry
+          const canRetry = await GeminiQuotaManager.canMakeRequest()
+          if (!canRetry) {
+            console.log('Cannot retry with Gemini due to quota exhaustion')
+            throw new Error('Quota exhausted for retry')
+          }
+
+          await GeminiQuotaManager.incrementUsage()
           const retry = await model.generateContent({
             contents: [
               {
@@ -260,31 +489,39 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       }
 
       const shuffledResults = shuffleArray(functionResult)
-      return new Response(
-        JSON.stringify({
-          data: shuffledResults,
-          context: context,
-          totalRecommendations: shuffledResults?.length || 0,
-          wasRetried,
-          jikanRecommendations:
-            jikanRecommendations && jikanRecommendations.mal_ids.length > 0
-              ? {
-                  count: jikanRecommendations.mal_ids.length,
-                  titles: jikanRecommendations.titles.slice(0, 5),
-                  basedOn: isFromFavorites
-                    ? `favorite_anime_${animeForJikan}`
-                    : `current_anime_${animeForJikan}`,
-                  isFromFavorites,
-                  favoriteTitle: isFromFavorites
-                    ? selectedFavoriteTitle
-                    : undefined,
-                }
-              : null,
-        }),
-        {
-          status: 200,
-        }
+      const response = {
+        data: shuffledResults,
+        context: context,
+        totalRecommendations: shuffledResults?.length || 0,
+        wasRetried,
+        jikanRecommendations:
+          jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+            ? {
+                count: jikanRecommendations.mal_ids.length,
+                titles: jikanRecommendations.titles.slice(0, 5),
+                basedOn: isFromFavorites
+                  ? `favorite_anime_${animeForJikan}`
+                  : `current_anime_${animeForJikan}`,
+                isFromFavorites,
+                favoriteTitle: isFromFavorites
+                  ? selectedFavoriteTitle
+                  : undefined,
+              }
+            : null,
+      }
+
+      // Cachear respuesta exitosa por 6 horas
+      await safeRedisOperation((client) =>
+        client.set(cacheKey, JSON.stringify(response), { EX: 21600 })
       )
+
+      return new Response(JSON.stringify(response), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Cache': 'MISS',
+        },
+      })
     }
 
     const responseText =
@@ -307,32 +544,43 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
 
         if (fallbackResult.length > 0) {
           const shuffledFallback = shuffleArray(fallbackResult)
-          return new Response(
-            JSON.stringify({
-              data: shuffledFallback,
-              context: context,
-              totalRecommendations: shuffledFallback.length,
-              wasRetried: false,
-              fallbackUsed: true,
-              jikanRecommendations:
-                jikanRecommendations && jikanRecommendations.mal_ids.length > 0
-                  ? {
-                      count: jikanRecommendations.mal_ids.length,
-                      titles: jikanRecommendations.titles.slice(0, 5),
-                      basedOn: isFromFavorites
-                        ? `favorite_anime_${animeForJikan}`
-                        : `current_anime_${animeForJikan}`,
-                      isFromFavorites,
-                      favoriteTitle: isFromFavorites
-                        ? selectedFavoriteTitle
-                        : undefined,
-                    }
-                  : null,
-            }),
-            {
-              status: 200,
-            }
+          const fallbackResponse = {
+            data: shuffledFallback,
+            context: context,
+            totalRecommendations: shuffledFallback.length,
+            wasRetried: false,
+            fallbackUsed: 'text-parsing',
+            jikanRecommendations:
+              jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+                ? {
+                    count: jikanRecommendations.mal_ids.length,
+                    titles: jikanRecommendations.titles.slice(0, 5),
+                    basedOn: isFromFavorites
+                      ? `favorite_anime_${animeForJikan}`
+                      : `current_anime_${animeForJikan}`,
+                    isFromFavorites,
+                    favoriteTitle: isFromFavorites
+                      ? selectedFavoriteTitle
+                      : undefined,
+                  }
+                : null,
+          }
+
+          // Cachear respuesta fallback por 3 horas
+          await safeRedisOperation((client) =>
+            client.set(cacheKey, JSON.stringify(fallbackResponse), {
+              EX: 10800,
+            })
           )
+
+          return new Response(JSON.stringify(fallbackResponse), {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Cache': 'MISS',
+              'X-Fallback': 'text-parsing',
+            },
+          })
         }
       }
     }
