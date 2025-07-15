@@ -21,15 +21,12 @@ export const GET: APIRoute = rateLimit(
       const limit = parseInt(url.searchParams.get('limit_count') ?? '20')
       const page = parseInt(url.searchParams.get('page_number') ?? '1')
 
-      const filters = getFilters(Object.values(CharacterFilters), url ,false)
-
-
+      const filters = getFilters(Object.values(CharacterFilters), url, false)
 
       const { data, error } = await supabase.rpc(
         'get_characters_dynamic',
         filters
       )
-
 
       const { role_filter, search_query, language_filter } = getFilters(
         ['role_filter', 'search_query', 'language_filter'],
