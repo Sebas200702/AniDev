@@ -1,4 +1,4 @@
-import { redis } from '@libs/redis'
+import { safeRedisOperation } from '@libs/redis'
 import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
 import sharp from 'sharp'
@@ -68,7 +68,9 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   try {
-    const cachedData = await redis.get(`image-${url.searchParams.toString()}`)
+    const cachedData = await safeRedisOperation((client) =>
+      client.get(`image-${url.searchParams.toString()}`)
+    )
     if (cachedData) {
       const response = Buffer.from(JSON.parse(cachedData).data)
       return new Response(response, {
@@ -76,8 +78,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
         headers: {
           'Content-Type': mimeType,
           'Content-Length': response.length.toString(),
-          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-          Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
+
         },
       })
     }
@@ -124,17 +125,17 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
-    await redis.set(
-      `image-${url.searchParams.toString()}`,
-      JSON.stringify(optimizedBuffer),
-      { EX: 31536000 }
+    await safeRedisOperation((client) =>
+      client.set(
+        `image-${url.searchParams.toString()}`,
+        JSON.stringify(optimizedBuffer),
+        { EX: 31536000 }
+      )
     )
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
-        'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-        Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
       },
     })
   } catch (error) {
