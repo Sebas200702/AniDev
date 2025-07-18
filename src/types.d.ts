@@ -45,11 +45,6 @@ export type Anime = {
   readonly themes: string[]
 }
 
-interface VoiceActor {
-  id: number
-  name: string
-  imageUrl: string
-}
 export interface WatchList extends AnimeCardInfo {
   id: string
   user_id: string
@@ -66,7 +61,7 @@ export enum CharacterFilters {
 }
 
 interface Character {
-  id: string
+  mal_id: number
   character_id: number
   character_name: string
   character_name_kanji: string
@@ -86,6 +81,8 @@ interface Character {
   voice_actor_image_url: string
   voice_actor_language: string
 }
+
+export interface CharacterDetails {}
 
 interface CharacterListProps {
   characters: Character[]
@@ -187,7 +184,6 @@ export interface AnimeCardInfo
     | 'mal_id'
     | 'title'
     | 'image_webp'
-    | 'mal_id'
     | 'year'
     | 'status'
     | 'genres'
@@ -239,6 +235,36 @@ interface Collection {
   query: string
   animes_ids: number[]
 }
+export interface CharacterDetails {
+  character_id: number
+  character_name: string
+  character_name_kanji: string | null
+  character_nicknames: string[] | null
+  character_about: string | null
+  character_image_url: string | null
+  character_small_image_url: string | null
+  character_url: string | null
+  animes: AnimeSummary[]
+  voice_actors: VoiceActor[]
+}
+
+export interface AnimeSummary extends AnimeCardInfo {
+  banner_image: string | null
+  role: string
+}
+
+export interface VoiceActor {
+  id: string
+  voice_actor_id: number
+  name: string
+  alternative_names: string[] | null
+  family_name: string | null
+  given_name: string | null
+  birthday: string | null 
+  image_url: string | null
+  language: string
+}
+
 export interface IconProps {
   className?: string
 }
