@@ -115,6 +115,15 @@ export const GET: APIRoute = rateLimit(
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
 
+      if (data.length === 0) {
+        return new Response(
+          JSON.stringify({ error: 'No se encontraron animes.' }),
+          {
+            status: 404,
+          }
+        )
+      }
+
       if (error) {
         console.error('Supabase error:', error)
         return new Response(
@@ -140,7 +149,6 @@ export const GET: APIRoute = rateLimit(
         last_page: Math.ceil(count / limit),
       }
 
-      // Guardar en cache de forma segura
       await safeRedisOperation(async (redis) => {
         return await redis.set(cacheKey, JSON.stringify(response), { EX: 7200 })
       })
