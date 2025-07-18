@@ -11,7 +11,7 @@ import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { AnimeBannerInfo } from 'types'
 
 /**
@@ -65,6 +65,8 @@ export const Carousel = () => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
+
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
     const url = sessionStorage.getItem('banners-url') ?? ''
@@ -83,39 +85,41 @@ export const Carousel = () => {
     setBanners([])
   }, [setUrl, setBanners, setLoading])
 
-  const preloadImages = useCallback(() => {
+  const preloadImages = useCallback(async () => {
     if (!banners || banners.length === 0) return
-    banners.forEach((anime) => {
-      const image = new Image()
-      if (isMobile) {
-        image.src = createImageUrlProxy(
-          anime.banner_image ?? `${baseUrl}/placeholder.webp`,
-          '720',
-          '50',
-          'webp'
-        )
-        image.src = createImageUrlProxy(
-          anime.banner_image ?? `${baseUrl}/placeholder.webp`,
-          '0',
-          '0',
-          'webp'
-        )
-        return
-      }
-      image.src = createImageUrlProxy(
-        anime.banner_image ?? `${baseUrl}/placeholder.webp`,
-        '1920',
-        '50',
-        'webp'
-      )
-      image.src = createImageUrlProxy(
-        anime.banner_image ?? `${baseUrl}/placeholder.webp`,
-        '0',
-        '0',
-        'webp'
-      )
+
+    const loadPromises = banners.map((anime, index) => {
+      return new Promise<void>((resolve) => {
+        const img = new Image()
+        img.onload = () => {
+          setImagesLoaded((prev) => new Set([...prev, index]))
+          resolve()
+        }
+        img.onerror = () => {
+          setImagesLoaded((prev) => new Set([...prev, index]))
+          resolve()
+        }
+
+        if (isMobile) {
+          img.src = createImageUrlProxy(
+            anime.banner_image ?? `${baseUrl}/placeholder.webp`,
+            '720',
+            '50',
+            'webp'
+          )
+        } else {
+          img.src = createImageUrlProxy(
+            anime.banner_image ?? `${baseUrl}/placeholder.webp`,
+            '1920',
+            '50',
+            'webp'
+          )
+        }
+      })
     })
-  }, [banners])
+
+    await Promise.all(loadPromises)
+  }, [banners, isMobile])
 
   const handleIndicatorClick = useCallback(
     (index: number) => {
@@ -141,6 +145,7 @@ export const Carousel = () => {
     setBanners(bannersData)
     sessionStorage.setItem('banners', JSON.stringify(bannersData))
     setLoading(false)
+    setImagesLoaded(new Set())
     preloadImages()
   }, [bannersData, bannersLoading, preloadImages, fetchBannerData])
 
@@ -159,7 +164,8 @@ export const Carousel = () => {
     }
   }, [banners, handleNext, handlePrev, resetInterval])
 
-  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
+  if (loading || !banners || banners.length === 0 || !imagesLoaded.has(0))
+    return <LoadingCarousel />
 
   return (
     <section
