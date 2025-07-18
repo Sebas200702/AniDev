@@ -45,7 +45,7 @@ export const SearchBar = () => {
   } = useSearchStoreResults()
   const { parentalControl, userInfo, trackSearchHistory } =
     useGlobalUserPreferences()
-  const debouncedQuery = useDebounce(query, 600)
+  const debouncedQuery = useDebounce(query, 900)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const filtersToApply = useMemo(
@@ -231,7 +231,7 @@ export const SearchBar = () => {
   }
 
   const isCharacterData = (data: any[]): data is Character[] => {
-    return data.length > 0 && 'id' in data[0]
+    return data.length > 0 && 'mal_id' in data[0] && 'character_name' in data[0]
   }
 
   const isMusicData = (data: any[]): data is AnimeSongWithImage[] => {
