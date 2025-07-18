@@ -285,8 +285,8 @@ export const SearchBar = () => {
             ref={inputRef}
             type="search"
             id="default-search"
-            className="h-full min-h-9 w-full text-sm text-white placeholder-gray-300 focus:outline-none"
-            placeholder="Search Anime..."
+            className="h-full min-h-9 w-full text-sm text-white placeholder-gray-400 focus:outline-none"
+            placeholder={`Search ${type}...`}
             value={query}
             autoComplete="off"
             onChange={handleInput}
