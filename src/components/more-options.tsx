@@ -58,7 +58,7 @@ export const MoreOptions = ({
 
       <div
         ref={menuRef}
-        className={`absolute z-20 target hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px]  `}
+        className={`absolute z-30 target hidden flex-col rounded-lg border border-zinc-700/50 bg-zinc-900/95 p-1 shadow-2xl backdrop-blur-md transition-all duration-200 ease-out md:max-w-[220px] md:min-w-[180px]  `}
         onClick={(e) => {
           e.stopPropagation()
           setIsMenuOpen(false)
