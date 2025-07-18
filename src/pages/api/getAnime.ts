@@ -58,9 +58,9 @@ interface ValidationResult {
 }
 
 const CACHE_PREFIX = 'anime_'
-const CACHE_TTL = 60 * 60 // 1 hour
+const CACHE_TTL = 60 * 60 
 
-// Mapa en memoria para prevenir peticiones duplicadas
+
 const pendingRequests = new Map<string, Promise<any>>()
 
 const validateSlug = (slug: string | null): ValidationResult => {
@@ -86,7 +86,7 @@ const validateSlug = (slug: string | null): ValidationResult => {
 const fetchAnimeData = async (slug: string, id: number) => {
   const cacheKey = `${CACHE_PREFIX}${slug}`
 
-  // Intentar obtener desde cache de forma segura
+
   const cached = await safeRedisOperation(async (redis) => {
     return await redis.get(cacheKey)
   })
@@ -105,7 +105,7 @@ const fetchAnimeData = async (slug: string, id: number) => {
 
       const result = data[0]
 
-      // Guardar en cache de forma segura
+
       await safeRedisOperation(async (redis) => {
         return await redis.set(cacheKey, JSON.stringify(result), {
           EX: CACHE_TTL,
@@ -140,8 +140,6 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-        Expires: new Date(Date.now() + 3600 * 1000).toUTCString(),
       },
     })
   } catch (error: any) {
