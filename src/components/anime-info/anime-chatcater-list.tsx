@@ -137,7 +137,7 @@ export const AnimeCaterList = ({
           className="grid min-w-full grid-cols-1 gap-4 xl:grid-cols-2"
         >
           {grp.items.map((character) => (
-            <li key={character.id}>
+            <li key={character.mal_id}>
               <AnimeCharacterCard character={character} />
             </li>
           ))}
