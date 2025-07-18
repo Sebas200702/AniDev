@@ -42,7 +42,7 @@ export const DinamicBanner = ({ banners }: Props) => {
       }, 500)
     }
 
-    const interval = setInterval(toggleVisibility, 7000)
+    const interval = setInterval(toggleVisibility, 15000)
 
     return () => clearInterval(interval)
   }, [banners, showFirstLayer])
