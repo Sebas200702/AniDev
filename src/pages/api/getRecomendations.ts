@@ -19,11 +19,11 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
-// Sistema de monitoreo de cuota Gemini
+
 class GeminiQuotaManager {
   private static readonly QUOTA_KEY = 'gemini_quota_usage'
-  private static readonly DAILY_LIMIT = 180 // Dejamos margen de seguridad (200 - 20)
-  private static readonly RESET_HOUR = 0 // UTC
+  private static readonly DAILY_LIMIT = 180
+  private static readonly RESET_HOUR = 0
 
   static async canMakeRequest(): Promise<boolean> {
     const today = new Date().toISOString().split('T')[0]
@@ -43,7 +43,6 @@ class GeminiQuotaManager {
 
     await safeRedisOperation((client) => client.incr(quotaKey))
 
-    // Establecer expiración a final del día UTC
     const tomorrow = new Date()
     tomorrow.setUTCDate(tomorrow.getUTCDate() + 1)
     tomorrow.setUTCHours(0, 0, 0, 0)
@@ -68,18 +67,18 @@ class GeminiQuotaManager {
   }
 }
 
-// Fallback inteligente sin Gemini
+
 async function createJikanBasedRecommendations(
   jikanRecommendations: { mal_ids: number[]; titles: string[] } | null,
   targetCount: number,
   currentAnime?: string
 ): Promise<any[]> {
   if (!jikanRecommendations || jikanRecommendations.mal_ids.length === 0) {
-    // Si no hay Jikan, usar popular fallback
+
     return await fetchRecomendations([], targetCount, currentAnime, null)
   }
 
-  // Usar recomendaciones de Jikan como base
+
   const jikanIds = jikanRecommendations.mal_ids.map((id) => id.toString())
   const jikanResult = await fetchRecomendations(
     jikanIds,
@@ -92,7 +91,7 @@ async function createJikanBasedRecommendations(
     return jikanResult
   }
 
-  // Si necesitamos más, agregar populares
+
   const additionalResult = await fetchRecomendations(
     [],
     targetCount,
@@ -139,10 +138,9 @@ const functionTool: Tool = {
 
 export const GET: APIRoute = async ({ request, cookies, url }) => {
   try {
-    // Crear clave de cache para recomendaciones
     const cacheKey = `recommendations:${url.searchParams.toString()}`
 
-    // Intentar obtener desde cache (cache de 6 horas para recomendaciones)
+
     const cachedRecommendations = await safeRedisOperation((client) =>
       client.get(cacheKey)
     )
@@ -267,8 +265,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
     )
 
     const functionPrompt = `${prompt} INSTRUCCIÓN CRÍTICA: Debes usar OBLIGATORIAMENTE la función fetch_recommendations con los MAL_IDs que has seleccionado. NO devuelvas texto plano. Usa la función tool disponible.`
-
-    // Verificar si podemos usar Gemini
     const canUseGemini = await GeminiQuotaManager.canMakeRequest()
     const currentUsage = await GeminiQuotaManager.getCurrentUsage()
 
@@ -307,7 +303,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
             : null,
       }
 
-      // Cachear la respuesta de fallback por menos tiempo (2 horas)
       await safeRedisOperation((client) =>
         client.set(cacheKey, JSON.stringify(response), { EX: 7200 })
       )
@@ -341,7 +336,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
     } catch (error: any) {
       console.error('Gemini API error:', error.message)
 
-      // Si es error de cuota, usar fallback
+
       if (error.status === 429) {
         console.log('Gemini quota error detected, using Jikan-based fallback')
         const fallbackResult = await createJikanBasedRecommendations(
@@ -373,7 +368,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
               : null,
         }
 
-        // Cachear la respuesta de fallback por menos tiempo (2 horas)
         await safeRedisOperation((client) =>
           client.set(cacheKey, JSON.stringify(response), { EX: 7200 })
         )
@@ -388,7 +382,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         })
       }
 
-      // Para otros errores, re-lanzar
       throw error
     }
 
@@ -428,7 +421,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }`
 
         try {
-          // Verificar cuota antes del retry
+
           const canRetry = await GeminiQuotaManager.canMakeRequest()
           if (!canRetry) {
             console.log('Cannot retry with Gemini due to quota exhaustion')
@@ -510,7 +503,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
             : null,
       }
 
-      // Cachear respuesta exitosa por 6 horas
       await safeRedisOperation((client) =>
         client.set(cacheKey, JSON.stringify(response), { EX: 21600 })
       )
@@ -566,7 +558,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
                 : null,
           }
 
-          // Cachear respuesta fallback por 3 horas
           await safeRedisOperation((client) =>
             client.set(cacheKey, JSON.stringify(fallbackResponse), {
               EX: 10800,
