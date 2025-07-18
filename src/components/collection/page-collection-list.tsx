@@ -1,7 +1,7 @@
 import { AnimeDetailCard } from '@components/anime-detail-card'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
+import { DinamicBanner } from '@components/dinamic-banner'
 import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { useEffect, useState } from 'react'
@@ -48,8 +48,7 @@ interface Props {
 export const PageColectionList = ({ title, id }: Props) => {
   const [url, setUrl] = useState('')
   const [animes, setAnimes] = useState<Anime[]>()
-  const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+
   const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
 
   useEffect(() => {
@@ -66,8 +65,6 @@ export const PageColectionList = ({ title, id }: Props) => {
       if (!url) return
       const data = await fetch(url).then((res) => res.json())
       setAnimes(data.data)
-      setCurrentBannerIndex(0)
-      setIsTransitioning(false)
       setImagesLoaded(new Set())
     }
     getAnimes()
@@ -105,70 +102,23 @@ export const PageColectionList = ({ title, id }: Props) => {
     preloadImages()
   }, [animes])
 
-  useEffect(() => {
-    if (!animes || animes.length <= 1 || !imagesLoaded.has(0)) return
-
-    const interval = setInterval(() => {
-      setIsTransitioning(true)
-
-      setTimeout(() => {
-        setCurrentBannerIndex((prev) => {
-          const nextIndex = (prev + 1) % animes.length
-          return nextIndex
-        })
-
-        setTimeout(() => {
-          setIsTransitioning(false)
-        }, 100)
-      }, 800)
-    }, 7000)
-
-    return () => clearInterval(interval)
-  }, [animes, imagesLoaded])
-
   if (!animes || !imagesLoaded.has(0)) return <PageCollectionLoader />
-
-  const currentAnime = animes[currentBannerIndex]
 
   return (
     <>
-      <div className="fixed aspect-[1080/600] h-[40vh] md:h-[50vh] w-full overflow-hidden">
-        <div
-          className={`w-full h-full transition-opacity duration-1000 ease-out ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
-          <Picture
-            image={createImageUrlProxy(
-              currentAnime.banner_image ??
-                currentAnime.image_small_webp ??
-                `${baseUrl}/placeholder.webp`,
-              '100',
-              '0',
-              'webp'
-            )}
-            styles="w-full object-cover object-center h-full relative "
-          >
-            <img
-              src={createImageUrlProxy(
-                currentAnime.banner_image ??
-                  currentAnime.image_large_webp ??
-                  `${baseUrl}/placeholder.webp`,
-                '1920',
-                '50',
-                'webp'
-              )}
-              alt=""
-              className="relative h-full w-full object-cover object-center"
-            />
-          </Picture>
-        </div>
-      </div>
+      <DinamicBanner
+        banners={animes.map(
+          (anime) =>
+            anime.banner_image ??
+            anime.image_large_webp ??
+            `${baseUrl}/placeholder.webp`
+        )}
+      />
 
       <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
       <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
 
-      <section className="relative z-10 flex flex-col gap-10 px-4 pt-[35dvh] md:px-20 md:pt-[40dvh] mb-20">
+      <section className="relative z-10 flex flex-col gap-10 px-4 pt-[35dvh] md:px-20  mb-20">
         <h2 className="subtitle text-balance">{title}</h2>
 
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
