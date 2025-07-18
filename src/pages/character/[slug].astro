@@ -1,0 +1,11 @@
+---
+import { CharacterInfo } from '@components/character-info/character'
+import Layout from '@layouts/base.astro'
+
+const slug = Astro.params.slug ?? ''
+const characterId = slug.split('_')[1]
+---
+
+<Layout characterId={characterId}>
+  <CharacterInfo client:load slug={slug} />
+</Layout>
