@@ -8,7 +8,7 @@ import { useMusicPlayerStore } from '@store/music-player-store'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
-import type { AnimeSong, AnimeSongWithImage } from 'types'
+import type { AnimeSong } from 'types'
 
 export const AnimeMusicItem = ({
   song,
