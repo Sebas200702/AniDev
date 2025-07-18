@@ -10,7 +10,7 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       <div className="aspect absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50" />
 
       <a
-        href={`/character/${character.character_name}-${character.character_id}`}
+        href={`/character/${normalizeString(character?.character_name ?? 'Unknown', true, false, true)}_${character.character_id}`}
         className="group/character absolute top-0 bottom-0 left-0 flex w-1/2 hover:z-10"
         aria-label={`About ${character.character_name}`}
       >
@@ -49,7 +49,7 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       </a>
 
       <a
-        href={`/voice-actor/${normalizeString(character.voice_actor_name, true, false, true)}-${character.voice_actor_id}`}
+        href={`/voice-actor/${normalizeString(character?.voice_actor_name ?? 'Unknown', true, false, true)}_${character.voice_actor_id}`}
         className="group/actor absolute top-0 right-0 bottom-0 flex w-1/2 flex-row-reverse hover:z-10"
         aria-label={`About ${character.voice_actor_name}`}
       >
