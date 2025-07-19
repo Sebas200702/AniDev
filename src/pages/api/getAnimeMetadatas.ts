@@ -70,7 +70,6 @@ export const GET: APIRoute = rateLimit(
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-
           },
         })
       }
