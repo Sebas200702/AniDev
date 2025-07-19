@@ -3,7 +3,7 @@ import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
-import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
+
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { AnimeSlider } from '@components/index/slider/anime-slider-list'
 import { Overlay } from '@components/overlay'
@@ -68,7 +68,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="relative z-10 mb-10 grid grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <article className="z-10 mb-10 grid grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-10 md:px-20 xl:grid-cols-5">
         <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
         <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
         <AnimeAside
@@ -81,7 +81,6 @@ export const AnimeInfo = ({ slug }: Props) => {
         <AnimeHeader animeData={animeData} />
 
         <div className="row-span-2 flex h-full w-full flex-col gap-4 md:col-span-2 xl:col-span-3">
-          <AnimeNavBar />
           <AnimeShowBox
             animeId={animeData.mal_id}
             trailer_url={animeData.trailer_url ?? ''}
