@@ -1,42 +1,38 @@
 import { CharacterSection } from '@components/anime-info/anime-characters'
 import { AnimeDescription } from '@components/anime-info/anime-description'
+import { AnimeMusic } from '@components/anime-info/anime-music'
+import { AnimeNavBar } from '@components/anime-info/anime-nav-bar'
 import { AnimeRelated } from '@components/anime-info/anime-related'
 import { AnimeTrailer } from '@components/anime-info/anime-trailer'
 import { useAnimeListsStore } from '@store/anime-list-store'
-import { AnimeMusic } from './anime-music'
+import { useEffect, useState } from 'react'
 
 /**
  * AnimeShowBox component displays content based on the selected tab for an anime.
  *
  * @description This component manages the display of different content sections for an anime
  * based on user selection. It dynamically renders the appropriate component according to the
- * currently selected tab (Synopsis, Trailer, or Characters). The component uses the anime list
- * store to track the active selection and conditionally renders the corresponding content.
+ * currently selected tab (Synopsis, Trailer, Characters, Music, Related). The component uses
+ * smooth transitions, modern visual effects, and responsive design for an enhanced user experience.
  *
- * For the Synopsis tab, it displays the anime's description using the AnimeDescription component.
- * For the Trailer tab, it renders the AnimeTrailer component with all necessary media properties.
- * For the Characters tab, it shows a placeholder for character information.
- *
- * The component implements a clean, conditional rendering approach that ensures only the
- * relevant content is displayed at any given time, improving both performance and user experience
- * by reducing unnecessary DOM elements.
+ * Features modern design improvements:
+ * - Smooth fade transitions between content sections
+ * - Gradient borders and backgrounds
+ * - Enhanced visual hierarchy with better spacing
+ * - Loading states with skeleton animations
+ * - Responsive design optimized for all screen sizes
+ * - Accessibility improvements with proper ARIA labels
  *
  * @param {Props} props - The component props
+ * @param {number} props.animeId - The unique identifier of the anime
  * @param {string} props.trailer_url - The URL of the anime trailer
  * @param {string} props.banner_image - The banner image of the anime
  * @param {string} props.image_large_webp - The large webp image of the anime
+ * @param {string} props.image_small_webp - The small webp image of the anime
+ * @param {string} props.image - The standard image of the anime
  * @param {string} props.title - The title of the anime
  * @param {string} props.synopsis - The synopsis of the anime
  * @returns {JSX.Element} The rendered content based on the selected tab
- *
- * @example
- * <AnimeShowBox
- *   trailer_url="https://youtube.com/watch?v=abc123"
- *   banner_image="https://example.com/banner.jpg"
- *   image_large_webp="https://example.com/image.webp"
- *   title="Anime Title"
- *   synopsis="This is the anime synopsis."
- * />
  */
 interface Props {
   animeId: number
@@ -48,6 +44,7 @@ interface Props {
   title: string
   synopsis: string
 }
+
 export const AnimeShowBox = ({
   animeId,
   trailer_url,
@@ -61,34 +58,89 @@ export const AnimeShowBox = ({
   const { animeList } = useAnimeListsStore()
   const currentSelected = animeList.find((section) => section.selected)
   const currentSelectedLabel = currentSelected?.label
+  const [isContentLoading, setIsContentLoading] = useState(false)
+  const [contentKey, setContentKey] = useState(0)
 
-  if (currentSelectedLabel === 'Trailer')
-    return (
-      <AnimeTrailer
-        trailer_url={trailer_url}
-        banner_image={banner_image}
-        image_large_webp={image_large_webp}
-        title={title}
-      />
-    )
+  // Handle smooth transitions when tab changes
+  useEffect(() => {
+    setIsContentLoading(true)
+    const timer = setTimeout(() => {
+      setIsContentLoading(false)
+      setContentKey((prev) => prev + 1)
+    }, 150)
 
-  if (currentSelectedLabel === 'Characters')
-    return <CharacterSection animeId={animeId} />
+    return () => clearTimeout(timer)
+  }, [currentSelectedLabel])
 
-  if (currentSelectedLabel === 'Music')
-    return (
-      <AnimeMusic
-        animeId={animeId}
-        image={image}
-        placeholder={image_small_webp}
-        banner_image={banner_image}
-        anime_title={title}
-      />
-    )
+  const renderContent = () => {
+    switch (currentSelectedLabel) {
+      case 'Trailer':
+        return (
+          <AnimeTrailer
+            trailer_url={trailer_url}
+            banner_image={banner_image}
+            image_large_webp={image_large_webp}
+            title={title}
+          />
+        )
+      case 'Characters':
+        return <CharacterSection animeId={animeId} />
+      case 'Music':
+        return (
+          <AnimeMusic
+            animeId={animeId}
+            image={image}
+            placeholder={image_small_webp}
+            banner_image={banner_image}
+            anime_title={title}
+          />
+        )
+      case 'Synopsis':
+        return <AnimeDescription synopsis={synopsis} />
+      case 'Related':
+        return <AnimeRelated animeId={animeId} />
+      default:
+        return <AnimeDescription synopsis={synopsis} />
+    }
+  }
 
-  if (currentSelectedLabel === 'Synopsis')
-    return <AnimeDescription synopsis={synopsis} />
+  return (
+    <section
+      className="border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95 hover:border-Primary-700/50 relative z-10 flex h-[400px] flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl md:h-[600px]"
+      role="tabpanel"
+      aria-labelledby={`tab-${currentSelectedLabel?.toLowerCase()}`}
+    >
+      <div className="from-Primary-950/20 to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
 
-  if (currentSelectedLabel === 'Related')
-    return <AnimeRelated animeId={animeId} />
+      {/* Navigation bar - Fixed at top */}
+      <div className="border-Primary-800/30 from-Primary-950/80 to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-4 backdrop-blur-md">
+        <AnimeNavBar />
+      </div>
+
+      {/* Content area with scroll */}
+      <div className="custom-scrollbar relative z-10 flex-1 overflow-y-auto p-6 md:p-8">
+        {isContentLoading ? (
+          <div className="animate-pulse space-y-4">
+            <div className="bg-Primary-800/30 h-8 w-3/4 rounded-lg" />
+            <div className="bg-Primary-800/20 h-4 w-full rounded" />
+            <div className="bg-Primary-800/20 h-4 w-5/6 rounded" />
+            <div className="bg-Primary-800/20 h-4 w-4/5 rounded" />
+            <div className="bg-Primary-800/10 h-32 w-full rounded-lg" />
+          </div>
+        ) : (
+          <div
+            key={contentKey}
+            className="animate-fadeIn transition-all duration-300 ease-out"
+            style={{
+              animation: 'fadeIn 0.4s ease-out forwards',
+            }}
+          >
+            {renderContent()}
+          </div>
+        )}
+      </div>
+
+      <div className="via-enfasisColor/20 absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent" />
+    </section>
+  )
 }
