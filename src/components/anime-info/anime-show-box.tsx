@@ -61,7 +61,6 @@ export const AnimeShowBox = ({
   const [isContentLoading, setIsContentLoading] = useState(false)
   const [contentKey, setContentKey] = useState(0)
 
-  // Handle smooth transitions when tab changes
   useEffect(() => {
     setIsContentLoading(true)
     const timer = setTimeout(() => {
@@ -99,26 +98,24 @@ export const AnimeShowBox = ({
         return <AnimeDescription synopsis={synopsis} />
       case 'Related':
         return <AnimeRelated animeId={animeId} />
-      default:
-        return <AnimeDescription synopsis={synopsis} />
     }
   }
 
   return (
     <section
-      className="border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95 hover:border-Primary-700/50 relative z-10 flex h-[400px] flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl md:h-[600px]"
+      className="border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95 hover:border-Primary-700/50 relative z-10 flex flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
       role="tabpanel"
       aria-labelledby={`tab-${currentSelectedLabel?.toLowerCase()}`}
     >
       <div className="from-Primary-950/20 to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
 
-      {/* Navigation bar - Fixed at top */}
       <div className="border-Primary-800/30 from-Primary-950/80 to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-4 backdrop-blur-md">
         <AnimeNavBar />
       </div>
 
-      {/* Content area with scroll */}
-      <div className="custom-scrollbar relative z-10 flex-1 overflow-y-auto p-6 md:p-8">
+      <div
+        className={`no-scrollbar relative z-10 aspect-video ${currentSelectedLabel === 'Trailer' ? 'overflow-y-hidden' : 'overflow-y-scroll'}`}
+      >
         {isContentLoading ? (
           <div className="animate-pulse space-y-4">
             <div className="bg-Primary-800/30 h-8 w-3/4 rounded-lg" />
@@ -130,7 +127,7 @@ export const AnimeShowBox = ({
         ) : (
           <div
             key={contentKey}
-            className="animate-fadeIn transition-all duration-300 ease-out"
+            className="animate-fadeIn h-min transition-all duration-300 ease-out"
             style={{
               animation: 'fadeIn 0.4s ease-out forwards',
             }}
