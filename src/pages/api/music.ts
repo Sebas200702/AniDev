@@ -17,7 +17,6 @@ export const GET: APIRoute = rateLimit(
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-
           },
         })
       }
@@ -54,7 +53,9 @@ export const GET: APIRoute = rateLimit(
         throw new Error('Ocurrió un error al obtener los musicas.')
       }
       await safeRedisOperation((client) =>
-        client.set(`music:${url.searchParams}`, JSON.stringify(response), { EX: 24 * 60 * 60 })
+        client.set(`music:${url.searchParams}`, JSON.stringify(response), {
+          EX: 24 * 60 * 60,
+        })
       )
 
       return new Response(JSON.stringify(response), {
