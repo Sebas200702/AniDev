@@ -29,7 +29,7 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
 
   return (
     <article
-      className="group bg-Complementary hover:border-enfasisColor/40 hover:cursor-pointer border-enfasisColor/5 relative aspect-[225/330] rounded-lg border-1 p-4 transition-all duration-300 hover:bg-zinc-800 hover:shadow-xl"
+      className="group bg-Complementary hover:border-enfasisColor/40 border-enfasisColor/5 relative aspect-[225/330] rounded-lg border-1 p-4 transition-all duration-300 hover:cursor-pointer hover:bg-zinc-800 hover:shadow-xl"
       onClick={() =>
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }
@@ -37,12 +37,12 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
       <div className="relative mb-4">
         <Picture
           image={song.placeholder}
-          styles="relative aspect-square rounded-md overflow-hidden shadow-lg aspect-square"
+          styles="relative aspect-square rounded-md overflow-hidden shadow-lg aspect-square h-full"
         >
           <img
             src={song.image}
             alt={song.song_title}
-            className="aspect-square w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
+            className="aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
           />
         </Picture>
 
