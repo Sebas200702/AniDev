@@ -38,7 +38,7 @@ export const AnimeRelated = ({ animeId }: { animeId: number }) => {
 
   if (loading)
     return (
-      <div className="relative z-10 flex flex-col gap-4 rounded-lg">
+      <div className="relative z-10 flex flex-col gap-4 rounded-lg p-4 md:p-6">
         <header className="flex items-center justify-between">
           <h2 className="text-lxx font-bold">Related</h2>
         </header>
@@ -56,7 +56,7 @@ export const AnimeRelated = ({ animeId }: { animeId: number }) => {
     )
 
   return (
-    <section className="relative z-10 flex flex-col gap-4 rounded-lg">
+    <section className="relative z-10 flex flex-col gap-4 rounded-lg p-4 md:p-6">
       <header className="flex items-center justify-between">
         <h2 className="text-lxx font-bold">Related</h2>
       </header>
