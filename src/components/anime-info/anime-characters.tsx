@@ -17,7 +17,7 @@ export const CharacterSection = ({ animeId }: Props) => {
   } = useCharacterStore()
 
   return (
-    <section className="relative z-10 flex flex-col gap-10 rounded-lg">
+    <section className="relative z-10 flex flex-col gap-8 rounded-lg p-4 md:p-6">
       <header className="flex items-center justify-between">
         <h2 className="text-lxx font-bold text-white">Characters</h2>
         <FilterDropdown
