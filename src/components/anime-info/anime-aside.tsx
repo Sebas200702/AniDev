@@ -67,6 +67,7 @@ export const AnimeAside = ({
     <aside className="anime-aside top-28 z-20 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
       <GaleryImage
         src={animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`}
+        alt={`Poster of ${animeData.title}`}
       >
         <Picture
           image={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
