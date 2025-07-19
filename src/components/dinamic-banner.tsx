@@ -62,9 +62,9 @@ export const DinamicBanner = ({ banners }: Props) => {
   const secondImage = banners[secondImageIndex]
 
   return (
-    <div className="fixed aspect-[1080/600] h-[40vh] md:h-[60vh] w-full overflow-hidden">
+    <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
       <div
-        className={`w-full h-full transition-opacity duration-1000 ease-out ${
+        className={`h-full w-full transition-opacity duration-1000 ease-out ${
           showFirstLayer && !isTransitioning ? 'opacity-100' : 'opacity-0'
         }`}
       >
@@ -90,7 +90,7 @@ export const DinamicBanner = ({ banners }: Props) => {
         </Picture>
       </div>
       <div
-        className={`w-full h-full absolute top-0 left-0 transition-opacity duration-1000 ease-out ${
+        className={`absolute top-0 left-0 h-full w-full transition-opacity duration-1000 ease-out ${
           !showFirstLayer && !isTransitioning ? 'opacity-100' : 'opacity-0'
         }`}
       >
