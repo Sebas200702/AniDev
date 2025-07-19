@@ -118,7 +118,7 @@ export const PageColectionList = ({ title, id }: Props) => {
       <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
       <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
 
-      <section className="relative z-10 flex flex-col gap-10 px-4 pt-[35dvh] md:px-20  mb-20">
+      <section className="relative z-10 mb-20 flex flex-col gap-10 px-4 pt-[35dvh] md:px-20">
         <h2 className="subtitle text-balance">{title}</h2>
 
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10 xl:grid-cols-3">
