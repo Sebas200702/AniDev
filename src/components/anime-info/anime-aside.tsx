@@ -1,6 +1,7 @@
 import { AddToListButton } from '@components/add-to-list-button'
 import { ShareButton } from '@components/buttons/share-button'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
+import { GaleryImage } from '@components/galery-image'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
 import type { Anime } from 'types'
@@ -64,20 +65,25 @@ export const AnimeAside = ({
 }: Props) => {
   return (
     <aside className="anime-aside top-28 z-20 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
-      <Picture
-        image={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
-        styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
+      <GaleryImage
+        src={animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`}
       >
-        <img
-          className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
-          src={animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`}
-          alt={animeData.title}
-          loading="lazy"
-          style={{
-            viewTransitionName: `anime-card-${animeData.mal_id}`,
-          }}
-        />
-      </Picture>
+        <Picture
+          image={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
+          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
+        >
+          <img
+            className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
+            src={animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`}
+            alt={animeData.title}
+            loading="lazy"
+            title={`Representative image of ${animeData.title}`}
+            style={{
+              viewTransitionName: `anime-card-${animeData.mal_id}`,
+            }}
+          />
+        </Picture>
+      </GaleryImage>
 
       <div className="flex h-full w-full flex-row justify-end gap-4">
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
