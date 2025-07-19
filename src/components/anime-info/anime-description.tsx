@@ -32,7 +32,11 @@ interface Props {
 
 export const AnimeDescription = ({ synopsis }: Props) => {
   return (
-    <div className="bg-Complementary text-Primary-50/90 text-m z-10 h-auto w-full space-y-2 rounded-md p-6">
+    <div className="text-Primary-50/90 text-m z-10 flex h-auto w-full flex-col gap-8 rounded-md">
+      <header className="flex items-center justify-between">
+        <h2 className="text-lxx font-bold text-white">Synopsis</h2>
+      </header>
+
       <p className="max-w-full">{splitTextOnP(synopsis ?? '')[0]}</p>
       <p className="max-w-full">{splitTextOnP(synopsis ?? '')[1]}</p>
     </div>
