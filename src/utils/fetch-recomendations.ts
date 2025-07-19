@@ -116,7 +116,6 @@ export const fetchRecomendations = async (
   const getAlternativeFallback = async (needed: number) => {
     console.log('Using traditional fallback strategies as last resort')
 
-
     const strategies = [
       {
         name: 'high_score',
@@ -142,7 +141,6 @@ export const fetchRecomendations = async (
             .gt('score', 7.0),
       },
     ]
-
 
     const strategy = strategies[Math.floor(Math.random() * strategies.length)]
     console.log(`Using fallback strategy: ${strategy.name}`)
@@ -174,17 +172,13 @@ export const fetchRecomendations = async (
       return []
     }
 
-
     return shuffleArray([...data]).slice(0, needed)
   }
-
 
   if (results.length < minResults) {
     const needed = minResults - results.length
 
-
     let fallbackResults = await getJikanFallback(needed)
-
 
     if (fallbackResults.length < needed) {
       const stillNeeded = needed - fallbackResults.length
