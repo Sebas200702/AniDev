@@ -85,7 +85,6 @@ const validateSlug = (slug: string | null): ValidationResult => {
 const fetchCharacterData = async (slug: string, id: number) => {
   const cacheKey = `${CACHE_PREFIX}${slug}`
 
-
   const cached = await safeRedisOperation(async (redis) => {
     return await redis.get(cacheKey)
   })
@@ -97,7 +96,9 @@ const fetchCharacterData = async (slug: string, id: number) => {
   }
 
   const fetchPromise = Promise.resolve(
-    supabase.rpc('get_character_details_with_animes', { input_character_id: id })
+    supabase.rpc('get_character_details_with_animes', {
+      input_character_id: id,
+    })
   )
     .then(async ({ data, error }) => {
       if (error || !data?.[0]) throw error || new Error('Data not found')
