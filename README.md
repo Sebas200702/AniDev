@@ -630,6 +630,7 @@ pnpm test src/test/api-tests/animes.test.ts
 - **JSDoc Comments**: Comprehensive API documentation
 - **Type Definitions**: Strong TypeScript typing
 - **Code Examples**: Usage examples for components and hooks
+- [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Sebas200702/AniDev)
 
 ### Error Handling
 
