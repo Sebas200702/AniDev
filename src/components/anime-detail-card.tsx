@@ -66,7 +66,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   ]
 
   return (
-    <li
+    <article
       key={anime.mal_id}
       className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-2'}`}
       onClick={() => setSearchIsOpen(false)}
@@ -75,7 +75,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className="bg-Complementary relative mx-auto flex aspect-[100/28] h-full w-full overflow-hidden rounded-lg"
+        className="bg-Complementary relative mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
         title={anime.title}
       >
         <div className="absolute h-full w-full">
@@ -165,6 +165,6 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           label="Share"
         />
       </MoreOptions>
-    </li>
+    </article>
   )
 }
