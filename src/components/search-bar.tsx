@@ -313,15 +313,14 @@ export const SearchBar = () => {
           </button>
         </div>
       </form>
-
-      <ul
-        className={`no-scrollbar max-h-96 w-full max-w-xl overflow-y-auto transition-all duration-300 ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} bg-Primary-950 flex flex-col gap-4 rounded-md p-2 shadow-lg`}
+      <div
+        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} transition-all duration-300`}
       >
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, i) => (
             <div
               key={i + 1}
-              className="bg-Complementary mx-auto flex aspect-[100/28] h-full w-full animate-pulse flex-row rounded-lg"
+              className="bg-Complementary mx-auto flex aspect-[100/30] h-full max-h-36 w-full animate-pulse flex-row rounded-lg"
             >
               <div className="aspect-[225/330] h-full animate-pulse rounded-l-lg bg-zinc-800 object-cover object-center transition-all ease-in-out"></div>
             </div>
@@ -382,7 +381,7 @@ export const SearchBar = () => {
               <h3 className="text-lg font-semibold">See all results</h3>
             </a>
           )}
-      </ul>
+      </div>
     </div>
   )
 }
