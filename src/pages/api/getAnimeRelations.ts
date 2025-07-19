@@ -26,13 +26,13 @@ export const GET: APIRoute = rateLimit(
             status: 200,
             headers: {
               'Content-Type': 'application/json',
-
             },
           }
         )
       }
 
       const relations = await getAnimeRelations(animeId)
+      
 
       await safeRedisOperation((client) =>
         client.set(cacheKey, JSON.stringify(relations), { EX: 60 * 60 * 24 })
@@ -42,7 +42,6 @@ export const GET: APIRoute = rateLimit(
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-
         },
       })
     } catch (error) {
