@@ -44,6 +44,7 @@ interface Props {
   styles: string
   metadata?: FileMetadata
   showMetadata?: boolean
+  showLabel?: boolean
 }
 
 /**
@@ -105,6 +106,7 @@ export const DownloadButton = ({
   title,
   styles,
   metadata,
+  showLabel = true,
   showMetadata = false,
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -302,9 +304,11 @@ export const DownloadButton = ({
         title={generateTooltip()}
       >
         <DownloadIcon className="h-4 w-4 xl:h-5 xl:w-5" />
-        <span className="font-medium">
-          {isLoading ? 'Downloading...' : 'Download'}
-        </span>
+        {showLabel && (
+          <span className="font-medium">
+            {isLoading ? 'Downloading...' : 'Download'}
+          </span>
+        )}
       </button>
     </div>
   )
