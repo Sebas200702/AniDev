@@ -77,7 +77,7 @@ export const getJikanRecommendations = async (
 
     const sortedRecommendations = data.data
       .sort((a, b) => b.votes - a.votes)
-      .slice(0, 20) 
+      .slice(0, 20)
 
     const mal_ids = sortedRecommendations.map((rec) => rec.entry.mal_id)
     const titles = sortedRecommendations.map((rec) => rec.entry.title)
