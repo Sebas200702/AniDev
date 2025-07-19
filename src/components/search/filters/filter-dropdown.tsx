@@ -127,7 +127,7 @@ export const FilterDropdown = ({
     >
       <button
         type="button"
-        className="custom-scrollbar flex h-full w-full cursor-pointer flex-wrap items-start gap-1 overflow-y-auto px-3 py-2"
+        className="custom-scrollbar flex h-full w-full cursor-pointer items-start gap-1 overflow-y-auto px-3 py-2"
         onClick={handleInputClick}
       >
         {ImputText ? (
@@ -142,7 +142,9 @@ export const FilterDropdown = ({
             aria-controls="dropdown-options"
           />
         ) : (
-          <span className="cursor-pointer capitalize">{values}</span>
+          <span className="w-full cursor-pointer text-left capitalize">
+            {values}
+          </span>
         )}
       </button>
 
@@ -175,9 +177,12 @@ export const FilterDropdown = ({
         )}
         <button
           type="button"
-          className={`h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={`${isOpen ? 'Cerrar' : 'Abrir'} opciones`}
+          className={`z-10 h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsOpen(!isOpen)
+          }}
+          aria-label={`${isOpen ? 'Close' : 'Open'} options`}
         >
           <svg
             fill="none"
