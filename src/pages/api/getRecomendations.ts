@@ -19,7 +19,6 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
-
 class GeminiQuotaManager {
   private static readonly QUOTA_KEY = 'gemini_quota_usage'
   private static readonly DAILY_LIMIT = 180
@@ -67,17 +66,14 @@ class GeminiQuotaManager {
   }
 }
 
-
 async function createJikanBasedRecommendations(
   jikanRecommendations: { mal_ids: number[]; titles: string[] } | null,
   targetCount: number,
   currentAnime?: string
 ): Promise<any[]> {
   if (!jikanRecommendations || jikanRecommendations.mal_ids.length === 0) {
-
     return await fetchRecomendations([], targetCount, currentAnime, null)
   }
-
 
   const jikanIds = jikanRecommendations.mal_ids.map((id) => id.toString())
   const jikanResult = await fetchRecomendations(
@@ -90,7 +86,6 @@ async function createJikanBasedRecommendations(
   if (jikanResult.length >= targetCount * 0.8) {
     return jikanResult
   }
-
 
   const additionalResult = await fetchRecomendations(
     [],
@@ -139,7 +134,6 @@ const functionTool: Tool = {
 export const GET: APIRoute = async ({ request, cookies, url }) => {
   try {
     const cacheKey = `recommendations:${url.searchParams.toString()}`
-
 
     const cachedRecommendations = await safeRedisOperation((client) =>
       client.get(cacheKey)
@@ -336,7 +330,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
     } catch (error: any) {
       console.error('Gemini API error:', error.message)
 
-
       if (error.status === 429) {
         console.log('Gemini quota error detected, using Jikan-based fallback')
         const fallbackResult = await createJikanBasedRecommendations(
@@ -421,7 +414,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         }`
 
         try {
-
           const canRetry = await GeminiQuotaManager.canMakeRequest()
           if (!canRetry) {
             console.log('Cannot retry with Gemini due to quota exhaustion')
