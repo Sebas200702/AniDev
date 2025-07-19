@@ -86,32 +86,16 @@ export const AnimeCharacterLoader = () => {
   return (
     <ul
       ref={listRef}
-      className="no-scrollbar flex gap-4 overflow-x-scroll px-8 py-4"
+      className="custom-scrollbar grid grid-cols-1 gap-4 overflow-x-hidden overflow-y-auto md:grid-cols-2 md:gap-6"
     >
-      <NexPrevBtnSlideList
-        label="prev-button"
-        styles="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
-      />
-
-      {extendedGroups.map((grp, idx) => (
-        <section
-          key={`${grp.cloneBlock}-${grp.originalIndex}-${idx}`}
-          className="grid min-w-full grid-cols-1 gap-4 xl:grid-cols-2"
-        >
-          {grp.items.map((character) => (
-            <li key={`${grp.cloneBlock}-${grp.originalIndex}-${character}`}>
-              {/* Cada placeholder es un div con animate-pulse */}
-              <div className="h-20 w-full animate-pulse rounded-xl bg-zinc-700 duration-300 md:h-28"></div>
-            </li>
-          ))}
-        </section>
+      {Array.from({ length: 20 }).map((_, index) => (
+        <li key={index}>
+          <div className="flex aspect-[100/30] h-full w-full animate-pulse flex-row justify-between overflow-hidden rounded-md bg-zinc-800 duration-300">
+            <div className="aspect-[225/330] h-full animate-pulse bg-zinc-700 object-cover object-center transition-all ease-in-out md:max-h-36"></div>
+            <div className="aspect-[225/330] h-full animate-pulse bg-zinc-700 object-cover object-center transition-all ease-in-out md:max-h-36"></div>
+          </div>
+        </li>
       ))}
-
-      {/* Botón “Siguiente” */}
-      <NexPrevBtnSlideList
-        label="next-button"
-        styles="absolute right-0 top-1/2 transform -translate-y-1/2 rotate-180 z-10"
-      />
     </ul>
   )
 }
