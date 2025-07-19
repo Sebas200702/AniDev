@@ -78,7 +78,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
         headers: {
           'Content-Type': mimeType,
           'Content-Length': response.length.toString(),
-
         },
       })
     }
