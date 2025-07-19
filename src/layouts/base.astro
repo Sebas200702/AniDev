@@ -38,7 +38,7 @@ let metaDesc =
   'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 let metaImage = image || `${baseUrl}/og-image.png`
 
-// Extract metadata based on content type
+
 if (animeId) {
   const metadata = await extractMetadata(
     {
@@ -70,7 +70,7 @@ if (themeId) {
 }
 
 if (characterId) {
-  // For character metadata, we need the full slug from the URL, not just the ID
+ 
   const fullSlug = Astro.url.pathname.split('/').pop() || ''
   const metadata = await extractMetadata(
     {
