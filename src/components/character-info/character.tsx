@@ -61,9 +61,9 @@ export const CharacterInfo = ({ slug }: Props) => {
         )}
       />
 
-      <article className="relative z-10 mb-10 grid grid-cols-1 w-full gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <article className="relative z-10 mb-10 grid w-full grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
         <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
-        <Overlay className="to-Primary-950/100 via-Primary-950  h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
+        <Overlay className="to-Primary-950/100 via-Primary-950 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
 
         <CharacterAside character={character} />
         <CharacterHeader character={character} />
