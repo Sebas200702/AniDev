@@ -80,11 +80,11 @@ export const AnimeMusicItem = ({
   }
 
   return (
-    <div className="group relative transition-all duration-300 ease-in-out md:hover:translate-x-2">
+
       <article
         onClick={handleClick}
         title={song.song_title}
-        className="hover:bg-Primary-900 group border-enfasisColor group relative flex aspect-[100/32] h-full w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-2 bg-zinc-800 transition-colors duration-300 ease-in-out md:max-h-36 md:gap-2"
+        className="hover:bg-Primary-900 group relative transition-all duration-300 ease-in-out md:hover:translate-x-2 group border-enfasisColor group  flex aspect-[100/30] h-full w-full cursor-pointer flex-row items-start  rounded-lg border-l-2 bg-zinc-800  md:max-h-36 md:gap-2"
       >
         <Picture
           image={placeholder}
@@ -151,6 +151,6 @@ export const AnimeMusicItem = ({
           </p>
         </footer>
       </article>
-    </div>
+
   )
 }
