@@ -1,4 +1,9 @@
 import { AnimeTag } from '@components/anime-tag'
+import { ExpandIconV2 } from '@components/icons/expand-icon'
+import { ImageViewer } from '@components/image-viewer'
+import { ModalTrigger } from '@components/modal-trigger'
+import { baseUrl } from '@utils/base-url'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
 import type { Anime } from 'types'
@@ -35,7 +40,7 @@ interface Props {
 
 export const AnimeHeader = ({ animeData }: Props) => {
   return (
-    <header className="anime-header z-10 flex w-full flex-col justify-center gap-6 md:col-span-2 md:gap-8 xl:col-span-4 xl:mt-0">
+    <header className="anime-header relative z-10 flex w-full flex-col justify-center gap-6 md:col-span-2 md:gap-8 xl:col-span-4 xl:mt-0">
       <h1 className="title mx-auto max-w-[30ch] text-center text-pretty md:mx-0 md:text-left md:text-wrap">
         {animeData.title}
       </h1>
@@ -55,7 +60,27 @@ export const AnimeHeader = ({ animeData }: Props) => {
             tag={normalizeRating(animeData.rating)}
             type={animeData.rating}
           />
-        )}
+        )}{' '}
+        <ModalTrigger
+          modalContent={
+            <ImageViewer
+              src={createImageUrlProxy(
+                animeData.banner_image ??
+                  animeData.image_large_webp ??
+                  `${baseUrl}/placeholder.webp`,
+                '1920',
+                '50',
+                'webp'
+              )}
+              alt={`${animeData.title} banner`}
+              onClose={() => {}}
+            />
+          }
+          className="absolute right-3"
+          aria-label="Open image in advanced viewer"
+        >
+          <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
+        </ModalTrigger>
       </ul>
     </header>
   )
