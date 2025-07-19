@@ -67,7 +67,6 @@ export const GET: APIRoute = rateLimit(
             status: 200,
             headers: {
               'content-type': 'application/json',
-
             },
           }
         )
@@ -144,7 +143,6 @@ export const GET: APIRoute = rateLimit(
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-
         },
       })
     } catch (err) {
