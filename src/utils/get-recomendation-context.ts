@@ -213,7 +213,6 @@ export const generateContextualPrompt = (
   const selectedStrategy =
     explorationStrategies[sessionId % explorationStrategies.length]
 
-
   const jikanSection =
     jikanRecommendations && jikanRecommendations.mal_ids.length > 0
       ? `
