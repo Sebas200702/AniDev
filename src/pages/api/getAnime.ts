@@ -58,8 +58,7 @@ interface ValidationResult {
 }
 
 const CACHE_PREFIX = 'anime_'
-const CACHE_TTL = 60 * 60 
-
+const CACHE_TTL = 60 * 60
 
 const pendingRequests = new Map<string, Promise<any>>()
 
@@ -86,7 +85,6 @@ const validateSlug = (slug: string | null): ValidationResult => {
 const fetchAnimeData = async (slug: string, id: number) => {
   const cacheKey = `${CACHE_PREFIX}${slug}`
 
-
   const cached = await safeRedisOperation(async (redis) => {
     return await redis.get(cacheKey)
   })
@@ -104,7 +102,6 @@ const fetchAnimeData = async (slug: string, id: number) => {
       if (error || !data?.[0]) throw error || new Error('Data not found')
 
       const result = data[0]
-
 
       await safeRedisOperation(async (redis) => {
         return await redis.set(cacheKey, JSON.stringify(result), {
