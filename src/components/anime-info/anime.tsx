@@ -104,7 +104,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         <AnimeDetails animeData={animeData} />
       </article>
       <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
-<Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
+        <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
     </>
   )
 }
