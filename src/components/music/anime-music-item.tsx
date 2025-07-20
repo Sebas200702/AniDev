@@ -80,77 +80,75 @@ export const AnimeMusicItem = ({
   }
 
   return (
-
-      <article
-        onClick={handleClick}
-        title={song.song_title}
-        className="hover:bg-Primary-900 group relative transition-all duration-300 ease-in-out md:hover:translate-x-2 group border-enfasisColor group  flex aspect-[100/30] h-full w-full cursor-pointer flex-row items-start  rounded-lg border-l-2 bg-zinc-800  md:max-h-36 md:gap-2"
+    <article
+      onClick={handleClick}
+      title={song.song_title}
+      className="hover:bg-Primary-900 group group border-enfasisColor group relative flex aspect-[100/30] h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-2 bg-zinc-800 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-2"
+    >
+      <Picture
+        image={placeholder}
+        styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
       >
-        <Picture
-          image={placeholder}
-          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
-        >
-          {isCurrentSong && (
-            <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
-              {heights.map((height, index) => (
-                <div
-                  key={index}
-                  className="bg-enfasisColor w-[3px] rounded-md transition-all duration-150 ease-out group-hover:opacity-0"
-                  style={{ height: `${height}px` }}
-                />
-              ))}
+        {isCurrentSong && (
+          <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
+            {heights.map((height, index) => (
+              <div
+                key={index}
+                className="bg-enfasisColor w-[3px] rounded-md transition-all duration-150 ease-out group-hover:opacity-0"
+                style={{ height: `${height}px` }}
+              />
+            ))}
 
-              <button
-                className="text-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none"
-                onClick={(e) => handlePlay(e)}
-                disabled={!canPlay}
-              >
-                {isPlaying ? (
-                  <PauseIcon className="h-6 w-6" />
-                ) : (
-                  <PlayIcon className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          )}
-
-          <img
-            src={image}
-            alt={song.song_title}
-            className="relative aspect-[225/330] h-full rounded-l-lg object-cover object-center"
-          />
-          <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
-        </Picture>
-
-        {song.type && (
-          <span
-            className={`absolute top-2 right-2 flex-shrink-0 rounded-full border p-1 text-xs font-medium md:px-2 md:py-1 ${getTypeColor(song.type)}`}
-          >
-            {song.type.toUpperCase()}
-          </span>
+            <button
+              className="text-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none"
+              onClick={(e) => handlePlay(e)}
+              disabled={!canPlay}
+            >
+              {isPlaying ? (
+                <PauseIcon className="h-6 w-6" />
+              ) : (
+                <PlayIcon className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         )}
 
-        <AddToPlayListButton
-          song={{
-            image,
-            banner_image,
-            anime_title,
-            placeholder,
-            ...song,
-          }}
-          isInPlayList={isInPlaylist}
-          clasName="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
+        <img
+          src={image}
+          alt={song.song_title}
+          className="relative aspect-[225/330] h-full rounded-l-lg object-cover object-center"
         />
+        <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
+      </Picture>
 
-        <footer className="flex h-full w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
-          <h3 className="text-l group-hover:text-enfasisColor/80 g text-pretty text-white transition-colors duration-300 ease-in-out select-none">
-            {song.song_title}
-          </h3>
-          <p className="text-s line-clamp-1 text-gray-400 select-none">
-            {song.artist_name}
-          </p>
-        </footer>
-      </article>
+      {song.type && (
+        <span
+          className={`absolute top-2 right-2 flex-shrink-0 rounded-full border p-1 text-xs font-medium md:px-2 md:py-1 ${getTypeColor(song.type)}`}
+        >
+          {song.type.toUpperCase()}
+        </span>
+      )}
 
+      <AddToPlayListButton
+        song={{
+          image,
+          banner_image,
+          anime_title,
+          placeholder,
+          ...song,
+        }}
+        isInPlayList={isInPlaylist}
+        clasName="hover:bg-Primary-950 absolute right-2 bottom-2 z-10 flex-shrink-0 cursor-pointer rounded-full p-2 transition-colors duration-300"
+      />
+
+      <footer className="flex h-full w-full max-w-[60%] flex-col items-start gap-2 p-2 md:p-4">
+        <h3 className="text-l group-hover:text-enfasisColor/80 g text-pretty text-white transition-colors duration-300 ease-in-out select-none">
+          {song.song_title}
+        </h3>
+        <p className="text-s line-clamp-1 text-gray-400 select-none">
+          {song.artist_name}
+        </p>
+      </footer>
+    </article>
   )
 }
