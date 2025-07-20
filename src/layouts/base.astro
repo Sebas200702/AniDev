@@ -16,6 +16,7 @@ import '@styles/anime-banner.css'
 import { CustomToaster } from '@components/custom-toaster'
 import '@pheralb/toast/dist/styles.css'
 import { AsideNav } from '@components/aside'
+import { ModalContainer } from '@components/modal-container'
 import { MusicPlayer } from '@components/music-player/music-player'
 const { cookies } = Astro
 const accessToken = cookies.get('sb-access-token')
@@ -37,7 +38,6 @@ let metaDesc =
   description ||
   'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 let metaImage = image || `${baseUrl}/og-image.png`
-
 
 if (animeId) {
   const metadata = await extractMetadata(
@@ -70,7 +70,6 @@ if (themeId) {
 }
 
 if (characterId) {
- 
   const fullSlug = Astro.url.pathname.split('/').pop() || ''
   const metadata = await extractMetadata(
     {
@@ -120,7 +119,7 @@ const userInfo = await getSessionUserInfo({
       https://cdn.jsdelivr.net
       https://www.gstatic.com
       http://www.gstatic.com;
-    frame-src 'self' https://www.youtube.com/;
+    frame-src 'self' https://www.youtube.com/ https://www.youtube-nocookie.com/;
     style-src 'self' 'unsafe-inline';
     media-src 'self' blob: https://a.animethemes.moe https://v.animethemes.moe;
     font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
@@ -131,7 +130,8 @@ const userInfo = await getSessionUserInfo({
       https://cdn.myanimelist.net
       https://coffee-advanced-tern-335.mypinata.cloud
       https://lh3.googleusercontent.com/
-      https://ani-dev.vercel.app;
+      https://ani-dev.vercel.app
+      https://www.youtube.com/;
     worker-src 'self' blob:;
   "
     />
@@ -185,6 +185,7 @@ const userInfo = await getSessionUserInfo({
         <CustomToaster client:load />
       </main>
       <Footer />
+      <ModalContainer client:load />
     </div>
   </body>
 </html>
