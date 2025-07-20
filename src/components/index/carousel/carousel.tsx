@@ -202,7 +202,7 @@ export const Carousel = () => {
         <NexPrevBtnCarousel action={handlePrev} label="Previous" />
         <NexPrevBtnCarousel action={handleNext} label="Next" />
       </div>
-      <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
+      <Overlay className="to-Primary-950  absolute left-0 top-0 bg-gradient-to-l h-full w-1/4 " />
     </section>
   )
 }
