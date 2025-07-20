@@ -8,6 +8,9 @@ import { type RedisClientType, createClient } from 'redis'
  * endpoints concurrently.
  */
 
+// Define the actual client type that includes all modules
+type ExtendedRedisClient = ReturnType<typeof createClient>
+
 interface RedisPoolConfig {
   maxConnections: number
   minConnections: number
@@ -16,10 +19,10 @@ interface RedisPoolConfig {
 }
 
 class RedisConnectionPool {
-  private pool: RedisClientType[] = []
-  private availableConnections: RedisClientType[] = []
-  private busyConnections: Set<RedisClientType> = new Set()
-  private connectionLastUsed: Map<RedisClientType, number> = new Map()
+  private pool: ExtendedRedisClient[] = []
+  private availableConnections: ExtendedRedisClient[] = []
+  private busyConnections: Set<ExtendedRedisClient> = new Set()
+  private connectionLastUsed: Map<ExtendedRedisClient, number> = new Map()
   private config: RedisPoolConfig
   private isShuttingDown = false
   private idleCleanupInterval: NodeJS.Timeout | null = null
@@ -36,7 +39,7 @@ class RedisConnectionPool {
     this.startIdleConnectionCleaner()
   }
 
-  private createRedisClient(): RedisClientType {
+  private createRedisClient(): ExtendedRedisClient {
     const client = createClient({
       username: 'default',
       password: import.meta.env.REDIS_PASSWORD,
@@ -65,7 +68,7 @@ class RedisConnectionPool {
     return client
   }
 
-  private removeClientFromPool(client: RedisClientType): void {
+  private removeClientFromPool(client: ExtendedRedisClient): void {
     this.pool = this.pool.filter(c => c !== client)
     this.availableConnections = this.availableConnections.filter(c => c !== client)
     this.busyConnections.delete(client)
@@ -91,7 +94,7 @@ class RedisConnectionPool {
     if (this.isShuttingDown) return
 
     const now = Date.now()
-    const connectionsToRemove: RedisClientType[] = []
+    const connectionsToRemove: ExtendedRedisClient[] = []
 
     // Solo limpiar si tenemos más que el mínimo
     if (this.availableConnections.length > this.config.minConnections) {
@@ -135,7 +138,7 @@ class RedisConnectionPool {
     }
   }
 
-  private async createAndConnectClient(): Promise<RedisClientType> {
+  private async createAndConnectClient(): Promise<ExtendedRedisClient> {
     const client = this.createRedisClient()
     try {
       await client.connect()
@@ -148,7 +151,7 @@ class RedisConnectionPool {
     }
   }
 
-  async acquireConnection(): Promise<RedisClientType> {
+  async acquireConnection(): Promise<ExtendedRedisClient> {
     if (this.isShuttingDown) {
       throw new Error('Connection pool is shutting down')
     }
@@ -191,7 +194,7 @@ class RedisConnectionPool {
     return this.waitForAvailableConnection()
   }
 
-  private async waitForAvailableConnection(): Promise<RedisClientType> {
+  private async waitForAvailableConnection(): Promise<ExtendedRedisClient> {
     const startTime = Date.now()
     
     while (Date.now() - startTime < this.config.acquireTimeout) {
@@ -204,7 +207,7 @@ class RedisConnectionPool {
     throw new Error(`Timeout acquiring Redis connection after ${this.config.acquireTimeout}ms`)
   }
 
-  releaseConnection(client: RedisClientType): void {
+  releaseConnection(client: ExtendedRedisClient): void {
     if (!this.busyConnections.has(client)) {
       return // Conexión ya liberada o no válida
     }
@@ -305,9 +308,9 @@ if (!global.__redisPool) {
  * @returns Promise with the operation result or null if failed
  */
 export async function executeRedisOperation<T>(
-  operation: (client: RedisClientType) => Promise<T>
+  operation: (client: ExtendedRedisClient) => Promise<T>
 ): Promise<T | null> {
-  let client: RedisClientType | null = null
+  let client: ExtendedRedisClient | null = null
   
   try {
     client = await redisPool.acquireConnection()
@@ -332,7 +335,7 @@ export async function executeRedisOperation<T>(
  * Maintains exact same API but now uses connection pooling internally
  */
 export async function safeRedisOperation<T>(
-  operation: (client: RedisClientType) => Promise<T>
+  operation: (client: ExtendedRedisClient) => Promise<T>
 ): Promise<T | null> {
   return executeRedisOperation(operation)
 }
@@ -342,7 +345,7 @@ export async function safeRedisOperation<T>(
  * Use this when you need to do multiple Redis calls in the same endpoint
  */
 export async function batchRedisOperations<T>(
-  operations: ((client: RedisClientType) => Promise<T>)[]
+  operations: ((client: ExtendedRedisClient) => Promise<T>)[]
 ): Promise<(T | null)[]> {
   const result = await executeRedisOperation(async (client) => {
     const results: (T | null)[] = []
@@ -385,3 +388,6 @@ export function getRedisPoolStats() {
 
 // Para casos donde necesites acceso directo (usar con cuidado)
 export { redisPool }
+
+// Type alias for backward compatibility with existing code
+export type RedisClientType = ExtendedRedisClient
