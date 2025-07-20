@@ -4,6 +4,8 @@ import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { GaleryImage } from '@components/galery-image'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
+import { createAnimeImageList } from '@utils/create-image-list'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { Anime } from 'types'
 
 /**
@@ -63,12 +65,18 @@ export const AnimeAside = ({
   shareText,
   url,
 }: Props) => {
+  const imageList = createAnimeImageList({
+    title: animeData.title,
+    posterImage: animeData.image_large_webp,
+    bannerImage: animeData.banner_image,
+    posterPlaceholder: animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`,
+    bannerPlaceholder: createImageUrlProxy(animeData.banner_image ?? `${baseUrl}/placeholder.webp` , '100', '0', 'webp'),
+
+  })
+
   return (
     <aside className="anime-aside top-28 z-20 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
-      <GaleryImage
-        src={animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`}
-        alt={`Poster of ${animeData.title}`}
-      >
+      <GaleryImage imageList={imageList}>
         <Picture
           image={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
           styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
