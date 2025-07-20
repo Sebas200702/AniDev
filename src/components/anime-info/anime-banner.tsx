@@ -4,6 +4,7 @@ import { ModalTrigger } from '@components/modal-trigger'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createSingleImageList } from '@utils/create-image-list'
 
 /**
  * Props for the AnimeBanner component.
@@ -53,60 +54,65 @@ export const AnimeBanner = ({
   image_large_webp,
   title,
 }: Props) => {
+  const imageList = createSingleImageList({
+    src: banner_image ?? image_large_webp,
+    alt: `${title} banner`,
+    maxWidth: '100vw',
+    optimize: true,
+    optimizeOptions: {
+      width: '1920',
+      quality: '50',
+      format: 'webp',
+    },
+  })
+
   return (
     <div className='group'>
-    <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
-      <Picture
-        image={
-          banner_image
-            ? createImageUrlProxy(banner_image, '100', '0', 'webp')
-            : createImageUrlProxy(
-                image_large_webp ?? `${baseUrl}/placeholder.webp`,
-                '100',
-                '0',
-                'webp'
-              )
-        }
-        styles="h-full object-cover object-center relative"
-      >
-        <img
-          src={
+      <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
+        <Picture
+          image={
             banner_image
-              ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
+              ? createImageUrlProxy(banner_image, '100', '0', 'webp')
               : createImageUrlProxy(
                   image_large_webp ?? `${baseUrl}/placeholder.webp`,
-                  '1920',
-                  '50',
+                  '100',
+                  '0',
                   'webp'
                 )
           }
-          alt={`${title} banner`}
-          loading="lazy"
-          className="relative h-full w-full object-cover object-center"
-        />
-      </Picture>
+          styles="h-full object-cover object-center relative"
+        >
+          <img
+            src={
+              banner_image
+                ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
+                : createImageUrlProxy(
+                    image_large_webp ?? `${baseUrl}/placeholder.webp`,
+                    '1920',
+                    '50',
+                    'webp'
+                  )
+            }
+            alt={`${title} banner`}
+            loading="lazy"
+            className="relative h-full w-full object-cover object-center"
+          />
+        </Picture>
+      </div>
 
+      {/* Small button to open image viewer */}
+      <ModalTrigger
+        modalContent={
+          <ImageViewer
+            imageList={imageList}
+            onClose={() => {}}
+          />
+        }
+        className="absolute md:right-20 right-4 md:top-[45dvh] top-[32dvh] z-50 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+        aria-label="Open banner image in advanced viewer"
+      >
+        <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
+      </ModalTrigger>
     </div>
-    <ModalTrigger
-    modalContent={
-      <ImageViewer
-        src={createImageUrlProxy(
-          banner_image ??
-            image_large_webp ??
-            `${baseUrl}/placeholder.webp`,
-          '1920',
-          '50',
-          'webp'
-        )}
-        alt={`${title} banner`}
-        onClose={() => {}}
-      />
-    }
-    className="absolute md:right-20 right-4 md:top-[45dvh] top-[32dvh] z-50  md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
-    aria-label="Open image in advanced viewer"
-  >
-    <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
-  </ModalTrigger>
-  </div>
   )
 }
