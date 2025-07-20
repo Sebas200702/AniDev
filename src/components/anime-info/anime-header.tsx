@@ -1,9 +1,4 @@
 import { AnimeTag } from '@components/anime-tag'
-import { ExpandIconV2 } from '@components/icons/expand-icon'
-import { ImageViewer } from '@components/image-viewer'
-import { ModalTrigger } from '@components/modal-trigger'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
 import type { Anime } from 'types'
@@ -61,7 +56,7 @@ export const AnimeHeader = ({ animeData }: Props) => {
             type={animeData.rating}
           />
         )}{' '}
-        
+
       </ul>
     </header>
   )
