@@ -118,9 +118,21 @@ class RedisConnectionPool {
   private async initializeMinConnections(): Promise<void> {
     const promises = []
     for (let i = 0; i < this.config.minConnections; i++) {
-      promises.push(this.createAndConnectClient())
+      promises.push(this.createInitialConnection())
     }
     await Promise.all(promises)
+  }
+
+  private async createInitialConnection(): Promise<void> {
+    const client = this.createRedisClient()
+    try {
+      await client.connect()
+      this.pool.push(client)
+      this.availableConnections.push(client)
+    } catch (error) {
+      console.error('Failed to create initial Redis connection:', error)
+      throw error
+    }
   }
 
   private async createAndConnectClient(): Promise<RedisClientType> {
@@ -128,7 +140,7 @@ class RedisConnectionPool {
     try {
       await client.connect()
       this.pool.push(client)
-      this.availableConnections.push(client)
+      // No agregar a availableConnections aquí, se agregará cuando se libere
       return client
     } catch (error) {
       console.error('Failed to create Redis connection:', error)
@@ -164,6 +176,11 @@ class RedisConnectionPool {
       try {
         const client = await this.createAndConnectClient()
         this.busyConnections.add(client)
+        // Remover de availableConnections ya que está en busyConnections
+        const index = this.availableConnections.indexOf(client)
+        if (index > -1) {
+          this.availableConnections.splice(index, 1)
+        }
         return client
       } catch (error) {
         console.error('Failed to create new connection:', error)
@@ -327,7 +344,7 @@ export async function safeRedisOperation<T>(
 export async function batchRedisOperations<T>(
   operations: ((client: RedisClientType) => Promise<T>)[]
 ): Promise<(T | null)[]> {
-  return executeRedisOperation(async (client) => {
+  const result = await executeRedisOperation(async (client) => {
     const results: (T | null)[] = []
     for (const operation of operations) {
       try {
@@ -339,12 +356,14 @@ export async function batchRedisOperations<T>(
     }
     return results
   })
+  
+  return result ?? []
 }
 
 export async function ensureRedisConnection(): Promise<boolean> {
   try {
     const result = await executeRedisOperation(async (client) => {
-      return client.ping()
+      return await client.ping()
     })
     return result === 'PONG'
   } catch {
