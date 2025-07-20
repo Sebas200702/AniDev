@@ -61,26 +61,7 @@ export const AnimeHeader = ({ animeData }: Props) => {
             type={animeData.rating}
           />
         )}{' '}
-        <ModalTrigger
-          modalContent={
-            <ImageViewer
-              src={createImageUrlProxy(
-                animeData.banner_image ??
-                  animeData.image_large_webp ??
-                  `${baseUrl}/placeholder.webp`,
-                '1920',
-                '50',
-                'webp'
-              )}
-              alt={`${animeData.title} banner`}
-              onClose={() => {}}
-            />
-          }
-          className="absolute right-3"
-          aria-label="Open image in advanced viewer"
-        >
-          <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
-        </ModalTrigger>
+        
       </ul>
     </header>
   )
