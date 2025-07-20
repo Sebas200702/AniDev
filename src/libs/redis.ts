@@ -1,4 +1,4 @@
-import { type RedisClientType, createClient } from 'redis'
+import { createClient } from 'redis'
 
 /**
  * Redis connection pool manager for handling multiple concurrent connections.
@@ -51,7 +51,6 @@ class RedisConnectionPool {
           return Math.min(retries * 500, 2000)
         },
         connectTimeout: 8000,
-        lazyConnect: true,
       },
     })
 
