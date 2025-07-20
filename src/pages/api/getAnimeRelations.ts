@@ -32,7 +32,6 @@ export const GET: APIRoute = rateLimit(
       }
 
       const relations = await getAnimeRelations(animeId)
-      
 
       await safeRedisOperation((client) =>
         client.set(cacheKey, JSON.stringify(relations), { EX: 60 * 60 * 24 })
