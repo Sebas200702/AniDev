@@ -177,7 +177,12 @@ export enum MusicFilters {
 export type Animes = {
   animes: Anime[]
 }
-
+export interface ImageType {
+    src: string
+    alt: string
+    maxWidth?: string
+    placeholder?: string
+  }
 export interface AnimeCardInfo
   extends Pick<
     Anime,
