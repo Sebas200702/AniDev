@@ -1,3 +1,6 @@
+import { ExpandIconV2 } from '@components/icons/expand-icon'
+import { ImageViewer } from '@components/image-viewer'
+import { ModalTrigger } from '@components/modal-trigger'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
@@ -51,6 +54,7 @@ export const AnimeBanner = ({
   title,
 }: Props) => {
   return (
+    <div className='group'>
     <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
       <Picture
         image={
@@ -81,6 +85,28 @@ export const AnimeBanner = ({
           className="relative h-full w-full object-cover object-center"
         />
       </Picture>
+
     </div>
+    <ModalTrigger
+    modalContent={
+      <ImageViewer
+        src={createImageUrlProxy(
+          banner_image ??
+            image_large_webp ??
+            `${baseUrl}/placeholder.webp`,
+          '1920',
+          '50',
+          'webp'
+        )}
+        alt={`${title} banner`}
+        onClose={() => {}}
+      />
+    }
+    className="absolute md:right-20 right-4 md:top-[45dvh] top-[32dvh] z-50  md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+    aria-label="Open image in advanced viewer"
+  >
+    <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
+  </ModalTrigger>
+  </div>
   )
 }
