@@ -1,8 +1,10 @@
 import { AddToListButton } from '@components/add-to-list-button'
 import { AnimeTag } from '@components/anime-tag'
+import { MoreOptions } from '@components/more-options'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { StatusPoint } from '@components/status-point'
+import { PlayIcon } from '@icons/play-icon'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
@@ -11,6 +13,7 @@ import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
 import type { AnimeCardInfo } from 'types'
+import { ShareButton } from './buttons/share-button'
 
 /**
  * AnimeCard component displays information about an anime including its title, image, and status.
@@ -62,6 +65,7 @@ export const AnimeCard = ({ anime }: Props) => {
   const { width: windowWidth } = useWindowWidth()
   const { userInfo } = useGlobalUserPreferences()
   const isMobile = windowWidth && windowWidth < 768
+  const shareText = `Watch ${anime.title} on AniDev`
 
   let timer: NodeJS.Timeout
 
@@ -102,15 +106,28 @@ export const AnimeCard = ({ anime }: Props) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {userInfo?.name && (
-        <div className="bg-Complementary/50 border-Primary-50/10 absolute top-3 left-3 z-10 flex items-center justify-center rounded-lg border-1 p-1 backdrop-blur-sm transition-all duration-200 ease-in-out md:opacity-0 md:group-hover:opacity-100">
-          <AddToListButton
-            animeId={mal_id}
-            anime_title={title}
-            styles="md:hover:text-enfasisColor h-4 w-4 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer transition-all duration-300 ease-in-out xl:h-5 xl:w-5"
-          />
-        </div>
-      )}
+      <MoreOptions className="absolute top-2 left-2 z-10 hidden md:top-3 md:left-3 md:flex">
+        <a
+          href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
+          title={`Watch ${anime.title}`}
+          className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <PlayIcon className="h-4 w-4" />
+        </a>
+
+        <AddToListButton
+          animeId={anime.mal_id}
+          anime_title={anime.title}
+          styles="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+        />
+
+        <ShareButton
+          className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
+          title={anime.title}
+          text={shareText}
+        />
+      </MoreOptions>
       <a
         href={`/anime/${slug}_${mal_id}`}
         className={`flex h-auto flex-col items-center rounded-lg`}
@@ -142,7 +159,7 @@ export const AnimeCard = ({ anime }: Props) => {
           <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </Picture>
 
-        <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-row items-center gap-4 px-4 py-2">
+        <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-row items-center gap-4 px-2 py-1 md:px-4 md:py-2">
           <StatusPoint
             class={`h-3 w-full max-w-3 rounded-full ${statusColors(status)} relative`}
             status={status}
