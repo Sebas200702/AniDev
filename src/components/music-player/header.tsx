@@ -6,6 +6,7 @@ import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
+import { ClosePlayerButton } from './close-player-button'
 
 interface Props {
   playerContainerRef: React.RefObject<HTMLDivElement | null>
@@ -132,6 +133,8 @@ export const Header = ({ playerContainerRef }: Props) => {
         </div>
 
         <div className="flex flex-col items-center gap-4">
+          {isMinimized && <ClosePlayerButton />}
+
           <button
             className="text-sxx button-primary h-min cursor-pointer rounded-sm p-1 md:p-4"
             onClick={handleChangeType}
@@ -153,7 +156,7 @@ export const Header = ({ playerContainerRef }: Props) => {
               onClear={() => setVersionNumber(1)}
               styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  min-w-24`}
               singleSelect
-              ImputText={false}
+              InputText={false}
             />
           )}
 
