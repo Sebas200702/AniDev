@@ -28,7 +28,7 @@ export const AnimeLoader = () => {
       <div className="fixed aspect-[1080/600] h-[60dvh] w-full animate-pulse bg-zinc-800 duration-300">
         <div className="to-Primary-950/100 absolute right-0 bottom-0 left-0 h-full w-full bg-gradient-to-b from-transparent transition-all duration-300 ease-in-out" />
       </div>
-      <div className="z-10 mb-10 grid w-full grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:w-[calc(100dvw-80px)] md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <div className="z-10 mb-10 grid w-full grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:w-[calc(100dvw-80px)] md:grid-cols-3 md:px-20 xl:grid-cols-5">
         <div className="row-span-2 row-start-2 -mt-4 flex flex-col gap-6 md:row-start-1 md:mt-0 md:gap-8 md:p-0">
           <div className="aspect-[225/330] h-0 w-full animate-pulse rounded-lg bg-zinc-800 px-8 duration-300 ease-in-out md:h-auto"></div>
           <div className="h-10 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out xl:h-12"></div>
@@ -39,9 +39,9 @@ export const AnimeLoader = () => {
           <div className="mx-auto h-8 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out md:mx-0 md:h-10 md:w-90"></div>
         </div>
 
-        <div className="row-span-2 flex w-full flex-col gap-4 md:col-span-2 xl:col-span-3">
-          <div className="h-9 w-60 animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
-          <div className="h-100 w-full animate-pulse rounded-lg bg-zinc-800 duration-300 ease-in-out"></div>
+        <div className="row-span-2 flex w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-800 duration-300 ease-in-out md:col-span-2 xl:col-span-3">
+          <div className="h-15 w-full"></div>
+          <div className="aspect-video w-full"></div>
         </div>
         <div className="w-full animate-pulse px-10 md:px-0">
           <div className="mx-auto h-8 w-[80%] rounded-t-lg bg-zinc-700 xl:h-10"></div>
