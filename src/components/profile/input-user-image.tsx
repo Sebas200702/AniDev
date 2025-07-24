@@ -1,4 +1,7 @@
+import { useModal } from '@hooks/useModal'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
+import { ImageEditor } from './image-editor'
 
 /**
  * InputUserImage component provides a file input interface for uploading profile images.
@@ -26,8 +29,9 @@ import { useUploadImageStore } from '@store/upload-image'
  * <InputUserImage />
  */
 export const InputUserImage = () => {
-  const { setImage, setType, showEditor } = useUploadImageStore()
-
+  const { setImage, setType } = useUploadImageStore()
+  const { openModal } = useModal()
+  const { userInfo } = useGlobalUserPreferences()
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
@@ -36,7 +40,10 @@ export const InputUserImage = () => {
     const reader = new FileReader()
     reader.onload = () => {
       setImage(reader.result as string)
-      showEditor()
+
+      openModal(ImageEditor, {
+        userName: userInfo?.name || '',
+      })
     }
     reader.readAsDataURL(file)
   }
