@@ -36,19 +36,13 @@ import { create } from 'zustand'
 interface UploadImageStore {
   image: string | null
   type: string | null
-  isEditorVisible: boolean
   setImage: (image: string) => void
   setType: (type: string) => void
-  showEditor: () => void
-  hideEditor: () => void
 }
 
 export const useUploadImageStore = create<UploadImageStore>((set) => ({
   image: null,
   type: null,
-  isEditorVisible: false,
   setImage: (image) => set({ image }),
   setType: (type) => set({ type }),
-  showEditor: () => set({ isEditorVisible: true }),
-  hideEditor: () => set({ isEditorVisible: false }),
 }))
