@@ -8,6 +8,6 @@ const mal_id = slug.split('_')[1]
 
 <Layout animeId={mal_id}>
   <section class="flex w-full flex-col text-white">
-    <AnimeInfo client:load slug={slug} />
+    <AnimeInfo client:visible slug={slug} />
   </section>
 </Layout>
