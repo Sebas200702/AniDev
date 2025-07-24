@@ -57,7 +57,7 @@ export const ShareButton = ({ title, url, text, className, label }: Props) => {
 
   return (
     <button onClick={handleClick} className={className} title="Share">
-      <ShareIcon className="h-4 w-4 xl:h-5 xl:w-5" />
+      <ShareIcon className="h-4 w-4" />
       {label && <span className="font-medium">Share</span>}
     </button>
   )
