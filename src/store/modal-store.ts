@@ -1,38 +1,37 @@
-import type { ReactNode } from 'react'
+import type { ComponentType } from 'react'
 import { create } from 'zustand'
 
 /**
- * GlobalModal store manages modal state across the application.
+ * GlobalModal store manages dynamic modal components across the application.
  *
- * @description This store provides a centralized modal management system using Zustand.
- * It allows any component to open modals with custom content and handles the modal state
- * globally, ensuring only one modal can be open at a time.
+ * @description This store provides a centralized modal management system using Zustand
+ * for dynamic React components. It allows any component to open modals with dynamic
+ * components that have their own state and lifecycle, ensuring only one modal can be
+ * open at a time.
  *
  * The store manages:
  * - Modal visibility state
- * - Modal content (React components/elements)
+ * - Modal component and its props
  * - Functions to open and close modals
  *
  * @interface GlobalModal - The interface defining the store's state and actions
- * @property {boolean} isOpen - Whether the modal is currently visible
- * @property {ReactNode | null} content - The content to render inside the modal
- * @property {function} openModal - Function to open modal with content
- * @property {function} closeModal - Function to close the modal
- *
- * @example
- * const { openModal, closeModal } = useGlobalModal();
- * openModal(<div>My modal content</div>);
  */
 interface GlobalModal {
   isOpen: boolean
-  content: ReactNode | null
-  openModal: (content: ReactNode) => void
+  Component: ComponentType<any> | null
+  componentProps: Record<string, any>
+  openModal: (
+    Component: ComponentType<any>,
+    props?: Record<string, any>
+  ) => void
   closeModal: () => void
 }
 
 export const useGlobalModal = create<GlobalModal>((set) => ({
   isOpen: false,
-  content: null,
-  openModal: (content: ReactNode) => set({ isOpen: true, content }),
-  closeModal: () => set({ isOpen: false, content: null }),
+  Component: null,
+  componentProps: {},
+  openModal: (Component, props = {}) =>
+    set({ isOpen: true, Component, componentProps: props }),
+  closeModal: () => set({ isOpen: false, Component: null, componentProps: {} }),
 }))
