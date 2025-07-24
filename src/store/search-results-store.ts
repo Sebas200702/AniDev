@@ -178,7 +178,7 @@ export const useSearchStoreResults = create<SearchStoreResults>()(
       storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
         query: state.query,
-        type: state.type,
+        currentType: state.currentType,
         searchHistory: state.searchHistory,
         appliedFilters: state.appliedFilters,
         url: state.url,
