@@ -68,8 +68,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10 mb-10 grid grid-cols-1 gap-10 px-4 mt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-10 md:px-20 xl:grid-cols-5">
-
+      <article className="z-10 mt-[35dvh] mb-10 grid grid-cols-1 gap-10 px-4 md:mb-20 md:grid-cols-3 md:px-20 xl:grid-cols-5">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -79,7 +78,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className="row-span-2 flex h-full w-full flex-col gap-4 md:col-span-2 xl:col-span-3">
+        <div className="row-span-2 flex h-full w-full flex-col gap-10 md:col-span-2 xl:col-span-3">
           <AnimeShowBox
             animeId={animeData.mal_id}
             trailer_url={animeData.trailer_url ?? ''}
@@ -104,7 +103,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         <AnimeDetails animeData={animeData} />
       </article>
       <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
-        <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
+      <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
     </>
   )
 }
