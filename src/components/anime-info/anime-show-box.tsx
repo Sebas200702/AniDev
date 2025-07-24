@@ -117,17 +117,11 @@ export const AnimeShowBox = ({
         className={`no-scrollbar relative z-10 aspect-video ${currentSelectedLabel === 'Trailer' ? 'overflow-y-hidden' : 'overflow-y-scroll'}`}
       >
         {isContentLoading ? (
-          <div className="animate-pulse space-y-4">
-            <div className="bg-Primary-800/30 h-8 w-3/4 rounded-lg" />
-            <div className="bg-Primary-800/20 h-4 w-full rounded" />
-            <div className="bg-Primary-800/20 h-4 w-5/6 rounded" />
-            <div className="bg-Primary-800/20 h-4 w-4/5 rounded" />
-            <div className="bg-Primary-800/10 h-32 w-full rounded-lg" />
-          </div>
+          <div className="h-full animate-pulse space-y-4"></div>
         ) : (
           <div
             key={contentKey}
-            className="animate-fadeIn h-min transition-all duration-300 ease-out"
+            className="animate-fadeIn h-full transition-all duration-300 ease-out"
             style={{
               animation: 'fadeIn 0.4s ease-out forwards',
             }}
