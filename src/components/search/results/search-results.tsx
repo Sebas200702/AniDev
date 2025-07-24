@@ -10,6 +10,7 @@ import {
   type AnimeCardInfo,
   type AnimeSongWithImage,
   type Character,
+  SearchType,
   ToastType,
 } from 'types'
 import { NotResultsFound } from './not-results-found'
@@ -48,7 +49,7 @@ export const SearchResults = () => {
     query,
     appliedFilters,
     totalResults,
-    type,
+    currentType,
   } = useSearchStoreResults()
 
   const renderLoadingCards = () => {
@@ -117,13 +118,13 @@ export const SearchResults = () => {
   const renderSearchResults = () => {
     if (!results) return null
 
-    if (type === 'music' && isMusicData(results)) {
+    if (currentType === SearchType.MUSIC && isMusicData(results)) {
       return (results as AnimeSongWithImage[]).map((song) => (
         <MusicCard key={song.song_id} song={song} />
       ))
     }
 
-    if (type === 'characters' && isCharacterData(results)) {
+    if (currentType === SearchType.CHARACTERS && isCharacterData(results)) {
       return (results as Character[]).map((character) => (
         <CharacterCard
           key={`${character.character_id}_${character.voice_actor_id}`}
@@ -132,7 +133,7 @@ export const SearchResults = () => {
       ))
     }
 
-    if (type === 'animes' && isAnimeData(results)) {
+    if (currentType === SearchType.ANIMES && isAnimeData(results)) {
       return (results as AnimeCardInfo[]).map((anime) => (
         <AnimeCard key={anime.mal_id} anime={anime} />
       ))
