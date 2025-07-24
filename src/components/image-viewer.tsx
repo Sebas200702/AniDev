@@ -7,8 +7,8 @@ import { RotateLeftIcon } from '@components/icons/rotate-left-icon'
 import { RotateRightIcon } from '@components/icons/rotate-right-icon'
 import { ZoomInIcon } from '@components/icons/zoom-in-icon'
 import { ZoomOutIcon } from '@components/icons/zoom-out-icon'
+import { useGlobalModal } from '@store/modal-store'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Picture } from '@components/picture'
 import type { ImageType } from 'types'
 
 interface ImageViewerProps {
@@ -16,8 +16,6 @@ interface ImageViewerProps {
   imageList: ImageType[]
   initialIndex?: number
 }
-
-
 
 interface TouchInfo {
   x: number
@@ -63,9 +61,9 @@ export const ImageViewer = ({
   const imageRef = useRef<HTMLImageElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const MIN_ZOOM = 0.5
+  const MIN_ZOOM = 0.1
   const MAX_ZOOM = 3
-  const ZOOM_STEP = 0.3
+  const ZOOM_STEP = 0.1
   const DOUBLE_TAP_DELAY = 300
 
   // Current image
@@ -79,9 +77,9 @@ export const ImageViewer = ({
   }, [])
 
   const handlePreviousImage = useCallback(() => {
-
     if (hasMultipleImages) {
-      const newIndex = currentIndex === 0 ? imageList.length - 1 : currentIndex - 1
+      const newIndex =
+        currentIndex === 0 ? imageList.length - 1 : currentIndex - 1
       setCurrentIndex(newIndex)
       handleReset()
     }
@@ -89,7 +87,8 @@ export const ImageViewer = ({
 
   const handleNextImage = useCallback(() => {
     if (hasMultipleImages) {
-      const newIndex = currentIndex === imageList.length - 1 ? 0 : currentIndex + 1
+      const newIndex =
+        currentIndex === imageList.length - 1 ? 0 : currentIndex + 1
       setCurrentIndex(newIndex)
       handleReset()
     }
@@ -110,7 +109,6 @@ export const ImageViewer = ({
   const handleRotateRight = useCallback(() => {
     setRotation((prev) => prev + 90)
   }, [])
-
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
@@ -145,11 +143,14 @@ export const ImageViewer = ({
   }, [])
 
   // Touch utility functions
-  const getDistance = useCallback((touch1: TouchInfo, touch2: TouchInfo): number => {
-    const dx = touch1.x - touch2.x
-    const dy = touch1.y - touch2.y
-    return Math.sqrt(dx * dx + dy * dy)
-  }, [])
+  const getDistance = useCallback(
+    (touch1: TouchInfo, touch2: TouchInfo): number => {
+      const dx = touch1.x - touch2.x
+      const dy = touch1.y - touch2.y
+      return Math.sqrt(dx * dx + dy * dy)
+    },
+    []
+  )
 
   const getCenter = useCallback((touch1: TouchInfo, touch2: TouchInfo) => {
     return {
@@ -166,15 +167,17 @@ export const ImageViewer = ({
     }
   }, [])
 
-    // Touch event handlers
+  // Touch event handlers
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       e.preventDefault()
 
-      const newTouches = Array.from(e.touches).map(touch => getTouchInfo(touch))
+      const newTouches = Array.from(e.touches).map((touch) =>
+        getTouchInfo(touch)
+      )
       setTouches(newTouches)
 
-            if (newTouches.length === 1) {
+      if (newTouches.length === 1) {
         const now = Date.now()
         const touch = newTouches[0]
 
@@ -213,11 +216,13 @@ export const ImageViewer = ({
     [zoom, position, lastTap, getTouchInfo, getDistance, getCenter, handleReset]
   )
 
-    const handleTouchMove = useCallback(
+  const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
       e.preventDefault()
 
-      const newTouches = Array.from(e.touches).map(touch => getTouchInfo(touch))
+      const newTouches = Array.from(e.touches).map((touch) =>
+        getTouchInfo(touch)
+      )
       setTouches(newTouches)
 
       if (newTouches.length === 1 && isDragging && zoom > 1) {
@@ -231,55 +236,81 @@ export const ImageViewer = ({
         // Pinch to zoom
         const distance = getDistance(newTouches[0], newTouches[1])
         const scale = distance / initialDistance
-        const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, initialZoom * scale))
+        const newZoom = Math.max(
+          MIN_ZOOM,
+          Math.min(MAX_ZOOM, initialZoom * scale)
+        )
 
         setZoom(newZoom)
       }
     },
-    [isDragging, zoom, dragStart, initialDistance, initialZoom, getTouchInfo, getDistance]
+    [
+      isDragging,
+      zoom,
+      dragStart,
+      initialDistance,
+      initialZoom,
+      getTouchInfo,
+      getDistance,
+    ]
   )
 
-      const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    e.preventDefault()
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      e.preventDefault()
 
-    const remainingTouches = Array.from(e.touches).map(touch => getTouchInfo(touch))
-    setTouches(remainingTouches)
+      const remainingTouches = Array.from(e.touches).map((touch) =>
+        getTouchInfo(touch)
+      )
+      setTouches(remainingTouches)
 
-    // Handle swipe gesture for navigation
-    if (remainingTouches.length === 0 && isSwipeGesture) {
-      const changedTouches = Array.from(e.changedTouches)
-      if (changedTouches.length > 0) {
-        const endX = changedTouches[0].clientX
-        const swipeDistance = endX - swipeStartX
-        const minSwipeDistance = 50
+      // Handle swipe gesture for navigation
+      if (remainingTouches.length === 0 && isSwipeGesture) {
+        const changedTouches = Array.from(e.changedTouches)
+        if (changedTouches.length > 0) {
+          const endX = changedTouches[0].clientX
+          const swipeDistance = endX - swipeStartX
+          const minSwipeDistance = 50
 
-        if (Math.abs(swipeDistance) > minSwipeDistance) {
-          if (swipeDistance > 0) {
-            handlePreviousImage()
-          } else {
-            handleNextImage()
+          if (Math.abs(swipeDistance) > minSwipeDistance) {
+            if (swipeDistance > 0) {
+              handlePreviousImage()
+            } else {
+              handleNextImage()
+            }
           }
         }
+        setIsSwipeGesture(false)
       }
-      setIsSwipeGesture(false)
-    }
 
-    if (remainingTouches.length === 0) {
-      setIsDragging(false)
-      setInitialDistance(0)
-      setInitialZoom(1)
-    } else if (remainingTouches.length === 1 && initialDistance > 0) {
-      // Transition from pinch to pan
-      setInitialDistance(0)
-      setInitialZoom(1)
+      if (remainingTouches.length === 0) {
+        setIsDragging(false)
+        setInitialDistance(0)
+        setInitialZoom(1)
+      } else if (remainingTouches.length === 1 && initialDistance > 0) {
+        // Transition from pinch to pan
+        setInitialDistance(0)
+        setInitialZoom(1)
 
-      if (zoom > 1) {
-        setIsDragging(true)
-        const touch = remainingTouches[0]
-        setDragStart({ x: touch.x - position.x, y: touch.y - position.y })
+        if (zoom > 1) {
+          setIsDragging(true)
+          const touch = remainingTouches[0]
+          setDragStart({ x: touch.x - position.x, y: touch.y - position.y })
+        }
       }
-    }
-  }, [zoom, position, initialDistance, getTouchInfo, isSwipeGesture, swipeStartX, hasMultipleImages, handlePreviousImage, handleNextImage])
+    },
+    [
+      zoom,
+      position,
+      initialDistance,
+      getTouchInfo,
+      isSwipeGesture,
+      swipeStartX,
+      hasMultipleImages,
+      handlePreviousImage,
+      handleNextImage,
+    ]
+  )
 
   const centerImage = useCallback(() => {
     if (zoom <= 1) {
@@ -331,7 +362,6 @@ export const ImageViewer = ({
     })
   }, [zoom])
 
-  // Prevent body scroll when touching the image viewer
   useEffect(() => {
     const preventTouchScroll = (e: TouchEvent) => {
       if (e.target && containerRef.current?.contains(e.target as Node)) {
@@ -339,8 +369,12 @@ export const ImageViewer = ({
       }
     }
 
-    document.addEventListener('touchstart', preventTouchScroll, { passive: false })
-    document.addEventListener('touchmove', preventTouchScroll, { passive: false })
+    document.addEventListener('touchstart', preventTouchScroll, {
+      passive: false,
+    })
+    document.addEventListener('touchmove', preventTouchScroll, {
+      passive: false,
+    })
 
     return () => {
       document.removeEventListener('touchstart', preventTouchScroll)
@@ -396,7 +430,8 @@ export const ImageViewer = ({
   const imageStyle = {
     transform: `translate(${position.x}px, ${position.y}px) scale(${zoom}) rotate(${rotation}deg)`,
     cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-    transition: isDragging || touches.length > 0 ? 'none' : 'transform 0.2s ease',
+    transition:
+      isDragging || touches.length > 0 ? 'none' : 'transform 0.2s ease',
     maxWidth: currentImage.maxWidth,
     maxHeight: '80vh',
     userSelect: 'none' as const,
@@ -404,18 +439,15 @@ export const ImageViewer = ({
   }
 
   return (
-    <div
-
-    >
-      {/* Mobile-optimized control bar */}
+    <>
       <div
-        className="absolute md:top-2 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 sm:gap-2 rounded-lg bg-black/80 p-1 backdrop-blur-sm top-16"
+        className="absolute top-16 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-lg bg-black/80 p-1 backdrop-blur-sm sm:gap-2 md:top-2"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={handleZoomOut}
           disabled={zoom <= MIN_ZOOM}
-          className="rounded p-2 sm:p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 touch-manipulation"
+          className="cursor-pointer touch-manipulation rounded p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:p-2"
           title="Zoom Out"
           aria-label="Zoom out"
         >
@@ -429,7 +461,7 @@ export const ImageViewer = ({
         <button
           onClick={handleZoomIn}
           disabled={zoom >= MAX_ZOOM}
-          className="rounded p-2 sm:p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 touch-manipulation"
+          className="cursor-pointer touch-manipulation rounded p-2 transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50 sm:p-2"
           title="Zoom In"
           aria-label="Zoom in"
         >
@@ -440,7 +472,7 @@ export const ImageViewer = ({
 
         <button
           onClick={handleRotateLeft}
-          className="hover:bg-Primary-950 rounded p-2 transition-colors"
+          className="hover:bg-Primary-950 cursor-pointer rounded p-2 transition-colors"
           title="Rotate Left"
           aria-label="Rotate left"
         >
@@ -449,7 +481,7 @@ export const ImageViewer = ({
 
         <button
           onClick={handleRotateRight}
-          className="hover:bg-Primary-950 rounded p-2 transition-colors"
+          className="hover:bg-Primary-950 cursor-pointer rounded p-2 transition-colors"
           title="Rotate Right"
           aria-label="Rotate right"
         >
@@ -460,7 +492,7 @@ export const ImageViewer = ({
 
         <button
           onClick={handleReset}
-          className="hover:bg-Primary-950 rounded p-2 transition-colors"
+          className="hover:bg-Primary-950 cursor-pointer rounded p-2 transition-colors"
           title="Reset"
           aria-label="Reset transformations"
         >
@@ -470,21 +502,20 @@ export const ImageViewer = ({
         <DownloadButton
           url={currentImage.src}
           title={currentImage.alt}
-          styles="hover:bg-Primary-950 rounded p-2 transition-colors"
+          styles="hover:bg-Primary-950 rounded p-2 transition-colors cursor-pointer"
           showLabel={false}
         />
       </div>
 
       <button
         onClick={onClose}
-        className="bg-Primary-Complementary/90 hover:bg-Primary-950 absolute top-4 right-4 z-10 rounded-full p-2 backdrop-blur-sm transition-colors"
+        className="bg-Primary-Complementary/90 hover:bg-Primary-950 absolute top-4 right-4 z-10 cursor-pointer rounded-full p-2 backdrop-blur-sm transition-colors"
         title="Close (ESC)"
         aria-label="Close image viewer"
       >
         <CloseIcon className="h-5 w-5" />
       </button>
 
-      {/* Navigation arrows for multiple images */}
       {hasMultipleImages && (
         <>
           <button
@@ -492,7 +523,7 @@ export const ImageViewer = ({
               e.stopPropagation()
               handlePreviousImage()
             }}
-            className="bg-Primary-Complementary/90 hover:bg-Primary-950 absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full p-3 backdrop-blur-sm transition-colors"
+            className="bg-Complementary/60 hover:bg-Primary-950 absolute top-1/2 left-4 z-10 -translate-y-1/2 cursor-pointer rounded-full p-3 backdrop-blur-sm transition-colors duration-300"
             title="Previous image (←)"
             aria-label="Previous image"
           >
@@ -504,7 +535,7 @@ export const ImageViewer = ({
               e.stopPropagation()
               handleNextImage()
             }}
-            className="bg-Primary-Complementary/90 hover:bg-Primary-950 absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full p-3 backdrop-blur-sm transition-colors"
+            className="bg-Complementary/60 hover:bg-Primary-950 absolute top-1/2 right-4 z-10 -translate-y-1/2 cursor-pointer rounded-full p-3 backdrop-blur-sm transition-colors duration-300"
             title="Next image (→)"
             aria-label="Next image"
           >
@@ -513,38 +544,30 @@ export const ImageViewer = ({
         </>
       )}
 
-      {/* Image counter */}
       {hasMultipleImages && (
-        <div className="absolute top-4 left-4 z-10 rounded bg-Primary-900/80 px-3 py-1 text-sm text-Primary-200 backdrop-blur-sm">
+        <div className="bg-Primary-900/80 text-Primary-200 absolute top-4 left-4 z-10 rounded px-3 py-1 text-sm backdrop-blur-sm">
           {currentIndex + 1} / {imageList.length}
         </div>
       )}
 
       <div
-        className="relative flex items-center justify-center touch-none"
+        className="relative flex touch-none items-center justify-center"
         onClick={(e) => e.stopPropagation()}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Picture
-         image={currentImage.placeholder ?? ''}
-         styles='relative '
-
-        >
         <img
           ref={imageRef}
           src={currentImage.src}
           alt={currentImage.alt}
           style={imageStyle}
           onMouseDown={handleMouseDown}
-          className="object-contain relative"
+          className=""
           draggable={false}
         />
-        </Picture>
       </div>
 
-      {/* Mobile-optimized help text */}
       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded bg-black/70 px-2 py-1 text-center text-xs text-white backdrop-blur-sm sm:bottom-4 sm:px-3 sm:text-xs">
         <span className="block sm:hidden">
           Pinch to zoom • Double tap to zoom • Drag to pan
@@ -555,6 +578,6 @@ export const ImageViewer = ({
           {hasMultipleImages && ' • ← → to navigate'}
         </span>
       </div>
-    </div>
+    </>
   )
 }
