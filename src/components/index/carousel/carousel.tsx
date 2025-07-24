@@ -4,7 +4,6 @@ import { Indicator } from '@components/index/carousel/indicator'
 import { NexPrevBtnCarousel } from '@components/index/carousel/nex-prev-btn-carousel'
 import { Overlay } from '@components/overlay'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
-import { useFetch } from '@hooks/useFetch'
 import { useCarouselStore } from '@store/carousel-store'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
@@ -65,25 +64,82 @@ export const Carousel = () => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
-  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
+    const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
+
+  const getBannerData = useCallback(async (url: string, requiredCount: number = 6, existingBanners: AnimeBannerInfo[] = [], attempts: number = 0): Promise<AnimeBannerInfo[]> => {
+    if (attempts > 10) {
+      console.warn('Max retry attempts reached for carousel banners')
+      return existingBanners
+    }
+
+    try {
+      const response = await fetch(`/api/animes?${url}&banners_filter=true&format=anime-banner`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const responseData = await response.json()
+      const animes: AnimeBannerInfo[] = responseData.data || []
+
+      if (!animes || animes.length === 0) {
+        const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
+        return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+      }
+
+
+      const newBanners = animes.filter(anime =>
+        anime &&
+        anime.mal_id &&
+        !existingBanners.some(existing => existing.mal_id === anime.mal_id)
+      )
+
+      const combinedBanners = [...existingBanners, ...newBanners]
+
+      if (combinedBanners.length < requiredCount) {
+        const { url: newUrl } = createDynamicUrl(requiredCount - combinedBanners.length, parentalControl)
+        return await getBannerData(newUrl, requiredCount, combinedBanners, attempts + 1)
+      }
+
+      return combinedBanners.slice(0, requiredCount)
+    } catch (error) {
+      console.error('Error fetching banner data:', error)
+      const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
+      return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+    }
+  }, [parentalControl])
 
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return
-    const url = sessionStorage.getItem('banners-url') ?? ''
-    const banners = JSON.parse(sessionStorage.getItem('banners') ?? '[]')
-    setUrl(url)
-    setBanners(banners)
-    if (url || banners.length > 0) return
 
-    const newUrl = createDynamicUrl(6, parentalControl)
-    setUrl(`/api/animes?${newUrl.url}&banners_filter=true&format=anime-banner`)
-    sessionStorage.setItem(
-      'banners-url',
-      `/api/animes?${newUrl.url}&banners_filter=true&format=anime-banner`
-    )
+    const cachedUrl = sessionStorage.getItem('banners-url') ?? ''
+    const cachedBanners = JSON.parse(sessionStorage.getItem('banners') ?? '[]')
+
+    setUrl(cachedUrl)
+    setBanners(cachedBanners)
+
+    if (cachedUrl && cachedBanners.length > 0) return
+
     setLoading(true)
     setBanners([])
-  }, [setUrl, setBanners, setLoading])
+
+    try {
+      const { url: newUrl } = createDynamicUrl(6, parentalControl)
+      const fetchedBanners = await getBannerData(newUrl)
+
+      if (fetchedBanners.length > 0) {
+        const finalUrl = `/api/animes?${newUrl}&banners_filter=true&format=anime-banner`
+        setUrl(finalUrl)
+        setBanners(fetchedBanners)
+        sessionStorage.setItem('banners-url', finalUrl)
+        sessionStorage.setItem('banners', JSON.stringify(fetchedBanners))
+      }
+    } catch (error) {
+      console.error('Failed to fetch banner data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [setUrl, setBanners, setLoading, parentalControl, getBannerData])
 
   const preloadImages = useCallback(async () => {
     if (!banners || banners.length === 0) return
@@ -134,20 +190,11 @@ export const Carousel = () => {
     fetchBannerData()
   }, [fetchBannerData])
 
-  const { data: bannersData, loading: bannersLoading } = useFetch<
-    AnimeBannerInfo[]
-  >({
-    url: url,
-  })
-
   useEffect(() => {
-    if (!bannersData || bannersLoading) return
-    setBanners(bannersData)
-    sessionStorage.setItem('banners', JSON.stringify(bannersData))
-    setLoading(false)
+    if (!banners || banners.length === 0) return
     setImagesLoaded(new Set())
     preloadImages()
-  }, [bannersData, bannersLoading, preloadImages, fetchBannerData])
+  }, [banners, preloadImages])
 
   useEffect(() => {
     resetInterval()
@@ -162,7 +209,7 @@ export const Carousel = () => {
       clearInterval(intervalRef.current!)
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [banners, handleNext, handlePrev, resetInterval])
+  }, [banners, handleKeyDown, resetInterval])
 
   if (loading || !banners || banners.length === 0 || !imagesLoaded.has(0))
     return <LoadingCarousel />
