@@ -1,10 +1,10 @@
 import { ExpandIconV2 } from '@components/icons/expand-icon'
 import { ImageViewer } from '@components/image-viewer'
-import { ModalTrigger } from '@components/modal-trigger'
 import { Picture } from '@components/picture'
+import { useModal } from '@hooks/useModal'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import { createSingleImageList } from '@utils/create-image-list'
+import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 
 /**
  * Props for the AnimeBanner component.
@@ -54,6 +54,8 @@ export const AnimeBanner = ({
   image_large_webp,
   title,
 }: Props) => {
+  const { openModal, closeModal } = useModal()
+
   const imageList = createSingleImageList({
     src: banner_image ?? image_large_webp,
     alt: `${title} banner`,
@@ -66,8 +68,16 @@ export const AnimeBanner = ({
     },
   })
 
+  const handleOpenImageViewer = () => {
+    openModal(ImageViewer, {
+      imageList,
+      initialIndex: 0,
+      onClose: closeModal,
+    })
+  }
+
   return (
-    <div className='group'>
+    <div className="group">
       <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
         <Picture
           image={
@@ -101,18 +111,13 @@ export const AnimeBanner = ({
       </div>
 
       {/* Small button to open image viewer */}
-      <ModalTrigger
-        modalContent={
-          <ImageViewer
-            imageList={imageList}
-            onClose={() => {}}
-          />
-        }
-        className="absolute md:right-20 right-4 md:top-[45dvh] top-[32dvh] z-50 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+      <button
+        onClick={handleOpenImageViewer}
+        className="absolute top-[32dvh] right-4 z-50 transition-opacity duration-300 md:top-[45dvh] md:right-20 md:opacity-0 md:group-hover:opacity-100"
         aria-label="Open banner image in advanced viewer"
       >
         <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
-      </ModalTrigger>
+      </button>
     </div>
   )
 }
