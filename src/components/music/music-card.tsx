@@ -29,7 +29,7 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
 
   return (
     <article
-      className="group bg-Complementary hover:border-enfasisColor/40 border-enfasisColor/5 relative aspect-[225/330] rounded-lg border-1 p-4 transition-all duration-300 hover:cursor-pointer hover:bg-zinc-800 hover:shadow-xl"
+      className="group bg-Complementary hover:border-enfasisColor/40 border-enfasisColor/5 relative aspect-[225/330] rounded-lg border-1 p-3 transition-all duration-300 hover:cursor-pointer hover:bg-zinc-800 hover:shadow-xl md:p-4"
       onClick={() =>
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }
@@ -60,39 +60,35 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
         </div>
       </div>
 
-      <footer className="mt-2 w-full space-y-2">
+      <footer className="mt-2 flex w-full flex-col space-y-2">
         <h3 className="md:text-md text-enfasisColor line-clamp-1 font-semibold group-hover:underline">
           {song.song_title}
         </h3>
         <p className="line-clamp-1 text-xs text-white md:text-sm">
           {song.artist_name || 'Unknown Artist'}
         </p>
+        <MoreOptions className="self-end">
+          <AddToPlayListButton
+            song={song}
+            isInPlayList={isInPlaylist}
+            clasName="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          />
+
+          <DownloadButton
+            styles="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            url={song.audio_url}
+            title={song.song_title}
+            themeId={song.theme_id ?? 0}
+            showLabel={false}
+          />
+          <ShareButton
+            className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
+            title={song.song_title}
+            text={`Listen to ${song.song_title} by ${song.artist_name}`}
+          />
+        </MoreOptions>
       </footer>
-      <MoreOptions containerIsHovered={true}>
-        <AddToPlayListButton
-          song={song}
-          isInPlayList={isInPlaylist}
-          clasName="w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group cursor-pointer"
-          label={`${!isInPlaylist ? 'Add' : 'Remove'} `}
-        />
-        <DownloadButton
-          styles="w-full flex items-center gap-3 hover:text-enfasisColor px-3 py-2.5 text-sm hover:bg-zinc-800/80 rounded-md transition-all duration-150 group cursor-pointer"
-          url={song.audio_url}
-          title={song.song_title}
-          metadata={{
-            type: 'audio',
-            coverUrl: song.image,
-            artist: song.artist_name ?? 'Unknown Artist',
-          }}
-        />
-        <ShareButton
-          className="hover:text-enfasisColor group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80"
-          url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
-          title={song.song_title}
-          text={`Listen to ${song.song_title} by ${song.artist_name}`}
-          label="Share"
-        />
-      </MoreOptions>
     </article>
   )
 }
