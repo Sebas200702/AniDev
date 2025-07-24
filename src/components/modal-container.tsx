@@ -1,25 +1,31 @@
-import { CloseIcon } from '@components/icons/close-icon'
 import { useGlobalModal } from '@store/modal-store'
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 /**
- * ModalContainer is the global modal renderer that should be placed in the main layout.
+ * ModalContainer is the global modal renderer using React Portal.
  *
- * @description This component subscribes to the global modal store and renders modals
- * when they are opened. It handles:
+ * @description This component subscribes to the global modal store and renders dynamic
+ * modal components using React Portal. It handles:
+ * - Portal-based rendering for proper DOM isolation
  * - Backdrop clicks to close modal
  * - Escape key to close modal
+ * - Dynamic component rendering with props
  * - Proper focus management
  * - Modal positioning and styling
  *
  * This component should be rendered once in the main layout and will handle
- * all modal rendering throughout the application.
+ * all modal rendering throughout the application using React Portal.
+ *
  */
+
 export const ModalContainer = () => {
-  const { isOpen, content, closeModal } = useGlobalModal()
+  const { isOpen, Component, componentProps, closeModal } = useGlobalModal()
   const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!isOpen) return
+
     const handleClickOutside = (e: MouseEvent) => {
       if (e.target instanceof HTMLElement && e.target === modalRef.current) {
         closeModal()
@@ -32,31 +38,29 @@ export const ModalContainer = () => {
       }
     }
 
-    if (isOpen) {
-      document.addEventListener('click', handleClickOutside)
-      document.addEventListener('keydown', handleEscapeKey)
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = 'hidden'
-    }
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleEscapeKey)
 
     return () => {
-      document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('keydown', handleEscapeKey)
-      document.body.style.overflow = 'unset'
     }
   }, [isOpen, closeModal])
 
-  if (!isOpen || !content) return null
+  if (!isOpen || !Component) return null
 
-  return (
+  const modalElement = (
     <div
       ref={modalRef}
       className="fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] items-center justify-center bg-black/50 backdrop-blur-sm"
-      onClick={closeModal}
       role="dialog"
+      onClick={() => closeModal()}
       aria-modal="true"
     >
-      {content}
+      <Component {...componentProps} />
     </div>
   )
+
+  // Use React Portal to render the modal
+  return createPortal(modalElement, document.body)
 }
