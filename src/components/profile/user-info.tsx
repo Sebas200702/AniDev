@@ -3,8 +3,9 @@ import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
 import { baseUrl } from '@utils/base-url'
 import { useEffect, useRef } from 'react'
-
+import { useModal } from '@hooks/useModal'
 import { InputUserImage } from './input-user-image'
+import { ImageEditor } from './image-editor'
 
 export const UserInfo = ({
   isSignUp,
@@ -13,10 +14,10 @@ export const UserInfo = ({
   styles?: string
 }) => {
   const { userInfo } = useGlobalUserPreferences()
-  const { setImage, setType, showEditor } = useUploadImageStore()
+  const { setImage, setType } = useUploadImageStore()
   const imageRef = useRef<HTMLImageElement | null>(null)
   const isEnabled = !!userInfo || isSignUp
-
+  const { openModal } = useModal()
   useEffect(() => {
     const original = HTMLCanvasElement.prototype.getContext as any
     HTMLCanvasElement.prototype.getContext = function (
@@ -38,10 +39,11 @@ export const UserInfo = ({
       const reader = new FileReader()
       reader.onload = () => {
         setImage(reader.result as string)
-        showEditor()
       }
       reader.readAsDataURL(file)
-
+      openModal(ImageEditor, {
+        userName: userInfo?.name || '',
+      })
       if (imageRef.current) {
         imageRef.current.classList.remove('opacity-10')
         imageRef.current.classList.add('opacity-100')
