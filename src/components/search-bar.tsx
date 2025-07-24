@@ -1,6 +1,7 @@
 import { navigate } from 'astro:transitions/client'
 import { AnimeDetailCard } from '@components/anime-detail-card'
 import { AnimeCharacterCard } from '@components/characters/detail-character-card'
+import { SearchIcon } from '@components/icons/search-icon'
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useDebounce } from '@hooks/useDebounce'
@@ -18,6 +19,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   type AnimeSongWithImage,
   type Character,
+  SearchType,
   ToastType,
   shortCuts,
 } from 'types'
@@ -37,11 +39,12 @@ export const SearchBar = () => {
     setTotalResults,
     addSearchHistory,
     setSearchHistoryIsOpen,
-    setType,
+    setCurrentType,
     searchHistory,
-    type,
+    currentType,
     clearSearchHistory,
     setSearchHistory,
+    setAppliedFilters,
   } = useSearchStoreResults()
   const { parentalControl, userInfo, trackSearchHistory } =
     useGlobalUserPreferences()
@@ -59,17 +62,17 @@ export const SearchBar = () => {
 
   const url = useMemo(() => {
     const defautlFilters =
-      type === 'animes'
+      currentType === SearchType.ANIMES
         ? defaultFiltersAnimes
-        : type === 'music'
+        : currentType === SearchType.MUSIC
           ? defaultFiltersMusic
           : defaultFiltersCharacters
 
-    const baseQuery = `/api/${type}?${defautlFilters}`
+    const baseQuery = `/api/${currentType}?${defautlFilters}`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
     const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
     return `${baseQuery}${searchQuery}${filterQuery}`
-  }, [debouncedQuery, filtersToApply, parentalControl, type])
+  }, [debouncedQuery, filtersToApply, parentalControl, currentType])
 
   const actionMap = {
     'close-search': () => setSearchIsOpen(false),
@@ -190,6 +193,7 @@ export const SearchBar = () => {
     setLoading(isLoading)
     if (isLoading || (!query && !appliedFilters) || !data) return
     setResults(data, false, fetchError)
+    console.log(data)
 
     setTotalResults(total)
     const newHistory = {
@@ -207,6 +211,9 @@ export const SearchBar = () => {
     setTotalResults,
     addSearchHistory,
   ])
+  useEffect(() => {
+    setAppliedFilters({})
+  }, [currentType])
 
   useEffect(() => {
     if (
@@ -269,14 +276,14 @@ export const SearchBar = () => {
           <FilterDropdown
             options={typeSearchOptions}
             label="Type"
-            values={[type]}
+            values={[currentType]}
             onChange={(values) => {
-              setType(values[0] as 'animes' | 'music' | 'characters')
+              setCurrentType(values[0] as SearchType)
             }}
             onClear={() => {}}
-            styles="max-w-40 bg-Complementary hover:bg-enfasisColor/10"
+            styles="max-w-40 w-full"
             singleSelect={true}
-            ImputText={false}
+            InputText={false}
           />
         </header>
 
@@ -286,7 +293,7 @@ export const SearchBar = () => {
             type="search"
             id="default-search"
             className="h-full min-h-9 w-full text-sm text-white placeholder-gray-400 focus:outline-none"
-            placeholder={`Search ${type}...`}
+            placeholder={`Search ${currentType}...`}
             value={query}
             autoComplete="off"
             onChange={handleInput}
@@ -296,20 +303,7 @@ export const SearchBar = () => {
             aria-label="Search"
             className="flex h-8 w-8 transform items-center justify-center"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            <SearchIcon className="h-5 w-5 text-white" />
           </button>
         </div>
       </form>
@@ -335,7 +329,7 @@ export const SearchBar = () => {
         {!isLoading &&
         !isLoadingFull &&
         animesFull &&
-        type === 'animes' &&
+        currentType === SearchType.ANIMES &&
         isAnimeData(animesFull)
           ? animesFull.map((result) => (
               <AnimeDetailCard key={result.mal_id} anime={result} />
@@ -343,7 +337,7 @@ export const SearchBar = () => {
           : !isLoading &&
               !isLoadingFull &&
               animesFull &&
-              type === 'music' &&
+              currentType === SearchType.MUSIC &&
               isMusicData(animesFull)
             ? animesFull.map((result) => (
                 <AnimeMusicItem
@@ -358,7 +352,7 @@ export const SearchBar = () => {
             : !isLoading &&
                 !isLoadingFull &&
                 animesFull &&
-                type === 'characters' &&
+                currentType === SearchType.CHARACTERS &&
                 isCharacterData(animesFull)
               ? animesFull.map((result) => (
                   <AnimeCharacterCard
