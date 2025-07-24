@@ -108,23 +108,29 @@ export const AnimeMusic = ({
     )
   if (error) return <div>Error: {error}</div>
   return (
-    <div className="z-10 flex flex-col gap-8 rounded-lg p-4 md:p-6">
+    <div className="z-10 flex h-full flex-col gap-8 rounded-lg p-4 md:p-6">
       <h2 className="text-lxx font-bold">Anime Music</h2>
-      <ul className="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
-        {songs.length === 0 && !loading && (
-          <div className="text-center text-2xl font-bold">No music found</div>
-        )}
-        {songs.map((song) => (
-          <AnimeMusicItem
-            key={song.song_id}
-            song={song}
-            image={image}
-            placeholder={placeholder}
-            banner_image={banner_image}
-            anime_title={anime_title}
-          />
-        ))}
-      </ul>
+
+      {songs.length === 0 && !loading && (
+        <div className="text-l text-Primary-200 flex h-full items-center justify-center">
+          {' '}
+          No music found{' '}
+        </div>
+      )}
+      {
+        <ul className="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+          {songs.map((song) => (
+            <AnimeMusicItem
+              key={song.song_id}
+              song={song}
+              image={image}
+              placeholder={placeholder}
+              banner_image={banner_image}
+              anime_title={anime_title}
+            />
+          ))}
+        </ul>
+      }
     </div>
   )
 }
