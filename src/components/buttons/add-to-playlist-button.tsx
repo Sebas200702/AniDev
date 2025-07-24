@@ -105,9 +105,9 @@ export const AddToPlayListButton = ({
       }}
     >
       {isInPlayList ? (
-        <DeleteIcon className="h-4 w-4 xl:h-5 xl:w-5" />
+        <DeleteIcon className="h-4 w-4" />
       ) : (
-        <AddToPlayList className="h-4 w-4 xl:h-5 xl:w-5" />
+        <AddToPlayList className="h-4 w-4" />
       )}
 
       {label && <span className="font-medium">{label}</span>}
