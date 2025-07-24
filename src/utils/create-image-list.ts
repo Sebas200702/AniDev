@@ -2,8 +2,6 @@ import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
 import type { ImageType } from 'types'
 
-
-
 /**
  * Creates a single ImageType object with proper fallbacks
  */
@@ -12,18 +10,15 @@ export const createImage = ({
   alt,
   maxWidth = '90vw',
   fallback = `${baseUrl}/placeholder.webp`,
-  placeholder = `${baseUrl}/placeholder.webp`,
 }: {
   src: string | null | undefined
   alt: string
   maxWidth?: string
   fallback?: string
-  placeholder?: string
 }): ImageType => ({
   src: src ?? fallback,
   alt,
   maxWidth,
-  placeholder,
 })
 
 /**
@@ -37,7 +32,6 @@ export const createOptimizedImage = ({
   format = 'webp' as const,
   maxWidth = '90vw',
   fallback = `${baseUrl}/placeholder.webp`,
-  placeholder = `${baseUrl}/placeholder.webp`,
 }: {
   src: string | null | undefined
   alt: string
@@ -46,14 +40,11 @@ export const createOptimizedImage = ({
   format?: 'webp' | 'jpg' | 'png'
   maxWidth?: string
   fallback?: string
-  placeholder?: string
 }): ImageType => ({
   src: createImageUrlProxy(src ?? fallback, width, quality, format),
   alt,
   maxWidth,
-  placeholder,
 })
-
 /**
  * Creates a standard anime image list with poster and banner
  */
@@ -63,25 +54,18 @@ export const createAnimeImageList = ({
   bannerImage,
   posterMaxWidth = '90vw',
   bannerMaxWidth = '100vw',
-  posterPlaceholder,
-  bannerPlaceholder,
-
 }: {
   title: string
   posterImage: string | null | undefined
   bannerImage?: string | null | undefined
   posterMaxWidth?: string
   bannerMaxWidth?: string
-  posterPlaceholder?: string
-  bannerPlaceholder?: string
 }): ImageType[] => {
   const images: ImageType[] = [
     createImage({
       src: posterImage,
       alt: `Poster of ${title}`,
       maxWidth: posterMaxWidth,
-      placeholder: posterPlaceholder,
-
     }),
   ]
 
@@ -91,8 +75,6 @@ export const createAnimeImageList = ({
         src: bannerImage,
         alt: `Banner of ${title}`,
         maxWidth: bannerMaxWidth,
-        placeholder: bannerPlaceholder,
-
       })
     )
   }
