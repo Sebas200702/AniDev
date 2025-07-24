@@ -69,9 +69,6 @@ export const AnimeAside = ({
     title: animeData.title,
     posterImage: animeData.image_large_webp,
     bannerImage: animeData.banner_image,
-    posterPlaceholder: animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`,
-    bannerPlaceholder: createImageUrlProxy(animeData.banner_image ?? `${baseUrl}/placeholder.webp` , '100', '0', 'webp'),
-
   })
 
   return (
