@@ -68,7 +68,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   return (
     <article
       key={anime.mal_id}
-      className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-2'}`}
+      className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-1'}`}
       onClick={() => setSearchIsOpen(false)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -120,7 +120,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         <div className="z-20 flex h-full w-[80%] flex-col justify-between px-2 py-4 md:p-4 xl:p-6">
           <h3 className="text-l line-clamp-1">{anime.title}</h3>
 
-          <footer className="flex flex-wrap items-center gap-4 text-xs text-gray-200 md:text-sm">
+          <footer className="flex flex-wrap items-center gap-2 text-xs text-gray-200 md:gap-4 md:text-sm">
             {animeMetadata.map((item, index) => (
               <div
                 key={index}
@@ -135,34 +135,28 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
       </a>
 
       <MoreOptions
-        containerIsHovered={isHovered}
+        className="absolute right-3 bottom-2"
         onMenuStateChange={(isOpen) => setIsMenuOpen(isOpen)}
-        className="md:-translate-y-4"
       >
         <a
           href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           title={`Watch ${anime.title}`}
-          className="hover:text-enfasisColor group flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80"
+          className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <PlayIcon className="h-4 w-4 xl:h-5 xl:w-5" />
-          <span className="text-sm">Watch Now</span>
+          <PlayIcon className="h-4 w-4" />
         </a>
 
-        <div className="hover:text-enfasisColor group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50">
-          <AddToListButton
-            animeId={anime.mal_id}
-            anime_title={anime.title}
-            styles="h-4 w-4  xl:h-5 xl:w-5"
-          />
-          <span className="text-sm">Add to List</span>
-        </div>
+        <AddToListButton
+          animeId={anime.mal_id}
+          anime_title={anime.title}
+          styles="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+        />
 
         <ShareButton
-          className="hover:text-enfasisColor group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-150 hover:bg-zinc-800/80"
+          className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           url={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
           title={anime.title}
           text={shareText}
-          label="Share"
         />
       </MoreOptions>
     </article>
