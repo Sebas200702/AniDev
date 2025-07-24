@@ -1,27 +1,24 @@
 import { useGlobalModal } from '@store/modal-store'
+import type { ComponentType } from 'react'
 
 /**
- * Custom hook that provides a convenient API for using the global modal system.
+ * Custom hook that provides a convenient API for using the global dynamic modal system.
  *
- * @description This hook wraps the global modal store and provides additional
- * utilities for common modal operations. It's designed to make modal usage
- * more convenient and consistent throughout the application.
+ * @description This hook wraps the global modal store and provides utilities for
+ * opening dynamic React components as modals. It's designed to work with components
+ * that have their own state and lifecycle, providing better performance and
+ * functionality than static JSX content.
  *
  * @returns An object with modal utilities:
  * - isOpen: Whether the modal is currently open
- * - openModal: Function to open modal with content
+ * - openModal: Function to open modal with a dynamic component
  * - closeModal: Function to close the modal
- * - openImageModal: Convenience function for opening basic image modals
- * - openConfirmModal: Convenience function for confirmation dialogs
  *
  * @example
- * const { openModal, openImageModal, closeModal } = useModal();
+ * const { openModal, closeModal } = useModal();
  *
- * // Open a custom modal
- * openModal(<div>Custom content</div>);
- *
- * // Open a basic image modal
- * openImageModal('/path/to/image.jpg', 'Alt text');
+ * // Open a dynamic component modal
+ * openModal(MyDynamicComponent, { prop1: 'value1', prop2: 'value2' });
  *
  * // Close modal programmatically
  * closeModal();
@@ -30,76 +27,20 @@ export const useModal = () => {
   const { isOpen, openModal, closeModal } = useGlobalModal()
 
   /**
-   * Opens a modal with an image (basic version)
-   * @param src - Image source URL
-   * @param alt - Alt text for the image
-   * @param maxWidth - Maximum width for the image (default: '90vw')
+   * Opens a modal with a dynamic React component
+   * @param Component - The React component to render in the modal
+   * @param props - Props to pass to the component
    */
-  const openImageModal = (src: string, alt: string, maxWidth = '90vw') => {
-    const imageContent = (
-      <figure className="relative" style={{ maxWidth }}>
-        <img
-          src={src}
-          alt={alt}
-          className="h-auto w-full rounded-lg"
-          loading="lazy"
-        />
-      </figure>
-    )
-    openModal(imageContent)
-  }
-
-  /**
-   * Opens a confirmation dialog modal
-   * @param title - Dialog title
-   * @param message - Dialog message
-   * @param onConfirm - Callback when confirmed
-   * @param onCancel - Callback when cancelled (optional)
-   * @param confirmText - Text for confirm button (default: 'Confirm')
-   * @param cancelText - Text for cancel button (default: 'Cancel')
-   */
-  const openConfirmModal = (
-    title: string,
-    message: string,
-    onConfirm: () => void,
-    onCancel?: () => void,
-    confirmText = 'Confirm',
-    cancelText = 'Cancel'
+  const openComponentModal = <T extends Record<string, any>>(
+    Component: ComponentType<T>,
+    props?: T
   ) => {
-    const confirmContent = (
-      <div className="bg-Primary-900 mx-auto max-w-md rounded-lg p-6">
-        <h3 className="text-Primary-50 mb-2 text-lg font-semibold">{title}</h3>
-        <p className="text-Primary-200 mb-6">{message}</p>
-        <div className="flex justify-end gap-3">
-          <button
-            onClick={() => {
-              onCancel?.()
-              closeModal()
-            }}
-            className="bg-Primary-700 text-Primary-50 hover:bg-Primary-600 rounded px-4 py-2 transition-colors"
-          >
-            {cancelText}
-          </button>
-          <button
-            onClick={() => {
-              onConfirm()
-              closeModal()
-            }}
-            className="rounded bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
-          >
-            {confirmText}
-          </button>
-        </div>
-      </div>
-    )
-    openModal(confirmContent)
+    openModal(Component, props)
   }
 
   return {
     isOpen,
-    openModal,
+    openModal: openComponentModal,
     closeModal,
-    openImageModal,
-    openConfirmModal,
   }
 }
