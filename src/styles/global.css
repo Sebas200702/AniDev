@@ -16,6 +16,7 @@
 
   --color-enfasisColor: var(--enfasis-dynamic);
 }
+
 .dynamic-border {
   --angle: 0deg;
   position: relative;
@@ -54,7 +55,7 @@
   @apply border-enfasisColor bg-enfasisColor md:hover:border-enfasisColor/80 md:hover:text-enfasisColor cursor-pointer items-center justify-center rounded-md border-2 p-1 text-white transition-all duration-300 ease-in-out md:hover:bg-transparent md:hover:shadow-md xl:p-2;
 }
 .button-secondary {
-  @apply cursor-pointer items-center justify-center rounded-md border-2 bg-transparent p-1 text-white transition-all duration-300 ease-in-out md:text-sm md:hover:opacity-50 md:hover:shadow-md xl:p-2;
+  @apply cursor-pointer items-center justify-center rounded-md border-2 bg-transparent p-1 text-white transition-all duration-300 ease-in-out md:hover:opacity-50 md:hover:shadow-md xl:p-2;
 }
 .custom-scrollbar {
   @apply overflow-x-hidden overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-zinc-700 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent;
@@ -503,4 +504,7 @@
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
   }
+}
+.animation-pause {
+  animation-play-state: paused;
 }
