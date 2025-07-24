@@ -106,11 +106,11 @@ export const AnimeMusicItem = ({
     <article
       ref={setNodeRef}
       style={style}
-      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} hover:bg-Primary-900 group group border-enfasisColor group relative flex aspect-[100/30] h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 bg-zinc-800 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1 overflow-hidden`}
+      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} hover:bg-Primary-900 group group border-enfasisColor group relative flex aspect-[100/30] h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 bg-zinc-800 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1 `}
       onClick={handleClick}
       title={song.song_title}
     >
-      <div className="absolute top-0 left-0 h-full w-full">
+      <div className="absolute top-0 left-0 h-full w-full rounded-lg overflow-hidden">
         <img
           src={createImageUrlProxy(banner_image || image, '100', '70', 'webp')}
           alt={song.song_title}
