@@ -23,7 +23,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
 
-export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
+export const MusicPlayer = () => {
   const {
     currentSong,
     savedTime,
@@ -42,7 +42,7 @@ export const MusicPlayer = ({ themeId }: { themeId?: string }) => {
   const { currentTime, playing, muted, volume, canPlay, duration } =
     useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing, player, canPlay, duration, themeId)
+  useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
