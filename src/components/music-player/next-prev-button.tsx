@@ -26,6 +26,7 @@ export const NextPrevButton = ({ direction }: Props) => {
     }
     const newCurrentSong = list[currentSongIndex + changeDirection]
     setSavedTime(0)
+    console.log('newCurrentSong', newCurrentSong)
     setCurrentSong(newCurrentSong)
     if (!isMinimized) {
       const newUrl = `/music/${normalizeString(newCurrentSong.song_title)}_${newCurrentSong.theme_id}`
