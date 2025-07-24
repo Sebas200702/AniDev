@@ -2,7 +2,7 @@ import { createClient } from 'redis'
 
 /**
  * Redis connection pool manager for handling multiple concurrent connections.
- * 
+ *
  * @description This module implements a connection pool pattern to prevent
  * "max number of clients reached" errors when using Redis across multiple
  * endpoints concurrently.
@@ -34,7 +34,7 @@ class RedisConnectionPool {
       acquireTimeout: config.acquireTimeout ?? 3000,
       idleTimeout: config.idleTimeout ?? 120000, // 2 minutos
     }
-    
+
     // Implementar limpieza de conexiones idle
     this.startIdleConnectionCleaner()
   }
@@ -68,11 +68,13 @@ class RedisConnectionPool {
   }
 
   private removeClientFromPool(client: ExtendedRedisClient): void {
-    this.pool = this.pool.filter(c => c !== client)
-    this.availableConnections = this.availableConnections.filter(c => c !== client)
+    this.pool = this.pool.filter((c) => c !== client)
+    this.availableConnections = this.availableConnections.filter(
+      (c) => c !== client
+    )
     this.busyConnections.delete(client)
     this.connectionLastUsed.delete(client)
-    
+
     try {
       if (client.isOpen) {
         client.quit().catch(() => {}) // Cerrar silenciosamente
@@ -107,10 +109,13 @@ class RedisConnectionPool {
       }
 
       // Asegurar que no bajemos del mínimo
-      const canRemove = Math.max(0, this.availableConnections.length - this.config.minConnections)
+      const canRemove = Math.max(
+        0,
+        this.availableConnections.length - this.config.minConnections
+      )
       const toRemove = connectionsToRemove.slice(0, canRemove)
 
-      toRemove.forEach(client => {
+      toRemove.forEach((client) => {
         console.log('Redis Pool: Removing idle connection')
         this.removeClientFromPool(client)
       })
@@ -159,7 +164,7 @@ class RedisConnectionPool {
     if (this.availableConnections.length > 0) {
       const client = this.availableConnections.pop()!
       this.busyConnections.add(client)
-      
+
       // Verificar si la conexión sigue activa
       if (!client.isReady) {
         try {
@@ -169,7 +174,7 @@ class RedisConnectionPool {
           return this.acquireConnection() // Intentar con otra conexión
         }
       }
-      
+
       return client
     }
 
@@ -195,15 +200,17 @@ class RedisConnectionPool {
 
   private async waitForAvailableConnection(): Promise<ExtendedRedisClient> {
     const startTime = Date.now()
-    
+
     while (Date.now() - startTime < this.config.acquireTimeout) {
       if (this.availableConnections.length > 0) {
         return this.acquireConnection()
       }
-      await new Promise(resolve => setTimeout(resolve, 50))
+      await new Promise((resolve) => setTimeout(resolve, 50))
     }
-    
-    throw new Error(`Timeout acquiring Redis connection after ${this.config.acquireTimeout}ms`)
+
+    throw new Error(
+      `Timeout acquiring Redis connection after ${this.config.acquireTimeout}ms`
+    )
   }
 
   releaseConnection(client: ExtendedRedisClient): void {
@@ -213,7 +220,7 @@ class RedisConnectionPool {
 
     this.busyConnections.delete(client)
     this.connectionLastUsed.set(client, Date.now()) // Marcar último uso
-    
+
     if (client.isReady && !this.isShuttingDown) {
       this.availableConnections.push(client)
     } else {
@@ -224,7 +231,9 @@ class RedisConnectionPool {
   async initialize(): Promise<void> {
     try {
       await this.initializeMinConnections()
-      console.log(`Redis Pool: Initialized with ${this.config.minConnections} connections`)
+      console.log(
+        `Redis Pool: Initialized with ${this.config.minConnections} connections`
+      )
     } catch (error) {
       console.error('Failed to initialize Redis pool:', error)
       throw error
@@ -233,13 +242,13 @@ class RedisConnectionPool {
 
   async shutdown(): Promise<void> {
     this.isShuttingDown = true
-    
+
     // Detener limpieza de conexiones idle
     if (this.idleCleanupInterval) {
       clearInterval(this.idleCleanupInterval)
       this.idleCleanupInterval = null
     }
-    
+
     console.log('Redis Pool: Starting graceful shutdown...')
 
     const shutdownPromises = this.pool.map(async (client) => {
@@ -253,12 +262,12 @@ class RedisConnectionPool {
     })
 
     await Promise.allSettled(shutdownPromises)
-    
+
     this.pool = []
     this.availableConnections = []
     this.busyConnections.clear()
     this.connectionLastUsed.clear()
-    
+
     console.log('Redis Pool: Shutdown complete')
   }
 
@@ -277,19 +286,21 @@ declare global {
   var __redisPool: RedisConnectionPool | undefined
 }
 
-const redisPool = global.__redisPool ?? new RedisConnectionPool({
-  maxConnections: 5, // Conservador para plan gratuito (límite ~30 conexiones)
-  minConnections: 1, // Mínimo de 1 para evitar crear conexiones innecesarias
-  acquireTimeout: 3000, // Timeout más corto
-  idleTimeout: 120000, // 2 minutos - cerrar conexiones idle más rápido
-})
+const redisPool =
+  global.__redisPool ??
+  new RedisConnectionPool({
+    maxConnections: 5, // Conservador para plan gratuito (límite ~30 conexiones)
+    minConnections: 1, // Mínimo de 1 para evitar crear conexiones innecesarias
+    acquireTimeout: 3000, // Timeout más corto
+    idleTimeout: 120000, // 2 minutos - cerrar conexiones idle más rápido
+  })
 
 if (!global.__redisPool) {
   global.__redisPool = redisPool
-  
+
   // Inicializar el pool al arrancar
   redisPool.initialize().catch(console.error)
-  
+
   // Cleanup al terminar el proceso
   const gracefulShutdown = async () => {
     await redisPool.shutdown()
@@ -302,7 +313,7 @@ if (!global.__redisPool) {
 
 /**
  * Executes a Redis operation using connection pooling.
- * 
+ *
  * @param operation - Function that receives a Redis client and returns a Promise
  * @returns Promise with the operation result or null if failed
  */
@@ -310,17 +321,20 @@ export async function executeRedisOperation<T>(
   operation: (client: ExtendedRedisClient) => Promise<T>
 ): Promise<T | null> {
   let client: ExtendedRedisClient | null = null
-  
+
   try {
     client = await redisPool.acquireConnection()
     return await operation(client)
   } catch (error: any) {
     console.error('Redis operation failed:', error.message)
-    
+
     if (error.message.includes('max number of clients reached')) {
-      console.error('Redis: Max clients reached. Pool stats:', redisPool.getStats())
+      console.error(
+        'Redis: Max clients reached. Pool stats:',
+        redisPool.getStats()
+      )
     }
-    
+
     return null
   } finally {
     if (client) {
@@ -358,7 +372,7 @@ export async function batchRedisOperations<T>(
     }
     return results
   })
-  
+
   return result ?? []
 }
 
