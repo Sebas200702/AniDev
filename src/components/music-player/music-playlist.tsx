@@ -16,76 +16,8 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { useEffect, useState } from 'react'
-import type { AnimeSongWithImage } from 'types'
-
-const SortableMusicItem = ({
-  song,
-  index,
-  isMobile,
-}: {
-  song: AnimeSongWithImage
-  index: number
-  isMobile: boolean
-}) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: song.song_id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.9 : 1,
-  }
-
-  const handleProps = { ...attributes, ...listeners }
-
-  return (
-    <li
-      ref={setNodeRef}
-      style={style}
-      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} rounded-xl border border-transparent`}
-    >
-      <div
-        {...handleProps}
-        className="bg-enfasisColor/50 hover:bg-enfasisColor/60 absolute top-1/2 right-0 z-10 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-sm shadow-lg backdrop-blur-sm transition-all duration-200 select-none active:cursor-grabbing"
-        style={{ touchAction: 'none' }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="pointer-events-none h-4 w-4 text-white"
-        >
-          <circle cx="8" cy="6" r="1.5" />
-          <circle cx="8" cy="12" r="1.5" />
-          <circle cx="8" cy="18" r="1.5" />
-          <circle cx="16" cy="6" r="1.5" />
-          <circle cx="16" cy="12" r="1.5" />
-          <circle cx="16" cy="18" r="1.5" />
-        </svg>
-      </div>
-
-      <div className="pr-6 transition-all duration-200">
-        <AnimeMusicItem
-          song={song}
-          anime_title={song.anime_title}
-          banner_image={song.banner_image}
-          image={song.image}
-          placeholder={song.placeholder}
-        />
-      </div>
-    </li>
-  )
-}
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
@@ -190,11 +122,14 @@ export const MusicPlayList = () => {
             >
               <ul className="flex flex-col gap-3">
                 {upcomingList.map((song, index) => (
-                  <SortableMusicItem
+                  <AnimeMusicItem
                     key={song.song_id}
                     song={song}
-                    index={index}
-                    isMobile={isMobile}
+                    image={song.image}
+                    placeholder={song.placeholder}
+                    banner_image={song.banner_image}
+                    anime_title={song.anime_title}
+                    isInMusicPlayer={true}
                   />
                 ))}
               </ul>
