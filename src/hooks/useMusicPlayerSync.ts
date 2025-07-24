@@ -10,8 +10,7 @@ export const useMusicPlayerSync = (
   playing: boolean,
   player: React.RefObject<MediaPlayerInstance | null>,
   canPlay: boolean,
-  duration: number,
-  themeId?: string
+  duration: number
 ) => {
   const {
     currentSong,
@@ -42,6 +41,15 @@ export const useMusicPlayerSync = (
   const isChangingSong = useRef(false)
   const mediaUpdateInterval = useRef<number | null>(null)
 
+  const getThemeIdFromPath = () => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname.split('_')[1]
+    }
+    return null
+  }
+
+  const themeId = getThemeIdFromPath()
+
   useEffect(() => {
     const fetchMusic = async () => {
       if (!themeId) return
@@ -63,7 +71,6 @@ export const useMusicPlayerSync = (
         )
 
         if (existingSongIndex !== -1) {
-          setCurrentSong(newSong)
           setVariants(
             data.filter((song) => song.version_id === newSong.version_id)
           )
@@ -75,26 +82,21 @@ export const useMusicPlayerSync = (
           )
 
           setVersions(uniqueVersions)
-
           setError(null)
           return
         }
 
-        let updatedList
-
-        if (list.length === 0) {
-          updatedList = [newSong]
+        if (list.length === 0 || !currentSong) {
+          const updatedList = [newSong]
+          setList(updatedList)
+          setCurrentSong(newSong)
         } else {
           const playedSongs = list.slice(0, currentSongIndex + 1)
-
           const remainingSongs = list.slice(currentSongIndex + 1)
-
-          updatedList = [...playedSongs, newSong, ...remainingSongs]
+          const updatedList = [...playedSongs, newSong, ...remainingSongs]
+          setList(updatedList)
         }
 
-        setList(updatedList)
-
-        setCurrentSong(newSong)
         setVariants(
           data.filter((song) => song.version_id === newSong.version_id)
         )
@@ -106,7 +108,6 @@ export const useMusicPlayerSync = (
         )
 
         setVersions(uniqueVersions)
-
         setError(null)
       } catch (error) {
         console.error('Error fetching music:', error)
@@ -114,7 +115,10 @@ export const useMusicPlayerSync = (
       }
     }
 
-    fetchMusic()
+    if (!isChangingSong.current) {
+      console.log('themeId', themeId)
+      fetchMusic()
+    }
   }, [themeId])
 
   useEffect(() => {
@@ -327,17 +331,19 @@ export const useMusicPlayerSync = (
   }, [duration, setDuration])
 
   useEffect(() => {
-    if (!currentSong) return
+    if (!currentSong || isChangingSong.current) return
 
     const newVersion = versions.find(
       (version) => version.version === versionNumber
     )
 
-    if (newVersion) {
+    // Solo cambiar la versión si es diferente a la actual
+    if (newVersion && newVersion.song_id !== currentSong.song_id) {
+      isChangingSong.current = true
       setCurrentSong(newVersion)
       setVariants(
         versions.filter((song) => song.version_id === newVersion.version_id)
       )
     }
-  }, [versionNumber, currentSong])
+  }, [versionNumber, currentSong, versions])
 }
