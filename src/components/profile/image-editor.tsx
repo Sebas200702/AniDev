@@ -6,7 +6,9 @@ import type { ReactCropperElement } from 'react-cropper'
 import { SuperImageCropper } from 'super-image-cropper'
 import '@styles/cropper.css'
 import { CloseIcon } from '@components/icons/close-icon'
+import { ModalDefaultContainer } from '@components/modal-default-container'
 import { useDragAndDrop } from '@hooks/useDragAndDrop'
+import { useModal } from '@hooks/useModal'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 
@@ -65,8 +67,8 @@ interface Payload {
  * <ImageEditor userName="john_doe" />
  */
 export const ImageEditor = ({ userName }: Props) => {
-  const { image, setImage, type, setType, isEditorVisible, hideEditor } =
-    useUploadImageStore()
+  const { image, setImage, type, setType } = useUploadImageStore()
+  const { closeModal } = useModal()
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
@@ -119,7 +121,8 @@ export const ImageEditor = ({ userName }: Props) => {
       )
     } finally {
       setIsLoading(false)
-      hideEditor()
+      closeModal()
+      // Cerrar el modal del sistema nuevo
     }
   }
 
@@ -228,17 +231,19 @@ export const ImageEditor = ({ userName }: Props) => {
     }
   }
 
-  if (!isEditorVisible) return null
+  // Removido: if (!isEditorVisible) return null
+  // Ahora el modal se controla desde el sistema de modal global
 
   return (
-    <section className="image-editor bg-Complementary/50 absolute top-0 right-0 bottom-0 left-0 z-50 flex h-full w-full flex-col items-center justify-center transition-opacity duration-300">
+    <div className="flex flex-col items-center justify-center">
       <h2 className="text-lx font-semibold">Edit your profile image</h2>
-      <div className="img-preview z-20 h-full max-h-40 w-full max-w-40 translate-y-1/2 overflow-hidden rounded-full"></div>
-
-      <div className="bg-Complementary border-enfasisColor/30 relative flex flex-col items-center gap-10 rounded-xl border p-8 pt-24">
+      <div className="img-preview !z-20 !h-40 !w-40 overflow-hidden rounded-full"></div>
+      <ModalDefaultContainer>
         <button
           className="absolute top-5 right-5 cursor-pointer transition-opacity hover:opacity-70"
-          onClick={hideEditor}
+          onClick={() => {
+            closeModal()
+          }}
           aria-label="Close editor"
         >
           <CloseIcon className="h-5 w-5" />
@@ -279,7 +284,7 @@ export const ImageEditor = ({ userName }: Props) => {
             {isLoading ? 'Processing...' : 'Done'}
           </button>
         </footer>
-      </div>
-    </section>
+      </ModalDefaultContainer>
+    </div>
   )
 }
