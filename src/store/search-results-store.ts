@@ -5,6 +5,7 @@ import type {
   Character,
   SearchHistory,
 } from 'types'
+import { SearchType } from 'types'
 
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
@@ -52,8 +53,8 @@ interface SearchStoreResults {
   searchBarIsOpen: boolean
   searchHistoryIsOpen: boolean
   url: string
-  type: 'animes' | 'music' | 'characters'
-  setType: (type: 'animes' | 'music' | 'characters') => void
+  currentType: SearchType
+  setCurrentType: (type: SearchType) => void
   loading: boolean
   completedSearch: boolean
   results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[]
@@ -90,9 +91,9 @@ export const useSearchStoreResults = create<SearchStoreResults>()(
       error: null,
       searchBarIsOpen: false,
       searchHistoryIsOpen: false,
-      type: 'animes',
-      setType: (type) => {
-        set({ type })
+      currentType: SearchType.ANIMES,
+      setCurrentType: (type) => {
+        set({ currentType: type })
       },
       url: '',
       loading: false,
