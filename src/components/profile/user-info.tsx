@@ -3,7 +3,7 @@ import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
 import { baseUrl } from '@utils/base-url'
 import { useEffect, useRef } from 'react'
-import { ImageEditor } from './image-editor'
+
 import { InputUserImage } from './input-user-image'
 
 export const UserInfo = ({
@@ -90,7 +90,6 @@ export const UserInfo = ({
         {(isSignUp || userInfo?.name) && <InputUserImage />}
       </div>
 
-      <ImageEditor userName={userInfo?.name || ''} />
       {!isSignUp && (
         <h1 className="truncate text-lg font-bold md:text-4xl">
           {userInfo?.name || 'Guest'}
