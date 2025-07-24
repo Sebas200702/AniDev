@@ -26,19 +26,19 @@ export const GaleryImage = ({
   const { openModal, closeModal } = useModal()
 
   const hasImages = imageList.length > 0
-  const validInitialIndex = Math.max(0, Math.min(initialIndex, imageList.length - 1))
+  const validInitialIndex = Math.max(
+    0,
+    Math.min(initialIndex, imageList.length - 1)
+  )
 
   const handleOpenViewer = () => {
     if (!hasImages || disabled) return
 
-    const viewerContent = (
-      <ImageViewer
-        imageList={imageList}
-        initialIndex={validInitialIndex}
-        onClose={closeModal}
-      />
-    )
-    openModal(viewerContent)
+    openModal(ImageViewer, {
+      imageList,
+      initialIndex: validInitialIndex,
+      onClose: closeModal,
+    })
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -73,5 +73,3 @@ export const GaleryImage = ({
     </button>
   )
 }
-
-export default GaleryImage
