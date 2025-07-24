@@ -68,19 +68,27 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   try {
+    // Optimized cache key
+    const cacheKey = `img:${Buffer.from(imageUrl).toString('base64')}:${width}:${quality}:${format}`
+
     const cachedData = await safeRedisOperation((client) =>
-      client.get(`image-${url.searchParams.toString()}`)
+      client.get(cacheKey)
     )
+
     if (cachedData) {
-      const response = Buffer.from(JSON.parse(cachedData).data)
-      return new Response(response, {
+      // Direct base64 decode - much faster than JSON parsing
+      const imageBuffer = Buffer.from(cachedData, 'base64')
+      return new Response(imageBuffer, {
         status: 200,
         headers: {
           'Content-Type': mimeType,
-          'Content-Length': response.length.toString(),
+          'Content-Length': imageBuffer.length.toString(),
+          'Cache-Control': 'public, max-age=31536000, immutable', // 1 year cache
+          ETag: `"${cacheKey}"`,
         },
       })
     }
+
     const response = await fetch(imageUrl)
     if (!response.ok) {
       return new Response(
@@ -124,17 +132,21 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       )
     }
 
+    // Store as base64 - much more efficient than JSON for binary data
     await safeRedisOperation((client) =>
       client.set(
-        `image-${url.searchParams.toString()}`,
-        JSON.stringify(optimizedBuffer),
-        { EX: 31536000 }
+        cacheKey,
+        optimizedBuffer.toString('base64'),
+        { EX: 31536000 } // 1 year
       )
     )
+
     return new Response(optimizedBuffer, {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=31536000, immutable', // 1 year cache
+        ETag: `"${cacheKey}"`,
       },
     })
   } catch (error) {
