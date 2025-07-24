@@ -95,7 +95,7 @@ export interface AnimeSongWithImage extends AnimeSong {
   anime_title: string
 }
 export interface AnimeSong {
-  anime_mal_id: number
+  anime_id: number
   song_title: string
   type: string
   video_url: string
@@ -174,15 +174,20 @@ export enum MusicFilters {
   page_number = 'page_number',
 }
 
+export enum SearchType {
+  ANIMES = 'animes',
+  MUSIC = 'music',
+  CHARACTERS = 'characters',
+}
+
 export type Animes = {
   animes: Anime[]
 }
 export interface ImageType {
-    src: string
-    alt: string
-    maxWidth?: string
-    placeholder?: string
-  }
+  src: string
+  alt: string
+  maxWidth?: string
+}
 export interface AnimeCardInfo
   extends Pick<
     Anime,
