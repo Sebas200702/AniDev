@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { CloseIcon } from '@components/icons/close-icon'
+import { Overlay } from '@components/overlay'
 import { CheckIcon } from '@icons/check-icon'
 import type { FilterOption } from 'types'
 
@@ -11,7 +13,7 @@ interface FilterDropdownProps {
   options: FilterOption[]
   styles: string
   singleSelect?: boolean
-  ImputText?: boolean
+  InputText?: boolean
 }
 
 /**
@@ -67,7 +69,7 @@ export const FilterDropdown = ({
   options,
   styles,
   singleSelect = false,
-  ImputText = true,
+  InputText = true,
 }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
@@ -77,7 +79,7 @@ export const FilterDropdown = ({
   const dinamicLabel = `${options.find((option) => option.value === values[0])?.label ?? ''}${
     values.length > 1 ? ` +${values.length - 1}` : ''
   }`
-  const placeholder = values.length === 0 ? label : dinamicLabel
+  const placeholder = values.length === 0 ? 'Any' : dinamicLabel
 
   useEffect(() => {
     setFilteredOptions(
@@ -120,102 +122,97 @@ export const FilterDropdown = ({
   }
 
   return (
-    <div
-      className={`relative ${styles} hover:border-enfasisColor/50 hover:bg-enfasisColor/20 w-full rounded-md border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
-      ref={dropdownRef}
-      onClick={handleInputClick}
-    >
-      <button
-        type="button"
-        className="custom-scrollbar flex h-full w-full cursor-pointer items-start gap-1 overflow-y-auto px-3 py-2"
+    <article className={`relative flex flex-col gap-2 ${styles}`}>
+      <span className="text-s font-extralight text-white">{label}</span>
+      <div
+        className={`group hover:border-enfasisColor/50 bg-Complementary relative w-full rounded-lg border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
+        ref={dropdownRef}
         onClick={handleInputClick}
       >
-        {ImputText ? (
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={placeholder}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="h-full w-full flex-grow cursor-pointer bg-transparent focus:outline-none"
-            aria-autocomplete="list"
-            aria-controls="dropdown-options"
-          />
-        ) : (
-          <span className="w-full cursor-pointer text-left capitalize">
-            {values}
-          </span>
-        )}
-      </button>
+        <Overlay className="bg-enfasisColor/5 group-hover:bg-enfasisColor/10 h-full w-full" />
+        <button
+          type="button"
+          className="custom-scrollbar flex h-full w-full cursor-pointer items-start gap-1 overflow-y-auto px-3 py-2"
+          onClick={handleInputClick}
+        >
+          {InputText ? (
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder={placeholder}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-full w-full flex-grow cursor-pointer bg-transparent focus:outline-none"
+              aria-autocomplete="list"
+              aria-controls="dropdown-options"
+            />
+          ) : (
+            <span className="w-full cursor-pointer text-left capitalize">
+              {values}
+            </span>
+          )}
+        </button>
 
-      <nav
-        className="absolute top-1/2 right-6 flex max-w-60 -translate-y-1/2 items-center space-x-1"
-        aria-label="Controls of selector"
-      >
-        {(values.length > 0 || search) && ImputText && (
+        <nav
+          className="absolute top-1/2 right-2 flex max-w-60 -translate-y-1/2 items-center space-x-1 md:right-6"
+          aria-label="Controls of selector"
+        >
+          {(values.length > 0 || search) && InputText && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                onClear()
+                setSearch('')
+              }}
+              className="hover:bg-enfasisColor/10 cursor-pointer rounded-full p-1 opacity-0 group-hover:opacity-100"
+              aria-label="Clear selection"
+            >
+              <CloseIcon className="h-3 w-3 text-gray-400" />
+            </button>
+          )}
           <button
             type="button"
+            className={`z-10 h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
             onClick={(e) => {
               e.stopPropagation()
-              onClear()
-              setSearch('')
+              setIsOpen(!isOpen)
             }}
-            className=""
-            aria-label="Clear selection"
+            aria-label={`${isOpen ? 'Close' : 'Open'} options`}
           >
             <svg
-              className="h-3 w-3 text-gray-300 hover:text-gray-100"
               fill="none"
               strokeWidth="2"
               stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path d="M6 18L18 6M6 6l12 12" />
+              <path d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-        )}
-        <button
-          type="button"
-          className={`z-10 h-4 w-4 cursor-pointer text-gray-400 transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation()
-            setIsOpen(!isOpen)
-          }}
-          aria-label={`${isOpen ? 'Close' : 'Open'} options`}
-        >
-          <svg
-            fill="none"
-            strokeWidth="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-      </nav>
+        </nav>
 
-      <div
-        id="dropdown-options"
-        className={`absolute -bottom-[1px] z-50 w-full translate-y-full px-1 ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
-      >
-        <ul className="custom-scrollbar bg-Complementary flex max-h-60 flex-col gap-2 overflow-auto rounded-b-md border-x border-b border-gray-100/10 shadow-lg transition-all duration-300 ease-in-out md:px-2 md:py-4">
-          {filteredOptions.map((option) => (
-            <button
-              type="button"
-              key={option.value}
-              className={`text-s flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 transition-colors duration-300 ease-in-out md:text-sm ${values.includes(option.value) ? 'bg-enfasisColor/20 hover:bg-enfasisColor/40' : 'hover:bg-Primary-900'}`}
-              onClick={() => toggleOption(option.value)}
-            >
-              <CheckIcon
-                className={`h-4 w-4 transition-opacity ${values.includes(option.value) ? 'opacity-100' : 'opacity-0'}`}
-              />
-              <span className="text-white">{option.label}</span>
-            </button>
-          ))}
-        </ul>
+        <div
+          id="dropdown-options"
+          className={`absolute -bottom-[1px] z-50 w-full translate-y-full px-1 ${isOpen ? 'h-auto opacity-100' : 'pointer-events-none h-0 opacity-0'}`}
+        >
+          <ul className="custom-scrollbar bg-Complementary flex max-h-60 flex-col gap-2 overflow-auto rounded-b-md border-x border-b border-gray-100/10 shadow-lg transition-all duration-300 ease-in-out md:px-2 md:py-4">
+            {filteredOptions.map((option) => (
+              <button
+                type="button"
+                key={option.value}
+                className={`text-s flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 transition-colors duration-300 ease-in-out md:text-sm ${values.includes(option.value) ? 'bg-enfasisColor/20 hover:bg-enfasisColor/40' : 'hover:bg-Primary-900'}`}
+                onClick={() => toggleOption(option.value)}
+              >
+                <CheckIcon
+                  className={`h-4 w-4 transition-opacity ${values.includes(option.value) ? 'opacity-100' : 'opacity-0'}`}
+                />
+                <span className="text-Primary-200">{option.label}</span>
+              </button>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </article>
   )
 }
