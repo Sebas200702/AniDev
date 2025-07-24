@@ -56,7 +56,6 @@ export const AnimeHeader = ({ animeData }: Props) => {
             type={animeData.rating}
           />
         )}{' '}
-
       </ul>
     </header>
   )
