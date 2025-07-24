@@ -8,7 +8,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     const animeId = url.searchParams.get('animeId')
     const cacheKey = `AnimeMusic_${animeId}`
 
-    // Intentar obtener desde cache de forma segura
     const cachedData = await safeRedisOperation(async (redis) => {
       return await redis.get(cacheKey)
     })
@@ -44,7 +43,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 
     const responseData = JSON.stringify(data)
 
-    // Guardar en cache de forma segura
     await safeRedisOperation(async (redis) => {
       return await redis.set(cacheKey, responseData, { EX: 60 * 60 * 24 })
     })
