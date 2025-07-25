@@ -6,7 +6,7 @@ import { AnimeLoader } from '@components/anime-info/anime-loader'
 
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { AnimeSlider } from '@components/index/slider/anime-slider-list'
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 import { baseUrl } from '@utils/base-url'
 import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
