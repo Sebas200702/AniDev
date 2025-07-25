@@ -13,7 +13,7 @@ import {
   SearchType,
   ToastType,
 } from 'types'
-import { NotResultsFound } from './not-results-found'
+import { NotResultsFound } from '@components/search/results/not-results-found'
 
 /**
  * SearchResults component displays search results for anime, music, and characters based on user queries and filters.
