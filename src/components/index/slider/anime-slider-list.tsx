@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { AnimeCard } from '@components/anime-card'
+import { AnimeCard } from '@components/anime-info/anime-card'
 import { AnimeSliderLoader } from '@components/index/slider/anime-slider-loader'
 import { NexPrevBtnSlideList } from '@components/index/slider/next-prev-btn-slider-list'
 import { SliderHeader } from '@components/index/slider/slider-header'
