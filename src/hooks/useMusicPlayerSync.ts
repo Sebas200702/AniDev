@@ -42,7 +42,8 @@ export const useMusicPlayerSync = (
   const mediaUpdateInterval = useRef<number | null>(null)
 
   const getThemeIdFromPath = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window === 'undefined') return
+    if (window.location.pathname.includes('/music')) {
       return window.location.pathname.split('_')[1]
     }
     return null
@@ -90,11 +91,13 @@ export const useMusicPlayerSync = (
           const updatedList = [newSong]
           setList(updatedList)
           setCurrentSong(newSong)
-        } else {
-          const playedSongs = list.slice(0, currentSongIndex + 1)
-          const remainingSongs = list.slice(currentSongIndex + 1)
+
+        }else{
+          const playedSongs = list.slice(0, currentSongIndex-1)
+          const remainingSongs = list.slice(currentSongIndex)
           const updatedList = [...playedSongs, newSong, ...remainingSongs]
           setList(updatedList)
+        
         }
 
         setVariants(
