@@ -1,4 +1,4 @@
-import { SectionList } from '@components/section-list'
+import { SectionList } from '@components/common/section-list'
 import { useCalendarListStore } from '@store/calendar-list-store'
 
 export const CalendarList = () => {
