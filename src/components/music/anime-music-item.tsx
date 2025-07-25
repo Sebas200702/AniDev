@@ -10,7 +10,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { useSearchStoreResults } from '@store/search-results-store'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
@@ -72,15 +72,9 @@ export const AnimeMusicItem = ({
   }
 
   const handleClick = () => {
-    if (isCurrentSong && isMinimized) return
+    if (isCurrentSong && !isMinimized) return
     setSearchIsOpen(false)
-    setCurrentSong({
-      ...song,
-      image,
-      placeholder,
-      banner_image,
-      anime_title,
-    })
+
     navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
   }
 
@@ -106,17 +100,21 @@ export const AnimeMusicItem = ({
     <article
       ref={setNodeRef}
       style={style}
-      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} hover:bg-Primary-900 group group border-enfasisColor group relative flex aspect-[100/30] h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 bg-zinc-800 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1 `}
+      className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} hover:bg-Primary-900 group group border-enfasisColor group relative flex  h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 bg-zinc-800 transition-all duration-300 ease-in-out md:max-h-36  md:gap-2 md:hover:translate-x-1 `}
       onClick={handleClick}
       title={song.song_title}
+
     >
+       <div className='h-full w-full flex aspect-[100/30] md:max-h-36 flex-row rounded-lg overflow-hidden'>
+
+
       <div className="absolute top-0 left-0 h-full w-full rounded-lg overflow-hidden">
         <img
           src={createImageUrlProxy(banner_image || image, '100', '70', 'webp')}
           alt={song.song_title}
-          className="h-full w-full object-cover object-center"
+          className=" w-full aspect-[100/30] object-cover object-center"
         />
-        <Overlay className="bg-Primary-950/90 h-full w-full backdrop-blur-sm" />
+        <Overlay className="bg-Primary-950/90 h-full w-full backdrop-blur-sm rounded-lg overflow-hidden" />
       </div>
       {isInMusicPlayer && (
         <div
@@ -204,39 +202,56 @@ export const AnimeMusicItem = ({
           title={song.song_title}
           text={`Listen ${song.song_title} on AniDev`}
         />
-        <a
-          href={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
+        <button
+          onClick={
+            handleClick
+          }
           title={`Listen ${song.song_title}`}
           className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
         >
           <PlayIcon className="h-4 w-4" />
-        </a>
+        </button>
       </MoreOptions>
 
-      <footer className="z-10 flex h-full w-full max-w-[60%] flex-col items-start justify-center gap-8 p-2 md:p-4">
-        <div className="text-pretty ease-in-out select-none">
-          <span className="text-l text-white">{song.song_title}</span>
+      <footer className="z-10 flex  w-full max-w-[65%] flex-col items-start  md:justify-center md:gap-4 justify-between  py-2 px-4 md:p-4">
+        <div className="text-pretty ease-in-out select-none space-x-1 w-full truncate flex flex-col md:flex-row items-start ">
+          <span className="text-s text-white truncate">{song.song_title}</span>
 
           {song.artist_name && (
-            <>
-              <span className="text-sx"> By</span>{' '}
-              <span className="text-l hover:text-enfasisColor text-gray-300 transition-all duration-300">
-                {song.artist_name}
-              </span>
-            </>
+
+
+              <button
+                title={`View ${song.artist_name} profile`}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigate(`/artist/${normalizeString(song.artist_name || '')}`)
+
+                }}
+                className="text-sxx gap-1  truncate  text-Primary-300 flex flex-row items-end "
+              >
+                By
+               <strong className='text-Primary-100 text-s  hover:text-enfasisColor cursor-pointer  transition-all truncate duration-300'> {song.artist_name}</strong>
+     </button>
+
           )}
         </div>
-
+        <span className='truncate text-sxx w-full flex flex-row items-end text-Primary-300'>
+        From
         <button
-          onClick={(e) => {
+         onClick={(e) => {
             e.stopPropagation()
             navigate(`/anime/${normalizeString(anime_title)}_${song.anime_id}`)
+
           }}
-          className="text-s text-gray-300 transition-all duration-300 select-none hover:underline"
+          title={`View ${anime_title} details`}
+          className=' truncate ml-1 cursor-pointer '
         >
-          {anime_title}
+            <strong    className='text-sx truncate text-Primary-100 hover:underline '>{anime_title}</strong>
+
         </button>
+        </span>
       </footer>
+      </div>
     </article>
   )
 }
