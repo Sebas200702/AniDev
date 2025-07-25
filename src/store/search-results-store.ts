@@ -4,7 +4,8 @@ import type {
   AppliedFilters,
   Character,
   SearchHistory,
-} from 'types'
+  AnimeDetail,
+    } from 'types'
 import { SearchType } from 'types'
 
 import { create } from 'zustand'
@@ -50,23 +51,21 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 interface SearchStoreResults {
   query: string
   error: string | null
-  searchBarIsOpen: boolean
   searchHistoryIsOpen: boolean
   url: string
   currentType: SearchType
   setCurrentType: (type: SearchType) => void
   loading: boolean
   completedSearch: boolean
-  results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[]
+  results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[] | AnimeDetail[]
   totalResults: number
   searchHistory: SearchHistory[]
   appliedFilters: AppliedFilters
   isLoadingMore: boolean
   setIsLoadingMore: (loadingMore: boolean) => void
   setQuery: (query: string) => void
-  setSearchIsOpen: (isOpen: boolean) => void
   setResults: (
-    results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[],
+    results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[] | AnimeDetail[],
     loading: boolean,
     error: string | null
   ) => void
@@ -89,7 +88,7 @@ export const useSearchStoreResults = create<SearchStoreResults>()(
     (set) => ({
       query: '',
       error: null,
-      searchBarIsOpen: false,
+
       searchHistoryIsOpen: false,
       currentType: SearchType.ANIMES,
       setCurrentType: (type) => {
@@ -113,9 +112,7 @@ export const useSearchStoreResults = create<SearchStoreResults>()(
       setQuery: (query) => {
         set((state) => ({ ...state, query }))
       },
-      setSearchIsOpen: (isOpen) => {
-        set((state) => ({ ...state, searchBarIsOpen: isOpen }))
-      },
+
 
       setResults: (results, loading, error) => {
         set((state) => ({ ...state, results, loading, error }))
