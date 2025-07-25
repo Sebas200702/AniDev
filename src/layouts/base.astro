@@ -172,7 +172,7 @@ const userInfo = await getSessionUserInfo({
         <ProgressBar client:load />
       </header>
 
-      <SearchBar client:load />
+      <SearchBar client:load visible={false} />
       <LoadUserPrefences userInfo={userInfo} client:load />
       <LoadWindowWidth client:load />
 
