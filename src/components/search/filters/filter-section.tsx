@@ -1,4 +1,4 @@
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { SearchBar } from '@components/search/filters/search-bar'
 import { useGlobalUserPreferences } from '@store/global-user'
