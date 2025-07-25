@@ -3,18 +3,18 @@ import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
 import { ShareButton } from '@components/buttons/share-button'
 import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
-import { MoreOptions } from '@components/more-options'
-import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
+import { MoreOptions } from '@components/common/more-options'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { useSearchStoreResults } from '@store/search-results-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
 import type { AnimeSong } from 'types'
+
 
 export const AnimeMusicItem = ({
   song,
@@ -48,7 +48,6 @@ export const AnimeMusicItem = ({
   const handleProps = { ...attributes, ...listeners }
 
   const [heights, setHeights] = useState([0, 0, 0, 0])
-  const { setSearchIsOpen } = useSearchStoreResults()
 
   const {
     isPlaying,
@@ -57,7 +56,6 @@ export const AnimeMusicItem = ({
     playerRef,
     canPlay,
     isMinimized,
-    setCurrentSong,
   } = useMusicPlayerStore()
   const isInPlaylist = list.some(
     (songList) => songList.song_id === song.song_id
@@ -73,8 +71,6 @@ export const AnimeMusicItem = ({
 
   const handleClick = () => {
     if (isCurrentSong && !isMinimized) return
-    setSearchIsOpen(false)
-
     navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
   }
 
@@ -215,7 +211,7 @@ export const AnimeMusicItem = ({
 
       <footer className="z-10 flex  w-full max-w-[65%] flex-col items-start  md:justify-center md:gap-4 justify-between  py-2 px-4 md:p-4">
         <div className="text-pretty ease-in-out select-none space-x-1 w-full truncate flex flex-col md:flex-row items-start ">
-          <span className="text-s text-white truncate">{song.song_title}</span>
+          <span className="text-m text-white truncate">{song.song_title}</span>
 
           {song.artist_name && (
 
@@ -230,7 +226,7 @@ export const AnimeMusicItem = ({
                 className="text-sxx gap-1  truncate  text-Primary-300 flex flex-row items-end "
               >
                 By
-               <strong className='text-Primary-100 text-s  hover:text-enfasisColor cursor-pointer  transition-all truncate duration-300'> {song.artist_name}</strong>
+               <strong className='text-Primary-100 text-m  hover:text-enfasisColor cursor-pointer  transition-all truncate duration-300'> {song.artist_name}</strong>
      </button>
 
           )}
