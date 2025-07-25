@@ -11,7 +11,7 @@ import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
 import { usePlayerDragging } from '@hooks/usePlayerDragging'
 import { toast } from '@pheralb/toast'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import {
   MediaPlayer,
   type MediaPlayerInstance,
@@ -53,8 +53,14 @@ export const MusicPlayer = () => {
     const timeRemaining = duration - currentTime
 
     if (timeRemaining <= 8 && timeRemaining > 0 && nextSong && !toastShown) {
+      const text = () => {
+        if (nextSong.artist_name) {
+          return `${nextSong.song_title} By ${nextSong.artist_name}`
+        }
+        return nextSong.song_title
+      }
       toast[ToastType.Info]({
-        text: `${nextSong.song_title} - ${nextSong.artist_name}`,
+        text: `${text()}`,
         description: 'Up Next',
         delayDuration: 7000,
         icon: (
