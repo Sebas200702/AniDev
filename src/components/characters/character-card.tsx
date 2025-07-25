@@ -1,6 +1,5 @@
-import { AnimeTag } from '@components/anime-tag'
-import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
@@ -42,10 +41,9 @@ export const CharacterCard = ({ character }: Props) => {
     character_image_url,
     character_small_image_url,
     character_id,
-    role,
     voice_actor_name,
     voice_actor_language,
-    voice_actor_image_url,
+
   } = character
 
   const slug = normalizeString(character_name, true, false, true)
