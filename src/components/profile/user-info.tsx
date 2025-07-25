@@ -91,7 +91,7 @@ export const UserInfo = ({
             '0',
             'webp'
           )}
-          styles="relative"
+          styles="relative rounded-full"
         >
           <img
             ref={imageRef}
@@ -102,7 +102,7 @@ export const UserInfo = ({
               'webp'
             )}
             alt={`${userInfo?.name} Avatar`}
-            className="h-full w-full rounded-full transition-all duration-200"
+            className="h-full w-full rounded-full transition-all duration-200 relative"
           />
         </Picture>
 
