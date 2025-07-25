@@ -1,6 +1,6 @@
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
-import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
