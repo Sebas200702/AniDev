@@ -4,7 +4,7 @@ import '@styles/player.css'
 import { CustomLayout } from '@components/music-player/custom-layout'
 import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 
-import { Picture } from '@components/picture'
+import { Picture } from '@components/media/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
