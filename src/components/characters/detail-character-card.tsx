@@ -1,17 +1,12 @@
-import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
-import { useSearchStoreResults } from '@store/search-results-store'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { Character } from 'types'
 
 export const AnimeCharacterCard = ({ character }: { character: Character }) => {
-  const { setSearchIsOpen } = useSearchStoreResults()
 
-  const handleClick = () => {
-    setSearchIsOpen(false)
-  }
 
   return (
     <article className="group from-Primary-950/50 to-Primary-950/80 hover:border-enfasisColor/60 relative aspect-[100/30] transform rounded-xl border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 ease-in-out hover:-translate-y-1 md:max-h-36">
@@ -21,7 +16,6 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
         href={`/character/${normalizeString(character?.character_name ?? 'Unknown', true, false, true)}_${character.character_id}`}
         className="group/character absolute top-0 bottom-0 left-0 flex w-1/2 overflow-hidden hover:z-10"
         aria-label={`About ${character.character_name}`}
-        onClick={handleClick}
       >
         <div className="relative aspect-[225/330] h-full flex-shrink-0 overflow-hidden rounded-l-xl">
           <Picture
