@@ -91,13 +91,11 @@ export const useMusicPlayerSync = (
           const updatedList = [newSong]
           setList(updatedList)
           setCurrentSong(newSong)
-
-        }else{
-          const playedSongs = list.slice(0, currentSongIndex-1)
+        } else {
+          const playedSongs = list.slice(0, currentSongIndex - 1)
           const remainingSongs = list.slice(currentSongIndex)
           const updatedList = [...playedSongs, newSong, ...remainingSongs]
           setList(updatedList)
-        
         }
 
         setVariants(

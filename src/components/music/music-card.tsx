@@ -1,7 +1,7 @@
 import { navigate } from 'astro:transitions/client'
 import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
-import { ShareButton } from '@components/buttons/share-button'
 import { DownloadButton } from '@components/buttons/download-button'
+import { ShareButton } from '@components/buttons/share-button'
 import { MoreOptions } from '@components/common/more-options'
 import { Picture } from '@components/media/picture'
 import { PauseIcon } from '@icons/pause-icon'

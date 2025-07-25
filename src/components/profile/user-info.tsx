@@ -1,13 +1,13 @@
+import { Picture } from '@components/media/picture'
 import { useDragAndDrop } from '@hooks/useDragAndDrop'
+import { useModal } from '@hooks/useModal'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUploadImageStore } from '@store/upload-image'
 import { baseUrl } from '@utils/base-url'
-import { useEffect, useRef } from 'react'
-import { useModal } from '@hooks/useModal'
-import { InputUserImage } from './input-user-image'
-import { ImageEditor } from './image-editor'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import { Picture } from '@components/media/picture'
+import { useEffect, useRef } from 'react'
+import { ImageEditor } from './image-editor'
+import { InputUserImage } from './input-user-image'
 
 export const UserInfo = ({
   isSignUp,
@@ -85,17 +85,26 @@ export const UserInfo = ({
           </span>
         </div>
         <Picture
-          image={createImageUrlProxy(userInfo?.avatar || `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+          image={createImageUrlProxy(
+            userInfo?.avatar || `${baseUrl}/placeholder.webp`,
+            '0',
+            '0',
+            'webp'
+          )}
           styles="relative"
         >
           <img
             ref={imageRef}
-            src={createImageUrlProxy(userInfo?.avatar || `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            src={createImageUrlProxy(
+              userInfo?.avatar || `${baseUrl}/placeholder.webp`,
+              '0',
+              '70',
+              'webp'
+            )}
             alt={`${userInfo?.name} Avatar`}
             className="h-full w-full rounded-full transition-all duration-200"
           />
         </Picture>
-
 
         {(isSignUp || userInfo?.name) && <InputUserImage />}
       </div>

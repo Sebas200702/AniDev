@@ -3,8 +3,8 @@ import { useDynamicBorder } from '@hooks/useDynamicBorder'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { baseUrl } from '@utils/base-url'
 import { colorToRGB } from '@utils/color-to-rgb'
-import { normalizeString } from '@utils/normalize-string'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { normalizeString } from '@utils/normalize-string'
 import type { AnimeCardInfo } from 'types'
 
 /**
@@ -83,11 +83,21 @@ export const CalendarItem = ({
         aria-label={`View details for ${anime.title}`}
       >
         <Picture
-          image={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+          image={createImageUrlProxy(
+            anime.image_webp ?? `${baseUrl}/placeholder.webp`,
+            '0',
+            '0',
+            'webp'
+          )}
           styles="relative overflow-hidden h-full w-full max-w-32 h-full transition-all duration-500 transform rounded-l-lg"
         >
           <img
-            src={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            src={createImageUrlProxy(
+              anime.image_webp ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '70',
+              'webp'
+            )}
             alt={anime.title}
             className="relative aspect-[225/330] h-full w-full max-w-32 transform object-cover object-center transition-all duration-500 will-change-transform group-hover:scale-105 group-hover:brightness-105 group-hover:contrast-110"
           />

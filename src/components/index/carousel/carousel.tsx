@@ -67,83 +67,140 @@ export const Carousel = () => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
-    const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
 
-  const getBannerData = useCallback(async (url: string, requiredCount: number = 6, existingBanners: AnimeBannerInfo[] = [], attempts: number = 0): Promise<AnimeBannerInfo[]> => {
-    const maxRetries = 10
+  const getBannerData = useCallback(
+    async (
+      url: string,
+      requiredCount: number = 6,
+      existingBanners: AnimeBannerInfo[] = [],
+      attempts: number = 0
+    ): Promise<AnimeBannerInfo[]> => {
+      const maxRetries = 10
 
-    if (attempts >= maxRetries) {
-      return existingBanners
-    }
-
-    try {
-      const response = await fetch(`/api/animes?${url}&banners_filter=true&format=anime-banner`)
-
-      if (!response.ok) {
-        // Register the URL as failed through API call
-        await addFailedUrlClient(url)
-
-        if (attempts < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
-          return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
-        }
+      if (attempts >= maxRetries) {
         return existingBanners
       }
 
-      const responseData = await response.json()
+      try {
+        const response = await fetch(
+          `/api/animes?${url}&banners_filter=true&format=anime-banner`
+        )
 
-      if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
-        // Register the URL as failed through API call
+        if (!response.ok) {
+          // Register the URL as failed through API call
+          await addFailedUrlClient(url)
+
+          if (attempts < maxRetries - 1) {
+            const { url: newUrl } = createDynamicUrl(
+              requiredCount,
+              parentalControl
+            )
+            return await getBannerData(
+              newUrl,
+              requiredCount,
+              existingBanners,
+              attempts + 1
+            )
+          }
+          return existingBanners
+        }
+
+        const responseData = await response.json()
+
+        if (
+          !responseData ||
+          !responseData.data ||
+          !Array.isArray(responseData.data)
+        ) {
+          // Register the URL as failed through API call
+          await addFailedUrlClient(url)
+
+          if (attempts < maxRetries - 1) {
+            const { url: newUrl } = createDynamicUrl(
+              requiredCount,
+              parentalControl
+            )
+            return await getBannerData(
+              newUrl,
+              requiredCount,
+              existingBanners,
+              attempts + 1
+            )
+          }
+          return existingBanners
+        }
+
+        const animes: AnimeBannerInfo[] = responseData.data
+
+        if (!animes || animes.length === 0) {
+          // Register the URL as failed through API call
+          await addFailedUrlClient(url)
+
+          if (attempts < maxRetries - 1) {
+            const { url: newUrl } = createDynamicUrl(
+              requiredCount,
+              parentalControl
+            )
+            return await getBannerData(
+              newUrl,
+              requiredCount,
+              existingBanners,
+              attempts + 1
+            )
+          }
+          return existingBanners
+        }
+
+        const newBanners = animes.filter(
+          (anime) =>
+            anime &&
+            anime.mal_id &&
+            !existingBanners.some(
+              (existing) => existing.mal_id === anime.mal_id
+            )
+        )
+
+        const combinedBanners = [...existingBanners, ...newBanners]
+
+        if (combinedBanners.length < requiredCount) {
+          if (attempts < maxRetries - 1) {
+            const { url: newUrl } = createDynamicUrl(
+              requiredCount - combinedBanners.length,
+              parentalControl
+            )
+            return await getBannerData(
+              newUrl,
+              requiredCount,
+              combinedBanners,
+              attempts + 1
+            )
+          }
+          return combinedBanners
+        }
+
+        return combinedBanners.slice(0, requiredCount)
+      } catch (error) {
+        // Register the URL as failed through API call for network errors too
         await addFailedUrlClient(url)
 
         if (attempts < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
-          return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+          const { url: newUrl } = createDynamicUrl(
+            requiredCount,
+            parentalControl
+          )
+          return await getBannerData(
+            newUrl,
+            requiredCount,
+            existingBanners,
+            attempts + 1
+          )
         }
         return existingBanners
       }
-
-      const animes: AnimeBannerInfo[] = responseData.data
-
-      if (!animes || animes.length === 0) {
-        // Register the URL as failed through API call
-        await addFailedUrlClient(url)
-
-        if (attempts < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
-          return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
-        }
-        return existingBanners
-      }
-
-      const newBanners = animes.filter(anime =>
-        anime &&
-        anime.mal_id &&
-        !existingBanners.some(existing => existing.mal_id === anime.mal_id)
-      )
-
-      const combinedBanners = [...existingBanners, ...newBanners]
-
-      if (combinedBanners.length < requiredCount) {
-        if (attempts < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(requiredCount - combinedBanners.length, parentalControl)
-          return await getBannerData(newUrl, requiredCount, combinedBanners, attempts + 1)
-        }
-        return combinedBanners
-      }
-
-      return combinedBanners.slice(0, requiredCount)
-    } catch (error) {
-      // Register the URL as failed through API call for network errors too
-      await addFailedUrlClient(url)
-
-      if (attempts < maxRetries - 1) {
-        const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
-        return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
-      }
-      return existingBanners
-    }
-  }, [parentalControl])
+    },
+    [parentalControl]
+  )
 
   const fetchBannerData = useCallback(async () => {
     if (typeof window === 'undefined') return

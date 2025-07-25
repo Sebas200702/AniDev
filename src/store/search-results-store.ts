@@ -1,11 +1,11 @@
 import type {
   AnimeCardInfo,
+  AnimeDetail,
   AnimeSongWithImage,
   AppliedFilters,
   Character,
   SearchHistory,
-  AnimeDetail,
-    } from 'types'
+} from 'types'
 import { SearchType } from 'types'
 
 import { create } from 'zustand'
@@ -57,7 +57,12 @@ interface SearchStoreResults {
   setCurrentType: (type: SearchType) => void
   loading: boolean
   completedSearch: boolean
-  results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[] | AnimeDetail[]
+  results:
+    | AnimeCardInfo[]
+    | null
+    | AnimeSongWithImage[]
+    | Character[]
+    | AnimeDetail[]
   totalResults: number
   searchHistory: SearchHistory[]
   appliedFilters: AppliedFilters
@@ -65,7 +70,12 @@ interface SearchStoreResults {
   setIsLoadingMore: (loadingMore: boolean) => void
   setQuery: (query: string) => void
   setResults: (
-    results: AnimeCardInfo[] | null | AnimeSongWithImage[] | Character[] | AnimeDetail[],
+    results:
+      | AnimeCardInfo[]
+      | null
+      | AnimeSongWithImage[]
+      | Character[]
+      | AnimeDetail[],
     loading: boolean,
     error: string | null
   ) => void
@@ -112,7 +122,6 @@ export const useSearchStoreResults = create<SearchStoreResults>()(
       setQuery: (query) => {
         set((state) => ({ ...state, query }))
       },
-
 
       setResults: (results, loading, error) => {
         set((state) => ({ ...state, results, loading, error }))

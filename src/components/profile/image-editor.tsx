@@ -13,8 +13,8 @@ import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 
 import { baseUrl } from '@utils/base-url'
-import { ToastType } from 'types'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { ToastType } from 'types'
 
 /**
  * Props interface for the ImageEditor component.
@@ -266,7 +266,12 @@ export const ImageEditor = ({ userName }: Props) => {
           <Cropper
             preview=".img-preview"
             ref={cropperRef}
-            src={createImageUrlProxy(image || `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            src={createImageUrlProxy(
+              image || `${baseUrl}/placeholder.webp`,
+              '0',
+              '70',
+              'webp'
+            )}
             className={`h-64 w-64 transition-opacity duration-200 md:h-96 md:w-96 ${isDragging ? 'opacity-30' : 'opacity-100'}`}
             initialAspectRatio={1}
             aspectRatio={1}

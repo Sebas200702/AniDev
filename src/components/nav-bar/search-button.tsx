@@ -1,6 +1,5 @@
-
-import { useModal } from '@hooks/useModal'
 import { SearchBar } from '@components/search/search-bar'
+import { useModal } from '@hooks/useModal'
 
 /**
  * SearchButton component provides a clickable button to open the search interface.
@@ -24,7 +23,6 @@ import { SearchBar } from '@components/search/search-bar'
  * <SearchButton />
  */
 export const SearchButton = () => {
-
   const { openModal } = useModal()
 
   const handleClick = () => {

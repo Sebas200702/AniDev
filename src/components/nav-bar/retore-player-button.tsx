@@ -27,7 +27,15 @@ export const RestorePlayerButton = () => {
           <figure
             className={`relative max-h-12 max-w-12 overflow-hidden rounded-full ${isPlaying ? 'animate-spin-slow' : ''}`}
           >
-            <Picture image={createImageUrlProxy(currentSong.placeholder, '0', '0', 'webp')  } styles="relative">
+            <Picture
+              image={createImageUrlProxy(
+                currentSong.placeholder,
+                '0',
+                '0',
+                'webp'
+              )}
+              styles="relative"
+            >
               <img
                 src={createImageUrlProxy(currentSong.image, '0', '70', 'webp')}
                 alt={currentSong?.song_title}

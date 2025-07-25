@@ -1,6 +1,6 @@
+import { DinamicBanner } from '@components/anime-info/dinamic-banner'
 import { CharacterAside } from '@components/character-info/character-aside'
 import { CharacterHeader } from '@components/character-info/character-header'
-import { DinamicBanner } from '@components/anime-info/dinamic-banner'
 import { Overlay } from '@components/layout/overlay'
 import { getCharacterData } from '@utils/get-character-data'
 import { useEffect, useState } from 'react'

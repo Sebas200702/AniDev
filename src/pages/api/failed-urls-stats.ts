@@ -1,5 +1,5 @@
-import { getFailedUrlsCount, clearFailedUrls } from '@utils/failed-urls-cache'
 import { rateLimit } from '@middlewares/rate-limit'
+import { clearFailedUrls, getFailedUrlsCount } from '@utils/failed-urls-cache'
 import type { APIRoute } from 'astro'
 
 /**
@@ -26,8 +26,8 @@ export const GET: APIRoute = rateLimit(async () => {
         message: `Currently tracking ${count} failed URL combinations`,
         cacheInfo: {
           ttl: '30 days',
-          purpose: 'Avoid regenerating known failing URL combinations'
-        }
+          purpose: 'Avoid regenerating known failing URL combinations',
+        },
       }),
       {
         status: 200,
@@ -57,7 +57,7 @@ export const DELETE: APIRoute = rateLimit(async () => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Failed URLs cache has been cleared successfully'
+        message: 'Failed URLs cache has been cleared successfully',
       }),
       {
         status: 200,
@@ -68,14 +68,11 @@ export const DELETE: APIRoute = rateLimit(async () => {
     )
   } catch (error) {
     console.error('Error clearing failed URLs cache:', error)
-    return new Response(
-      JSON.stringify({ error: 'Failed to clear cache' }),
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    return new Response(JSON.stringify({ error: 'Failed to clear cache' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
   }
 })

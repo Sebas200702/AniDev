@@ -1,8 +1,8 @@
 import { CloseIcon } from '@components/icons/close-icon'
 import { WarningIcon } from '@components/icons/warning-icon'
+import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 import { useModal } from '@hooks/useModal'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 
 interface ClosePlayerModalProps {
   onClose: () => void
@@ -20,7 +20,6 @@ const ClosePlayerModal = ({ onClose }: ClosePlayerModalProps) => {
     setSavedTime,
     setVariants,
     setIsHidden,
-
   } = useMusicPlayerStore()
 
   const handleClose = () => {

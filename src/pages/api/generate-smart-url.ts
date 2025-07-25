@@ -1,5 +1,5 @@
-import { createDynamicUrlServer } from '@utils/create-dynamic-url-server'
 import { rateLimit } from '@middlewares/rate-limit'
+import { createDynamicUrlServer } from '@utils/create-dynamic-url-server'
 import type { APIRoute } from 'astro'
 
 /**
@@ -26,7 +26,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     if (limit < 1 || limit > 50) {
       return new Response(
         JSON.stringify({
-          error: 'Invalid limit. Must be between 1 and 50.'
+          error: 'Invalid limit. Must be between 1 and 50.',
         }),
         {
           status: 400,
@@ -40,7 +40,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     if (maxAttempts < 1 || maxAttempts > 10) {
       return new Response(
         JSON.stringify({
-          error: 'Invalid max_attempts. Must be between 1 and 10.'
+          error: 'Invalid max_attempts. Must be between 1 and 10.',
         }),
         {
           status: 400,
@@ -52,7 +52,11 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     }
 
     // Generate smart URL using the optimized server function
-    const result = await createDynamicUrlServer(limit, parentalControl, maxAttempts)
+    const result = await createDynamicUrlServer(
+      limit,
+      parentalControl,
+      maxAttempts
+    )
 
     return new Response(
       JSON.stringify({
@@ -62,9 +66,9 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
         parameters: {
           limit,
           parentalControl,
-          maxAttempts
+          maxAttempts,
         },
-        info: 'URL generated using smart cache-aware algorithm'
+        info: 'URL generated using smart cache-aware algorithm',
       }),
       {
         status: 200,
@@ -78,7 +82,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     return new Response(
       JSON.stringify({
         error: 'Failed to generate smart URL',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : 'Unknown error',
       }),
       {
         status: 500,

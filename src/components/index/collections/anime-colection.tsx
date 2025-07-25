@@ -6,9 +6,9 @@ import { Picture } from '@components/media/picture'
 import { useIndexStore } from '@store/index-store'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { normalizeString } from '@utils/normalize-string'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { addFailedUrlClient } from '@utils/failed-urls-client'
+import { normalizeString } from '@utils/normalize-string'
 
 interface Props {
   /**
@@ -90,7 +90,10 @@ export const AnimeCollection = ({ id }: Props) => {
         return
       }
 
-      const { url, title: generatedTitle } = createDynamicUrl(30, parentalControl)
+      const { url, title: generatedTitle } = createDynamicUrl(
+        30,
+        parentalControl
+      )
       setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
@@ -143,7 +146,11 @@ export const AnimeCollection = ({ id }: Props) => {
    * @param {number} retryCount - Current retry attempt count.
    * @returns {Promise<{ animes: Anime[], title: string, query: string, animes_ids: number[] } | null>} The fetched anime data or null if failed.
    */
-  const fetchAnimes = async (url: string, dynamicTitle: string, retryCount: number = 0): Promise<{
+  const fetchAnimes = async (
+    url: string,
+    dynamicTitle: string,
+    retryCount: number = 0
+  ): Promise<{
     animes: AnimeCollectionInfo[]
     title: string
     query: string
@@ -165,7 +172,10 @@ export const AnimeCollection = ({ id }: Props) => {
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
-          const { url: newUrl, title: generatedTitle } = createDynamicUrl(30, parentalControl)
+          const { url: newUrl, title: generatedTitle } = createDynamicUrl(
+            30,
+            parentalControl
+          )
           return await fetchAnimes(newUrl, generatedTitle, retryCount + 1)
         }
         return null
@@ -173,12 +183,19 @@ export const AnimeCollection = ({ id }: Props) => {
 
       const responseData = await response.json()
 
-      if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
+      if (
+        !responseData ||
+        !responseData.data ||
+        !Array.isArray(responseData.data)
+      ) {
         // Register the URL as failed through API call
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
-          const { url: newUrl, title: generatedTitle } = createDynamicUrl(30, parentalControl)
+          const { url: newUrl, title: generatedTitle } = createDynamicUrl(
+            30,
+            parentalControl
+          )
           return await fetchAnimes(newUrl, generatedTitle, retryCount + 1)
         }
         return null
@@ -191,7 +208,10 @@ export const AnimeCollection = ({ id }: Props) => {
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
-          const { url: newUrl, title: generatedTitle } = createDynamicUrl(30, parentalControl)
+          const { url: newUrl, title: generatedTitle } = createDynamicUrl(
+            30,
+            parentalControl
+          )
           return await fetchAnimes(newUrl, generatedTitle, retryCount + 1)
         }
         return null
@@ -201,7 +221,10 @@ export const AnimeCollection = ({ id }: Props) => {
 
       if (isCollectionUnique(newAnimeIds) || fetchedAnimes.length !== 3) {
         if (retryCount < maxRetries - 1) {
-          const { url: newUrl, title: generatedTitle } = createDynamicUrl(30, parentalControl)
+          const { url: newUrl, title: generatedTitle } = createDynamicUrl(
+            30,
+            parentalControl
+          )
           return await fetchAnimes(newUrl, generatedTitle, retryCount + 1)
         }
         return null
@@ -221,7 +244,10 @@ export const AnimeCollection = ({ id }: Props) => {
       await addFailedUrlClient(url)
 
       if (retryCount < maxRetries - 1) {
-        const { url: newUrl, title: generatedTitle } = createDynamicUrl(30, parentalControl)
+        const { url: newUrl, title: generatedTitle } = createDynamicUrl(
+          30,
+          parentalControl
+        )
         return await fetchAnimes(newUrl, generatedTitle, retryCount + 1)
       }
       return null
@@ -263,11 +289,21 @@ export const AnimeCollection = ({ id }: Props) => {
           {animes.map((anime, i) => (
             <Picture
               key={anime.mal_id}
-              image={createImageUrlProxy(anime.image_small_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+              image={createImageUrlProxy(
+                anime.image_small_webp ?? `${baseUrl}/placeholder.webp`,
+                '0',
+                '0',
+                'webp'
+              )}
               styles={`${getPosition(i)} w-full max-w-44 rounded-md relative`}
             >
               <img
-                src={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+                src={createImageUrlProxy(
+                  anime.image_webp ?? `${baseUrl}/placeholder.webp`,
+                  '0',
+                  '70',
+                  'webp'
+                )}
                 alt={anime.title}
                 fetchPriority="high"
                 loading="lazy"

@@ -43,7 +43,6 @@ export const CharacterCard = ({ character }: Props) => {
     character_id,
     voice_actor_name,
     voice_actor_language,
-
   } = character
 
   const slug = normalizeString(character_name, true, false, true)

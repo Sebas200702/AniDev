@@ -75,12 +75,22 @@ export const AnimeAside = ({
     <aside className="anime-aside top-28 z-20 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
       <GaleryImage imageList={imageList}>
         <Picture
-          image={createImageUrlProxy(animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+          image={createImageUrlProxy(
+            animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`,
+            '0',
+            '0',
+            'webp'
+          )}
           styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
         >
           <img
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
-            src={createImageUrlProxy(animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            src={createImageUrlProxy(
+              animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '70',
+              'webp'
+            )}
             alt={animeData.title}
             loading="lazy"
             title={`Representative image of ${animeData.title}`}

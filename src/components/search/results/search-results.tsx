@@ -2,6 +2,7 @@ import { AnimeCard } from '@components/anime-info/anime-card'
 import { CharacterCard } from '@components/characters/character-card'
 import { MusicCard } from '@components/music/music-card'
 import { LoadingCard } from '@components/search/results/loading-card'
+import { NotResultsFound } from '@components/search/results/not-results-found'
 import { SearchResultsLoader } from '@components/search/results/serch-results-loader'
 import { toast } from '@pheralb/toast'
 import { useSearchStoreResults } from '@store/search-results-store'
@@ -13,7 +14,6 @@ import {
   SearchType,
   ToastType,
 } from 'types'
-import { NotResultsFound } from '@components/search/results/not-results-found'
 
 /**
  * SearchResults component displays search results for anime, music, and characters based on user queries and filters.

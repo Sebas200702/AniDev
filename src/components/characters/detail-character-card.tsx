@@ -6,8 +6,6 @@ import { normalizeString } from '@utils/normalize-string'
 import type { Character } from 'types'
 
 export const AnimeCharacterCard = ({ character }: { character: Character }) => {
-
-
   return (
     <article className="group from-Primary-950/50 to-Primary-950/80 hover:border-enfasisColor/60 relative aspect-[100/30] transform rounded-xl border border-gray-100/20 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 ease-in-out hover:-translate-y-1 md:max-h-36">
       <div className="aspect absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent opacity-50" />
@@ -21,7 +19,7 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
           <Picture
             image={createImageUrlProxy(
               character.character_small_image_url ??
-              `${baseUrl}/placeholder.webp`,
+                `${baseUrl}/placeholder.webp`,
               '0',
               '0',
               'webp'
@@ -73,8 +71,9 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
             styles="h-full w-full relative"
           >
             <img
-                src={createImageUrlProxy(
-                character.voice_actor_image_url ?? `${baseUrl}/placeholder.webp`,
+              src={createImageUrlProxy(
+                character.voice_actor_image_url ??
+                  `${baseUrl}/placeholder.webp`,
                 '0',
                 '70',
                 'webp'

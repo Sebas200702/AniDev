@@ -6,6 +6,7 @@ import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
+import { useModal } from '@hooks/useModal'
 import { useShortcuts } from '@hooks/useShortCuts'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
@@ -16,7 +17,6 @@ import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { useModal } from '@hooks/useModal'
 import {
   type AnimeSongWithImage,
   type Character,
@@ -27,7 +27,7 @@ import {
 import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
 
 export const SearchBar = () => {
-  const { closeModal,  openModal } = useModal()
+  const { closeModal, openModal } = useModal()
   const {
     query,
     setQuery,
@@ -78,7 +78,6 @@ export const SearchBar = () => {
     'close-search': () => closeModal(),
     'open-search': () => openModal(SearchBar),
 
-
     'navigate-profile': () => navigate('/profile'),
     'navigate-home': () => navigate('/'),
     'navigate-settings': () => navigate('/profile/settings'),
@@ -128,18 +127,15 @@ export const SearchBar = () => {
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
 
-
   useEffect(() => {
     setUrl(url)
   }, [url])
-
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
       if (query.trim()) {
-
         navigate(`/search?q=${encodeURIComponent(query.trim())}`)
       }
     },
@@ -192,7 +188,6 @@ export const SearchBar = () => {
     setAppliedFilters({})
   }, [currentType])
 
-
   useEffect(() => {
     if (
       !searchHistory ||
@@ -210,8 +205,6 @@ export const SearchBar = () => {
       setSearchHistory(history)
     })
   }, [trackSearchHistory, query, appliedFilters])
-
-
 
   const isAnimeData = (data: any[]): data is AnimeDetail[] => {
     return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
@@ -232,7 +225,6 @@ export const SearchBar = () => {
         role="search"
         onSubmit={handleSubmit}
         className="relative mt-24 flex w-full max-w-xl flex-col gap-6 shadow-lg"
-
       >
         <header className="flex items-center justify-between">
           <div className="hidden gap-4 text-gray-300 select-none md:flex">
@@ -284,8 +276,7 @@ export const SearchBar = () => {
         </div>
       </form>
       <div
-        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} transition-all duration-300 mt-4`}
-
+        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} mt-4 transition-all duration-300`}
       >
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, i) => (
@@ -345,14 +336,13 @@ export const SearchBar = () => {
           !isLoadingFull &&
           query && (
             <a
-            href={`/search?q=${encodeURIComponent(query)}`}
+              href={`/search?q=${encodeURIComponent(query)}`}
               className="button-primary flex items-center justify-center"
-
             >
               <h3 className="text-lg font-semibold">See all results</h3>
             </a>
           )}
       </div>
-
-</>  )
+    </>
+  )
 }

@@ -1,5 +1,5 @@
-import { addFailedUrl } from '@utils/failed-urls-cache'
 import { rateLimit } from '@middlewares/rate-limit'
+import { addFailedUrl } from '@utils/failed-urls-cache'
 import type { APIRoute } from 'astro'
 
 /**
@@ -23,7 +23,7 @@ export const POST: APIRoute = rateLimit(async ({ request }) => {
     if (!url || typeof url !== 'string') {
       return new Response(
         JSON.stringify({
-          error: 'Invalid request. URL is required and must be a string.'
+          error: 'Invalid request. URL is required and must be a string.',
         }),
         {
           status: 400,
@@ -41,7 +41,7 @@ export const POST: APIRoute = rateLimit(async ({ request }) => {
       JSON.stringify({
         success: true,
         message: 'Failed URL registered successfully',
-        url: url
+        url: url,
       }),
       {
         status: 200,
@@ -55,7 +55,7 @@ export const POST: APIRoute = rateLimit(async ({ request }) => {
     return new Response(
       JSON.stringify({
         error: 'Failed to register URL in cache',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        details: error instanceof Error ? error.message : 'Unknown error',
       }),
       {
         status: 500,

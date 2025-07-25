@@ -4,10 +4,10 @@ import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
 import { ClosePlayerButton } from './close-player-button'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 interface Props {
   playerContainerRef: React.RefObject<HTMLDivElement | null>

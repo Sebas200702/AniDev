@@ -38,7 +38,7 @@ const lessPopularGenres = [
   AnimeGenres.SUSPENSE,
   AnimeGenres.AVANT_GARDE,
   AnimeGenres.AWARD_WINNING,
-  AnimeGenres.ECCHI
+  AnimeGenres.ECCHI,
 ]
 
 /**
@@ -121,7 +121,8 @@ export const createDynamicUrl = (
     const useFilter = Math.random() < 0.6
     if (!useFilter) return []
 
-    const randomFilter = validFilters[getRandomNumber(0, validFilters.length - 1)]
+    const randomFilter =
+      validFilters[getRandomNumber(0, validFilters.length - 1)]
     return [randomFilter]
   }
 
@@ -194,9 +195,12 @@ export const createDynamicUrl = (
           break
         }
         case AnimeFilters.Status: {
-          const status = getRandomNumber(0, 1) === 0 ? 'Finished Airing' : 'Currently Airing'
+          const status =
+            getRandomNumber(0, 1) === 0 ? 'Finished Airing' : 'Currently Airing'
           filterParams.push({ status_filter: status })
-          titleParts.push(status === 'Currently Airing' ? 'Airing Now' : 'Complete Series')
+          titleParts.push(
+            status === 'Currently Airing' ? 'Airing Now' : 'Complete Series'
+          )
           break
         }
         default:

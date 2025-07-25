@@ -1,7 +1,7 @@
 import { AnimeCard } from '@components/anime-info/anime-card'
+import { SectionList } from '@components/common/section-list'
 import { UserListOptions } from '@components/profile/user-tabs/user-list-options'
 import { LoadingCard } from '@components/search/results/loading-card'
-import { SectionList } from '@components/common/section-list'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUserListsStore } from '@store/user-list-store'
 /**

@@ -88,8 +88,7 @@ export const AnimeTrailer = ({
               '1920',
               '70',
               'webp'
-            )
-            }
+            )}
             styles="aspect-video h-full relative w-full rounded-sm"
           >
             <img

@@ -22,7 +22,6 @@ import { createPortal } from 'react-dom'
 export const ModalContainer = () => {
   const { isOpen, Component, componentProps, closeModal } = useGlobalModal()
   const modalRef = useRef<HTMLDivElement>(null)
- 
 
   useEffect(() => {
     if (!isOpen) return
@@ -58,9 +57,7 @@ export const ModalContainer = () => {
       role="dialog"
       aria-modal="true"
     >
-
-        <Component {...componentProps} />
-
+      <Component {...componentProps} />
     </div>
   )
 

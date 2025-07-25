@@ -1,3 +1,6 @@
+import { DownloadModalSkeleton } from '@components/download/download-modal-skeleton'
+import { Picture } from '@components/media/picture'
+import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { MusicIcon } from '@icons/music-icon'
 import { VideoIcon } from '@icons/video-icon'
@@ -6,9 +9,6 @@ import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { useEffect, useState } from 'react'
 import { ToastType } from 'types'
-import { DownloadModalSkeleton } from '@components/download/download-modal-skeleton'
-import { ModalDefaultContainer } from '@components/modal/modal-default-container'
-import { Picture } from '@components/media/picture'
 
 interface MusicInfo {
   song_title: string

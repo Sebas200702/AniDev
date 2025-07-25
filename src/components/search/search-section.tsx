@@ -3,7 +3,7 @@ import '@styles/search-section.css'
 import { AppliedFiltersComponent } from '@components/search/filters/applied-filters'
 import { useEffect, useRef, useState } from 'react'
 
-import { SearchResultsErrorBoundary } from '@components/error-boundary'
+import { SearchResultsErrorBoundary } from '@components/common/error-boundary'
 import { FilterSection } from '@components/search/filters/filter-section'
 import { SearchHistoryModal } from '@components/search/history/search-history-modal'
 import { SearchResults } from '@components/search/results/search-results'

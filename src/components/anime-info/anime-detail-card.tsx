@@ -1,10 +1,10 @@
 import { AddToListButton } from '@components/buttons/add-to-list-button'
 import { ShareButton } from '@components/buttons/share-button'
+import { MoreOptions } from '@components/common/more-options'
 import { CalendarIcon } from '@components/icons/calendar-icon'
 import { EpisodeIcon } from '@components/icons/episode-icon'
 import { PlayIcon } from '@components/icons/play-icon'
 import { TypeIcon } from '@components/icons/type-icon'
-import { MoreOptions } from '@components/common/more-options'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
 import { baseUrl } from '@utils/base-url'
@@ -35,7 +35,6 @@ import type { AnimeDetail } from 'types'
  */
 
 export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
-
   const shareText = `Watch ${anime.title} on AniDev`
   const [isHovered, setIsHovered] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -68,7 +67,6 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
     <article
       key={anime.mal_id}
       className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-1'}`}
-
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -106,11 +104,21 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           </Picture>
         </div>
         <Picture
-          image={createImageUrlProxy(anime.image_small_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+          image={createImageUrlProxy(
+            anime.image_small_webp ?? `${baseUrl}/placeholder.webp`,
+            '0',
+            '0',
+            'webp'
+          )}
           styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
         >
           <img
-            src={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            src={createImageUrlProxy(
+              anime.image_webp ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '70',
+              'webp'
+            )}
             alt={anime.title}
             className="relative aspect-[225/330] h-full w-full rounded-l-lg object-cover object-center"
             loading="lazy"

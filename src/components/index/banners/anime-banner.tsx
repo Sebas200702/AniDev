@@ -8,8 +8,8 @@ import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import { normalizeString } from '@utils/normalize-string'
 import { addFailedUrlClient } from '@utils/failed-urls-client'
+import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
 
 /**
@@ -50,7 +50,10 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
-  const getBannerData = async (url: string, retryCount = 0): Promise<{
+  const getBannerData = async (
+    url: string,
+    retryCount = 0
+  ): Promise<{
     imageUrl: string
     title: string
     synopsis: string
@@ -79,7 +82,11 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
       const responseData = await response.json()
 
-      if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
+      if (
+        !responseData ||
+        !responseData.data ||
+        !Array.isArray(responseData.data)
+      ) {
         // Register the URL as failed through API call
         await addFailedUrlClient(url)
 

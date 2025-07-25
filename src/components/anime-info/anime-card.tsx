@@ -1,9 +1,10 @@
-import { AddToListButton } from '@components/buttons/add-to-list-button'
 import { AnimeTag } from '@components/anime-info/anime-tag'
+import { AddToListButton } from '@components/buttons/add-to-list-button'
+import { ShareButton } from '@components/buttons/share-button'
 import { MoreOptions } from '@components/common/more-options'
+import { StatusPoint } from '@components/common/status-point'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-import { StatusPoint } from '@components/common/status-point'
 import { PlayIcon } from '@icons/play-icon'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
@@ -13,7 +14,6 @@ import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
 import type { AnimeCardInfo } from 'types'
-import { ShareButton } from '@components/buttons/share-button'
 
 /**
  * AnimeCard component displays information about an anime including its title, image, and status.
