@@ -1,4 +1,4 @@
-import { AnimeDetailCard } from '@components/anime-detail-card'
+import { AnimeDetailCard } from '@components/anime-info/anime-detail-card'
 import { LoadingCard } from '@components/search/results/loading-card'
 import { useFetch } from '@hooks/useFetch'
 import type { AnimeDetail } from 'types'
