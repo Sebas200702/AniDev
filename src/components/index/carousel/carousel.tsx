@@ -2,7 +2,7 @@ import { CarouselItem } from '@components/index/carousel/carousel-item'
 import { LoadingCarousel } from '@components/index/carousel/carousel-loader'
 import { Indicator } from '@components/index/carousel/indicator'
 import { NexPrevBtnCarousel } from '@components/index/carousel/nex-prev-btn-carousel'
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 import { useCarouselScroll } from '@hooks/useCarouselScroll'
 import { useCarouselStore } from '@store/carousel-store'
 import { useGlobalUserPreferences } from '@store/global-user'
@@ -10,6 +10,7 @@ import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { addFailedUrlClient } from '@utils/failed-urls-client'
 import { useCallback, useEffect, useState } from 'react'
 import type { AnimeBannerInfo } from 'types'
 
@@ -25,6 +26,8 @@ import type { AnimeBannerInfo } from 'types'
  * index, and animation effects. It implements an efficient image preloading mechanism to ensure smooth
  * transitions between carousel items. When no cached data is available, it dynamically generates a URL
  * and fetches a new set of banner images.
+ *
+ * Now includes intelligent retry system that registers failed URL combinations through API calls.
  *
  * The UI features a responsive layout that adapts to different screen sizes, with full-width banner
  * images, navigation indicators, and next/previous buttons. During loading, a skeleton loader is
@@ -67,8 +70,9 @@ export const Carousel = () => {
     const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
 
   const getBannerData = useCallback(async (url: string, requiredCount: number = 6, existingBanners: AnimeBannerInfo[] = [], attempts: number = 0): Promise<AnimeBannerInfo[]> => {
-    if (attempts > 10) {
-      console.warn('Max retry attempts reached for carousel banners')
+    const maxRetries = 10
+
+    if (attempts >= maxRetries) {
       return existingBanners
     }
 
@@ -76,17 +80,41 @@ export const Carousel = () => {
       const response = await fetch(`/api/animes?${url}&banners_filter=true&format=anime-banner`)
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        // Register the URL as failed through API call
+        await addFailedUrlClient(url)
+
+        if (attempts < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
+          return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+        }
+        return existingBanners
       }
 
       const responseData = await response.json()
-      const animes: AnimeBannerInfo[] = responseData.data || []
 
-      if (!animes || animes.length === 0) {
-        const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
-        return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+      if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
+        // Register the URL as failed through API call
+        await addFailedUrlClient(url)
+
+        if (attempts < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
+          return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+        }
+        return existingBanners
       }
 
+      const animes: AnimeBannerInfo[] = responseData.data
+
+      if (!animes || animes.length === 0) {
+        // Register the URL as failed through API call
+        await addFailedUrlClient(url)
+
+        if (attempts < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
+          return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+        }
+        return existingBanners
+      }
 
       const newBanners = animes.filter(anime =>
         anime &&
@@ -97,15 +125,23 @@ export const Carousel = () => {
       const combinedBanners = [...existingBanners, ...newBanners]
 
       if (combinedBanners.length < requiredCount) {
-        const { url: newUrl } = createDynamicUrl(requiredCount - combinedBanners.length, parentalControl)
-        return await getBannerData(newUrl, requiredCount, combinedBanners, attempts + 1)
+        if (attempts < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(requiredCount - combinedBanners.length, parentalControl)
+          return await getBannerData(newUrl, requiredCount, combinedBanners, attempts + 1)
+        }
+        return combinedBanners
       }
 
       return combinedBanners.slice(0, requiredCount)
     } catch (error) {
-      console.error('Error fetching banner data:', error)
-      const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
-      return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+      // Register the URL as failed through API call for network errors too
+      await addFailedUrlClient(url)
+
+      if (attempts < maxRetries - 1) {
+        const { url: newUrl } = createDynamicUrl(requiredCount, parentalControl)
+        return await getBannerData(newUrl, requiredCount, existingBanners, attempts + 1)
+      }
+      return existingBanners
     }
   }, [parentalControl])
 
