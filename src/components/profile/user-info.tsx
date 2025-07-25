@@ -7,7 +7,7 @@ import { useModal } from '@hooks/useModal'
 import { InputUserImage } from './input-user-image'
 import { ImageEditor } from './image-editor'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import { Picture } from '@components/picture'
+import { Picture } from '@components/media/picture'
 
 export const UserInfo = ({
   isSignUp,
