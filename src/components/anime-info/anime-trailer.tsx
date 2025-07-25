@@ -6,6 +6,7 @@ import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 /**
  * Props for the AnimeTrailer component.
@@ -82,8 +83,12 @@ export const AnimeTrailer = ({
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
           <Picture
-            image={
-              banner_image ?? image_large_webp ?? `${baseUrl}/placeholder.webp`
+            image={createImageUrlProxy(
+              banner_image ?? image_large_webp ?? `${baseUrl}/placeholder.webp`,
+              '1920',
+              '70',
+              'webp'
+            )
             }
             styles="aspect-video h-full relative w-full rounded-sm"
           >
