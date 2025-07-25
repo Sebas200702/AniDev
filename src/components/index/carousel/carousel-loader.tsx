@@ -1,4 +1,4 @@
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 
 /**
  * LoadingCarousel component displays a loading animation for the carousel.
