@@ -232,6 +232,11 @@ export const SearchBar = () => {
       setSearchHistory(history)
     })
   }, [trackSearchHistory, query, appliedFilters])
+  useEffect(()=>{
+    if(window.location.pathname === '/search') return
+    setSearchIsOpen(false)
+
+  },[])
 
   const isAnimeData = (data: any[]): data is AnimeDetail[] => {
     return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
