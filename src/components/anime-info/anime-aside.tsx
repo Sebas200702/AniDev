@@ -5,7 +5,7 @@ import { GaleryImage } from '@components/galery-image'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
 import { createAnimeImageList } from '@utils/create-image-list'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import type { Anime } from 'types'
 
 /**
