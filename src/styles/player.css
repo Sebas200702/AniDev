@@ -195,13 +195,11 @@
   --media-thumbnail-aspect-ratio: 16 / 9;
   --media-thumbnail-min-width: 120px;
   --media-thumbnail-min-height: calc(
-    var(--media-thumbnail-min-width) /
-    var(--aspect-ratio)
+    var(--media-thumbnail-min-width) / var(--aspect-ratio)
   );
   --media-thumbnail-max-width: 180px;
   --media-thumbnail-max-height: calc(
-    var(--media-thumbnail-max-width) /
-    var(--aspect-ratio)
+    var(--media-thumbnail-max-width) / var(--aspect-ratio)
   );
 
   /* Time. */
