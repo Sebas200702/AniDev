@@ -3,7 +3,7 @@ import { PageCollectionLoader } from '@components/collection/page-colletion-load
 import { DinamicBanner } from '@components/dinamic-banner'
 import { Overlay } from '@components/overlay'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useEffect, useState } from 'react'
 import type { Anime } from 'types'
 
