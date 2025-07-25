@@ -1,4 +1,4 @@
-import { ModalDefaultContainer } from './modal-default-container'
+import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 
 /**
  * Skeleton component for the download modal content

@@ -1,6 +1,6 @@
 import { ExpandIconV2 } from '@components/icons/expand-icon'
-import { ImageViewer } from '@components/image-viewer'
-import { Overlay } from '@components/overlay'
+import { ImageViewer } from '@components/media/image-viewer'
+import { Overlay } from '@components/layout/overlay'
 import { useModal } from '@hooks/useModal.tsx'
 import type { ImageType } from 'types'
 

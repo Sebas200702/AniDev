@@ -6,9 +6,9 @@ import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { useEffect, useState } from 'react'
 import { ToastType } from 'types'
-import { DownloadModalSkeleton } from './download-modal-skeleton'
-import { ModalDefaultContainer } from './modal-default-container'
-import { Picture } from './picture'
+import { DownloadModalSkeleton } from '@components/download/download-modal-skeleton'
+import { ModalDefaultContainer } from '@components/modal/modal-default-container'
+import { Picture } from '@components/media/picture'
 
 interface MusicInfo {
   song_title: string

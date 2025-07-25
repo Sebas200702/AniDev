@@ -1,4 +1,4 @@
-import { DownloadButton } from '@components/dowload-button'
+import { DownloadButton } from '@components/buttons/download-button'
 import { CloseIcon } from '@components/icons/close-icon'
 import { NextIcon } from '@components/icons/next-icon'
 import { PreviousIcon } from '@components/icons/previous-icon'

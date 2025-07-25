@@ -1,5 +1,5 @@
 import { navigate } from 'astro:transitions/client'
-import { AnimeDetailCard } from '@components/anime-detail-card'
+import { AnimeDetailCard } from '@components/anime-info/anime-detail-card'
 import { AnimeCharacterCard } from '@components/characters/detail-character-card'
 import { SearchIcon } from '@components/icons/search-icon'
 import { AnimeMusicItem } from '@components/music/anime-music-item'
@@ -16,6 +16,7 @@ import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useModal } from '@hooks/useModal'
 import {
   type AnimeSongWithImage,
   type Character,
@@ -26,6 +27,7 @@ import {
 import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
 
 export const SearchBar = () => {
+  const { closeModal,  openModal } = useModal()
   const {
     query,
     setQuery,
@@ -34,8 +36,6 @@ export const SearchBar = () => {
     results,
     setResults,
     setUrl,
-    searchBarIsOpen,
-    setSearchIsOpen,
     setTotalResults,
     addSearchHistory,
     setSearchHistoryIsOpen,
@@ -75,16 +75,10 @@ export const SearchBar = () => {
   }, [debouncedQuery, filtersToApply, parentalControl, currentType])
 
   const actionMap = {
-    'close-search': () => setSearchIsOpen(false),
-    'open-search': () => {
-      setSearchIsOpen(true)
-      const el = document.getElementById(
-        'default-search'
-      ) as HTMLInputElement | null
+    'close-search': () => closeModal(),
+    'open-search': () => openModal(SearchBar),
 
-      if (!el) return
-      el.focus()
-    },
+
     'navigate-profile': () => navigate('/profile'),
     'navigate-home': () => navigate('/'),
     'navigate-settings': () => navigate('/profile/settings'),
@@ -133,35 +127,19 @@ export const SearchBar = () => {
     url: `${url.replace('format=search', 'format=anime-detail').replace('30', '7')}`,
     skip: !url || (!filtersToApply && !debouncedQuery),
   })
-  useEffect(() => {
-    if (searchBarIsOpen && inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [searchBarIsOpen])
+
 
   useEffect(() => {
     setUrl(url)
   }, [url])
-  const handleClickOutside = (event: MouseEvent) => {
-    const $SearchBarContainer = document.getElementById('search-bar-container')
-    if (event.target && event.target === $SearchBarContainer) {
-      setSearchIsOpen(false)
-    }
-  }
 
-  useEffect(() => {
-    window.addEventListener('click', handleClickOutside)
-    return () => {
-      window.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
       if (query.trim()) {
-        setSearchIsOpen(false)
+
         navigate(`/search?q=${encodeURIComponent(query.trim())}`)
       }
     },
@@ -193,7 +171,6 @@ export const SearchBar = () => {
     setLoading(isLoading)
     if (isLoading || (!query && !appliedFilters) || !data) return
     setResults(data, false, fetchError)
-    console.log(data)
 
     setTotalResults(total)
     const newHistory = {
@@ -215,6 +192,7 @@ export const SearchBar = () => {
     setAppliedFilters({})
   }, [currentType])
 
+
   useEffect(() => {
     if (
       !searchHistory ||
@@ -232,11 +210,8 @@ export const SearchBar = () => {
       setSearchHistory(history)
     })
   }, [trackSearchHistory, query, appliedFilters])
-  useEffect(()=>{
-    if(window.location.pathname === '/search') return
-    setSearchIsOpen(false)
 
-  },[])
+
 
   const isAnimeData = (data: any[]): data is AnimeDetail[] => {
     return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
@@ -251,17 +226,13 @@ export const SearchBar = () => {
   }
 
   return (
-    <div
-      id="search-bar-container"
-      className={`fixed z-50 flex h-full w-full flex-col items-center justify-center gap-8 bg-black/60 p-3 backdrop-blur-sm ${
-        searchBarIsOpen ? 'block' : 'hidden'
-      }`}
-    >
+    <>
       <form
         id="search-bar"
         role="search"
         onSubmit={handleSubmit}
         className="relative mt-24 flex w-full max-w-xl flex-col gap-6 shadow-lg"
+
       >
         <header className="flex items-center justify-between">
           <div className="hidden gap-4 text-gray-300 select-none md:flex">
@@ -313,7 +284,8 @@ export const SearchBar = () => {
         </div>
       </form>
       <div
-        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} transition-all duration-300`}
+        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} transition-all duration-300 mt-4`}
+
       >
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, i) => (
@@ -373,14 +345,14 @@ export const SearchBar = () => {
           !isLoadingFull &&
           query && (
             <a
-              href={`/search?q=${encodeURIComponent(query)}`}
-              onClick={() => setSearchIsOpen(false)}
+            href={`/search?q=${encodeURIComponent(query)}`}
               className="button-primary flex items-center justify-center"
+
             >
               <h3 className="text-lg font-semibold">See all results</h3>
             </a>
           )}
       </div>
-    </div>
-  )
+
+</>  )
 }

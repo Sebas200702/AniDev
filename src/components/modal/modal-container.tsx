@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom'
  * @description This component subscribes to the global modal store and renders dynamic
  * modal components using React Portal. It handles:
  * - Portal-based rendering for proper DOM isolation
- * - Backdrop clicks to close modal
+ * - Backdrop clicks to close modal (but not content clicks)
  * - Escape key to close modal
  * - Dynamic component rendering with props
  * - Proper focus management
@@ -22,12 +22,14 @@ import { createPortal } from 'react-dom'
 export const ModalContainer = () => {
   const { isOpen, Component, componentProps, closeModal } = useGlobalModal()
   const modalRef = useRef<HTMLDivElement>(null)
+ 
 
   useEffect(() => {
     if (!isOpen) return
 
     const handleClickOutside = (e: MouseEvent) => {
-      if (e.target instanceof HTMLElement && e.target === modalRef.current) {
+      // Solo cerrar si el click fue directamente en el backdrop
+      if (e.target === modalRef.current) {
         closeModal()
       }
     }
@@ -52,15 +54,15 @@ export const ModalContainer = () => {
   const modalElement = (
     <div
       ref={modalRef}
-      className="fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] items-center justify-center bg-black/50 backdrop-blur-sm"
+      className="fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 backdrop-blur-sm"
       role="dialog"
-      onClick={() => closeModal()}
       aria-modal="true"
     >
-      <Component {...componentProps} />
+
+        <Component {...componentProps} />
+
     </div>
   )
 
-  // Use React Portal to render the modal
   return createPortal(modalElement, document.body)
 }

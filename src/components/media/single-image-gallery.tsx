@@ -1,4 +1,4 @@
-import { GaleryImage } from '@components/galery-image'
+import { GaleryImage } from '@components/media/galery-image'
 import { createSingleImageList } from '@utils/create-image-list'
 import type { ImageType } from 'types'
 

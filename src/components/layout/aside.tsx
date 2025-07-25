@@ -1,4 +1,4 @@
-import { Logo } from '@components/logo'
+import { Logo } from '@components/common/logo'
 import { useAsideStore } from '@store/aside-store'
 import { useEffect } from 'react'
 

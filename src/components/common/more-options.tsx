@@ -1,4 +1,4 @@
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 import { MoreOptionsIcon } from '@icons/more-options-icon'
 import { useEffect, useRef, useState } from 'react'
 
