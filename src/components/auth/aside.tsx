@@ -2,7 +2,7 @@ import { Favicon } from '@components/icons/favicon'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { StepsComponent } from './steps'
 
 /**
