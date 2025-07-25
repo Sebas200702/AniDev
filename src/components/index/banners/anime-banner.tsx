@@ -7,7 +7,7 @@ import { useIndexStore } from '@store/index-store'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
 
