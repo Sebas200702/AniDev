@@ -1,6 +1,6 @@
 import { Picture } from '@components/picture'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useEffect, useState } from 'react'
 
 interface Props {
