@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { CloseIcon } from '@components/icons/close-icon'
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 import { CheckIcon } from '@icons/check-icon'
 import type { FilterOption } from 'types'
 
