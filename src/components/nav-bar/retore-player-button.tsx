@@ -1,5 +1,5 @@
 import { MusicIcon } from '@components/icons/music-icon'
-import { Picture } from '@components/picture'
+import { Picture } from '@components/media/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
