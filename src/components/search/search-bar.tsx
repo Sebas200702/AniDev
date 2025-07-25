@@ -26,7 +26,7 @@ import {
 } from 'types'
 import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
 
-export const SearchBar = () => {
+export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
   const { closeModal, openModal } = useModal()
   const {
     query,
@@ -217,6 +217,8 @@ export const SearchBar = () => {
   const isMusicData = (data: any[]): data is AnimeSongWithImage[] => {
     return data.length > 0 && 'song_id' in data[0]
   }
+
+  if (!visible) return null
 
   return (
     <>
