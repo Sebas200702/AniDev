@@ -15,17 +15,41 @@ interface FilterResult {
   title: string
 }
 
-const unpopularGenres = [AnimeGenres.EROTICA, AnimeGenres.BOYS_LOVE]
+// Géneros más populares y con más probabilidad de tener contenido
+const popularGenres = [
+  AnimeGenres.ACTION,
+  AnimeGenres.ADVENTURE,
+  AnimeGenres.COMEDY,
+  AnimeGenres.DRAMA,
+  AnimeGenres.ROMANCE,
+  AnimeGenres.FANTASY,
+  AnimeGenres.SUPERNATURAL,
+  AnimeGenres.SLICE_OF_LIFE,
+  AnimeGenres.SCI_FI,
+  AnimeGenres.YURI,
+]
+
+// Géneros menos populares que pueden generar menos resultados
+const lessPopularGenres = [
+  AnimeGenres.GOURMET,
+  AnimeGenres.HORROR,
+  AnimeGenres.MYSTERY,
+
+  AnimeGenres.SUSPENSE,
+  AnimeGenres.AVANT_GARDE,
+  AnimeGenres.AWARD_WINNING,
+  AnimeGenres.ECCHI
+]
 
 /**
- * Retrieves a list of popular anime genres, excluding unpopular ones.
+ * Retrieves a list of popular anime genres with weighted selection.
  *
  * @returns {AnimeGenres[]} Array of popular anime genres
  */
-const getPopularGenres = (): AnimeGenres[] => {
-  return Object.values(AnimeGenres).filter(
-    (genre) => !unpopularGenres.includes(genre)
-  )
+const getWeightedGenres = (): AnimeGenres[] => {
+  // 80% probabilidad de géneros populares, 20% de géneros menos populares
+  const usePopular = Math.random() < 0.8
+  return usePopular ? popularGenres : lessPopularGenres
 }
 
 /**
@@ -58,64 +82,58 @@ const capitalizeTitle = (text: string): string => {
 
 /**
  * Creates a dynamic URL and title for fetching anime data based on randomly selected filters.
+ * This is the main function for frontend components - optimized for better success rates.
  *
  * @description This function generates a URL with query parameters and a corresponding title
- * based on randomly selected anime filters. It supports various filter types including genre,
- * type (TV/Movie), year, and status. The function uses weighted randomization to prioritize
- * certain filter combinations for better user experience. The generated title is formatted
- * using templates that make the collections more engaging and descriptive.
- *
- * The function employs several helper methods to:
- * - Select random filters from available options
- * - Choose anime types with weighted preferences
- * - Generate appealing title templates
- * - Apply filters and create corresponding URL parameters
+ * based on randomly selected anime filters. It has been optimized to generate combinations
+ * more likely to have results by:
+ * - Using fewer simultaneous filters to reduce restriction
+ * - Prioritizing popular genres with more content
+ * - Avoiding overly restrictive combinations
  *
  * @param {number} [limit=6] - The maximum number of anime items to fetch
+ * @param {boolean} [parentalControl=true] - Whether to apply parental control filters
  * @returns {FilterResult} An object containing the generated URL query string and formatted title
  *
  * @example
- * createDynamicUrl(10)
- * // Might return: { url: "limit_count=10&genre_filter=action&type_filter=movie", title: "Top 10 Action Movies" }
+ * const result = createDynamicUrl(10)
+ * // Returns: { url: "limit_count=10&genre_filter=action", title: "Top 10 Action Anime" }
  */
 export const createDynamicUrl = (
   limit = 6,
   parentalControl = true
 ): FilterResult => {
-  const genres = getPopularGenres()
+  const genres = getWeightedGenres()
 
   /**
-   * Selects a random set of filters from the available options.
+   * Selects a random set of filters with reduced restrictiveness.
    *
-   * @param {number} count - Number of filters to select
-   * @returns {AnimeFilters[]} Array of randomly selected filters
+   * @returns {AnimeFilters[]} Array of randomly selected filters (max 1)
    */
-  const getRandomFilters = (count: number): AnimeFilters[] => {
+  const getRandomFilters = (): AnimeFilters[] => {
     const validFilters = [
       AnimeFilters.Status,
-      AnimeFilters.Year,
-      AnimeFilters.Type,
       AnimeFilters.Genre,
+      AnimeFilters.Type,
     ]
-    const selectedFilters = new Set<AnimeFilters>()
-    while (selectedFilters.size < count) {
-      const randomFilter =
-        validFilters[getRandomNumber(0, validFilters.length - 1)]
-      selectedFilters.add(randomFilter)
-    }
-    return Array.from(selectedFilters)
+
+    // 60% probabilidad de solo 1 filtro, 40% de ningún filtro específico
+    const useFilter = Math.random() < 0.6
+    if (!useFilter) return []
+
+    const randomFilter = validFilters[getRandomNumber(0, validFilters.length - 1)]
+    return [randomFilter]
   }
 
   /**
-   * Selects a random anime type with weighted preferences.
-   * Movies have a 70% chance, TV shows have a 30% chance.
+   * Selects a random anime type with adjusted preferences.
    *
    * @returns {AnimeTypes} The selected anime type
    */
   const getRandomType = (): AnimeTypes => {
     const weightedTypes = [
-      { type: AnimeTypes.MOVIE, weight: 0.7 },
-      { type: AnimeTypes.TV, weight: 0.3 },
+      { type: AnimeTypes.TV, weight: 0.6 },
+      { type: AnimeTypes.MOVIE, weight: 0.4 },
     ]
     const random = Math.random()
     let accumulatedWeight = 0
@@ -142,8 +160,9 @@ export const createDynamicUrl = (
       "{filters} You Can't Miss",
       'The Ultimate {filters} List',
       'Discover {filters}',
-      'Find the Top {filters} Anime',
-      'Step Into the World of {filters}',
+      'Featured {filters}',
+      'Best {filters} Selection',
+      'Amazing {filters}',
     ]
     return templates[getRandomNumber(0, templates.length - 1)]
   }
@@ -174,41 +193,10 @@ export const createDynamicUrl = (
           titleParts.push(`${genre} Anime`)
           break
         }
-        case AnimeFilters.Year: {
-          const currentYear = new Date().getFullYear()
-          const minYear = currentYear - 40
-          const year = getRandomNumber(minYear, currentYear)
-          filterParams.push({ year_filter: year.toString() })
-          titleParts.push(`from ${year}`)
-          break
-        }
         case AnimeFilters.Status: {
-          const currentYear = new Date().getFullYear()
-          const minClassicYear = currentYear - 10
-          const status =
-            getRandomNumber(0, 1) === 0 ? 'Finished Airing' : 'Currently Airing'
-          if (status === 'Currently Airing') {
-            const yearFilterIndex = filterParams.findIndex((param) =>
-              param.hasOwnProperty('year_filter')
-            )
-            if (yearFilterIndex !== -1) {
-              filterParams.splice(yearFilterIndex, 1)
-              titleParts.splice(
-                titleParts.findIndex((part) => part.startsWith('from')),
-                1
-              )
-            }
-            titleParts.push('Airing Now')
-          } else {
-            const yearFilter = filterParams.find((param) =>
-              param.hasOwnProperty('year_filter')
-            )
-            const isClassic = yearFilter
-              ? parseInt(yearFilter.year_filter) <= minClassicYear
-              : false
-            titleParts.push(isClassic ? 'Classic' : 'Finished Airing')
-          }
+          const status = getRandomNumber(0, 1) === 0 ? 'Finished Airing' : 'Currently Airing'
           filterParams.push({ status_filter: status })
+          titleParts.push(status === 'Currently Airing' ? 'Airing Now' : 'Complete Series')
           break
         }
         default:
@@ -236,12 +224,15 @@ export const createDynamicUrl = (
         .replace('{filters}', filtersText)
     )
 
+    const baseUrl = `limit_count=${limit}&parental_control=${parentalControl}`
+    const finalUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl
+
     return {
-      url: `limit_count=${limit}&${queryParams}&parental_control=${parentalControl}`,
+      url: finalUrl,
       title,
     }
   }
 
-  const appliedFilters = getRandomFilters(getRandomNumber(1, 2))
+  const appliedFilters = getRandomFilters()
   return generateUrlAndTitle(appliedFilters)
 }
