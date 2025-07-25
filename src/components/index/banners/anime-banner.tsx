@@ -1,7 +1,7 @@
 import { BannerInfo } from '@components/index/banners/banner-info'
 import { BannerLoader } from '@components/index/banners/banner-loader'
-import { Overlay } from '@components/overlay'
-import { Picture } from '@components/picture'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useIndexStore } from '@store/index-store'
 import { useWindowWidth } from '@store/window-width'
@@ -9,6 +9,7 @@ import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
+import { addFailedUrlClient } from '@utils/failed-urls-client'
 import { useEffect, useState } from 'react'
 
 /**
@@ -25,6 +26,8 @@ import { useEffect, useState } from 'react'
  *
  * The UI displays an anime banner with title, synopsis, and a link to the anime details. During loading,
  * a skeleton loader is displayed to improve user experience.
+ *
+ * Now includes intelligent retry system that registers failed URL combinations through API calls.
  *
  * @param {Object} props - The component props
  * @param {number} props.id - The ID used for caching and determining animation style
@@ -47,22 +50,71 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
-  const getBannerData = async (url: string) => {
-    const response = await fetch(
-      `/api/animes?${url}&banners_filter=true&limit_count=1&format=anime-banner`
-    ).then((res) => res.json())
+  const getBannerData = async (url: string, retryCount = 0): Promise<{
+    imageUrl: string
+    title: string
+    synopsis: string
+    mal_id: number
+  } | null> => {
+    const maxRetries = 10
 
-    const [anime] = response.data
-
-    if (!anime || animeBanners.includes(anime.mal_id)) {
-      const { url: newUrl } = createDynamicUrl(1, parentalControl)
-      return await getBannerData(newUrl)
+    if (retryCount >= maxRetries) {
+      return null
     }
-    return {
-      imageUrl: anime.banner_image,
-      title: anime.title,
-      synopsis: anime.synopsis,
-      mal_id: anime.mal_id,
+
+    try {
+      const fullUrl = `/api/animes?${url}&banners_filter=true&limit_count=1&format=anime-banner`
+      const response = await fetch(fullUrl)
+
+      if (!response.ok) {
+        // Register the URL as failed through API call
+        await addFailedUrlClient(url)
+
+        if (retryCount < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(1, parentalControl)
+          return await getBannerData(newUrl, retryCount + 1)
+        }
+        return null
+      }
+
+      const responseData = await response.json()
+
+      if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
+        // Register the URL as failed through API call
+        await addFailedUrlClient(url)
+
+        if (retryCount < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(1, parentalControl)
+          return await getBannerData(newUrl, retryCount + 1)
+        }
+        return null
+      }
+
+      const [anime] = responseData.data
+
+      if (!anime || animeBanners.includes(anime.mal_id)) {
+        if (retryCount < maxRetries - 1) {
+          const { url: newUrl } = createDynamicUrl(1, parentalControl)
+          return await getBannerData(newUrl, retryCount + 1)
+        }
+        return null
+      }
+
+      return {
+        imageUrl: anime.banner_image,
+        title: anime.title,
+        synopsis: anime.synopsis,
+        mal_id: anime.mal_id,
+      }
+    } catch (error) {
+      // Register the URL as failed through API call for network errors too
+      await addFailedUrlClient(url)
+
+      if (retryCount < maxRetries - 1) {
+        const { url: newUrl } = createDynamicUrl(1, parentalControl)
+        return await getBannerData(newUrl, retryCount + 1)
+      }
+      return null
     }
   }
 
@@ -77,8 +129,14 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         }, 100)
         return
       }
-      const { url } = createDynamicUrl(1)
+
+      const { url } = createDynamicUrl(1, parentalControl)
       const data = await getBannerData(url)
+
+      if (!data) {
+        setLoading(false)
+        return
+      }
 
       setBannerData(data)
       animeBanners.push(data.mal_id)
