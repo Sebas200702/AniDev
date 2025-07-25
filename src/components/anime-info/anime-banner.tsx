@@ -1,6 +1,6 @@
 import { ExpandIconV2 } from '@components/icons/expand-icon'
-import { ImageViewer } from '@components/image-viewer'
-import { Picture } from '@components/picture'
+import { ImageViewer } from '@components/media/image-viewer'
+import { Picture } from '@components/media/picture'
 import { useModal } from '@hooks/useModal'
 import { baseUrl } from '@utils/base-url'
 import { createSingleImageList } from '@utils/create-image-list'
