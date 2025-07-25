@@ -4,7 +4,7 @@ import { Picture } from '@components/picture'
 import { useModal } from '@hooks/useModal'
 import { baseUrl } from '@utils/base-url'
 import { createSingleImageList } from '@utils/create-image-list'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 /**
  * Props for the AnimeBanner component.
