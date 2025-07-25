@@ -1,4 +1,4 @@
-import { Picture } from '@components/picture'
+import { Picture } from '@components/media/picture'
 import { useDynamicBorder } from '@hooks/useDynamicBorder'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { baseUrl } from '@utils/base-url'
