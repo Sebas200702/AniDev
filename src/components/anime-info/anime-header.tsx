@@ -1,4 +1,4 @@
-import { AnimeTag } from '@components/anime-tag'
+import { AnimeTag } from '@components/anime-info/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
 import type { Anime } from 'types'
