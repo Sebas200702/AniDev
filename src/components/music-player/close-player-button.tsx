@@ -20,6 +20,7 @@ const ClosePlayerModal = ({ onClose }: ClosePlayerModalProps) => {
     setSavedTime,
     setVariants,
     setIsHidden,
+
   } = useMusicPlayerStore()
 
   const handleClose = () => {
