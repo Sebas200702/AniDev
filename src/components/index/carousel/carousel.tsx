@@ -9,7 +9,7 @@ import { useGlobalUserPreferences } from '@store/global-user'
 import { useWindowWidth } from '@store/window-width'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useCallback, useEffect, useState } from 'react'
 import type { AnimeBannerInfo } from 'types'
 
