@@ -7,9 +7,8 @@ import { TypeIcon } from '@components/icons/type-icon'
 import { MoreOptions } from '@components/more-options'
 import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
-import { useSearchStoreResults } from '@store/search-results-store'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useState } from 'react'
 import type { AnimeDetail } from 'types'
@@ -36,7 +35,7 @@ import type { AnimeDetail } from 'types'
  */
 
 export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
-  const { setSearchIsOpen } = useSearchStoreResults()
+
   const shareText = `Watch ${anime.title} on AniDev`
   const [isHovered, setIsHovered] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -69,7 +68,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
     <article
       key={anime.mal_id}
       className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-1'}`}
-      onClick={() => setSearchIsOpen(false)}
+
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
