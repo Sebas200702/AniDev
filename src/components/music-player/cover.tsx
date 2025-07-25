@@ -1,6 +1,6 @@
 import { Picture } from '@components/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 export const Cover = () => {
   const { currentSong, isPlaying, type, isMinimized } = useMusicPlayerStore()
