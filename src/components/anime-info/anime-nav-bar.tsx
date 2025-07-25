@@ -1,4 +1,4 @@
-import { SectionList } from '@components/section-list'
+import { SectionList } from '@components/common/section-list'
 import { useAnimeListsStore } from '@store/anime-list-store'
 
 /**
