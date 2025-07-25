@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Picture } from '@components/picture'
+import { Picture } from '@components/media/picture'
 import { AnimeEpisodesLoader } from '@components/watch-anime/episodes/anime-episodes-loader'
 import Pagination from '@components/watch-anime/episodes/pagination'
 import { useFetch } from '@hooks/useFetch'
