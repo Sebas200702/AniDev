@@ -4,7 +4,7 @@ import { SettingsIcon } from '@components/icons/settings-icon'
 import { UserIcon } from '@components/icons/user-icon'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { signOut } from 'auth-astro/client'
 
 /**
