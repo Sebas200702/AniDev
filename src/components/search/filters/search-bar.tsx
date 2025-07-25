@@ -1,6 +1,6 @@
 import { CloseIcon } from '@components/icons/close-icon'
 import { SearchIcon } from '@components/icons/search-icon'
-import { Overlay } from '@components/overlay'
+import { Overlay } from '@components/layout/overlay'
 import { useSearchStoreResults } from '@store/search-results-store'
 export const SearchBar = () => {
   const { query, setQuery } = useSearchStoreResults()
