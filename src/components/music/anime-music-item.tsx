@@ -138,7 +138,7 @@ export const AnimeMusicItem = ({
         </div>
       )}
       <Picture
-        image={placeholder}
+        image={createImageUrlProxy(placeholder, '0', '0', 'webp')}
         styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
       >
         {isCurrentSong && (
@@ -166,7 +166,7 @@ export const AnimeMusicItem = ({
         )}
 
         <img
-          src={image}
+          src={createImageUrlProxy(image, '0', '70', 'webp')}
           alt={song.song_title}
           className="relative aspect-[225/330] h-full rounded-l-lg object-cover object-center"
         />

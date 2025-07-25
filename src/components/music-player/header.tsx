@@ -7,6 +7,7 @@ import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
 import { ClosePlayerButton } from './close-player-button'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 interface Props {
   playerContainerRef: React.RefObject<HTMLDivElement | null>
@@ -107,7 +108,7 @@ export const Header = ({ playerContainerRef }: Props) => {
         >
           {currentSong.image && (
             <img
-              src={currentSong.image}
+              src={createImageUrlProxy(currentSong.image, '0', '70', 'webp')}
               alt={currentSong.anime_title}
               className="h-full w-full object-cover"
             />

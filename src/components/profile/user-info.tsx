@@ -6,6 +6,8 @@ import { useEffect, useRef } from 'react'
 import { useModal } from '@hooks/useModal'
 import { InputUserImage } from './input-user-image'
 import { ImageEditor } from './image-editor'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { Picture } from '@components/picture'
 
 export const UserInfo = ({
   isSignUp,
@@ -82,13 +84,19 @@ export const UserInfo = ({
             Drop your image here
           </span>
         </div>
+        <Picture
+          image={createImageUrlProxy(userInfo?.avatar || `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+          styles="relative"
+        >
+          <img
+            ref={imageRef}
+            src={createImageUrlProxy(userInfo?.avatar || `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            alt={`${userInfo?.name} Avatar`}
+            className="h-full w-full rounded-full transition-all duration-200"
+          />
+        </Picture>
 
-        <img
-          ref={imageRef}
-          src={userInfo?.avatar || `${baseUrl}/placeholder.webp`}
-          alt={`${userInfo?.name} Avatar`}
-          className="h-full w-full rounded-full transition-all duration-200"
-        />
+
         {(isSignUp || userInfo?.name) && <InputUserImage />}
       </div>
 

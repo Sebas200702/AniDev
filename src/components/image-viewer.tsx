@@ -7,6 +7,7 @@ import { RotateLeftIcon } from '@components/icons/rotate-left-icon'
 import { RotateRightIcon } from '@components/icons/rotate-right-icon'
 import { ZoomInIcon } from '@components/icons/zoom-in-icon'
 import { ZoomOutIcon } from '@components/icons/zoom-out-icon'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useGlobalModal } from '@store/modal-store'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ImageType } from 'types'
@@ -559,7 +560,7 @@ export const ImageViewer = ({
       >
         <img
           ref={imageRef}
-          src={currentImage.src}
+          src={createImageUrlProxy(currentImage.src, '0', '70', 'webp')}
           alt={currentImage.alt}
           style={imageStyle}
           onMouseDown={handleMouseDown}

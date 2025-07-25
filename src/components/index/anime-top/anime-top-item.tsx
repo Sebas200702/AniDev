@@ -8,6 +8,7 @@ import { baseUrl } from '@utils/base-url'
 import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import type { AnimeTopInfo } from 'types'
 
 /**
@@ -65,11 +66,11 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           title={anime.title}
         >
           <Picture
-            image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
+            image={createImageUrlProxy(anime.image_small_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
             styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
           >
             <img
-              src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
+              src={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
               alt={anime.title}
               className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
               loading="lazy"

@@ -135,7 +135,10 @@ export const AnimeCard = ({ anime }: Props) => {
       >
         <Picture
           image={createImageUrlProxy(
-            image_small_webp ?? `${baseUrl}/placeholder.webp`
+            image_small_webp ?? `${baseUrl}/placeholder.webp`,
+            '0',
+            '0',
+            'webp'
           )}
           styles="relative h-full w-full rounded-lg"
         >
@@ -143,7 +146,10 @@ export const AnimeCard = ({ anime }: Props) => {
             src={
               isMobile
                 ? createImageUrlProxy(
-                    image_webp ?? `${baseUrl}/placeholder.webp`
+                    image_webp ?? `${baseUrl}/placeholder.webp`,
+                    '0',
+                    '70',
+                    'webp'
                   )
                 : createImageUrlProxy(
                     image_large_webp ?? `${baseUrl}/placeholder.webp`,

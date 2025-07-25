@@ -106,11 +106,11 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           </Picture>
         </div>
         <Picture
-          image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
+          image={createImageUrlProxy(anime.image_small_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
           styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
         >
           <img
-            src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
+            src={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
             alt={anime.title}
             className="relative aspect-[225/330] h-full w-full rounded-l-lg object-cover object-center"
             loading="lazy"

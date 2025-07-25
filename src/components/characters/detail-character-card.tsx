@@ -2,6 +2,7 @@ import { Overlay } from '@components/overlay'
 import { Picture } from '@components/picture'
 import { useSearchStoreResults } from '@store/search-results-store'
 import { baseUrl } from '@utils/base-url'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { Character } from 'types'
 
@@ -24,16 +25,22 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       >
         <div className="relative aspect-[225/330] h-full flex-shrink-0 overflow-hidden rounded-l-xl">
           <Picture
-            image={
+            image={createImageUrlProxy(
               character.character_small_image_url ??
-              `${baseUrl}/placeholder.webp`
-            }
+              `${baseUrl}/placeholder.webp`,
+              '0',
+              '0',
+              'webp'
+            )}
             styles="h-full w-full relative"
           >
             <img
-              src={
-                character.character_image_url ?? `${baseUrl}/placeholder.webp`
-              }
+              src={createImageUrlProxy(
+                character.character_image_url ?? `${baseUrl}/placeholder.webp`,
+                '0',
+                '70',
+                'webp'
+              )}
               alt={character.character_name}
               className="relative h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/character:scale-105"
               loading="lazy"
@@ -63,15 +70,21 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       >
         <div className="relative aspect-[225/330] h-full flex-shrink-0 overflow-hidden rounded-r-xl">
           <Picture
-            image={
-              character.voice_actor_image_url ?? `${baseUrl}/placeholder.webp`
-            }
+            image={createImageUrlProxy(
+              character.voice_actor_image_url ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '0',
+              'webp'
+            )}
             styles="h-full w-full relative"
           >
             <img
-              src={
-                character.voice_actor_image_url ?? `${baseUrl}/placeholder.webp`
-              }
+                src={createImageUrlProxy(
+                character.voice_actor_image_url ?? `${baseUrl}/placeholder.webp`,
+                '0',
+                '70',
+                'webp'
+              )}
               alt={character.voice_actor_name}
               className="relative h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/actor:scale-105"
               loading="lazy"

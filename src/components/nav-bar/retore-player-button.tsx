@@ -1,6 +1,7 @@
 import { MusicIcon } from '@components/icons/music-icon'
 import { Picture } from '@components/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 export const RestorePlayerButton = () => {
   const { isHidden, setIsHidden, isPlaying, currentSong } =
@@ -26,9 +27,9 @@ export const RestorePlayerButton = () => {
           <figure
             className={`relative max-h-12 max-w-12 overflow-hidden rounded-full ${isPlaying ? 'animate-spin-slow' : ''}`}
           >
-            <Picture image={currentSong.placeholder} styles="relative">
+            <Picture image={createImageUrlProxy(currentSong.placeholder, '0', '0', 'webp')  } styles="relative">
               <img
-                src={currentSong.image}
+                src={createImageUrlProxy(currentSong.image, '0', '70', 'webp')}
                 alt={currentSong?.song_title}
                 className="relative aspect-square h-full rounded-lg object-cover"
               />

@@ -60,7 +60,7 @@ export const Cover = () => {
         >
           <Picture
             image={createImageUrlProxy(
-              currentSong.banner_image,
+              currentSong.banner_image ?? currentSong.image,
               '100',
               '0',
               'webp'
@@ -68,7 +68,7 @@ export const Cover = () => {
             styles="relative"
           >
             <img
-              src={proxyUrl}
+              src={createImageUrlProxy(proxyUrl, '0', '70', 'webp')}
               alt={currentSong.song_title}
               className="relative h-full w-full rounded-full object-cover"
             />

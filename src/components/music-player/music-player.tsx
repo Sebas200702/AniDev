@@ -65,7 +65,7 @@ export const MusicPlayer = () => {
         delayDuration: 7000,
         icon: (
           <img
-            src={nextSong.image}
+            src={createImageUrlProxy(nextSong.image, '0', '70', 'webp')}
             alt={nextSong.song_title}
             className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12"
           />

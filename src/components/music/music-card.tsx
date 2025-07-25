@@ -7,6 +7,7 @@ import { Picture } from '@components/picture'
 import { PauseIcon } from '@icons/pause-icon'
 import { PlayIcon } from '@icons/play-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeSongWithImage } from 'types'
 
@@ -36,11 +37,11 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
     >
       <div className="relative mb-4">
         <Picture
-          image={song.placeholder}
+          image={createImageUrlProxy(song.placeholder, '0', '0', 'webp')}
           styles="relative aspect-square rounded-md overflow-hidden shadow-lg aspect-square h-full"
         >
           <img
-            src={song.image}
+            src={createImageUrlProxy(song.image, '0', '70', 'webp')}
             alt={song.song_title}
             className="aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
           />

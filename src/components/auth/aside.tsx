@@ -66,7 +66,7 @@ export const Aside = ({
         className={`z-10 h-full w-full bg-gradient-to-b via-black/50 via-20% to-black/90`}
       />
       <img
-        src={bgImage}
+        src={createImageUrlProxy(bgImage, '0', '70', 'webp')}
         className="relative h-full w-full object-cover object-center"
         alt=""
       />

@@ -7,6 +7,7 @@ import { useIndexStore } from '@store/index-store'
 import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { normalizeString } from '@utils/normalize-string'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 interface Props {
   /**
@@ -192,11 +193,11 @@ export const AnimeCollection = ({ id }: Props) => {
           {animes.map((anime, i) => (
             <Picture
               key={anime.mal_id}
-              image={anime.image_small_webp ?? `${baseUrl}/placeholder.webp`}
+              image={createImageUrlProxy(anime.image_small_webp ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
               styles={`${getPosition(i)} w-full max-w-44 rounded-md relative`}
             >
               <img
-                src={anime.image_webp ?? `${baseUrl}/placeholder.webp`}
+                src={createImageUrlProxy(anime.image_webp ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
                 alt={anime.title}
                 fetchPriority="high"
                 loading="lazy"
