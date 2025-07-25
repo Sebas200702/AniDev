@@ -4,7 +4,7 @@ import { Picture } from '@components/picture'
 import { AnimeEpisodesLoader } from '@components/watch-anime/episodes/anime-episodes-loader'
 import Pagination from '@components/watch-anime/episodes/pagination'
 import { useFetch } from '@hooks/useFetch'
-import { createImageUrlProxy } from '@utils/create-imageurl-proxy'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import type { AnimeEpisode } from 'types'
 
 interface Props {
