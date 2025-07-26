@@ -35,6 +35,7 @@ export const MusicPlayer = () => {
     list,
     currentSongIndex,
     src,
+    isPlaying
   } = useMusicPlayerStore()
 
   const player = useRef<MediaPlayerInstance>(null)
@@ -52,7 +53,8 @@ export const MusicPlayer = () => {
     const nextSong = list[currentSongIndex + 1]
     const timeRemaining = duration - currentTime
 
-    if (timeRemaining <= 8 && timeRemaining > 0 && nextSong && !toastShown) {
+    if (timeRemaining <= 8 && timeRemaining > 0 && nextSong && !toastShown && isPlaying) {
+
       const text = () => {
         if (nextSong.artist_name) {
           return `${nextSong.song_title} By ${nextSong.artist_name}`
@@ -76,7 +78,10 @@ export const MusicPlayer = () => {
   }, [currentTime, duration, currentSong, list, currentSongIndex, toastShown])
 
   useEffect(() => {
-    setToastShown(false)
+    setTimeout(() => {
+        setToastShown(false)
+      }, 8000)
+
   }, [currentSong?.song_id])
 
   if (!currentSong) return

@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const NextPrevButton = ({ direction }: Props) => {
-  const { currentSongIndex, setCurrentSong, list, setSavedTime, isMinimized } =
+  const { currentSongIndex, setCurrentSong, list, setSavedTime, isMinimized, setCurrentTime } =
     useMusicPlayerStore()
 
   const hasNext = currentSongIndex + 1 < list.length
@@ -26,7 +26,8 @@ export const NextPrevButton = ({ direction }: Props) => {
     }
     const newCurrentSong = list[currentSongIndex + changeDirection]
     setSavedTime(0)
-    console.log('newCurrentSong', newCurrentSong)
+    setCurrentTime(0)
+
     setCurrentSong(newCurrentSong)
     if (!isMinimized) {
       const newUrl = `/music/${normalizeString(newCurrentSong.song_title)}_${newCurrentSong.theme_id}`
