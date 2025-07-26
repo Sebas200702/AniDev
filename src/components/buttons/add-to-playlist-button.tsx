@@ -10,6 +10,7 @@ interface Props {
   isInPlayList: boolean
   clasName?: string
   label?: string
+  isCurrentSong?: boolean
 }
 
 type Action = {
@@ -23,6 +24,7 @@ export const AddToPlayListButton = ({
   isInPlayList,
   clasName,
   label,
+  isCurrentSong,
 }: Props) => {
   const { list, setList } = useMusicPlayerStore()
 
@@ -103,11 +105,12 @@ export const AddToPlayListButton = ({
         e.stopPropagation()
         handleClickList()
       }}
+      disabled={isCurrentSong}
     >
       {isInPlayList ? (
-        <DeleteIcon className="h-4 w-4" />
+        <DeleteIcon className="h-4 w-4 md:h-5 md:w-5" />
       ) : (
-        <AddToPlayList className="h-4 w-4" />
+        <AddToPlayList className="h-4 w-4 md:h-5 md:w-5" />
       )}
 
       {label && <span className="font-medium">{label}</span>}
