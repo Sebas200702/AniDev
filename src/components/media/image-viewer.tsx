@@ -564,7 +564,6 @@ export const ImageViewer = ({
           alt={currentImage.alt}
           style={imageStyle}
           onMouseDown={handleMouseDown}
-          className=""
           draggable={false}
         />
       </div>
