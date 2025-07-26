@@ -63,10 +63,6 @@ export const AnimeMusicItem = ({
       : playerRef.current?.play()
   }
 
-  const handleClick = () => {
-    if (isCurrentSong && !isMinimized) return
-    navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
-  }
 
   useEffect(() => {
     let interval: string | number | NodeJS.Timeout | undefined
@@ -87,11 +83,11 @@ export const AnimeMusicItem = ({
   }, [isPlaying])
 
   return (
-    <article
+    <a
       ref={setNodeRef}
       style={style}
       className={`relative transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} hover:bg-Primary-900 group group border-enfasisColor group relative flex h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 bg-zinc-800 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1`}
-      onClick={handleClick}
+      href={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
       title={song.song_title}
     >
       <div className="flex aspect-[100/30] h-full w-full flex-row overflow-hidden rounded-lg md:max-h-36">
@@ -245,6 +241,6 @@ export const AnimeMusicItem = ({
           </span>
         </footer>
       </div>
-    </article>
+    </a>
   )
 }
