@@ -27,7 +27,6 @@ export const ModalContainer = () => {
     if (!isOpen) return
 
     const handleClickOutside = (e: MouseEvent) => {
-      // Solo cerrar si el click fue directamente en el backdrop
       if (e.target === modalRef.current) {
         closeModal()
       }
@@ -53,7 +52,7 @@ export const ModalContainer = () => {
   const modalElement = (
     <div
       ref={modalRef}
-      className="fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 backdrop-blur-sm"
+      className="fixed top-0 left-0 z-[100] p-4 flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
     >
