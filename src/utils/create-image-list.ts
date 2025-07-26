@@ -1,5 +1,4 @@
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import type { ImageType } from 'types'
 
 /**
@@ -24,27 +23,7 @@ export const createImage = ({
 /**
  * Creates an optimized image with proxy URL
  */
-export const createOptimizedImage = ({
-  src,
-  alt,
-  width = '1920',
-  quality = '50',
-  format = 'webp' as const,
-  maxWidth = '90vw',
-  fallback = `${baseUrl}/placeholder.webp`,
-}: {
-  src: string | null | undefined
-  alt: string
-  width?: string
-  quality?: string
-  format?: 'webp' | 'jpg' | 'png'
-  maxWidth?: string
-  fallback?: string
-}): ImageType => ({
-  src: createImageUrlProxy(src ?? fallback, width, quality, format),
-  alt,
-  maxWidth,
-})
+
 /**
  * Creates a standard anime image list with poster and banner
  */
@@ -71,7 +50,7 @@ export const createAnimeImageList = ({
 
   if (bannerImage) {
     images.push(
-      createOptimizedImage({
+      createImage({
         src: bannerImage,
         alt: `Banner of ${title}`,
         maxWidth: bannerMaxWidth,
@@ -104,7 +83,7 @@ export const createSingleImageList = ({
 }): ImageType[] => {
   if (optimize && optimizeOptions) {
     return [
-      createOptimizedImage({
+      createImage({
         src,
         alt,
         maxWidth,
