@@ -3,6 +3,7 @@ import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
 import { ShareButton } from '@components/buttons/share-button'
 import { MoreOptions } from '@components/common/more-options'
 import { PauseIcon } from '@components/icons/pause-icon'
+import { DownloadButton } from '@components/buttons/download-button'
 import { PlayIcon } from '@components/icons/play-icon'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
@@ -185,21 +186,21 @@ export const AnimeMusicItem = ({
             }}
             isInPlayList={isInPlaylist}
             clasName="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            isCurrentSong={isCurrentSong}
           />
-
+          <DownloadButton
+            styles="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            url={song.audio_url}
+            title={song.song_title}
+            themeId={song.theme_id ?? 0}
+            showLabel={false}
+          />
           <ShareButton
             className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
             title={song.song_title}
             text={`Listen ${song.song_title} on AniDev`}
           />
-          <button
-            onClick={handleClick}
-            title={`Listen ${song.song_title}`}
-            className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <PlayIcon className="h-4 w-4" />
-          </button>
         </MoreOptions>
 
         <footer className="z-10 flex w-full max-w-[65%] flex-col items-start justify-between px-4 py-2 md:justify-center md:gap-4 md:p-4">
@@ -215,7 +216,7 @@ export const AnimeMusicItem = ({
                   e.stopPropagation()
                   navigate(`/artist/${normalizeString(song.artist_name || '')}`)
                 }}
-                className="text-sxx text-Primary-300 flex flex-row items-end gap-1 truncate"
+                className="text-sxx w-full md:w-auto text-Primary-300 flex flex-row items-end gap-1 truncate"
               >
                 By
                 <strong className="text-Primary-100 text-m hover:text-enfasisColor cursor-pointer truncate transition-all duration-300">
