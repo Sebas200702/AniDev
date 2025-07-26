@@ -37,7 +37,7 @@ export const MoreOptions = ({
   return (
     <>
       <div
-        className={`bg-Complementary/60 z-20 flex cursor-pointer flex-row items-center justify-center overflow-hidden rounded-md backdrop-blur-sm transition-all duration-300 ease-in-out md:rounded-xl ${isHovering ? 'w-20 md:w-24' : 'w-6 md:w-8'} h-6 md:h-8 ${className} `}
+        className={`bg-Complementary/60 z-20 flex cursor-pointer flex-row items-center justify-center overflow-hidden rounded-md backdrop-blur-sm transition-all duration-300 ease-in-out md:rounded-xl ${isHovering ? 'w-20 md:w-24' : 'w-6.5 md:w-8'} h-6.5 md:h-8 ${className} `}
         onClick={(e) => {
           e.stopPropagation()
           setIsMenuOpen(!isMenuOpen)
