@@ -7,24 +7,13 @@ export const Cover = () => {
 
   if (!currentSong) return null
 
-  let proxyUrl: string
-  try {
-    isMinimized
-      ? (proxyUrl = createImageUrlProxy(
-          currentSong.banner_image ?? currentSong.image,
-          '400',
-          '70',
-          'webp'
-        ))
-      : (proxyUrl = createImageUrlProxy(
+  const proxyUrl= createImageUrlProxy(
           currentSong.banner_image ?? currentSong.image,
           '1920',
           '50',
           'webp'
-        ))
-  } catch {
-    proxyUrl = currentSong.banner_image
-  }
+        )
+
   if (!isMinimized && type === 'audio') {
     return (
       <div className="relative aspect-video h-full overflow-hidden">
