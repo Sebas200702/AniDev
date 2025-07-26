@@ -154,9 +154,9 @@ export const AddToListButton = ({
       className={`${styles} flex items-center justify-center`}
     >
       {isInWatchList ? (
-        <DeleteIcon className="h-4 w-4" />
+        <DeleteIcon className="h-4 w-4 md:h-5 md:w-5" />
       ) : (
-        <AddToListIcon className="h-4 w-4" />
+        <AddToListIcon className="h-4 w-4 md:h-5 md:w-5" />
       )}
     </button>
   )
