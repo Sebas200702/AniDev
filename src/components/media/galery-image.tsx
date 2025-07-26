@@ -11,11 +11,13 @@ interface Props {
   disabled?: boolean
   overlayClassName?: string
   iconClassName?: string
+  className?: string
   ariaLabel?: string
 }
 
 export const GaleryImage = ({
   children,
+  className = '',
   imageList = [],
   initialIndex = 0,
   disabled = false,
@@ -57,7 +59,7 @@ export const GaleryImage = ({
       onClick={handleOpenViewer}
       onKeyDown={handleKeyDown}
       disabled={disabled}
-      className="group relative block cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+      className={`group relative block cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       aria-label={ariaLabel}
       type="button"
       tabIndex={0}
