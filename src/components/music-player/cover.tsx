@@ -57,7 +57,7 @@ export const Cover = () => {
             styles="relative"
           >
             <img
-              src={createImageUrlProxy(proxyUrl, '0', '70', 'webp')}
+              src={proxyUrl}
               alt={currentSong.song_title}
               className="relative h-full w-full rounded-full object-cover"
             />
