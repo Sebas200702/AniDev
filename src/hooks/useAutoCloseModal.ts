@@ -29,7 +29,7 @@ interface UseAutoCloseModalOptions {
  * })
  * ```
  *
-  * @description
+ * @description
  * Este hook detecta cambios de URL a través de múltiples métodos:
  * - **Eventos de Astro**: `astro:page-load`, `astro:after-swap`, `astro:before-preparation`, `astro:after-preparation`
  * - **Click Interceptor**: Detecta clicks en elementos `<a>` para cierre inmediato
@@ -59,50 +59,28 @@ export const useAutoCloseModal = (
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    lastUrlRef.current = window.location.href
-    const handleUrlChangeWithDebounce = () => {
-      if (urlChangeDebounceRef.current) {
-        clearTimeout(urlChangeDebounceRef.current)
-      }
-
-      urlChangeDebounceRef.current = window.setTimeout(() => {
-        const currentUrl = window.location.href
-        if (currentUrl !== lastUrlRef.current) {
-          lastUrlRef.current = currentUrl
-          if (isModalOpen) {
-            if (enableLogs) {
-              console.log('URL changed, auto-closing modal:', {
-                from: lastUrlRef.current,
-                to: currentUrl
-              })
-            }
-            closeModal()
-          }
-        }
-      }, debounceMs)
-    }
-
-
-    document.addEventListener('astro:page-load', handleUrlChangeWithDebounce)
-    document.addEventListener('astro:after-swap', handleUrlChangeWithDebounce)
-    document.addEventListener('astro:before-preparation', handleUrlChangeWithDebounce)
-    document.addEventListener('astro:after-preparation', handleUrlChangeWithDebounce)
-    window.addEventListener('hashchange', handleUrlChangeWithDebounce)
-
     const handleLinkClick = (event: Event) => {
       try {
         const target = event.target as HTMLElement
         const link = target.closest('a')
 
-        if (link && link.href && !link.hasAttribute('data-astro-reload') && !link.hasAttribute('target')) {
+        if (
+          link &&
+          link.href &&
+          !link.hasAttribute('data-astro-reload') &&
+          !link.hasAttribute('target')
+        ) {
           const linkUrl = new URL(link.href)
           const currentUrl = new URL(window.location.href)
-          if (linkUrl.origin === currentUrl.origin &&
-              (linkUrl.pathname !== currentUrl.pathname || linkUrl.search !== currentUrl.search)) {
+          if (
+            linkUrl.origin === currentUrl.origin &&
+            (linkUrl.pathname !== currentUrl.pathname ||
+              linkUrl.search !== currentUrl.search)
+          ) {
             if (enableLogs) {
               console.log('Astro link clicked, closing modal immediately:', {
                 from: currentUrl.pathname + currentUrl.search,
-                to: linkUrl.pathname + linkUrl.search
+                to: linkUrl.pathname + linkUrl.search,
               })
             }
             if (isModalOpen) {
@@ -118,44 +96,5 @@ export const useAutoCloseModal = (
     }
 
     document.addEventListener('click', handleLinkClick, true)
-
-    const originalPushState = history.pushState.bind(history)
-    const originalReplaceState = history.replaceState.bind(history)
-
-    history.pushState = function(data: any, unused: string, url?: string | URL | null) {
-      originalPushState(data, unused, url)
-      handleUrlChangeWithDebounce()
-    }
-
-    history.replaceState = function(data: any, unused: string, url?: string | URL | null) {
-      originalReplaceState(data, unused, url)
-      handleUrlChangeWithDebounce()
-    }
-
-    const observer = new MutationObserver(() => {
-      const currentUrl = window.location.href
-      if (currentUrl !== lastUrlRef.current) {
-        handleUrlChangeWithDebounce()
-      }
-    })
-
-    observer.observe(document, { subtree: true, childList: true })
-
-    return () => {
-      if (urlChangeDebounceRef.current) {
-        clearTimeout(urlChangeDebounceRef.current)
-      }
-      document.removeEventListener('astro:page-load', handleUrlChangeWithDebounce)
-      document.removeEventListener('astro:after-swap', handleUrlChangeWithDebounce)
-      document.removeEventListener('astro:before-preparation', handleUrlChangeWithDebounce)
-      document.removeEventListener('astro:after-preparation', handleUrlChangeWithDebounce)
-      window.removeEventListener('hashchange', handleUrlChangeWithDebounce)
-      document.removeEventListener('click', handleLinkClick, true)
-
-      history.pushState = originalPushState
-      history.replaceState = originalReplaceState
-
-      observer.disconnect()
-    }
-  }, [isModalOpen, closeModal, debounceMs, enableLogs])
+  }, [isModalOpen, closeModal, enableLogs])
 }
