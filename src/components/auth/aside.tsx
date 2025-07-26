@@ -68,7 +68,7 @@ export const Aside = ({
       <img
         src={createImageUrlProxy(`${baseUrl}/${bgImage}`, '0', '70', 'webp')}
         className="relative h-full w-full object-cover object-center"
-        alt=""
+        alt={`Background for ${isSignUp ? 'sign up' : 'sign in'} page`}
       />
       <footer className="absolute right-0 bottom-0 left-0 z-10 hidden flex-col gap-10 p-4 md:flex">
         <header className="flex flex-col gap-2">
