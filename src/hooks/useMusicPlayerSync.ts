@@ -2,7 +2,7 @@ import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
 import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
 import type { MediaPlayerInstance } from '@vidstack/react'
-import { useEffect, useRef, version } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { AnimeSongWithImage } from 'types'
 
 export const useMusicPlayerSync = (
@@ -41,63 +41,86 @@ export const useMusicPlayerSync = (
   const isChangingSong = useRef(false)
   const mediaUpdateInterval = useRef<number | null>(null)
 
-  const getThemeIdFromPath = () => {
-    if (typeof window === 'undefined') return
-    if (window.location.pathname.includes('/music')) {
-      return window.location.pathname.split('_')[1]
-    }
-    return null
+
+  const [themeId, setThemeId] = useState<string | null>(null)
+  const debounceTimeoutRef = useRef<number | null>(null)
+
+
+  const extractThemeIdFromPath = () => {
+    if (typeof window === 'undefined' || !window.location.pathname.includes('/music')) return null
+    const pathParts = window.location.pathname.split('_')
+    return pathParts.length > 1 ? pathParts[1] : null
   }
 
-  const themeId = getThemeIdFromPath()
 
   useEffect(() => {
-    const fetchMusic = async () => {
-      if (!themeId) return
+    if (typeof window === 'undefined') return
 
-      try {
-        const response = await fetch(`/api/getMusicInfo?themeId=${themeId}`)
-        const data = await response.json()
-        console.log('Fetched music data:', data)
 
-        if (!data || !Array.isArray(data) || data.length === 0) {
-          setError('No se encontró música para este tema')
-          return
-        }
+    setThemeId(extractThemeIdFromPath())
 
-        const newSong = data[0]
 
-        const existingSongIndex = list.findIndex(
-          (song) => song.song_id === newSong.song_id
-        )
+    const updateThemeIdWithDebounce = () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current)
+      }
 
-        if (existingSongIndex !== -1) {
-          setVariants(
-            data.filter((song) => song.version_id === newSong.version_id)
-          )
-          setVersionNumber(newSong.version)
+      debounceTimeoutRef.current = window.setTimeout(() => {
+        const newThemeId = extractThemeIdFromPath()
+        setThemeId(newThemeId)
+      }, 100)
+    }
 
-          const uniqueVersions = data.filter(
-            (song, index, self) =>
-              self.findIndex((s) => s.version_id === song.version_id) === index
-          )
 
-          setVersions(uniqueVersions)
-          setError(null)
-          return
-        }
 
-        if (list.length === 0 || !currentSong) {
-          const updatedList = [newSong]
-          setList(updatedList)
-          setCurrentSong(newSong)
-        } else {
-          const playedSongs = list.slice(0, currentSongIndex - 1)
-          const remainingSongs = list.slice(currentSongIndex)
-          const updatedList = [...playedSongs, newSong, ...remainingSongs]
-          setList(updatedList)
-        }
+    window.addEventListener('popstate', updateThemeIdWithDebounce)
+    document.addEventListener('astro:page-load', updateThemeIdWithDebounce)
+    document.addEventListener('astro:after-swap', updateThemeIdWithDebounce)
 
+    let lastUrl = window.location.href
+    const observer = new MutationObserver(() => {
+      const currentUrl = window.location.href
+      if (currentUrl !== lastUrl) {
+        lastUrl = currentUrl
+        updateThemeIdWithDebounce()
+      }
+    })
+
+    observer.observe(document, { subtree: true, childList: true })
+
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current)
+      }
+      window.removeEventListener('popstate', updateThemeIdWithDebounce)
+      document.removeEventListener('astro:page-load', updateThemeIdWithDebounce)
+      document.removeEventListener('astro:after-swap', updateThemeIdWithDebounce)
+      observer.disconnect()
+    }
+  }, [])
+
+
+  const fetchMusic = async (currentThemeId?: string) => {
+    const idToUse = currentThemeId || themeId
+    if (!idToUse) return
+
+    try {
+      const response = await fetch(`/api/getMusicInfo?themeId=${idToUse}`)
+      const data = await response.json()
+      console.log('Fetched music data for themeId:', idToUse, data)
+
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        setError('No se encontró música para este tema')
+        return
+      }
+
+      const newSong = data[0]
+
+      const existingSongIndex = list.findIndex(
+        (song) => song.song_id === newSong.song_id
+      )
+
+      if (existingSongIndex !== -1) {
         setVariants(
           data.filter((song) => song.version_id === newSong.version_id)
         )
@@ -110,15 +133,46 @@ export const useMusicPlayerSync = (
 
         setVersions(uniqueVersions)
         setError(null)
-      } catch (error) {
-        console.error('Error fetching music:', error)
-        setError('Error al cargar la música')
+        return
       }
-    }
 
-    if (!isChangingSong.current) {
-      console.log('themeId', themeId)
-      fetchMusic()
+      if (list.length === 0 || !currentSong) {
+        const updatedList = [newSong]
+        setList(updatedList)
+        setCurrentSong(newSong)
+      } else {
+        const playedSongs = list.slice(0, currentSongIndex - 1)
+        const remainingSongs = list.slice(currentSongIndex)
+        const updatedList = [...playedSongs, newSong, ...remainingSongs]
+        setList(updatedList)
+      }
+
+      setVariants(
+        data.filter((song) => song.version_id === newSong.version_id)
+      )
+      setVersionNumber(newSong.version)
+
+      const uniqueVersions = data.filter(
+        (song, index, self) =>
+          self.findIndex((s) => s.version_id === song.version_id) === index
+      )
+
+      setVersions(uniqueVersions)
+      setError(null)
+    } catch (error) {
+      console.error('Error fetching music:', error)
+      setError('Error al cargar la música')
+    }
+  }
+
+
+
+
+  useEffect(() => {
+
+    if (themeId && !isChangingSong.current) {
+      console.log('themeId changed:', themeId)
+      fetchMusic(themeId)
     }
   }, [themeId])
 
@@ -337,8 +391,6 @@ export const useMusicPlayerSync = (
     const newVersion = versions.find(
       (version) => version.version === versionNumber
     )
-
-    // Solo cambiar la versión si es diferente a la actual
     if (newVersion && newVersion.song_id !== currentSong.song_id) {
       isChangingSong.current = true
       setCurrentSong(newVersion)
