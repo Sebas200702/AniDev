@@ -110,7 +110,7 @@ export const DownloadButton = ({
         aria-label="Open download options"
         disabled={isLoading}
       >
-        <DownloadIcon className="h-4 w-4" />
+        <DownloadIcon className="h-4 w-4 md:h-5 md:w-5" />
         {showLabel && (
           <span className="font-medium">
             {isLoading ? 'Downloading...' : 'Download'}
@@ -130,7 +130,7 @@ export const DownloadButton = ({
       disabled={isLoading}
       title={`Download ${title}`}
     >
-      <DownloadIcon className="h-4 w-4 xl:h-5 xl:w-5" />
+      <DownloadIcon className="h-4 w-4 md:h-5 md:w-5" />
       {showLabel && (
         <span className="font-medium">
           {isLoading ? 'Downloading...' : 'Download'}
