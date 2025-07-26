@@ -112,7 +112,7 @@ export const AnimeCard = ({ anime }: Props) => {
           title={`Watch ${anime.title}`}
           className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <PlayIcon className="h-4 w-4" />
+          <PlayIcon className="h-4 w-4 md:h-5 md:w-5" />
         </a>
 
         <AddToListButton
