@@ -54,7 +54,7 @@ export const Aside = ({
   return (
     <Picture
       image={
-        createImageUrlProxy(`${baseUrl}${bgImage}`, '100', '0', 'webp') ?? ''
+        createImageUrlProxy(`${baseUrl}/${bgImage}`, '100', '0', 'webp') ?? ''
       }
       styles="w-full md:relative  absolute inset-0 z-0 overflow-hidden rounded-md"
     >
@@ -66,7 +66,7 @@ export const Aside = ({
         className={`z-10 h-full w-full bg-gradient-to-b via-black/50 via-20% to-black/90`}
       />
       <img
-        src={createImageUrlProxy(bgImage, '0', '70', 'webp')}
+        src={createImageUrlProxy(`${baseUrl}/${bgImage}`, '0', '70', 'webp')}
         className="relative h-full w-full object-cover object-center"
         alt=""
       />
