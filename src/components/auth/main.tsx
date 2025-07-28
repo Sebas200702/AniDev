@@ -57,10 +57,10 @@ export const Main = ({ isLoading, isSignUp, title }: Props) => {
     <section className="z-10 flex h-full w-full flex-col items-center justify-center px-4 py-8 md:px-18">
       {steps[currentStep - 1] && (
         <>
-          <h2 className="text-Primary-50 text-lx mb-4 font-bold">
+          <h2 className="text-Primary-50 text-lxx mb-4 font-bold">
             {steps[currentStep - 1].title}
           </h2>
-          <p className="text-Primary-100 mb-6 text-sm">
+          <p className="text-Primary-100 mb-6 text-sm text-pretty">
             {steps[currentStep - 1].description}
           </p>
           {currentStep === 1 ? (
