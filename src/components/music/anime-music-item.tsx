@@ -58,6 +58,7 @@ export const AnimeMusicItem = ({
   const isCurrentSong = currentSong?.song_id === song.song_id
   const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation()
+    e.preventDefault()
     isPlaying && canPlay
       ? playerRef.current?.pause()
       : playerRef.current?.play()
