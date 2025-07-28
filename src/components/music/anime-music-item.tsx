@@ -107,27 +107,7 @@ export const AnimeMusicItem = ({
             />
             <Overlay className="bg-Primary-950/90 h-full w-full overflow-hidden rounded-lg backdrop-blur-sm" />
           </div>
-          {isInMusicPlayer && (
-            <div
-              {...handleProps}
-              className="bg-enfasisColor/50 absolute top-1/2 right-0 z-10 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-r-md p-1 shadow-lg backdrop-blur-sm transition-all duration-200 select-none active:cursor-grabbing"
-              style={{ touchAction: 'none' }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="pointer-events-none h-4 w-4 text-white"
-              >
-                <circle cx="8" cy="6" r="1.5" />
-                <circle cx="8" cy="12" r="1.5" />
-                <circle cx="8" cy="18" r="1.5" />
-                <circle cx="16" cy="6" r="1.5" />
-                <circle cx="16" cy="12" r="1.5" />
-                <circle cx="16" cy="18" r="1.5" />
-              </svg>
-            </div>
-          )}
+
           <Picture
             image={createImageUrlProxy(placeholder, '0', '0', 'webp')}
             styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
@@ -246,6 +226,28 @@ export const AnimeMusicItem = ({
           text={`Listen ${song.song_title} on AniDev`}
         />
       </MoreOptions>
+        {isInMusicPlayer && (
+            <div
+              {...handleProps}
+              className="bg-enfasisColor/50 absolute top-1/2 right-0 z-10 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-r-md p-1 shadow-lg backdrop-blur-sm transition-all duration-200 select-none active:cursor-grabbing"
+              style={{ touchAction: 'none' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="pointer-events-none h-4 w-4 text-white"
+              >
+                <circle cx="8" cy="6" r="1.5" />
+                <circle cx="8" cy="12" r="1.5" />
+                <circle cx="8" cy="18" r="1.5" />
+                <circle cx="16" cy="6" r="1.5" />
+                <circle cx="16" cy="12" r="1.5" />
+                <circle cx="16" cy="18" r="1.5" />
+              </svg>
+            </div>
+          )}
     </article>
   )
 }
