@@ -36,9 +36,6 @@ import type { AnimeDetail } from 'types'
 
 export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   const shareText = `Watch ${anime.title} on AniDev`
-  const [isHovered, setIsHovered] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
   const animeMetadata = [
     {
       icon: (
@@ -66,9 +63,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   return (
     <article
       key={anime.mal_id}
-      className={`group relative transition-all duration-300 ease-in-out ${isMenuOpen ? '' : 'md:hover:translate-x-1'}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative transition-all duration-300 ease-in-out md:hover:translate-x-1`}
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
@@ -141,10 +136,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
         </div>
       </a>
 
-      <MoreOptions
-        className="absolute right-3 bottom-2"
-        onMenuStateChange={(isOpen) => setIsMenuOpen(isOpen)}
-      >
+      <MoreOptions className="absolute right-3 bottom-2">
         <a
           href={`/watch/${normalizeString(anime.title)}_${anime.mal_id}`}
           title={`Watch ${anime.title}`}
