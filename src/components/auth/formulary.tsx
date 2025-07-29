@@ -5,7 +5,7 @@ import { useAuthFormStore } from '@store/auth-form-store'
 import { useStepsStore } from '@store/steps-store'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
-import type { ApiJsonResponse } from 'types'
+
 
 interface Props {
   /**
@@ -26,38 +26,9 @@ interface Props {
   step?: string
 }
 
-enum RedirectionResult {
-  URL_FROM_JSON,
-  SUCCESS_MESSAGE,
-  REDIRECT_HEADER,
-  DEFAULT_REDIRECT,
-  NO_REDIRECT,
-}
 
-const _handleResponseRedirection = (
-  response: Response,
-  responseContent: ApiJsonResponse | string,
-  isSignUp: boolean,
-  setSuccessMessage: (message: string | null) => void
-): RedirectionResult => {
-  if (typeof responseContent === 'object' && responseContent.url) {
-    window.location.href = responseContent.url
-    return RedirectionResult.URL_FROM_JSON
-  }
 
-  if (typeof responseContent === 'object' && responseContent.message) {
-    setSuccessMessage(responseContent.message)
-    return RedirectionResult.SUCCESS_MESSAGE
-  }
 
-  if (response.redirected) {
-    window.location.href = response.url
-    return RedirectionResult.REDIRECT_HEADER
-  }
-
-  window.location.href = isSignUp ? '/signin' : '/'
-  return RedirectionResult.DEFAULT_REDIRECT
-}
 
 /**
  * Formulary component handles user authentication for sign-in and sign-up processes.
