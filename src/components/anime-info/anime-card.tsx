@@ -63,7 +63,6 @@ export const AnimeCard = ({ anime }: Props) => {
 
   const slug = normalizeString(title)
   const { width: windowWidth } = useWindowWidth()
-  const { userInfo } = useGlobalUserPreferences()
   const isMobile = windowWidth && windowWidth < 768
   const shareText = `Watch ${anime.title} on AniDev`
 
