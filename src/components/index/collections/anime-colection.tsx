@@ -1,6 +1,6 @@
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useEffect, useState } from 'react'
-import type { AnimeCollectionInfo, Collection } from 'types'
+import type { AnimeCollectionInfo } from 'types'
 
 import { Picture } from '@components/media/picture'
 import { useIndexStore } from '@store/index-store'
@@ -126,7 +126,7 @@ export const AnimeCollection = ({ id }: Props) => {
 
   useEffect(() => {
     setLoading(true)
-    let currentCollections: Collection[] = []
+    let currentCollections: AnimeCollectionInfo[] = []
     Object.keys(sessionStorage).forEach((key) => {
       if (key.startsWith('animeCollection_')) {
         currentCollections.push(JSON.parse(sessionStorage.getItem(key)!))
@@ -239,8 +239,7 @@ export const AnimeCollection = ({ id }: Props) => {
 
       collections.push(newCollection)
       return newCollection
-    } catch (error) {
-      // Register the URL as failed through API call for network errors too
+    } catch (_error) {
       await addFailedUrlClient(url)
 
       if (retryCount < maxRetries - 1) {
