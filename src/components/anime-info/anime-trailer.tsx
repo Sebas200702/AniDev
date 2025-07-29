@@ -61,8 +61,6 @@ export const AnimeTrailer = ({
   image_large_webp,
   title,
 }: Props) => {
-  const videoId = trailer_url?.split('v=')[1]?.split('&')[0]
-
   return (
     <>
       {trailer_url ? (
