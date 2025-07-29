@@ -24,15 +24,14 @@ export default defineConfig({
       }
 
       if (pub.length === 0) {
-        const { data: createRes, error: createErr } =
-          await supabaseAdmin.auth.admin.createUser({
-            email: user.email,
-            email_confirm: true,
-            user_metadata: {
-              user_name: user.name,
-              avatar_url: user.image,
-            },
-          })
+        const { error: createErr } = await supabaseAdmin.auth.admin.createUser({
+          email: user.email,
+          email_confirm: true,
+          user_metadata: {
+            user_name: user.name,
+            avatar_url: user.image,
+          },
+        })
         if (createErr) {
           console.error('Error creando usuario admin:', createErr)
           return false
