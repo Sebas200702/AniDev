@@ -113,8 +113,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         synopsis: anime.synopsis,
         mal_id: anime.mal_id,
       }
-    } catch (error) {
-      // Register the URL as failed through API call for network errors too
+    } catch (_error) {
       await addFailedUrlClient(url)
 
       if (retryCount < maxRetries - 1) {
