@@ -60,6 +60,31 @@ export enum CharacterFilters {
   language_filter = 'language_filter',
 }
 
+export interface Character {
+  mal_id: number
+  character_id: number
+  character_name: string
+  character_name_kanji: string
+  character_nicknames: string[]
+  character_about: string
+  character_image_url: string
+  character_small_image_url: string
+  character_url: string
+  role: string
+  voice_actor_id: number
+  voice_actor_name: string
+  voice_actor_alternative_names: string[]
+  voice_actor_family_name: string
+  voice_actor_given_name: string
+  voice_actor_birthday: string
+  voice_actor_about: string
+  voice_actor_image_url: string
+  voice_actor_language: string
+}
+
+
+
+
 export interface AnimeSongWithImage extends AnimeSong {
   image: string
   placeholder: string
