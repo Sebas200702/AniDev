@@ -40,7 +40,6 @@ import type { AnimeBannerInfo } from 'types'
  */
 export const Carousel = () => {
   const {
-    url,
     setUrl,
     banners,
     setBanners,
@@ -67,7 +66,7 @@ export const Carousel = () => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
 
-    const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set())
 
   const getBannerData = useCallback(
     async (
@@ -76,21 +75,21 @@ export const Carousel = () => {
       existingBanners: AnimeBannerInfo[] = [],
       attempts: number = 0
     ): Promise<AnimeBannerInfo[]> => {
-    const maxRetries = 10
+      const maxRetries = 10
 
-    if (attempts >= maxRetries) {
-      return existingBanners
-    }
+      if (attempts >= maxRetries) {
+        return existingBanners
+      }
 
-    try {
+      try {
         const response = await fetch(
           `/api/animes?${url}&banners_filter=true&format=anime-banner`
         )
 
-      if (!response.ok) {
-        await addFailedUrlClient(url)
+        if (!response.ok) {
+          await addFailedUrlClient(url)
 
-        if (attempts < maxRetries - 1) {
+          if (attempts < maxRetries - 1) {
             const { url: newUrl } = createDynamicUrl(
               requiredCount,
               parentalControl
@@ -101,21 +100,20 @@ export const Carousel = () => {
               existingBanners,
               attempts + 1
             )
+          }
+          return existingBanners
         }
-        return existingBanners
-      }
 
-      const responseData = await response.json()
+        const responseData = await response.json()
 
         if (
           !responseData ||
           !responseData.data ||
           !Array.isArray(responseData.data)
         ) {
+          await addFailedUrlClient(url)
 
-        await addFailedUrlClient(url)
-
-        if (attempts < maxRetries - 1) {
+          if (attempts < maxRetries - 1) {
             const { url: newUrl } = createDynamicUrl(
               requiredCount,
               parentalControl
@@ -126,17 +124,16 @@ export const Carousel = () => {
               existingBanners,
               attempts + 1
             )
+          }
+          return existingBanners
         }
-        return existingBanners
-      }
 
-      const animes: AnimeBannerInfo[] = responseData.data
+        const animes: AnimeBannerInfo[] = responseData.data
 
-      if (!animes || animes.length === 0) {
+        if (!animes || animes.length === 0) {
+          await addFailedUrlClient(url)
 
-        await addFailedUrlClient(url)
-
-        if (attempts < maxRetries - 1) {
+          if (attempts < maxRetries - 1) {
             const { url: newUrl } = createDynamicUrl(
               requiredCount,
               parentalControl
@@ -147,23 +144,23 @@ export const Carousel = () => {
               existingBanners,
               attempts + 1
             )
+          }
+          return existingBanners
         }
-        return existingBanners
-      }
 
         const newBanners = animes.filter(
           (anime) =>
-        anime &&
-        anime.mal_id &&
+            anime &&
+            anime.mal_id &&
             !existingBanners.some(
               (existing) => existing.mal_id === anime.mal_id
             )
-      )
+        )
 
-      const combinedBanners = [...existingBanners, ...newBanners]
+        const combinedBanners = [...existingBanners, ...newBanners]
 
-      if (combinedBanners.length < requiredCount) {
-        if (attempts < maxRetries - 1) {
+        if (combinedBanners.length < requiredCount) {
+          if (attempts < maxRetries - 1) {
             const { url: newUrl } = createDynamicUrl(
               requiredCount - combinedBanners.length,
               parentalControl
@@ -174,16 +171,15 @@ export const Carousel = () => {
               combinedBanners,
               attempts + 1
             )
+          }
+          return combinedBanners
         }
-        return combinedBanners
-      }
 
-      return combinedBanners.slice(0, requiredCount)
-    } catch (error) {
-   
-      await addFailedUrlClient(url)
+        return combinedBanners.slice(0, requiredCount)
+      } catch (_error) {
+        await addFailedUrlClient(url)
 
-      if (attempts < maxRetries - 1) {
+        if (attempts < maxRetries - 1) {
           const { url: newUrl } = createDynamicUrl(
             requiredCount,
             parentalControl
@@ -194,9 +190,9 @@ export const Carousel = () => {
             existingBanners,
             attempts + 1
           )
+        }
+        return existingBanners
       }
-      return existingBanners
-    }
     },
     [parentalControl]
   )
