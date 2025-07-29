@@ -73,7 +73,8 @@
           },
           "correctness": {
             "noChildrenProp": "error",
-            "useJsxKeyInIterable": "error"
+            "useJsxKeyInIterable": "error",
+            "noUnusedVariables": "error"
           },
           "security": { "noDangerouslySetInnerHtmlWithChildren": "error" },
           "suspicious": {
