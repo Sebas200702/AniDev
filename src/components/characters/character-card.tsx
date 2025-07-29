@@ -1,6 +1,6 @@
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-import { useWindowWidth } from '@store/window-width'
+
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
@@ -22,7 +22,7 @@ import type { Character } from 'types'
  * while the character name is displayed prominently. The voice actor name is shown when available.
  *
  * @param {Props} props - The component props
- * @param {Character} props.character - The character object containing details to display including name, images, role, and voice actor
+ * @param {CharacterDetails} props.character - The character object containing details to display including name, images, role, and voice actor
  * @returns {JSX.Element} The rendered character card with image, name, role, and voice actor info
  *
  * @example
@@ -30,9 +30,9 @@ import type { Character } from 'types'
  */
 interface Props {
   /**
-   * The character object containing details to display.
-   */
-  character: Character
+     * The character object containing details to display.
+     */
+    character: Character
 }
 
 export const CharacterCard = ({ character }: Props) => {
@@ -46,8 +46,6 @@ export const CharacterCard = ({ character }: Props) => {
   } = character
 
   const slug = normalizeString(character_name, true, false, true)
-  const { width: windowWidth } = useWindowWidth()
-  const isMobile = windowWidth && windowWidth < 768
 
   let timer: NodeJS.Timeout
 
@@ -75,22 +73,6 @@ export const CharacterCard = ({ character }: Props) => {
    */
   const handleMouseLeave = () => {
     clearTimeout(timer)
-  }
-
-  /**
-   * Gets the appropriate role color based on character role.
-   */
-  const getRoleColor = (role: string) => {
-    switch (role.toLowerCase()) {
-      case 'main':
-        return 'bg-yellow-400'
-      case 'supporting':
-        return 'bg-blue-400'
-      case 'background':
-        return 'bg-gray-400'
-      default:
-        return 'bg-green-400'
-    }
   }
 
   return (
