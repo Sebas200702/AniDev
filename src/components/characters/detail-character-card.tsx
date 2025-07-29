@@ -19,7 +19,7 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
           <Picture
             image={createImageUrlProxy(
               character.character_small_image_url ??
-              `${baseUrl}/placeholder.webp`,
+                `${baseUrl}/placeholder.webp`,
               '0',
               '0',
               'webp'
@@ -71,7 +71,7 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
             styles="h-full w-full relative"
           >
             <img
-                src={createImageUrlProxy(
+              src={createImageUrlProxy(
                 character.voice_actor_image_url ??
                   `${baseUrl}/placeholder.webp`,
                 '0',
