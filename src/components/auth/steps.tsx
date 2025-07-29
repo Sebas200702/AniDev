@@ -332,7 +332,7 @@ const stepsSignIn: {
  * @returns {JSX.Element} A list of step indicators showing progress through the auth flow
  */
 export const StepsComponent = (isSignUp: boolean) => {
-  const { currentStep, setCurrentStep, setSteps } = useStepsStore()
+  const { currentStep, setSteps } = useStepsStore()
   const steps = isSignUp ? stepsSignUp : stepsSignIn
   useEffect(() => {
     setSteps(steps)
