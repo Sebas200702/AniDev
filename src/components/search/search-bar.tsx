@@ -4,6 +4,7 @@ import { AnimeCharacterCard } from '@components/characters/detail-character-card
 import { SearchIcon } from '@components/icons/search-icon'
 import { AnimeMusicItem } from '@components/music/anime-music-item'
 import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { useAutoCloseModal } from '@hooks/useAutoCloseModal'
 import { useDebounce } from '@hooks/useDebounce'
 import { useFetch } from '@hooks/useFetch'
 import { useModal } from '@hooks/useModal'
@@ -17,7 +18,6 @@ import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { useAutoCloseModal } from '@hooks/useAutoCloseModal'
 import {
   type AnimeSongWithImage,
   type Character,
@@ -54,7 +54,7 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
 
   useAutoCloseModal(isModalOpen, closeModal, {
     debounceMs: 50,
-    enableLogs: true
+    enableLogs: true,
   })
 
   const filtersToApply = useMemo(
@@ -127,7 +127,7 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
   const {
     data: animesFull,
     loading: isLoadingFull,
-    error: fetchErrorFull,
+    error,
   } = useFetch<AnimeDetail[] | AnimeSongWithImage[] | Character[]>({
     url: `${url.replace('format=search', 'format=anime-detail').replace('30', '7')}`,
     skip: !url || (!filtersToApply && !debouncedQuery),
@@ -232,7 +232,7 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
         id="search-bar"
         role="search"
         onSubmit={handleSubmit}
-        className="relative mt-24 flex w-full max-w-xl flex-col gap-6 shadow-lg "
+        className="relative mt-24 flex w-full max-w-xl flex-col gap-6 shadow-lg"
       >
         <header className="flex items-center justify-between">
           <div className="hidden gap-4 text-gray-300 select-none md:flex">
@@ -284,7 +284,7 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
         </div>
       </form>
       <div
-        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} mt-4 transition-all duration-300 `}
+        className={`no-scrollbar no-scrollbar bg-Primary-950 relative flex h-full max-h-96 w-full max-w-xl flex-col gap-4 overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} mt-4 transition-all duration-300`}
       >
         {isLoadingFull &&
           Array.from({ length: 7 }, (_, i) => (
@@ -337,6 +337,12 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
                   />
                 ))
               : null}
+
+        {error && (
+          <p className="text-lg text-red-500">
+            Error fetching data: {error || 'Unknown error'}
+          </p>
+        )}
 
         {results &&
           results?.length > 7 &&
