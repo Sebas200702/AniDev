@@ -82,6 +82,12 @@ export interface Character {
   voice_actor_language: string
 }
 
+export interface Collection {
+  title: string
+  query: string
+  animes_ids: number[]
+}
+
 export interface AnimeSongWithImage extends AnimeSong {
   image: string
   placeholder: string
