@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react'
 
 export const MusicPlayList = () => {
   const { list, currentSongIndex, setList } = useMusicPlayerStore()
-  const [activeId, setActiveId] = useState<number | null>(null)
+  const [_, setActiveId] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export const MusicPlayList = () => {
               strategy={verticalListSortingStrategy}
             >
               <ul className="flex flex-col gap-3">
-                {upcomingList.map((song, index) => (
+                {upcomingList.map((song) => (
                   <AnimeMusicItem
                     key={song.song_id}
                     song={song}
