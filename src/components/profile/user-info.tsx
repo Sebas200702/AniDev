@@ -102,7 +102,7 @@ export const UserInfo = ({
               'webp'
             )}
             alt={`${userInfo?.name} Avatar`}
-            className="h-full w-full rounded-full transition-all duration-200 relative"
+            className="relative h-full w-full rounded-full transition-all duration-200"
           />
         </Picture>
 
