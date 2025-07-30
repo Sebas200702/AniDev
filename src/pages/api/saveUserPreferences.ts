@@ -9,9 +9,9 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const user = userInfo?.name
+  const userName = userInfo?.name ?? 'anonymous'
 
-  if (!user) {
+  if (!userName) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
@@ -31,7 +31,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   const { data, error } = await supabase
     .from('public_users')
     .update({ enfasis_color: enfasiscolor, parental_control: parentalControl })
-    .eq('name', user.name)
+    .eq('name', userName)
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
