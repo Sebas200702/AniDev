@@ -43,6 +43,8 @@ export const Picture = ({
         className="absolute inset-0 bg-cover bg-center blur-lg filter"
         src={image}
         alt="placeholder"
+        loading="eager"
+        decoding="async"
       />
       {children}
     </picture>
