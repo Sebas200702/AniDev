@@ -6,7 +6,11 @@ export const usePlayerBehavior = (
 ) => {
   const { setIsMinimized, isMinimized, setIsHidden } = useMusicPlayerStore()
   const isTransitioningRef = useRef(false)
-  const currentPathRef = useRef(window.location.pathname)
+  const currentPathRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    currentPathRef.current = window.location.pathname
+  }, [])
 
   const updateMinimizedState = useCallback(() => {
     const currentPath = window.location.pathname
