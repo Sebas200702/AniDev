@@ -30,9 +30,9 @@ import type { Character } from 'types'
  */
 interface Props {
   /**
-     * The character object containing details to display.
-     */
-    character: Character
+   * The character object containing details to display.
+   */
+  character: Character
 }
 
 export const CharacterCard = ({ character }: Props) => {
