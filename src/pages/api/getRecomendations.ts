@@ -156,7 +156,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       refreshToken: cookies.get('sb-refresh-token')?.value,
     })
 
-    const userName = userInfo?.name
+    const userName = userInfo?.name ?? 'anonymous'
 
     const isAuth = !!userName
 
