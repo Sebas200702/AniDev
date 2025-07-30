@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client'
 import type { Anime } from 'types'
 
 /**
@@ -29,13 +30,13 @@ export const getAnimeData = async (
     })
 
     if (response.status === 404) {
-      window.location.href = '/404'
+      navigate('/404')
     }
 
     const animeData = await response.json().then((data) => data.anime)
 
     return animeData
-  } catch (error) {
+  } catch (_error) {
     return
   }
 }
