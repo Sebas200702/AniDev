@@ -77,18 +77,15 @@ class RedisConnectionPool {
 
     try {
       if (client.isOpen) {
-        client.quit().catch(() => {}) // Cerrar silenciosamente
+        client.quit().catch(() => {})
       }
-    } catch (error) {
-      // Ignorar errores al cerrar
-    }
+    } catch (_error) {}
   }
 
   private startIdleConnectionCleaner(): void {
-    // Limpiar conexiones idle cada minuto
     this.idleCleanupInterval = setInterval(() => {
       this.cleanupIdleConnections()
-    }, 60000) // 1 minuto
+    }, 60000)
   }
 
   private cleanupIdleConnections(): void {
@@ -96,8 +93,6 @@ class RedisConnectionPool {
 
     const now = Date.now()
     const connectionsToRemove: ExtendedRedisClient[] = []
-
-    // Solo limpiar si tenemos más que el mínimo
     if (this.availableConnections.length > this.config.minConnections) {
       for (const client of this.availableConnections) {
         const lastUsed = this.connectionLastUsed.get(client) || now
@@ -108,7 +103,6 @@ class RedisConnectionPool {
         }
       }
 
-      // Asegurar que no bajemos del mínimo
       const canRemove = Math.max(
         0,
         this.availableConnections.length - this.config.minConnections
@@ -147,7 +141,7 @@ class RedisConnectionPool {
     try {
       await client.connect()
       this.pool.push(client)
-      // No agregar a availableConnections aquí, se agregará cuando se libere
+
       return client
     } catch (error) {
       console.error('Failed to create Redis connection:', error)
@@ -160,30 +154,26 @@ class RedisConnectionPool {
       throw new Error('Connection pool is shutting down')
     }
 
-    // Si hay conexiones disponibles, usar una
     if (this.availableConnections.length > 0) {
       const client = this.availableConnections.pop()!
       this.busyConnections.add(client)
 
-      // Verificar si la conexión sigue activa
       if (!client.isReady) {
         try {
           if (!client.isOpen) await client.connect()
-        } catch (error) {
+        } catch (_error) {
           this.removeClientFromPool(client)
-          return this.acquireConnection() // Intentar con otra conexión
+          return this.acquireConnection()
         }
       }
 
       return client
     }
 
-    // Si no hemos alcanzado el máximo, crear nueva conexión
     if (this.pool.length < this.config.maxConnections) {
       try {
         const client = await this.createAndConnectClient()
         this.busyConnections.add(client)
-        // Remover de availableConnections ya que está en busyConnections
         const index = this.availableConnections.indexOf(client)
         if (index > -1) {
           this.availableConnections.splice(index, 1)
@@ -194,7 +184,6 @@ class RedisConnectionPool {
       }
     }
 
-    // Esperar por una conexión disponible
     return this.waitForAvailableConnection()
   }
 
@@ -215,11 +204,11 @@ class RedisConnectionPool {
 
   releaseConnection(client: ExtendedRedisClient): void {
     if (!this.busyConnections.has(client)) {
-      return // Conexión ya liberada o no válida
+      return
     }
 
     this.busyConnections.delete(client)
-    this.connectionLastUsed.set(client, Date.now()) // Marcar último uso
+    this.connectionLastUsed.set(client, Date.now())
 
     if (client.isReady && !this.isShuttingDown) {
       this.availableConnections.push(client)
@@ -243,7 +232,6 @@ class RedisConnectionPool {
   async shutdown(): Promise<void> {
     this.isShuttingDown = true
 
-    // Detener limpieza de conexiones idle
     if (this.idleCleanupInterval) {
       clearInterval(this.idleCleanupInterval)
       this.idleCleanupInterval = null
@@ -280,8 +268,6 @@ class RedisConnectionPool {
     }
   }
 }
-
-// Singleton del pool de conexiones
 declare global {
   var __redisPool: RedisConnectionPool | undefined
 }
@@ -289,19 +275,17 @@ declare global {
 const redisPool =
   global.__redisPool ??
   new RedisConnectionPool({
-    maxConnections: 5, // Conservador para plan gratuito (límite ~30 conexiones)
-    minConnections: 1, // Mínimo de 1 para evitar crear conexiones innecesarias
-    acquireTimeout: 3000, // Timeout más corto
-    idleTimeout: 120000, // 2 minutos - cerrar conexiones idle más rápido
+    maxConnections: 5,
+    minConnections: 1,
+    acquireTimeout: 3000,
+    idleTimeout: 120000,
   })
 
 if (!global.__redisPool) {
   global.__redisPool = redisPool
 
-  // Inicializar el pool al arrancar
   redisPool.initialize().catch(console.error)
 
-  // Cleanup al terminar el proceso
   const gracefulShutdown = async () => {
     await redisPool.shutdown()
   }
@@ -394,13 +378,10 @@ export async function connectRedis(): Promise<void> {
   }
 }
 
-// Export pool stats for monitoring
 export function getRedisPoolStats() {
   return redisPool.getStats()
 }
 
-// Para casos donde necesites acceso directo (usar con cuidado)
 export { redisPool }
 
-// Type alias for backward compatibility with existing code
 export type RedisClientType = ExtendedRedisClient
