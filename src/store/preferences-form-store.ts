@@ -17,11 +17,6 @@ const preferencesSchema = z.object({
   favorite_genres: z.array(z.string()).optional(),
 })
 
-type PreferencesFormValues = z.infer<typeof preferencesSchema>
-type PreferencesFormErrors = Partial<
-  Record<keyof PreferencesFormValues, string>
->
-
 /**
  * Preferences form state and methods interface.
  *
