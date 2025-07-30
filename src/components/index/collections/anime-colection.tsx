@@ -1,6 +1,6 @@
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useEffect, useState } from 'react'
-import type { AnimeCollectionInfo } from 'types'
+import type { AnimeCollectionInfo, Collection } from 'types'
 
 import { Picture } from '@components/media/picture'
 import { useIndexStore } from '@store/index-store'
@@ -126,7 +126,7 @@ export const AnimeCollection = ({ id }: Props) => {
 
   useEffect(() => {
     setLoading(true)
-    let currentCollections: AnimeCollectionInfo[] = []
+    let currentCollections: Collection[] = []
     Object.keys(sessionStorage).forEach((key) => {
       if (key.startsWith('animeCollection_')) {
         currentCollections.push(JSON.parse(sessionStorage.getItem(key)!))
@@ -168,7 +168,7 @@ export const AnimeCollection = ({ id }: Props) => {
       )
 
       if (!response.ok) {
-        // Register the URL as failed through API call
+       
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
@@ -188,7 +188,7 @@ export const AnimeCollection = ({ id }: Props) => {
         !responseData.data ||
         !Array.isArray(responseData.data)
       ) {
-        // Register the URL as failed through API call
+
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
@@ -204,7 +204,7 @@ export const AnimeCollection = ({ id }: Props) => {
       const fetchedAnimes: AnimeCollectionInfo[] = responseData.data
 
       if (!fetchedAnimes || fetchedAnimes.length === 0) {
-        // Register the URL as failed through API call
+
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
