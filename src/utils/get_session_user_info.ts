@@ -35,7 +35,7 @@ export const getSessionUserInfo = async ({
   request: Request | undefined
   accessToken: string | undefined
   refreshToken: string | undefined
-}) => {
+}): Promise<{ name: string | null; avatar: string | null } | null> => {
   if (!request) return null
 
   if (accessToken && refreshToken) {
@@ -44,11 +44,10 @@ export const getSessionUserInfo = async ({
       access_token: accessToken,
     })
 
-    if (data?.user) {
-      return {
-        name: data.user.user_metadata?.user_name ?? null,
-        avatar: data.user.user_metadata?.avatar_url ?? null,
-      }
+    if (!data?.user || error) return null
+    return {
+      name: data.user.user_metadata?.user_name ?? null,
+      avatar: data.user.user_metadata?.avatar_url ?? null,
     }
   }
 
@@ -63,7 +62,6 @@ export const getSessionUserInfo = async ({
 
   const userInfo = {
     name: session.user.name ?? null,
-
     avatar: error ? (session.user.image ?? null) : data?.avatar_url,
   }
 
