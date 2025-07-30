@@ -31,7 +31,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   }
 
   const formattedHistory = Array.isArray(searchHistory) ? searchHistory : []
-  const { data, error } = await supabase.from('search_history').upsert(
+  const { error } = await supabase.from('search_history').upsert(
     {
       search_history: JSON.stringify(formattedHistory),
       user_id: userId[0].id,
