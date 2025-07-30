@@ -39,9 +39,10 @@ export const Picture = ({
 }) => {
   return (
     <picture className={`${styles} overflow-hidden`}>
-      <div
+      <img
         className="absolute inset-0 bg-cover bg-center blur-lg filter"
-        style={{ backgroundImage: `url(${image})` }}
+        src={image}
+        alt="placeholder"
       />
       {children}
     </picture>
