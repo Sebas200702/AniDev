@@ -41,24 +41,23 @@ export const useMusicPlayerSync = (
   const isChangingSong = useRef(false)
   const mediaUpdateInterval = useRef<number | null>(null)
 
-
   const [themeId, setThemeId] = useState<string | null>(null)
   const debounceTimeoutRef = useRef<number | null>(null)
 
-
   const extractThemeIdFromPath = () => {
-    if (typeof window === 'undefined' || !window.location.pathname.includes('/music')) return null
+    if (
+      typeof window === 'undefined' ||
+      !window.location.pathname.includes('/music')
+    )
+      return null
     const pathParts = window.location.pathname.split('_')
     return pathParts.length > 1 ? pathParts[1] : null
   }
 
-
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-
     setThemeId(extractThemeIdFromPath())
-
 
     const updateThemeIdWithDebounce = () => {
       if (debounceTimeoutRef.current) {
@@ -70,8 +69,6 @@ export const useMusicPlayerSync = (
         setThemeId(newThemeId)
       }, 100)
     }
-
-
 
     window.addEventListener('popstate', updateThemeIdWithDebounce)
     document.addEventListener('astro:page-load', updateThemeIdWithDebounce)
@@ -94,11 +91,13 @@ export const useMusicPlayerSync = (
       }
       window.removeEventListener('popstate', updateThemeIdWithDebounce)
       document.removeEventListener('astro:page-load', updateThemeIdWithDebounce)
-      document.removeEventListener('astro:after-swap', updateThemeIdWithDebounce)
+      document.removeEventListener(
+        'astro:after-swap',
+        updateThemeIdWithDebounce
+      )
       observer.disconnect()
     }
   }, [])
-
 
   const fetchMusic = async (currentThemeId?: string) => {
     const idToUse = currentThemeId || themeId
@@ -147,9 +146,7 @@ export const useMusicPlayerSync = (
         setList(updatedList)
       }
 
-      setVariants(
-        data.filter((song) => song.version_id === newSong.version_id)
-      )
+      setVariants(data.filter((song) => song.version_id === newSong.version_id))
       setVersionNumber(newSong.version)
 
       const uniqueVersions = data.filter(
@@ -165,11 +162,7 @@ export const useMusicPlayerSync = (
     }
   }
 
-
-
-
   useEffect(() => {
-
     if (themeId && !isChangingSong.current) {
       console.log('themeId changed:', themeId)
       fetchMusic(themeId)
