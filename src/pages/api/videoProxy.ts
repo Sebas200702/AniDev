@@ -48,7 +48,7 @@ import type { APIRoute } from 'astro'
  * "Missing resource URL"
  */
 
-export const GET: APIRoute = rateLimit(async ({ request, url }) => {
+export const GET: APIRoute = rateLimit(async ({ url }) => {
   const resourceUrl = url.searchParams.get('url')
 
   if (!resourceUrl) {
