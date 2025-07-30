@@ -1,4 +1,4 @@
-import type { AnimeCollectionInfo } from 'types'
+import type { AnimeCollectionInfo, Collection } from 'types'
 import { create } from 'zustand'
 
 /**
@@ -26,9 +26,9 @@ import { create } from 'zustand'
  */
 interface IndexStore {
   animeBanners: number[]
-  collections: AnimeCollectionInfo[]
+  collections: Collection[]
   setAnimeBanners: (animeBanners: number[]) => void
-  setCollections: (collections: AnimeCollectionInfo[]) => void
+  setCollections: (collections: Collection[]) => void
 }
 
 export const useIndexStore = create<IndexStore>((set) => ({
