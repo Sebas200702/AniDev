@@ -27,7 +27,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
       status: 500,
     })
   }
-  const { data, error } = await supabase.from('watch_list').upsert({
+  const { error } = await supabase.from('watch_list').upsert({
     anime_id: animeId,
     user_id: userData.id,
     type: type,
@@ -70,7 +70,7 @@ export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
     })
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('watch_list')
     .delete()
     .eq('anime_id', animeId)
