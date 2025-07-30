@@ -15,9 +15,6 @@ const profileSchema = z.object({
   gender: z.string().min(1, 'Gender is required'),
 })
 
-type ProfileFormValues = z.infer<typeof profileSchema>
-type ProfileFormErrors = Partial<Record<keyof ProfileFormValues, string>>
-
 /**
  * Profile form state and methods interface.
  *
