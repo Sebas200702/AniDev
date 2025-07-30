@@ -74,8 +74,9 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
                     'webp'
                   )
             }
-            alt="Anime Banner"
-            loading="lazy"
+            alt={`${anime.title} banner`}
+            loading="eager"
+            decoding="async"
           />
         </Picture>
       </div>
