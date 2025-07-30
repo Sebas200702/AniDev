@@ -9,8 +9,14 @@ interface Props {
 }
 
 export const NextPrevButton = ({ direction }: Props) => {
-  const { currentSongIndex, setCurrentSong, list, setSavedTime, isMinimized, setCurrentTime } =
-    useMusicPlayerStore()
+  const {
+    currentSongIndex,
+    setCurrentSong,
+    list,
+    setSavedTime,
+    isMinimized,
+    setCurrentTime,
+  } = useMusicPlayerStore()
 
   const hasNext = currentSongIndex + 1 < list.length
   const hasPrev = currentSongIndex > 0
