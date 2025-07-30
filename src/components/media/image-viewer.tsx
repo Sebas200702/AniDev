@@ -49,13 +49,11 @@ export const ImageViewer = ({
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-
-  // Touch-specific state
   const [touches, setTouches] = useState<TouchInfo[]>([])
   const [initialDistance, setInitialDistance] = useState(0)
   const [initialZoom, setInitialZoom] = useState(1)
   const [lastTap, setLastTap] = useState(0)
-  const [touchCenter, setTouchCenter] = useState({ x: 0, y: 0 })
+
   const [swipeStartX, setSwipeStartX] = useState(0)
   const [isSwipeGesture, setIsSwipeGesture] = useState(false)
 
@@ -66,8 +64,6 @@ export const ImageViewer = ({
   const MAX_ZOOM = 3
   const ZOOM_STEP = 0.1
   const DOUBLE_TAP_DELAY = 300
-
-  // Current image
   const currentImage = imageList[currentIndex]
   const hasMultipleImages = imageList.length > 1
 
@@ -142,8 +138,6 @@ export const ImageViewer = ({
     const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP
     setZoom((prev) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, prev + delta)))
   }, [])
-
-  // Touch utility functions
   const getDistance = useCallback(
     (touch1: TouchInfo, touch2: TouchInfo): number => {
       const dx = touch1.x - touch2.x
@@ -168,7 +162,6 @@ export const ImageViewer = ({
     }
   }, [])
 
-  // Touch event handlers
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       e.preventDefault()
@@ -204,14 +197,11 @@ export const ImageViewer = ({
           setDragStart({ x: touch.x - position.x, y: touch.y - position.y })
         }
       } else if (newTouches.length === 2) {
-        // Pinch to zoom setup
         setIsDragging(false)
         const distance = getDistance(newTouches[0], newTouches[1])
-        const center = getCenter(newTouches[0], newTouches[1])
 
         setInitialDistance(distance)
         setInitialZoom(zoom)
-        setTouchCenter(center)
       }
     },
     [zoom, position, lastTap, getTouchInfo, getDistance, getCenter, handleReset]
