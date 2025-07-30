@@ -7,12 +7,12 @@ export const Cover = () => {
 
   if (!currentSong) return null
 
-  const proxyUrl= createImageUrlProxy(
-          currentSong.banner_image ?? currentSong.image,
-          '1920',
-          '50',
-          'webp'
-        )
+  const proxyUrl = createImageUrlProxy(
+    currentSong.banner_image ?? currentSong.image,
+    '1920',
+    '50',
+    'webp'
+  )
 
   if (!isMinimized && type === 'audio') {
     return (
