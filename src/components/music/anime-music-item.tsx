@@ -49,7 +49,7 @@ export const AnimeMusicItem = ({
 
   const [heights, setHeights] = useState([0, 0, 0, 0])
 
-  const { isPlaying, currentSong, list, playerRef, canPlay, isMinimized } =
+  const { isPlaying, currentSong, list, playerRef, canPlay } =
     useMusicPlayerStore()
   const isInPlaylist = list.some(
     (songList) => songList.song_id === song.song_id
@@ -86,11 +86,11 @@ export const AnimeMusicItem = ({
     <article
       ref={setNodeRef}
       style={style}
-      className={`transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''}  group group border-enfasisColor group relative flex h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1`}
+      className={`transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1`}
     >
       <a
         href={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
-        className="bg-zinc-800hover:bg-Primary-900  relative mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
+        className="bg-zinc-800hover:bg-Primary-900 relative mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
         title={song.song_title}
       >
         <div className="flex aspect-[100/30] h-full w-full flex-row overflow-hidden rounded-lg md:max-h-36">
@@ -167,7 +167,7 @@ export const AnimeMusicItem = ({
                       `/artist/${normalizeString(song.artist_name || '')}`
                     )
                   }}
-                  className="text-sxx w-full md:w-auto text-Primary-300 flex flex-row items-end gap-1 truncate"
+                  className="text-sxx text-Primary-300 flex w-full flex-row items-end gap-1 truncate md:w-auto"
                 >
                   By
                   <strong className="text-Primary-100 text-m hover:text-enfasisColor cursor-pointer truncate transition-all duration-300">
@@ -198,7 +198,7 @@ export const AnimeMusicItem = ({
         </div>
       </a>
       <MoreOptions
-        className={`absolute md:bottom-3 ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} bottom-2  md:flex`}
+        className={`absolute md:bottom-3 ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} bottom-2 md:flex`}
       >
         <AddToPlayListButton
           song={{
