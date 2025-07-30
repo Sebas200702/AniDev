@@ -43,7 +43,7 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
   const [cachedAnimes, setCachedAnimes] = useState<AnimeCardInfo[]>([])
   const { width: windowWidth, setWidth: setWindowWidth } = useWindowWidth()
   const listRef = useRef<HTMLUListElement>(null)
-  const { userInfo, parentalControl } = useGlobalUserPreferences()
+  const { parentalControl } = useGlobalUserPreferences()
   const storageKey = `animes_${url}`
 
   const getCachedAnimes = useCallback(() => {
