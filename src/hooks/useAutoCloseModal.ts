@@ -52,9 +52,7 @@ export const useAutoCloseModal = (
   closeModal: () => void,
   options: UseAutoCloseModalOptions = {}
 ) => {
-  const { debounceMs = 100, enableLogs = false } = options
-  const urlChangeDebounceRef = useRef<number | null>(null)
-  const lastUrlRef = useRef<string>('')
+  const { enableLogs = false } = options
 
   useEffect(() => {
     if (typeof window === 'undefined') return
