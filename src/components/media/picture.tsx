@@ -40,7 +40,7 @@ export const Picture = ({
   return (
     <picture className={`${styles} overflow-hidden`}>
       <img
-        className="absolute inset-0 bg-cover bg-center blur-lg filter"
+        className="absolute inset-0 bg-cover bg-center blur-lg filter w-full h-full"
         src={image}
         alt="placeholder"
         loading="eager"
