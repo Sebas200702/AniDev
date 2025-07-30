@@ -6,7 +6,6 @@ import { useStepsStore } from '@store/steps-store'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
 
-
 interface Props {
   /**
    * The title of the formulary.
@@ -25,10 +24,6 @@ interface Props {
    */
   step?: string
 }
-
-
-
-
 
 /**
  * Formulary component handles user authentication for sign-in and sign-up processes.
