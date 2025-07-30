@@ -66,12 +66,11 @@ export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
   }
 
   try {
-    const { data: verifyData, error: verifyError } =
-      await supabaseAdmin.auth.admin.generateLink({
-        email,
-        type: 'signup',
-        password,
-      })
+    const { error: verifyError } = await supabaseAdmin.auth.admin.generateLink({
+      email,
+      type: 'signup',
+      password,
+    })
 
     if (verifyError) {
       console.error('Error en la verificación:', verifyError.message)
