@@ -75,8 +75,6 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
                   )
             }
             alt={`${anime.title} banner`}
-            loading="eager"
-            decoding="async"
           />
         </Picture>
       </div>
