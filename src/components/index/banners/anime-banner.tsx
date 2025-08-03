@@ -10,6 +10,7 @@ import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { addFailedUrlClient } from '@utils/failed-urls-client'
 import { normalizeString } from '@utils/normalize-string'
+import '@styles/anime-banner.css'
 import { useEffect, useState } from 'react'
 
 /**
