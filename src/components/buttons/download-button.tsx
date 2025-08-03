@@ -1,9 +1,10 @@
+
+import { DownloadModalContent } from '@components/download/download-modal-content'
 import { useModal } from '@hooks/useModal'
 import { DownloadIcon } from '@icons/download-icon'
 import { toast } from '@pheralb/toast'
 import { useState } from 'react'
 import { ToastType } from 'types'
-import { DownloadModalContent } from '../download/download-modal-content'
 
 interface Props {
   url: string
