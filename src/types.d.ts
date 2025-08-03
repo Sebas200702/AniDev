@@ -172,6 +172,10 @@ export enum MusicFilters {
   search_query = 'search_query',
   order_by = 'order_by',
   page_number = 'page_number',
+  anime_season = 'anime_season',
+  anime_year = 'anime_year',
+  anime_status = 'anime_status',
+  artist_filter = 'artist_filter',
 }
 
 export enum SearchType {
