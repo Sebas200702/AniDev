@@ -1,5 +1,6 @@
 import { CloseIcon } from '@components/icons/close-icon'
 import { Toaster } from '@pheralb/toast'
+import '@pheralb/toast/dist/styles.css'
 
 export const CustomToaster = () => {
   return (
