@@ -1,9 +1,5 @@
-import { ExpandIconV2 } from '@components/icons/expand-icon'
-import { ImageViewer } from '@components/media/image-viewer'
 import { Picture } from '@components/media/picture'
-import { useModal } from '@hooks/useModal'
 import { baseUrl } from '@utils/base-url'
-import { createSingleImageList } from '@utils/create-image-list'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
 /**
@@ -54,28 +50,6 @@ export const AnimeBanner = ({
   image_large_webp,
   title,
 }: Props) => {
-  const { openModal, closeModal } = useModal()
-
-  const imageList = createSingleImageList({
-    src: banner_image ?? image_large_webp,
-    alt: `${title} banner`,
-    maxWidth: '100vw',
-    optimize: true,
-    optimizeOptions: {
-      width: '1920',
-      quality: '50',
-      format: 'webp',
-    },
-  })
-
-  const handleOpenImageViewer = () => {
-    openModal(ImageViewer, {
-      imageList,
-      initialIndex: 0,
-      onClose: closeModal,
-    })
-  }
-
   return (
     <div className="group">
       <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
@@ -109,15 +83,6 @@ export const AnimeBanner = ({
           />
         </Picture>
       </div>
-
-      {/* Small button to open image viewer */}
-      <button
-        onClick={handleOpenImageViewer}
-        className="absolute top-[32dvh] right-4 z-50 transition-opacity duration-300 md:top-[45dvh] md:right-20 md:opacity-0 md:group-hover:opacity-100"
-        aria-label="Open banner image in advanced viewer"
-      >
-        <ExpandIconV2 className="text-Primary-200 h-6 w-6" />
-      </button>
     </div>
   )
 }
