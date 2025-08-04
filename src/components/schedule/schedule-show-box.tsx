@@ -57,11 +57,10 @@ export const CalendarShowBox = () => {
         if (!currentSelectedLabel) return
 
         const response = await fetch(
-          `/api/animes?status_filter=currently airing&aired_day_filter=${currentSelectedLabel}&banners_filter=false&parental_control=${parentalControl}`
+          `/api/animes?status_filter=currently airing&aired_day_filter=${currentSelectedLabel}&banners_filter=false&parental_control=${parentalControl}&format=schedule`
         )
 
         if (response.status === 404) {
-          window.location.href = '/404'
           return
         }
 
