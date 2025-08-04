@@ -56,7 +56,9 @@ export const getFilters = (
         }
       } else {
         filters[filter] = value
-          ? value.split('_').map((item) => normalizeString(item))
+          ? value
+              .split('_')
+              .map((item) => normalizeString(item, false, false, true))
           : null
       }
 
