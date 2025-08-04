@@ -1,4 +1,3 @@
-
 import { DownloadModalContent } from '@components/download/download-modal-content'
 import { useModal } from '@hooks/useModal'
 import { DownloadIcon } from '@icons/download-icon'
