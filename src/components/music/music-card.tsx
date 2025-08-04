@@ -35,15 +35,15 @@ export const MusicCard = ({ song }: { song: AnimeSongWithImage }) => {
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }
     >
-      <div className="relative mb-4">
+      <div className="relative mb-4 overflow-hidden">
         <Picture
           image={createImageUrlProxy(song.placeholder, '0', '0', 'webp')}
-          styles="relative aspect-square rounded-md overflow-hidden shadow-lg aspect-square h-full"
+          styles="relative aspect-square rounded-md overflow-hidden shadow-lg aspect-square  h-full relative"
         >
           <img
             src={createImageUrlProxy(song.image, '0', '70', 'webp')}
             alt={song.song_title}
-            className="aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
+            className="relative aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
           />
         </Picture>
 
