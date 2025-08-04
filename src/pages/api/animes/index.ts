@@ -67,8 +67,6 @@ export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
       const cacheKey = `animes-partial:${url.searchParams}`
-
-      // Intentar obtener desde cache de forma segura
       const cached = await safeRedisOperation(async (redis) => {
         return await redis.get(cacheKey)
       })
@@ -100,6 +98,7 @@ export const GET: APIRoute = rateLimit(
         AnimeCollection = 'anime-collection',
         AnimeDetail = 'anime-detail',
         Search = 'search',
+        Schedule = 'schedule',
       }
       const getFormat = (format: string) => {
         if (format === Formats.AnimeCard) return 'get_anime_summary_card'
@@ -108,10 +107,12 @@ export const GET: APIRoute = rateLimit(
         if (format === Formats.AnimeDetail) return 'get_anime_detail_card'
         if (format === Formats.AnimeCollection) return 'get_animes_collection'
         if (format === Formats.Search) return 'get_anime_summary_card'
+        if (format === Formats.Schedule) return 'get_anime_schedule'
 
         return 'get_anime_summary_card'
       }
       const formatFunction = getFormat(format ?? '')
+      console.log(filters)
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
 
