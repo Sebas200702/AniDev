@@ -49,7 +49,7 @@ export const GET: APIRoute = rateLimit(
       }
 
       if (error) {
-        console.error('Error al obtener los animes:', error)
+        console.error('Error al obtener los musicas:', error)
         throw new Error('Ocurrió un error al obtener los musicas.')
       }
       await safeRedisOperation((client) =>
