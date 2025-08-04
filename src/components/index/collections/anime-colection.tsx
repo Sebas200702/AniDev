@@ -168,7 +168,6 @@ export const AnimeCollection = ({ id }: Props) => {
       )
 
       if (!response.ok) {
-       
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
@@ -188,7 +187,6 @@ export const AnimeCollection = ({ id }: Props) => {
         !responseData.data ||
         !Array.isArray(responseData.data)
       ) {
-
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
@@ -204,7 +202,6 @@ export const AnimeCollection = ({ id }: Props) => {
       const fetchedAnimes: AnimeCollectionInfo[] = responseData.data
 
       if (!fetchedAnimes || fetchedAnimes.length === 0) {
-
         await addFailedUrlClient(url)
 
         if (retryCount < maxRetries - 1) {
