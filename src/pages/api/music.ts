@@ -27,7 +27,7 @@ export const GET: APIRoute = rateLimit(
       )
 
       const limit = parseInt(url.searchParams.get('limit_count') ?? '10')
-      const page = url.searchParams.get('page_number')
+      const page = parseInt(url.searchParams.get('page_number') ?? '1')
       const filters = getFilters(Object.values(MusicFilters), url, false)
       const countFilters = getFilters(CountFilters, url, false)
 
