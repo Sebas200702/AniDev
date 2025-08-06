@@ -38,7 +38,7 @@ export const AsideNav = () => {
 
   return (
     <>
-      <aside className={`fixed top-0 left-0 z-50 hidden h-full ${isAsideOpen ? 'w-40' : 'w-20'}  hover:w-40 flex-col text-white md:flex`}>
+      <aside className={`fixed top-0 left-0 z-50 hidden h-full flex-col text-white md:flex`}>
         <nav className=" mt-10 flex h-full w-full flex-col gap-6 items-center">
           <Logo />
           {menuItems.map((item) => (
