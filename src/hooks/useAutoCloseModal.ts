@@ -60,7 +60,7 @@ export const useAutoCloseModal = (
     const handleLinkClick = (event: Event) => {
       try {
         const target = event.target as HTMLElement
-        const link = target.closest('a')
+        const link = target.closest('a') || target.closest('')
 
         if (
           link &&
