@@ -1,6 +1,6 @@
 export const Logo = () => {
   return (
-    <a href="/" className="mb-10" title="AniDev">
+    <a href="/" className="mb-20" title="AniDev">
       <svg
         className="text-enfasisColor h-12 w-12"
         viewBox="0 0 73 83"
