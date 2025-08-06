@@ -1,6 +1,6 @@
 import { Logo } from '@components/common/logo'
 import { useAsideStore } from '@store/aside-store'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const AsideNav = () => {
   const { setActiveItem, activeItem, items: menuItems } = useAsideStore()
@@ -17,28 +17,46 @@ export const AsideNav = () => {
 
     setActiveItem('')
   }, [menuItems])
+  const menuRef = useRef<HTMLDivElement>(null)
+  const [isAsideOpen, setIsAsideOpen] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+
+    useEffect(() => {
+      const handleOutsideClick = (e: MouseEvent) => {
+        if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+          setIsAsideOpen(false)
+
+          menuRef.current.classList.replace('flex', 'hidden')
+        }
+      }
+
+      document.addEventListener('mousedown', handleOutsideClick)
+      return () => {
+        document.removeEventListener('mousedown', handleOutsideClick)
+      }
+    }, [])
 
   return (
     <>
-      <aside className="bg-Primary-950 fixed top-0 left-0 z-50 hidden h-full w-20 flex-col border-r border-white/10 md:flex">
-        <nav className="mx-auto mt-10 flex h-full w-full flex-col items-center">
+      <aside className={`fixed top-0 left-0 z-50 hidden h-full ${isAsideOpen ? 'w-40' : 'w-20'}  hover:w-40 flex-col text-white md:flex`}>
+        <nav className=" mt-10 flex h-full w-full flex-col gap-6 items-center">
           <Logo />
           {menuItems.map((item) => (
+            <div className="relative group flex flex-row  items-center" key={item.id}>
             <a
               key={item.id}
               href={item.href}
               onClick={() => setActiveItem(item.id)}
-              className={`hover:text-enfasisColor group flex w-full flex-col items-center gap-3 p-2 transition-all duration-200 ${
-                activeItem === item.id
-                  ? 'text-enfasisColor border-enfasisColor border-r-2'
-                  : 'text-Primary-100 border-transparent'
-              }`}
+              title={'Navigate to ' + item.label}
+              aria-label={item.label}
+              className={` group flex group-hover  flex-col items-center p-3 transition-all rounded-xl duration-200
+                ${activeItem === item.id ? 'bg-enfasisColor/50 hover:bg-enfasisColor/60' : 'hover:bg-Primary-900'}`}
             >
-              <item.icon className="h-6 w-6" />
-              <span className="text-center text-sm font-medium">
-                {item.label}
-              </span>
+              <item.icon className="h-6.5 w-6.5" />
+
             </a>
+            <span key={item.id}  className=" absolute text-sm opacity-0 group-hover:opacity-100  group-hover:translate-x-15 translate-x-1/2 bg-enfasisColor/80 px-3 py-1.5 transition-all duration-200 rounded-md">{item.label}</span>
+            </div>
           ))}
         </nav>
       </aside>
@@ -56,10 +74,9 @@ export const AsideNav = () => {
                   : 'text-Primary-100'
               }`}
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span className="w-full truncate text-center text-xs font-medium">
-                {item.label}
-              </span>
+              <item.icon className="h-6 w-6 flex-shrink-0" />
+                <span className="text-xs">{item.label}</span>
+
             </a>
           ))}
         </div>
