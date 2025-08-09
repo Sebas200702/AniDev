@@ -1,6 +1,6 @@
 import { Logo } from '@components/common/logo'
 import { useAsideStore } from '@store/aside-store'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 
 export const AsideNav = () => {
   const { setActiveItem, activeItem, items: menuItems } = useAsideStore()
@@ -17,28 +17,12 @@ export const AsideNav = () => {
 
     setActiveItem('')
   }, [menuItems])
-  const menuRef = useRef<HTMLDivElement>(null)
-  const [isAsideOpen, setIsAsideOpen] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
 
-    useEffect(() => {
-      const handleOutsideClick = (e: MouseEvent) => {
-        if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-          setIsAsideOpen(false)
 
-          menuRef.current.classList.replace('flex', 'hidden')
-        }
-      }
-
-      document.addEventListener('mousedown', handleOutsideClick)
-      return () => {
-        document.removeEventListener('mousedown', handleOutsideClick)
-      }
-    }, [])
 
   return (
     <>
-      <aside className={`fixed top-0 left-0 z-50 hidden h-full w-20 flex-col text-white md:flex`}>
+      <aside className={`fixed top-0 left-0 z-50 hidden h-full w-20 flex-col border-r border-white/5  text-white md:flex`}>
         <nav className=" mt-10 flex h-full w-full flex-col gap-6 items-center">
           <Logo />
           {menuItems.map((item) => (
