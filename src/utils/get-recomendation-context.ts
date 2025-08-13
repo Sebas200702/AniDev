@@ -12,312 +12,189 @@ export const generateContextualPrompt = (
   } | null,
   favoriteAnimeId?: string
 ): string => {
-  let contextualInstructions = ''
+  let contextInstructions = ''
   let recommendationCount = context.count || 12
 
+  // Step 1 — Context-based focus
   switch (context.type) {
     case 'current_search':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: BÚSQUEDA ACTUAL
-          El usuario está buscando: "${context.data?.searchQuery}"
-
-          **ENFOQUE ESPECIAL:**
-          - Prioriza animes que coincidan directamente con la búsqueda actual
-          - Incluye variaciones y sinónimos del término buscado
-          - Considera animes relacionados temáticamente con la búsqueda
-          - Si es un género, enfócate 80% en ese género específico
-          - Si es un estudio, incluye principalmente animes de ese estudio
-          - Si es un personaje/seiyuu, busca animes donde aparezcan
-        `
+      contextInstructions = `
+## CONTEXT: CURRENT SEARCH
+User is searching for: "${context.data?.searchQuery}"
+- Focus on anime that directly match or strongly relate to the search term.
+- Include synonyms, related themes, and connected works.
+- If it's a genre, 80% should be from that genre.
+- If it's a studio, focus mainly on works from that studio.
+- If it's a character/seiyuu, include anime they appear in.
+      `
       break
-
     case 'currently_watching':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: ANIME ACTUAL
-          El usuario está viendo actualmente: "${context.data?.currentAnime}"
-
-          **ENFOQUE ESPECIAL:**
-          - Recomienda animes similares en tono y temática
-          - Considera el mismo género o subgénero
-          - Incluye animes del mismo estudio o director si es posible
-          - Busca animes con protagonistas o dinámicas similares
-          - Prioriza animes que complementen la experiencia actual
-        `
+      contextInstructions = `
+## CONTEXT: CURRENTLY WATCHING
+User is watching: "${context.data?.currentAnime}"
+- Recommend anime with similar tone, themes, or subgenres.
+- Include works by the same studio/director.
+- Look for similar protagonists or dynamics.
+- Prioritize titles that complement the current viewing.
+      `
       break
-
     case 'mood_based':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: ESTADO DE ÁNIMO
-          El usuario busca algo para su estado de ánimo: "${context.data?.mood}"
-
-          **ENFOQUE ESPECIAL:**
-          - Adapta las recomendaciones al estado emocional actual
-          - Para "relajado": slice of life, iyashikei, comedias ligeras
-          - Para "emocionado": action, adventure, shounen intensos
-          - Para "nostálgico": clásicos, animes retro, coming of age
-          - Para "triste": drama, romance, animes emotivos
-          - Para "divertido": comedias, parodies, animes absurdos
-        `
+      contextInstructions = `
+## CONTEXT: MOOD-BASED
+User mood: "${context.data?.mood}"
+- Adapt recommendations to current mood.
+- Relaxed: slice of life, iyashikei, light comedies.
+- Excited: action, adventure, intense shounen.
+- Nostalgic: classics, retro anime, coming-of-age.
+- Sad: drama, romance, emotional works.
+- Fun: comedies, parodies, absurd humor.
+      `
       break
-
     case 'similar_to':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: SIMILAR A
-          Buscar animes similares a: "${context.data?.referenceAnime}" (No incluir el anime de referencia en las recomendaciones)
-
-          **ENFOQUE ESPECIAL:**
-          - Analiza profundamente el anime de referencia
-          - Considera género, temas, estilo narrativo y visual
-          - Incluye animes del mismo director/estudio
-          - Busca animes con protagonistas o tramas similares
-          - Considera la época y el target demográfico
-        `
+      contextInstructions = `
+## CONTEXT: SIMILAR TO
+Find anime similar to: "${context.data?.referenceAnime}" (exclude it from results)
+- Analyze deeply: genre, themes, narrative style, visuals.
+- Include works by same director/studio.
+- Look for similar plots or protagonists.
+- Consider era and demographic.
+      `
       break
-
     case 'seasonal':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: TEMPORADA
-          Recomendaciones para la temporada: "${context.data?.season}"
-
-          **ENFOQUE ESPECIAL:**
-          - Enfócate en animes de la temporada actual o próxima
-          - Incluye animes que están en emisión
-          - Considera animes estacionales populares
-          - Incluye tanto continuaciones como series nuevas
-          - Prioriza animes con buen recibimiento actual
-        `
+      contextInstructions = `
+## CONTEXT: SEASONAL
+Season: "${context.data?.season}"
+- Focus on anime from the current/upcoming season.
+- Include ongoing shows and seasonal hits.
+- Mix sequels and new titles.
+- Prioritize current high-rated works.
+      `
       break
-
     case 'marathon':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: MARATÓN
-          El usuario quiere hacer un maratón de anime
-
-          **ENFOQUE ESPECIAL:**
-          - Recomienda series largas (50+ episodios) o sagas completas
-          - Incluye animes con múltiples temporadas
-          - Considera animes perfectos para ver de corrido
-          - Prioriza animes con arcos narrativos satisfactorios
-          - Incluye tanto shounen largos como series episódicas
-        `
+      contextInstructions = `
+## CONTEXT: MARATHON
+User wants a binge session.
+- Recommend long series (50+ eps) or full sagas.
+- Include multi-season anime.
+- Works perfect for continuous viewing.
+- Strong story arcs and satisfying conclusions.
+      `
       recommendationCount = 8
       break
-
     case 'quick_watch':
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: VISUALIZACIÓN RÁPIDA
-          Tiempo disponible: "${context.data?.timeAvailable}"
-
-          **ENFOQUE ESPECIAL:**
-          - Prioriza animes cortos (12 episodios o menos)
-          - Incluye películas de anime
-          - Considera OVAs y especiales
-          - Busca animes con historias autoconclusivas
-          - Evita series largas o con múltiples temporadas
-        `
+      contextInstructions = `
+## CONTEXT: QUICK WATCH
+Available time: "${context.data?.timeAvailable}"
+- Short series (≤12 eps), movies, OVAs, specials.
+- Self-contained stories.
+- Avoid long-running titles.
+      `
       break
-
     default:
-      contextualInstructions = `
-          ## CONTEXTO ESPECÍFICO: RECOMENDACIONES GENERALES
-          Genera recomendaciones diversas basadas en el perfil completo del usuario.
-        `
+      contextInstructions = `
+## CONTEXT: GENERAL RECOMMENDATIONS
+Diverse recommendations based on full user profile.
+      `
       recommendationCount = 24
       break
   }
 
-  const currentDate = new Date()
-  const hourOfDay = currentDate.getHours()
-  const dayOfWeek = currentDate.getDay()
-  const sessionId = Math.floor(Math.random() * 1000)
+  // Step 2 — Time awareness
+  const now = new Date()
+  const hour = now.getHours()
+  const day = now.getDay()
 
   const timeContext = {
-    mood:
-      hourOfDay < 12
-        ? 'energético'
-        : hourOfDay < 18
-          ? 'relajado'
-          : 'introspectivo',
+    mood: hour < 12 ? 'energetic' : hour < 18 ? 'relaxed' : 'introspective',
     period:
-      hourOfDay < 6
-        ? 'madrugada'
-        : hourOfDay < 12
-          ? 'mañana'
-          : hourOfDay < 18
-            ? 'tarde'
-            : 'noche',
-    weekType: dayOfWeek < 5 ? 'día laboral' : 'fin de semana',
+      hour < 6
+        ? 'early morning'
+        : hour < 12
+          ? 'morning'
+          : hour < 18
+            ? 'afternoon'
+            : 'night',
+    weekType: day < 5 ? 'weekday' : 'weekend',
   }
 
-  const explorationStrategies = [
+  // Step 3 — Strategy selection
+  const strategies = [
     {
       id: 'hidden_gems',
-      title: 'Cazador de Joyas Ocultas',
-      description: 'Animes excepcionales con scores 7.5+ pero <100k miembros',
-      distribution: '40% géneros favoritos, 60% descubrimientos sorprendentes',
-      focus:
-        'calidad sobre popularidad, directores emergentes, estudios boutique',
+      title: 'Hidden Gems',
+      focus: 'High-quality underrated anime',
+      dist: '40% favorites, 60% discoveries',
     },
     {
-      id: 'temporal_journey',
-      title: 'Viajero del Tiempo Anime',
-      description: 'Expedición cronológica por diferentes eras del anime',
-      distribution: '25% cada década (90s, 2000s, 2010s, 2020s)',
-      focus:
-        'evolución del medio, clásicos vs modernos, nostalgia vs innovación',
+      id: 'auteur_focus',
+      title: 'Auteur Showcase',
+      focus: 'Visionary directors & masterpieces',
+      dist: '2–3 directors, ≤2 works each',
     },
     {
-      id: 'auteur_showcase',
-      title: 'Exposición de Autores',
-      description: 'Enfoque en directores visionarios y sus obras maestras',
-      distribution: '2-3 directores únicos, máximo 2 obras por director',
-      focus: 'Miyazaki, Shinkai, Kon, Yuasa, Yamada, Ikuhara, Watanabe',
+      id: 'studio_tour',
+      title: 'Studio Expedition',
+      focus: 'Variety of top studios',
+      dist: '3–4 studios, contrasting styles',
     },
     {
-      id: 'studio_expedition',
-      title: 'Expedición de Estudios',
-      description: 'Tour por la diversidad de estudios de animación',
-      distribution: '3-4 estudios diferentes, estilos contrastantes',
-      focus: 'Ghibli, Madhouse, Bones, Trigger, WIT, MAPPA, P.A.Works',
-    },
-    {
-      id: 'genre_fusion',
-      title: 'Fusión de Géneros',
-      description: 'Exploración de subgéneros y mezclas inesperadas',
-      distribution: '60% híbridos únicos, 40% géneros puros',
-      focus: 'cyberpunk slice-of-life, psychological sports, romantic mecha',
-    },
-    {
-      id: 'emotional_spectrum',
-      title: 'Espectro Emocional',
-      description: 'Viaje emocional completo con balance cuidadoso',
-      distribution: '25% inspirador, 25% relajante, 25% intenso, 25% reflexivo',
-      focus: 'curva emocional, catarsis, variety pack',
-    },
-    {
-      id: 'cultural_bridge',
-      title: 'Puente Cultural',
-      description: 'Diversidad cultural y perspectivas internacionales',
-      distribution: '70% japonés tradicional, 30% influencias globales',
-      focus: 'temas universales, colaboraciones, adaptaciones',
-    },
-    {
-      id: 'thematic_symphony',
-      title: 'Sinfonía Temática',
-      description: 'Narrativa unificada alrededor de un tema central',
-      distribution: 'todas las selecciones conectadas temáticamente',
-      focus: 'crecimiento, familia, amistad, superación, identidad',
+      id: 'emotional_curve',
+      title: 'Emotional Spectrum',
+      focus: 'Balanced emotional journey',
+      dist: 'Equal mix of moods',
     },
   ]
-
   const selectedStrategy =
-    explorationStrategies[sessionId % explorationStrategies.length]
+    strategies[Math.floor(Math.random() * strategies.length)]
 
-  const jikanSection =
-    jikanRecommendations && jikanRecommendations.mal_ids.length > 0
-      ? `
-
-## 🎯 RECOMENDACIONES OFICIALES DE JIKAN
-**Anime base (MAL_ID ${favoriteAnimeId || currentAnime}):**
-${favoriteAnimeId ? `- 🎲 **Basado en anime favorito aleatorio** (no hay anime actual)` : `- 🎬 **Basado en anime actual**`}
-- 📊 **${jikanRecommendations.mal_ids.length} recomendaciones oficiales** obtenidas de MyAnimeList
-- 🏆 **MAL_IDs más recomendados:** ${jikanRecommendations.mal_ids.slice(0, 10).join(', ')}
-- 📝 **Títulos principales:** ${jikanRecommendations.titles.slice(0, 5).join(', ')}
-
-**🔥 INSTRUCCIONES ESPECIALES PARA JIKAN - ALTA PRIORIDAD:**
-- ✅ **PRIORIZA estos MAL_IDs** de Jikan en tus recomendaciones (${Math.ceil(recommendationCount * 0.6)} de ${recommendationCount} - 60% PRIORIDAD)
-- 🎨 Úsalos como **base temática principal** para encontrar animes similares
-- 📚 Analiza los **patrones comunes** entre estas recomendaciones oficiales
-- 🔍 Si alguno no está en nuestra base de datos, busca animes **temáticamente similares**
-- ⚖️ Balancea con el perfil del usuario pero **PRIORIZA las sugerencias de Jikan**
-${favoriteAnimeId ? `- 🎯 **Considera que es un anime favorito** del usuario, así que las recomendaciones deben ser de alta calidad` : ''}
-
-`
-      : ''
-
-  return `
-# 🎯 SISTEMA DE RECOMENDACIONES INTELIGENTE v2.1
-
-## 👤 PERFIL COMPLETO DEL USUARIO
-**${userProfile.name}** (${calculatedAge} años, ${userProfile.gender})
-- 📊 Nivel: ${userProfile.fanatic_level} | Frecuencia: ${userProfile.frequency_of_watch}
-- 🎨 Géneros favoritos: ${userProfile.favorite_genres.join(', ')}
-- 🏢 Estudios preferidos: ${userProfile.favorite_studios.join(', ')}
-- 📺 Formato favorito: ${userProfile.preferred_format}
-
-**HISTORIAL DE CONSUMO:**
-- ✅ Vistos: ${userProfile.watched_animes.slice(0, 6).join(', ')}${userProfile.watched_animes.length > 6 ? ` (+${userProfile.watched_animes.length - 6} más)` : ''}
-- ⭐ Favoritos: ${userProfile.favorite_animes.join(', ')}
-${currentAnime ? `- 🎬 Viendo actualmente: MAL_ID ${currentAnime}` : ''}
-${jikanSection}
-## 🌟 CONTEXTO DE SESIÓN
-**📋 Tipo de recomendación:** ${context.type.toUpperCase()}
-${contextualInstructions}
-
-**⏰ Contexto temporal:**
-- 🕐 ${timeContext.period} (${hourOfDay}:00) - Mood ${timeContext.mood}
-- 📅 ${timeContext.weekType}
-- 🎲 ID de sesión: #${sessionId}
-
-${context.focus ? `**🎪 Elemento especial:** ${context.focus}` : ''}
-
-## 🎨 ESTRATEGIA DE CURACIÓN: "${selectedStrategy.title}"
-**📖 Descripción:** ${selectedStrategy.description}
-**📊 Distribución:** ${selectedStrategy.distribution}
-**🎯 Enfoque:** ${selectedStrategy.focus}
-
-## 🚫 RESTRICCIONES ABSOLUTAS
-- ❌ EXCLUIR todos los animes vistos: [${userProfile.watched_animes.join(', ')}]
-- ❌ EXCLUIR todos los favoritos: [${userProfile.favorite_animes.join(', ')}]
-${currentAnime ? `- ❌ EXCLUIR anime actual (MAL_ID ${currentAnime})` : ''}
-- ❌ NO repetir IDs en la lista final
-
-## 📊 COMPOSICIÓN INTELIGENTE
-${
-  jikanRecommendations && jikanRecommendations.mal_ids.length > 0
+  // Step 4 — Jikan comparison
+  const jikanSection = jikanRecommendations?.mal_ids?.length
     ? `
-**Por fuente de recomendación (PRIORIDAD JIKAN):**
-- 🎯 ${Math.ceil(recommendationCount * 0.6)} animes basados en recomendaciones oficiales de Jikan (60% PRIORIDAD ALTA)
-- 👤 ${Math.floor(recommendationCount * 0.25)} animes alineados con preferencias del usuario (25%)
-- 🔍 ${recommendationCount - Math.ceil(recommendationCount * 0.6) - Math.floor(recommendationCount * 0.25)} animes de exploración sorpresa (15%)
-`
-    : `
-**Por relevancia al perfil:**
-- 🎯 ${Math.floor(recommendationCount * 0.65)} animes alineados con preferencias conocidas
-- 🔍 ${Math.floor(recommendationCount * 0.25)} animes de exploración guiada
-- ⚡ ${recommendationCount - Math.floor(recommendationCount * 0.65) - Math.floor(recommendationCount * 0.25)} animes sorpresa estratégicos
-`
-}
-
-**Por época (flexible según estrategia):**
-- 🆕 30-50% modernos (2018-2024)
-- 🏛️ 30-40% establecidos (2010-2017)
-- 💎 15-25% clásicos (2000-2009)
-- 🏺 5-15% vintage (<2000)
-
-**Por popularidad:**
-- 🔥 50% reconocidos y accesibles
-- 💫 30% populares pero no obvios
-- 💎 20% joyas por descubrir
-
-## ⚙️ PARÁMETROS DE CALIDAD
-- Score mínimo MyAnimeList: 6.8
-- Balance popularidad/originalidad según estrategia
-- Máximo 2 animes por estudio (salvo estrategia específica)
-- Diversidad de décadas y subgéneros
-- Consideration for ${timeContext.mood} mood
-
-## 🎯 INSTRUCCIONES FINALES
-Actúa como experto curador creando una selección de ${recommendationCount} animes perfectamente personalizada para ${userProfile.name} usando la estrategia "${selectedStrategy.title}" en este contexto específico de ${timeContext.period}.
-
-${
-  jikanRecommendations && jikanRecommendations.mal_ids.length > 0
-    ? `
-**🔥 PRIORIDAD MÁXIMA (60%):** Incorpora las recomendaciones oficiales de Jikan como base principal. Dedica ${Math.ceil(recommendationCount * 0.6)} de ${recommendationCount} recomendaciones a animes similares o directamente de la lista de Jikan, personalizándolas según el perfil del usuario.
-`
-    : ''
-}
-
-**IMPORTANTE:** Selecciona exactamente ${recommendationCount} MAL_IDs de animes que cumplan con todos los criterios establecidos. Usa la función disponible para procesar las recomendaciones.
+## OFFICIAL JIKAN RECOMMENDATIONS
+Base anime: ${favoriteAnimeId || currentAnime}
+- ${jikanRecommendations.mal_ids.length} official MAL recommendations
+- Compare generated list with Jikan’s → keep best matches & improve with user profile
+${favoriteAnimeId ? '- Treat as high-priority favorite' : ''}
     `
+    : ''
+
+  // Step 5 — Final prompt
+  return `
+# SMART ANIME RECOMMENDER v3.0 (React-style generation)
+
+## USER PROFILE
+${userProfile.name} (${calculatedAge} y/o, ${userProfile.gender})
+- Level: ${userProfile.fanatic_level} | Watch frequency: ${userProfile.frequency_of_watch}
+- Favorite genres: ${userProfile.favorite_genres.join(', ')}
+- Favorite studios: ${userProfile.favorite_studios.join(', ')}
+- Preferred format: ${userProfile.preferred_format}
+- Watched: ${userProfile.watched_animes.slice(0, 6).join(', ')}${userProfile.watched_animes.length > 6 ? ` (+${userProfile.watched_animes.length - 6} more)` : ''}
+- Favorites: ${userProfile.favorite_animes.join(', ')}
+${currentAnime ? `- Currently watching: MAL_ID ${currentAnime}` : ''}
+
+${contextInstructions}
+${jikanSection}
+
+## TIME CONTEXT
+- ${timeContext.period} (${hour}:00) — Mood: ${timeContext.mood}
+- ${timeContext.weekType}
+
+## CURATION STRATEGY: ${selectedStrategy.title}
+- Focus: ${selectedStrategy.focus}
+- Distribution: ${selectedStrategy.dist}
+
+## RULES
+- EXCLUDE all watched & favorite anime from final list (to avoid repeats).
+- No duplicate IDs.
+- Min MAL score: 7.8.
+- Max 2 anime per studio (unless strategy-specific).
+- Keep decade & genre diversity.
+- FAVORITE PRIORITY: Always bias towards titles similar to favorites in tone, genre, or studio.
+
+## REACT-LIKE FLOW
+1️⃣ Generate new recommendations based purely on profile + context + strategy.
+2️⃣ Compare with Jikan recommendations (if available). Keep overlaps & upgrade list with Jikan’s strongest suggestions.
+3️⃣ Reflect on results — adjust for balance, diversity, and stronger alignment with favorites.
+4️⃣ Return the final ${recommendationCount} MAL_ID list.
+`
 }
