@@ -40,15 +40,6 @@ const functionTool: Tool = {
 
 export const GET: APIRoute = async ({ request, cookies, url }) => {
   try {
-    const cacheKey = `recommendations:${url.searchParams.toString()}`
-    const cached = await safeRedisOperation((c) => c.get(cacheKey))
-    if (cached)
-      return new Response(cached, {
-        status: 200,
-        headers: { 'Content-Type': 'application/json', 'X-Cache': 'HIT' },
-      })
-
-
     const userInfo = await getSessionUserInfo({
       request,
       accessToken: cookies.get('sb-access-token')?.value,
@@ -59,7 +50,13 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       await getUserDataToRecomendations(userName, !!userName)
     if (error || !userProfile || !calculatedAge)
       return new Response(JSON.stringify({ error }), { status: 500 })
-
+    const cacheKey = `recommendations-${userName}:${url.searchParams.toString()}`
+    const cached = await safeRedisOperation((c) => c.get(cacheKey))
+    if (cached)
+      return new Response(cached, {
+        status: 200,
+        headers: { 'Content-Type': 'application/json', 'X-Cache': 'HIT' },
+      })
 
     const context: RecommendationContext = {
       type:
@@ -75,7 +72,7 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       },
       count: parseInt(url.searchParams.get('count') || '24'),
       focus: url.searchParams.get('focus') || undefined,
-      parentalControl: url.searchParams.get('parental_control') === 'true'
+      parentalControl: url.searchParams.get('parental_control') === 'true',
     }
 
     let animeForJikan: string | undefined
