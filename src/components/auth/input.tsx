@@ -1,3 +1,4 @@
+import { Overlay } from '@components/layout/overlay'
 import { type FormValues, useAuthFormStore } from '@store/auth-form-store'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
@@ -81,10 +82,11 @@ export const Input = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         {children}
       </div>
+      <Overlay className="bg-enfasisColor/5 group-hover:bg-enfasisColor/10 h-full w-full" />
       <input
         type={inputType}
         name={name}
@@ -92,7 +94,7 @@ export const Input = ({
         onChange={onChange || handleChange}
         placeholder={placeholder}
         required={required}
-        className="text-m focus:ring-enfasisColor bg-Primary-950/70 placeholder-Primary-300 hover:bg-enfasisColor/5 hover:border-enfasisColor/40 w-full rounded-md border border-gray-100/10 px-10 py-2 text-white transition-all duration-300 ease-in-out focus:ring-1 focus:outline-none"
+        className="text-m focus:ring-enfasisColor bg-Complementary placeholder-Primary-300  hover:border-enfasisColor/50 w-full rounded-md border border-gray-100/10 px-10 py-2 text-white transition-all duration-300 ease-in-out focus:ring-1 focus:outline-none"
       />
       {type === 'password' && (
         <button
