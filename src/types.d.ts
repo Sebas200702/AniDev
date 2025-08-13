@@ -119,7 +119,7 @@ export interface RecommendationContext {
     | 'seasonal'
     | 'marathon'
     | 'quick_watch'
-  data?: {
+  data: {
     searchQuery?: string
     currentAnime?: string
     mood?: string
@@ -257,6 +257,161 @@ export interface CharacterDetails {
   animes: AnimeSummary[]
   voice_actors: VoiceActor[]
 }
+
+export interface AnimeRecommendation {
+  mal_id: number
+  title: string
+  score?: number
+  episodes?: number | null
+  image_url?: string
+  url?: string
+  synopsis?: string | null
+  [key: string]: unknown
+}
+
+export interface JikanRecommendationsRaw {
+  mal_ids: number[]
+  titles: string[]
+  error?: string
+}
+
+export type FallbackReason = 'quota-exhausted' | 'api-error' | 'text-parsing' | 'jikan' | null
+
+export interface RecommendationContextData {
+  searchQuery?: string
+  currentAnime?: string
+  mood?: string
+  referenceAnime?: string
+  season?: string
+  timeAvailable?: string
+}
+
+
+export interface RecommendationContext {
+  type: 'general' | 'similar' | 'mood' | string
+  data: RecommendationContextData
+  count?: number
+  focus?: string | undefined
+  parentalControl : boolean
+}
+
+export interface UserProfile {
+  id?: string | number
+  name?: string
+  email?: string
+  favorite_animes?: string[]
+  [key: string]: unknown
+}
+
+
+export interface GetUserDataToRecomendationsResult {
+  userProfile?: UserProfile | null
+  calculatedAge?: number | null
+  error?: string | null
+}
+
+
+export interface ModelContentPart {
+  text?: string
+  functionCall?: {
+    name?: string
+    args?: Record<string, any>
+  }
+}
+
+export interface ModelCandidateContent {
+  parts?: ModelContentPart[]
+}
+
+export interface ModelCandidate {
+  content?: ModelCandidateContent
+  [key: string]: unknown
+}
+
+export interface ModelGenerateContentResponse {
+  response?: {
+    candidates?: ModelCandidate[]
+    [key: string]: unknown
+  }
+
+  [key: string]: unknown
+}
+
+
+export type FunctionToolArgs = Record<string, unknown>
+export type FunctionToolMalIds = string[]
+
+
+
+export type FetchRecommendationsFn = (
+  malIds: string[],
+  targetCount: number,
+  currentAnime?: string | undefined,
+  jikanRecommendations?: JikanRecommendationsRaw | null
+) => Promise<AnimeRecommendation[]>
+
+export type CreateJikanFallbackFn = (
+  jikan: JikanRecommendationsRaw | null,
+  count: number,
+  animeId: string | undefined,
+  parentalControl: boolean
+) => Promise<AnimeRecommendation[]>
+
+export type SafeRedisOperationFn = <T = unknown>(
+  operation: (client: any) => Promise<T> | T
+) => Promise<T>
+
+
+export interface JikanRecommendationsMeta {
+  count: number
+  titles: string[]
+  basedOn: string
+  isFromFavorites: boolean
+  favoriteTitle?: string
+}
+
+
+export interface RecommendationsDebugInfo {
+  responseType: string
+  hasText: boolean
+  textLength: number
+  /* otros campos debug que quieras añadir */
+  [key: string]: unknown
+}
+
+export interface RecommendationsApiResponse {
+  data: AnimeRecommendation[]
+  context: RecommendationContext
+  totalRecommendations: number
+  wasRetried?: boolean
+  quotaExhausted?: boolean
+  fallbackUsed?: FallbackReason
+  jikanRecommendations?: JikanRecommendationsMeta | null
+  debugInfo?: RecommendationsDebugInfo
+  /* campos extra que usabas en algunos responses (por compatibilidad) */
+  wasRetriedByModel?: boolean
+}
+
+
+export interface PickAnimeForJikanResult {
+  animeForJikan?: string | undefined
+  isFromFavorites?: boolean
+  selectedFavoriteTitle?: string
+}
+
+export interface BuildResponseOptions {
+  data: AnimeRecommendation[]
+  context: RecommendationContext
+  wasRetried?: boolean
+  quotaExhausted?: boolean
+  fallbackUsed?: FallbackReason
+  jikan?: JikanRecommendationsRaw | null
+  animeForJikan?: string | undefined
+  isFromFavorites?: boolean
+  favoriteTitle?: string | undefined
+}
+
+
 
 export interface AnimeSummary extends AnimeCardInfo {
   banner_image: string | null
