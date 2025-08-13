@@ -241,7 +241,7 @@ export const Step3 = () => {
           <h3 className="text-Primary-50 mb-6 text-xl font-semibold">
             {currentCategory[1].title}
           </h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4 w-full">
             {currentCategory[1].fields.map(renderField)}
           </div>
         </div>
