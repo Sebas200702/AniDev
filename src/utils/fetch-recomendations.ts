@@ -130,8 +130,10 @@ export const fetchRecomendations = async (
   }
   const getAlternativeFallback = async (needed: number) => {
     console.log('Using traditional fallback strategies as last resort')
+    const fallbackResults: any[] = []
+    const usedInFallback = new Set<number>()
 
-    const strategies = [
+    const strategies = shuffleArray([
       {
         name: 'high_score',
         query: (q: any) =>
@@ -155,48 +157,61 @@ export const fetchRecomendations = async (
             .lt('members', 30000)
             .gt('score', 7.0),
       },
-    ]
+    ])
 
-    const strategy = strategies[Math.floor(Math.random() * strategies.length)]
-    console.log(`Using fallback strategy: ${strategy.name}`)
+    for (const strategy of strategies) {
+      if (fallbackResults.length >= needed) break
 
-    let baseQuery = supabase
-      .from('anime')
-      .select(
-        `
-          mal_id,
-          title,
-          image_webp,
-          image_small_webp,
-          image_large_webp,
-          year,
-          status,
-          score,
-          rating,
-          anime_genres ( genres ( name ) )
-        `
-      )
+      const stillNeeded = needed - fallbackResults.length
+      console.log(`Using fallback strategy: ${strategy.name} for ${stillNeeded} results`)
 
-    if (parentalControl) {
+      const allExcludedIds = [...excludedIds, ...usedInFallback].join(',')
+
+      let baseQuery = supabase
+        .from('anime')
+        .select(
+          `
+            mal_id,
+            title,
+            image_webp,
+            image_small_webp,
+            image_large_webp,
+            year,
+            status,
+            score,
+            rating,
+            anime_genres ( genres ( name ) )
+          `
+        )
+
+      if (parentalControl) {
+        baseQuery = baseQuery
+          .not('rating', 'ilike', '%Rx - Hentai%')
+          .not('rating', 'ilike', '%R+ - Mild Nudity%')
+      }
+
       baseQuery = baseQuery
-        .not('rating', 'ilike', '%Rx - Hentai%')
-        .not('rating', 'ilike', '%R+ - Mild Nudity%')
+        .not('mal_id', 'in', `(${allExcludedIds})`)
+        .not('score', 'is', null)
+        .gt('score', 7.8)
+        .limit(Math.min(stillNeeded * 2, 40))
+
+      const { data, error } = await strategy.query(baseQuery)
+
+      if (error || !data) {
+        console.error(`Fallback strategy ${strategy.name} query error:`, error)
+        continue
+      }
+
+      for (const anime of data) {
+        if (fallbackResults.length < needed) {
+          fallbackResults.push(anime)
+          usedInFallback.add(anime.mal_id)
+        }
+      }
     }
 
-    baseQuery = baseQuery
-      .not('mal_id', 'in', `(${[...excludedIds].join(',')})`)
-      .not('score', 'is', null)
-      .gt('score', 7.8)
-      .limit(Math.min(needed * 3, 50))
-
-    const { data, error } = await strategy.query(baseQuery)
-
-    if (error || !data) {
-      console.error('Fallback query error:', error)
-      return []
-    }
-
-    return shuffleArray([...data]).slice(0, needed)
+    return fallbackResults
   }
 
   if (results.length < minResults) {
