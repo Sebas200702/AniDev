@@ -189,7 +189,7 @@ export const Step2 = ({ isSignUp }: Props) => {
           onChange={(newValues) => handleSelectChange(field.name, newValues)}
           onClear={() => handleClearSelectValue(field.name)}
           options={field.options || []}
-          styles="min-h-[44px] bg-Primary-950/70"
+          styles="min-h-[44px]"
           singleSelect={true}
         />
       )
