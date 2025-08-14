@@ -31,7 +31,7 @@ export const AnimeSliderLoader = ({ context }: { context?: string }) => {
   const animes = Array.from({ length: 7 }, (_, index) => index)
 
   const createGroups = (animes: number[]) => {
-    let itemsPerGroup = 2
+    let itemsPerGroup = 6
 
     if (context === 'anime-info') {
       if (windowWidth && windowWidth >= 1280) {
