@@ -1,9 +1,10 @@
-import { useMusicPlayerStore } from '@store/music-player-store'
-import { normalizeString } from '@utils/normalize-string'
-import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
-import type { MediaPlayerInstance } from '@vidstack/react'
 import { useEffect, useRef, useState } from 'react'
+
 import type { AnimeSongWithImage } from 'types'
+import type { MediaPlayerInstance } from '@vidstack/react'
+import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
+import { normalizeString } from '@utils/normalize-string'
+import { useMusicPlayerStore } from '@store/music-player-store'
 
 export const useMusicPlayerSync = (
   currentTime: number,
@@ -140,8 +141,8 @@ export const useMusicPlayerSync = (
         setList(updatedList)
         setCurrentSong(newSong)
       } else {
-        const playedSongs = list.slice(0, currentSongIndex - 1)
-        const remainingSongs = list.slice(currentSongIndex)
+        const playedSongs = list.slice(0, currentSongIndex )
+        const remainingSongs = list.slice(currentSongIndex +1)
         const updatedList = [...playedSongs, newSong, ...remainingSongs]
         setList(updatedList)
       }
