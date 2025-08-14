@@ -93,7 +93,7 @@ export const MusicPlayer = () => {
   return (
     <article
       ref={playerContainerRef}
-      className={`group flex rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 mx-4 mt-30 h-min flex-col-reverse md:mx-20 xl:mx-0 xl:mb-20 xl:ml-20 xl:w-[60%]'} ${
+      className={`group flex rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 flex-col-reverse w-full  '} ${
         isDraggingPlayer && isMinimized
           ? 'music-player-dragging cursor-grabbing select-none'
           : ''
