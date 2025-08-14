@@ -235,6 +235,18 @@ export interface AnimeTopInfo
     | 'type'
     | 'episodes'
   > {}
+export interface ArtistInfo {
+name: string,
+  image_url: string,
+  image_small_url: string,
+  mal_id: number,
+  alternative_names: string[],
+  about: string,
+  birthday: string,
+  given_name: string,
+  family_name: string
+
+}
 
 export interface RandomAnime extends Pick<Anime, 'mal_id' | 'title'> {}
 export enum ToastType {
@@ -275,7 +287,12 @@ export interface JikanRecommendationsRaw {
   error?: string
 }
 
-export type FallbackReason = 'quota-exhausted' | 'api-error' | 'text-parsing' | 'jikan' | null
+export type FallbackReason =
+  | 'quota-exhausted'
+  | 'api-error'
+  | 'text-parsing'
+  | 'jikan'
+  | null
 
 export interface RecommendationContextData {
   searchQuery?: string
@@ -286,13 +303,12 @@ export interface RecommendationContextData {
   timeAvailable?: string
 }
 
-
 export interface RecommendationContext {
   type: 'general' | 'similar' | 'mood' | string
   data: RecommendationContextData
   count?: number
   focus?: string | undefined
-  parentalControl : boolean
+  parentalControl: boolean
 }
 
 export interface UserProfile {
@@ -303,13 +319,11 @@ export interface UserProfile {
   [key: string]: unknown
 }
 
-
 export interface GetUserDataToRecomendationsResult {
   userProfile?: UserProfile | null
   calculatedAge?: number | null
   error?: string | null
 }
-
 
 export interface ModelContentPart {
   text?: string
@@ -337,11 +351,8 @@ export interface ModelGenerateContentResponse {
   [key: string]: unknown
 }
 
-
 export type FunctionToolArgs = Record<string, unknown>
 export type FunctionToolMalIds = string[]
-
-
 
 export type FetchRecommendationsFn = (
   malIds: string[],
@@ -361,7 +372,6 @@ export type SafeRedisOperationFn = <T = unknown>(
   operation: (client: any) => Promise<T> | T
 ) => Promise<T>
 
-
 export interface JikanRecommendationsMeta {
   count: number
   titles: string[]
@@ -369,7 +379,6 @@ export interface JikanRecommendationsMeta {
   isFromFavorites: boolean
   favoriteTitle?: string
 }
-
 
 export interface RecommendationsDebugInfo {
   responseType: string
@@ -392,7 +401,6 @@ export interface RecommendationsApiResponse {
   wasRetriedByModel?: boolean
 }
 
-
 export interface PickAnimeForJikanResult {
   animeForJikan?: string | undefined
   isFromFavorites?: boolean
@@ -410,8 +418,6 @@ export interface BuildResponseOptions {
   isFromFavorites?: boolean
   favoriteTitle?: string | undefined
 }
-
-
 
 export interface AnimeSummary extends AnimeCardInfo {
   banner_image: string | null
