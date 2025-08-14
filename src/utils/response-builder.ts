@@ -34,7 +34,7 @@ export const buildResponse = ({
 }
 
 export async function cacheAndRespond(key: string, payload: any, headers = {}) {
-  await safeRedisOperation((c) =>
+      await safeRedisOperation((c) =>
     c.set(key, JSON.stringify(payload), { EX: 21600 })
   )
   return new Response(JSON.stringify(payload), {
