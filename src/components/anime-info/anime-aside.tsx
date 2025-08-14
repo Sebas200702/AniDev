@@ -72,7 +72,7 @@ export const AnimeAside = ({
   })
 
   return (
-    <aside className="anime-aside top-28 z-20 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
+    <aside className="anime-aside top-28 z-50 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
       <GaleryImage
         imageList={imageList}
         className="hidden aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center md:flex"
@@ -104,7 +104,7 @@ export const AnimeAside = ({
         </Picture>
       </GaleryImage>
 
-      <div className="flex h-full w-full flex-row justify-end gap-4">
+      <div className="flex h-full w-full flex-row justify-end gap-2">
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
 
         <AddToListButton
