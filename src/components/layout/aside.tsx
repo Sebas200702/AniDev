@@ -18,28 +18,34 @@ export const AsideNav = () => {
     setActiveItem('')
   }, [menuItems])
 
-
-
   return (
     <>
-      <aside className={`fixed top-0 left-0 z-50 hidden h-full w-20 flex-col border-r border-white/5  text-white md:flex`}>
-        <nav className=" mt-10 flex h-full w-full flex-col gap-6 items-center">
+      <aside
+        className={`fixed top-0 left-0 z-50 hidden h-full w-20 flex-col border-r border-white/5 text-white md:flex`}
+      >
+        <nav className="mt-10 flex h-full w-full flex-col items-center gap-6">
           <Logo />
           {menuItems.map((item) => (
-            <div className="relative group flex flex-row  items-center" key={item.id}>
-            <a
+            <div
+              className="group relative flex flex-row items-center"
               key={item.id}
-              href={item.href}
-              onClick={() => setActiveItem(item.id)}
-              title={'Navigate to ' + item.label}
-              aria-label={item.label}
-              className={` group flex group-hover  flex-col items-center p-3 transition-all rounded-xl duration-200
-                ${activeItem === item.id ? 'bg-enfasisColor/50 hover:bg-enfasisColor/60' : 'hover:bg-Primary-900'}`}
             >
-              <item.icon className="h-6.5 w-6.5" />
+              <a
 
-            </a>
-            <span key={item.id}  className=" absolute text-sm opacity-0 group-hover:opacity-100  group-hover:translate-x-15 translate-x-1/2 bg-enfasisColor/80 px-3 py-1.5 transition-all duration-200 rounded-md">{item.label}</span>
+                href={item.href}
+                onClick={() => setActiveItem(item.id)}
+                title={'Navigate to ' + item.label}
+                aria-label={item.label}
+                className={`group group-hover flex flex-col items-center rounded-xl p-3 transition-all duration-200 ${activeItem === item.id ? 'bg-enfasisColor/50 hover:bg-enfasisColor/60' : 'hover:bg-Primary-900'}`}
+              >
+                <item.icon className="h-6.5 w-6.5" />
+              </a>
+              <span
+        
+                className="bg-enfasisColor/80 absolute translate-x-1/2 rounded-md px-3 py-1.5 text-sm opacity-0 transition-all duration-200 group-hover:translate-x-15 group-hover:opacity-100"
+              >
+                {item.label}
+              </span>
             </div>
           ))}
         </nav>
@@ -59,8 +65,7 @@ export const AsideNav = () => {
               }`}
             >
               <item.icon className="h-6 w-6 flex-shrink-0" />
-                <span className="text-xs">{item.label}</span>
-
+              <span className="text-xs">{item.label}</span>
             </a>
           ))}
         </div>
