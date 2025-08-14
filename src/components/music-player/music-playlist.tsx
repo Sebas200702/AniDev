@@ -79,7 +79,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar max-h-96 overflow-y-auto px-4 md:max-h-[700px] md:pr-20 md:pl-10">
+    <section className="no-scrollbar max-h-96 overflow-y-auto px-4 sticky top-30   md:max-h-[700px]">
       <header className="mb-6">
         <h2 className="text-2xl font-semibold text-zinc-100">
           Currently Playing
@@ -87,7 +87,7 @@ export const MusicPlayList = () => {
       </header>
 
       {currentSong && (
-        <div className="mb-8">
+        <div className="mb-8 w-full">
           <AnimeMusicItem
             song={currentSong}
             anime_title={currentSong.anime_title}
@@ -120,13 +120,12 @@ export const MusicPlayList = () => {
               items={upcomingList.map((song) => song.song_id)}
               strategy={verticalListSortingStrategy}
             >
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-3 w-full">
                 {upcomingList.map((song) => (
                   <AnimeMusicItem
                     key={song.song_id}
                     song={song}
                     image={song.image}
-                    placeholder={song.placeholder}
                     banner_image={song.banner_image}
                     anime_title={song.anime_title}
                     isInMusicPlayer={true}
