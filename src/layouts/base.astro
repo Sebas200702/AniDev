@@ -1,10 +1,10 @@
 ---
 import '@styles/global.css'
 import { ClientRouter } from 'astro:transitions'
-import Footer from '@components/layout/footer.astro'
 import { LoadUserPrefences } from '@components/common/load-user-preferences'
 import { LoadWindowWidth } from '@components/common/load-window-width'
 import { ProgressBar } from '@components/common/progres-bar'
+import Footer from '@components/layout/footer.astro'
 import NavBar from '@components/nav-bar/nav-bar.astro'
 import { SearchBar } from '@components/search/search-bar'
 import { baseTitle, baseUrl } from '@utils/base-url'
@@ -12,12 +12,10 @@ import { METADATA_CONFIGS, extractMetadata } from '@utils/get-metadata'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import { AstroFont } from 'astro-font'
 import '@styles/fade-out.css'
-
 import { CustomToaster } from '@components/common/custom-toaster'
-
 import { AsideNav } from '@components/layout/aside'
 import { ModalContainer } from '@components/modal/modal-container'
-import { MusicPlayer } from '@components/music-player/music-player'
+import { MusicPlayerContainer } from '@components/music-player/music-player-container'
 const { cookies } = Astro
 const accessToken = cookies.get('sb-access-token')
 const refreshToken = cookies.get('sb-refresh-token')
@@ -128,6 +126,7 @@ const userInfo = await getSessionUserInfo({
       https://i.ytimg.com
       https://cdn.myanimelist.net
       https://coffee-advanced-tern-335.mypinata.cloud
+      https://pub-92474f7785774e91a790e086dfa6b2ef.r2.dev
       https://lh3.googleusercontent.com/
       https://ani-dev.vercel.app
       https://www.youtube.com/;
@@ -175,9 +174,9 @@ const userInfo = await getSessionUserInfo({
 
       <main
         id="layout-player-container"
-        class="relative flex max-w-[100dvw] flex-col [grid-area:main] md:max-w-[calc(100dvw-80px)] xl:flex-row"
+        class="relative flex max-w-[100dvw] flex-col [grid-area:main]  "
       >
-        <MusicPlayer client:only transition:persist />
+        <MusicPlayerContainer client:only transition:persist className="col-start-1 row-start-1" />
         <slot />
         <CustomToaster client:load />
       </main>
