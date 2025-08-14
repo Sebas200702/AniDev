@@ -1,13 +1,13 @@
-import { navigate } from 'astro:transitions/client'
+import { ClosePlayerButton } from './close-player-button'
 import { ExpandIcon } from '@components/icons/expand-icon'
+import { FilterDropdown } from '@components/search/filters/filter-dropdown'
 import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
-import { FilterDropdown } from '@components/search/filters/filter-dropdown'
-import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { navigate } from 'astro:transitions/client'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
-import { ClosePlayerButton } from './close-player-button'
+import { useMusicPlayerStore } from '@store/music-player-store'
 
 interface Props {
   playerContainerRef: React.RefObject<HTMLDivElement | null>
@@ -115,50 +115,92 @@ export const Header = ({ playerContainerRef }: Props) => {
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
-          <h1
-            className={`line-clamp-1 text-xs ${isMinimized ? 'text-xs font-medium' : 'text-l'} leading-tight text-white`}
+        <div className="flex flex-col gap-4">
+          <span
+            className={`line-clamp-1 space-x-3 ${isMinimized ? 'text-s font-medium' : 'text-l  '} leading-tight text-white`}
           >
             {currentSong.song_title}
-          </h1>
-          <span
-            className={`text-Primary-400 line-clamp-1 hidden md:flex ${isMinimized ? 'text-xs font-medium' : 'text-s'} leading-tight`}
-          >
+            {currentSong.artist_name && (
+              <strong className="text-Primary-400 text-xs mx-1">By</strong>
+            )}
             {currentSong.artist_name}
           </span>
+
           <span
             className={`text-enfasisColor line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-m'} leading-tight`}
           >
+            <strong className="text-Primary-400 text-xs mx-1">From</strong>
             {currentSong.anime_title}
           </span>
         </div>
 
-        <div className="flex flex-col items-center gap-4">
-          {isMinimized && <ClosePlayerButton />}
+        <div className="flex flex-row items-center gap-4">
+          {isMinimized && (
+            <>
+              <button
+                className="text-sxx button-primary h-min cursor-pointer rounded-sm p-1 md:p-4"
+                onClick={handleChangeType}
+              >
+                {type.toUpperCase()}
+              </button>
+              <ClosePlayerButton />
+            </>
+          )}
 
-          <button
-            className="text-sxx button-primary h-min cursor-pointer rounded-sm p-1 md:p-4"
-            onClick={handleChangeType}
-          >
-            {type.toUpperCase()}
-          </button>
-
-          {versions.length > 1 && !isMinimized && (
-            <FilterDropdown
-              label="Version"
-              values={[versionNumber.toString()]}
-              onChange={(value) => setVersionNumber(parseInt(value[0]))}
-              options={
-                versions.map((version) => ({
-                  label: `${version.version}`,
-                  value: version.version.toString(),
-                })) ?? []
-              }
-              onClear={() => setVersionNumber(1)}
-              styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  min-w-24`}
-              singleSelect
-              InputText={false}
-            />
+          {!isMinimized && (
+            <div className="flex md:flex-row flex-col items-center gap-8 xl:w-80 w-28 justify-end ">
+              <div className="flex w-full flex-col  max-w-40 gap-2">
+                <span className="text-Primary-200 text-s">Select Type</span>
+                <div className="flex w-full -skew-x-8 transform flex-row overflow-hidden rounded-sm ">
+                  <button
+                    title={`Select Audio Type`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setType('audio')
+                    }}
+                    className={`text-Primary-100 text-m flex w-full cursor-pointer items-center justify-center py-1.5 transition-colors ${
+                      type === 'audio'
+                        ? 'bg-enfasisColor/80'
+                        : 'bg-enfasisColor/20 hover:bg-enfasisColor/40'
+                    }`}
+                  >
+                    <span className="flex skew-x-8">Audio</span>
+                  </button>
+                  <button
+                    title={`Select Video Type`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setType('video')
+                      setSrc(currentSong?.video_url)
+                    }}
+                    className={`text-Primary-100 text-m flex w-full cursor-pointer items-center justify-center py-1.5 transition-colors ${
+                      type === 'video'
+                        ? 'bg-enfasisColor/80'
+                        : 'bg-enfasisColor/20 hover:bg-enfasisColor/40'
+                    }`}
+                  >
+                    <span className="flex skew-x-8">Video</span>
+                  </button>
+                </div>
+              </div>
+              {versions.length > 1 && (
+                <FilterDropdown
+                  label="Version"
+                  values={[versionNumber.toString()]}
+                  onChange={(value) => setVersionNumber(parseInt(value[0]))}
+                  options={
+                    versions.map((version) => ({
+                      label: `${version.version}`,
+                      value: version.version.toString(),
+                    })) ?? []
+                  }
+                  onClear={() => setVersionNumber(1)}
+                  styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  min-w-24`}
+                  singleSelect
+                  InputText={false}
+                />
+              )}
+            </div>
           )}
 
           {isMinimized && (
