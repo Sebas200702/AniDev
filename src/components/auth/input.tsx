@@ -82,7 +82,7 @@ export const Input = ({
   }
 
   return (
-    <div className="relative group">
+    <div className="group relative">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         {children}
       </div>
@@ -94,7 +94,7 @@ export const Input = ({
         onChange={onChange || handleChange}
         placeholder={placeholder}
         required={required}
-        className="text-m focus:ring-enfasisColor bg-Complementary placeholder-Primary-300  hover:border-enfasisColor/50 w-full rounded-md border border-gray-100/10 px-10 py-2 text-white transition-all duration-300 ease-in-out focus:ring-1 focus:outline-none"
+        className="text-m focus:ring-enfasisColor bg-Complementary placeholder-Primary-300 hover:border-enfasisColor/50 w-full rounded-md border border-gray-100/10 px-10 py-2 text-white transition-all duration-300 ease-in-out focus:ring-1 focus:outline-none"
       />
       {type === 'password' && (
         <button
