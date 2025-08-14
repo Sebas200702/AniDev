@@ -20,9 +20,15 @@ export const fetchRecomendations = async (
   } | null,
   parentalControl = true
 ) => {
-  const numericIds = mal_ids.map((id) => Number(id))
+
+  const numericIds = mal_ids
+    .filter(id => id && !isNaN(Number(id)) && Number.isInteger(Number(id)))
+    .map((id) => Number(id))
+
   const excludedIds = new Set<number>()
 
+
+  const hasValidIds = numericIds.length > 0
 
   let query = supabase
     .from('anime')
@@ -40,7 +46,11 @@ export const fetchRecomendations = async (
         anime_genres ( genres ( name ) )
       `
     )
-    .in('mal_id', numericIds)
+
+
+  if (hasValidIds) {
+    query = query.in('mal_id', numericIds)
+  }
 
   if (parentalControl) {
     query = query
@@ -52,11 +62,9 @@ export const fetchRecomendations = async (
 
   if (error) {
     console.error('Supabase error:', error)
-    return []
   }
 
   let results = initialData || []
-
 
   if (currentAnimeId) {
     const currentIdNum = Number(currentAnimeId)
@@ -163,14 +171,14 @@ export const fetchRecomendations = async (
       if (fallbackResults.length >= needed) break
 
       const stillNeeded = needed - fallbackResults.length
-      console.log(`Using fallback strategy: ${strategy.name} for ${stillNeeded} results`)
+      console.log(
+        `Using fallback strategy: ${strategy.name} for ${stillNeeded} results`
+      )
 
       const allExcludedIds = [...excludedIds, ...usedInFallback].join(',')
 
-      let baseQuery = supabase
-        .from('anime')
-        .select(
-          `
+      let baseQuery = supabase.from('anime').select(
+        `
             mal_id,
             title,
             image_webp,
@@ -182,7 +190,7 @@ export const fetchRecomendations = async (
             rating,
             anime_genres ( genres ( name ) )
           `
-        )
+      )
 
       if (parentalControl) {
         baseQuery = baseQuery
@@ -193,7 +201,7 @@ export const fetchRecomendations = async (
       baseQuery = baseQuery
         .not('mal_id', 'in', `(${allExcludedIds})`)
         .not('score', 'is', null)
-        .gt('score', 7.8)
+        .gt('score', 6.8)
         .limit(Math.min(stillNeeded * 2, 40))
 
       const { data, error } = await strategy.query(baseQuery)
