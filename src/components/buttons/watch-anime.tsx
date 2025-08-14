@@ -32,7 +32,7 @@ export const WatchAnimeButton = ({
   return (
     <a
       href={url}
-      className="button-primary text-m flex w-full items-center justify-center gap-2"
+      className="button-primary text-s flex w-full items-center justify-center gap-2"
       title={`Watch ${title}`}
     >
       <PlayIcon className="h-4 w-4 md:h-5 md:w-5" />
