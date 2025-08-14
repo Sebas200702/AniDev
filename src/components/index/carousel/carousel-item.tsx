@@ -85,7 +85,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
         <h2 className="title line-clamp-1 max-h-44 text-center drop-shadow-md md:mb-4">
           {anime.title}
         </h2>
-        <p className="text-l mb-4 line-clamp-2 text-center drop-shadow md:text-left">
+        <p className="text-l text-Primary-200 mb-4 line-clamp-2 text-center drop-shadow md:text-left">
           {anime.synopsis ?? 'No description available'}
         </p>
         <div className="mx-auto flex w-full flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
@@ -105,7 +105,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
 
       <Overlay className="to-Primary-950 via-Primary-950 md:via-Primary-950/10 h-full w-full bg-gradient-to-b" />
       <Overlay
-        className={`md:to-Primary-950/90 md:via-Primary-950/60 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
+        className={`md:to-Primary-950 md:via-Primary-950/80 h-full w-full ${index % 2 === 0 ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}
       />
     </li>
   )
