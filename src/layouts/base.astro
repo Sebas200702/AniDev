@@ -176,7 +176,7 @@ const userInfo = await getSessionUserInfo({
         id="layout-player-container"
         class="relative flex max-w-[100dvw] flex-col [grid-area:main]  "
       >
-        <MusicPlayerContainer client:only transition:persist className="col-start-1 row-start-1" />
+        <MusicPlayerContainer client:load transition:persist className="col-start-1 row-start-1 " />
         <slot />
         <CustomToaster client:load />
       </main>
