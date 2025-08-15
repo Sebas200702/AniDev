@@ -41,8 +41,8 @@ export const AsideNav = () => {
                 <item.icon className="h-6.5 w-6.5" />
               </a>
               <span
-        
-                className="bg-enfasisColor/80 absolute translate-x-1/2 rounded-md px-3 py-1.5 text-sm opacity-0 transition-all duration-200 group-hover:translate-x-15 group-hover:opacity-100"
+
+                className="bg-enfasisColor/80 absolute translate-x-1/2 rounded-md px-3 py-1.5 text-sm opacity-0 transition-all duration-200 group-hover:translate-x-15 group-hover:opacity-100 pointer-events-none"
               >
                 {item.label}
               </span>
