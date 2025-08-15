@@ -1,5 +1,6 @@
 ---
 import { MusicPlayList } from '@components/music-player/music-playlist'
+import { ArtistInfoComponent } from '@components/music-player/artist-info'
 import Layout from '@layouts/base.astro'
 
 const { slug } = Astro.params
@@ -7,7 +8,27 @@ const [_, theme_id] = slug?.split('_') ?? ['', '']
 ---
 
 <Layout themeId={theme_id}>
-  <section class="my-20 xl:mt-30 xl:w-[40%]" id="music-player-container">
-    <MusicPlayList client:only />
+  <section
+    class="mt-30 mb-10 grid h-full w-full grid-cols-1 gap-10 px-4 md:px-20 xl:grid-cols-[62%_1fr]"
+  >
+    <div class="relative flex flex-col">
+      <div
+        id="music-player-container"
+        class="absolute top-0 left-0 z-20 h-full w-full"
+      >
+      </div>
+
+      <div
+        class="bg-Complementary aspect-video w-full animate-pulse duration-200"
+      >
+      </div>
+      <div
+        class="bg-Primary-900 h-28 w-full animate-pulse rounded-b-xl duration-200"
+      >
+      </div>
+    </div>
+
+    <MusicPlayList client:load />
+    <ArtistInfoComponent client:load />
   </section>
 </Layout>
