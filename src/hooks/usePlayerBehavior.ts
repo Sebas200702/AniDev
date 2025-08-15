@@ -10,7 +10,7 @@ export const usePlayerBehavior = (
 
   const updateMinimizedState = useCallback(() => {
     const currentPath = window.location.pathname
-    const shouldMinimize = !currentPath.includes('/music')
+    const shouldMinimize = !currentPath.includes('/music/')
 
     if (
       currentPathRef.current !== currentPath ||
