@@ -79,8 +79,8 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar max-h-96 overflow-y-auto px-4 sticky top-30   md:max-h-[700px]">
-      <header className="mb-6">
+    <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll rounded-xl p-6 md:max-h-[700px]">
+      <header className="mb-10">
         <h2 className="text-2xl font-semibold text-zinc-100">
           Currently Playing
         </h2>
@@ -101,12 +101,12 @@ export const MusicPlayList = () => {
       {upcomingList.length > 0 && (
         <>
           <header className="mb-6">
-            <div className="mb-4 flex items-center gap-4">
-              <div className="h-px flex-1 bg-gray-600/30"></div>
+            <div className="flex items-center gap-4">
+              <div className="flex-1 bg-gray-600/30"></div>
               <h3 className="text-sm font-medium tracking-wider text-gray-400 uppercase">
                 Up Next
               </h3>
-              <div className="h-px flex-1 bg-gray-600/30"></div>
+              <div className="flex-1 bg-gray-600/30"></div>
             </div>
           </header>
           <DndContext
@@ -120,7 +120,7 @@ export const MusicPlayList = () => {
               items={upcomingList.map((song) => song.song_id)}
               strategy={verticalListSortingStrategy}
             >
-              <ul className="flex flex-col gap-3 w-full">
+              <ul className="flex w-full flex-col gap-3">
                 {upcomingList.map((song) => (
                   <AnimeMusicItem
                     key={song.song_id}
