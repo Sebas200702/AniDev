@@ -122,28 +122,101 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
     }
 
     await GeminiQuota.increment()
-    const geminiResp = await model.generateContent({
-      contents: [
-        {
-          role: 'user',
-          parts: [
+
+
+    const maxRetries = 2
+    let geminiResp
+    let fnCall
+    let retryCount = 0
+
+    while (retryCount <= maxRetries) {
+      try {
+        geminiResp = await model.generateContent({
+          contents: [
             {
-              text: `${prompt} INSTRUCCIÓN CRÍTICA: Usa fetch_recommendations.`,
+              role: 'user',
+              parts: [
+                {
+                  text: `${prompt} INSTRUCCIÓN CRÍTICA: Debes usar fetch_recommendations y generar una lista de IDs de anime. Responde SOLO con la función fetch_recommendations.`,
+                },
+              ],
             },
           ],
-        },
-      ],
-      tools: [functionTool],
-    })
+          tools: [functionTool],
+        })
 
-    const fnCall =
-      geminiResp.response?.candidates?.[0]?.content?.parts?.[0]?.functionCall
-    if (!fnCall)
-      return new Response(JSON.stringify({ error: 'No function call' }), {
-        status: 400,
-      })
+        fnCall =
+          geminiResp.response?.candidates?.[0]?.content?.parts?.[0]?.functionCall
+
+        if (fnCall && fnCall.name === 'fetch_recommendations') {
+          break
+        }
+
+        retryCount++
+        if (retryCount <= maxRetries) {
+          console.warn(`Gemini no generó función válida, reintentando... (${retryCount}/${maxRetries})`)
+
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
+      } catch (geminiError) {
+        console.error('Error en Gemini:', geminiError)
+        retryCount++
+        if (retryCount <= maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
+      }
+    }
+
+    if (!fnCall || fnCall.name !== 'fetch_recommendations') {
+      console.warn('Gemini falló en generar función válida, usando fallback de Jikan')
+      const data = await createJikanFallback(
+        jikan,
+        context.count || 24,
+        context.data.currentAnime,
+        context.parentalControl
+      )
+      return cacheAndRespond(
+        cacheKey,
+        buildResponse({
+          data,
+          context,
+          quotaExhausted: false,
+          fallbackUsed: 'api-error',
+          jikan,
+          animeForJikan,
+          isFromFavorites,
+          favoriteTitle: selectedFavoriteTitle,
+        }),
+        { 'X-Fallback': 'gemini-failed' }
+      )
+    }
 
     const ids = Object.values(fnCall.args)?.[0] as string[]
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      console.warn('IDs inválidos de Gemini, usando fallback de Jikan')
+      const data = await createJikanFallback(
+        jikan,
+        context.count || 24,
+        context.data.currentAnime,
+        context.parentalControl
+      )
+      return cacheAndRespond(
+        cacheKey,
+        buildResponse({
+          data,
+          context,
+          quotaExhausted: false,
+          fallbackUsed: 'api-error',
+          jikan,
+          animeForJikan,
+          isFromFavorites,
+          favoriteTitle: selectedFavoriteTitle,
+        }),
+        { 'X-Fallback': 'invalid-ids' }
+      )
+    }
+
     const result = await fetchRecomendations(
       ids,
       context.count,
