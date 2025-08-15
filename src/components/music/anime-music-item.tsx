@@ -90,7 +90,6 @@ export const AnimeMusicItem = ({
       ref={setNodeRef}
       style={style}
       onClick={() => {
-        if (isInMusicPlayer) return
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }}
       className={`link transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1`}
