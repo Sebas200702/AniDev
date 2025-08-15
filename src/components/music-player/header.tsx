@@ -97,7 +97,7 @@ export const Header = ({ playerContainerRef }: Props) => {
 
   return (
     <header
-      className={`relative flex w-full flex-row gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'p-6'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
+      className={`relative flex w-full h-28 flex-row gap-2 bg-Complementary ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'p-6 rounded-b-xl'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       onClick={(e) => e.stopPropagation()}
