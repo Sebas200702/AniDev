@@ -1,0 +1,8 @@
+---
+import Layout from '@layouts/base.astro'
+const { slug } = Astro.params
+const [name, id] = slug?.split('_') ?? ['', '']
+import { Artist } from '@components/artist/artist'
+---
+
+<Layout> <Artist name={name} id={id} client:load /> </Layout>
