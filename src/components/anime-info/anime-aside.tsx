@@ -1,12 +1,12 @@
 import { AddToListButton } from '@components/buttons/add-to-list-button'
-import { ShareButton } from '@components/buttons/share-button'
-import { WatchAnimeButton } from '@components/buttons/watch-anime'
+import type { Anime } from 'types'
 import { GaleryImage } from '@components/media/galery-image'
 import { Picture } from '@components/media/picture'
+import { ShareButton } from '@components/buttons/share-button'
+import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { baseUrl } from '@utils/base-url'
 import { createAnimeImageList } from '@utils/create-image-list'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import type { Anime } from 'types'
 
 /**
  * AnimeAside component displays additional information about an anime in a sidebar format.
@@ -72,10 +72,10 @@ export const AnimeAside = ({
   })
 
   return (
-    <aside className="anime-aside top-28 z-50 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
+    <aside className="anime-aside top-28 z-50  px-20 md:px-0 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
       <GaleryImage
         imageList={imageList}
-        className="hidden aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center md:flex"
+        className=" aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center "
       >
         <Picture
           image={createImageUrlProxy(
@@ -84,7 +84,7 @@ export const AnimeAside = ({
             '0',
             'webp'
           )}
-          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
+          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative "
         >
           <img
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
