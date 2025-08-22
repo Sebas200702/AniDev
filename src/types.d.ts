@@ -244,7 +244,8 @@ name: string,
   about: string,
   birthday: string,
   given_name: string,
-  family_name: string
+  family_name: string,
+  alternative_image_url: string
 
 }
 
