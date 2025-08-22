@@ -16,9 +16,11 @@ export const ArtistInfoComponent = () => {
     skip: !artistName,
   })
 
-  if (loading || !data) {
+
+  if (loading|| !data ) {
     return <ArtistInfoLoader />
   }
+
 
   return (
     <>
@@ -27,14 +29,17 @@ export const ArtistInfoComponent = () => {
           title={`Info about ${artist.name}`}
           href={`/artist/${normalizeString(artist.name, true, true, true)}_${artist.mal_id}`}
           key={artist.name}
-          className="relative row-start-2 flex flex-col group gap-6 p-6"
+          className="relative row-start-2 md:rounded-xl overflow-hidden flex flex-col group gap-6 p-4 md:p-6"
         >
-          <Overlay className="bg-Primary-950/95 absolute inset-0 z-10 h-full w-full rounded-xl backdrop-blur-sm" />
-          <Overlay className="bg-enfasisColor/5 group-hover:bg-enfasisColor/10 absolute inset-0 z-10 h-full w-full rounded-xl" />
-          <figure className="absolute top-0 left-0 h-full w-full overflow-hidden rounded-3xl">
+
+
+          <figure className="absolute top-0 left-0 h-full w-full object-cover object-center overflow-hidden md:rounded-3xl">
+
+
+
             <Picture
               image={createImageUrlProxy(
-                artist.image_small_url,
+                artist.image_small_url ??artist.alternative_image_url ?? '/placeholder',
                 '0',
                 '0',
                 'webp'
@@ -42,10 +47,11 @@ export const ArtistInfoComponent = () => {
               styles=" relative overflow-hidden object-cover object-center  w-full h-full"
             >
               <img
-                src={createImageUrlProxy(artist.image_url, '0', '70', 'webp')}
+                src={createImageUrlProxy(artist.image_url ??artist.alternative_image_url ?? '/placeholder', '0', '70', 'webp')}
                 alt={artist.name}
-                className="relative h-full w-full object-cover"
+                className="relative h-full w-full  object-cover object-center"
               />
+
             </Picture>
           </figure>
 
@@ -53,9 +59,11 @@ export const ArtistInfoComponent = () => {
 
           <div className="relative z-20 flex w-full  flex-row items-center gap-6 rounded-full p-2">
             <figure className="flex h-full max-h-20 w-full max-w-20 overflow-hidden rounded-full">
+
               <Picture
                 image={createImageUrlProxy(
-                  artist.image_small_url,
+                  artist.image_small_url ??artist.alternative_image_url ?? '/placeholder'
+                  ,
                   '0',
                   '0',
                   'webp'
@@ -64,7 +72,8 @@ export const ArtistInfoComponent = () => {
               >
                 <img
                   src={createImageUrlProxy(
-                    artist.image_url,
+                    artist.image_url ??artist.alternative_image_url ?? '/placeholder'
+                    ,
                     '0',
                     '80',
                     'webp'
@@ -86,8 +95,11 @@ export const ArtistInfoComponent = () => {
           <p className="text-m text-Primary-200 z-20 line-clamp-3">
             {artist.about}
           </p>
+          <Overlay className="bg-Primary-950/95  z-10 h-full w-full md:rounded-xl backdrop-blur-sm" />
+          <Overlay className="bg-enfasisColor/5 group-hover:bg-enfasisColor/10  z-10     h-full w-full md:rounded-xl" />
         </a>
       ))}
+
     </>
   )
 }
