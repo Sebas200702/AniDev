@@ -1,10 +1,9 @@
+import type { Character } from 'types'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
-import type { Character } from 'types'
 
 /**
  * CharacterCard component displays information about an anime character including their name, image, and role.
@@ -49,38 +48,11 @@ export const CharacterCard = ({ character }: Props) => {
 
   let timer: NodeJS.Timeout
 
-  /**
-   * Handles the mouse enter event for the character card.
-   *
-   * @description
-   * This function implements a debounced action for when the user hovers over the card.
-   * It uses a 1-second delay to prevent excessive interactions during quick mouse movements.
-   */
-  const handleMouseEnter = async () => {
-    timer = setTimeout(() => {
-      // Future: could fetch additional character metadata here
-      console.log(`Viewing character: ${character_name}`)
-    }, 1000)
-  }
-
-  /**
-   * Handles the mouse leave event for the character card.
-   *
-   * @description
-   * This function cleans up the timer set by handleMouseEnter when the user's mouse
-   * leaves the card. It prevents any delayed actions from occurring if the user moves
-   * away from the card before the debounce delay expires.
-   */
-  const handleMouseLeave = () => {
-    clearTimeout(timer)
-  }
 
   return (
     <li
       className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl"
       title={`View details for ${character_name}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <a
         href={`/character/${slug}_${character_id}`}
