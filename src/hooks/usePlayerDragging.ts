@@ -37,7 +37,7 @@ export const usePlayerDragging = (
   const handleTouchMove = useCallback(
     (e: TouchEvent) => {
       if (!isDraggingPlayer) return
-      e.preventDefault()
+  
 
       const touch = e.touches[0]
       const playerWidth = playerRef.current?.offsetWidth || 320
