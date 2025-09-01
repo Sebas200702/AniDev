@@ -2,7 +2,6 @@ import { AnimeMusicItem } from '@components/music/anime-music-item'
 import {
   DndContext,
   type DragEndEvent,
-  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   closestCenter,
@@ -79,9 +78,9 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll rounded-xl p-6 md:max-h-[700px]">
+    <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll md:rounded-xl p-4 md:p-6 md:max-h-[700px]">
       <header className="mb-10">
-        <h2 className="text-2xl font-semibold text-zinc-100">
+        <h2 className="text-lx font-semibold text-zinc-100">
           Currently Playing
         </h2>
       </header>
