@@ -1,10 +1,10 @@
-import type { APIRoute } from 'astro'
-import { MusicFilters } from 'types'
-import { getFilters } from '@utils/get-filters-of-search-params'
-import { rateLimit } from '@middlewares/rate-limit'
-import { redisConnection } from '@middlewares/redis-connection'
 import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
+import { rateLimit } from '@middlewares/rate-limit'
+import { redisConnection } from '@middlewares/redis-connection'
+import { getFilters } from '@utils/get-filters-of-search-params'
+import type { APIRoute } from 'astro'
+import { MusicFilters } from 'types'
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {

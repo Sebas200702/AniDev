@@ -31,7 +31,6 @@ export const getFavoriteAnimeIds = async (
       }
     }
 
-
     const { data: exactMatches, error: exactError } = await supabase
       .from('anime')
       .select('mal_id, title')
@@ -53,9 +52,6 @@ export const getFavoriteAnimeIds = async (
     )
 
     if (unmatchedTitles.length > 0) {
-
-
-
       let flexibleQuery = supabase.from('anime').select('mal_id, title')
 
       unmatchedTitles.forEach((title, index) => {
@@ -78,15 +74,11 @@ export const getFavoriteAnimeIds = async (
           (anime) => !existingMalIds.has(anime.mal_id)
         )
         allMatches = [...allMatches, ...newMatches]
-
-
       }
     }
 
     const mal_ids = allMatches.map((anime) => anime.mal_id)
     const matchedTitles = allMatches.map((anime) => anime.title)
-
-
 
     return {
       mal_ids,

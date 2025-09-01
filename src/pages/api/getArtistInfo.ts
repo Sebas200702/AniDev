@@ -1,8 +1,8 @@
-import type { APIRoute } from 'astro'
-import { normalizeString } from '@utils/normalize-string'
-import { redisConnection } from '@middlewares/redis-connection'
 import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
+import { redisConnection } from '@middlewares/redis-connection'
+import { normalizeString } from '@utils/normalize-string'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   const artistName = normalizeString(

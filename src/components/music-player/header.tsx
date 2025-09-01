@@ -1,14 +1,14 @@
-import { ClosePlayerButton } from './close-player-button'
-import { ExpandIcon } from '@components/icons/expand-icon'
-import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { navigate } from 'astro:transitions/client'
 import { MoreOptions } from '@components/common/more-options'
+import { ExpandIcon } from '@components/icons/expand-icon'
 import { PauseIcon } from '@components/icons/pause-icon'
 import { PlayIcon } from '@components/icons/play-icon'
+import { FilterDropdown } from '@components/search/filters/filter-dropdown'
+import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import { navigate } from 'astro:transitions/client'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
-import { useMusicPlayerStore } from '@store/music-player-store'
+import { ClosePlayerButton } from './close-player-button'
 
 interface Props {
   playerContainerRef: React.RefObject<HTMLDivElement | null>
@@ -99,7 +99,7 @@ export const Header = ({ playerContainerRef }: Props) => {
   return (
     <div className="relative">
       <header
-        className={`bg-Complementary relative flex w-full flex-row  gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4 ' : 'h-28  p-4 md:rounded-b-xl md:p-6'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
+        className={`bg-Complementary relative flex w-full flex-row gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'h-28 p-4 md:rounded-b-xl md:p-6'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
         onClick={(e) => e.stopPropagation()}
@@ -150,8 +150,8 @@ export const Header = ({ playerContainerRef }: Props) => {
             )}
 
             {!isMinimized && (
-              <div className="flex  items-center justify-end gap-4 md:gap-8 flex-row xl:w-80 md:w-60">
-                <div className=" w-full max-w-40 flex-col md:flex hidden gap-2">
+              <div className="flex flex-row items-center justify-end gap-4 md:w-60 md:gap-8 xl:w-80">
+                <div className="hidden w-full max-w-40 flex-col gap-2 md:flex">
                   <span className="text-Primary-200 text-s">Select Type</span>
                   <div className="flex w-full -skew-x-8 transform flex-row overflow-hidden rounded-sm">
                     <button
@@ -186,7 +186,7 @@ export const Header = ({ playerContainerRef }: Props) => {
                   </div>
                 </div>
                 <button
-                  className="text-sx button-primary mt-6 h-min flex md:hidden cursor-pointer rounded-sm p-1 md:mt-0 md:p-4"
+                  className="text-sx button-primary mt-6 flex h-min cursor-pointer rounded-sm p-1 md:mt-0 md:hidden md:p-4"
                   onClick={handleChangeType}
                 >
                   {type.toUpperCase()}
@@ -212,7 +212,9 @@ export const Header = ({ playerContainerRef }: Props) => {
             )}
           </div>
         </div>
-        <div className={`from-enfasisColor/0 to-enfasisColor/20 pointer-events-none absolute inset-0  bg-gradient-to-r  transition-opacity duration-300 ease-in-out ${isMinimized ? ' rounded-t-xl group-hover:opacity-100 opacity-0' :'opacity-0'}`} />
+        <div
+          className={`from-enfasisColor/0 to-enfasisColor/20 pointer-events-none absolute inset-0 bg-gradient-to-r transition-opacity duration-300 ease-in-out ${isMinimized ? 'rounded-t-xl opacity-0 group-hover:opacity-100' : 'opacity-0'}`}
+        />
       </header>
 
       {isMinimized && (

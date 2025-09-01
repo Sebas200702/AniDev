@@ -1,5 +1,5 @@
-import { shuffleArray } from '@utils/shuffle-array'
 import { supabase } from '@libs/supabase'
+import { shuffleArray } from '@utils/shuffle-array'
 
 export const fetchRecomendations = async (
   mal_ids: string[],
@@ -12,20 +12,16 @@ export const fetchRecomendations = async (
   } | null,
   parentalControl = true
 ) => {
-
   const numericIds = mal_ids
-    .filter(id => id && !isNaN(Number(id)) && Number.isInteger(Number(id)))
+    .filter((id) => id && !isNaN(Number(id)) && Number.isInteger(Number(id)))
     .map((id) => Number(id))
 
   const excludedIds = new Set<number>()
 
-
   const hasValidIds = numericIds.length > 0
 
-  let query = supabase
-    .from('anime')
-    .select(
-      `
+  let query = supabase.from('anime').select(
+    `
         mal_id,
         title,
         image_webp,
@@ -37,8 +33,7 @@ export const fetchRecomendations = async (
         rating,
         anime_genres ( genres ( name ) )
       `
-    )
-
+  )
 
   if (hasValidIds) {
     query = query.in('mal_id', numericIds)
@@ -75,8 +70,6 @@ export const fetchRecomendations = async (
     if (!jikanRecommendations || jikanRecommendations.mal_ids.length === 0) {
       return []
     }
-
-
 
     const availableJikanIds = jikanRecommendations.mal_ids.filter(
       (id) => !excludedIds.has(id)
@@ -118,7 +111,6 @@ export const fetchRecomendations = async (
       console.error('Jikan fallback query error:', error)
       return []
     }
-
 
     return data
   }

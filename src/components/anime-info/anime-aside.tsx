@@ -1,12 +1,12 @@
 import { AddToListButton } from '@components/buttons/add-to-list-button'
-import type { Anime } from 'types'
-import { GaleryImage } from '@components/media/galery-image'
-import { Picture } from '@components/media/picture'
 import { ShareButton } from '@components/buttons/share-button'
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
+import { GaleryImage } from '@components/media/galery-image'
+import { Picture } from '@components/media/picture'
 import { baseUrl } from '@utils/base-url'
 import { createAnimeImageList } from '@utils/create-image-list'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import type { Anime } from 'types'
 
 /**
  * AnimeAside component displays additional information about an anime in a sidebar format.
@@ -72,10 +72,10 @@ export const AnimeAside = ({
   })
 
   return (
-    <aside className="anime-aside top-28 z-50  px-20 md:px-0 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
+    <aside className="anime-aside top-28 z-50 flex h-min w-full flex-col gap-8 px-20 md:row-span-2 md:items-start md:px-0 xl:sticky">
       <GaleryImage
         imageList={imageList}
-        className=" aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center "
+        className="aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center"
       >
         <Picture
           image={createImageUrlProxy(

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
-import type { AnimeSongWithImage } from 'types'
-import type { MediaPlayerInstance } from '@vidstack/react'
-import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
-import { normalizeString } from '@utils/normalize-string'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { normalizeString } from '@utils/normalize-string'
+import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
+import type { MediaPlayerInstance } from '@vidstack/react'
+import type { AnimeSongWithImage } from 'types'
 
 export const useMusicPlayerSync = (
   currentTime: number,
@@ -105,7 +105,6 @@ export const useMusicPlayerSync = (
       const response = await fetch(`/api/getMusicInfo?themeId=${idToUse}`)
       const data = await response.json()
 
-
       if (!data || !Array.isArray(data) || data.length === 0) {
         setError('No se encontró música para este tema')
         return
@@ -138,8 +137,8 @@ export const useMusicPlayerSync = (
         setList(updatedList)
         setCurrentSong(newSong)
       } else {
-        const playedSongs = list.slice(0, currentSongIndex )
-        const remainingSongs = list.slice(currentSongIndex +1)
+        const playedSongs = list.slice(0, currentSongIndex)
+        const remainingSongs = list.slice(currentSongIndex + 1)
         const updatedList = [...playedSongs, newSong, ...remainingSongs]
         setList(updatedList)
       }
@@ -320,13 +319,11 @@ export const useMusicPlayerSync = (
     if (type === 'video') {
       setSrc(currentSong.video_url)
     }
-
   }, [currentSong, type, setSrc, setSavedTime, player])
 
   useEffect(() => {
     if (player) setPlayerRef(player)
   }, [player, setPlayerRef])
-
 
   useEffect(() => {
     if (

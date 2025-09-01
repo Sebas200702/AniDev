@@ -64,21 +64,22 @@ export const useAutoCloseModal = (
 
         if (
           link &&
-          ((link.tagName === 'A' && link.href) || link.classList?.contains('anime-music-item')) &&
+          ((link.tagName === 'A' && link.href) ||
+            link.classList?.contains('anime-music-item')) &&
           !link.hasAttribute('data-astro-reload') &&
           !link.hasAttribute('target')
         ) {
           const linkUrl = new URL(link.href)
           const currentUrl = new URL(window.location.href)
-          const isSameOrigin = link.tagName === 'A'
-            ? linkUrl.origin === currentUrl.origin &&
-              (linkUrl.pathname !== currentUrl.pathname ||
-               linkUrl.search !== currentUrl.search)
-            : true;
+          const isSameOrigin =
+            link.tagName === 'A'
+              ? linkUrl.origin === currentUrl.origin &&
+                (linkUrl.pathname !== currentUrl.pathname ||
+                  linkUrl.search !== currentUrl.search)
+              : true
 
           if (isSameOrigin) {
             if (enableLogs) {
-
             }
             if (isModalOpen) {
               closeModal()

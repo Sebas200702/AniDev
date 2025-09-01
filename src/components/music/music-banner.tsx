@@ -1,12 +1,12 @@
-import { useFetch } from '@hooks/useFetch'
-import { useEffect, useState } from 'react'
-import { type AnimeSongWithImage } from 'types'
-import { getLatestSongs } from '@utils/music'
+import { navigate } from 'astro:transitions/client'
 import { DinamicBanner } from '@components/anime-info/dinamic-banner'
 import { Overlay } from '@components/layout/overlay'
+import { useFetch } from '@hooks/useFetch'
 import { useMusicPlayerStore } from '@store/music-player-store'
-import { navigate } from 'astro:transitions/client'
+import { getLatestSongs } from '@utils/music'
 import { shuffleArray } from '@utils/shuffle-array'
+import { useEffect, useState } from 'react'
+import { type AnimeSongWithImage } from 'types'
 
 export const MusicBanner = () => {
   const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
@@ -29,8 +29,8 @@ export const MusicBanner = () => {
   if (!data || !songs || loading)
     return (
       <>
-        <Overlay className="to-Primary-950 via-Primary-950 z-10 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
-        <div className="bg-Primary-900 absolute  flex aspect-[1080/600] h-[40vh] w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20 animate-pulse items-center  duration-300"></div>
+        <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 z-10 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
+        <div className="bg-Primary-900 absolute flex aspect-[1080/600] h-[40vh] w-full animate-pulse flex-col items-center justify-center gap-6 overflow-hidden text-left duration-300 md:h-[60vh] md:px-20"></div>
       </>
     )
 

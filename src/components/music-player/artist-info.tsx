@@ -1,12 +1,12 @@
-import type { ArtistInfo } from 'types'
-import { ArtistInfoLoader } from '@components/music-player/artist-info-loader'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
+import { ArtistInfoLoader } from '@components/music-player/artist-info-loader'
+import { useFetch } from '@hooks/useFetch'
+import { useMusicPlayerStore } from '@store/music-player-store'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
-import { useFetch } from '@hooks/useFetch'
-import { useMusicPlayerStore } from '@store/music-player-store'
+import type { ArtistInfo } from 'types'
 
 export const ArtistInfoComponent = () => {
   const { currentSong } = useMusicPlayerStore()

@@ -1,9 +1,9 @@
-import type { Character } from 'types'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
+import type { Character } from 'types'
 
 /**
  * CharacterCard component displays information about an anime character including their name, image, and role.
@@ -45,9 +45,6 @@ export const CharacterCard = ({ character }: Props) => {
   } = character
 
   const slug = normalizeString(character_name, true, false, true)
-
-  let timer: NodeJS.Timeout
-
 
   return (
     <li

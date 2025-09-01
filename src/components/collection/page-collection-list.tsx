@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import type { Anime } from 'types'
 import { AnimeDetailCard } from '@components/anime-info/anime-detail-card'
 import { DinamicBanner } from '@components/anime-info/dinamic-banner'
-import { Overlay } from '@components/layout/overlay'
 import { PageCollectionLoader } from '@components/collection/page-colletion-loader'
+import { Overlay } from '@components/layout/overlay'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import type { Anime } from 'types'
 
 /**
  * Props for the PageColectionList component.

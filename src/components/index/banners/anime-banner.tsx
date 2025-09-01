@@ -6,14 +6,14 @@ import { BannerInfo } from '@components/index/banners/banner-info'
 import { BannerLoader } from '@components/index/banners/banner-loader'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-import { addFailedUrlClient } from '@utils/failed-urls-client'
-import { baseUrl } from '@utils/base-url'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import { normalizeString } from '@utils/normalize-string'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useIndexStore } from '@store/index-store'
 import { useWindowWidth } from '@store/window-width'
+import { baseUrl } from '@utils/base-url'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { addFailedUrlClient } from '@utils/failed-urls-client'
+import { normalizeString } from '@utils/normalize-string'
 
 /**
  * AnimeBanner component displays a banner for an anime.
@@ -168,9 +168,9 @@ export const AnimeBanner = ({ id }: { id: number }) => {
 
   return (
     <section
-      className={`anime-banner-${animationNumber} fade-out relative flex flex-row items-center md:py-4 md:px-20`}
+      className={`anime-banner-${animationNumber} fade-out relative flex flex-row items-center md:px-20 md:py-4`}
     >
-      <article className="group bg-Complementary relative w-full overflow-hidden md:rounded-2xl transition-all duration-400 ease-in-out md:hover:opacity-95">
+      <article className="group bg-Complementary relative w-full overflow-hidden transition-all duration-400 ease-in-out md:rounded-2xl md:hover:opacity-95">
         <a
           href={`/anime/${slug}_${mal_id}`}
           aria-label={`View details for ${title}`}

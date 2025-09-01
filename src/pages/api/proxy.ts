@@ -75,7 +75,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   try {
-
     const cacheKey = `img:${Buffer.from(imageUrl).toString('base64')}:${width}:${quality}:${format}`
 
     const cachedData = await safeRedisOperation((client) =>
@@ -120,11 +119,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       throw new Error('Image optimization failed')
     }
     await safeRedisOperation((client) =>
-      client.set(
-        cacheKey,
-        optimizedBuffer.toString('base64'),
-        { EX: 31536000 }
-      )
+      client.set(cacheKey, optimizedBuffer.toString('base64'), { EX: 31536000 })
     )
 
     return new Response(new Uint8Array(optimizedBuffer), {

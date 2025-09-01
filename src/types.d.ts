@@ -237,17 +237,16 @@ export interface AnimeTopInfo
     | 'episodes'
   > {}
 export interface ArtistInfo {
-name: string,
-  image_url: string,
-  image_small_url: string,
-  mal_id: number,
-  alternative_names: string[],
-  about: string,
-  birthday: string,
-  given_name: string,
-  family_name: string,
+  name: string
+  image_url: string
+  image_small_url: string
+  mal_id: number
+  alternative_names: string[]
+  about: string
+  birthday: string
+  given_name: string
+  family_name: string
   alternative_image_url: string
-
 }
 
 export interface RandomAnime extends Pick<Anime, 'mal_id' | 'title'> {}
