@@ -1,13 +1,5 @@
+import { shuffleArray } from '@utils/shuffle-array'
 import { supabase } from '@libs/supabase'
-
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
 
 export const fetchRecomendations = async (
   mal_ids: string[],
@@ -81,20 +73,16 @@ export const fetchRecomendations = async (
 
   const getJikanFallback = async (needed: number) => {
     if (!jikanRecommendations || jikanRecommendations.mal_ids.length === 0) {
-      console.log('No Jikan recommendations available for fallback')
       return []
     }
 
-    console.log(
-      `Using Jikan recommendations as fallback for ${needed} missing results`
-    )
+
 
     const availableJikanIds = jikanRecommendations.mal_ids.filter(
       (id) => !excludedIds.has(id)
     )
 
     if (availableJikanIds.length === 0) {
-      console.log('All Jikan recommendations already included')
       return []
     }
 
@@ -131,13 +119,10 @@ export const fetchRecomendations = async (
       return []
     }
 
-    console.log(
-      `Jikan fallback found ${data.length} animes from ${shuffledJikanIds.length} requested IDs`
-    )
+
     return data
   }
   const getAlternativeFallback = async (needed: number) => {
-    console.log('Using traditional fallback strategies as last resort')
     const fallbackResults: any[] = []
     const usedInFallback = new Set<number>()
 
@@ -171,9 +156,6 @@ export const fetchRecomendations = async (
       if (fallbackResults.length >= needed) break
 
       const stillNeeded = needed - fallbackResults.length
-      console.log(
-        `Using fallback strategy: ${strategy.name} for ${stillNeeded} results`
-      )
 
       const allExcludedIds = [...excludedIds, ...usedInFallback].join(',')
 
@@ -229,9 +211,6 @@ export const fetchRecomendations = async (
 
     if (fallbackResults.length < needed) {
       const stillNeeded = needed - fallbackResults.length
-      console.log(
-        `Jikan fallback provided ${fallbackResults.length}/${needed} results, using traditional fallback for remaining ${stillNeeded}`
-      )
 
       const traditionalResults = await getAlternativeFallback(stillNeeded)
       fallbackResults = [...fallbackResults, ...traditionalResults]
