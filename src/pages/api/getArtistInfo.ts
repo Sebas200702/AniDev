@@ -1,16 +1,22 @@
 import type { APIRoute } from 'astro'
+import { normalizeString } from '@utils/normalize-string'
 import { redisConnection } from '@middlewares/redis-connection'
 import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 
-export const GET: APIRoute = redisConnection(async ({url}) => {
-    const artistName = url.searchParams.get('artistName')
+export const GET: APIRoute = redisConnection(async ({ url }) => {
+  const artistName = normalizeString(
+    url.searchParams.get('artistName') ?? '',
+    false,
+    true,
+    true
+  )
 
   const cacheKey = `ArtistInfo_${artistName}`
 
   const cachedData = await safeRedisOperation((client) => client.get(cacheKey))
   if (cachedData) {
-    return new Response(JSON.stringify({data: JSON.parse(cachedData)}), {
+    return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +28,8 @@ export const GET: APIRoute = redisConnection(async ({url}) => {
     return new Response('Artists Name is required', { status: 400 })
   }
 
-  const { data, error } = await supabase.rpc('get_artist_info', { artist_name :artistName
+  const { data, error } = await supabase.rpc('get_artist_info', {
+    artist_name: artistName,
   })
 
   if (error) {
@@ -34,7 +41,7 @@ export const GET: APIRoute = redisConnection(async ({url}) => {
     client.set(cacheKey, JSON.stringify(data), { EX: 60 * 60 * 24 })
   )
 
-  return new Response(JSON.stringify({data}), {
+  return new Response(JSON.stringify({ data }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
