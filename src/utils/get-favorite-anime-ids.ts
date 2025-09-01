@@ -31,11 +31,7 @@ export const getFavoriteAnimeIds = async (
       }
     }
 
-    console.log(
-      `Searching for MAL IDs for favorite animes: ${favoriteAnimeTitles.join(', ')}`
-    )
 
-    // Primera consulta: búsqueda exacta por título
     const { data: exactMatches, error: exactError } = await supabase
       .from('anime')
       .select('mal_id, title')
@@ -56,14 +52,12 @@ export const getFavoriteAnimeIds = async (
       (title) => !foundTitles.has(title)
     )
 
-    // Segunda consulta: búsqueda flexible para títulos no encontrados
     if (unmatchedTitles.length > 0) {
-      console.log(`Doing flexible search for: ${unmatchedTitles.join(', ')}`)
 
-      // Crear una query OR para búsqueda parcial usando ilike
+
+
       let flexibleQuery = supabase.from('anime').select('mal_id, title')
 
-      // Construir condiciones OR para cada título no encontrado
       unmatchedTitles.forEach((title, index) => {
         const normalizedTitle = title.trim()
         if (index === 0) {
@@ -79,25 +73,20 @@ export const getFavoriteAnimeIds = async (
       if (flexibleError) {
         console.warn('Error in flexible title search:', flexibleError)
       } else if (flexibleMatches && flexibleMatches.length > 0) {
-        // Filtrar duplicados y agregar matches flexibles
         const existingMalIds = new Set(allMatches.map((anime) => anime.mal_id))
         const newMatches = flexibleMatches.filter(
           (anime) => !existingMalIds.has(anime.mal_id)
         )
         allMatches = [...allMatches, ...newMatches]
 
-        console.log(
-          `Found ${newMatches.length} additional matches through flexible search`
-        )
+
       }
     }
 
     const mal_ids = allMatches.map((anime) => anime.mal_id)
     const matchedTitles = allMatches.map((anime) => anime.title)
 
-    console.log(
-      `Successfully found ${mal_ids.length} MAL IDs for favorite animes`
-    )
+
 
     return {
       mal_ids,
