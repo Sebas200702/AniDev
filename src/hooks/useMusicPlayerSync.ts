@@ -10,7 +10,6 @@ export const useMusicPlayerSync = (
   currentTime: number,
   playing: boolean,
   player: React.RefObject<MediaPlayerInstance | null>,
-  canPlay: boolean,
   duration: number
 ) => {
   const {
@@ -20,7 +19,6 @@ export const useMusicPlayerSync = (
     setSrc,
     setIsPlaying,
     setPlayerRef,
-    setCanPlay,
     setDuration,
     list,
     setCurrentSong,
@@ -106,7 +104,7 @@ export const useMusicPlayerSync = (
     try {
       const response = await fetch(`/api/getMusicInfo?themeId=${idToUse}`)
       const data = await response.json()
-      console.log('Fetched music data for themeId:', idToUse, data)
+
 
       if (!data || !Array.isArray(data) || data.length === 0) {
         setError('No se encontró música para este tema')
@@ -164,7 +162,6 @@ export const useMusicPlayerSync = (
 
   useEffect(() => {
     if (themeId && !isChangingSong.current) {
-      console.log('themeId changed:', themeId)
       fetchMusic(themeId)
     }
   }, [themeId])
@@ -323,15 +320,13 @@ export const useMusicPlayerSync = (
     if (type === 'video') {
       setSrc(currentSong.video_url)
     }
+
   }, [currentSong, type, setSrc, setSavedTime, player])
 
   useEffect(() => {
     if (player) setPlayerRef(player)
   }, [player, setPlayerRef])
 
-  useEffect(() => {
-    setCanPlay(canPlay)
-  }, [canPlay, setCanPlay])
 
   useEffect(() => {
     if (
