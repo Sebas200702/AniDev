@@ -1,6 +1,7 @@
 ---
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
+import { MusicBanner } from '@components/music/music-banner'
 
 const title = `Anime Music - ${baseTitle}`
 const description =
@@ -8,5 +9,5 @@ const description =
 ---
 
 <Layout title={title} description={description}>
-
+  <MusicBanner client:load />
 </Layout>
