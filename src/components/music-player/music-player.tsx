@@ -40,10 +40,10 @@ export const MusicPlayer = () => {
 
   const player = useRef<MediaPlayerInstance>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
-  const { currentTime, playing, muted, volume, canPlay, duration } =
+  const { currentTime, playing, muted, volume,  duration } =
     useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
+  useMusicPlayerSync(currentTime, playing, player,  duration)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
