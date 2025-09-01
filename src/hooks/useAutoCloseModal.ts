@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 interface UseAutoCloseModalOptions {
   debounceMs?: number
@@ -6,23 +6,23 @@ interface UseAutoCloseModalOptions {
 }
 
 /**
- * Hook para auto-cerrar modal cuando cambie la URL
- * Evita el evento popstate para no cerrar en navegación con botones del navegador
+ * Hook to automatically close modal on URL changes
+ * Avoids popstate event to prevent closing when using browser navigation buttons
  *
- * @param isModalOpen - Estado que indica si el modal está abierto
- * @param closeModal - Función para cerrar el modal
- * @param options - Opciones de configuración
- * @param options.debounceMs - Tiempo de debounce en milisegundos (default: 100)
- * @param options.enableLogs - Habilitar logs de debugging (default: false)
+ * @param isModalOpen - Boolean indicating if the modal is open
+ * @param closeModal - Function to close the modal
+ * @param options - Configuration options
+ * @param options.debounceMs - Debounce time in milliseconds (default: 100)
+ * @param options.enableLogs - Enable debug logs (default: false)
  *
  * @example
  * ```tsx
  * const { isOpen, closeModal } = useModal()
  *
- * // Uso básico
+ * // Basic usage
  * useAutoCloseModal(isOpen, closeModal)
  *
- * // Con configuración personalizada
+ * // With custom configuration
  * useAutoCloseModal(isOpen, closeModal, {
  *   debounceMs: 200,
  *   enableLogs: true
@@ -30,22 +30,22 @@ interface UseAutoCloseModalOptions {
  * ```
  *
  * @description
- * Este hook detecta cambios de URL a través de múltiples métodos:
- * - **Eventos de Astro**: `astro:page-load`, `astro:after-swap`, `astro:before-preparation`, `astro:after-preparation`
- * - **Click Interceptor**: Detecta clicks en elementos `<a>` para cierre inmediato
- * - **History API**: Intercepta `pushState` y `replaceState` para navegación programática
- * - **Hash Changes**: Detecta cambios en el hash de la URL
- * - **MutationObserver**: Como respaldo para detectar cambios no capturados
+ * This hook detects URL changes through multiple methods:
+ * - **Astro Events**: `astro:page-load`, `astro:after-swap`, `astro:before-preparation`, `astro:after-preparation`
+ * - **Click Interceptor**: Detects clicks on `<a>` elements for immediate closing
+ * - **History API**: Intercepts `pushState` and `replaceState` for programmatic navigation
+ * - **Hash Changes**: Detects URL hash changes
+ * - **MutationObserver**: As fallback for detecting uncaptured changes
  *
- * ❌ **NO escucha** el evento `popstate` para evitar cerrar el modal cuando
- * el usuario navega con los botones del navegador (atrás/adelante).
+ * ❌ **Does NOT listen** to `popstate` event to prevent closing the modal
+ * when user navigates with browser back/forward buttons.
  *
- * ✅ **Detecta navegación por**:
- * - Enlaces `<a>` internos (cierre inmediato)
- * - `navigate()` de Astro
+ * ✅ **Detects navigation from**:
+ * - Internal `<a>` links (immediate close)
+ * - Astro's `navigate()`
  * - `history.pushState()` / `history.replaceState()`
- * - Cambios de query parameters
- * - Cambios de hash (#)
+ * - Query parameter changes
+ * - Hash changes (#)
  */
 export const useAutoCloseModal = (
   isModalOpen: boolean,
@@ -60,26 +60,26 @@ export const useAutoCloseModal = (
     const handleLinkClick = (event: Event) => {
       try {
         const target = event.target as HTMLElement
-        const link = target.closest('a') || target.closest('')
+        const link = target.closest('a') || target.closest('anime-music-item')
 
         if (
           link &&
-          link.href &&
+          ((link.tagName === 'A' && link.href) ||
+            link.classList?.contains('anime-music-item')) &&
           !link.hasAttribute('data-astro-reload') &&
           !link.hasAttribute('target')
         ) {
           const linkUrl = new URL(link.href)
           const currentUrl = new URL(window.location.href)
-          if (
-            linkUrl.origin === currentUrl.origin &&
-            (linkUrl.pathname !== currentUrl.pathname ||
-              linkUrl.search !== currentUrl.search)
-          ) {
+          const isSameOrigin =
+            link.tagName === 'A'
+              ? linkUrl.origin === currentUrl.origin &&
+                (linkUrl.pathname !== currentUrl.pathname ||
+                  linkUrl.search !== currentUrl.search)
+              : true
+
+          if (isSameOrigin) {
             if (enableLogs) {
-              console.log('Astro link clicked, closing modal immediately:', {
-                from: currentUrl.pathname + currentUrl.search,
-                to: linkUrl.pathname + linkUrl.search,
-              })
             }
             if (isModalOpen) {
               closeModal()

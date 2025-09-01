@@ -74,7 +74,11 @@ const ClosePlayerModal = ({ onClose }: ClosePlayerModalProps) => {
   )
 }
 
-export const ClosePlayerButton = () => {
+interface Props {
+  className?: string
+}
+
+export const ClosePlayerButton = ({ className }: Props) => {
   const { openModal, closeModal } = useModal()
 
   const handleOpenModal = () => {
@@ -85,7 +89,9 @@ export const ClosePlayerButton = () => {
 
   return (
     <button onClick={handleOpenModal} aria-label="Close music player">
-      <CloseIcon className="text-Primary-200 h-4 w-4 transition-colors duration-300 hover:text-red-400" />
+      <CloseIcon
+        className={`${className} text-Primary-200 h-4 w-4 transition-colors duration-300 hover:text-red-400`}
+      />
     </button>
   )
 }

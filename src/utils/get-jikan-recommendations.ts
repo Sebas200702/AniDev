@@ -47,8 +47,6 @@ export const getJikanRecommendations = async (
   error?: string
 }> => {
   try {
-    console.log(`Fetching Jikan recommendations for anime ID: ${malId}`)
-
     const response = await fetch(
       `https://api.jikan.moe/v4/anime/${malId}/recommendations`
     )
@@ -81,10 +79,6 @@ export const getJikanRecommendations = async (
 
     const mal_ids = sortedRecommendations.map((rec) => rec.entry.mal_id)
     const titles = sortedRecommendations.map((rec) => rec.entry.title)
-
-    console.log(
-      `Successfully fetched ${mal_ids.length} recommendations from Jikan`
-    )
 
     return {
       mal_ids,

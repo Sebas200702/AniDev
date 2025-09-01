@@ -1,6 +1,6 @@
 import { MusicPlayer } from '@components/music-player/music-player'
-import { createPortal } from 'react-dom'
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 export const MusicPlayerContainer = ({ className }: { className?: string }) => {
   const portalElementRef = useRef<HTMLDivElement | null>(null)
@@ -26,7 +26,10 @@ export const MusicPlayerContainer = ({ className }: { className?: string }) => {
         : 'layout-player-container'
       let targetParent = document.getElementById(targetId)
       if (!targetParent) {
-        const fallbackId = targetId === 'music-player-container' ? 'layout-player-container' : 'music-player-container'
+        const fallbackId =
+          targetId === 'music-player-container'
+            ? 'layout-player-container'
+            : 'music-player-container'
         targetParent = document.getElementById(fallbackId)
       }
       const el = portalElementRef.current
@@ -35,7 +38,6 @@ export const MusicPlayerContainer = ({ className }: { className?: string }) => {
         setIsReady(true)
       }
     }
-
 
     movePortalContainer()
 
@@ -61,7 +63,6 @@ export const MusicPlayerContainer = ({ className }: { className?: string }) => {
       observer.disconnect()
     }
   }, [className])
-
 
   useEffect(() => {
     const el = portalElementRef.current

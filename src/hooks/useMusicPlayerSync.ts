@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 
-import type { AnimeSongWithImage } from 'types'
-import type { MediaPlayerInstance } from '@vidstack/react'
-import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
-import { normalizeString } from '@utils/normalize-string'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { normalizeString } from '@utils/normalize-string'
+import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
+import type { MediaPlayerInstance } from '@vidstack/react'
+import type { AnimeSongWithImage } from 'types'
 
 export const useMusicPlayerSync = (
   currentTime: number,
   playing: boolean,
   player: React.RefObject<MediaPlayerInstance | null>,
-  canPlay: boolean,
   duration: number
 ) => {
   const {
@@ -20,7 +19,6 @@ export const useMusicPlayerSync = (
     setSrc,
     setIsPlaying,
     setPlayerRef,
-    setCanPlay,
     setDuration,
     list,
     setCurrentSong,
@@ -106,7 +104,6 @@ export const useMusicPlayerSync = (
     try {
       const response = await fetch(`/api/getMusicInfo?themeId=${idToUse}`)
       const data = await response.json()
-      console.log('Fetched music data for themeId:', idToUse, data)
 
       if (!data || !Array.isArray(data) || data.length === 0) {
         setError('No se encontró música para este tema')
@@ -140,8 +137,8 @@ export const useMusicPlayerSync = (
         setList(updatedList)
         setCurrentSong(newSong)
       } else {
-        const playedSongs = list.slice(0, currentSongIndex )
-        const remainingSongs = list.slice(currentSongIndex +1)
+        const playedSongs = list.slice(0, currentSongIndex)
+        const remainingSongs = list.slice(currentSongIndex + 1)
         const updatedList = [...playedSongs, newSong, ...remainingSongs]
         setList(updatedList)
       }
@@ -164,7 +161,6 @@ export const useMusicPlayerSync = (
 
   useEffect(() => {
     if (themeId && !isChangingSong.current) {
-      console.log('themeId changed:', themeId)
       fetchMusic(themeId)
     }
   }, [themeId])
@@ -328,10 +324,6 @@ export const useMusicPlayerSync = (
   useEffect(() => {
     if (player) setPlayerRef(player)
   }, [player, setPlayerRef])
-
-  useEffect(() => {
-    setCanPlay(canPlay)
-  }, [canPlay, setCanPlay])
 
   useEffect(() => {
     if (

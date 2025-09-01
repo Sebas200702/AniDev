@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react'
 
+import { navigate } from 'astro:transitions/client'
 import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
-import type { AnimeSong } from 'types'
-import { CSS } from '@dnd-kit/utilities'
 import { DownloadButton } from '@components/buttons/download-button'
-import { MoreOptions } from '@components/common/more-options'
-import { Overlay } from '@components/layout/overlay'
-import { PauseIcon } from '@components/icons/pause-icon'
-import { Picture } from '@components/media/picture'
-import { PlayIcon } from '@components/icons/play-icon'
 import { ShareButton } from '@components/buttons/share-button'
+import { MoreOptions } from '@components/common/more-options'
+import { PauseIcon } from '@components/icons/pause-icon'
+import { PlayIcon } from '@components/icons/play-icon'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
-import { navigate } from 'astro:transitions/client'
 import { normalizeString } from '@utils/normalize-string'
-import { useMusicPlayerStore } from '@store/music-player-store'
-import { useSortable } from '@dnd-kit/sortable'
+import type { AnimeSong } from 'types'
 
 export const AnimeMusicItem = ({
   song,
@@ -92,10 +92,10 @@ export const AnimeMusicItem = ({
       onClick={() => {
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }}
-      className={`link transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex h-full w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:max-h-36 md:gap-2 md:hover:translate-x-1`}
+      className={`anime-music-item link transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
     >
-      <div className="flex aspect-[100/30] h-full w-full flex-row overflow-hidden rounded-lg md:max-h-36">
-        <div className="absolute top-0 left-0 h-full w-full overflow-hidden rounded-lg">
+      <div className="flex aspect-[100/30] max-h-36 w-full flex-row overflow-hidden rounded-lg">
+        <div className="absolute top-0 left-0 aspect-[100/30] max-h-36 w-full overflow-hidden rounded-lg">
           <img
             src={createImageUrlProxy(
               banner_image || image,
@@ -163,7 +163,7 @@ export const AnimeMusicItem = ({
               <a
                 title={`View ${song.artist_name} profile`}
                 href={`/artist/${normalizeString(song.artist_name || '')}`}
-                className="text-sxx text-Primary-300 flex w-full flex-row items-end gap-1 truncate md:w-auto"
+                className="text-sxx text-Primary-300 flex w-min flex-row items-end gap-1 truncate md:w-auto"
               >
                 By
                 <strong className="text-Primary-100 text-m hover:text-enfasisColor cursor-pointer truncate transition-all duration-300">

@@ -109,7 +109,7 @@ const userInfo = await getSessionUserInfo({
       http-equiv="Content-Security-Policy"
       content="
     default-src 'self';
-    connect-src 'self' data: https://a.animethemes.moe https://v.animethemes.moe;
+    connect-src 'self' data: https://a.animethemes.moe https://v.animethemes.moe  https://i.ytimg.com;
     script-src
       'self'
       'unsafe-inline'
@@ -174,9 +174,13 @@ const userInfo = await getSessionUserInfo({
 
       <main
         id="layout-player-container"
-        class="relative flex max-w-[100dvw] flex-col [grid-area:main]  "
+        class="relative flex max-w-[100dvw] flex-col [grid-area:main]"
       >
-        <MusicPlayerContainer client:load transition:persist className="col-start-1 row-start-1 " />
+        <MusicPlayerContainer
+          client:load
+          transition:persist
+          className="col-start-1 row-start-1"
+        />
         <slot />
         <CustomToaster client:load />
       </main>

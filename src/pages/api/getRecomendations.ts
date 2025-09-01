@@ -123,7 +123,6 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
 
     await GeminiQuota.increment()
 
-
     const maxRetries = 2
     let geminiResp
     let fnCall
@@ -146,7 +145,8 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
         })
 
         fnCall =
-          geminiResp.response?.candidates?.[0]?.content?.parts?.[0]?.functionCall
+          geminiResp.response?.candidates?.[0]?.content?.parts?.[0]
+            ?.functionCall
 
         if (fnCall && fnCall.name === 'fetch_recommendations') {
           break
@@ -154,21 +154,25 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
 
         retryCount++
         if (retryCount <= maxRetries) {
-          console.warn(`Gemini no generó función válida, reintentando... (${retryCount}/${maxRetries})`)
+          console.warn(
+            `Gemini no generó función válida, reintentando... (${retryCount}/${maxRetries})`
+          )
 
-          await new Promise(resolve => setTimeout(resolve, 100))
+          await new Promise((resolve) => setTimeout(resolve, 100))
         }
       } catch (geminiError) {
         console.error('Error en Gemini:', geminiError)
         retryCount++
         if (retryCount <= maxRetries) {
-          await new Promise(resolve => setTimeout(resolve, 100))
+          await new Promise((resolve) => setTimeout(resolve, 100))
         }
       }
     }
 
     if (!fnCall || fnCall.name !== 'fetch_recommendations') {
-      console.warn('Gemini falló en generar función válida, usando fallback de Jikan')
+      console.warn(
+        'Gemini falló en generar función válida, usando fallback de Jikan'
+      )
       const data = await createJikanFallback(
         jikan,
         context.count || 24,

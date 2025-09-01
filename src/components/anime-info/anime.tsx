@@ -3,7 +3,6 @@ import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
-
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { AnimeSlider } from '@components/index/slider/anime-slider-list'
 import { Overlay } from '@components/layout/overlay'
@@ -68,7 +67,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10 mt-[35dvh] mb-10 grid grid-cols-1 gap-10 px-4 md:mb-20 md:grid-cols-3 md:px-20 xl:grid-cols-5">
+      <article className="z-10 mt-26 mb-10 grid grid-cols-1 gap-8 md:mt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-10 md:px-20 xl:grid-cols-5">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
@@ -102,7 +101,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         </div>
         <AnimeDetails animeData={animeData} />
       </article>
-      <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
+      <Overlay className="md:to-Primary-950 md:via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
       <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
     </>
   )

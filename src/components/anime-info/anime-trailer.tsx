@@ -1,12 +1,12 @@
 import '@vidstack/react/player/styles/default/theme.css'
 import '@styles/video.css'
 import '@styles/player.css'
-import { CustomLayout } from '@components/music-player/custom-layout'
-import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 
 import { Picture } from '@components/media/picture'
+import { CustomLayout } from '@components/music-player/custom-layout'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 
 /**
  * Props for the AnimeTrailer component.

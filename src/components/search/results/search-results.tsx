@@ -55,8 +55,6 @@ export const SearchResults = () => {
   const renderLoadingCards = () => {
     if (!isLoadingMore) return null
 
-    console.log(totalResults, results, isLoadingMore)
-
     const remainingResults = totalResults - (results?.length || 0)
     const loadingCardsCount = Math.min(remainingResults, 10)
 

@@ -1,6 +1,8 @@
+import path from 'path'
 import { safeRedisOperation } from '@libs/redis'
 import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
+import fs from 'fs/promises'
 import sharp from 'sharp'
 
 /**
@@ -49,6 +51,15 @@ import sharp from 'sharp'
  * }
  */
 
+const getPlaceholderBuffer = async () => {
+  const placeholderPath = path.resolve(
+    process.cwd(),
+    'public',
+    'placeholder.webp'
+  )
+  return fs.readFile(placeholderPath)
+}
+
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
 
@@ -59,16 +70,11 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   )
   const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
   const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
-
   if (!imageUrl) {
-    return new Response(JSON.stringify({ error: 'Missing "url" parameter' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    throw new Error('Missing image URL')
   }
 
   try {
-    // Optimized cache key
     const cacheKey = `img:${Buffer.from(imageUrl).toString('base64')}:${width}:${quality}:${format}`
 
     const cachedData = await safeRedisOperation((client) =>
@@ -76,14 +82,13 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     )
 
     if (cachedData) {
-      // Direct base64 decode - much faster than JSON parsing
       const imageBuffer = Buffer.from(cachedData, 'base64')
       return new Response(imageBuffer, {
         status: 200,
         headers: {
           'Content-Type': mimeType,
           'Content-Length': imageBuffer.length.toString(),
-          'Cache-Control': 'public, max-age=31536000, immutable', // 1 year cache
+          'Cache-Control': 'public, max-age=31536000, immutable',
           ETag: `"${cacheKey}"`,
         },
       })
@@ -91,23 +96,11 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 
     const response = await fetch(imageUrl)
     if (!response.ok) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid image URL (response not ok)' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      throw new Error('Failed to fetch image')
     }
     const contentType = response.headers.get('content-type') ?? ''
     if (!contentType.startsWith('image/')) {
-      return new Response(
-        JSON.stringify({ error: 'URL does not point to a valid image' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      throw new Error('Invalid image response')
     }
 
     const arrayBuffer = await response.arrayBuffer()
@@ -123,37 +116,30 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 
     const optimizedBuffer = await image.toBuffer()
     if (!optimizedBuffer) {
-      return new Response(
-        JSON.stringify({ error: 'Error processing image (empty buffer)' }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      throw new Error('Image optimization failed')
     }
-
-    // Store as base64 - much more efficient than JSON for binary data
     await safeRedisOperation((client) =>
-      client.set(
-        cacheKey,
-        optimizedBuffer.toString('base64'),
-        { EX: 31536000 } // 1 year
-      )
+      client.set(cacheKey, optimizedBuffer.toString('base64'), { EX: 31536000 })
     )
 
-    return new Response(optimizedBuffer, {
+    return new Response(new Uint8Array(optimizedBuffer), {
       headers: {
         'Content-Type': mimeType,
         'Content-Length': optimizedBuffer.length.toString(),
-        'Cache-Control': 'public, max-age=31536000, immutable', // 1 year cache
+        'Cache-Control': 'public, max-age=31536000, immutable',
         ETag: `"${cacheKey}"`,
       },
     })
   } catch (error) {
     console.error('Error processing image:', error)
-    return new Response(JSON.stringify({ error: 'Error processing image' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+    const buffer = await getPlaceholderBuffer()
+    return new Response(new Uint8Array(buffer), {
+      status: 200,
+      headers: {
+        'Content-Type': 'image/webp',
+        'Content-Length': buffer.length.toString(),
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
     })
   }
 })

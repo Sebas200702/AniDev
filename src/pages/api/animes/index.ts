@@ -112,7 +112,6 @@ export const GET: APIRoute = rateLimit(
         return 'get_anime_summary_card'
       }
       const formatFunction = getFormat(format ?? '')
-      console.log(filters)
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
 

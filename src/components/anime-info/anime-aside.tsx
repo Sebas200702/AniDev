@@ -72,10 +72,10 @@ export const AnimeAside = ({
   })
 
   return (
-    <aside className="anime-aside top-28 z-50 row-start-2 flex h-min w-full flex-col gap-8 md:row-span-2 md:items-start xl:sticky">
+    <aside className="anime-aside top-28 z-50 flex h-min w-full flex-col gap-8 px-20 md:row-span-2 md:items-start md:px-0 xl:sticky">
       <GaleryImage
         imageList={imageList}
-        className="hidden aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center md:flex"
+        className="aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center"
       >
         <Picture
           image={createImageUrlProxy(
@@ -84,7 +84,7 @@ export const AnimeAside = ({
             '0',
             'webp'
           )}
-          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative md:flex hidden"
+          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative "
         >
           <img
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
