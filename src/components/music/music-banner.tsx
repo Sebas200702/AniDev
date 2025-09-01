@@ -1,46 +1,61 @@
 import { useFetch } from '@hooks/useFetch'
 import { useEffect, useState } from 'react'
 import { type AnimeSongWithImage } from 'types'
-import { getRandomWeightedSong } from '@utils/music'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { getLatestSongs } from '@utils/music'
+import { DinamicBanner } from '@components/anime-info/dinamic-banner'
+import { Overlay } from '@components/layout/overlay'
+import { useMusicPlayerStore } from '@store/music-player-store'
+import { navigate } from 'astro:transitions/client'
+import { shuffleArray } from '@utils/shuffle-array'
 
 export const MusicBanner = () => {
-  const [randomSong, setRandomSong] = useState<AnimeSongWithImage | null>(null)
-  const { data, loading, error } = useFetch<AnimeSongWithImage[]>({
+  const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
+  const [banners, setBanners] = useState<string[]>([])
+
+  const { setCurrentSong, setList } = useMusicPlayerStore()
+  const { data, loading } = useFetch<AnimeSongWithImage[]>({
     url: '/api/music?anime_status=Currently Airing&order_by=score desc',
   })
 
   useEffect(() => {
     if (!data) return
-    const song = getRandomWeightedSong(data)
-    setRandomSong(song)
+    const songs = shuffleArray(getLatestSongs(data) as AnimeSongWithImage[])
+    const banners = shuffleArray(getLatestSongs(data, true) as string[])
+
+    setSongs(songs)
+    setBanners(banners)
   }, [data])
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error loading music</div>
-  if (!randomSong) return null
+  if (!data || !songs || loading)
+    return (
+      <>
+        <Overlay className="to-Primary-950 via-Primary-950 z-10 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
+        <div className="bg-Primary-900 absolute  flex aspect-[1080/600] h-[40vh] w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20 animate-pulse items-center  duration-300"></div>
+      </>
+    )
 
+  const handleClick = () => {
+    const newCurrentSong = songs[0]
+    setCurrentSong(newCurrentSong)
+    setList(songs)
+
+    navigate(`/music/${newCurrentSong.song_title}_${newCurrentSong.theme_id}`)
+  }
   return (
-    <div className="relative h-64 overflow-hidden rounded-lg">
-      <img
-        src={createImageUrlProxy(randomSong.image,'0','70','webp')}
-        alt={randomSong.anime_title}
-        className="w-full h-full object-cover"
-      />
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
-        <h2 className="text-xl font-bold text-white">{randomSong.anime_title}</h2>
-        <p className="text-gray-200">{randomSong.song_title}</p>
-        {randomSong.banner_image && (
-          <div className="absolute inset-0 -z-10">
-            <img
-              src={createImageUrlProxy( randomSong.banner_image, '0','70','webp')}
-              alt=""
-              className="w-full h-full object-cover"
-              aria-hidden="true"
-            />
-          </div>
-        )}
-      </div>
-    </div>
+    <>
+      <DinamicBanner banners={banners} />
+      <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
+      <header className="absolute z-20 flex aspect-[1080/600] h-[40vh] w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20">
+        <h1 className="subtitle">Openings that are playing now</h1>
+
+        <ul className="flex gap-4">
+          <button className="button-primary" onClick={handleClick}>
+            Play Now
+          </button>
+        </ul>
+      </header>
+
+      <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
+    </>
   )
 }
