@@ -1,10 +1,10 @@
-import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
-import { rateLimit } from '@middlewares/rate-limit'
-import { redisConnection } from '@middlewares/redis-connection'
-import { getFilters } from '@utils/get-filters-of-search-params'
 import type { APIRoute } from 'astro'
 import { Filters } from 'types'
+import { getFilters } from '@utils/get-filters-of-search-params'
+import { rateLimit } from '@middlewares/rate-limit'
+import { redisConnection } from '@middlewares/redis-connection'
+import { safeRedisOperation } from '@libs/redis'
+import { supabase } from '@libs/supabase'
 
 /**
  * Main anime listing endpoint with multiple format options.
@@ -112,7 +112,7 @@ export const GET: APIRoute = rateLimit(
         return 'get_anime_summary_card'
       }
       const formatFunction = getFormat(format ?? '')
-      console.log(filters)
+
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
 
