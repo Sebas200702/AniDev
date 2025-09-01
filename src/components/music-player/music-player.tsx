@@ -114,14 +114,13 @@ export const MusicPlayer = () => {
         aspectRatio={isMinimized ? 'auto' : 'video'}
         viewType="video"
         streamType="on-demand"
-        logLevel="warn"
+        logLevel="silent"
         playsInline
         autoPlay
         title={currentSong.song_title}
         onCanPlay={() => {
           if (player.current && savedTime > 0) {
             player.current.currentTime = savedTime
-            player.current.play()
           }
         }}
         poster={createImageUrlProxy(
