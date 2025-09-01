@@ -96,6 +96,7 @@ export interface AnimeSongWithImage extends AnimeSong {
 }
 export interface AnimeSong {
   anime_id: number
+  anime_score: number
   song_title: string
   type: string
   video_url: string
