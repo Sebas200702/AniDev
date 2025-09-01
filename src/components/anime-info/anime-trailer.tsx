@@ -1,9 +1,9 @@
 import '@vidstack/react/player/styles/default/theme.css'
 import '@styles/video.css'
 import '@styles/player.css'
-import { CustomLayout } from '@components/music-player/custom-layout'
-import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 
+import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
+import { CustomLayout } from '@components/music-player/custom-layout'
 import { Picture } from '@components/media/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
