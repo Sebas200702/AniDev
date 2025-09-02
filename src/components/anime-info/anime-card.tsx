@@ -151,7 +151,7 @@ export const AnimeCard = ({ anime }: Props) => {
                   )
                 : createImageUrlProxy(
                     image_large_webp ?? `${baseUrl}/placeholder.webp`,
-                    '400',
+                    '300',
                     '75',
                     'webp'
                   )
