@@ -11,12 +11,12 @@ import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { useModal } from '@hooks/useModal'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeSong } from 'types'
-import { useModal } from '@hooks/useModal'
 
 export const AnimeMusicItem = ({
   song,
@@ -131,7 +131,6 @@ export const AnimeMusicItem = ({
                 className="text-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none disabled:cursor-not-allowed"
                 onClick={(e) => handlePlay(e)}
                 disabled={!canPlay}
-
               >
                 {isPlaying ? (
                   <PauseIcon className="h-6 w-6" />

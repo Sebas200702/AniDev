@@ -42,7 +42,8 @@ export const LoadUserPrefences = () => {
 
   const { data: userInfo } = useFetch<UserInfo>({ url: '/api/session' })
 
-  useEffect(() => {    const savedEnfasis = localStorage.getItem('enfasis')
+  useEffect(() => {
+    const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
     const savedTrackSearchHistory = localStorage.getItem('track_search_history')
     setEnfasis(savedEnfasis ?? '#1d6cff')

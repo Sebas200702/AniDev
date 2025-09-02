@@ -246,7 +246,10 @@ export const useMusicPlayerSync = (
       if (!isMinimized) {
         const newUrl = `/music/${normalizeString(song.song_title)}_${song.theme_id}`
         import('@utils/sycronize-player-metadata').then((module) => {
-          module.SyncronizePlayerMetadata({ title: song.song_title, url: newUrl })
+          module.SyncronizePlayerMetadata({
+            title: song.song_title,
+            url: newUrl,
+          })
         })
       }
     }
@@ -349,7 +352,10 @@ export const useMusicPlayerSync = (
     if (!isMinimized) {
       const newUrl = `/music/${normalizeString(nextSong.song_title)}_${nextSong.theme_id}`
       import('@utils/sycronize-player-metadata').then((module) => {
-        module.SyncronizePlayerMetadata({ title: nextSong.song_title, url: newUrl })
+        module.SyncronizePlayerMetadata({
+          title: nextSong.song_title,
+          url: newUrl,
+        })
       })
     }
   }, [

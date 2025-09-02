@@ -16,7 +16,6 @@ import { AsideNav } from '@components/layout/aside'
 import { ModalContainer } from '@components/modal/modal-container'
 import { MusicPlayerContainer } from '@components/music-player/music-player-container'
 
-
 interface Props {
   animeId?: string
   title?: string
@@ -161,7 +160,7 @@ if (characterId) {
       </header>
 
       <SearchBar client:load visible={false} />
-      <LoadUserPrefences  client:load />
+      <LoadUserPrefences client:load />
       <LoadWindowWidth client:load />
 
       <main

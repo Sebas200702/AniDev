@@ -92,7 +92,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
         </p>
         <div className="mx-auto flex w-full flex-row items-center gap-4 md:mx-0 md:w-96 md:justify-center">
           <a
-            className="button-secondary md:text-m flex w-full text-s items-center justify-center"
+            className="button-secondary md:text-m text-s flex w-full items-center justify-center"
             href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
             title={`Discover ${anime.title}`}
           >
