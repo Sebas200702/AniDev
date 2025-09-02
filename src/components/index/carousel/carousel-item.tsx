@@ -51,8 +51,8 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
         <Picture
           image={createImageUrlProxy(
             anime.banner_image ?? `${baseUrl}/placeholder.webp`,
-            '100',
-            '0',
+            '20', // ancho super pequeño
+            '10',
             'webp'
           )}
           styles="w-full h-full object-cover object-center relative"
@@ -77,6 +77,7 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
             alt={`${anime.title} banner`}
             fetchPriority="high"
             decoding="async"
+            loading="lazy"
           />
         </Picture>
       </div>
