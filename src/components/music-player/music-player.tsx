@@ -8,7 +8,6 @@ import {
   Spinner,
   useMediaStore,
 } from '@vidstack/react'
-import { lazy } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
 
