@@ -75,7 +75,7 @@ export const AnimeAside = ({
     <aside className="anime-aside top-28 z-50 flex h-min w-full flex-col gap-8 px-20 md:row-span-2 md:items-start md:px-0 xl:sticky">
       <GaleryImage
         imageList={imageList}
-        className="aspect-[225/330] w-full overflow-hidden rounded-lg object-cover object-center"
+        className="aspect-[225/330] w-full"
       >
         <Picture
           image={createImageUrlProxy(
@@ -84,7 +84,7 @@ export const AnimeAside = ({
             '0',
             'webp'
           )}
-          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out relative "
+          styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
         >
           <img
             className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
@@ -97,9 +97,6 @@ export const AnimeAside = ({
             alt={animeData.title}
             loading="lazy"
             title={`Representative image of ${animeData.title}`}
-            style={{
-              viewTransitionName: `anime-card-${animeData.mal_id}`,
-            }}
           />
         </Picture>
       </GaleryImage>
