@@ -47,18 +47,12 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
       key={anime.mal_id}
       className={`relative flex h-full w-full flex-shrink-0 flex-col items-center justify-center p-6 pt-36 md:justify-normal md:p-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
-      <div className="absolute inset-0 h-[40vh] w-full overflow-hidden md:h-full aspect-video">
+      <div className="absolute inset-0 h-[40vh] w-full overflow-hidden md:h-full">
         <Picture
-          image={isMobile
-            ? createImageUrlProxy(
+          image={
+          createImageUrlProxy(
                 anime.banner_image ?? '',
-                '720',
-                '1',
-                'webp'
-              )
-            : createImageUrlProxy(
-                anime.banner_image ?? '',
-                '1920',
+                '100',
                 '1',
                 'webp'
               )}
