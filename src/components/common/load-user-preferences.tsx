@@ -1,3 +1,4 @@
+import { useFetch } from '@hooks/useFetch'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { getWatchList } from '@utils/get-watch-list'
 import { useEffect } from 'react'
@@ -23,10 +24,11 @@ import { useEffect } from 'react'
  * @example
  * <LoadTheme />
  */
-interface Props {
-  userInfo: { name: string | null; avatar: string | null } | null
+interface UserInfo {
+  name: string | null
+  avatar: string | null
 }
-export const LoadUserPrefences = ({ userInfo }: Props) => {
+export const LoadUserPrefences = () => {
   const {
     enfasis,
     setEnfasis,
@@ -38,7 +40,10 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     setWatchList,
   } = useGlobalUserPreferences()
 
+  const { data: userInfo } = useFetch<UserInfo>({ url: '/api/session' })
+
   useEffect(() => {
+    if (!userInfo) return
     const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
     const savedTrackSearchHistory = localStorage.getItem('track_search_history')
@@ -47,10 +52,8 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
     const fetchWatchList = async () => {
-      if (userInfo?.name) {
-        const watchList = await getWatchList()
-        setWatchList(watchList)
-      }
+      const watchList = await getWatchList()
+      setWatchList(watchList)
     }
     fetchWatchList()
     document.documentElement.style.setProperty('--color-enfasisColor', enfasis)
@@ -63,6 +66,7 @@ export const LoadUserPrefences = ({ userInfo }: Props) => {
     trackSearchHistory,
     setTrackSearchHistory,
     setWatchList,
+    userInfo,
   ])
   return null
 }
