@@ -2,14 +2,8 @@ import '@vidstack/react/player/styles/default/theme.css'
 import '@vidstack/react/player/styles/default/layouts/audio.css'
 import '@styles/video.css'
 import '@styles/player.css'
-import { CustomControls } from '@components/music-player/controls'
+
 import { Cover } from '@components/music-player/cover'
-import { lazy } from 'react'
-const CustomLayout = lazy(() =>
-  import('@components/music-player/custom-layout').then((module) => ({
-    default: module.CustomLayout,
-  }))
-)
 import { Header } from '@components/music-player/header'
 import { useMusicPlayerSync } from '@hooks/useMusicPlayerSync'
 import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
@@ -25,8 +19,19 @@ import {
   Spinner,
   useMediaStore,
 } from '@vidstack/react'
+import { lazy } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
+const CustomControls = lazy(() =>
+  import('@components/music-player/controls').then((module) => ({
+    default: module.CustomControls,
+  }))
+)
+const CustomLayout = lazy(() =>
+  import('@components/music-player/custom-layout').then((module) => ({
+    default: module.CustomLayout,
+  }))
+)
 
 export const MusicPlayer = () => {
   const {
