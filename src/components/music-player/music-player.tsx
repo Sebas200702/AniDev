@@ -1,24 +1,42 @@
-// CSS will be loaded dynamically when component mounts
-
-import { Cover } from '@components/music-player/cover'
-import { Header } from '@components/music-player/header'
 import { useMusicPlayerSync } from '@hooks/useMusicPlayerSync'
 import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
 import { usePlayerDragging } from '@hooks/usePlayerDragging'
-import { toast } from '@pheralb/toast'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import {
-  MediaPlayer,
   type MediaPlayerInstance,
-  MediaProvider,
-  Poster,
   Spinner,
   useMediaStore,
 } from '@vidstack/react'
 import { lazy } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
+
+const MediaPlayer = lazy(() =>
+  import('@vidstack/react').then((module) => ({
+    default: module.MediaPlayer,
+  }))
+)
+const MediaProvider = lazy(() =>
+  import('@vidstack/react').then((module) => ({
+    default: module.MediaProvider,
+  }))
+)
+const Poster = lazy(() =>
+  import('@vidstack/react').then((module) => ({
+    default: module.Poster,
+  }))
+)
+const Cover = lazy(() =>
+  import('@components/music-player/cover').then((module) => ({
+    default: module.Cover,
+  }))
+)
+const Header = lazy(() =>
+  import('@components/music-player/header').then((module) => ({
+    default: module.Header,
+  }))
+)
 const CustomControls = lazy(() =>
   import('@components/music-player/controls').then((module) => ({
     default: module.CustomControls,
@@ -47,15 +65,14 @@ export const MusicPlayer = () => {
 
   const player = useRef<MediaPlayerInstance>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
-  const { currentTime, playing, muted, volume, duration , canPlay } =
+  const { currentTime, playing, muted, volume, duration, canPlay } =
     useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing, player, canPlay, duration  )
+  useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
   const [toastShown, setToastShown] = useState(false)
-
 
   useEffect(() => {
     const loadCSS = async () => {
@@ -63,7 +80,7 @@ export const MusicPlayer = () => {
         import('@vidstack/react/player/styles/default/theme.css'),
         import('@vidstack/react/player/styles/default/layouts/audio.css'),
         import('@styles/video.css'),
-        import('@styles/player.css')
+        import('@styles/player.css'),
       ])
     }
     loadCSS()
@@ -86,17 +103,19 @@ export const MusicPlayer = () => {
         }
         return nextSong.song_title
       }
-      toast[ToastType.Info]({
-        text: `${text()}`,
-        description: 'Up Next',
-        delayDuration: 7000,
-        icon: (
-          <img
-            src={createImageUrlProxy(nextSong.image, '0', '70', 'webp')}
-            alt={nextSong.song_title}
-            className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12"
-          />
-        ),
+      import('@pheralb/toast').then((module) => {
+        module.toast[ToastType.Info]({
+          text: `${text()}`,
+          description: 'Up Next',
+          delayDuration: 7000,
+          icon: (
+            <img
+              src={createImageUrlProxy(nextSong.image, '0', '70', 'webp')}
+              alt={nextSong.song_title}
+              className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12"
+            />
+          ),
+        })
       })
       setToastShown(true)
     }
@@ -128,6 +147,7 @@ export const MusicPlayer = () => {
       }
     >
       <Header playerContainerRef={playerContainerRef} />
+
       <MediaPlayer
         ref={player}
         src={src ?? ''}
@@ -162,6 +182,7 @@ export const MusicPlayer = () => {
               <Cover />
             </div>
           )}
+
           <Poster className="vds-poster" />
 
           {isMinimized && (
