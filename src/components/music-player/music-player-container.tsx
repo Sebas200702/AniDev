@@ -1,6 +1,10 @@
-import { MusicPlayer } from '@components/music-player/music-player'
+import { lazy } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+
+const MusicPlayer = lazy(() =>
+  import('@components/music-player/music-player').then(module => ({ default: module.MusicPlayer }))
+)
 
 export const MusicPlayerContainer = ({ className }: { className?: string }) => {
   const portalElementRef = useRef<HTMLDivElement | null>(null)
