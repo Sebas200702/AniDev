@@ -9,16 +9,13 @@ import NavBar from '@components/nav-bar/nav-bar.astro'
 import { SearchBar } from '@components/search/search-bar'
 import { baseTitle, baseUrl } from '@utils/base-url'
 import { METADATA_CONFIGS, extractMetadata } from '@utils/get-metadata'
-import { getSessionUserInfo } from '@utils/get_session_user_info'
 import { AstroFont } from 'astro-font'
 import '@styles/fade-out.css'
 import { CustomToaster } from '@components/common/custom-toaster'
 import { AsideNav } from '@components/layout/aside'
 import { ModalContainer } from '@components/modal/modal-container'
 import { MusicPlayerContainer } from '@components/music-player/music-player-container'
-const { cookies } = Astro
-const accessToken = cookies.get('sb-access-token')
-const refreshToken = cookies.get('sb-refresh-token')
+
 
 interface Props {
   animeId?: string
@@ -82,11 +79,6 @@ if (characterId) {
   metaDesc = metadata.description
   metaImage = metadata.image
 }
-const userInfo = await getSessionUserInfo({
-  request: Astro.request,
-  accessToken: accessToken?.value,
-  refreshToken: refreshToken?.value,
-})
 ---
 
 <html lang="en">
@@ -169,7 +161,7 @@ const userInfo = await getSessionUserInfo({
       </header>
 
       <SearchBar client:load visible={false} />
-      <LoadUserPrefences userInfo={userInfo} client:load />
+      <LoadUserPrefences  client:load />
       <LoadWindowWidth client:load />
 
       <main
