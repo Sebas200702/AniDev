@@ -2,7 +2,7 @@ import { NextIcon } from '@icons/next-icon'
 import { PreviousIcon } from '@icons/previous-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
-import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
+
 
 interface Props {
   direction: 'Next' | 'Prev'
@@ -37,9 +37,8 @@ export const NextPrevButton = ({ direction }: Props) => {
     setCurrentSong(newCurrentSong)
     if (!isMinimized) {
       const newUrl = `/music/${normalizeString(newCurrentSong.song_title)}_${newCurrentSong.theme_id}`
-      SyncronizePlayerMetadata({
-        title: newCurrentSong.song_title,
-        url: newUrl,
+      import('@utils/sycronize-player-metadata').then((module) => {
+        module.SyncronizePlayerMetadata({ title: newCurrentSong.song_title, url: newUrl })
       })
     }
   }
