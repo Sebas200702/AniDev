@@ -16,6 +16,7 @@ import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeSong } from 'types'
+import { useModal } from '@hooks/useModal'
 
 export const AnimeMusicItem = ({
   song,
@@ -40,6 +41,8 @@ export const AnimeMusicItem = ({
     transform,
     isDragging,
   } = useSortable({ id: song.song_id })
+
+  const { closeModal } = useModal()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -90,6 +93,7 @@ export const AnimeMusicItem = ({
       ref={setNodeRef}
       style={style}
       onClick={() => {
+        closeModal()
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }}
       className={`anime-music-item link transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
