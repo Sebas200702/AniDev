@@ -5,7 +5,6 @@ import { MuteIcon } from '@icons/muted-icon'
 
 import { PauseIcon } from '@icons/pause-icon'
 import { PlayIcon } from '@icons/play-icon'
-
 import { VolumeHighIcon } from '@icons/volumen-high-icon'
 import { VolumeLowIcon } from '@icons/volumen-low-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
