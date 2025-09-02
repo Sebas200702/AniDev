@@ -9,6 +9,5 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     accessToken,
     refreshToken,
   })
-  console.log(session)
   return new Response(JSON.stringify({ data: session }))
 }
