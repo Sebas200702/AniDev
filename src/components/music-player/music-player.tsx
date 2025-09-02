@@ -12,41 +12,11 @@ import { lazy } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
 
-const MediaPlayer = lazy(() =>
-  import('@vidstack/react').then((module) => ({
-    default: module.MediaPlayer,
-  }))
-)
-const MediaProvider = lazy(() =>
-  import('@vidstack/react').then((module) => ({
-    default: module.MediaProvider,
-  }))
-)
-const Poster = lazy(() =>
-  import('@vidstack/react').then((module) => ({
-    default: module.Poster,
-  }))
-)
-const Cover = lazy(() =>
-  import('@components/music-player/cover').then((module) => ({
-    default: module.Cover,
-  }))
-)
-const Header = lazy(() =>
-  import('@components/music-player/header').then((module) => ({
-    default: module.Header,
-  }))
-)
-const CustomControls = lazy(() =>
-  import('@components/music-player/controls').then((module) => ({
-    default: module.CustomControls,
-  }))
-)
-const CustomLayout = lazy(() =>
-  import('@components/music-player/custom-layout').then((module) => ({
-    default: module.CustomLayout,
-  }))
-)
+import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
+import { Cover } from '@components/music-player/cover'
+import { Header } from '@components/music-player/header'
+import { CustomControls } from '@components/music-player/controls'
+import { CustomLayout } from '@components/music-player/custom-layout'
 
 export const MusicPlayer = () => {
   const {
