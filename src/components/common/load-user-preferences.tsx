@@ -42,9 +42,7 @@ export const LoadUserPrefences = () => {
 
   const { data: userInfo } = useFetch<UserInfo>({ url: '/api/session' })
 
-  useEffect(() => {
-    if (!userInfo) return
-    const savedEnfasis = localStorage.getItem('enfasis')
+  useEffect(() => {    const savedEnfasis = localStorage.getItem('enfasis')
     const savedParentalControl = localStorage.getItem('parental_control')
     const savedTrackSearchHistory = localStorage.getItem('track_search_history')
     setEnfasis(savedEnfasis ?? '#1d6cff')
@@ -52,6 +50,7 @@ export const LoadUserPrefences = () => {
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
     const fetchWatchList = async () => {
+      if (!userInfo) return
       const watchList = await getWatchList()
       setWatchList(watchList)
     }
