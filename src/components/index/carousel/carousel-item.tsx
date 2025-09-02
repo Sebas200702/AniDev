@@ -53,13 +53,13 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
             ? createImageUrlProxy(
                 anime.banner_image ?? '',
                 '720',
-                '10',
+                '1',
                 'webp'
               )
             : createImageUrlProxy(
                 anime.banner_image ?? '',
                 '1920',
-                '10',
+                '1',
                 'webp'
               )}
           styles="w-full h-full object-cover object-center relative"
