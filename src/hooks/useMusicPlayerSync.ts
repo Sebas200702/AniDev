@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { normalizeString } from '@utils/normalize-string'
-import { SyncronizePlayerMetadata } from '@utils/sycronize-player-metadata'
 import type { MediaPlayerInstance } from '@vidstack/react'
 import type { AnimeSongWithImage } from 'types'
 
@@ -10,6 +9,7 @@ export const useMusicPlayerSync = (
   currentTime: number,
   playing: boolean,
   player: React.RefObject<MediaPlayerInstance | null>,
+  canPlay: boolean,
   duration: number
 ) => {
   const {
@@ -20,6 +20,7 @@ export const useMusicPlayerSync = (
     setIsPlaying,
     setPlayerRef,
     setDuration,
+    setCanPlay,
     list,
     setCurrentSong,
     setCurrentSongIndex,
@@ -164,6 +165,9 @@ export const useMusicPlayerSync = (
       fetchMusic(themeId)
     }
   }, [themeId])
+  useEffect(() => {
+    setCanPlay(canPlay)
+  }, [canPlay, setCanPlay])
 
   useEffect(() => {
     if (!('mediaSession' in navigator) || !currentSong || !playing) {
@@ -241,7 +245,9 @@ export const useMusicPlayerSync = (
 
       if (!isMinimized) {
         const newUrl = `/music/${normalizeString(song.song_title)}_${song.theme_id}`
-        SyncronizePlayerMetadata({ title: song.song_title, url: newUrl })
+        import('@utils/sycronize-player-metadata').then((module) => {
+          module.SyncronizePlayerMetadata({ title: song.song_title, url: newUrl })
+        })
       }
     }
 
@@ -342,7 +348,9 @@ export const useMusicPlayerSync = (
 
     if (!isMinimized) {
       const newUrl = `/music/${normalizeString(nextSong.song_title)}_${nextSong.theme_id}`
-      SyncronizePlayerMetadata({ title: nextSong.song_title, url: newUrl })
+      import('@utils/sycronize-player-metadata').then((module) => {
+        module.SyncronizePlayerMetadata({ title: nextSong.song_title, url: newUrl })
+      })
     }
   }, [
     savedTime,
