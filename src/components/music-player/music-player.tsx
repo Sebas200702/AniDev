@@ -1,7 +1,4 @@
-import '@vidstack/react/player/styles/default/theme.css'
-import '@vidstack/react/player/styles/default/layouts/audio.css'
-import '@styles/video.css'
-import '@styles/player.css'
+// CSS will be loaded dynamically when component mounts
 
 import { Cover } from '@components/music-player/cover'
 import { Header } from '@components/music-player/header'
@@ -50,14 +47,27 @@ export const MusicPlayer = () => {
 
   const player = useRef<MediaPlayerInstance>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
-  const { currentTime, playing, muted, volume, duration } =
+  const { currentTime, playing, muted, volume, duration , canPlay } =
     useMediaStore(player)
 
-  useMusicPlayerSync(currentTime, playing, player, duration)
+  useMusicPlayerSync(currentTime, playing, player, canPlay, duration  )
   usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
 
   const [toastShown, setToastShown] = useState(false)
+
+
+  useEffect(() => {
+    const loadCSS = async () => {
+      await Promise.all([
+        import('@vidstack/react/player/styles/default/theme.css'),
+        import('@vidstack/react/player/styles/default/layouts/audio.css'),
+        import('@styles/video.css'),
+        import('@styles/player.css')
+      ])
+    }
+    loadCSS()
+  }, [])
 
   useEffect(() => {
     const nextSong = list[currentSongIndex + 1]
