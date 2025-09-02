@@ -4,7 +4,12 @@ import '@styles/video.css'
 import '@styles/player.css'
 import { CustomControls } from '@components/music-player/controls'
 import { Cover } from '@components/music-player/cover'
-import { CustomLayout } from '@components/music-player/custom-layout'
+import { lazy } from 'react'
+const CustomLayout = lazy(() =>
+  import('@components/music-player/custom-layout').then((module) => ({
+    default: module.CustomLayout,
+  }))
+)
 import { Header } from '@components/music-player/header'
 import { useMusicPlayerSync } from '@hooks/useMusicPlayerSync'
 import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
