@@ -1,5 +1,4 @@
-import { AnimeFilters } from 'types'
-import { AnimeRating } from 'types'
+import { AnimeFilters, NormalizedRating } from 'types'
 
 /**
  * Checks if a string contains any numeric digits.
@@ -49,7 +48,15 @@ export const getFilterOfTag = (tag: string) => {
   if (tag === 'Movie') return AnimeFilters.Type
   if (tag === 'Music') return AnimeFilters.Type
   if (haveNumbers(tag) && tag.length === 4) return AnimeFilters.Year
-  if (Object.values(AnimeRating).includes(tag as AnimeRating))
+  const normalize = (s: string) =>
+    s.toLowerCase().normalize('NFKC').replace(/\s+/g, ' ').trim()
+
+  console.log(tag)
+
+  if (Object.values(NormalizedRating).map(normalize).includes(normalize(tag))) {
     return AnimeFilters.Rating
+  }
+
+
   return AnimeFilters.Genre
 }
