@@ -38,10 +38,10 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   }
 
   await safeRedisOperation((client) =>
-    client.set(cacheKey, JSON.stringify(data), { EX: 60 * 60 * 24 })
+    client.set(cacheKey, JSON.stringify(data[0]), { EX: 60 * 60 * 24 })
   )
 
-  return new Response(JSON.stringify({ data }), {
+  return new Response(JSON.stringify({ data : data[0] }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
