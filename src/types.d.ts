@@ -188,6 +188,29 @@ export enum SearchType {
 export type Animes = {
   animes: Anime[]
 }
+
+export interface PersonAbout {
+  description: string
+  members: Member[]
+  details: Record<string, string | string[]>
+  favorites: Record<string, string[]>
+  awards: string[]
+  links: Links
+}
+
+export interface Member {
+  name: string
+  role: string
+}
+
+export interface Links {
+  twitter?: string
+  instagram?: string
+  profile?: string
+  website?: string
+  [key: string]: string | undefined 
+}
+
 export interface ImageType {
   src: string
   alt: string
