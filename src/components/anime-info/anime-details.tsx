@@ -47,11 +47,9 @@ interface Props {
  * <AnimeDetails animeData={animeData} />
  */
 export const AnimeDetails = ({ animeData }: Props) => {
-  const [isOpen, setIsOpen] = useState(false)
 
-  const handleClick = () => {
-    setIsOpen(!isOpen)
-  }
+
+
   const {
     status,
     type,
@@ -105,35 +103,20 @@ export const AnimeDetails = ({ animeData }: Props) => {
 
   return (
     <section
-      className={`z-10 flex h-min w-full flex-col items-center justify-center px-10 transition-all duration-300 md:col-span-1 md:px-0 ${isOpen ? '' : '-translate-y-10 transform delay-300 md:translate-y-0'} `}
+      className={`z-10 flex h-min w-full flex-col items-center justify-center  transition-all duration-300 md:col-span-1   `}
     >
       <header
-        className={`bg-enfasisColor w-[80%] items-center justify-center transition-all delay-300 duration-300 ease-in-out ${isOpen ? 'rounded-t-xl' : 'rounded-b-xl md:rounded-t-xl md:rounded-b-none'} flex flex-row gap-4 px-4 py-1.5`}
+        className={`bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl transition-all delay-300 duration-300 ease-in-out  flex flex-row gap-4 px-4 py-1.5`}
       >
         <h2 className="text-center text-lg text-pretty">Details</h2>
-        <button
-          title="Show more details"
-          className="md:hidden"
-          onClick={handleClick}
-        >
-          <svg
-            fill="none"
-            className={`h-4 w-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            strokeWidth="2"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+
       </header>
       <ul
-        className={`bg-Complementary flex w-full flex-col overflow-hidden transition-all ${isOpen ? 'max-h-500 opacity-100 delay-300' : 'max-h-0 opacity-0 md:max-h-full md:opacity-100'} rounded-md`}
+        className='border-Primary-800/30 from-Complementary w-full p-6 via-Primary-950 to-Complementary/95 border bg-gradient-to-br shadow-2xl transition-all duration-500 ease-in-out hover:shadow-xl rounded-xl space-y-4'
       >
         {animeDetails.map((detail) => (
           <li
-            className="flex w-full flex-row items-center gap-4 px-6 py-4 capitalize xl:px-8"
+            className="flex w-full flex-row items-center gap-4 py-2 capitalize"
             key={detail.name}
             title={detail.name}
           >
