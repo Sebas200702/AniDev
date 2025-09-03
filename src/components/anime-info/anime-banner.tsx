@@ -52,7 +52,7 @@ export const AnimeBanner = ({
 }: Props) => {
   return (
     <div className="group">
-      <div className="fixed aspect-[1080/600] h-[40vh] w-full overflow-hidden md:h-[60vh]">
+      <div className="fixed  h-[40vh] w-full overflow-hidden md:h-[60vh]">
         <Picture
           image={
             banner_image
@@ -64,7 +64,7 @@ export const AnimeBanner = ({
                   'webp'
                 )
           }
-          styles="h-full object-cover object-center relative"
+          styles=" w-full h-full object-cover object-center relative"
         >
           <img
             src={
