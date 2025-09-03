@@ -1,6 +1,7 @@
 import { AnimeTag } from '@components/anime-info/anime-tag'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
+import { normalizeString } from '@utils/normalize-string'
 import type { Anime } from 'types'
 
 /**
@@ -53,7 +54,8 @@ export const AnimeHeader = ({ animeData }: Props) => {
         {animeData.rating && (
           <AnimeTag
             tag={normalizeRating(animeData.rating)}
-            type={animeData.rating}
+            type={normalizeString(animeData.rating)}
+
           />
         )}{' '}
       </ul>
