@@ -208,7 +208,7 @@ export interface Links {
   instagram?: string
   profile?: string
   website?: string
-  [key: string]: string | undefined 
+  [key: string]: string | undefined
 }
 
 export interface ImageType {
@@ -543,6 +543,14 @@ export enum AnimeRating {
   R = 'r - 17+ (violence & profanity)',
   RN = 'r+ - mild nudity',
   RX = 'rx+-+hentai',
+}
+export enum NormalizedRating {
+  G = 'E',
+  PG = 'E',
+  PG_13 = '13+',
+  R = '15+',
+  RN = '17+',
+  RX = '18+',
 }
 
 export const genreOptions: FilterOption[] = Object.values(AnimeGenres).map(
