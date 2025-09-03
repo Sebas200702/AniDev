@@ -1,4 +1,4 @@
-import { AnimeRating } from 'types'
+import { AnimeRating , NormalizedRating} from 'types'
 /**
  * Normalizes anime age ratings into a simplified format.
  *
@@ -24,13 +24,13 @@ export const normalizeRating = (rating: string): string => {
   const lowerRating = rating.toLowerCase()
 
   // Check against AnimeRating enum values
-  if (lowerRating === AnimeRating.G) return 'E'
-  if (lowerRating === AnimeRating.PG) return 'E'
-  if (lowerRating === AnimeRating.PG_13) return '13+'
-  if (lowerRating === AnimeRating.R) return '15+'
-  if (lowerRating === AnimeRating.RN) return '17+'
-  if (lowerRating === AnimeRating.RX) return '18+'
+  if (lowerRating === AnimeRating.G) return NormalizedRating.G
+  if (lowerRating === AnimeRating.PG) return NormalizedRating.PG
+  if (lowerRating === AnimeRating.PG_13) return NormalizedRating.PG_13
+  if (lowerRating === AnimeRating.R) return NormalizedRating.R
+  if (lowerRating === AnimeRating.RN) return NormalizedRating.RN
+  if (lowerRating === AnimeRating.RX) return NormalizedRating.RX
 
   // If no match found, return 'E' as default
-  return 'E'
+  return NormalizedRating.G
 }
