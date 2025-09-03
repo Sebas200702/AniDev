@@ -4,7 +4,9 @@ import { CharacterHeader } from '@components/character-info/character-header'
 import { Overlay } from '@components/layout/overlay'
 import { getCharacterData } from '@utils/get-character-data'
 import { useEffect, useState } from 'react'
-import type { CharacterDetails } from 'types'
+import type { CharacterDetails, PersonAbout } from 'types'
+import { SeiyuuList } from '@components/character-info/seiyuu-list'
+import { CharacterAbout } from '@components/character-info/character-about'
 
 interface Props {
   slug: string
@@ -12,12 +14,14 @@ interface Props {
 
 export const CharacterInfo = ({ slug }: Props) => {
   const [character, setCharacter] = useState<CharacterDetails>()
+  const [about, setAbout] = useState<PersonAbout>()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
       const data = await getCharacterData(slug)
+
       if (data) {
         setCharacter(data)
       }
@@ -26,7 +30,25 @@ export const CharacterInfo = ({ slug }: Props) => {
     fetchData()
   }, [slug])
 
-  if (isLoading) {
+  useEffect(() => {
+    if (!character) return
+
+
+
+    const fetchFormatAbout = async () => {
+      const about = await fetch(
+        `/api/about?about=${encodeURIComponent(character.character_about ?? '')}`
+      ).then((data) => data.json())
+
+      console.log(about)
+      setAbout(about)
+
+    }
+    fetchFormatAbout()
+  }, [character])
+
+
+  if (isLoading || !about) {
     return (
       <div className="min-w-full">
         <div className="fixed aspect-[1080/600] h-[60dvh] w-full animate-pulse bg-zinc-800 duration-300">
@@ -44,8 +66,7 @@ export const CharacterInfo = ({ slug }: Props) => {
       </div>
     )
   }
-
-  if (!character) {
+  if (!character || !about) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p className="text-white">Character not found</p>
@@ -61,12 +82,14 @@ export const CharacterInfo = ({ slug }: Props) => {
         )}
       />
 
-      <article className="relative z-10 mb-10 grid w-full grid-cols-1 gap-10 px-4 pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-15 md:px-20 xl:grid-cols-5">
+      <article className="relative z-10 mb-10 grid w-full grid-cols-1 gap-6 md:gap-10  pt-26  md:pt-[35dvh] md:mb-20 md:grid-cols-3 md:px-20 xl:grid-cols-5">
         <Overlay className="to-Primary-950 via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
         <Overlay className="to-Primary-950/100 via-Primary-950 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
 
         <CharacterAside character={character} />
-        <CharacterHeader character={character} />
+        <CharacterHeader character={character}  />
+        <CharacterAbout about={about}/>
+        <SeiyuuList Seiyuus={character.voice_actors} />
       </article>
     </>
   )
