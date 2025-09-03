@@ -67,7 +67,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
       />
 
-      <article className="z-10 mt-26 mb-10 grid grid-cols-1 gap-8 md:mt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-10 md:px-20 xl:grid-cols-5">
+      <article className="z-10 pt-26 mb-10 grid grid-cols-1 gap-6 md:pt-[35dvh] md:mb-20 md:grid-cols-3 md:gap-10 md:px-20 xl:grid-cols-5">
         <AnimeAside
           animeData={animeData}
           watchNowUrl={watchNowUrl}
