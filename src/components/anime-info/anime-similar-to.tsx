@@ -13,7 +13,7 @@ export const SimilarToComponet = ({ title, mal_id }: props) => {
 
   return (
     <section
-      className='flex flex-col md:row-span-2 md:col-span-3 md:col-start-2 border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95 hover:border-Primary-700/50 relative z-10   overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
+      className='flex flex-col md:row-span-2 md:col-span-3 md:col-start-2 border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95  relative z-10   overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
       role="tabpanel '
     >
       <div className="from-Primary-950/20 to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
