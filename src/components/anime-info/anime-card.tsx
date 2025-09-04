@@ -98,7 +98,7 @@ export const AnimeCard = ({ anime }: Props) => {
   }
 
   return (
-    <li
+    <article
       className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.01]"
       title={title}
       onMouseEnter={handleMouseEnter}
@@ -178,6 +178,6 @@ export const AnimeCard = ({ anime }: Props) => {
       <div className="absolute top-2 -right-3">
         <AnimeTag tag={year?.toString()} type={year?.toString()} />
       </div>
-    </li>
+    </article>
   )
 }
