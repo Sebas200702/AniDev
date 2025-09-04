@@ -71,7 +71,7 @@ export const CharacterInfo = ({ slug }: Props) => {
         )}
       </Header>
       <CharacterAbout about={about} />
-      <SeiyuuList Seiyuus={character.voice_actors} />
+      <SeiyuuList seiyuus={character.voice_actors} />
     </InfoPageLayout>
   )
 }
