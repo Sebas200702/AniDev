@@ -3,14 +3,14 @@ import type { VoiceActor } from 'types'
 import { InfoSection } from '@components/shared/InfoSection'
 
 interface Props {
-  characters: VoiceActor[]
+    seiyuus: VoiceActor[]
 }
 
-export const SeiyuuList = ({ characters }: Props) => {
+export const SeiyuuList = ({ seiyuus }: Props) => {
   return (
     <InfoSection title="Characters" ulClassName='w-full'>
-      {characters.map((character) => (
-        <SeiyuuInfo key={character.voice_actor_id} seiyuu={character} />
+      {seiyuus.map((seiyuu) => (
+        <SeiyuuInfo key={seiyuu.voice_actor_id} seiyuu={seiyuu} />
       ))}
     </InfoSection>
   )
