@@ -6,6 +6,7 @@ import { AnimeRelated } from '@components/anime-info/anime-related'
 import { AnimeTrailer } from '@components/anime-info/anime-trailer'
 import { useAnimeListsStore } from '@store/anime-list-store'
 import { useEffect, useState } from 'react'
+import { MainInfo } from '@components/shared/MainInfo'
 
 /**
  * AnimeShowBox component displays content based on the selected tab for an anime.
@@ -102,10 +103,8 @@ export const AnimeShowBox = ({
   }
 
   return (
-    <section
-      className="border-Primary-800/30 md:from-Complementary md:col-span-3 md:via-Primary-950 md:to-Complementary/95  relative z-10 flex flex-col overflow-hidden md:rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
-      role="tabpanel"
-      aria-labelledby={`tab-${currentSelectedLabel?.toLowerCase()}`}
+    <MainInfo
+
     >
       <div className="md:from-Primary-950/20 md:to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
 
@@ -132,6 +131,6 @@ export const AnimeShowBox = ({
       </div>
 
       <div className="via-enfasisColor/20 absolute right-0 bottom-0 left-0 h-px bg-gradient-to-r from-transparent to-transparent" />
-    </section>
+    </MainInfo>
   )
 }
