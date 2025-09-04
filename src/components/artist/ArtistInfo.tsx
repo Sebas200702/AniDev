@@ -1,13 +1,17 @@
+import { DinamicBanner } from '@components/anime-info/dinamic-banner'
 import { ArtistLoader } from '@components/artist/ArtistLoader'
 import { ArtistSongList } from '@components/artist/ArtistSongList'
-import { CharacterAbout } from '@components/character-info/character-about'
 import { Aside } from '@components/shared/Aside'
 import { Header } from '@components/shared/Header'
 import { InfoPageLayout } from '@components/shared/InfoPageLayout'
 import { useFetch } from '@hooks/useFetch'
 import { useEffect, useState } from 'react'
-import type { AnimeSongWithImage, ArtistInfo as ArtistInfoType, PersonAbout } from 'types'
-
+import type {
+  AnimeSongWithImage,
+  ArtistInfo as ArtistInfoType,
+  PersonAbout,
+} from 'types'
+import { ArtistAbout } from './ArtistAbout'
 interface Props {
   name: string
 }
@@ -17,9 +21,11 @@ export const ArtistInfo = ({ name }: Props) => {
   const { data: artistInfo, loading } = useFetch<ArtistInfoType>({
     url: `/api/getArtistInfo?artistName=${name}`,
   })
-  const { data: songs, loading: songsLoading } = useFetch<AnimeSongWithImage[]>({
-    url: `/api/music?artist_filter=${name}`,
-  })
+  const { data: songs, loading: songsLoading } = useFetch<AnimeSongWithImage[]>(
+    {
+      url: `/api/music?artist_filter=${name}`,
+    }
+  )
 
   useEffect(() => {
     if (loading || !artistInfo) return
@@ -29,8 +35,7 @@ export const ArtistInfo = ({ name }: Props) => {
         `/api/about?about=${encodeURIComponent(artistInfo.about)}`
       ).then((data) => data.json())
 
-      console.log(artistInfo.about)
-
+      
       setAbout(about)
     }
     fetchFormatAbout()
@@ -40,15 +45,17 @@ export const ArtistInfo = ({ name }: Props) => {
     return <ArtistLoader />
   }
 
+  const banners = songs.map((song) => song.banner_image)
+
   return (
-    <InfoPageLayout banner={null}>
+    <InfoPageLayout banner={<DinamicBanner banners={banners} />}>
       <Aside
         title={artistInfo.name}
         posterImage={artistInfo.image_url}
         smallImage={artistInfo.image_small_url}
       />
       <Header title={artistInfo.name} />
-      <CharacterAbout about={about} />
+      <ArtistAbout about={about} />
       <ArtistSongList songs={songs} />
     </InfoPageLayout>
   )
