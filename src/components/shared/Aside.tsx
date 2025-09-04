@@ -20,7 +20,7 @@ export const Aside = ({ title, posterImage, smallImage, children }: Props) => {
 
   return (
     <aside className="anime-aside top-28 z-50 flex h-min w-full flex-col gap-8 px-20 md:row-span-2 md:items-start md:px-0 xl:sticky">
-      <GaleryImage imageList={imageList} className="aspect-[225/330] w-full">
+      <GaleryImage imageList={imageList} className="aspect-[225/330] w-full rounded-lg overflow-hidden">
         <Picture
           image={createImageUrlProxy(
             smallImage ?? `${baseUrl}/placeholder.webp`,
@@ -31,7 +31,7 @@ export const Aside = ({ title, posterImage, smallImage, children }: Props) => {
           styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
         >
           <img
-            className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
+            className="relative aspect-[225/330] w-full  object-cover object-center transition-all ease-in-out"
             src={createImageUrlProxy(
               posterImage ?? `${baseUrl}/placeholder.webp`,
               '0',
