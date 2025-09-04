@@ -103,7 +103,7 @@ export const AnimeShowBox = ({
 
   return (
     <section
-      className="border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95 hover:border-Primary-700/50 relative z-10 flex flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
+      className="border-Primary-800/30 from-Complementary md:col-span-3 via-Primary-950 to-Complementary/95 hover:border-Primary-700/50 relative z-10 flex flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
       role="tabpanel"
       aria-labelledby={`tab-${currentSelectedLabel?.toLowerCase()}`}
     >
