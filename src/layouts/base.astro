@@ -23,9 +23,11 @@ interface Props {
   image?: string
   themeId?: string
   characterId?: string
+  artistName?: string
 }
 
-const { animeId, title, description, image, themeId, characterId } = Astro.props
+const { animeId, title, description, image, themeId, characterId, artistName } =
+  Astro.props
 
 let metaTitle = title || `${baseTitle}`
 let metaDesc =
@@ -69,6 +71,21 @@ if (characterId) {
     {
       ...METADATA_CONFIGS.character,
       value: fullSlug,
+    },
+    metaTitle,
+    metaDesc,
+    metaImage
+  )
+  metaTitle = metadata.title
+  metaDesc = metadata.description
+  metaImage = metadata.image
+}
+
+if (artistName) {
+  const metadata = await extractMetadata(
+    {
+      ...METADATA_CONFIGS.artist,
+      value: artistName,
     },
     metaTitle,
     metaDesc,
