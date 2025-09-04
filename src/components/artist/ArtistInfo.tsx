@@ -6,7 +6,7 @@ import { Header } from '@components/shared/Header'
 import { InfoPageLayout } from '@components/shared/InfoPageLayout'
 import { useFetch } from '@hooks/useFetch'
 import { useEffect, useState } from 'react'
-import type { AnimeSongWithImage, ArtistInfo, PersonAbout } from 'types'
+import type { AnimeSongWithImage, ArtistInfo as ArtistInfoType, PersonAbout } from 'types'
 
 interface Props {
   name: string
@@ -14,7 +14,7 @@ interface Props {
 
 export const ArtistInfo = ({ name }: Props) => {
   const [about, setAbout] = useState<PersonAbout>()
-  const { data: artistInfo, loading } = useFetch<ArtistInfo>({
+  const { data: artistInfo, loading } = useFetch<ArtistInfoType>({
     url: `/api/getArtistInfo?artistName=${name}`,
   })
   const { data: songs, loading: songsLoading } = useFetch<AnimeSongWithImage[]>({
@@ -29,6 +29,8 @@ export const ArtistInfo = ({ name }: Props) => {
         `/api/about?about=${encodeURIComponent(artistInfo.about)}`
       ).then((data) => data.json())
 
+      console.log(artistInfo.about)
+
       setAbout(about)
     }
     fetchFormatAbout()
@@ -42,8 +44,8 @@ export const ArtistInfo = ({ name }: Props) => {
     <InfoPageLayout banner={null}>
       <Aside
         title={artistInfo.name}
-        posterImage={artistInfo.image}
-        smallImage={artistInfo.image}
+        posterImage={artistInfo.image_url}
+        smallImage={artistInfo.image_small_url}
       />
       <Header title={artistInfo.name} />
       <CharacterAbout about={about} />
