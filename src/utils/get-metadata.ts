@@ -104,4 +104,17 @@ export const METADATA_CONFIGS = {
     },
     imageExtractor: (data: any) => data.character?.character_image_url,
   },
+  artist: {
+    endpoint: '/api/getArtistInfo',
+    param: 'artistName',
+    titleFormatter: (data: any) =>
+      data.data?.name ? `${data.data.name} - ${baseTitle}` : undefined,
+    descriptionFormatter: (data: any) => {
+      const about: string | undefined = data.data?.about
+      if (!about) return undefined
+      const trimmed = about.slice(0, 150)
+      return `${trimmed}${about.length > 150 ? '...' : ''}`
+    },
+    imageExtractor: (data: any) => data.data?.image_url,
+  },
 } as const
