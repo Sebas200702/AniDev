@@ -4,13 +4,14 @@ import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeHeader } from '@components/anime-info/anime-header'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
-import { AnimeSlider } from '@components/index/slider/anime-slider-list'
+
 import { Overlay } from '@components/layout/overlay'
 import { baseUrl } from '@utils/base-url'
 import { getAnimeData } from '@utils/get-anime-data'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
 import type { Anime } from 'types'
+import { SimilarToComponet } from './anime-similar-to'
 
 /**
  * AnimeInfo component serves as the main container for all anime-related information and displays it.
@@ -77,7 +78,7 @@ export const AnimeInfo = ({ slug }: Props) => {
 
         <AnimeHeader animeData={animeData} />
 
-        <div className="row-span-2 flex h-full w-full flex-col gap-10 md:col-span-2 xl:col-span-3">
+
           <AnimeShowBox
             animeId={animeData.mal_id}
             trailer_url={animeData.trailer_url ?? ''}
@@ -92,14 +93,11 @@ export const AnimeInfo = ({ slug }: Props) => {
             title={animeData.title}
             synopsis={animeData.synopsis ?? 'No synopsis available'}
           />
-
-          <AnimeSlider
-            title="Similar to"
-            url={`/api/getRecomendations?similar_to=${animeData.title}&currentAnime=${animeData.mal_id}`}
-            context="anime-info"
-          />
-        </div>
         <AnimeDetails animeData={animeData} />
+          <SimilarToComponet title={animeData.title} mal_id={animeData.mal_id} />
+
+
+
       </article>
       <Overlay className="md:to-Primary-950 md:via-Primary-950/20 absolute inset-0 bg-gradient-to-l via-60%" />
       <Overlay className="to-Primary-950/100 via-Primary-950 z-0 h-full w-full bg-gradient-to-b via-[38dvh] md:via-[55dvh]" />
