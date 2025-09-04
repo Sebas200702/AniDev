@@ -37,6 +37,7 @@ export const NexPrevBtnSlideList = ({
       <button
         className={`${label} group bg-enfasisColor z-10 my-auto flex h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out focus:outline-none"
         aria-label="Next`}
+        title={label}
       >
         <NextPrevIcon className="h-3 w-3 md:h-4 md:w-4" />
       </button>
