@@ -103,18 +103,18 @@ export const AnimeShowBox = ({
 
   return (
     <section
-      className="border-Primary-800/30 from-Complementary md:col-span-3 via-Primary-950 to-Complementary/95  relative z-10 flex flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
+      className="border-Primary-800/30 md:from-Complementary md:col-span-3 md:via-Primary-950 md:to-Complementary/95  relative z-10 flex flex-col overflow-hidden md:rounded-xl border bg-gradient-to-br shadow-2xl backdrop-blur-sm transition-all duration-500 ease-in-out hover:shadow-xl"
       role="tabpanel"
       aria-labelledby={`tab-${currentSelectedLabel?.toLowerCase()}`}
     >
-      <div className="from-Primary-950/20 to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
+      <div className="md:from-Primary-950/20 md:to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
 
-      <div className="border-Primary-800/30 from-Primary-950/80 to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-4 backdrop-blur-md">
+      <div className="border-Primary-800/30 md:from-Primary-950/80 md:to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-4 backdrop-blur-md">
         <AnimeNavBar />
       </div>
 
       <div
-        className={`no-scrollbar relative z-10 aspect-video ${currentSelectedLabel === 'Trailer' ? 'overflow-y-hidden' : 'overflow-y-scroll'}`}
+        className={`no-scrollbar relative z-10 md:aspect-video max-h-[400px] ${currentSelectedLabel === 'Trailer' ? 'overflow-y-hidden aspect-video' : 'overflow-y-scroll'}`}
       >
         {isContentLoading ? (
           <div className="h-full animate-pulse space-y-4"></div>
