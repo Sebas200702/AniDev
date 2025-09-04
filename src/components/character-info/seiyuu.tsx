@@ -12,7 +12,7 @@ export const SeiyuuInfo = ({ seiyuu }: Props) => {
   return (
     <a
         href={`/voice-actor/${normalizeString(seiyuu.name ?? 'Unknown', true, false, true)}_${seiyuu.voice_actor_id}`}
-        className="group/actor flex aspect-[70/30] w-full from-Primary-950/50 to-Primary-950/80  relative  bg-gradient-to-br backdrop-blur-sm transition-all duration-300  rounded-md overflow-hidden "
+        className="group/actor flex aspect-[70/30] w-full from-Primary-950/50 border-2 border-Primary-800/30 hover:border-enfasisColor/50 to-Primary-950/80   relative  bg-gradient-to-br backdrop-blur-sm transition-all duration-300  rounded-md overflow-hidden "
         aria-label={`About ${seiyuu.name}`}
       >
         <div className="relative aspect-[225/330] h-full rounded-r-md flex-shrink-0 overflow-hidden">
