@@ -47,9 +47,6 @@ interface Props {
  * <AnimeDetails animeData={animeData} />
  */
 export const AnimeDetails = ({ animeData }: Props) => {
-
-
-
   const {
     status,
     type,
@@ -103,17 +100,14 @@ export const AnimeDetails = ({ animeData }: Props) => {
 
   return (
     <section
-      className={`z-10 flex h-min w-full flex-col items-center justify-center row-span-2 transition-all duration-300 col-span-1   `}
+      className={`z-10 flex h-min border-Primary-800/30 from-Complementary  via-Primary-950 to-Complementary/95 border bg-gradient-to-br shadow-2xl w-full ease-in-out md:rounded-xl flex-col items-center justify-center row-span-2 transition-all duration-300 col-span-1   `}
     >
       <header
-        className={`bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl transition-all delay-300 duration-300 ease-in-out  flex flex-row gap-4 px-4 py-1.5`}
+        className={`bg-enfasisColor/5 w-full items-center justify-center  transition-all delay-300 duration-300 ease-in-out  flex flex-row gap-4 px-4 py-1.5`}
       >
         <h2 className="text-center text-lg text-pretty">Details</h2>
-
       </header>
-      <ul
-        className='border-Primary-800/30 from-Complementary w-full p-6 via-Primary-950 to-Complementary/95 border bg-gradient-to-br shadow-2xl transition-all duration-500 ease-in-out hover:shadow-xl rounded-xl space-y-4'
-      >
+      <ul className="p-6 space-y-4">
         {animeDetails.map((detail) => (
           <li
             className="flex w-full flex-row items-center gap-4 py-2 capitalize"
