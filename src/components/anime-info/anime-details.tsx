@@ -103,7 +103,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
 
   return (
     <section
-      className={`z-10 flex h-min w-full flex-col items-center justify-center  transition-all duration-300 md:col-span-1   `}
+      className={`z-10 flex h-min w-full flex-col items-center justify-center row-span-2 transition-all duration-300 col-span-1   `}
     >
       <header
         className={`bg-enfasisColor w-[80%] items-center justify-center rounded-t-xl transition-all delay-300 duration-300 ease-in-out  flex flex-row gap-4 px-4 py-1.5`}
