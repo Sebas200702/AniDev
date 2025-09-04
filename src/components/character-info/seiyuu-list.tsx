@@ -13,7 +13,7 @@ export const SeiyuuList = ({ Seiyuus }: Props) => {
       >
         <h3 className="text-center text-lg text-pretty">Seiyuus</h3>
       </header>
-      <ul className='border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95 border bg-gradient-to-br shadow-2xl transition-all duration-500 ease-in-out hover:shadow-xl p-6 rounded-xl space-y-6'>
+      <ul className="w-full">
         {Seiyuus.map((seiyuu) => (
           <SeiyuuInfo key={seiyuu.voice_actor_id} seiyuu={seiyuu} />
         ))}
