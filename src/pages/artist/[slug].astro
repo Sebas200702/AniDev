@@ -5,6 +5,6 @@ const { slug } = Astro.params
 const [name] = slug?.split('_') ?? ['']
 ---
 
-<Layout>
+<Layout artistName={name}>
   <ArtistInfo client:load name={name} />
 </Layout>
