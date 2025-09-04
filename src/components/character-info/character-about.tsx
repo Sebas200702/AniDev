@@ -1,4 +1,5 @@
 import type { PersonAbout } from 'types'
+import { MainInfo } from '@components/shared/MainInfo'
 
 interface Props {
   about: PersonAbout
@@ -6,7 +7,7 @@ interface Props {
 export const CharacterAbout = ({ about }: Props) => {
   const { description, details, favorites } = about
   return (
-    <section className="xl:col-span-3 col-span-1 md:col-span-2 border-Primary-800/30 from-Complementary via-Primary-950 to-Complementary/95  relative z-10 flex flex-col overflow-hidden rounded-xl border bg-gradient-to-br shadow-2xl transition-all duration-500 ease-in-out hover:shadow-xl">
+    <MainInfo>
       <div className="from-Primary-950/20 to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
 
       <div className="border-Primary-800/30 from-Primary-950/80 to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-4 md:p-6 backdrop-blur-md">
@@ -58,6 +59,6 @@ export const CharacterAbout = ({ about }: Props) => {
           </>
         )}
       </div>
-    </section>
+    </MainInfo>
   )
 }
