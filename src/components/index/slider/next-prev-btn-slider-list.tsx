@@ -32,11 +32,11 @@ export const NexPrevBtnSlideList = ({
 }: NexPrevBtnSlideListProps) => {
   return (
     <nav
-      className={` ${label} ${styles} to-Primary-950/90 absolute top-0 bottom-0 z-20 h-full w-20 items-center justify-start bg-gradient-to-l from-transparent md:flex`}
+      className={`${styles} to-Primary-950/90 absolute top-0 bottom-0 z-20 h-full w-20 items-center justify-start bg-gradient-to-l from-transparent md:flex`}
     >
       <button
-        className="group bg-enfasisColor z-10 my-auto flex h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out focus:outline-none"
-        aria-label="Next"
+        className={`${label} group bg-enfasisColor z-10 my-auto flex h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out focus:outline-none"
+        aria-label="Next`}
       >
         <NextPrevIcon className="h-3 w-3 md:h-4 md:w-4" />
       </button>
