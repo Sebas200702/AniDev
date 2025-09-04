@@ -16,7 +16,10 @@ export const CharacterAside = ({ character }: Props) => {
   })
   return (
     <aside className="top-28 z-20 md:px-0 px-20   flex  flex-col row-span-1  md:row-span-2 md:items-start xl:sticky">
-      <GaleryImage imageList={imageList} className="aspect-[225/330] rounded-lg overflow-hidden w-full">
+      <GaleryImage
+        imageList={imageList}
+        className="aspect-[225/330] rounded-lg overflow-hidden w-full"
+      >
         <Picture
           image={createImageUrlProxy(
             character.character_small_image_url ??
