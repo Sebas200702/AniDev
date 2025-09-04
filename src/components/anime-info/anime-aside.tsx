@@ -73,10 +73,7 @@ export const AnimeAside = ({
 
   return (
     <aside className="anime-aside top-28 z-50 flex h-min w-full flex-col gap-8 px-20 md:row-span-2 md:items-start md:px-0 xl:sticky">
-      <GaleryImage
-        imageList={imageList}
-        className="aspect-[225/330] w-full"
-      >
+      <GaleryImage imageList={imageList} className="aspect-[225/330] w-full">
         <Picture
           image={createImageUrlProxy(
             animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`,
