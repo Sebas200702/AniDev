@@ -1,11 +1,11 @@
-import { AddToListButton } from '@components/buttons/add-to-list-button'
-import { ShareButton } from '@components/buttons/share-button'
-import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
 import { AnimeTag } from '@components/anime-info/anime-tag'
+import { AddToListButton } from '@components/buttons/add-to-list-button'
+import { ShareButton } from '@components/buttons/share-button'
+import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { Aside } from '@components/shared/Aside'
 import { Header } from '@components/shared/Header'
 import { InfoPageLayout } from '@components/shared/InfoPageLayout'
@@ -85,22 +85,24 @@ export const AnimeInfo = ({ slug }: Props) => {
           />
         )}
       </Header>
-      <AnimeShowBox
-        animeId={animeData.mal_id}
-        trailer_url={animeData.trailer_url ?? ''}
-        banner_image={animeData.banner_image ?? ''}
-        image_large_webp={
-          animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
-        }
-        image={animeData.image_webp ?? `${baseUrl}/placeholder.webp`}
-        image_small_webp={
-          animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`
-        }
-        title={animeData.title}
-        synopsis={animeData.synopsis ?? 'No synopsis available'}
-      />
+      <div className="xl:col-span-3 col-span-1 md:col-span-2 flex flex-col gap-6">
+        <AnimeShowBox
+          animeId={animeData.mal_id}
+          trailer_url={animeData.trailer_url ?? ''}
+          banner_image={animeData.banner_image ?? ''}
+          image_large_webp={
+            animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
+          }
+          image={animeData.image_webp ?? `${baseUrl}/placeholder.webp`}
+          image_small_webp={
+            animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`
+          }
+          title={animeData.title}
+          synopsis={animeData.synopsis ?? 'No synopsis available'}
+        />
+        <SimilarToComponet title={animeData.title} mal_id={animeData.mal_id} />
+      </div>
       <AnimeDetails animeData={animeData} />
-      <SimilarToComponet title={animeData.title} mal_id={animeData.mal_id} />
     </InfoPageLayout>
   )
 }
