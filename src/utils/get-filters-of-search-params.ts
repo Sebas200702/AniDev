@@ -1,5 +1,5 @@
 import { normalizeString } from '@utils/normalize-string'
-import { Filters } from 'types'
+import { Filters, MusicFilters } from 'types'
 
 /**
  * Processes URL search parameters to extract and format filter values.
@@ -39,7 +39,8 @@ export const getFilters = (
       const value = url.searchParams.get(filter)
       if (
         filter === Filters.parental_control ||
-        filter === Filters.banners_filter
+        filter === Filters.banners_filter ||
+        filter === MusicFilters.unique_per_anime
       ) {
         filters[filter] = value === 'true' ? true : false
       } else if (
@@ -48,10 +49,14 @@ export const getFilters = (
         filter === Filters.search_query
       ) {
         filters[filter] = value ?? null
-      } else if (filter === Filters.order_by) {
+      } else if (
+        filter === Filters.order_by ||
+        filter === MusicFilters.order_by
+      ) {
         if (includeSortParams && value) {
           const [column, direction] = value.split(' ')
-          filters['sort_column'] = column || 'score'
+          filters['sort_column'] =
+            column || (filter === MusicFilters.order_by ? 'song_id' : 'score')
           filters['sort_direction'] = direction || 'desc'
         }
       } else {
@@ -69,7 +74,25 @@ export const getFilters = (
 
   if (includeSortParams) {
     if (!result.sort_column) {
-      result.sort_column = 'score'
+      const hasMusicFilters = filters.some(
+        (f) =>
+          f === MusicFilters.type_music ||
+          f === MusicFilters.artist_filter ||
+          f === MusicFilters.unique_per_anime
+      )
+
+      console.log('Debug getFilters:', {
+        filters: filters,
+        hasMusicFilters,
+        MusicFilters_order_by: MusicFilters.order_by,
+        Filters_order_by: Filters.order_by,
+      })
+
+      if (hasMusicFilters) {
+        result.sort_column = 'song_id'
+      } else {
+        result.sort_column = 'score'
+      }
     }
     if (!result.sort_direction) {
       result.sort_direction = 'desc'
