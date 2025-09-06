@@ -24,7 +24,7 @@ import type { ComponentType } from 'react'
  * closeModal();
  */
 export const useModal = () => {
-  const { isOpen, openModal, closeModal } = useGlobalModal()
+  const { isOpen, openModal, closeModal, setOnClose } = useGlobalModal()
 
   /**
    * Opens a modal with a dynamic React component
@@ -38,9 +38,18 @@ export const useModal = () => {
     openModal(Component, props)
   }
 
+  /**
+   * Sets a callback function to be executed when the modal is closed
+   * @param callback - Function to execute when modal closes (optional)
+   */
+  const onClose = (callback?: (() => void) | null) => {
+    setOnClose(callback)
+  }
+
   return {
     isOpen,
     openModal: openComponentModal,
     closeModal,
+    onClose,
   }
 }
