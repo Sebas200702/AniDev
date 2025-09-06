@@ -9,13 +9,15 @@ interface Props {
   title: string
   posterImage: string
   smallImage: string
+  bannerImage ?: string
   children?: ReactNode
 }
 
-export const Aside = ({ title, posterImage, smallImage, children }: Props) => {
+export const Aside = ({ title, posterImage, smallImage, children , bannerImage}: Props) => {
   const imageList = createAnimeImageList({
     title: `${title} Image`,
     posterImage: posterImage,
+    bannerImage
   })
 
   return (
