@@ -113,7 +113,7 @@ export const AnimeShowBox = ({
       </div>
 
       <div
-        className={`no-scrollbar relative z-10 md:aspect-video max-h-[400px] ${currentSelectedLabel === 'Trailer' ? 'overflow-y-hidden aspect-video' : 'overflow-y-scroll'}`}
+        className={`no-scrollbar relative z-10 md:aspect-video max-h-[400px] md:max-h-full ${currentSelectedLabel === 'Trailer' ? 'overflow-y-hidden aspect-video' : 'overflow-y-scroll'}`}
       >
         {isContentLoading ? (
           <div className="h-full animate-pulse space-y-4"></div>
