@@ -30,7 +30,7 @@ interface GlobalUserPreferences {
   userInfo: UserInfo | null
   watchList: WatchList[]
   setUserInfo: (user: UserInfo | null) => void
-  parentalControl: boolean
+  parentalControl: boolean | null
   trackSearchHistory: boolean
   setParentalControl: (value: boolean) => void
   setTrackSearchHistory: (value: boolean) => void
@@ -50,7 +50,7 @@ export const useGlobalUserPreferences = create<GlobalUserPreferences>(
     setUserInfo(user) {
       set({ userInfo: user })
     },
-    parentalControl: true,
+    parentalControl: null,
     setParentalControl(value) {
       set({ parentalControl: value })
     },
