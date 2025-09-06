@@ -20,18 +20,34 @@ interface GlobalModal {
   isOpen: boolean
   Component: ComponentType<any> | null
   componentProps: Record<string, any>
+  onCloseCallback?: (() => void) | null
   openModal: (
     Component: ComponentType<any>,
     props?: Record<string, any>
   ) => void
   closeModal: () => void
+  setOnClose: (callback?: (() => void) | null) => void
 }
 
-export const useGlobalModal = create<GlobalModal>((set) => ({
+export const useGlobalModal = create<GlobalModal>((set, get) => ({
   isOpen: false,
   Component: null,
   componentProps: {},
+  onCloseCallback: null,
   openModal: (Component, props = {}) =>
     set({ isOpen: true, Component, componentProps: props }),
-  closeModal: () => set({ isOpen: false, Component: null, componentProps: {} }),
+  closeModal: () => {
+    const { onCloseCallback } = get()
+    // Ejecutar el callback de onClose si existe y es una función
+    if (onCloseCallback && typeof onCloseCallback === 'function') {
+      onCloseCallback()
+    }
+    set({
+      isOpen: false,
+      Component: null,
+      componentProps: {},
+      onCloseCallback: null,
+    })
+  },
+  setOnClose: (callback) => set({ onCloseCallback: callback }),
 }))
