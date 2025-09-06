@@ -7,6 +7,7 @@ import { getLatestSongs } from '@utils/music'
 import { shuffleArray } from '@utils/shuffle-array'
 import { useEffect, useState } from 'react'
 import { type AnimeSongWithImage } from 'types'
+import { PlayIcon } from '@components/icons/play-icon'
 
 export const MusicBanner = () => {
   const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
@@ -14,7 +15,7 @@ export const MusicBanner = () => {
 
   const { setCurrentSong, setList } = useMusicPlayerStore()
   const { data, loading } = useFetch<AnimeSongWithImage[]>({
-    url: '/api/music?anime_status=Currently Airing&order_by=score desc',
+    url: '/api/music?anime_status=Currently Airing&order_by=score desc&type_music=op',
   })
 
   useEffect(() => {
@@ -46,10 +47,11 @@ export const MusicBanner = () => {
       <DinamicBanner banners={banners} />
       <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
       <header className="absolute z-20 flex aspect-[1080/600] h-[40vh] w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20">
-        <h1 className="subtitle">Openings that are playing now</h1>
+        <h1 className="title">Openings that are playing now</h1>
 
         <ul className="flex gap-4">
-          <button className="button-primary" onClick={handleClick}>
+          <button className="button-primary px-4 flex gap-2" onClick={handleClick}>
+          <PlayIcon className='w-4 h-4'/>
             Play Now
           </button>
         </ul>
