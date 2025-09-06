@@ -82,8 +82,12 @@ const validateSlug = (slug: string | null): ValidationResult => {
   return { valid: true, id }
 }
 
-const fetchAnimeData = async (slug: string, id: number) => {
-  const cacheKey = `${CACHE_PREFIX}${slug}`
+const fetchAnimeData = async (
+  slug: string,
+  id: number,
+  parentalControl = true
+) => {
+  const cacheKey = `${CACHE_PREFIX}${slug}${parentalControl ? '_pc' : ''}`
 
   const cached = await safeRedisOperation(async (redis) => {
     return await redis.get(cacheKey)
@@ -96,10 +100,38 @@ const fetchAnimeData = async (slug: string, id: number) => {
   }
 
   const fetchPromise = Promise.resolve(
-    supabase.rpc('get_anime_by_id', { p_mal_id: id })
+    supabase.rpc('get_anime_by_id', {
+      p_mal_id: id,
+      p_parental_control: parentalControl,
+    })
   )
     .then(async ({ data, error }) => {
-      if (error || !data?.[0]) throw error || new Error('Data not found')
+      if (error) throw error
+      if (!data?.[0] && parentalControl) {
+        const { data: unrestricted } = await supabase.rpc('get_anime_by_id', {
+          p_mal_id: id,
+          p_parental_control: false,
+        })
+
+        if (unrestricted?.[0]) {
+          const blockedResult = {
+            blocked: true,
+            message: 'This content is blocked by parental controls',
+          }
+
+          await safeRedisOperation(async (redis) => {
+            return await redis.set(cacheKey, JSON.stringify(blockedResult), {
+              EX: CACHE_TTL,
+            })
+          })
+
+          return blockedResult
+        }
+      }
+
+      if (!data?.[0]) {
+        throw new Error('Data not found')
+      }
 
       const result = data[0]
 
@@ -122,6 +154,8 @@ const fetchAnimeData = async (slug: string, id: number) => {
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
     const slug = url.searchParams.get('slug')
+    const parentalControlParam = url.searchParams.get('parentalControl')
+    const parentalControl = parentalControlParam === 'false' ? false : true
     const validation = validateSlug(slug)
 
     if (!validation.valid) {
@@ -131,9 +165,24 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       })
     }
 
-    const anime = await fetchAnimeData(slug!, validation.id!)
+    const result = await fetchAnimeData(slug!, validation.id!, parentalControl)
 
-    return new Response(JSON.stringify({ anime }), {
+    if (result.blocked) {
+      return new Response(
+        JSON.stringify({
+          blocked: true,
+          message: result.message,
+        }),
+        {
+          status: 403,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+    }
+
+    return new Response(JSON.stringify({ anime: result }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
