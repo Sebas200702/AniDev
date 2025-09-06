@@ -30,7 +30,7 @@ export const normalizeString = (
   removeSpace: boolean = true,
   lowerCase: boolean = false
 ): string => {
-  // Define the regex pattern for special characters once
+  if (!str) return ''
   const specialCharsPattern = /[/?¡.:,;¿!@#$%^&*()\-_=+[\]{}|\\'<>`~"]/g
 
   // Remove special characters
