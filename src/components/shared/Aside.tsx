@@ -34,8 +34,8 @@ export const Aside = ({ title, posterImage, smallImage, children }: Props) => {
             className="relative aspect-[225/330] w-full  object-cover object-center transition-all ease-in-out"
             src={createImageUrlProxy(
               posterImage ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '70',
+              '500',
+              '75',
               'webp'
             )}
             alt={title}
