@@ -114,8 +114,7 @@ export const GET: APIRoute = rateLimit(
       const formatFunction = getFormat(format ?? '')
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
-      console.log(data)
-      console.log(filters)
+
 
       if (!data || data.length === 0) {
         return new Response(
