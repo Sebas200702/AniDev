@@ -20,7 +20,7 @@ import { createPortal } from 'react-dom'
  */
 
 export const ModalContainer = () => {
-  const { isOpen, Component, componentProps, closeModal } = useGlobalModal()
+  const { isOpen, Component, componentProps, closeModal  } = useGlobalModal()
   const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export const ModalContainer = () => {
     const handleClickOutside = (e: MouseEvent) => {
       if (e.target === modalRef.current) {
         closeModal()
+
       }
     }
 
