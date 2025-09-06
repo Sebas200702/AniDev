@@ -9,7 +9,6 @@ export const ArtistAbout = ({ about }: Props) => {
   return (
     <MainInfo>
       <div className="from-Primary-950/20 to-Primary-900/10 pointer-events-none absolute inset-0 bg-gradient-to-t via-transparent" />
-
       <div className="border-Primary-800/30 from-Primary-950/80 to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-4 md:p-6 backdrop-blur-md">
         <h2 className="text-lxx">About</h2>
       </div>
