@@ -1,3 +1,4 @@
+import { normalizeString } from '@utils/normalize-string'
 import { AnimeFilters, NormalizedRating } from 'types'
 
 /**
@@ -48,15 +49,14 @@ export const getFilterOfTag = (tag: string) => {
   if (tag === 'Movie') return AnimeFilters.Type
   if (tag === 'Music') return AnimeFilters.Type
   if (haveNumbers(tag) && tag.length === 4) return AnimeFilters.Year
-  const normalize = (s: string) =>
-    s.toLowerCase().normalize('NFKC').replace(/\s+/g, ' ').trim()
 
-  console.log(tag)
-
-  if (Object.values(NormalizedRating).map(normalize).includes(normalize(tag))) {
+  if (
+    Object.values(NormalizedRating)
+      .map((rating) => normalizeString(rating))
+      .includes(normalizeString(tag))
+  ) {
     return AnimeFilters.Rating
   }
-
 
   return AnimeFilters.Genre
 }
