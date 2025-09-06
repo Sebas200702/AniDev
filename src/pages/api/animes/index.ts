@@ -88,7 +88,7 @@ export const GET: APIRoute = rateLimit(
 
       const limit = parseInt(url.searchParams.get('limit_count') ?? '10')
       const page = url.searchParams.get('page_number')
-      const filters = getFilters(Object.values(Filters), url)
+      const filters = getFilters(Object.values(Filters), url, true)
       const countFilters = getFilters(CountFilters, url, false)
 
       enum Formats {
@@ -114,8 +114,10 @@ export const GET: APIRoute = rateLimit(
       const formatFunction = getFormat(format ?? '')
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
+      console.log(data)
+      console.log(filters)
 
-      if (data.length === 0) {
+      if (!data || data.length === 0) {
         return new Response(
           JSON.stringify({ error: 'No se encontraron animes.' }),
           {
