@@ -177,18 +177,20 @@ export const AnimeMusicItem = ({
               </a>
             )}
           </div>
-          <span className="text-sxx text-Primary-300 flex w-full flex-row items-end truncate">
-            From
-            <a
-              href={`/anime/${normalizeString(anime_title)}_${song.anime_id}`}
-              title={`View ${anime_title} details`}
-              className="ml-1 cursor-pointer truncate"
-            >
-              <strong className="text-sx text-Primary-100 truncate hover:underline">
-                {anime_title}
-              </strong>
-            </a>
-          </span>
+          {anime_title && (
+            <span className="text-sxx text-Primary-300 flex w-full flex-row items-end truncate">
+              From
+              <a
+                href={`/anime/${normalizeString(anime_title)}_${song.anime_id}`}
+                title={`View ${anime_title} details`}
+                className="ml-1 cursor-pointer truncate"
+              >
+                <strong className="text-sx text-Primary-100 truncate hover:underline">
+                  {anime_title}
+                </strong>
+              </a>
+            </span>
+          )}
         </footer>
       </div>
 
