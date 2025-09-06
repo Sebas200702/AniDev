@@ -65,7 +65,7 @@ export const CharacterCard = ({ character }: Props) => {
           <img
             src={createImageUrlProxy(
               character_image_url ?? `${baseUrl}/placeholder.webp`,
-              '0',
+              '500',
               '75',
               'webp'
             )}
