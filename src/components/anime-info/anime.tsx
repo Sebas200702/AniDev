@@ -2,6 +2,7 @@ import { AnimeBanner } from '@components/anime-info/anime-banner'
 import { AnimeDetails } from '@components/anime-info/anime-details'
 import { AnimeLoader } from '@components/anime-info/anime-loader'
 import { AnimeShowBox } from '@components/anime-info/anime-show-box'
+import { SimilarToComponet } from '@components/anime-info/anime-similar-to'
 import { AnimeTag } from '@components/anime-info/anime-tag'
 import { AddToListButton } from '@components/buttons/add-to-list-button'
 import { ShareButton } from '@components/buttons/share-button'
@@ -9,32 +10,74 @@ import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { Aside } from '@components/shared/Aside'
 import { Header } from '@components/shared/Header'
 import { InfoPageLayout } from '@components/shared/InfoPageLayout'
+import { useBlockedContent } from '@hooks/useBlockedContent'
 import { baseUrl } from '@utils/base-url'
 import { getAnimeData } from '@utils/get-anime-data'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
 import { normalizeString } from '@utils/normalize-string'
-import { useEffect, useState } from 'react'
-import type { Anime } from 'types'
-import { SimilarToComponet } from './anime-similar-to'
 
+/**
+ * Props interface for the AnimeInfo component
+ */
 interface Props {
+  /** The anime slug in format 'title_id' (e.g., 'one-piece_21') */
   slug: string
 }
 
+/**
+ * AnimeInfo component displays detailed information about a specific anime.
+ *
+ * @summary
+ * A comprehensive anime information page component that shows anime details,
+ * handles parental control blocking, and provides interactive features.
+ *
+ * @description
+ * This component fetches and displays detailed anime information including
+ * banner, poster, synopsis, genres, characters, music, and related content.
+ * It handles parental control restrictions and provides a modal for blocked
+ * content with options to adjust settings or go back.
+ *
+ * The component uses the useBlockedContent hook to manage:
+ * - Data fetching and loading states
+ * - Parental control blocking logic
+ * - Modal management for blocked content
+ * - Navigation handling
+ *
+ * @features
+ * - Responsive design with mobile-first approach
+ * - Parental control integration
+ * - Interactive anime details (trailer, characters, music)
+ * - Social sharing capabilities
+ * - Add to list functionality
+ * - Watch anime button
+ * - Similar anime recommendations
+ *
+ * @param {Props} props - The component props
+ * @param {string} props.slug - The anime slug in format 'title_id'
+ * @returns {JSX.Element} The rendered anime information page
+ *
+ * @example
+ * // Usage in a page
+ * <AnimeInfo slug="one-piece_21" />
+ */
 export const AnimeInfo = ({ slug }: Props) => {
-  const [animeData, setAnimeData] = useState<Anime>()
+  const { animeData, isBlocked, isLoading, isMounted } = useBlockedContent({
+    slug,
+    getAnimeData,
+  })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAnimeData(slug)
-      if (!data) return
-      setAnimeData(data)
-    }
-    fetchData()
-  }, [])
+  if (!isMounted || isLoading) {
+    return <AnimeLoader />
+  }
 
-  if (!animeData) return <AnimeLoader />
+  if (isBlocked) {
+    return <AnimeLoader />
+  }
+
+  if (!animeData) {
+    return <AnimeLoader />
+  }
 
   const url = `/anime/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
@@ -56,6 +99,7 @@ export const AnimeInfo = ({ slug }: Props) => {
         title={animeData.title}
         posterImage={animeData.image_large_webp ?? ''}
         smallImage={animeData.image_small_webp ?? ''}
+        bannerImage={animeData.banner_image ?? ''}
       >
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
         <AddToListButton
@@ -75,7 +119,7 @@ export const AnimeInfo = ({ slug }: Props) => {
           tag={getAnimeType(animeData.type ?? '')}
           type={animeData.type ?? ''}
         />
-        {animeData.genres?.map((genre) => (
+        {animeData.genres?.map((genre: string) => (
           <AnimeTag key={genre} tag={genre} type={genre} style="w-auto" />
         ))}
         {animeData.rating && (
@@ -89,13 +133,13 @@ export const AnimeInfo = ({ slug }: Props) => {
         <AnimeShowBox
           animeId={animeData.mal_id}
           trailer_url={animeData.trailer_url ?? ''}
-          banner_image={animeData.banner_image ?? ''}
+          banner_image={animeData.banner_image}
           image_large_webp={
-            animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
+            animeData.image_large_webp
           }
-          image={animeData.image_webp ?? `${baseUrl}/placeholder.webp`}
+          image={animeData.image_webp}
           image_small_webp={
-            animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`
+            animeData.image_small_webp
           }
           title={animeData.title}
           synopsis={animeData.synopsis ?? 'No synopsis available'}
