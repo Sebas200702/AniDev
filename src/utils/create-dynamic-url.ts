@@ -101,7 +101,7 @@ const capitalizeTitle = (text: string): string => {
  */
 export const createDynamicUrl = (
   limit = 6,
-  parentalControl = true
+  parentalControl ?: boolean | null 
 ): FilterResult => {
   const genres = getWeightedGenres()
 
