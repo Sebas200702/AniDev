@@ -13,7 +13,7 @@ export const buildResponse = ({
   favoriteTitle,
 }: BuildResponseOptions) => {
   return {
-    data: shuffleArray(data),
+    data,
     context,
     totalRecommendations: data.length,
     wasRetried,
@@ -41,11 +41,4 @@ export async function cacheAndRespond(key: string, payload: any, headers = {}) {
     status: 200,
     headers: { 'Content-Type': 'application/json', ...headers },
   })
-}
-
-function shuffleArray<T>(arr: T[]) {
-  return arr
-    .map((item) => [Math.random(), item] as [number, T])
-    .sort((a, b) => a[0] - b[0])
-    .map(([, item]) => item)
 }
