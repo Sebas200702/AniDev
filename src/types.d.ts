@@ -177,6 +177,7 @@ export enum MusicFilters {
   anime_year = 'anime_year',
   anime_status = 'anime_status',
   artist_filter = 'artist_filter',
+  unique_per_anime = 'unique_per_anime'
 }
 
 export enum SearchType {
