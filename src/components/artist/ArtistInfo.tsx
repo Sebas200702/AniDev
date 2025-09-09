@@ -35,7 +35,6 @@ export const ArtistInfo = ({ name }: Props) => {
         `/api/about?about=${encodeURIComponent(artistInfo.about)}`
       ).then((data) => data.json())
 
-      
       setAbout(about)
     }
     fetchFormatAbout()
