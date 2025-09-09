@@ -17,7 +17,7 @@ export const CharacterImagesColection = ({ id }: Props) => {
   const listRef = useRef<HTMLDivElement>(null)
 
   const createGroups = (characters: CharacterImages[]) => {
-    let itemsPerGroup = 3
+    let itemsPerGroup = 2
 
     if (windowWidth && windowWidth >= 1280) {
       itemsPerGroup = 4
