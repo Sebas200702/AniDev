@@ -15,7 +15,7 @@ export const CharacterImage = ({ character }: Props) => {
   return (
     <button
       key={character.character_id}
-      className={`w-full h-full rounded-full border-3 ${isSelected ? ' border-enfasisColor' : 'border-enfasisColor/0'} transition-colors duration-300 ease-in-out  overflow-hidden aspect-square cursor-pointer group`}
+      className={` h-full w-full aspect-square rounded-full border-3 ${isSelected ? ' border-enfasisColor' : 'border-enfasisColor/0'} transition-colors duration-300 ease-in-out  overflow-hidden aspect-square cursor-pointer group`}
       onClick={handleClick}
     >
       <Picture
@@ -35,7 +35,7 @@ export const CharacterImage = ({ character }: Props) => {
             'webp'
           )}
           alt={character.character_name}
-          className="relative object-cover object-center w-full h-full "
+          className="relative object-cover object-center w-full h-full aspect-square "
         />
         <Overlay className="group-hover:opacity-100 opacity-0 h-full w-full bg-enfasisColor/40 transition-opacity duration-200" />
       </Picture>
