@@ -9,9 +9,7 @@ interface Props {
 }
 export const SeiyuuInfo = ({ seiyuu }: Props) => {
   return (
-    <li
-      className="w-full"
-    >
+    <li className="w-full">
       <a
         href={`/voice-actor/${normalizeString(seiyuu.name ?? 'Unknown', true, false, true)}_${seiyuu.voice_actor_id}`}
         className="group/actor flex w-full flex-row items-center gap-4 rounded-md p-2 capitalize transition-colors hover:bg-white/5"
@@ -20,17 +18,16 @@ export const SeiyuuInfo = ({ seiyuu }: Props) => {
         <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full">
           <Picture
             image={createImageUrlProxy(
-                seiyuu.image_url ?? `${baseUrl}/placeholder.webp`,
+              seiyuu.image_url ?? `${baseUrl}/placeholder.webp`,
               '0',
               '0',
               'webp'
             )}
-            styles="h-full w-full relative"
+            styles="h-full w-full relative overflow-hidden"
           >
             <img
               src={createImageUrlProxy(
-                seiyuu.image_url ??
-                  `${baseUrl}/placeholder.webp`,
+                seiyuu.image_url ?? `${baseUrl}/placeholder.webp`,
                 '0',
                 '70',
                 'webp'
@@ -43,12 +40,10 @@ export const SeiyuuInfo = ({ seiyuu }: Props) => {
         </div>
 
         <div className="flex flex-1 flex-col justify-center">
-            <h2 className="text-s group-hover/actor:text-enfasisColor font-medium text-white transition-colors duration-300 ease-in-out">
-                {seiyuu.name}
-            </h2>
-            <small className="text-xs text-gray-400">
-                {seiyuu.language}
-            </small>
+          <h2 className="text-s group-hover/actor:text-enfasisColor font-medium text-white transition-colors duration-300 ease-in-out">
+            {seiyuu.name}
+          </h2>
+          <small className="text-xs text-gray-400">{seiyuu.language}</small>
         </div>
       </a>
     </li>
