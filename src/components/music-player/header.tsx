@@ -31,16 +31,7 @@ export const Header = ({ playerContainerRef }: Props) => {
     setVersionNumber,
   } = useMusicPlayerStore()
 
-  if (!currentSong || !playerContainerRef) return
-  const handleChangeType = () => {
-    if (type === 'audio') {
-      setType('video')
-      setSrc(currentSong?.video_url)
-    } else {
-      setType('audio')
-      setSrc(currentSong.audio_url)
-    }
-  }
+
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       const target = e.target as HTMLElement
@@ -95,6 +86,16 @@ export const Header = ({ playerContainerRef }: Props) => {
     },
     [setDragOffset, setIsDraggingPlayer]
   )
+  if (!currentSong || !playerContainerRef) return
+  const handleChangeType = () => {
+    if (type === 'audio') {
+      setType('video')
+      setSrc(currentSong?.video_url)
+    } else {
+      setType('audio')
+      setSrc(currentSong.audio_url)
+    }
+  }
 
   return (
     <div className="relative">
