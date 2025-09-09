@@ -119,7 +119,7 @@ export const MusicPlayer = () => {
 
       <MediaPlayer
         ref={player}
-        src={src ?? ''}
+        src={src || undefined}
         aspectRatio={isMinimized ? 'auto' : 'video'}
         viewType="video"
         streamType="on-demand"
@@ -134,7 +134,7 @@ export const MusicPlayer = () => {
         }}
         poster={createImageUrlProxy(
           currentSong.banner_image ?? currentSong.image,
-          '1980',
+          isMinimized ? '300' : '1980',
           '75',
           'webp'
         )}
