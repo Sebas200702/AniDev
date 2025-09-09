@@ -1,4 +1,4 @@
-import { BlockedIcon } from '@components/icons/blocked-incon'
+import { BlockedIcon } from '@components/icons/blocked-icon'
 import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 interface BlockedContentProps {
   message?: string
