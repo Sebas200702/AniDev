@@ -25,8 +25,10 @@ import {
   SearchType,
   ToastType,
   shortCuts,
+  type AnimeCardInfo,
+  type AnimeDetail,
+  typeSearchOptions,
 } from 'types'
-import { type AnimeCardInfo, type AnimeDetail, typeSearchOptions } from 'types'
 
 export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
   const { closeModal, openModal, isOpen: isModalOpen } = useModal()
@@ -54,7 +56,7 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useAutoCloseModal(isModalOpen, closeModal, {
-    debounceMs: 50,
+    debounceMs: 500,
     enableLogs: true,
   })
 
@@ -68,12 +70,12 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
   const defaultFiltersCharacters = 'limit_count=30&language_filter=japanese'
 
   const url = useMemo(() => {
-    const defautlFilters =
-      currentType === SearchType.ANIMES
-        ? defaultFiltersAnimes
-        : currentType === SearchType.MUSIC
-          ? defaultFiltersMusic
-          : defaultFiltersCharacters
+    let defautlFilters = defaultFiltersCharacters
+    if (currentType === SearchType.ANIMES) {
+      defautlFilters = defaultFiltersAnimes
+    } else if (currentType === SearchType.MUSIC) {
+      defautlFilters = defaultFiltersMusic
+    }
 
     const baseQuery = `/api/${currentType}?${defautlFilters}`
     const searchQuery = debouncedQuery ? `&search_query=${debouncedQuery}` : ''
@@ -304,46 +306,47 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
         )}
 
         {!isLoading &&
-        !isLoadingFull &&
-        animesFull &&
-        currentType === SearchType.ANIMES &&
-        isAnimeData(animesFull)
-          ? animesFull.map((result) => (
-              <AnimeDetailCard key={result.mal_id} anime={result} />
-            ))
-          : !isLoading &&
-              !isLoadingFull &&
-              animesFull &&
-              currentType === SearchType.MUSIC &&
-              isMusicData(animesFull)
-            ? animesFull.map((result) => (
-                <AnimeMusicItem
-                  key={result.song_id}
-                  song={result}
-                  image={result.image ?? `${baseUrl}/placeholder.webp`}
-                  placeholder={
-                    result.placeholder ?? `${baseUrl}/placeholder.webp`
-                  }
-                  banner_image={
-                    result.banner_image ??
-                    result.image ??
-                    `${baseUrl}/placeholder.webp`
-                  }
-                  anime_title={result.anime_title}
-                />
-              ))
-            : !isLoading &&
-                !isLoadingFull &&
-                animesFull &&
-                currentType === SearchType.CHARACTERS &&
-                isCharacterData(animesFull)
-              ? animesFull.map((result) => (
-                  <AnimeCharacterCard
-                    key={`${result.character_id}_${result.voice_actor_id}`}
-                    character={result}
-                  />
-                ))
-              : null}
+          !isLoadingFull &&
+          animesFull &&
+          currentType === SearchType.ANIMES &&
+          isAnimeData(animesFull) &&
+          animesFull.map((result) => (
+            <AnimeDetailCard key={result.mal_id} anime={result} />
+          ))}
+
+        {!isLoading &&
+          !isLoadingFull &&
+          animesFull &&
+          currentType === SearchType.MUSIC &&
+          isMusicData(animesFull) &&
+          animesFull.map((result) => (
+            <AnimeMusicItem
+              key={result.song_id}
+              song={result}
+              image={result.image ?? `${baseUrl}/placeholder.webp`}
+              placeholder={
+                result.placeholder ?? `${baseUrl}/placeholder.webp`
+              }
+              banner_image={
+                result.banner_image ??
+                result.image ??
+                `${baseUrl}/placeholder.webp`
+              }
+              anime_title={result.anime_title}
+            />
+          ))}
+
+        {!isLoading &&
+          !isLoadingFull &&
+          animesFull &&
+          currentType === SearchType.CHARACTERS &&
+          isCharacterData(animesFull) &&
+          animesFull.map((result) => (
+            <AnimeCharacterCard
+              key={`${result.character_id}_${result.voice_actor_id}`}
+              character={result}
+            />
+          ))}
 
         {error && (
           <p className="text-lg text-red-500">
