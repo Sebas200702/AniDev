@@ -5,11 +5,11 @@ import { useFetch } from '@hooks/useFetch'
 import { useGlobalUserPreferences } from '@store/global-user'
 import type { AnimeCardInfo } from 'types'
 
-interface props {
+interface Props {
   title: string
   mal_id: number
 }
-export const SimilarToComponet = ({ title, mal_id }: props) => {
+export const SimilarToComponet = ({ title, mal_id }: Props) => {
   const { parentalControl } = useGlobalUserPreferences()
   const { data, loading } = useFetch<AnimeCardInfo[]>({
     url: `/api/animes/getRecomendations?similar_to=${title}&currentAnime=${mal_id}&parental_control=${parentalControl}`,
