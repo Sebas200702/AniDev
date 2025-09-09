@@ -22,7 +22,7 @@ export const ArtistInfoComponent = () => {
   }
 
   return (
-    <>
+
       <a
         title={`Info about ${artist.name}`}
         href={`/artist/${normalizeString(artist.name, true, true, true)}_${artist.mal_id}`}
@@ -102,6 +102,6 @@ export const ArtistInfoComponent = () => {
         <Overlay className="bg-Primary-950/95 z-10 h-full w-full backdrop-blur-sm md:rounded-xl" />
         <Overlay className="bg-enfasisColor/5 group-hover:bg-enfasisColor/10 z-10 h-full w-full md:rounded-xl" />
       </a>
-    </>
+   
   )
 }
