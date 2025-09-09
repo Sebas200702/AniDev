@@ -2,6 +2,7 @@ import { Overlay } from '@components/layout/overlay'
 import { type FormValues, useAuthFormStore } from '@store/auth-form-store'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { InputType } from 'types'
 
 /**
  * Props for the Input component.
@@ -15,10 +16,10 @@ import { useState } from 'react'
  */
 interface Props {
   name: string
-  type: string
-  placeholder: string
+  type: InputType
+  placeholder?: string
   required?: boolean
-  children: ReactNode
+  children?: ReactNode
   value?: string | string[]
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   options?: {
@@ -70,7 +71,7 @@ export const Input = ({
   onChange,
 }: Props) => {
   const { setValue, clearMessages } = useAuthFormStore()
-  const [inputType, setInputType] = useState(type)
+  const [inputType, setInputType] = useState<InputType>(type)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue(name as keyof FormValues, e.target.value)
@@ -78,11 +79,15 @@ export const Input = ({
   }
 
   const togglePasswordVisibility = () => {
-    setInputType(inputType === 'password' ? 'text' : 'password')
+    setInputType(
+      inputType === InputType.PASSWORD ? InputType.TEXT : InputType.PASSWORD
+    )
   }
 
   return (
-    <div className="group relative">
+    <div
+      className={`group relative ${inputType === InputType.FILE ? 'hidden' : ''}`}
+    >
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
         {children}
       </div>
@@ -101,7 +106,9 @@ export const Input = ({
           type="button"
           onClick={togglePasswordVisibility}
           className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none"
-          aria-label={`${inputType === 'password' ? 'Show' : 'Hide'} password`}
+          aria-label={`${
+            inputType === InputType.PASSWORD ? 'Show' : 'Hide'
+          } password`}
         >
           <svg
             className="h-5 w-5"
