@@ -28,7 +28,6 @@
     "@pheralb/toast": "^1.0.0",
     "@supabase/supabase-js": "^2.50.0",
     "@tailwindcss/vite": "^4.1.10",
-    "@vercel/speed-insights": "^1.2.0",
     "@vidstack/react": "^1.12.13",
     "astro": "5.13.5",
     "astro-font": "^1.1.0",
