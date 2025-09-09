@@ -110,6 +110,13 @@ export interface AnimeSong {
   theme_id: number | null
   version_id: number | null
 }
+export interface ImagePayload {
+  image: string | null
+  type: string | null
+  filename: string | null
+  isBanner: boolean
+  prompt?: string
+}
 export interface RecommendationContext {
   type:
     | 'general'
@@ -177,9 +184,15 @@ export enum MusicFilters {
   anime_year = 'anime_year',
   anime_status = 'anime_status',
   artist_filter = 'artist_filter',
-  unique_per_anime = 'unique_per_anime'
+  unique_per_anime = 'unique_per_anime',
 }
 
+export enum InputType {
+  TEXT = 'text',
+  EMAIL = 'email',
+  PASSWORD = 'password',
+  FILE = 'file',
+}
 export enum SearchType {
   ANIMES = 'animes',
   MUSIC = 'music',
@@ -488,8 +501,26 @@ export interface SearchHistory {
   totalResults: number
 }
 export interface UserInfo {
+  id: string | null
   name: string | null
   avatar: string | null
+  banner_image: string | null
+}
+export interface BannerImage{
+    title: string,
+    banner_image :string,
+    mal_id : number
+}
+export interface DataImage {
+  type: string
+  url?: string
+}
+export interface CharacterImages {
+  character_id: number
+  character_name: string
+  character_image_url: string
+  character_small_image_url: string
+  anime_title: string
 }
 
 export enum AnimeTypes {
