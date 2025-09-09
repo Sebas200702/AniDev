@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client'
 import { DinamicBanner } from '@components/anime-info/dinamic-banner'
+import { PlayIcon } from '@components/icons/play-icon'
 import { Overlay } from '@components/layout/overlay'
 import { useFetch } from '@hooks/useFetch'
 import { useMusicPlayerStore } from '@store/music-player-store'
@@ -7,7 +8,6 @@ import { getLatestSongs } from '@utils/music'
 import { shuffleArray } from '@utils/shuffle-array'
 import { useEffect, useState } from 'react'
 import { type AnimeSongWithImage } from 'types'
-import { PlayIcon } from '@components/icons/play-icon'
 
 export const MusicBanner = () => {
   const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
@@ -31,7 +31,7 @@ export const MusicBanner = () => {
     return (
       <>
         <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 z-10 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
-        <div className="bg-Primary-900 absolute flex aspect-[1080/600] h-[40vh] w-full animate-pulse flex-col items-center justify-center gap-6 overflow-hidden text-left duration-300 md:h-[60vh] md:px-20"></div>
+        <div className="bg-Primary-900 absolute flex aspect-[1080/600] h-[40dvh] w-full animate-pulse flex-col items-center justify-center gap-6 overflow-hidden text-left duration-300 md:h-[60dvh] md:px-20"></div>
       </>
     )
 
@@ -46,12 +46,15 @@ export const MusicBanner = () => {
     <>
       <DinamicBanner banners={banners} />
       <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
-      <header className="absolute z-20 flex aspect-[1080/600] h-[40vh] w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20">
+      <header className="absolute z-20 flex aspect-[1080/600] h-[45vh] p-4 w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20">
         <h1 className="title">Openings that are playing now</h1>
 
         <ul className="flex gap-4">
-          <button className="button-primary px-4 flex gap-2" onClick={handleClick}>
-          <PlayIcon className='w-4 h-4'/>
+          <button
+            className="button-primary px-4 flex gap-2"
+            onClick={handleClick}
+          >
+            <PlayIcon className="w-4 h-4" />
             Play Now
           </button>
         </ul>
