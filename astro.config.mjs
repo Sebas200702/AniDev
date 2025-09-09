@@ -11,7 +11,6 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [react(), sitemap(), auth()],
   compressHTML: true,
-  compressStaticAssets: true,
   compressPublicAssets: true,
   prefetch: {
     prefetchAll: true,
