@@ -9,7 +9,7 @@ import { useGlobalUserPreferences } from '@store/global-user'
 import { useUpdateProfile } from '@store/update-profile'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
-import { useEffect } from 'react'
+
 import type { DataImage } from 'types'
 import { AnimeBannerColection } from './anime-banner-colection'
 import { CharacterImagesColection } from './character-images-colection'
@@ -17,11 +17,11 @@ import { EditProfile } from './edit-profile'
 import { ImageEditor } from './image-editor'
 
 export const ChangeImages = ({ type, url }: DataImage) => {
-  const { openModal, onClose } = useModal()
+  const { openModal } = useModal()
   const { userInfo } = useGlobalUserPreferences()
   const malIds = [
-    33206, 21, 47917, 813, 16498, 52299, 38691, 40748, 30484, 30831, 54492,
-    44074, 49596, 57334, 58390, 35849, 53446, 15583,
+    33206, 21, 47917, 813, 16498, 52299, 38691, 40748,40591, 30484, 30831, 54492,
+    44074, 49596, 57334, 58390, 35849, 53446, 15583,32182, 2001
   ]
   const { setAvatar, setBannerImage, setAvatarType, setBannerType } =
     useUpdateProfile()
@@ -54,16 +54,16 @@ export const ChangeImages = ({ type, url }: DataImage) => {
     openModal(EditProfile)
   }
   const handleCancelClick = () => {
-    setAvatar(userInfo?.avatar ?? '')
-    setBannerImage(userInfo?.banner_image ?? '')
+    if(isAvatar){
+
+        setAvatar(userInfo?.avatar ?? '')
+    }else{
+
+        setBannerImage(userInfo?.banner_image ?? '')
+    }
     openModal(EditProfile)
   }
-  useEffect(() => {
-    onClose(() => {
-      setAvatar(userInfo?.avatar ?? '')
-      setBannerImage(userInfo?.banner_image ?? '')
-    })
-  }, [])
+
   return (
     <ModalDefaultContainer>
       <section className="xl:w-[35vw] md:w-[60vw] h-[80vh] overflow-y-scroll no-scrollbar ">
@@ -74,7 +74,7 @@ export const ChangeImages = ({ type, url }: DataImage) => {
           <div
             {...dragDropProps}
             ref={dropTargetRef}
-            className={`${isAvatar ? 'md:max-h-32 md:max-w-32 max-w-24 max-h-24  w-full h-full relative rounded-full aspect-square' : 'absolute top-0 w-full  aspect-[1080/300]'}  object-cover object-center overflow-hidden   `}
+            className={`${isAvatar ? 'md:max-h-32 md:max-w-32 max-w-24 max-h-24  w-full h-full relative rounded-full aspect-square' : 'absolute top-0 w-full rounded  aspect-[1080/300]'}  object-cover object-center overflow-hidden   `}
           >
             {isDragging && (
               <div className="bg-enfasisColor absolute inset-0 z-10 flex items-center justify-center opacity-80">
@@ -127,7 +127,6 @@ export const ChangeImages = ({ type, url }: DataImage) => {
                 className="button-primary w-full  disabled:opacity-30 disabled:pointer-events-none"
                 title={`Save your ${type}`}
                 onClick={handleDoneClick}
-
               >
                 Done
               </button>
