@@ -83,9 +83,9 @@ export const AnimeBannerColection = ({ id }: Props) => {
   if (!data || loading)
     return (
       <div className="py-4 flex flex-col gap-3">
-        <div className="w-1/3 rounded-md  bg-Primary-700 h-[30px] animate-pulse duration-300 transition-all"></div>
+        <div className="w-1/3 rounded-md  bg-Primary-700 h-[30px] animate-pulse md:mx-8 duration-300 transition-all"></div>
         <div className="flex flex-row w-full overflow-x-scroll gap-4 md:px-8  no-scrollbar ">
-          <div className="md:aspect-[1080/300] aspect-[1080/500] w-full  bg-zinc-700  animate-pulse duration-300" />
+          <div className="md:aspect-[1080/300] aspect-[1080/500] w-full rounded  bg-zinc-700  animate-pulse duration-300" />
         </div>
       </div>
     )
