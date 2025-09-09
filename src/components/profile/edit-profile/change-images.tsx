@@ -21,7 +21,7 @@ export const ChangeImages = ({ type, url }: DataImage) => {
   const { userInfo } = useGlobalUserPreferences()
   const malIds = [
     33206, 21, 47917, 813, 16498, 52299, 38691, 40748,40591, 30484, 30831, 54492,
-    44074, 49596, 57334, 58390, 35849, 53446, 15583,32182, 2001
+    44074, 49596, 57334,34572, 58390, 35849, 53446, 15583,32182, 2001
   ]
   const { setAvatar, setBannerImage, setAvatarType, setBannerType } =
     useUpdateProfile()
