@@ -63,7 +63,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   return (
     <article
       key={anime.mal_id}
-      className={`group relative transition-all duration-300 ease-in-out md:hover:translate-x-1`}
+      className={`group relative anime-detail-card transition-all duration-300 ease-in-out md:hover:translate-x-1`}
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
