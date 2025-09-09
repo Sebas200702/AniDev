@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { AnimeSong } from 'types'
 import { AnimeMusicItem } from '../music/anime-music-item'
-import { baseUrl } from '@utils/base-url'
 
 /**
  * AnimeMusic component displays a list of music tracks associated with an anime.
@@ -124,9 +123,9 @@ export const AnimeMusic = ({
             <AnimeMusicItem
               key={song.song_id}
               song={song}
-              image={image ?? `${baseUrl}/placeholder.webp`}
+              image={image}
               placeholder={placeholder}
-              banner_image={banner_image ?? image ?? `${baseUrl}/placeholder.webp`}
+              banner_image={banner_image}
               anime_title={anime_title}
             />
           ))}
