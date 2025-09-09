@@ -212,20 +212,12 @@ export const Step2 = ({ isSignUp }: Props) => {
   )
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col gap-4">
-      <div className="w-full">
-        <div className=" rounded-lg p-6">
-          <h3 className="text-Primary-50 mb-6 text-xl font-semibold">
-            Personal Information
-          </h3>
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col items-center gap-4 mb-6">
-              {avatarField && renderField(avatarField)}
-            </div>
-            <div className="grid grid-cols-1 gap-4 ">
-              {otherFields.map(renderField)}
-            </div>
-          </div>
+    <form onSubmit={onSubmit} className="flex w-full flex-col h-full p-4">
+      <div className="grid grid-cols-1 gap-4">
+        {avatarField && renderField(avatarField)}
+
+        <div className="grid grid-cols-1 gap-4 ">
+          {otherFields.map(renderField)}
         </div>
       </div>
 
