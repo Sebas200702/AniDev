@@ -63,7 +63,7 @@ export const Aside = ({
       />
 
       <Overlay
-        className={`z-10 h-full w-full bg-gradient-to-b via-black/50 via-20% to-black/90`}
+        className={`z-10 h-full w-full bg-gradient-to-b via-black/60 via-20% to-black/90`}
       />
       <img
         src={createImageUrlProxy(`${baseUrl}/${bgImage}`, '0', '70', 'webp')}
