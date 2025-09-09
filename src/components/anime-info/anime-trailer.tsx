@@ -20,7 +20,6 @@ import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 interface Props {
   trailer_url: string
   banner_image: string
-  image_large_webp: string
   title: string
 }
 
@@ -55,12 +54,7 @@ interface Props {
  *   title="My Anime Title"
  * />
  */
-export const AnimeTrailer = ({
-  trailer_url,
-  banner_image,
-  image_large_webp,
-  title,
-}: Props) => {
+export const AnimeTrailer = ({ trailer_url, banner_image, title }: Props) => {
   return (
     <>
       {trailer_url ? (
@@ -81,20 +75,11 @@ export const AnimeTrailer = ({
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
           <Picture
-            image={createImageUrlProxy(
-              banner_image ?? image_large_webp ?? `${baseUrl}/placeholder.webp`,
-              '1920',
-              '70',
-              'webp'
-            )}
-            styles="aspect-video h-full relative w-full rounded-sm"
+            image={createImageUrlProxy(banner_image, '100', '0', 'webp')}
+            styles="aspect-video h-full relative w-full rounded-sm overflow-hidden"
           >
             <img
-              src={
-                banner_image ??
-                image_large_webp ??
-                `${baseUrl}/placeholder.webp`
-              }
+              src={createImageUrlProxy(banner_image, '1920', '70', 'webp')}
               alt={title}
               className="aspect-video h-full w-full rounded-sm object-cover object-center transition-all ease-in-out"
               loading="lazy"
