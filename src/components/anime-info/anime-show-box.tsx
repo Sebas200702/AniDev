@@ -79,7 +79,6 @@ export const AnimeShowBox = ({
           <AnimeTrailer
             trailer_url={trailer_url}
             banner_image={banner_image}
-            image_large_webp={image_large_webp}
             title={title}
           />
         )
