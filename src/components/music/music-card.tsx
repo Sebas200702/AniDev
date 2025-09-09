@@ -7,10 +7,10 @@ import { Picture } from '@components/media/picture'
 import { PauseIcon } from '@icons/pause-icon'
 import { PlayIcon } from '@icons/play-icon'
 import { useMusicPlayerStore } from '@store/music-player-store'
+import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeSongWithImage } from 'types'
-import { baseUrl } from '@utils/base-url'
 
 export const MusicCard = ({
   song,
@@ -47,11 +47,21 @@ export const MusicCard = ({
       >
         <div className="relative shrink-0 w-14 h-14 md:w-16 md:h-16 overflow-hidden rounded-md shadow-md">
           <Picture
-            image={createImageUrlProxy(song.placeholder ??`${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+            image={createImageUrlProxy(
+              song.placeholder ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '0',
+              'webp'
+            )}
             styles="relative w-full h-full"
           >
             <img
-              src={createImageUrlProxy(song.image ??`${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+              src={createImageUrlProxy(
+                song.image ?? `${baseUrl}/placeholder.webp`,
+                '0',
+                '70',
+                'webp'
+              )}
               alt={song.song_title}
               className="h-full w-full rounded-md object-cover relative transition-transform duration-300 group-hover:scale-[1.01]"
             />
@@ -114,11 +124,21 @@ export const MusicCard = ({
     >
       <div className={`relative overflow-hidden mb-4`}>
         <Picture
-          image={createImageUrlProxy(song.placeholder ?? `${baseUrl}/placeholder.webp`, '0', '0', 'webp')}
+          image={createImageUrlProxy(
+            song.placeholder ?? `${baseUrl}/placeholder.webp`,
+            '0',
+            '0',
+            'webp'
+          )}
           styles={`relative aspect-square rounded-md shadow-lg overflow-hidden h-full relative`}
         >
           <img
-            src={createImageUrlProxy(song.image ?? `${baseUrl}/placeholder.webp`, '0', '70', 'webp')}
+            src={createImageUrlProxy(
+              song.image ?? `${baseUrl}/placeholder.webp`,
+              '0',
+              '70',
+              'webp'
+            )}
             alt={song.song_title}
             className={`relative aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102`}
           />
