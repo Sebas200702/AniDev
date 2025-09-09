@@ -52,7 +52,7 @@ export const useAutoCloseModal = (
   closeModal: () => void,
   options: UseAutoCloseModalOptions = {}
 ) => {
-  const { enableLogs = false } = options
+  const { enableLogs = false , debounceMs} = options
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -60,31 +60,22 @@ export const useAutoCloseModal = (
     const handleLinkClick = (event: Event) => {
       try {
         const target = event.target as HTMLElement
-        const link = target.closest('a') || target.closest('anime-music-item')
+        const link = target.closest('a') || target.closest('.anime-music-item') || target.closest('.anime-detail-card')
 
         if (
           link &&
           ((link.tagName === 'A' && link.href) ||
-            link.classList?.contains('anime-music-item')) &&
-          !link.hasAttribute('data-astro-reload') &&
-          !link.hasAttribute('target')
+            link.classList?.contains('anime-music-item') || link.classList?.contains('anime-detail-card'))
         ) {
-          const linkUrl = new URL(link.href)
-          const currentUrl = new URL(window.location.href)
-          const isSameOrigin =
-            link.tagName === 'A'
-              ? linkUrl.origin === currentUrl.origin &&
-                (linkUrl.pathname !== currentUrl.pathname ||
-                  linkUrl.search !== currentUrl.search)
-              : true
 
-          if (isSameOrigin) {
-            if (enableLogs) {
-            }
-            if (isModalOpen) {
-              closeModal()
-            }
-          }
+            setTimeout(() => {
+                if (isModalOpen) {
+                    closeModal()
+                  }
+
+            }, debounceMs);
+
+
         }
       } catch (error) {
         if (enableLogs) {
