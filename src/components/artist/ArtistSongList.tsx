@@ -7,10 +7,10 @@ interface Props {
 }
 export const ArtistSongList = ({ songs }: Props) => {
   return (
-    <InfoSection title="Songs" ulClassName='w-full'>
-        {songs.map((song) => (
-          <MusicCard key={song.song_id} song={song} isMini />
-        ))}
+    <InfoSection title="Songs" ulClassName="w-full">
+      {songs.map((song) => (
+        <MusicCard key={song.song_id} song={song} isMini />
+      ))}
     </InfoSection>
   )
 }
