@@ -16,37 +16,11 @@ const description =
   <section
     class="p-y mx-auto mt-16 flex w-full flex-col gap-24 px-4 text-white md:gap-16 md:px-20"
   >
-    <Picture
-      styles="w-full h-100 object-cover object-center  absolute top-0 left-0"
-      image={createImageUrlProxy(
-        'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-        '100',
-        '0',
-        'webp'
-      )}
-    >
-      <img
-        class="absolute inset-0 h-full w-full object-cover object-center"
-        src={createImageUrlProxy(
-          'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-          '1080',
-          '60',
-          'webp'
-        )}
-        alt=""
-        loading="lazy"
-      />
-      <Overlay
-        className="to-Primary-950 absolute inset-0 h-full w-full bg-gradient-to-b"
-      />
-      <Overlay
-        className="md:to-Primary-950 absolute top-0 left-0 h-full w-1/4 bg-gradient-to-l"
-      />
-    </Picture>
+   
     <UserInfo client:load />
 
     <div class="relative">
-      <UserList client:only />
+      <UserList client:load />
     </div>
   </section>
 </Layout>

@@ -1,0 +1,159 @@
+import { EditIcon } from '@components/icons/edit-icon'
+import { Overlay } from '@components/layout/overlay'
+import { Picture } from '@components/media/picture'
+import { ModalDefaultContainer } from '@components/modal/modal-default-container'
+import { useDragAndDrop } from '@hooks/useDragAndDrop'
+import { useModal } from '@hooks/useModal'
+import { useProfileImage } from '@hooks/useProfileImage'
+import { useGlobalUserPreferences } from '@store/global-user'
+import { useUpdateProfile } from '@store/update-profile'
+import { baseUrl } from '@utils/base-url'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { useEffect } from 'react'
+import type { DataImage } from 'types'
+import { AnimeBannerColection } from './anime-banner-colection'
+import { CharacterImagesColection } from './character-images-colection'
+import { EditProfile } from './edit-profile'
+import { ImageEditor } from './image-editor'
+
+export const ChangeImages = ({ type, url }: DataImage) => {
+  const { openModal, onClose } = useModal()
+  const { userInfo } = useGlobalUserPreferences()
+  const malIds = [
+    33206, 21, 47917, 813, 16498, 52299, 38691, 40748, 30484, 30831, 54492,
+    44074, 49596, 57334, 58390, 35849, 53446, 15583,
+  ]
+  const { setAvatar, setBannerImage, setAvatarType, setBannerType } =
+    useUpdateProfile()
+  const isAvatar = type === 'avatar'
+  const imgWidth = isAvatar ? '240' : '720'
+  const { imgSrc } = useProfileImage({
+    type: isAvatar ? 'avatar' : 'banner',
+    baseUrl: url ?? '',
+    width: imgWidth,
+    quality: '75',
+    format: 'webp',
+  })
+  const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
+    onDrop: (file) => {
+      if (!file) return
+      const blobUrl = URL.createObjectURL(file)
+      if (isAvatar) {
+        setAvatar(blobUrl)
+        setAvatarType(file.type)
+      } else {
+        setBannerType(file.type)
+        setBannerImage(blobUrl)
+      }
+    },
+  })
+  const handleCropClick = () => {
+    openModal(ImageEditor, { type })
+  }
+  const handleDoneClick = () => {
+    openModal(EditProfile)
+  }
+  const handleCancelClick = () => {
+    setAvatar(userInfo?.avatar ?? '')
+    setBannerImage(userInfo?.banner_image ?? '')
+    openModal(EditProfile)
+  }
+  useEffect(() => {
+    onClose(() => {
+      setAvatar(userInfo?.avatar ?? '')
+      setBannerImage(userInfo?.banner_image ?? '')
+    })
+  }, [])
+  return (
+    <ModalDefaultContainer>
+      <section className="xl:w-[35vw] md:w-[60vw] h-[80vh] overflow-y-scroll no-scrollbar ">
+        <header
+          className={` flex ${type === 'avatar' ? 'md:flex-row md:p-4 flex-col' : 'flex-col'} sticky py-4 z-30 md:top-0  left-0 right-0 gap-8 items-center   `}
+        >
+          <Overlay className="bg-Complementary h-full w-full" />
+          <div
+            {...dragDropProps}
+            ref={dropTargetRef}
+            className={`${isAvatar ? 'md:max-h-32 md:max-w-32 max-w-24 max-h-24  w-full h-full relative rounded-full aspect-square' : 'absolute top-0 w-full  aspect-[1080/300]'}  object-cover object-center overflow-hidden   `}
+          >
+            {isDragging && (
+              <div className="bg-enfasisColor absolute inset-0 z-10 flex items-center justify-center opacity-80">
+                <span className="px-4 text-center text-lg font-medium text-white">
+                  Drop your image here
+                </span>
+              </div>
+            )}
+
+            <Picture
+              image={
+                imgSrc ||
+                createImageUrlProxy(
+                  url ?? `${baseUrl}/placeholder.webp`,
+                  '0',
+                  '0',
+                  'webp'
+                )
+              }
+            >
+              <img
+                src={
+                  imgSrc ||
+                  createImageUrlProxy(
+                    url ?? `${baseUrl}/placeholder.webp`,
+                    '0',
+                    '75',
+                    'webp'
+                  )
+                }
+                alt={type}
+                className={`${isAvatar ? 'aspect-square' : 'w-full  aspect-[1080/300]'} relative w-full h-full object-center object-cover  `}
+                loading="lazy"
+              />
+            </Picture>
+          </div>
+          <div
+            className={`z-10 flex flex-col md:gap-6 gap-3 w-full ${type === 'avatar' ? '' : 'mt-44'}`}
+          >
+            <h2 className="capitalize text-lx md:text-left text-center">
+              Select Your {type}
+            </h2>
+            <p className="text-m text-Primary-300 md:text-left text-center">
+              {type === 'avatar'
+                ? 'Select your profile image, you can change it when ever you want'
+                : 'Select your profile banner , you can change it when ever you want'}
+            </p>
+            <div className="flex flex-row gap-2 text-s w-full">
+              <button
+                className="button-primary w-full  disabled:opacity-30 disabled:pointer-events-none"
+                title={`Save your ${type}`}
+                onClick={handleDoneClick}
+
+              >
+                Done
+              </button>
+              <button
+                className="button-secondary w-full max-w-24"
+                title={`Cancel updating ${type} image`}
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </button>
+              <button
+                className="button-secondary  "
+                title={`Crop ${type} image `}
+                onClick={handleCropClick}
+              >
+                <EditIcon className="h-5 w-5 " />
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {type === 'avatar' &&
+          malIds.map((id) => <CharacterImagesColection key={id} id={id} />)}
+        {type !== 'avatar' &&
+          malIds.map((id) => <AnimeBannerColection key={id} id={id} />)}
+      </section>
+    </ModalDefaultContainer>
+  )
+}

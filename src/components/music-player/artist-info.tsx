@@ -20,7 +20,7 @@ export const ArtistInfoComponent = () => {
   if (loading || !artist) {
     return <ArtistInfoLoader />
   }
-  console.log(artist)
+
   return (
     <>
       <a
@@ -39,7 +39,7 @@ export const ArtistInfoComponent = () => {
               '0',
               'webp'
             )}
-            styles=" relative overflow-hidden object-cover object-center  w-full h-full"
+            styles=" relative overflow-hidden object-cover object-center  w-full h-full overflow-hidden"
           >
             <img
               src={createImageUrlProxy(

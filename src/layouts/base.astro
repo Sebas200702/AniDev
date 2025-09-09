@@ -117,7 +117,7 @@ if (artistName) {
       http-equiv="Content-Security-Policy"
       content="
     default-src 'self';
-    connect-src 'self' data: https://a.animethemes.moe https://v.animethemes.moe  https://i.ytimg.com;
+    connect-src 'self' data: blob: https://a.animethemes.moe https://v.animethemes.moe  https://i.ytimg.com;
     script-src
       'self'
       'unsafe-inline'
@@ -131,8 +131,8 @@ if (artistName) {
     img-src
       'self'
       data:
+      blob:
       https://i.ytimg.com
-      https://cdn.myanimelist.net
       https://coffee-advanced-tern-335.mypinata.cloud
       https://pub-92474f7785774e91a790e086dfa6b2ef.r2.dev
       https://lh3.googleusercontent.com/

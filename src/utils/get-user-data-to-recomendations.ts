@@ -28,26 +28,14 @@ const userPlaceholder = {
 }
 
 export const getUserDataToRecomendations = async (
-  userName: string | null,
+  userId: string | null | undefined,
   isAuth: boolean
 ) => {
-  if (!isAuth && !userName) {
+  if (!isAuth && !userId) {
     return {
       userProfile: userPlaceholder,
       calculatedAge: 25,
       error: null,
-    }
-  }
-  const { data: userId, error: userIdError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', userName)
-
-  if (userIdError) {
-    return {
-      userProfile: null,
-      calculatedAge: null,
-      error: userIdError.message,
     }
   }
 
@@ -56,7 +44,7 @@ export const getUserDataToRecomendations = async (
     .select(
       'search_history(search_history), favorite_animes, favorite_genres, favorite_studios, frequency_of_watch, fanatic_level, gender, last_name, name, preferred_format, birthday, watched_animes'
     )
-    .eq('user_id', userId?.[0]?.id)
+    .eq('user_id', userId)
 
   if (userProfileError) {
     return {

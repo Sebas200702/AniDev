@@ -9,8 +9,8 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const userName = userInfo?.name
-  if (!userName) {
+
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
@@ -18,23 +18,11 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
 
   const searchHistory = await request.json()
 
-  const { data: userId, error: userIdError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', userName)
-
-  if (userIdError) {
-    console.error(userIdError)
-    return new Response(JSON.stringify({ error: userIdError.message }), {
-      status: 500,
-    })
-  }
-
   const formattedHistory = Array.isArray(searchHistory) ? searchHistory : []
   const { error } = await supabase.from('search_history').upsert(
     {
       search_history: JSON.stringify(formattedHistory),
-      user_id: userId[0].id,
+      user_id: userInfo.id,
     },
     {
       onConflict: 'user_id',
@@ -59,29 +47,17 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const userName = userInfo?.name
-  if (!userName) {
+
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
-    })
-  }
-
-  const { data: userId, error: userIdError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', userName)
-
-  if (userIdError) {
-    console.error(userIdError)
-    return new Response(JSON.stringify({ error: userIdError.message }), {
-      status: 500,
     })
   }
 
   const { data, error } = await supabase
     .from('search_history')
     .select('search_history')
-    .eq('user_id', userId[0]?.id)
+    .eq('user_id', userInfo.id)
 
   if (!data || data.length === 0) {
     return new Response(JSON.stringify({ error: 'No search history found' }), {
@@ -111,29 +87,17 @@ export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const userName = userInfo?.name
-  if (!userName) {
+
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
-    })
-  }
-
-  const { data: userId, error: userIdError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', userName)
-
-  if (userIdError) {
-    console.error(userIdError)
-    return new Response(JSON.stringify({ error: userIdError.message }), {
-      status: 500,
     })
   }
 
   const { error: deleteError } = await supabase
     .from('search_history')
     .delete()
-    .eq('user_id', userId[0]?.id)
+    .eq('user_id', userInfo.id)
 
   if (deleteError) {
     console.error(deleteError)

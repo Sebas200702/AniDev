@@ -81,13 +81,6 @@ export const getFilters = (
           f === MusicFilters.unique_per_anime
       )
 
-      console.log('Debug getFilters:', {
-        filters: filters,
-        hasMusicFilters,
-        MusicFilters_order_by: MusicFilters.order_by,
-        Filters_order_by: Filters.order_by,
-      })
-
       if (hasMusicFilters) {
         result.sort_column = 'song_id'
       } else {

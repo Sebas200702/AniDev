@@ -45,12 +45,12 @@ export const GET: APIRoute = async ({ request, cookies, url }) => {
       accessToken: cookies.get('sb-access-token')?.value,
       refreshToken: cookies.get('sb-refresh-token')?.value,
     })
-    const userName = userInfo?.name ?? ''
+
     const { userProfile, calculatedAge, error } =
-      await getUserDataToRecomendations(userName, !!userName)
+      await getUserDataToRecomendations(userInfo?.id, !!userInfo?.id)
     if (error || !userProfile || !calculatedAge)
       return new Response(JSON.stringify({ error }), { status: 500 })
-    const cacheKey = `recommendations-${userName}:${url.searchParams.toString()}`
+    const cacheKey = `recommendations-${userInfo?.id}:${url.searchParams.toString()}`
     const cached = await safeRedisOperation((c) => c.get(cacheKey))
     if (cached)
       return new Response(cached, {

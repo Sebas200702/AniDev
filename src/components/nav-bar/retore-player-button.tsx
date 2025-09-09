@@ -34,7 +34,7 @@ export const RestorePlayerButton = () => {
                 '0',
                 'webp'
               )}
-              styles="relative"
+              styles="relative overflow-hidden"
             >
               <img
                 src={createImageUrlProxy(currentSong.image, '0', '70', 'webp')}

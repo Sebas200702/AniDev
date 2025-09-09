@@ -11,11 +11,11 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
 
-import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
-import { Cover } from '@components/music-player/cover'
-import { Header } from '@components/music-player/header'
 import { CustomControls } from '@components/music-player/controls'
+import { Cover } from '@components/music-player/cover'
 import { CustomLayout } from '@components/music-player/custom-layout'
+import { Header } from '@components/music-player/header'
+import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 
 export const MusicPlayer = () => {
   const {

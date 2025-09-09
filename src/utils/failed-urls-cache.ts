@@ -47,7 +47,7 @@ export const addFailedUrl = async (url: string): Promise<void> => {
     if (!normalizedKey) return // Skip empty keys
 
     await safeRedisOperation(async (redis) => {
-      await redis.sadd(FAILED_URLS_KEY, normalizedKey)
+      await redis.add(FAILED_URLS_KEY, normalizedKey)
       await redis.expire(FAILED_URLS_KEY, CACHE_TTL)
     })
   } catch (error) {

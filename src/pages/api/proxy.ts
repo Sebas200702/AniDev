@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import path from 'path'
 import { safeRedisOperation } from '@libs/redis'
 import { redisConnection } from '@middlewares/redis-connection'
@@ -74,6 +75,18 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     throw new Error('Missing image URL')
   }
 
+  // blob: URLs are browser-local and cannot be fetched by the server.
+  // Clients should POST the Blob to this endpoint instead (see POST handler below).
+  if (imageUrl.startsWith('blob:')) {
+    return new Response(
+      JSON.stringify({
+        error:
+          'blob: URLs are not fetchable on the server. Use POST /api/proxy with the Blob as the request body.',
+      }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    )
+  }
+
   try {
     const cacheKey = `img:${Buffer.from(imageUrl).toString('base64')}:${width}:${quality}:${format}`
 
@@ -132,6 +145,82 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     })
   } catch (error) {
     console.error('Error processing image:', error)
+    const buffer = await getPlaceholderBuffer()
+    return new Response(new Uint8Array(buffer), {
+      status: 200,
+      headers: {
+        'Content-Type': 'image/webp',
+        'Content-Length': buffer.length.toString(),
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
+  }
+})
+
+export const POST: APIRoute = redisConnection(async ({ request, url }) => {
+  try {
+    const width = parseInt(url.searchParams.get('w') ?? '0', 10)
+    const quality = Math.min(
+      Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1),
+      100
+    )
+    const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
+    const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
+
+    const arrayBuffer = await request.arrayBuffer()
+    if (!arrayBuffer || arrayBuffer.byteLength === 0) {
+      return new Response(JSON.stringify({ error: 'Empty image body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    const buffer = Buffer.from(arrayBuffer)
+    const hash = crypto.createHash('sha256').update(buffer).digest('hex')
+    const cacheKey = `img:body:${hash}:${width}:${quality}:${format}`
+
+    const cachedData = await safeRedisOperation((client) =>
+      client.get(cacheKey)
+    )
+    if (cachedData) {
+      const imageBuffer = Buffer.from(cachedData, 'base64')
+      return new Response(imageBuffer, {
+        status: 200,
+        headers: {
+          'Content-Type': mimeType,
+          'Content-Length': imageBuffer.length.toString(),
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          ETag: `"${cacheKey}"`,
+        },
+      })
+    }
+
+    let image = sharp(buffer)
+    if (width > 0) {
+      image = image.resize({ width })
+    }
+    image =
+      format === 'avif' ? image.avif({ quality }) : image.webp({ quality })
+
+    const optimizedBuffer = await image.toBuffer()
+    if (!optimizedBuffer) {
+      throw new Error('Image optimization failed')
+    }
+
+    await safeRedisOperation((client) =>
+      client.set(cacheKey, optimizedBuffer.toString('base64'), { EX: 31536000 })
+    )
+
+    return new Response(new Uint8Array(optimizedBuffer), {
+      headers: {
+        'Content-Type': mimeType,
+        'Content-Length': optimizedBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=31536000, immutable',
+        ETag: `"${cacheKey}"`,
+      },
+    })
+  } catch (error) {
+    console.error('Error processing image (POST):', error)
     const buffer = await getPlaceholderBuffer()
     return new Response(new Uint8Array(buffer), {
       status: 200,

@@ -115,7 +115,6 @@ export const GET: APIRoute = rateLimit(
 
       const { data, error } = await supabase.rpc(formatFunction, filters)
 
-
       if (!data || data.length === 0) {
         return new Response(
           JSON.stringify({ error: 'No se encontraron animes.' }),

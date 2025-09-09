@@ -110,7 +110,6 @@ class RedisConnectionPool {
       const toRemove = connectionsToRemove.slice(0, canRemove)
 
       toRemove.forEach((client) => {
-        console.log('Redis Pool: Removing idle connection')
         this.removeClientFromPool(client)
       })
     }
@@ -220,9 +219,6 @@ class RedisConnectionPool {
   async initialize(): Promise<void> {
     try {
       await this.initializeMinConnections()
-      console.log(
-        `Redis Pool: Initialized with ${this.config.minConnections} connections`
-      )
     } catch (error) {
       console.error('Failed to initialize Redis pool:', error)
       throw error
@@ -236,8 +232,6 @@ class RedisConnectionPool {
       clearInterval(this.idleCleanupInterval)
       this.idleCleanupInterval = null
     }
-
-    console.log('Redis Pool: Starting graceful shutdown...')
 
     const shutdownPromises = this.pool.map(async (client) => {
       try {
@@ -255,8 +249,6 @@ class RedisConnectionPool {
     this.availableConnections = []
     this.busyConnections.clear()
     this.connectionLastUsed.clear()
-
-    console.log('Redis Pool: Shutdown complete')
   }
 
   getStats() {

@@ -24,7 +24,7 @@ export const Cover = () => {
             '0',
             'webp'
           )}
-          styles="relative  h-full aspect-video"
+          styles="relative  h-full aspect-video overflow-hidden"
         >
           <img
             src={proxyUrl}

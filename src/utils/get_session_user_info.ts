@@ -1,5 +1,6 @@
 import { supabase } from '@libs/supabase'
 import { getSession } from 'auth-astro/server'
+import type { UserInfo } from 'types'
 
 /**
  * getSessionUserInfo retrieves user information from the current session.
@@ -35,8 +36,18 @@ export const getSessionUserInfo = async ({
   request: Request | undefined
   accessToken: string | undefined
   refreshToken: string | undefined
-}): Promise<{ name: string | null; avatar: string | null } | null> => {
+}): Promise<UserInfo | null> => {
   if (!request) return null
+
+  const session = await getSession(request)
+
+  if (!session?.user) return null
+
+  const { data: metadata, error } = await supabase
+    .from('public_users')
+    .select('avatar_url , banner_image , name')
+    .eq('id', session.user.id)
+    .single()
 
   if (accessToken && refreshToken) {
     const { data, error } = await supabase.auth.setSession({
@@ -46,24 +57,20 @@ export const getSessionUserInfo = async ({
 
     if (!data?.user || error) return null
     return {
-      name: data.user.user_metadata?.user_name ?? null,
-      avatar: data.user.user_metadata?.avatar_url ?? null,
+      id: data.user.id,
+
+      name: data.user.user_metadata?.user_name,
+      avatar: data.user.user_metadata?.avatar_url,
+      banner_image: metadata?.banner_image,
     }
   }
 
-  const session = await getSession(request)
-  if (!session?.user) return null
-
-  const { data, error } = await supabase
-    .from('public_users')
-    .select('avatar_url')
-    .eq('name', session.user.name)
-    .single()
-
-  const userInfo = {
+  const userInfo: UserInfo = {
+    id: session.user.id ?? null,
     name: session.user.name ?? null,
-    avatar: error ? (session.user.image ?? null) : data?.avatar_url,
+    avatar: metadata?.avatar_url ?? session.user.image,
+    banner_image: metadata?.banner_image,
   }
 
-  return userInfo.name ? userInfo : null
+  return userInfo
 }

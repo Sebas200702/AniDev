@@ -89,7 +89,7 @@ export const CalendarItem = ({
             '0',
             'webp'
           )}
-          styles="relative overflow-hidden h-full w-full max-w-32 h-full transition-all duration-500 transform rounded-l-lg"
+          styles="relative overflow-hidden h-full w-full max-w-32 h-full transition-all duration-500 transform rounded-l-lg overflow-hidden"
         >
           <img
             src={createImageUrlProxy(

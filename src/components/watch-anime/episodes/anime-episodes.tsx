@@ -130,7 +130,7 @@ export const AnimeEpisodes = ({
             key={episode_id}
           >
             <Picture
-              styles="relative aspect-[16/9] h-full w-full rounded-md"
+              styles="relative aspect-[16/9] h-full w-full rounded-md overflow-hidden"
               image={createImageUrlProxy(
                 image_url ?? image_webp,
                 '100',

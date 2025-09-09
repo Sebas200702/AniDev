@@ -12,6 +12,7 @@ import { useShortcuts } from '@hooks/useShortCuts'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useSearchStoreResults } from '@store/search-results-store'
+import { baseUrl } from '@utils/base-url'
 import { deleteSearchHistory } from '@utils/delete-search-history'
 import { createFiltersToApply } from '@utils/filters-to-apply'
 import { loadSearchHistory } from '@utils/load-search-history'
@@ -319,9 +320,15 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
                 <AnimeMusicItem
                   key={result.song_id}
                   song={result}
-                  image={result.image}
-                  placeholder={result.placeholder}
-                  banner_image={result.banner_image}
+                  image={result.image ?? `${baseUrl}/placeholder.webp`}
+                  placeholder={
+                    result.placeholder ?? `${baseUrl}/placeholder.webp`
+                  }
+                  banner_image={
+                    result.banner_image ??
+                    result.image ??
+                    `${baseUrl}/placeholder.webp`
+                  }
                   anime_title={result.anime_title}
                 />
               ))

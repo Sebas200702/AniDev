@@ -34,7 +34,6 @@ export const GET: APIRoute = rateLimit(
       const filters = getFilters(Object.values(MusicFilters), url, true)
       const countFilters = getFilters(CountFilters, url, false)
 
-      console.log(filters)
       const { data, error } = await supabase.rpc('get_music', filters)
 
       const { data: count, error: countError } = await supabase.rpc(

@@ -54,7 +54,7 @@ import type { APIRoute } from 'astro'
 interface ValidationResult {
   valid: boolean
   error?: string
-  id?: number
+  idResult?: number
 }
 
 const CACHE_PREFIX = 'anime_'
@@ -62,32 +62,24 @@ const CACHE_TTL = 60 * 60
 
 const pendingRequests = new Map<string, Promise<any>>()
 
-const validateSlug = (slug: string | null): ValidationResult => {
-  if (!slug) {
+const validateSlug = (id: string | null): ValidationResult => {
+  if (!id) {
     return { valid: false, error: 'Slug is required' }
   }
 
-  const lastUnderscoreIndex = slug.lastIndexOf('_')
-  if (lastUnderscoreIndex === -1) {
-    return { valid: false, error: 'Invalid slug format' }
-  }
+  const idResult = parseInt(id)
 
-  const idStr = slug.slice(lastUnderscoreIndex + 1)
-  const id = parseInt(idStr)
-
-  if (isNaN(id) || id <= 0) {
+  if (isNaN(idResult) || idResult <= 0) {
     return { valid: false, error: 'Invalid anime ID' }
   }
 
-  return { valid: true, id }
+  return { valid: true, idResult }
 }
 
-const fetchAnimeData = async (
-  slug: string,
-  id: number,
-  parentalControl = true
-) => {
-  const cacheKey = `${CACHE_PREFIX}${slug}${parentalControl ? '_pc' : ''}`
+const fetchAnimeData = async (id: number, parentalControl = true) => {
+  // Include the anime id in the cache key to avoid returning the same cached
+  // result for different ids.
+  const cacheKey = `${CACHE_PREFIX}${id}${parentalControl ? '_pc' : ''}`
 
   const cached = await safeRedisOperation(async (redis) => {
     return await redis.get(cacheKey)
@@ -153,10 +145,10 @@ const fetchAnimeData = async (
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    const slug = url.searchParams.get('slug')
+    const id = url.searchParams.get('id')
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam === 'false' ? false : true
-    const validation = validateSlug(slug)
+    const validation = validateSlug(id)
 
     if (!validation.valid) {
       return new Response(JSON.stringify({ error: validation.error }), {
@@ -165,7 +157,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       })
     }
 
-    const result = await fetchAnimeData(slug!, validation.id!, parentalControl)
+    const result = await fetchAnimeData(validation.idResult!, parentalControl)
 
     if (result.blocked) {
       return new Response(
@@ -182,7 +174,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
       )
     }
 
-    return new Response(JSON.stringify({ anime: result }), {
+    return new Response(JSON.stringify({ data: result }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

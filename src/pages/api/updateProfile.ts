@@ -59,16 +59,15 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const user = userInfo?.name
 
-  if (!user) {
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
   }
 
   const body = await request.json()
-  const avatar = body
+  const { avatar, banner_image, name } = body
 
   if (!avatar) {
     return new Response(JSON.stringify({ error: 'Avatar is required' }), {
@@ -78,8 +77,8 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
 
   const { data, error } = await supabase
     .from('public_users')
-    .update({ avatar_url: avatar })
-    .eq('name', user)
+    .update({ avatar_url: avatar, banner_image, name })
+    .eq('id', userInfo.id)
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
@@ -88,7 +87,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   }
 
   return new Response(
-    JSON.stringify({ message: 'Avatar updated successfully', data }),
+    JSON.stringify({ message: 'Profile updated successfully', data }),
     {
       status: 200,
     }

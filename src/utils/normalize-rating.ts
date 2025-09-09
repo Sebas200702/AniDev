@@ -1,4 +1,4 @@
-import { AnimeRating , NormalizedRating} from 'types'
+import { AnimeRating, NormalizedRating } from 'types'
 /**
  * Normalizes anime age ratings into a simplified format.
  *

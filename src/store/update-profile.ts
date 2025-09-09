@@ -33,16 +33,32 @@ import { create } from 'zustand'
  * setImage('https://example.com/image.jpg');
  * showEditor();
  */
-interface UploadImageStore {
-  image: string | null
-  type: string | null
-  setImage: (image: string) => void
-  setType: (type: string) => void
+interface UpdateProfile {
+  avatar: string | null
+  userName: string | null
+  avatarType: string | null
+  bannerImage: string | null
+  bannerType: string | null
+  isSubmitDisable: boolean
+  setAvatar: (image: string) => void
+  setUsername: (userName: string) => void
+  setAvatarType: (type: string) => void
+  setBannerImage: (bannerImage: string) => void
+  setBannerType: (type: string) => void
+  setIsSubmitDisabled: (isSubmitDisable: boolean) => void
 }
 
-export const useUploadImageStore = create<UploadImageStore>((set) => ({
-  image: null,
-  type: null,
-  setImage: (image) => set({ image }),
-  setType: (type) => set({ type }),
+export const useUpdateProfile = create<UpdateProfile>((set) => ({
+  avatar: null,
+  userName: null,
+  avatarType: null,
+  bannerImage: null,
+  bannerType: null,
+  isSubmitDisable: true,
+  setAvatar: (avatar) => set({ avatar }),
+  setUsername: (userName) => set({ userName }),
+  setAvatarType: (avatarType) => set({ avatarType }),
+  setBannerImage: (bannerImage) => set({ bannerImage }),
+  setBannerType: (bannerType) => set({ bannerType }),
+  setIsSubmitDisabled: (isSubmitDisable) => set({ isSubmitDisable }),
 }))

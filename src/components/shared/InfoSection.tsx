@@ -12,9 +12,7 @@ export const InfoSection = ({ title, children, ulClassName = '' }: Props) => {
       <header className="bg-enfasisColor/5 w-full items-center justify-center  transition-all delay-300 duration-300 ease-in-out  flex flex-row gap-4 px-4 py-1.5">
         <h2 className="text-center text-lg text-pretty">{title}</h2>
       </header>
-      <ul className={`p-6 space-y-4 ${ulClassName} `}>
-        {children}
-      </ul>
+      <ul className={`p-6 space-y-4 ${ulClassName} `}>{children}</ul>
     </section>
   )
 }

@@ -9,27 +9,18 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const user = userInfo?.name
-  if (!user) {
+
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
   }
   const body = await request.json()
   const { animeId, type } = body
-  const { data: userData, error: userError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', user)
-    .single()
-  if (userError) {
-    return new Response(JSON.stringify({ error: userError.message }), {
-      status: 500,
-    })
-  }
+
   const { error } = await supabase.from('watch_list').upsert({
     anime_id: animeId,
-    user_id: userData.id,
+    user_id: userInfo?.id,
     type: type,
   })
   if (error) {
@@ -51,30 +42,20 @@ export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const user = userInfo?.name
-  if (!user) {
+
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
   }
   const body = await request.json()
   const { animeId } = body
-  const { data: userData, error: userError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', user)
-    .single()
-  if (userError) {
-    return new Response(JSON.stringify({ error: userError.message }), {
-      status: 500,
-    })
-  }
 
   const { error } = await supabase
     .from('watch_list')
     .delete()
     .eq('anime_id', animeId)
-    .eq('user_id', userData.id)
+    .eq('user_id', userInfo?.id)
 
   if (error) {
     console.log(error)
@@ -96,25 +77,15 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
     accessToken: cookies.get('sb-access-token')?.value,
     refreshToken: cookies.get('sb-refresh-token')?.value,
   })
-  const user = userInfo?.name
-  if (!user) {
+
+  if (!userInfo?.id) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401,
     })
   }
-  const { data: userData, error: userError } = await supabase
-    .from('public_users')
-    .select('id')
-    .eq('name', user)
-    .single()
-  if (userError) {
-    return new Response(JSON.stringify({ error: userError.message }), {
-      status: 500,
-    })
-  }
 
   const { data, error } = await supabase.rpc('get_user_watch_list', {
-    p_user_id: userData.id,
+    p_user_id: userInfo?.id,
   })
 
   if (error) {

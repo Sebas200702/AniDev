@@ -4,6 +4,7 @@ import { MusicCard } from './music-card'
 
 interface Props {
   title: string
+  url: string
 }
 export const MusicMiniCardLayout = ({ title }: Props) => {
   const { data: latest, loading: latestLoading } = useFetch<

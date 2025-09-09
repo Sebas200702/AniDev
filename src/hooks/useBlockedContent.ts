@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
 import { ToastType } from 'types'
 
 interface UseBlockedContentProps {
-  slug: string
-  getAnimeData: (slug: string, parentalControl: boolean | null) => Promise<any>
+  id: string
+  getAnimeData: (id: string, parentalControl: boolean | null) => Promise<any>
 }
 
 interface UseBlockedContentReturn {
@@ -34,7 +34,7 @@ interface UseBlockedContentReturn {
  * @returns Objeto con el estado y funciones relacionadas con el bloqueo
  */
 export const useBlockedContent = ({
-  slug,
+  id,
   getAnimeData,
 }: UseBlockedContentProps): UseBlockedContentReturn => {
   const [animeData, setAnimeData] = useState<any | null>(null)
@@ -56,7 +56,7 @@ export const useBlockedContent = ({
     const fetchData = async () => {
       setIsLoading(true)
 
-      const response = await getAnimeData(slug, parentalControl)
+      const response = await getAnimeData(id, parentalControl)
 
       if (!response) {
         setIsLoading(false)
@@ -76,7 +76,7 @@ export const useBlockedContent = ({
     }
 
     fetchData()
-  }, [slug, parentalControl, isMounted, getAnimeData])
+  }, [id, parentalControl, isMounted, getAnimeData])
 
   useEffect(() => {
     if (isBlocked && blockedMessage) {

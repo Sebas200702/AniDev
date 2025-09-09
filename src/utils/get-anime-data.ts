@@ -47,16 +47,13 @@ export interface AnimeResult {
  *   })
  */
 export const getAnimeData = async (
-  slug: string,
+  id: string,
   parentalControl: boolean | null
 ): Promise<AnimeResult | undefined> => {
   try {
-    console.log(parentalControl)
     const response = await fetch(
-      `/api/getAnime?slug=${slug}&parentalControl=${parentalControl}`,
-
+      `/api/getAnime?id=${id}&parentalControl=${parentalControl}`
     )
-
 
     if (response.status === 404) {
       navigate('/404')
@@ -67,7 +64,7 @@ export const getAnimeData = async (
       const data = await response.json()
       return {
         blocked: data.blocked,
-        message: data.message
+        message: data.message,
       }
     }
 
@@ -77,8 +74,7 @@ export const getAnimeData = async (
     }
 
     const data = await response.json()
-    return { anime: data.anime }
-
+    return { anime: data.data }
   } catch (error) {
     console.error('Error fetching anime data:', error)
     return undefined
