@@ -22,7 +22,7 @@ import { normalizeString } from '@utils/normalize-string'
  */
 interface Props {
   /** The anime slug in format 'title_id' (e.g., 'one-piece_21') */
-  slug: string
+  id: string
 }
 
 /**
@@ -61,9 +61,9 @@ interface Props {
  * // Usage in a page
  * <AnimeInfo slug="one-piece_21" />
  */
-export const AnimeInfo = ({ slug }: Props) => {
+export const AnimeInfo = ({ id }: Props) => {
   const { animeData, isBlocked, isLoading, isMounted } = useBlockedContent({
-    slug,
+    id,
     getAnimeData,
   })
 
@@ -87,7 +87,11 @@ export const AnimeInfo = ({ slug }: Props) => {
     <InfoPageLayout
       banner={
         <AnimeBanner
-          banner_image={animeData.banner_image ?? ''}
+          banner_image={
+            animeData.banner_image ??
+            animeData.image_large_webp ??
+            `${baseUrl}/placeholder.webp`
+          }
           image_large_webp={
             animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
           }
@@ -97,9 +101,11 @@ export const AnimeInfo = ({ slug }: Props) => {
     >
       <Aside
         title={animeData.title}
-        posterImage={animeData.image_large_webp ?? ''}
-        smallImage={animeData.image_small_webp ?? ''}
-        bannerImage={animeData.banner_image ?? ''}
+        posterImage={
+          animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
+        }
+        smallImage={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
+        bannerImage={animeData.banner_image ?? `${baseUrl}/placeholder.webp`}
       >
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
         <AddToListButton
@@ -133,13 +139,17 @@ export const AnimeInfo = ({ slug }: Props) => {
         <AnimeShowBox
           animeId={animeData.mal_id}
           trailer_url={animeData.trailer_url ?? ''}
-          banner_image={animeData.banner_image}
-          image_large_webp={
-            animeData.image_large_webp
+          banner_image={
+            animeData.banner_image ??
+            animeData.image_large_webp ??
+            `${baseUrl}/placeholder.webp`
           }
-          image={animeData.image_webp}
+          image_large_webp={
+            animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
+          }
+          image={animeData.image_webp ?? `${baseUrl}/placeholder.webp`}
           image_small_webp={
-            animeData.image_small_webp
+            animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`
           }
           title={animeData.title}
           synopsis={animeData.synopsis ?? 'No synopsis available'}
