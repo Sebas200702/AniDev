@@ -40,9 +40,12 @@ export const UserList = () => {
   useEffect(() => {
     setIsLoading(true)
 
-    if (!userInfo?.name) return
-    setIsLoading(false)
-  }, [watchList])
+
+
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 700)
+  }, [])
 
   if (isLoading)
     return (
@@ -66,7 +69,7 @@ export const UserList = () => {
         </ul>
       </section>
     )
-  if (!isLoading && !userInfo?.name && !watchList)
+  if (!isLoading && !userInfo?.name)
     return (
       <section className="flex flex-col gap-4">
         <nav className="flex w-full flex-row items-center justify-between">

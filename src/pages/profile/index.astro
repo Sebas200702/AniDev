@@ -16,11 +16,11 @@ const description =
   <section
     class="p-y mx-auto mt-16 flex w-full flex-col gap-24 px-4 text-white md:gap-16 md:px-20"
   >
-   
+
     <UserInfo client:load />
 
     <div class="relative">
-      <UserList client:load />
+      <UserList client:only />
     </div>
   </section>
 </Layout>
