@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-
 import { navigate } from 'astro:transitions/client'
 import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
 import { DownloadButton } from '@components/buttons/download-button'
@@ -11,7 +10,6 @@ import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useModal } from '@hooks/useModal'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
@@ -42,7 +40,6 @@ export const AnimeMusicItem = ({
     isDragging,
   } = useSortable({ id: song.song_id })
 
-  const { closeModal } = useModal()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -93,10 +90,9 @@ export const AnimeMusicItem = ({
       ref={setNodeRef}
       style={style}
       onClick={() => {
-        closeModal()
         navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
       }}
-      className={`anime-music-item link transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
+      className={`anime-music-item  transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
     >
       <div className="flex aspect-[100/30] max-h-36 w-full flex-row overflow-hidden rounded-lg">
         <div className="absolute top-0 left-0 aspect-[100/30] max-h-36 w-full overflow-hidden rounded-lg">
