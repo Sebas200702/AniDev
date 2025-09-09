@@ -13,7 +13,7 @@ export const ParentalControl = () => {
     <label className="relative inline-flex cursor-pointer items-center">
       <input
         type="checkbox"
-        checked={parentalControl}
+        checked={parentalControl ?? true}
         onChange={handleChange}
         className="peer sr-only"
       />
