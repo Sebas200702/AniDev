@@ -1,18 +1,21 @@
 import { Picture } from '@components/media/picture'
 import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { useMemo } from 'react'
+import { baseUrl } from '@utils/base-url'
 
 export const Cover = () => {
   const { currentSong, isPlaying, type, isMinimized } = useMusicPlayerStore()
 
-  if (!currentSong) return null
+  const proxyUrl = useMemo(() => {
+    const source = currentSong?.banner_image ?? currentSong?.image
+    if (!source) return `${baseUrl}/placeholder.webp`
+    return isMinimized
+      ? createImageUrlProxy(source, '300', '75', 'webp')
+      : createImageUrlProxy(source, '1920', '75', 'webp')
+  }, [isMinimized, currentSong?.banner_image, currentSong?.image])
 
-  const proxyUrl = createImageUrlProxy(
-    currentSong.banner_image ?? currentSong.image,
-    '1920',
-    '50',
-    'webp'
-  )
+  if (!currentSong) return null
 
   if (!isMinimized && type === 'audio') {
     return (
@@ -26,11 +29,13 @@ export const Cover = () => {
           )}
           styles="relative  h-full aspect-video overflow-hidden"
         >
-          <img
-            src={proxyUrl}
-            alt={currentSong.song_title}
-            className="relative aspect-video h-full w-full object-cover"
-          />
+          {proxyUrl && (
+            <img
+              src={proxyUrl}
+              alt={currentSong.song_title}
+              className="relative aspect-video h-full w-full object-cover object-center"
+            />
+          )}
         </Picture>
       </div>
     )
@@ -41,12 +46,8 @@ export const Cover = () => {
       className={`relative ${type === 'video' ? 'hidden' : ''} ${isMinimized ? 'hidden md:flex' : ''} h-full w-full items-center justify-center p-4`}
       id="music-player-cover"
     >
-      <div className="disk flex items-center justify-center rounded-full p-6">
-        <figure
-          className={`animate-spin-slow relative h-32 w-32 overflow-hidden rounded-full border border-gray-100/20 shadow-lg transition-all duration-300 ease-in-out ${
-            isPlaying ? '' : 'animation-pause'
-          }`}
-        >
+      <div className={` ${isPlaying? '' : 'animation-pause'} disk flex items-center animate-spin-slow justify-center rounded-full p-6`}>
+
           <Picture
             image={createImageUrlProxy(
               currentSong.banner_image ?? currentSong.image,
@@ -54,15 +55,17 @@ export const Cover = () => {
               '0',
               'webp'
             )}
-            styles="relative"
+            styles="relative max-h-32 max-w-32 rounded-full object-cover object-center aspect-square"
           >
-            <img
-              src={proxyUrl}
-              alt={currentSong.song_title}
-              className="relative h-full w-full rounded-full object-cover"
-            />
+            {proxyUrl && (
+              <img
+                src={proxyUrl}
+                alt={currentSong.song_title}
+                className="relative h-full w-full rounded-full object-cover object-center"
+              />
+            )}
           </Picture>
-        </figure>
+
       </div>
     </div>
   )
