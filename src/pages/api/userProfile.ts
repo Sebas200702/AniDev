@@ -40,16 +40,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
       formData.getAll('favorite_genres')
     ).filter(Boolean)
 
-    const { data: historyId, error: errorHistoryId } = await supabase
-      .from('search_history')
-      .select('id')
-      .eq('user_id', userInfo.id)
 
-    if (errorHistoryId) {
-      return new Response(JSON.stringify({ error: errorHistoryId.message }), {
-        status: 500,
-      })
-    }
 
     const filterNonNullFields = (data: Record<string, any>) => {
       const filtered: Record<string, any> = {}
@@ -70,8 +61,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     }
 
     const rawProfileData = {
-      user_id: userInfo.id,
-      history_id: historyId?.[0]?.id || null,
+      id: userInfo.id,
       name: name || null,
       last_name: last_name || null,
       birthday: birthday || null,
@@ -87,12 +77,12 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
 
     const profileData = filterNonNullFields(rawProfileData)
 
-    profileData.user_id = userInfo.id
+    profileData.id = userInfo.id
 
     const { data: existingProfile } = await supabase
       .from('user_profiles')
       .select('*')
-      .eq('user_id', userInfo.id)
+      .eq('id', userInfo.id)
       .single()
 
     let result
@@ -100,12 +90,12 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
       const { data, error } = await supabase
         .from('user_profiles')
         .update(profileData)
-        .eq('user_id', userInfo.id)
+        .eq('id', userInfo.id)
         .select()
 
       result = { data, error }
     } else {
-      profileData.history_id = historyId?.[0]?.id || null
+
       const { data, error } = await supabase
         .from('user_profiles')
         .insert(profileData)
