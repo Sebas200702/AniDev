@@ -62,7 +62,9 @@ export const CharacterInfo = ({ slug }: Props) => {
         posterImage={character.character_image_url ?? ''}
         smallImage={character.character_small_image_url ?? ''}
       />
-      <Header title={`${character.character_name} - ${character.character_name_kanji}`}>
+      <Header
+        title={`${character.character_name} - ${character.character_name_kanji}`}
+      >
         {nicknames.length > 0 && (
           <p className="mt-2 text-l text-Primary-200">
             <span className="font-semibol text-Primary-50">Nicknames:</span>{' '}
