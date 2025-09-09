@@ -39,12 +39,14 @@ export const Picture = ({
 }) => {
   return (
     <figure className={`${styles} overflow-hidden`}>
-      <img
-        className="absolute inset-0 h-full w-full  object-cover object-center  blur-lg filter"
-        src={image}
-        alt="placeholder"
-        loading="lazy"
-      />
+      {image ? (
+        <img
+          className="absolute inset-0 h-full w-full  object-cover object-center  blur-lg filter"
+          src={image}
+          alt="placeholder"
+          loading="lazy"
+        />
+      ) : null}
       {children}
     </figure>
   )
