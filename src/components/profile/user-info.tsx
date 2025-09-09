@@ -20,7 +20,7 @@ export const UserInfo = ({
   const imageRef = useRef<HTMLImageElement | null>(null)
 
   return (
-    <section className={`${isSignUp ? 'relative w-full ' : ''}`}>
+    <section className={`${isSignUp ? 'relative w-full md:mb-16 mb-6' : ''}`}>
       <Picture
         styles={` ${isSignUp ? 'w-full h-30 rounded' : 'w-full h-100'} object-cover object-center  absolute top-0 left-0 overflow-hidden `}
         image={createImageUrlProxy(
@@ -48,7 +48,7 @@ export const UserInfo = ({
         className={`z-10 flex w-full flex-row items-center ${isSignUp ? 'justify-center' : 'mt-24'} gap-4 text-white md:gap-8`}
       >
         <div
-          className={`group relative flex h-full w-full aspect-square items-center justify-center rounded-full ${isSignUp ? 'max-h-24 max-w-24 mt-4' : 'max-h-26 max-w-26 md:max-h-[150px] md:max-w-[150px]'}`}
+          className={`group relative flex h-full w-full aspect-square items-center justify-center rounded-full ${isSignUp ? 'md:max-h-24 md:max-w-24 max-w-20 max-h-20 md:translate-y-1/2 mt-4 ' : 'max-h-26 max-w-26 md:max-h-[150px] md:max-w-[150px]'}`}
         >
           <div
             className={`bg-enfasisColor absolute inset-0 flex w-full h-full items-center justify-center rounded-full transition-opacity duration-200 `}
