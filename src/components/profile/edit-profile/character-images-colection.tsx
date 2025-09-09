@@ -91,18 +91,25 @@ export const CharacterImagesColection = ({ id }: Props) => {
 
   if (!data || loading)
     return (
-      <div className="py-4 flex flex-col gap-3">
-        <div className="w-1/3 rounded-md md:mx-8 bg-Primary-700 h-[30px] animate-pulse duration-300 transition-all"></div>
+      <div className="py-4 flex flex-col gap-3 w-full">
+        <div className="w-1/3 rounded-md md:mx-8 bg-Primary-700 xl:h-[30px] h-6 animate-pulse duration-300 transition-all"></div>
 
-        <div className="flex flex-row w-full overflow-x-scroll gap-4 md:px-8 no-scrollbar ">
-          {Array(4)
-            .fill(0)
-            .map((_, idx) => (
-              <div
-                key={idx}
-                className="min-w-34 min-h-34 w-full h-full aspect-video rounded-full bg-zinc-700  animate-pulse duration-300"
-              />
+        <div className="relative overflow-hidden">
+          <div
+            className="flex flex-row w-full overflow-x-scroll gap-8 md:px-8 no-scrollbar  scroll-smooth"
+          >
+            {Array.from({ length: 3 }).map((_, groupIndex) => (
+              <ul key={groupIndex} className="flex w-full flex-none gap-4 ">
+                {Array.from({
+                  length: windowWidth && windowWidth >= 1280 ? 4 : 3,
+                }).map((__, idx) => (
+
+                    <div key={idx} className=" w-full h-full aspect-square rounded-full bg-zinc-700  animate-pulse duration-300" />
+
+                ))}
+              </ul>
             ))}
+          </div>
         </div>
       </div>
     )
@@ -126,7 +133,7 @@ export const CharacterImagesColection = ({ id }: Props) => {
 
         <div
           ref={listRef}
-          className="flex flex-row w-full overflow-x-scroll gap-8 md:px-8 no-scrollbar  scroll-smooth"
+          className="flex flex-row w-full overflow-x-scroll md:gap-8 gap-4 md:px-8 no-scrollbar  scroll-smooth"
         >
           {groups.map((group, groupIndex) => (
             <ul key={groupIndex} className="flex w-full flex-none gap-4 ">
