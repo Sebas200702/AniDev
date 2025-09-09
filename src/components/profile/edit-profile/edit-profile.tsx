@@ -15,7 +15,7 @@ import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { uploadImages } from '@utils/upload-images'
 import { useEffect, useState } from 'react'
 import { InputType, ToastType } from 'types'
-import type { DataImage, ImagePayload, UserInfo } from 'types'
+import type { DataImage, UserInfo } from 'types'
 
 export const EditProfile = () => {
   const { userInfo, setUserInfo } = useGlobalUserPreferences()
@@ -80,12 +80,12 @@ export const EditProfile = () => {
       const { data: banner } = await uploadImages(
         bannerPayload,
         userInfo,
-        '/api/uploadImages'
+        '/api/uploadImage'
       )
       const { data: avatar } = await uploadImages(
         avatarPayload,
         userInfo,
-        '/api/uploadImages'
+        '/api/uploadImage'
       )
 
       const profile: UserInfo = {
@@ -141,6 +141,7 @@ export const EditProfile = () => {
       })
     }
   }, [isLoading, successMessage, errorMessage])
+
   return (
     <ModalDefaultContainer>
       <h2 className="text-lx absolute text-center top-0 -translate-y-full w-full text-Primary-50 p-4">
