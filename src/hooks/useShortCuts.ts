@@ -14,7 +14,7 @@ export function useShortcuts(shortCuts: Shortcut[], actionMap: ActionMap) {
         evt.ctrlKey && 'ctrl',
         evt.shiftKey && 'shift',
         evt.altKey && 'alt',
-        evt.key.toLowerCase(),
+        evt.key?.toLowerCase(),
       ]
         .filter(Boolean)
         .join('+')
