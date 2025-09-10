@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
-
 import { Picture } from '@components/media/picture'
 import { AnimeEpisodesLoader } from '@components/watch-anime/episodes/anime-episodes-loader'
 import Pagination from '@components/watch-anime/episodes/pagination'
 import { useFetch } from '@hooks/useFetch'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import type { AnimeEpisode } from 'types'
 
 interface Props {
@@ -130,31 +128,17 @@ export const AnimeEpisodes = ({
             key={episode_id}
           >
             <Picture
-              styles="relative aspect-[16/9] h-full w-full rounded-md overflow-hidden"
-              image={createImageUrlProxy(
-                image_url ?? image_webp,
-                '100',
-                '0',
-                'webp'
-              )}
-            >
-              <img
-                src={createImageUrlProxy(
-                  image_url ?? image_webp,
-                  '1080',
-                  '80',
-                  'webp'
-                )}
-                alt={title ?? `Episodio ${episode_id}`}
-                loading="lazy"
-                className="relative aspect-[16/9] h-full w-full rounded-md object-cover"
-              />
-              <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-black/50 px-2.5 py-1.25 text-xs font-bold text-white transition-all duration-300 ease-in-out">
-                <span className="text-sm text-white">
-                  {duration.replace(/\s*per\s*ep/i, '')}
-                </span>
-              </div>
-            </Picture>
+              styles="relative aspect-video h-full w-full object-cover object-center rounded-md overflow-hidden"
+              image={image_url || image_webp}
+              placeholder={image_url || image_webp}
+              alt={title ?? `Episodio ${episode_id}`}
+            />
+
+            <div className="bg-blur-sm absolute bottom-3 left-3 z-10 flex items-center justify-center rounded-sm bg-black/50 px-2.5 py-1.25 text-xs font-bold text-white transition-all duration-300 ease-in-out">
+              <span className="text-sm text-white">
+                {duration.replace(/\s*per\s*ep/i, '')}
+              </span>
+            </div>
             <h3 className="text-xl font-bold text-pretty text-white transition-all duration-300 ease-in-out">
               {title ?? `${slug} Episodio ${episode_id}`}
             </h3>
