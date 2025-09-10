@@ -77,7 +77,7 @@ export const AnimeTrailer = ({ trailer_url, banner_image, title }: Props) => {
               image={banner_image}
               placeholder={banner_image}
               alt={`${title} banner`}
-              banner
+              isBanner
               styles="aspect-video h-full  w-full rounded-sm overflow-hidden"
             />
             <span className="bg-Complementary/90 text-Primary-200 text-l absolute inset-0 flex h-full w-full items-center justify-center text-center">
