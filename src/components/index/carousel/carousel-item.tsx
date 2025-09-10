@@ -1,9 +1,6 @@
 import { WatchAnimeButton } from '@components/buttons/watch-anime'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-import { useWindowWidth } from '@store/window-width'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { AnimeBannerInfo } from 'types'
 
@@ -40,8 +37,7 @@ interface CarouselItemProps {
  * <CarouselItem anime={animeData} index={0} />
  */
 export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
-  const { width: windowWidth } = useWindowWidth()
-  const isMobile = windowWidth && windowWidth < 768
+
   return (
     <li
       key={anime.mal_id}
@@ -49,38 +45,12 @@ export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
     >
       <div className="absolute inset-0 h-[40vh] w-full overflow-hidden md:h-full">
         <Picture
-          image={
-          createImageUrlProxy(
-                anime.banner_image ?? '',
-                '100',
-                '1',
-                'webp'
-              )}
+          image={anime.banner_image || ''}
+          isBanner
+          placeholder={anime.banner_image || ''}
+          alt={`${anime.title} banner`}
           styles="w-full h-full object-cover object-center relative"
-        >
-          <img
-            className="relative h-full w-full object-cover object-center"
-            src={
-              isMobile
-                ? createImageUrlProxy(
-                    anime.banner_image ?? '',
-                    '720',
-                    '70',
-                    'webp'
-                  )
-                : createImageUrlProxy(
-                    anime.banner_image ?? '',
-                    '1920',
-                    '70',
-                    'webp'
-                  )
-            }
-            alt={`${anime.title} banner`}
-            fetchPriority="high"
-            decoding="async"
-
-          />
-        </Picture>
+        />
       </div>
 
       <div
