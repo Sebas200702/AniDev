@@ -1,5 +1,7 @@
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { buildProxiedImageSrc } from '@utils/proxy-image'
+import { useEffect, useState } from 'react'
 /**
  * Picture component displays an image with a background placeholder for progressive loading.
  *
@@ -20,7 +22,7 @@ import { createImageUrlProxy } from '@utils/create-image-url-proxy'
  * @param {string} [props.styles] - Optional additional CSS class names for styling the picture container
  * @param {string} props.image - The URL of the low-resolution image to use as background placeholder
  * @param {React.ReactNode} props.children - The content to render inside the picture element, typically the high-resolution image
- * @returns {JSX.Element} The rendered picture element with background image and children
+ * @returns The rendered picture element with background image and children
  *
  * @example
  * <Picture
@@ -35,41 +37,71 @@ export const Picture = ({
   image,
   placeholder,
   alt,
-  banner,
-
+  isBanner,
 }: {
   styles?: string
   image?: string
   placeholder?: string
   alt: string
-  banner?: boolean
-
+  isBanner?: boolean
 }) => {
+  const [resolvedPlaceholder, setResolvedPlaceholder] = useState<string>()
+  const [resolvedImage, setResolvedImage] = useState<string>()
+
+  useEffect(() => {
+    let active = true
+    const resolve = async () => {
+      const placeholderSrc = placeholder || `${baseUrl}/placeholder`
+      const imageSrc = image || `${baseUrl}/placeholder`
+      const widthMain = isBanner ? '1920' : '0'
+
+      const [ph, im] = await Promise.all([
+        buildProxiedImageSrc(placeholderSrc, '100', '0', 'webp').catch(
+          () => ''
+        ),
+        buildProxiedImageSrc(imageSrc, widthMain, '75', 'webp').catch(() => ''),
+      ])
+
+      if (!active) return
+      setResolvedPlaceholder(ph || undefined)
+      setResolvedImage(im || undefined)
+    }
+    resolve()
+    return () => {
+      active = false
+    }
+  }, [placeholder, image, isBanner])
+
   return (
     <figure className={`${styles} overflow-hidden relative`}>
       <img
         className="absolute inset-0 h-full w-full  object-cover object-center  blur-lg filter"
-        src={createImageUrlProxy(
-          placeholder ?? `${baseUrl}/placeholder`,
-          '100',
-          '0',
-          'webp'
-        )}
+        src={
+          resolvedPlaceholder ||
+          createImageUrlProxy(
+            placeholder || `${baseUrl}/placeholder`,
+            '100',
+            '0',
+            'webp'
+          )
+        }
         alt={alt}
         loading="lazy"
       />
       <img
         className={` h-full w-full relative object-cover object-center`}
-        src={createImageUrlProxy(
-          image ?? `${baseUrl}/placeholder`,
-          `${banner ? '1920' : '0'}`,
-          '75',
-          'webp'
-        )}
+        src={
+          resolvedImage ||
+          createImageUrlProxy(
+            image || `${baseUrl}/placeholder`,
+            `${isBanner ? '1920' : '0'}`,
+            '75',
+            'webp'
+          )
+        }
         alt={alt}
         loading="lazy"
       />
-
     </figure>
   )
 }
