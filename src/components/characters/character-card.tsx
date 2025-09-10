@@ -57,8 +57,8 @@ export const CharacterCard = ({ character }: Props) => {
         aria-label={`View details for ${character_name}`}
       >
         <Picture
-          placeholder={character_small_image_url ?? ''}
-          image={character_image_url ?? ''}
+          placeholder={character_small_image_url || ''}
+          image={character_image_url || ''}
           alt={`${character_name} character`}
           styles=" h-full w-full transform object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
