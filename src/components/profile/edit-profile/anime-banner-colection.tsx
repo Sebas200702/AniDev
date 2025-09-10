@@ -4,7 +4,6 @@ import { Picture } from '@components/media/picture'
 import { useFetch } from '@hooks/useFetch'
 import { useUpdateProfile } from '@store/update-profile'
 import { useWindowWidth } from '@store/window-width'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useEffect, useRef } from 'react'
 import type { BannerImage } from 'types'
 interface Props {
@@ -120,29 +119,15 @@ export const AnimeBannerColection = ({ id }: Props) => {
                 <button
                   key={banner.mal_id}
                   className={`w-full h-full relative border-3 ${banner.banner_image === bannerImage ? 'border-enfasisColor' : 'border-enfasisColor/0'} md:aspect-[1080/300] object-cover object-center aspect-[1080/500] transition-colors duration-300 rounded overflow-hidden ease-in-out    cursor-pointer group`}
-                  onClick={() => setBannerImage(banner.banner_image ?? '')}
+                  onClick={() => setBannerImage(banner.banner_image)}
                 >
                   <Picture
                     styles="w-full h-full object-cover object-center rounded  md:aspect-[1080/300] aspect-[1080/500] relative cursor-pointer "
-                    image={createImageUrlProxy(
-                      banner.banner_image ?? '',
-                      '100',
-                      '0',
-                      'webp'
-                    )}
-                  >
-                    <img
-                      className="relative object-cover  md:aspect-[1080/300] aspect-[1080/500] object-center"
-                      src={createImageUrlProxy(
-                        banner.banner_image ?? '',
-                        '1080',
-                        '60',
-                        'webp'
-                      )}
-                      alt=""
-                      loading="lazy"
-                    />
-                  </Picture>
+                    image={banner.banner_image}
+                    placeholder={banner.banner_image}
+                    alt={`Banner of ${banner.title}`}
+                    isBanner
+                  />
                   <Overlay className="group-hover:opacity-100 opacity-0 h-full w-full bg-enfasisColor/40 transition-opacity duration-200" />
                 </button>
               ))}
