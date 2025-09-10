@@ -47,25 +47,12 @@ export const MusicCard = ({
       >
         <div className="relative shrink-0 w-14 h-14 md:w-16 md:h-16 overflow-hidden rounded-md shadow-md">
           <Picture
-            image={createImageUrlProxy(
-              song.placeholder ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '0',
-              'webp'
-            )}
-            styles="relative w-full h-full"
-          >
-            <img
-              src={createImageUrlProxy(
-                song.image ?? `${baseUrl}/placeholder.webp`,
-                '0',
-                '70',
-                'webp'
-              )}
-              alt={song.song_title}
-              className="h-full w-full rounded-md object-cover relative transition-transform duration-300 group-hover:scale-[1.01]"
-            />
-          </Picture>
+            placeholder={song.placeholder}
+            image={song.image}
+            styles="h-full w-full rounded-md object-cover relative transition-transform duration-300 group-hover:scale-[1.01]"
+            alt={song.song_title}
+          />
+
           <div className="absolute right-1 bottom-1 z-20 translate-y-1 transform opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             <button
               className="bg-enfasisColor text-Primary-50 cursor-pointer rounded-full p-1.5 shadow-2xl transition-all duration-200 hover:scale-105"
@@ -124,25 +111,11 @@ export const MusicCard = ({
     >
       <div className={`relative overflow-hidden mb-4`}>
         <Picture
-          image={createImageUrlProxy(
-            song.placeholder ?? `${baseUrl}/placeholder.webp`,
-            '0',
-            '0',
-            'webp'
-          )}
-          styles={`relative aspect-square rounded-md shadow-lg overflow-hidden h-full relative`}
-        >
-          <img
-            src={createImageUrlProxy(
-              song.image ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '70',
-              'webp'
-            )}
-            alt={song.song_title}
-            className={`relative aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102`}
-          />
-        </Picture>
+          placeholder={song.placeholder}
+          image={song.image}
+          styles="relative aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
+          alt={song.song_title}
+        />
 
         <div
           className={`absolute right-2 bottom-2 z-20 translate-y-2 transform opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100`}
