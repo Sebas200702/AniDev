@@ -54,34 +54,12 @@ export const AnimeBanner = ({
     <div className="group">
       <div className="fixed  h-[40vh] w-full overflow-hidden md:h-[60vh]">
         <Picture
-          image={
-            banner_image
-              ? createImageUrlProxy(banner_image, '100', '0', 'webp')
-              : createImageUrlProxy(
-                  image_large_webp ?? `${baseUrl}/placeholder.webp`,
-                  '100',
-                  '0',
-                  'webp'
-                )
-          }
-          styles=" w-full h-full object-cover object-center relative"
-        >
-          <img
-            src={
-              banner_image
-                ? createImageUrlProxy(banner_image, '1920', '50', 'webp')
-                : createImageUrlProxy(
-                    image_large_webp ?? `${baseUrl}/placeholder.webp`,
-                    '1920',
-                    '50',
-                    'webp'
-                  )
-            }
-            alt={`${title} banner`}
-            loading="lazy"
-            className="relative h-full w-full object-cover object-center"
-          />
-        </Picture>
+          image={banner_image ?? image_large_webp}
+          placeholder={banner_image ?? image_large_webp}
+          styles=" w-full h-full object-cover object-center "
+          alt={`banner image of ${title}`}
+          banner
+        />
       </div>
     </div>
   )
