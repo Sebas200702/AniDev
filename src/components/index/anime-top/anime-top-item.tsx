@@ -66,27 +66,13 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           title={anime.title}
         >
           <Picture
-            image={createImageUrlProxy(
-              anime.image_small_webp ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '0',
-              'webp'
-            )}
-            styles="aspect-[225/330] w-full md:max-w-32   overflow-hidden rounded-lg relative max-w-20"
-          >
-            <img
-              src={createImageUrlProxy(
-                anime.image_webp ?? `${baseUrl}/placeholder.webp`,
-                '0',
-                '70',
-                'webp'
-              )}
-              alt={anime.title}
-              className="relative aspect-[225/330] h-full w-full rounded-lg object-cover object-center transition-all ease-in-out group-hover:scale-105"
-              loading="lazy"
-            />
-            <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
-          </Picture>
+            placeholder={anime.image_small_webp ?? ''}
+            styles="aspect-[225/330] w-full md:max-w-32 transitions-all duration-300  ease-in-out group-hover:scale-105 overflow-hidden rounded-lg relative max-w-20"
+            image={anime.image_webp ?? ''}
+            alt={anime.title}
+          />
+
+          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
         </a>
         <article className="flex h-full w-full flex-row gap-4 p-4 md:p-6">
           <div className="text-s flex h-full w-full flex-col justify-between">
