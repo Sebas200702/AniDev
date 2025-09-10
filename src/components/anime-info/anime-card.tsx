@@ -7,8 +7,7 @@ import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
 import { PlayIcon } from '@icons/play-icon'
 import { useWindowWidth } from '@store/window-width'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+
 import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
@@ -97,6 +96,7 @@ export const AnimeCard = ({ anime }: Props) => {
     clearTimeout(timer)
   }
 
+
   return (
     <li
       className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.01]"
@@ -132,36 +132,13 @@ export const AnimeCard = ({ anime }: Props) => {
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={createImageUrlProxy(
-            image_small_webp ?? `${baseUrl}/placeholder.webp`,
-            '100',
-            '0',
-            'webp'
-          )}
-          styles="relative h-full w-full rounded-lg"
-        >
-          <img
-            src={
-              isMobile
-                ? createImageUrlProxy(
-                    image_webp ?? `${baseUrl}/placeholder.webp`,
-                    '200',
-                    '70',
-                    'webp'
-                  )
-                : createImageUrlProxy(
-                    image_large_webp ?? `${baseUrl}/placeholder.webp`,
-                    '300',
-                    '75',
-                    'webp'
-                  )
-            }
-            alt={`Cover of ${title}`}
-            className="relative aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out"
-            loading="lazy"
-          />
-          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
-        </Picture>
+          image={(isMobile ? image_webp  : image_large_webp) ?? ''}
+          placeholder={ image_small_webp ?? ''}
+          alt={`Representation of ${anime.title}`}
+
+          styles="relative h-full w-full object-cover object-center aspect-[225/330] rounded-lg"
+        />
+        <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
 
         <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-row items-center gap-4 px-2 py-1 md:px-4 md:py-2">
           <StatusPoint
