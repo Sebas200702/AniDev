@@ -44,7 +44,7 @@ export const getUserDataToRecomendations = async (
     .select(
       'search_history(search_history), favorite_animes, favorite_genres, favorite_studios, frequency_of_watch, fanatic_level, gender, last_name, name, preferred_format, birthday, watched_animes'
     )
-    .eq('user_id', userId)
+    .eq('id', userId)
 
   if (userProfileError) {
     return {
