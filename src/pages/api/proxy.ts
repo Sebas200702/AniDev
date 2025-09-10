@@ -75,8 +75,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     throw new Error('Missing image URL')
   }
 
-  // blob: URLs are browser-local and cannot be fetched by the server.
-  // Clients should POST the Blob to this endpoint instead (see POST handler below).
+
   if (imageUrl.startsWith('blob:')) {
     return new Response(
       JSON.stringify({
