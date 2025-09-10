@@ -67,9 +67,9 @@ export const DinamicBanner = ({ banners }: Props) => {
         }`}
       >
         <Picture
-          image={firstImage ?? ''}
-          placeholder={firstImage ?? ''}
-          banner
+          image={firstImage || ''}
+          placeholder={firstImage ||''}
+          isBanner
           alt='DinamicBanner'
           styles="w-full object-cover object-center h-full  "
         />
@@ -82,9 +82,9 @@ export const DinamicBanner = ({ banners }: Props) => {
         }`}
       >
         <Picture
-          image={secondImage ?? ''}
-          placeholder={secondImage ?? ''}
-          banner
+          image={secondImage || ''}
+          placeholder={secondImage || ''}
+          isBanner
           alt='DinamicBanner'
           styles="w-full object-cover object-center h-full  "
         />
