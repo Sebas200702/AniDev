@@ -52,8 +52,8 @@ export const Aside = ({
   isSignUp: boolean
 }) => {
   return (
-    <section>
-      <div className='absolute inset-0 w-full h-full overflow-hidden rounded-md '>
+    <section className='md:relative absolute w-full h-full'>
+      <div className='absolute md:static inset-0 w-full h-full overflow-hidden rounded-md '>
         <Picture
           image={`${baseUrl}/${bgImage}`}
           placeholder={`${baseUrl}/${bgImage}`}
@@ -68,11 +68,7 @@ export const Aside = ({
       <Overlay
         className={`z-10 h-full w-full bg-gradient-to-b via-black/60 via-20% to-black/90`}
       />
-      <img
-        src={createImageUrlProxy(`${baseUrl}/${bgImage}`, '0', '70', 'webp')}
-        className="relative h-full w-full object-cover object-center"
-        alt={`Background for ${isSignUp ? 'sign up' : 'sign in'} page`}
-      />
+
       <footer className="absolute right-0 bottom-0 left-0 z-10 hidden flex-col gap-10 p-4 md:flex">
         <header className="flex flex-col gap-2">
           <span className="bg-Primary-50/10 w-fit rounded-full px-4 py-2 text-sm backdrop-blur-2xl">
