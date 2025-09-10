@@ -1,17 +1,13 @@
 import '@styles/anime-banner.css'
-
 import { useEffect, useState } from 'react'
-
 import { BannerInfo } from '@components/index/banners/banner-info'
 import { BannerLoader } from '@components/index/banners/banner-loader'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useIndexStore } from '@store/index-store'
-import { useWindowWidth } from '@store/window-width'
-import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+
 import { addFailedUrlClient } from '@utils/failed-urls-client'
 import { normalizeString } from '@utils/normalize-string'
 
@@ -50,8 +46,8 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const { setAnimeBanners, animeBanners } = useIndexStore()
   const [loading, setLoading] = useState(true)
   const { parentalControl } = useGlobalUserPreferences()
-  const { width: windowWidth } = useWindowWidth()
-  const isMobile = windowWidth && windowWidth < 768
+
+
 
   const getBannerData = async (
     url: string,
@@ -176,37 +172,15 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           aria-label={`View details for ${title}`}
         >
           <Picture
-            image={createImageUrlProxy(
-              imageUrl ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '0',
-              'webp'
-            )}
+            image={imageUrl ?? ''}
+            placeholder={imageUrl ?? ''}
+            banner
+            alt="Anime Banner"
             styles="aspect-[1080/500] h-full w-full  md:aspect-[1080/300] object-cover object-center relative"
-          >
-            <img
-              src={
-                isMobile
-                  ? createImageUrlProxy(
-                      imageUrl ?? `${baseUrl}/placeholder.webp`,
-                      '720',
-                      '50',
-                      'webp'
-                    )
-                  : createImageUrlProxy(
-                      imageUrl ?? `${baseUrl}/placeholder.webp`,
-                      '1920',
-                      '50',
-                      'webp'
-                    )
-              }
-              alt="Anime Banner"
-              loading="lazy"
-              className="relative aspect-[1080/500] h-full w-full object-cover object-center md:aspect-[1080/300]"
-            />
-            <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b" />
-            <Overlay className="to-Primary-950/30 h-full w-0 bg-gradient-to-l md:group-hover:w-full" />
-          </Picture>
+          />
+
+          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b" />
+          <Overlay className="to-Primary-950/30 h-full w-0 bg-gradient-to-l md:group-hover:w-full" />
         </a>
         <BannerInfo
           title={title}
