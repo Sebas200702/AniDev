@@ -33,10 +33,10 @@ export const Aside = ({
         className="aspect-[225/330] w-full rounded-lg overflow-hidden"
       >
         <Picture
-          image={smallImage}
-          placeholder={posterImage}
+          image={posterImage}
+          placeholder={smallImage}
           styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out overflow-hidden"
-          alt=''
+          alt={title}
         />
       </GaleryImage>
       {children && (
