@@ -2,8 +2,6 @@ import { SettingsIcon } from '@components/icons/settings-icon'
 import { UserIcon } from '@components/icons/user-icon'
 import { Picture } from '@components/media/picture'
 import { useGlobalUserPreferences } from '@store/global-user'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { signOut } from 'auth-astro/client'
 import { useEffect, useRef } from 'react'
 
@@ -65,24 +63,12 @@ export const Profile = () => {
         >
           <Picture
             styles="max-h-10 max-w-10 object-cover relative rounded-full object-center aspect-square"
-            image={createImageUrlProxy(
-              userInfo?.avatar ?? `${baseUrl}/profile-picture-5.webp`,
-              '0',
-              '0'
-            )}
-          >
-            <img
-              className="h-ful w-full rounded-full object-cover relative object-center aspect-square"
-              src={createImageUrlProxy(
-                userInfo?.avatar ?? `${baseUrl}/profile-picture-5.webp`,
-                '150',
-                '75'
-              )}
-              alt="Profile"
-              fetchPriority="high"
-              decoding="async"
-            />
-          </Picture>
+            image={userInfo?.avatar || ''}
+            placeholder={
+              userInfo?.avatar || ''
+            }
+            alt={`Avatar of  ${userInfo?.name}`}
+          />
         </button>
       </article>
       <div
