@@ -6,12 +6,10 @@ import { Picture } from '@components/media/picture'
 import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 import { ChangeImages } from '@components/profile/edit-profile/change-images'
 import { useModal } from '@hooks/useModal'
-import { useProfileImage } from '@hooks/useProfileImage'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUpdateProfile } from '@store/update-profile'
 import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { uploadImages } from '@utils/upload-images'
 import { useEffect, useState } from 'react'
 import { InputType, ToastType } from 'types'
@@ -35,13 +33,7 @@ export const EditProfile = () => {
   } = useUpdateProfile()
   const { closeModal, openModal } = useModal()
 
-  useEffect(() => {
-    if (!avatar || !userName || !bannerImage) {
-      setUsername(userInfo?.name || '')
-      setBannerImage(userInfo?.banner_image || '')
-      setAvatar(userInfo?.avatar || '')
-    }
-  }, [avatar, userName, bannerImage])
+ 
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
@@ -153,7 +145,7 @@ export const EditProfile = () => {
           onClick={() =>
             handleClickEdit({
               url:
-                userInfo?.banner_image ??
+                userInfo?.banner_image ||
                 'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
               type: 'banner',
             })
@@ -162,48 +154,18 @@ export const EditProfile = () => {
           <Picture
             styles="w-full h-full object-cover object-center  md:aspect-[1080/300] aspect-[1080/500] relative cursor-pointer "
             image={
-              useProfileImage({
-                type: 'banner',
-                baseUrl:
-                  userInfo?.banner_image ??
-                  'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-                width: '100',
-                quality: '0',
-                format: 'webp',
-              }).imgSrc ||
-              createImageUrlProxy(
-                userInfo?.banner_image ??
-                  'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-                '100',
-                '0',
-                'webp'
-              )
+              bannerImage ||
+              userInfo?.banner_image ||
+              'https://media.kitsu.app/anime/cover_images/3936/original.jpg'
             }
-          >
-            <img
-              className="relative object-cover md:aspect-[1080/300] aspect-[1080/500] object-center"
-              src={
-                useProfileImage({
-                  type: 'banner',
-                  baseUrl:
-                    userInfo?.banner_image ??
-                    'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-                  width: '1080',
-                  quality: '75',
-                  format: 'webp',
-                }).imgSrc ||
-                createImageUrlProxy(
-                  userInfo?.banner_image ??
-                    'https://media.kitsu.app/anime/cover_images/3936/original.jpg',
-                  '1080',
-                  '75',
-                  'webp'
-                )
-              }
-              alt=""
-              loading="lazy"
-            />
-          </Picture>
+            placeholder={
+              bannerImage ||
+              userInfo?.banner_image ||
+              'https://media.kitsu.app/anime/cover_images/3936/original.jpg'
+            }
+            alt={`Banner of ${userInfo?.name}`}
+            isBanner
+          />
           <span className="absolute top-1/2 left-1/2  group-hover:opacity-100 opacity-0 -translate-x-1/2 rounded-full -translate-y-1/2 z-50 text-s select-none">
             {'Change banner image'}
           </span>
@@ -229,43 +191,12 @@ export const EditProfile = () => {
           }
         >
           <Picture
-            image={
-              useProfileImage({
-                type: 'avatar',
-                baseUrl: userInfo?.avatar || `${baseUrl}/placeholder.webp`,
-                width: '0',
-                quality: '0',
-                format: 'webp',
-              }).imgSrc ||
-              createImageUrlProxy(
-                userInfo?.avatar || `${baseUrl}/placeholder.webp`,
-                '0',
-                '0',
-                'webp'
-              )
-            }
-            styles="absolute rounded-full overflow-hidden w-full h-full  cursor-pointer object-cover object-center"
-          >
-            <img
-              src={
-                useProfileImage({
-                  type: 'avatar',
-                  baseUrl: userInfo?.avatar || `${baseUrl}/placeholder.webp`,
-                  width: '0',
-                  quality: '75',
-                  format: 'webp',
-                }).imgSrc ||
-                createImageUrlProxy(
-                  userInfo?.avatar || `${baseUrl}/placeholder.webp`,
-                  '0',
-                  '75',
-                  'webp'
-                )
-              }
-              alt={`${userInfo?.name} Avatar`}
-              className="relative h-full w-full rounded-full transition-all duration-200 object-cover object-center"
-            />
-          </Picture>
+            styles="relative h-full w-full rounded-full transition-all duration-200 object-cover object-center "
+            image={avatar || userInfo?.avatar|| ''}
+            placeholder={avatar || userInfo?.avatar || ''}
+            alt={`Avatar of ${userInfo?.name}`}
+          />
+
           <span className="absolute top-1/2 left-1/2  group-hover:opacity-100 opacity-0 -translate-x-1/2 rounded-full -translate-y-1/2 z-50 text-s select-none">
             {'Change'}
           </span>
