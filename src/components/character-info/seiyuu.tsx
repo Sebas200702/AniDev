@@ -15,8 +15,8 @@ export const SeiyuuInfo = ({ seiyuu }: Props) => {
       >
         <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full">
           <Picture
-            image={seiyuu.image_url ?? ''}
-            placeholder={seiyuu.image_url ?? ''}
+            image={seiyuu.image_url || ''}
+            placeholder={seiyuu.image_url || ''}
             styles="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/actor:scale-105"
             alt={seiyuu.name}
           />
