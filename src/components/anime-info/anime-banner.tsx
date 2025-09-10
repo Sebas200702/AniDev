@@ -54,11 +54,11 @@ export const AnimeBanner = ({
     <div className="group">
       <div className="fixed  h-[40vh] w-full overflow-hidden md:h-[60vh]">
         <Picture
-          image={banner_image ?? image_large_webp}
-          placeholder={banner_image ?? image_large_webp}
+          image={banner_image || image_large_webp}
+          placeholder={banner_image || image_large_webp}
           styles=" w-full h-full object-cover object-center "
           alt={`banner image of ${title}`}
-          banner
+          isBanner
         />
       </div>
     </div>
