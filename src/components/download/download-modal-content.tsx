@@ -273,25 +273,11 @@ export const DownloadModalContent = ({
           <div className="bg-enfasisColor/10 relative flex flex-row rounded-lg">
             <div className="border-enfasisColor relative aspect-square h-full w-full max-w-20 overflow-hidden rounded-lg border-l-4">
               <Picture
-                image={createImageUrlProxy(
-                  dataForVersion[0].image,
-                  '0',
-                  '0',
-                  'webp'
-                )}
-                styles="w-full h-full aspect-square object-cover relative"
-              >
-                <img
-                  src={createImageUrlProxy(
-                    dataForVersion[0].image,
-                    '80',
-                    '50',
-                    'webp'
-                  )}
-                  alt={dataForVersion[0].song_title}
-                  className="relative aspect-square h-full w-full object-cover"
-                />
-              </Picture>
+                image={dataForVersion[0].image}
+                placeholder={dataForVersion[0].image}
+                styles="w-full h-full aspect-square object-cover object-center relative"
+                alt={dataForVersion[0].song_title}
+              />
             </div>
             <div className="flex min-h-full w-full flex-col justify-between p-4">
               <h3 className="text-Primary-50 text-m line-clamp-1 font-bold">
