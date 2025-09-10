@@ -52,12 +52,15 @@ export const Aside = ({
   isSignUp: boolean
 }) => {
   return (
-    <Picture
-      image={
-        createImageUrlProxy(`${baseUrl}/${bgImage}`, '100', '0', 'webp') ?? ''
-      }
-      styles="w-full md:relative  absolute inset-0 z-0 overflow-hidden rounded-md"
-    >
+    <section>
+      <div className='absolute inset-0 w-full h-full overflow-hidden rounded-md '>
+        <Picture
+          image={`${baseUrl}/${bgImage}`}
+          placeholder={`${baseUrl}/${bgImage}`}
+          styles="w-full h-full "
+          alt="background image"
+        />
+      </div>
       <Favicon
         className={`text-enfasisColor absolute top-2 right-4 left-4 z-20 h-8 w-8 md:h-16 md:w-16`}
       />
@@ -87,6 +90,6 @@ export const Aside = ({
 
         <div className="flex flex-row gap-4">{StepsComponent(isSignUp)}</div>
       </footer>
-    </Picture>
+    </section>
   )
 }
