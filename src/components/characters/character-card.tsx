@@ -57,24 +57,13 @@ export const CharacterCard = ({ character }: Props) => {
         aria-label={`View details for ${character_name}`}
       >
         <Picture
-          image={createImageUrlProxy(
-            character_small_image_url ?? `${baseUrl}/placeholder.webp`
-          )}
-          styles="w-full h-full"
-        >
-          <img
-            src={createImageUrlProxy(
-              character_image_url ?? `${baseUrl}/placeholder.webp`,
-              '500',
-              '75',
-              'webp'
-            )}
-            alt={`${character_name} character`}
-            className="relative h-full w-full transform object-cover object-center transition-transform duration-500 group-hover:scale-110"
-            loading="lazy"
-          />
-          <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
-        </Picture>
+          placeholder={character_small_image_url ?? ''}
+          image={character_image_url ?? ''}
+          alt={`${character_name} character`}
+          styles=" h-full w-full transform object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
+
+        <Overlay className="to-Primary-950/80 h-1/3 w-full bg-gradient-to-b md:group-hover:h-full" />
 
         <footer className="absolute inset-0 flex translate-y-2 transform flex-col justify-end p-4 transition-transform duration-300 group-hover:translate-y-0">
           <h3 className="group-hover:text-enfasisColor mb-4 truncate text-lg font-bold text-white transition-colors">
