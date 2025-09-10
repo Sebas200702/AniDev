@@ -1,6 +1,5 @@
 ---
-import { CalendarList } from '@components/schedule/schedule-list'
-import { CalendarShowBox } from '@components/schedule/schedule-show-box'
+
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
 
@@ -13,7 +12,6 @@ const description =
   <section
     class="mx-4 mt-24 flex w-full flex-col items-center overflow-hidden md:mx-20"
   >
-    <CalendarList client:load />
-    <CalendarShowBox client:only />
+
   </section>
 </Layout>
