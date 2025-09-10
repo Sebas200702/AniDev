@@ -132,8 +132,8 @@ export const AnimeCard = ({ anime }: Props) => {
         aria-label={`View details for ${title}`}
       >
         <Picture
-          image={(isMobile ? image_webp  : image_large_webp) ?? ''}
-          placeholder={ image_small_webp ?? ''}
+          image={(isMobile ? image_webp  : image_large_webp) || ''}
+          placeholder={ image_small_webp || ''}
           alt={`Representation of ${anime.title}`}
 
           styles="relative h-full w-full object-cover object-center aspect-[225/330] rounded-lg"
