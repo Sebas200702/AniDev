@@ -9,12 +9,12 @@ import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { useModal } from '@hooks/useModal'
 import { useProfileImage } from '@hooks/useProfileImage'
 import { toast } from '@pheralb/toast'
+import { useGlobalUserPreferences } from '@store/global-user'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { ToastType } from 'types'
 import type { DataImage } from 'types'
 import { ChangeImages } from './change-images'
-
 
 /**
  * Payload interface for image upload.
@@ -111,8 +111,6 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
     openModal(ChangeImages, { type })
   }
 
-
-
   return (
     <ModalDefaultContainer>
       <div className="flex flex-col items-center justify-center md:w-[40vw] w-[80vw] gap-10">
@@ -144,11 +142,10 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
               cropSrc ||
               createImageUrlProxy(
                 `${baseUrl}/placeholder.webp`,
-                '0',
-                '70',
-                'webp'
-              )
-            }
+              '0',
+              '70',
+              'webp'
+            )}
             initialAspectRatio={isAvatar ? 1 : 1080 / 300}
             aspectRatio={isAvatar ? 1 : 1080 / 300}
             guides={false}
@@ -171,7 +168,6 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
           >
             Cancel
           </button>
-
         </footer>
       </div>
     </ModalDefaultContainer>
