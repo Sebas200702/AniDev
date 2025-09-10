@@ -95,24 +95,19 @@ export const AnimeMusicItem = ({
     >
       <div className="flex aspect-[100/30] max-h-36 w-full flex-row overflow-hidden rounded-lg">
         <div className="absolute top-0 left-0 aspect-[100/30] max-h-36 w-full overflow-hidden rounded-lg">
-          <img
-            src={createImageUrlProxy(
-              banner_image || image,
-              '100',
-              '70',
-              'webp'
-            )}
+          <Picture
+            image={banner_image ?? image}
+            isBanner
+            placeholder={banner_image ?? image}
             alt={song.song_title}
-            className="aspect-[100/30] w-full object-cover object-center"
+            styles="aspect-[100/30] w-full object-cover object-center"
           />
           <Overlay className="bg-Primary-950/90 h-full w-full overflow-hidden rounded-lg backdrop-blur-sm" />
         </div>
 
         <div className="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative">
           <Picture
-            image={
-              placeholder ?? image
-              }
+            image={placeholder ?? image}
             placeholder={image}
             alt={song.song_title}
             styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
