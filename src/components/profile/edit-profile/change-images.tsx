@@ -4,12 +4,11 @@ import { Picture } from '@components/media/picture'
 import { ModalDefaultContainer } from '@components/modal/modal-default-container'
 import { useDragAndDrop } from '@hooks/useDragAndDrop'
 import { useModal } from '@hooks/useModal'
-import { useProfileImage } from '@hooks/useProfileImage'
+
 import { useGlobalUserPreferences } from '@store/global-user'
 import { useUpdateProfile } from '@store/update-profile'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 
+import { useMemo } from 'react'
 import type { DataImage } from 'types'
 import { AnimeBannerColection } from './anime-banner-colection'
 import { CharacterImagesColection } from './character-images-colection'
@@ -20,20 +19,25 @@ export const ChangeImages = ({ type, url }: DataImage) => {
   const { openModal } = useModal()
   const { userInfo } = useGlobalUserPreferences()
   const malIds = [
-    33206,37786, 21, 47917, 813, 16498, 52299, 38691, 40748,40591, 30484, 30831, 54492,
-    44074, 49596, 57334,34572, 58390, 35849, 53446, 15583,32182, 2001
+    33206, 37786, 21, 47917, 813, 16498, 52299, 38691, 40748, 40591, 30484,
+    30831, 54492, 44074, 49596, 57334, 34572, 58390, 35849, 53446, 15583, 32182,
+    2001,
   ]
-  const { setAvatar, setBannerImage, setAvatarType, setBannerType } =
-    useUpdateProfile()
+  const {
+    setAvatar,
+    setBannerImage,
+    setAvatarType,
+    setBannerType,
+    avatar,
+    bannerImage,
+  } = useUpdateProfile()
   const isAvatar = type === 'avatar'
-  const imgWidth = isAvatar ? '240' : '720'
-  const { imgSrc } = useProfileImage({
-    type: isAvatar ? 'avatar' : 'banner',
-    baseUrl: url ?? '',
-    width: imgWidth,
-    quality: '75',
-    format: 'webp',
-  })
+
+  const imgSrc = useMemo(() => {
+    return isAvatar
+      ? (avatar ?? userInfo?.avatar)
+      : (bannerImage ?? userInfo?.banner_image ?? url)
+  }, [isAvatar, avatar, userInfo?.avatar, bannerImage, userInfo?.banner_image])
   const { isDragging, dragDropProps, dropTargetRef } = useDragAndDrop({
     onDrop: (file) => {
       if (!file) return
@@ -54,12 +58,10 @@ export const ChangeImages = ({ type, url }: DataImage) => {
     openModal(EditProfile)
   }
   const handleCancelClick = () => {
-    if(isAvatar){
-
-        setAvatar(userInfo?.avatar ?? '')
-    }else{
-
-        setBannerImage(userInfo?.banner_image ?? '')
+    if (isAvatar) {
+      setAvatar(userInfo?.avatar ?? '')
+    } else {
+      setBannerImage(userInfo?.banner_image ?? '')
     }
     openModal(EditProfile)
   }
@@ -68,7 +70,7 @@ export const ChangeImages = ({ type, url }: DataImage) => {
     <ModalDefaultContainer>
       <section className="xl:w-[35vw] md:w-[60vw] h-[80vh] overflow-y-scroll no-scrollbar ">
         <header
-          className={` flex ${type === 'avatar' ? 'md:flex-row md:p-4 flex-col' : 'flex-col'} sticky py-4 z-30 md:top-0  left-0 right-0 gap-8 items-center   `}
+          className={` flex ${isAvatar ? 'md:flex-row md:p-4 flex-col' : 'flex-col'} sticky py-4 z-30 md:top-0  left-0 right-0 gap-8 items-center   `}
         >
           <Overlay className="bg-Complementary h-full w-full" />
           <div
@@ -85,34 +87,15 @@ export const ChangeImages = ({ type, url }: DataImage) => {
             )}
 
             <Picture
-              image={
-                imgSrc ||
-                createImageUrlProxy(
-                  url ?? `${baseUrl}/placeholder.webp`,
-                  '0',
-                  '0',
-                  'webp'
-                )
-              }
-            >
-              <img
-                src={
-                  imgSrc ||
-                  createImageUrlProxy(
-                    url ?? `${baseUrl}/placeholder.webp`,
-                    '0',
-                    '75',
-                    'webp'
-                  )
-                }
-                alt={type}
-                className={`${isAvatar ? 'aspect-square' : 'w-full  aspect-[1080/300]'} relative w-full h-full object-center object-cover  `}
-                loading="lazy"
-              />
-            </Picture>
+              image={imgSrc || ''}
+              placeholder={imgSrc || ''}
+              alt={type}
+              isBanner={!isAvatar}
+              styles={`${isAvatar ? 'aspect-square' : 'w-full  aspect-[1080/300]'} relative w-full h-full object-center object-cover  `}
+            />
           </div>
           <div
-            className={`z-10 flex flex-col md:gap-6 gap-3 w-full ${type === 'avatar' ? '' : 'mt-44'}`}
+            className={`z-10 flex flex-col md:gap-6 gap-3 w-full ${isAvatar ? '' : 'mt-44'}`}
           >
             <h2 className="capitalize text-lx md:text-left text-center">
               Select Your {type}
@@ -148,7 +131,7 @@ export const ChangeImages = ({ type, url }: DataImage) => {
           </div>
         </header>
 
-        {type === 'avatar' &&
+        {isAvatar &&
           malIds.map((id) => <CharacterImagesColection key={id} id={id} />)}
         {type !== 'avatar' &&
           malIds.map((id) => <AnimeBannerColection key={id} id={id} />)}
