@@ -1,6 +1,4 @@
 import { Picture } from '@components/media/picture'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -69,25 +67,14 @@ export const DinamicBanner = ({ banners }: Props) => {
         }`}
       >
         <Picture
-          image={createImageUrlProxy(
-            firstImage ?? `${baseUrl}/placeholder.webp`,
-            '100',
-            '0',
-            'webp'
-          )}
-          styles="w-full object-cover object-center h-full relative "
-        >
-          <img
-            src={createImageUrlProxy(
-              firstImage ?? `${baseUrl}/placeholder.webp`,
-              '1920',
-              '50',
-              'webp'
-            )}
-            alt=""
-            className="relative h-full w-full object-cover object-center"
-          />
-        </Picture>
+          image={firstImage ?? ''}
+          placeholder={firstImage ?? ''}
+          banner
+          alt='DinamicBanner'
+          styles="w-full object-cover object-center h-full  "
+        />
+
+
       </div>
       <div
         className={`absolute top-0 left-0 h-full w-full transition-opacity duration-1000 ease-out ${
@@ -95,25 +82,12 @@ export const DinamicBanner = ({ banners }: Props) => {
         }`}
       >
         <Picture
-          image={createImageUrlProxy(
-            secondImage ?? `${baseUrl}/placeholder.webp`,
-            '100',
-            '0',
-            'webp'
-          )}
-          styles="w-full object-cover object-center h-full relative "
-        >
-          <img
-            src={createImageUrlProxy(
-              secondImage ?? `${baseUrl}/placeholder.webp`,
-              '1920',
-              '50',
-              'webp'
-            )}
-            alt=""
-            className="relative h-full w-full object-cover object-center"
-          />
-        </Picture>
+          image={secondImage ?? ''}
+          placeholder={secondImage ?? ''}
+          banner
+          alt='DinamicBanner'
+          styles="w-full object-cover object-center h-full  "
+        />
       </div>
     </div>
   )
