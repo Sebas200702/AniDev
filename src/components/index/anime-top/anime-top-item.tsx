@@ -66,9 +66,9 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
           title={anime.title}
         >
           <Picture
-            placeholder={anime.image_small_webp ?? ''}
+            placeholder={anime.image_small_webp || ''}
             styles="aspect-[225/330] w-full md:max-w-32 transitions-all duration-300  ease-in-out group-hover:scale-105 overflow-hidden rounded-lg relative max-w-20"
-            image={anime.image_webp ?? ''}
+            image={anime.image_webp || ''}
             alt={anime.title}
           />
 
