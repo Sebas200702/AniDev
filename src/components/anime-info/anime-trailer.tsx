@@ -72,20 +72,18 @@ export const AnimeTrailer = ({ trailer_url, banner_image, title }: Props) => {
         </MediaPlayer>
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
-          <Picture
-            image={createImageUrlProxy(banner_image, '100', '0', 'webp')}
-            styles="aspect-video h-full relative w-full rounded-sm overflow-hidden"
-          >
-            <img
-              src={createImageUrlProxy(banner_image, '1920', '70', 'webp')}
-              alt={title}
-              className="aspect-video h-full w-full rounded-sm object-cover object-center transition-all ease-in-out"
-              loading="lazy"
+          <div className="aspect-video h-full relative w-full rounded-sm overflow-hidden">
+            <Picture
+              image={banner_image}
+              placeholder={banner_image}
+              alt={`${title} banner`}
+              banner
+              styles="aspect-video h-full  w-full rounded-sm overflow-hidden"
             />
             <span className="bg-Complementary/90 text-Primary-200 text-l absolute inset-0 flex h-full w-full items-center justify-center text-center">
               Video not available
             </span>
-          </Picture>
+          </div>
         </div>
       )}
     </>
