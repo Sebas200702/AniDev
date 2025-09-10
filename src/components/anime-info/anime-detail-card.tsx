@@ -7,10 +7,8 @@ import { PlayIcon } from '@components/icons/play-icon'
 import { TypeIcon } from '@components/icons/type-icon'
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+
 import { normalizeString } from '@utils/normalize-string'
-import { useState } from 'react'
 import type { AnimeDetail } from 'types'
 
 /**
@@ -67,58 +65,26 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className="bg-Complementary relative mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
+        className="bg-Complementary  mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
         title={anime.title}
       >
         <div className="absolute h-full w-full">
           <Picture
-            image={createImageUrlProxy(
-              anime.banner_image ??
-                anime.image_large_webp ??
-                `${baseUrl}/placeholder.webp`,
-              '0',
-              '0',
-              'webp'
-            )}
-            styles="w-full h-full object-cover object-center relative grayscale-100 md:group-hover:grayscale-40 transition-all ease-in-out duration-300"
-          >
-            <img
-              src={createImageUrlProxy(
-                anime.banner_image ??
-                  anime.image_large_webp ??
-                  `${baseUrl}/placeholder.webp`,
-                '500',
-                '60',
-                'webp'
-              )}
-              alt={normalizeString(anime.title)}
-              className="relative h-full w-full object-cover object-center"
-              loading="lazy"
-            />
-            <Overlay className="to-Primary-950 via-Primary-950/40 h-full w-full bg-gradient-to-l via-0% to-70%" />
-          </Picture>
+            image={anime.banner_image ?? anime.image_large_webp ?? ''}
+            placeholder={anime.banner_image ?? anime.image_large_webp ?? ''}
+            alt={normalizeString(anime.title)}
+            banner
+            styles="w-full h-full object-cover object-center grayscale-100 md:group-hover:grayscale-40 transition-all ease-in-out duration-300"
+          />
+          <Overlay className="to-Primary-950 via-Primary-950/40 h-full w-full bg-gradient-to-l via-0% to-70%" />
         </div>
         <Picture
-          image={createImageUrlProxy(
-            anime.image_small_webp ?? `${baseUrl}/placeholder.webp`,
-            '0',
-            '0',
-            'webp'
-          )}
-          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
-        >
-          <img
-            src={createImageUrlProxy(
-              anime.image_webp ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '70',
-              'webp'
-            )}
-            alt={anime.title}
-            className="relative aspect-[225/330] h-full w-full rounded-l-lg object-cover object-center"
-            loading="lazy"
-          />
-        </Picture>
+          placeholder={anime.image_small_webp ?? ''}
+          image={anime.image_webp ?? ''}
+          alt={normalizeString(anime.title)}
+          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg "
+        />
+
         <div className="z-20 flex h-full w-[80%] flex-col justify-between px-2 py-4 md:p-4 xl:p-6">
           <h3 className="text-l line-clamp-1">{anime.title}</h3>
 
