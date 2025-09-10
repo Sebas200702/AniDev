@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { navigate } from 'astro:transitions/client'
 import { AddToPlayListButton } from '@components/buttons/add-to-playlist-button'
 import { DownloadButton } from '@components/buttons/download-button'
@@ -14,6 +13,7 @@ import { useMusicPlayerStore } from '@store/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { normalizeString } from '@utils/normalize-string'
+import { useEffect, useState } from 'react'
 import type { AnimeSong } from 'types'
 
 export const AnimeMusicItem = ({
@@ -39,7 +39,6 @@ export const AnimeMusicItem = ({
     transform,
     isDragging,
   } = useSortable({ id: song.song_id })
-
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -109,10 +108,15 @@ export const AnimeMusicItem = ({
           <Overlay className="bg-Primary-950/90 h-full w-full overflow-hidden rounded-lg backdrop-blur-sm" />
         </div>
 
-        <Picture
-          image={createImageUrlProxy(placeholder ?? image, '100', '0', 'webp')}
-          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
-        >
+        <div className="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative">
+          <Picture
+            image={
+              placeholder ?? image
+              }
+            placeholder={image}
+            alt={song.song_title}
+            styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
+          />
           {isCurrentSong && (
             <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
               {heights.map((height, index) => (
@@ -136,14 +140,8 @@ export const AnimeMusicItem = ({
               </button>
             </div>
           )}
-
-          <img
-            src={createImageUrlProxy(image, '0', '70', 'webp')}
-            alt={song.song_title}
-            className="relative aspect-[225/330] h-full rounded-l-lg object-cover object-center"
-          />
           <Overlay className="group-hover:bg-Primary-950/40 bg-Primary-950/0 h-full w-full" />
-        </Picture>
+        </div>
 
         {song.type && (
           <span
