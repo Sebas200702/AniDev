@@ -33,17 +33,11 @@ export const Aside = ({
         className="aspect-[225/330] w-full rounded-lg overflow-hidden"
       >
         <Picture
-          image={createImageUrlProxy(smallImage, '0', '0', 'webp')}
+          image={smallImage}
+          placeholder={posterImage}
           styles="aspect-[225/330] w-full rounded-lg object-cover object-center transition-all ease-in-out overflow-hidden"
-        >
-          <img
-            className="relative aspect-[225/330] w-full  object-cover object-center transition-all ease-in-out"
-            src={createImageUrlProxy(posterImage, '500', '75', 'webp')}
-            alt={title}
-            loading="lazy"
-            title={`Representative image of ${title}`}
-          />
-        </Picture>
+          alt=''
+        />
       </GaleryImage>
       {children && (
         <div className="flex h-full w-full flex-row justify-end gap-2">
