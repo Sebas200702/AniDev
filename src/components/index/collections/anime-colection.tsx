@@ -285,27 +285,11 @@ export const AnimeCollection = ({ id }: Props) => {
           {animes.map((anime, i) => (
             <Picture
               key={anime.mal_id}
-              image={createImageUrlProxy(
-                anime.image_small_webp ?? `${baseUrl}/placeholder.webp`,
-                '0',
-                '0',
-                'webp'
-              )}
-              styles={`${getPosition(i)} w-full max-w-44 rounded-md relative`}
-            >
-              <img
-                src={createImageUrlProxy(
-                  anime.image_webp ?? `${baseUrl}/placeholder.webp`,
-                  '0',
-                  '70',
-                  'webp'
-                )}
-                alt={anime.title}
-                fetchPriority="high"
-                loading="lazy"
-                className="relative aspect-[225/330] h-auto w-full max-w-44 rounded-md object-cover object-center"
-              />
-            </Picture>
+              image={anime.image_webp || ''}
+              placeholder={anime.image_small_webp || ''}
+              styles={`${getPosition(i)} w-full rounded-md relative aspect-[225/330] h-auto max-w-44 rounded-md object-cover object-center`}
+              alt={anime.title}
+            />
           ))}
         </ul>
       </a>
