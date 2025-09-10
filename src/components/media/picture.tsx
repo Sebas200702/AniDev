@@ -1,3 +1,5 @@
+import { baseUrl } from '@utils/base-url'
+import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 /**
  * Picture component displays an image with a background placeholder for progressive loading.
  *
@@ -31,23 +33,43 @@
 export const Picture = ({
   styles,
   image,
-  children,
+  placeholder,
+  alt,
+  banner,
+
 }: {
   styles?: string
-  image: string
-  children: React.ReactNode
+  image?: string
+  placeholder?: string
+  alt: string
+  banner?: boolean
+
 }) => {
   return (
-    <figure className={`${styles} overflow-hidden`}>
-      {image ? (
-        <img
-          className="absolute inset-0 h-full w-full  object-cover object-center  blur-lg filter"
-          src={image}
-          alt="placeholder"
-          loading="lazy"
-        />
-      ) : null}
-      {children}
+    <figure className={`${styles} overflow-hidden relative`}>
+      <img
+        className="absolute inset-0 h-full w-full  object-cover object-center  blur-lg filter"
+        src={createImageUrlProxy(
+          placeholder ?? `${baseUrl}/placeholder`,
+          '100',
+          '0',
+          'webp'
+        )}
+        alt={alt}
+        loading="lazy"
+      />
+      <img
+        className={` h-full w-full relative object-cover object-center`}
+        src={createImageUrlProxy(
+          image ?? `${baseUrl}/placeholder`,
+          `${banner ? '1920' : '0'}`,
+          '75',
+          'webp'
+        )}
+        alt={alt}
+        loading="lazy"
+      />
+
     </figure>
   )
 }
