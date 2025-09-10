@@ -1,7 +1,5 @@
 import { Overlay } from '@components/layout/overlay'
 import { Picture } from '@components/media/picture'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import type { Character } from 'types'
 
@@ -17,28 +15,12 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       >
         <div className="relative aspect-[225/330] h-full flex-shrink-0 overflow-hidden rounded-l-xl">
           <Picture
-            image={createImageUrlProxy(
-              character.character_small_image_url ??
-                `${baseUrl}/placeholder.webp`,
-              '0',
-              '0',
-              'webp'
-            )}
-            styles="h-full w-full relative"
-          >
-            <img
-              src={createImageUrlProxy(
-                character.character_image_url ?? `${baseUrl}/placeholder.webp`,
-                '500',
-                '75',
-                'webp'
-              )}
-              alt={character.character_name}
-              className="relative h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/character:scale-105"
-              loading="lazy"
-            />
-            <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
-          </Picture>
+            placeholder={character.character_small_image_url}
+            styles="relative h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/character:scale-105"
+            image={character.character_image_url}
+            alt={`Representation of ${character.character_name}`}
+          />
+          <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
 
           <div className="from-enfasisColor/0 to-enfasisColor/20 absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 ease-in-out group-hover/character:opacity-100" />
         </div>
@@ -62,28 +44,12 @@ export const AnimeCharacterCard = ({ character }: { character: Character }) => {
       >
         <div className="relative aspect-[225/330] h-full flex-shrink-0 overflow-hidden rounded-r-xl">
           <Picture
-            image={createImageUrlProxy(
-              character.voice_actor_image_url ?? `${baseUrl}/placeholder.webp`,
-              '0',
-              '0',
-              'webp'
-            )}
-            styles="h-full w-full relative"
-          >
-            <img
-              src={createImageUrlProxy(
-                character.voice_actor_image_url ??
-                  `${baseUrl}/placeholder.webp`,
-                '500',
-                '75',
-                'webp'
-              )}
-              alt={character.voice_actor_name}
-              className="relative h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/actor:scale-105"
-              loading="lazy"
-            />
-            <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
-          </Picture>
+            image={character.voice_actor_image_url}
+            placeholder={character.voice_actor_image_url}
+            alt={character.voice_actor_name}
+            styles="relative h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/actor:scale-105"
+          />
+          <Overlay className="to-Primary-950/60 h-full w-full bg-gradient-to-b from-transparent" />
 
           <div className="from-enfasisColor/0 to-enfasisColor/20 absolute inset-0 bg-gradient-to-l opacity-0 transition-opacity duration-300 ease-in-out group-hover/actor:opacity-100" />
         </div>
