@@ -70,17 +70,17 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
       >
         <div className="absolute h-full w-full">
           <Picture
-            image={anime.banner_image ?? anime.image_large_webp ?? ''}
-            placeholder={anime.banner_image ?? anime.image_large_webp ?? ''}
+            image={anime.banner_image || anime.image_large_webp || ''}
+            placeholder={anime.banner_image || anime.image_large_webp || ''}
             alt={normalizeString(anime.title)}
-            banner
+            isBanner
             styles="w-full h-full object-cover object-center grayscale-100 md:group-hover:grayscale-40 transition-all ease-in-out duration-300"
           />
           <Overlay className="to-Primary-950 via-Primary-950/40 h-full w-full bg-gradient-to-l via-0% to-70%" />
         </div>
         <Picture
-          placeholder={anime.image_small_webp ?? ''}
-          image={anime.image_webp ?? ''}
+          placeholder={anime.image_small_webp || ''}
+          image={anime.image_webp || ''}
           alt={normalizeString(anime.title)}
           styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg "
         />
