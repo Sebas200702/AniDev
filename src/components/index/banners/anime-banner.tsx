@@ -172,9 +172,9 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           aria-label={`View details for ${title}`}
         >
           <Picture
-            image={imageUrl ?? ''}
-            placeholder={imageUrl ?? ''}
-            banner
+            image={imageUrl || ''}
+            placeholder={imageUrl || ''}
+            isBanner
             alt="Anime Banner"
             styles="aspect-[1080/500] h-full w-full  md:aspect-[1080/300] object-cover object-center relative"
           />
