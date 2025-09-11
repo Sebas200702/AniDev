@@ -1,5 +1,3 @@
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { Picture } from 'domains/shared/components/media/picture'
 
 /**
