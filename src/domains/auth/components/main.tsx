@@ -1,4 +1,4 @@
-import { Step1, Step2, Step3 } from '@components/auth/steps/index'
+import { Step1, Step2, Step3 } from 'domains/auth/components/steps/index'
 import { useStepsStore } from '@store/steps-store'
 
 interface Props {
