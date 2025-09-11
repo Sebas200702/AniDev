@@ -7,7 +7,7 @@ import { Header } from 'domains/shared/components/layout/base/Header'
 import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLayout'
 import { useEffect, useState } from 'react'
 import type { CharacterDetails, PersonAbout } from 'types'
-import { CharacterLoader } from '../../domains/character/components/character-loader'
+import { CharacterLoader } from 'domains/character/components/character-loader'
 
 interface Props {
   slug: string
