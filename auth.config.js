@@ -15,7 +15,6 @@ export default defineConfig({
   callbacks: {
     async jwt({ token, user }) {
       if (user?.email) {
-        // Buscar usuario por email (solo primera vez)
         const { data, error } = await supabaseAdmin.auth.admin.listUsers()
         if (error) throw error
 
@@ -23,7 +22,6 @@ export default defineConfig({
           (u) => u.email?.toLowerCase() === user.email?.toLowerCase()
         )
 
-        // Si no existe en Supabase → crearlo
         if (!supabaseUser) {
           const { data: created, error: createErr } =
             await supabaseAdmin.auth.admin.createUser({
@@ -57,7 +55,6 @@ export default defineConfig({
 
         token.supabaseUserId = supabaseUser.id
 
-        // Generar token válido para usar con supabase-js en el cliente
         const { data: link, error: linkErr } =
           await supabaseAdmin.auth.admin.generateLink({
             type: 'magiclink',
