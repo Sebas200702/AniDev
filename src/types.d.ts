@@ -506,10 +506,10 @@ export interface UserInfo {
   avatar: string | null
   banner_image: string | null
 }
-export interface BannerImage{
-    title: string,
-    banner_image :string,
-    mal_id : number
+export interface BannerImage {
+  title: string
+  banner_image: string
+  mal_id: number
 }
 export interface DataImage {
   type: string
