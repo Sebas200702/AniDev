@@ -1,4 +1,4 @@
-import { Aside } from '@components/auth/aside'
+import { Aside } from 'domains/auth/components/aside'
 import { Main } from 'domains/auth/components/main'
 import { toast } from '@pheralb/toast'
 import { useAuthFormStore } from '@store/auth-form-store'
