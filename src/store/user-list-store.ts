@@ -1,7 +1,7 @@
-import { CollectionIcon } from '@components/icons/collection-icon'
-import { CompletedIcon } from '@components/icons/completed-icon'
-import { ToWatchIcon } from '@components/icons/to-watch-icon'
-import { WatchingIcon } from '@components/icons/watch-icon'
+import { CollectionIcon } from 'domains/shared/components/icons/collection-icon'
+import { CompletedIcon } from 'domains/shared/components/icons/completed-icon'
+import { ToWatchIcon } from 'domains/shared/components/icons/to-watch-icon'
+import { WatchingIcon } from 'domains/shared/components/icons/watch-icon'
 import type { Section } from 'types'
 import { create } from 'zustand'
 

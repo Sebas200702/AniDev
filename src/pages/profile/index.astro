@@ -1,11 +1,8 @@
 ---
-import { Overlay } from '@components/layout/overlay'
-import { Picture } from '@components/media/picture'
-import { UserInfo } from '@components/profile/user-info'
-import { UserList } from '@components/profile/user-tabs/user-list'
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { UserInfo } from 'domains/user/components/user-info'
+import { UserList } from 'domains/user/components/user-tabs/user-list'
 
 const title = `Profile - ${baseTitle}`
 const description =

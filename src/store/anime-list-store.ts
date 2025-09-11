@@ -1,8 +1,8 @@
-import { CharacterIcon } from '@components/icons/character-icon'
-import { MusicIcon } from '@components/icons/music-icon'
-import { RelatedIcon } from '@components/icons/related-icon'
-import { SynopsisIcon } from '@components/icons/synopsis-icon'
-import { TrailerIcon } from '@components/icons/trailer-icon'
+import { CharacterIcon } from 'domains/shared/components/icons/character-icon'
+import { MusicIcon } from 'domains/shared/components/icons/music-icon'
+import { RelatedIcon } from 'domains/shared/components/icons/related-icon'
+import { SynopsisIcon } from 'domains/shared/components/icons/synopsis-icon'
+import { TrailerIcon } from 'domains/shared/components/icons/trailer-icon'
 import type { Section } from 'types'
 import { create } from 'zustand'
 

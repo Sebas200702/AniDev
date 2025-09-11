@@ -1,6 +1,6 @@
 ---
-import { WatchAnime } from '@components/watch-anime/watch-anime'
 import Layout from '@layouts/base.astro'
+import { WatchAnime } from 'domains/watch/components/watch-anime'
 const slug = Astro.params.slug ?? ''
 const currentEpisode = parseInt(Astro.url.searchParams.get('ep') ?? '1') || 1
 ---

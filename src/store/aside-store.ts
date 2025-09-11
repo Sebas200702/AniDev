@@ -1,8 +1,8 @@
-import { CalendarIcon } from '@icons/calendar-icon'
-import { HomeIcon } from '@icons/home-icon'
-import { UserIcon } from '@icons/user-icon'
+import { CalendarIcon } from 'domains/shared/components/icons/calendar-icon'
+import { HomeIcon } from 'domains/shared/components/icons/home-icon'
+import { UserIcon } from 'domains/shared/components/icons/user-icon'
 
-import { MusicIcon } from '@components/icons/music-icon'
+import { MusicIcon } from 'domains/shared/components/icons/music-icon'
 import { create } from 'zustand'
 
 interface AsideStore {

@@ -1,5 +1,5 @@
 import { navigate } from 'astro:transitions/client'
-import { BlockedContent } from '@components/common/blocked-content'
+import { BlockedContent } from 'domains/shared/components/blocked-content'
 import { useModal } from '@hooks/useModal'
 import { toast } from '@pheralb/toast'
 import { useGlobalUserPreferences } from '@store/global-user'
