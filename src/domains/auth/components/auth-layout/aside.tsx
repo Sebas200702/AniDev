@@ -1,9 +1,9 @@
+import { StepsComponent } from '@auth/components/auth-steps/steps'
 import { Favicon } from '@shared/components/icons/common/favicon'
 import { Picture } from '@shared/components/media/picture'
 import { baseUrl } from '@utils/base-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import { StepsComponent } from './auth-steps/steps'
 
 /**
  * Aside component for authentication pages.
