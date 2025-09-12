@@ -4,8 +4,8 @@ import { MusicCard } from '@music/components/music-card/music-card'
 import { toast } from '@pheralb/toast'
 import { LoadingCard } from '@search/components/search-results/loading-card'
 import { useSearchStoreResults } from '@search/stores/search-results-store'
-import { NotResultsFound } from 'domains/search/components/results/not-results-found'
-import { SearchResultsLoader } from 'domains/search/components/results/serch-results-loader'
+import { NotResultsFound } from '@search/components/search-results/not-results-found'
+import { SearchResultsLoader } from '@search/components/search-results/serch-results-loader'
 import { useEffect } from 'react'
 import {
   type AnimeCardInfo,
