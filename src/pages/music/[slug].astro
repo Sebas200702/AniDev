@@ -1,7 +1,7 @@
 ---
 import Layout from '@layouts/base.astro'
-import { ArtistInfoComponent } from 'domains/music/components/music-player/artist-info'
-import { MusicPlayList } from 'domains/music/components/music-player/music-playlist'
+import { ArtistInfoComponent } from '@music/components/music-player/artist-info/artist-info'
+import { MusicPlayList } from '@music/components/music-playlist/music-playlist'
 
 const { slug } = Astro.params
 const [_, theme_id] = slug?.split('_') ?? ['', '']

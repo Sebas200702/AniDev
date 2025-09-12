@@ -39,7 +39,7 @@ export const uploadImages = async (
     }
 
     if (payload.withPrompt) {
-      body.prompt = payload.prompt || '' 
+      body.prompt = payload.prompt || ''
     }
 
     const response = await fetch(url, {

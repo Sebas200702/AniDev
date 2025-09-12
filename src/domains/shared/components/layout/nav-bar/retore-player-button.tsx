@@ -1,6 +1,6 @@
-import { useMusicPlayerStore } from '@store/music-player-store'
-import { MusicIcon } from 'domains/shared/components/icons/music-icon'
-import { Picture } from 'domains/shared/components/media/picture'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { MusicIcon } from '@shared/components/icons/music/music-icon'
+import { Picture } from '@shared/components/media/picture'
 
 export const RestorePlayerButton = () => {
   const { isHidden, setIsHidden, isPlaying, currentSong } =

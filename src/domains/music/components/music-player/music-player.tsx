@@ -1,7 +1,7 @@
-import { useMusicPlayerSync } from '@hooks/useMusicPlayerSync'
-import { usePlayerBehavior } from '@hooks/usePlayerBehavior'
-import { usePlayerDragging } from '@hooks/usePlayerDragging'
-import { useMusicPlayerStore } from '@store/music-player-store'
+import { useMusicPlayerSync } from '@music/hooks/useMusicPlayerSync'
+import { usePlayerBehavior } from '@music/hooks/usePlayerBehavior'
+import { usePlayerDragging } from '@music/hooks/usePlayerDragging'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import {
   type MediaPlayerInstance,
@@ -11,11 +11,11 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { ToastType } from 'types'
 
+import { Cover } from '@music/components/music-player/music-info/cover'
+import { Header } from '@music/components/music-player/music-info/header'
 import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 import { CustomControls } from 'domains/music/components/music-player/controls'
-import { Cover } from 'domains/music/components/music-player/cover'
 import { CustomLayout } from 'domains/music/components/music-player/custom-layout'
-import { Header } from 'domains/music/components/music-player/header'
 
 export const MusicPlayer = () => {
   const {
@@ -48,8 +48,8 @@ export const MusicPlayer = () => {
       await Promise.all([
         import('@vidstack/react/player/styles/default/theme.css'),
         import('@vidstack/react/player/styles/default/layouts/audio.css'),
-        import('@styles/video.css'),
-        import('@styles/player.css'),
+        import('@music/styles/video.css'),
+        import('@music/styles/player.css'),
       ])
     }
     loadCSS()

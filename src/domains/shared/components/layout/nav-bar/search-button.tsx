@@ -1,5 +1,5 @@
-import { useModal } from '@hooks/useModal'
-import { SearchBar } from 'domains/search/components/search-bar'
+import { SearchBar } from '@search/components/search-global/search-bar'
+import { useModal } from '@shared/hooks/useModal'
 
 /**
  * SearchButton component provides a clickable button to open the search interface.

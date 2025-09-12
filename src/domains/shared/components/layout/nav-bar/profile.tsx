@@ -1,8 +1,8 @@
-import { useGlobalUserPreferences } from '@store/global-user'
+import { SettingsIcon } from '@shared/components/icons/common/settings-icon'
+import { UserIcon } from '@shared/components/icons/user/user-icon'
+import { Picture } from '@shared/components/media/picture'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { signOut } from 'auth-astro/client'
-import { SettingsIcon } from 'domains/shared/components/icons/settings-icon'
-import { UserIcon } from 'domains/shared/components/icons/user-icon'
-import { Picture } from 'domains/shared/components/media/picture'
 import { useEffect, useRef } from 'react'
 
 /**

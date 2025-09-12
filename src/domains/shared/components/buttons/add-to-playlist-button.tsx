@@ -1,7 +1,7 @@
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { toast } from '@pheralb/toast'
-import { useMusicPlayerStore } from '@store/music-player-store'
-import { AddToPlayList } from 'domains/shared/components/icons/add-to-play-list-icon'
-import { DeleteIcon } from 'domains/shared/components/icons/delete-icon'
+import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
+import { AddToPlayList } from '@shared/components/icons/music/add-to-play-list-icon'
 import type { AnimeSongWithImage } from 'types'
 import { ToastType } from 'types'
 

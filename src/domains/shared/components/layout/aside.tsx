@@ -1,5 +1,5 @@
-import { useAsideStore } from '@store/aside-store'
-import { Logo } from 'domains/shared/components/logo'
+import { Logo } from '@shared/components/ui/logo'
+import { useAsideStore } from '@shared/stores/aside-store'
 import { useEffect } from 'react'
 
 export const AsideNav = () => {

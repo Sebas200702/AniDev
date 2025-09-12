@@ -1,7 +1,7 @@
 import { navigate } from 'astro:transitions/client'
-import { useGlobalUserPreferences } from '@store/global-user'
+import { RandomIcon } from '@shared/components/icons/anime/random-icon'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { normalizeString } from '@utils/normalize-string'
-import { RandomIcon } from 'domains/shared/components/icons/random-icon'
 
 /**
  * RandomAnimeButton component provides a button to navigate to a random anime.

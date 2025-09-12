@@ -1,7 +1,7 @@
-import { useModal } from '@hooks/useModal.tsx'
-import { ExpandIconV2 } from 'domains/shared/components/icons/expand-icon'
+import { ExpandIconV2 } from '@shared/components/icons/common/expand-icon'
+import { ImageViewer } from '@shared/components/media/image-viewer'
+import { useModal } from '@shared/hooks/useModal'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import { ImageViewer } from 'domains/shared/components/media/image-viewer'
 import type { ImageType } from 'types'
 
 interface Props {

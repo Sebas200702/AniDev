@@ -1,9 +1,13 @@
 import { navigate } from 'astro:transitions/client'
-import { NextPrevButton } from 'domains/music/components/music-player/next-prev-button'
-import { ExpandIcon } from 'domains/shared/components/icons/expand-icon'
-import { MuteIcon } from 'domains/shared/components/icons/muted-icon'
+import { NextPrevButton } from '@music/components/music-player/button/next-prev-button'
+import { ExpandIcon } from '@shared/components/icons/common/expand-icon'
+import { MuteIcon } from '@shared/components/icons/watch/muted-icon'
 
-import { useMusicPlayerStore } from '@store/music-player-store'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
+import { PlayIcon } from '@shared/components/icons/watch/play-icon'
+import { VolumeHighIcon } from '@shared/components/icons/watch/volumen-high-icon'
+import { VolumeLowIcon } from '@shared/components/icons/watch/volumen-low-icon'
 import { normalizeString } from '@utils/normalize-string'
 import {
   Controls,
@@ -13,10 +17,6 @@ import {
   TimeSlider,
   VolumeSlider,
 } from '@vidstack/react'
-import { PauseIcon } from 'domains/shared/components/icons/pause-icon'
-import { PlayIcon } from 'domains/shared/components/icons/play-icon'
-import { VolumeHighIcon } from 'domains/shared/components/icons/volumen-high-icon'
-import { VolumeLowIcon } from 'domains/shared/components/icons/volumen-low-icon'
 
 interface Props {
   muted: boolean

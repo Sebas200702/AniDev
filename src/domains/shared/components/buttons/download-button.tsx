@@ -1,7 +1,7 @@
-import { useModal } from '@hooks/useModal'
 import { toast } from '@pheralb/toast'
+import { useModal } from '@shared/hooks/useModal'
 import { DownloadModalContent } from 'domains/download/components/download-modal-content'
-import { DownloadIcon } from 'domains/shared/components/icons/download-icon'
+import { DownloadIcon } from '@shared/components/icons/common/download-icon'
 import { useState } from 'react'
 import { ToastType } from 'types'
 

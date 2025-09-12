@@ -1,5 +1,5 @@
-import { useFetch } from '@hooks/useFetch'
-import { Picture } from 'domains/shared/components/media/picture'
+import { Picture } from '@shared/components/media/picture'
+import { useFetch } from '@shared/hooks/useFetch'
 import { AnimeEpisodesLoader } from 'domains/watch/components/episodes/anime-episodes-loader'
 import Pagination from 'domains/watch/components/episodes/pagination'
 import { useEffect, useState } from 'react'

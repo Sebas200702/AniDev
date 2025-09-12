@@ -1,6 +1,6 @@
 ---
-import { ArtistInfo } from 'domains/artist/components/ArtistInfo'
 import Layout from '@layouts/base.astro'
+import { ArtistInfo } from '@artist/components/artist-info/ArtistInfo'
 const { slug } = Astro.params
 const [name] = slug?.split('_') ?? ['']
 ---

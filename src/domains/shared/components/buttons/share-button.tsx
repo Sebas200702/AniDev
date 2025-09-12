@@ -1,4 +1,4 @@
-import { ShareIcon } from 'domains/shared/components/icons/share-icon'
+import { ShareIcon } from '@shared/components/icons/common/share-icon'
 interface Props {
   /**
    * The title of the anime to be shared.

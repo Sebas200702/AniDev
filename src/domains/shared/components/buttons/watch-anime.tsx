@@ -1,4 +1,4 @@
-import { PlayIcon } from 'domains/shared/components/icons/play-icon'
+import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 
 /**
  * WatchAnimeButton component renders a button to watch an anime.

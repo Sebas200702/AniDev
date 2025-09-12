@@ -75,7 +75,6 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     throw new Error('Missing image URL')
   }
 
-
   if (imageUrl.startsWith('blob:')) {
     return new Response(
       JSON.stringify({

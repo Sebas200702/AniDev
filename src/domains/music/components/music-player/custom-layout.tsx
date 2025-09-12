@@ -1,9 +1,9 @@
-import { useMusicPlayerStore } from '@store/music-player-store'
+import { NextPrevButton } from '@music/components/music-player/button/next-prev-button'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { Menu } from '@vidstack/react'
 import { DefaultVideoLayout } from '@vidstack/react/player/layouts/default'
-import { NextPrevButton } from 'domains/music/components/music-player/next-prev-button'
 import type { AnimeSongWithImage } from 'types'
-import { customIcons } from './custom-icons'
+import { customIcons } from './custom-icons/custom-icons'
 
 export const CustomLayout = () => {
   const { variants, src, setSrc, type } = useMusicPlayerStore()

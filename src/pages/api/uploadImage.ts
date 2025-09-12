@@ -356,7 +356,6 @@ const handleJson = async (request: Request, userId: string) => {
 }
 
 export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
-
   try {
     const userInfo = await getSessionUserInfo({
       request,

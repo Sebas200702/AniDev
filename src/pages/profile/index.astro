@@ -1,8 +1,8 @@
 ---
 import Layout from '@layouts/base.astro'
+import { UserInfo } from '@user/components/user-dashboard/user-info'
+import { UserList } from '@user/components/user-dashboard/user-list'
 import { baseTitle } from '@utils/base-url'
-import { UserInfo } from 'domains/user/components/user-info'
-import { UserList } from 'domains/user/components/user-tabs/user-list'
 
 const title = `Profile - ${baseTitle}`
 const description =
@@ -13,7 +13,6 @@ const description =
   <section
     class="p-y mx-auto mt-16 flex w-full flex-col gap-24 px-4 text-white md:gap-16 md:px-20"
   >
-
     <UserInfo client:load />
 
     <div class="relative">

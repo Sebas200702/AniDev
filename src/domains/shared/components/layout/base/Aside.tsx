@@ -1,8 +1,7 @@
-
 import { createAnimeImageList } from '@utils/create-image-list'
 
-import { GaleryImage } from 'domains/shared/components/media/galery-image'
-import { Picture } from 'domains/shared/components/media/picture'
+import { GaleryImage } from '@shared/components/media/galery-image'
+import { Picture } from '@shared/components/media/picture'
 import type { ReactNode } from 'react'
 
 interface Props {

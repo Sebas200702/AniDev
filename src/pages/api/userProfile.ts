@@ -40,8 +40,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
       formData.getAll('favorite_genres')
     ).filter(Boolean)
 
-
-
     const filterNonNullFields = (data: Record<string, any>) => {
       const filtered: Record<string, any> = {}
 
@@ -95,7 +93,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
 
       result = { data, error }
     } else {
-
       const { data, error } = await supabase
         .from('user_profiles')
         .insert(profileData)

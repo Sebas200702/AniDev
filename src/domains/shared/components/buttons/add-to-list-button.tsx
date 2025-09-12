@@ -1,8 +1,8 @@
 import { toast } from '@pheralb/toast'
-import { useGlobalUserPreferences } from '@store/global-user'
-import { useUserListsStore } from '@store/user-list-store'
-import { AddToListIcon } from 'domains/shared/components/icons/add-to-list-icon'
-import { DeleteIcon } from 'domains/shared/components/icons/delete-icon'
+import { AddToListIcon } from '@shared/components/icons/anime/add-to-list-icon'
+import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
+import { useUserListsStore } from '@user/stores/user-list-store'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
 
