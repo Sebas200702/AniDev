@@ -1,8 +1,8 @@
+import { Aside } from '@auth/components/auth-layout/aside'
 import { Main } from '@auth/components/auth-layout/main'
 import { useAuthFormStore } from '@auth/stores/auth-form-store'
 import { useStepsStore } from '@auth/stores/steps-store'
 import { toast } from '@pheralb/toast'
-import { Aside } from 'domains/auth/components/aside'
 import { useEffect } from 'react'
 import { ToastType } from 'types'
 
@@ -85,7 +85,7 @@ export const Formulary = ({ title, bgImage, step }: Props) => {
 
   return (
     <section className="flex  w-full items-center justify-center px-4 text-white h-full max-h-[75vh] md:mt-20 md:px-20">
-      <article className="bg-Complementary border-enfasisColor/30 relative flex h-full   w-full max-w-7xl rounded-lg border-1 ">
+      <article className="bg-Complementary border-enfasisColor/30 relative flex h-full overflow-hidden  w-full max-w-7xl rounded-lg border-1 ">
         <Aside bgImage={bgImage ?? ''} isSignUp={isSignUp} />
         <Main isLoading={isLoading} isSignUp={isSignUp} title={title} />
       </article>
