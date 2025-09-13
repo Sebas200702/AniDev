@@ -16,7 +16,7 @@
       "@music/*": ["domains/music/*"],
       "@schedule/*": ["domains/schedule/*"],
       "@search/*": ["domains/search/*"],
-      "@seiyuus/*": ["domains/seiyuus/*"],
+      "@seiyuu/*": ["domains/seiyuu/*"],
       "@shared/*": ["domains/shared/*"],
       "@user/*": ["domains/user/*"],
       "@watch/*": ["domains/watch/*"],
