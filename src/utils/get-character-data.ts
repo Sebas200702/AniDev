@@ -1,5 +1,5 @@
 import { navigate } from 'astro:transitions/client'
-import type { CharacterDetails } from 'types'
+import type { CharacterDetails } from '@character/types'
 
 /**
  * Fetches character data based on the provided slug.
