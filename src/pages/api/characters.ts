@@ -4,7 +4,7 @@ import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { getFilters } from '@utils/get-filters-of-search-params'
 import type { APIRoute } from 'astro'
-import { CharacterFilters } from 'types'
+import { CharacterFilters } from '@character/types'
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
