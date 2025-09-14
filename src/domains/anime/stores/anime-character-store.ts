@@ -1,4 +1,4 @@
-import type { Character } from 'types'
+import type { Character } from '@character/types'
 import { create } from 'zustand'
 
 interface CharacterStore {
