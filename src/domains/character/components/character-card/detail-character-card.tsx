@@ -1,7 +1,7 @@
 import { Picture } from '@shared/components/media/picture'
 import { normalizeString } from '@utils/normalize-string'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { Character } from 'types'
+import type { Character } from '@character/types'
 
 export const AnimeCharacterCard = ({ character }: { character: Character }) => {
   return (
