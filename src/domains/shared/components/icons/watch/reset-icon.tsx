@@ -1,6 +1,4 @@
-interface IconProps {
-  className?: string
-}
+import type { IconProps } from '@shared/types'
 
 export const ResetIcon = ({ className }: IconProps) => {
   return (
