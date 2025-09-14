@@ -1,7 +1,7 @@
-import type { ImagePayload, UserInfo } from 'types'
+import type { ImagePayload, UserInfo } from '@user/types'
 
 export const uploadImages = async (
-  payload: ImagePayload & { withPrompt?: boolean }, // 👈 agregamos la bandera
+  payload: ImagePayload & { withPrompt?: boolean },
   userInfo: UserInfo | null,
   url: string
 ) => {
@@ -20,7 +20,7 @@ export const uploadImages = async (
     form.set('isBanner', String(!!payload.isBanner))
 
     if (payload.withPrompt) {
-      form.set('prompt', payload.prompt || '') // 👈 si editing, mandamos el prompt
+      form.set('prompt', payload.prompt || '')
     }
 
     const res = await fetch(url, {
