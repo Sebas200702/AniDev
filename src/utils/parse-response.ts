@@ -1,4 +1,4 @@
-import type { ApiJsonResponse } from 'types'
+import type { ApiJsonResponse } from '@shared/types'
 
 /**
  * Parses a Response object into either a JSON object or a string based on the content type.
