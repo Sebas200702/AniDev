@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 /**
  * EpisodeIcon component renders an icon representing an episode or media content.
  *
