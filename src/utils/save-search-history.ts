@@ -1,4 +1,4 @@
-import type { SearchHistory, UserInfo } from 'types'
+import type { SearchHistory, UserInfo } from '@user/types'
 
 export const saveSearchHistory = async (
   history: SearchHistory[],
