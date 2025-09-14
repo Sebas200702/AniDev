@@ -2,7 +2,7 @@ import { AnimeCharacterLoader } from '@anime/components/anime-charcaters/anime-c
 import { useCharacterStore } from '@anime/stores/anime-character-store'
 import { AnimeCharacterCard } from '@character/components/character-card/detail-character-card'
 import { useEffect, useRef } from 'react'
-import type { Character } from 'types'
+import type { Character } from '@character/types'
 
 export const AnimeCaterList = ({
   animeId,
