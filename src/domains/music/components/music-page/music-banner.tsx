@@ -7,7 +7,7 @@ import { getLatestSongs } from '@utils/music'
 import { shuffleArray } from '@utils/shuffle-array'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import { useEffect, useState } from 'react'
-import { type AnimeSongWithImage } from 'types'
+import { type AnimeSongWithImage } from '@music/types'
 
 export const MusicBanner = () => {
   const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
