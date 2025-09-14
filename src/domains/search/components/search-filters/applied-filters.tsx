@@ -1,7 +1,7 @@
 import { useSearchStoreResults } from '@search/stores/search-results-store'
+import type { AppliedFilters } from '@search/types'
 import { TagIcon } from '@shared/components/icons/search/tag-icon'
 import { useCallback, useMemo } from 'react'
-import type { AppliedFilters } from 'types'
 export const AppliedFiltersComponent = () => {
   const { appliedFilters, setAppliedFilters } = useSearchStoreResults()
   const appliedFiltersEntries = useMemo(
