@@ -1,4 +1,5 @@
-import { AnimeTypes } from 'types'
+import { AnimeTypes } from "@anime/types"
+
 
 /**
  * typeColors function returns a Tailwind CSS color class based on the anime type.
