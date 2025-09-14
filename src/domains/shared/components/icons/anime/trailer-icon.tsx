@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * TrailerIcon component renders an SVG icon representing a video trailer.
