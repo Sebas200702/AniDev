@@ -1,8 +1,8 @@
 import { ExpandIconV2 } from '@shared/components/icons/common/expand-icon'
 import { ImageViewer } from '@shared/components/media/image-viewer'
 import { useModal } from '@shared/hooks/useModal'
+import type { ImageType } from '@shared/types'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { ImageType } from 'types'
 
 interface Props {
   children: React.ReactNode
