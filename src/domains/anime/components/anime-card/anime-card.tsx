@@ -10,7 +10,7 @@ import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { AnimeCardInfo } from 'types'
+import type { AnimeCardInfo } from '@anime/types'
 
 /**
  * AnimeCard component displays information about an anime including its title, image, and status.
