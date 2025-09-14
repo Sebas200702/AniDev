@@ -1,12 +1,14 @@
 import { useIndexStore } from '@shared/stores/index-store'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect, useState } from 'react'
-import type { AnimeCollectionInfo, Collection } from 'types'
 
+
+import type { AnimeCollectionInfo } from '@anime/types'
 import { Picture } from '@shared/components/media/picture'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { addFailedUrlClient } from '@utils/failed-urls-client'
 import { normalizeString } from '@utils/normalize-string'
+import type { Collection } from '@collection/types'
 
 interface Props {
   /**
@@ -60,7 +62,6 @@ export const AnimeCollection = ({ id }: Props) => {
   const [loading, setLoading] = useState(true)
   const [animes, setAnimes] = useState<AnimeCollectionInfo[]>([])
   const [title, setTitle] = useState('')
-  const [_query, setQuery] = useState('')
 
   /**
    * Checks if a collection is unique by comparing the IDs of the anime entries.
@@ -81,7 +82,6 @@ export const AnimeCollection = ({ id }: Props) => {
         const parsedData = JSON.parse(storedData)
         setAnimes(parsedData.animes)
         setTitle(parsedData.title)
-        setQuery(parsedData.query)
         setTimeout(() => {
           setLoading(false)
         }, 200)
@@ -92,7 +92,6 @@ export const AnimeCollection = ({ id }: Props) => {
         30,
         parentalControl
       )
-      setQuery(url)
 
       const data = await fetchAnimes(url, generatedTitle)
 
