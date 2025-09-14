@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * SpringIcon component renders an icon representing a spring or seasonal anime.
