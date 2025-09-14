@@ -4,7 +4,7 @@ import { BlockedContent } from '@shared/components/ui/blocked-content'
 import { useModal } from '@shared/hooks/useModal'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect, useState } from 'react'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
 
 interface UseBlockedContentProps {
   id: string
