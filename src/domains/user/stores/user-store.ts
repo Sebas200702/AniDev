@@ -1,4 +1,4 @@
-import type { UserInfo, WatchList } from 'types'
+import type { UserInfo, WatchList } from '@user/types'
 import { create } from 'zustand'
 
 /**
