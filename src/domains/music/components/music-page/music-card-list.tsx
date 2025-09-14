@@ -1,6 +1,6 @@
 import { MusicCard } from '@music/components/music-card/music-card'
 import { useFetch } from '@shared/hooks/useFetch'
-import type { AnimeSongWithImage } from 'types'
+import type { AnimeSongWithImage } from '@music/types'
 
 export const MusicCardLayout = () => {
   const { data: trending, loading: trendingLoading } = useFetch<
