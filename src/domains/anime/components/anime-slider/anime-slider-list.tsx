@@ -7,7 +7,7 @@ import { SliderHeader } from '@anime/components/anime-slider/slider-header'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useWindowWidth } from '@shared/hooks/window-width'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import type { AnimeCardInfo } from 'types'
+import type { AnimeCardInfo } from '@anime/types'
 
 interface Props {
   url: string
