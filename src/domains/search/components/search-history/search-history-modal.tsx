@@ -5,7 +5,7 @@ import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { deleteSearchHistory } from '@utils/delete-search-history'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useEffect, useRef } from 'react'
-import type { AppliedFilters } from 'types'
+import type { AppliedFilters } from '@search/types'
 
 interface SearchHistoryModalProps {
   isOpen: boolean
