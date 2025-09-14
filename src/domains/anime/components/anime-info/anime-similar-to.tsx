@@ -3,7 +3,7 @@ import { LoadingCard } from '@search/components/search-results/loading-card'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { MainInfo } from 'domains/shared/components/layout/base/MainInfo'
-import type { AnimeCardInfo } from 'types'
+import type { AnimeCardInfo } from '@anime/types'
 
 interface Props {
   title: string
