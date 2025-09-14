@@ -4,7 +4,7 @@ import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
 import { useUserListsStore } from '@user/stores/user-list-store'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect } from 'react'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
 
 export const AddToListButton = ({
   animeId,
