@@ -1,4 +1,4 @@
-import type { Section } from 'types'
+import type { Section } from '@shared/types'
 import { create } from 'zustand'
 
 interface CalendarListStore {
