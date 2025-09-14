@@ -7,10 +7,9 @@ import { ZoomOutIcon } from '@shared/components/icons/media/zoom-out-icon'
 import { NextIcon } from '@shared/components/icons/watch/next-icon'
 import { PreviousIcon } from '@shared/components/icons/watch/previous-icon'
 import { ResetIcon } from '@shared/components/icons/watch/reset-icon'
-import { useGlobalModal } from '@shared/stores/modal-store'
+import type { ImageType } from '@shared/types'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { ImageType } from 'types'
 
 interface ImageViewerProps {
   onClose: () => void
