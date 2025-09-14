@@ -1,9 +1,10 @@
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import type { AnimeSongWithImage } from '@music/types'
 import { toast } from '@pheralb/toast'
 import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
 import { AddToPlayList } from '@shared/components/icons/music/add-to-play-list-icon'
-import type { AnimeSongWithImage } from 'types'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
+
 
 interface Props {
   song: AnimeSongWithImage
