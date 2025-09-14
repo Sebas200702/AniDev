@@ -7,7 +7,7 @@ import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { AnimeTopInfo } from 'types'
+import type { AnimeTopInfo } from '@anime/types'
 
 /**
  * AnimeTopItem component displays a single item in the top anime list.
