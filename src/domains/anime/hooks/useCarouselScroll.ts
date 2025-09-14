@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 
-import type { AnimeBannerInfo } from 'types'
+import type { AnimeBannerInfo } from '@anime/types'
 
 /**
  * useCarouselScroll is a custom hook that manages the scrolling behavior of a carousel.
