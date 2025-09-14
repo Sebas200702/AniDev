@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * AiredToIcon component renders an icon representing the end date an anime aired.
