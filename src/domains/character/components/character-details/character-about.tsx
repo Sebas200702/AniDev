@@ -1,5 +1,5 @@
 import { MainInfo } from '@shared/components/layout/base/MainInfo'
-import type { PersonAbout } from 'types'
+import type { PersonAbout } from '@user/types'
 
 interface Props {
   about: PersonAbout
