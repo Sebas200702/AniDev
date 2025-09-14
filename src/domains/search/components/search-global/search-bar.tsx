@@ -1,16 +1,22 @@
 import { navigate } from 'astro:transitions/client'
 import { AnimeDetailCard } from '@anime/components/anime-card/anime-detail-card'
+import type { AnimeCardInfo, AnimeDetail } from '@anime/types'
 import { AnimeCharacterCard } from '@character/components/character-card/detail-character-card'
+import type { Character } from '@character/types'
 import { AnimeMusicItem } from '@music/components/music-card/music-detail-card'
+import type { AnimeSongWithImage } from '@music/types'
 import { toast } from '@pheralb/toast'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { useSearchStoreResults } from '@search/stores/search-results-store'
+import { useDebounce } from '@search/stores/useDebounce'
+import { SearchType } from '@search/types'
+import { typeSearchOptions } from '@search/utils/constants'
 import { SearchIcon } from '@shared/components/icons/search/search-icon'
 import { useAutoCloseModal } from '@shared/hooks/useAutoCloseModal'
-import { useDebounce } from '@search/stores/useDebounce'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useModal } from '@shared/hooks/useModal'
 import { useShortcuts } from '@shared/hooks/useShortCuts'
+import { ToastType, shortCuts } from '@shared/types'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { baseUrl } from '@utils/base-url'
 import { deleteSearchHistory } from '@utils/delete-search-history'
@@ -19,16 +25,6 @@ import { loadSearchHistory } from '@utils/load-search-history'
 import { normalizeString } from '@utils/normalize-string'
 import { saveSearchHistory } from '@utils/save-search-history'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import {
-  type AnimeCardInfo,
-  type AnimeDetail,
-  type AnimeSongWithImage,
-  type Character,
-  SearchType,
-  ToastType,
-  shortCuts,
-  typeSearchOptions,
-} from 'types'
 
 export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
   const { closeModal, openModal, isOpen: isModalOpen } = useModal()
