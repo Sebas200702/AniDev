@@ -1,19 +1,17 @@
 import { AnimeCard } from '@anime/components/anime-card/anime-card'
+import type { AnimeCardInfo } from '@anime/types'
 import { CharacterCard } from '@character/components/character-card/character-card'
+import type { Character } from '@character/types'
 import { MusicCard } from '@music/components/music-card/music-card'
+import type { AnimeSongWithImage } from '@music/types'
 import { toast } from '@pheralb/toast'
 import { LoadingCard } from '@search/components/search-results/loading-card'
-import { useSearchStoreResults } from '@search/stores/search-results-store'
 import { NotResultsFound } from '@search/components/search-results/not-results-found'
 import { SearchResultsLoader } from '@search/components/search-results/serch-results-loader'
+import { useSearchStoreResults } from '@search/stores/search-results-store'
+import { SearchType } from '@search/types'
+import { ToastType } from '@shared/types'
 import { useEffect } from 'react'
-import {
-  type AnimeCardInfo,
-  type AnimeSongWithImage,
-  type Character,
-  SearchType,
-  ToastType,
-} from 'types'
 
 /**
  * SearchResults component displays search results for anime, music, and characters based on user queries and filters.
@@ -117,13 +115,11 @@ export const SearchResults = () => {
     if (!results) return null
 
     if (currentType === SearchType.MUSIC && isMusicData(results)) {
-      return (results as AnimeSongWithImage[]).map((song) => (
-        <MusicCard key={song.song_id} song={song} />
-      ))
+      return results.map((song) => <MusicCard key={song.song_id} song={song} />)
     }
 
     if (currentType === SearchType.CHARACTERS && isCharacterData(results)) {
-      return (results as Character[]).map((character) => (
+      return results.map((character) => (
         <CharacterCard
           key={`${character.character_id}_${character.voice_actor_id}`}
           character={character}
@@ -132,7 +128,7 @@ export const SearchResults = () => {
     }
 
     if (currentType === SearchType.ANIMES && isAnimeData(results)) {
-      return (results as AnimeCardInfo[]).map((anime) => (
+      return results.map((anime) => (
         <AnimeCard key={anime.mal_id} anime={anime} />
       ))
     }
