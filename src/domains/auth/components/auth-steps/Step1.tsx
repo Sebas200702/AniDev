@@ -6,9 +6,10 @@ import { toast } from '@pheralb/toast'
 import { EmailIcon } from '@shared/components/icons/auth/email-icon'
 import { PasswordIcon } from '@shared/components/icons/auth/password-icon'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
+import { ToastType } from '@shared/types'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
+import type { UserInfo } from '@user/types'
 import { parseResponse } from '@utils/parse-response'
-import { ToastType, type UserInfo } from 'types'
 
 interface Props {
   isLoading: boolean
