@@ -1,5 +1,5 @@
 import { useFetch } from '@shared/hooks/useFetch'
-import type { AnimeSongWithImage } from 'types'
+import type { AnimeSongWithImage } from '@music/types'
 import { AnimeMusicItem } from '../music-card/music-detail-card'
 
 export const MusicItemsLayout = () => {
