@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * SummerIcon component renders a sun icon with radiating beams.
