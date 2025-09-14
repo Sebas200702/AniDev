@@ -1,4 +1,4 @@
-import type { AnimeBannerInfo } from 'types'
+import type { AnimeBannerInfo } from '@anime/types'
 /**
  * CarouselStore manages state for the anime carousel component.
  *
