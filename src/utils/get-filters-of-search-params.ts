@@ -1,5 +1,7 @@
+import { MusicFilters } from '@music/types'
+import { Filters } from '@shared/types'
 import { normalizeString } from '@utils/normalize-string'
-import { Filters, MusicFilters } from 'types'
+
 
 /**
  * Processes URL search parameters to extract and format filter values.
