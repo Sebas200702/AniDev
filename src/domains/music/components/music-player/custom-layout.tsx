@@ -2,7 +2,7 @@ import { NextPrevButton } from '@music/components/music-player/button/next-prev-
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { Menu } from '@vidstack/react'
 import { DefaultVideoLayout } from '@vidstack/react/player/layouts/default'
-import type { AnimeSongWithImage } from 'types'
+import type { AnimeSongWithImage } from '@music/types'
 import { customIcons } from './custom-icons/custom-icons'
 
 export const CustomLayout = () => {
