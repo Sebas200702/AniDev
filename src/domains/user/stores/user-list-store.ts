@@ -2,7 +2,7 @@ import { CollectionIcon } from '@shared/components/icons/anime/collection-icon'
 import { CompletedIcon } from '@shared/components/icons/anime/completed-icon'
 import { ToWatchIcon } from '@shared/components/icons/user/to-watch-icon'
 import { WatchingIcon } from '@shared/components/icons/watch/watch-icon'
-import type { Section } from 'types'
+import type { Section } from '@shared/types'
 import { create } from 'zustand'
 
 /**
