@@ -1,9 +1,9 @@
 import { Picture } from '@shared/components/media/picture'
 import { normalizeString } from '@utils/normalize-string'
-import type { VoiceActor } from 'types'
+import type { Seiyuu } from '@seiyuu/types'
 
 interface Props {
-  seiyuu: VoiceActor
+  seiyuu: Seiyuu
 }
 export const SeiyuuCard = ({ seiyuu }: Props) => {
   return (
