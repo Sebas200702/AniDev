@@ -1,5 +1,5 @@
+import type { ImageType } from '@shared/types'
 import { baseUrl } from '@utils/base-url'
-import type { ImageType } from 'types'
 
 /**
  * Creates a single ImageType object with proper fallbacks
