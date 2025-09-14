@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * TitleJapaneseIcon component renders an icon representing Japanese title text.
