@@ -1,17 +1,15 @@
 import { ArtistAbout } from '@artist/components/artist-info/ArtistAbout'
 import { ArtistLoader } from '@artist/components/artist-info/ArtistLoader'
 import { ArtistSongList } from '@artist/components/artist-info/ArtistSongList'
+import type { ArtistInfo as ArtistInfoType } from '@artist/types'
+import type { AnimeSongWithImage } from '@music/types'
+import { Aside } from '@shared/components/layout/base/Aside'
+import { Header } from '@shared/components/layout/base/Header'
+import { InfoPageLayout } from '@shared/components/layout/base/InfoPageLayout'
 import { DinamicBanner } from '@shared/components/ui/dinamic-banner'
 import { useFetch } from '@shared/hooks/useFetch'
-import { Aside } from 'domains/shared/components/layout/base/Aside'
-import { Header } from 'domains/shared/components/layout/base/Header'
-import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLayout'
+import type { PersonAbout } from '@user/types'
 import { useEffect, useState } from 'react'
-import type {
-  AnimeSongWithImage,
-  ArtistInfo as ArtistInfoType,
-  PersonAbout,
-} from 'types'
 interface Props {
   name: string
 }
