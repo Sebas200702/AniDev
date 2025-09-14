@@ -1,9 +1,9 @@
 import { SeiyuuCard } from 'domains/seiyuu/components/seiyuu-card/seiyuu-card'
 import { InfoSection } from 'domains/shared/components/layout/base/InfoSection'
-import type { VoiceActor } from 'types'
+import type { Seiyuu } from '@seiyuu/types'
 
 interface Props {
-  seiyuus: VoiceActor[]
+  seiyuus: Seiyuu[]
 }
 
 export const SeiyuuList = ({ seiyuus }: Props) => {
