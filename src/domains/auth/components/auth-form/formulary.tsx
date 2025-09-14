@@ -3,8 +3,8 @@ import { Main } from '@auth/components/auth-layout/main'
 import { useAuthFormStore } from '@auth/stores/auth-form-store'
 import { useStepsStore } from '@auth/stores/steps-store'
 import { toast } from '@pheralb/toast'
+import { ToastType } from '@shared/types'
 import { useEffect } from 'react'
-import { ToastType } from 'types'
 
 interface Props {
   /**
