@@ -1,4 +1,5 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
+
 /**
  * NextPrevIcon component renders an icon representing navigation options.
  *
