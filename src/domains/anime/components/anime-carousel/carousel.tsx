@@ -10,9 +10,9 @@ import { baseUrl } from '@utils/base-url'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { addFailedUrlClient } from '@utils/failed-urls-client'
-import { Overlay } from 'domains/shared/components/layout/overlay'
+import { Overlay } from '@shared/components/layout/overlay'
 import { useCallback, useEffect, useState } from 'react'
-import type { AnimeBannerInfo } from 'types'
+import type { AnimeBannerInfo } from '@anime/types'
 
 /**
  * Carousel component displays a rotating banner of featured anime content.
