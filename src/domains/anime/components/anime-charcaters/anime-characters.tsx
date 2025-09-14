@@ -1,7 +1,7 @@
 import { AnimeCaterList } from '@anime/components/anime-charcaters/anime-chatcater-list'
 import { useCharacterStore } from '@anime/stores/anime-character-store'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
-import { languageOptions } from 'types'
+import { languageOptions } from '@search/utils/constants'
 
 interface Props {
   animeId: number
