@@ -1,5 +1,5 @@
 import { getFavoriteAnimeIds } from '@utils/get-favorite-anime-ids'
-import { type UserProfile } from 'types'
+import type { UserProfile } from '@user/types'
 
 export async function pickAnimeForJikan(userProfile: UserProfile) {
   if (!userProfile.favorite_animes?.length) return {}
