@@ -3,8 +3,8 @@ import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { Picture } from '@shared/components/media/picture'
 import { useFetch } from '@shared/hooks/useFetch'
 import { normalizeString } from '@utils/normalize-string'
-import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { ArtistInfo } from 'types'
+import { Overlay } from '@shared/components/layout/overlay'
+import type { ArtistInfo } from '@artist/types'
 
 export const ArtistInfoComponent = () => {
   const { currentSong } = useMusicPlayerStore()
