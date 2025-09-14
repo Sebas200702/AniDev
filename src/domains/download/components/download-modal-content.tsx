@@ -7,7 +7,7 @@ import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { DownloadModalSkeleton } from 'domains/download/components/download-modal-skeleton'
 import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
 import { useEffect, useState } from 'react'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
 
 interface MusicInfo {
   song_title: string
