@@ -1,4 +1,4 @@
-import type { AnimeCollectionInfo, Collection } from 'types'
+import type { Collection } from '@collection/types'
 import { create } from 'zustand'
 
 /**
