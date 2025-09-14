@@ -1,13 +1,8 @@
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { SearchBar } from '@search/components/search-filters/search-bar'
 import { useSearchStoreResults } from '@search/stores/search-results-store'
-import { useWindowWidth } from '@shared/hooks/window-width'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { studioOptions } from '@utils/create-studios-options'
-import { Overlay } from 'domains/shared/components/layout/overlay'
-import { useCallback, useState } from 'react'
+import { type AppliedFilters, SearchType } from '@search/types'
 import {
-  SearchType,
   airedDayOptions,
   formatOptions,
   genreOptions,
@@ -17,8 +12,12 @@ import {
   statusOptions,
   typeMusic,
   yearOptions,
-} from 'types'
-import type { AppliedFilters } from 'types'
+} from '@search/utils/constants'
+import { useWindowWidth } from '@shared/hooks/window-width'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { studioOptions } from '@utils/create-studios-options'
+import { Overlay } from 'domains/shared/components/layout/overlay'
+import { useCallback, useState } from 'react'
 
 /**
  * FilterSection component provides a comprehensive set of filters for anime search functionality.
