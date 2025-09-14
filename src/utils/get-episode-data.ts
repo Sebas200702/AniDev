@@ -1,4 +1,4 @@
-import type { AnimeEpisode } from 'types'
+import type {  AnimeEpisode } from '@watch/types'
 
 interface Props {
   slug: string
