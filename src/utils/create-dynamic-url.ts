@@ -1,4 +1,4 @@
-import { AnimeFilters, AnimeGenres, AnimeTypes } from 'types'
+import { AnimeFilters, AnimeGenres, AnimeTypes } from '@anime/types'
 
 /**
  * Generates a random number within a specified range.
