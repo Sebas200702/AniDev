@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * SynopsisIcon component renders an icon representing a synopsis or text summary.
