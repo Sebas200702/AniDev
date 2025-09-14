@@ -1,5 +1,5 @@
 import { supabase } from '@libs/supabase'
-import type { RandomAnime } from 'types'
+import type { RandomAnime } from '@anime/types'
 export const getRandomAnime = async (
   parentalControl: boolean | null
 ): Promise<RandomAnime> => {
