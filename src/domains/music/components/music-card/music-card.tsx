@@ -7,10 +7,8 @@ import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { Picture } from '@shared/components/media/picture'
 import { MoreOptions } from '@shared/components/ui/more-options'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
-import type { AnimeSongWithImage } from 'types'
+import type { AnimeSongWithImage } from '@music/types'
 
 export const MusicCard = ({
   song,
