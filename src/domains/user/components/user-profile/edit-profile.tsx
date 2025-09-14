@@ -1,19 +1,20 @@
+import type { DataImage } from '@anime/types'
 import { Input } from '@auth/components/auth-form/input'
 import { toast } from '@pheralb/toast'
 import { EditIcon } from '@shared/components/icons/common/edit-icon'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
 import { Picture } from '@shared/components/media/picture'
 import { useModal } from '@shared/hooks/useModal'
+import { InputType, ToastType } from '@shared/types'
 import { ChangeImages } from '@user/components/user-profile/change-images'
 import { useUpdateProfile } from '@user/stores/update-profile'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
+import type { UserInfo } from '@user/types'
 import { baseUrl } from '@utils/base-url'
 import { uploadImages } from '@utils/upload-images'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
 import { useEffect, useState } from 'react'
-import { InputType, ToastType } from 'types'
-import type { DataImage, UserInfo } from 'types'
 
 export const EditProfile = () => {
   const { userInfo, setUserInfo } = useGlobalUserPreferences()
