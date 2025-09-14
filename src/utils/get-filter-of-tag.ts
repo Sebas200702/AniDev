@@ -1,5 +1,6 @@
+import { AnimeFilters, NormalizedRating } from '@anime/types'
 import { normalizeString } from '@utils/normalize-string'
-import { AnimeFilters, NormalizedRating } from 'types'
+
 
 /**
  * Checks if a string contains any numeric digits.
