@@ -9,7 +9,7 @@ import {
   useMediaStore,
 } from '@vidstack/react'
 import { useEffect, useRef, useState } from 'react'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
 
 import { Cover } from '@music/components/music-player/music-info/cover'
 import { Header } from '@music/components/music-player/music-info/header'
