@@ -1,8 +1,9 @@
+import type { Anime } from '@anime/types'
 import { EpisodesList } from 'domains/watch/components/episodes-list'
 import { Footer } from 'domains/watch/components/footer'
 import { Player } from 'domains/watch/components/player'
 import { useState } from 'react'
-import type { Anime, AnimeEpisode } from 'types'
+import type {  AnimeEpisode } from '@watch/types'
 
 interface Props {
   slug: string
