@@ -1,4 +1,5 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
+
 export const VolumeLowIcon = ({ className }: IconProps) => {
   return (
     <svg
