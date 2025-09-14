@@ -1,4 +1,4 @@
-import { AnimeGenres } from 'types'
+import { AnimeGenres } from '@anime/types'
 
 /**
  * Maps anime genres to their corresponding Tailwind CSS color classes for hover effects.
