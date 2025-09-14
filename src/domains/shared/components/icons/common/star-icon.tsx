@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * StarIcon component renders a star-shaped icon for ratings and favorites.
