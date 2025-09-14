@@ -1,9 +1,9 @@
+import type { CharacterImages } from '@character/types'
 import { NextPrevIcon } from '@shared/components/icons/watch/next-prev-icon'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useWindowWidth } from '@shared/hooks/window-width'
 import { CharacterImage } from '@user/components/user-profile/character-image'
 import { useEffect, useRef } from 'react'
-import type { CharacterImages } from 'types'
 
 interface Props {
   id: number
