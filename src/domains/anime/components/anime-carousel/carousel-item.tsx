@@ -2,7 +2,7 @@ import { WatchAnimeButton } from '@shared/components/buttons/watch-anime'
 import { Picture } from '@shared/components/media/picture'
 import { normalizeString } from '@utils/normalize-string'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { AnimeBannerInfo } from 'types'
+import type { AnimeBannerInfo } from '@anime/types'
 
 interface CarouselItemProps {
   anime: AnimeBannerInfo
