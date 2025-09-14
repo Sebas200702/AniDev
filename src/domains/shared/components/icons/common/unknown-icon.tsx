@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * UnknownIcon component renders an icon representing an unknown or help state.
