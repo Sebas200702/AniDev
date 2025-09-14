@@ -1,5 +1,5 @@
 import { normalizeString } from '@utils/normalize-string'
-import type { AppliedFilters } from 'types'
+import type { AppliedFilters } from '@search/types'
 
 /**
  * createFiltersToApply generates a query string from applied filters for API requests.
