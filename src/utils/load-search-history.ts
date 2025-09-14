@@ -1,4 +1,4 @@
-import type { SearchHistory, UserInfo } from 'types'
+import type { UserInfo, SearchHistory } from '@user/types'
 
 export const loadSearchHistory = async (
   userInfo: UserInfo | null
