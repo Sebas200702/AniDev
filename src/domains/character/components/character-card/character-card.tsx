@@ -1,9 +1,7 @@
 import { Picture } from '@shared/components/media/picture'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { Character } from 'types'
+import type { Character } from '@character/types'
 
 /**
  * CharacterCard component displays information about an anime character including their name, image, and role.
