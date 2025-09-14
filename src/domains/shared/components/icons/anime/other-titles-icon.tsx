@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * OtherTitlesIcon component renders an icon representing alternative titles for anime content.
