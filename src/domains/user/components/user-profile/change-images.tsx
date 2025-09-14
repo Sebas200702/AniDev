@@ -8,8 +8,8 @@ import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-def
 import { useUpdateProfile } from '@user/stores/update-profile'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
+import type { DataImage } from '@anime/types'
 import { useMemo } from 'react'
-import type { DataImage } from 'types'
 import { AnimeBannerColection } from './anime-banner-colection'
 import { CharacterImagesColection } from './character-images-colection'
 import { EditProfile } from './edit-profile'
