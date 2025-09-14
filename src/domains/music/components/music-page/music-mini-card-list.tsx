@@ -1,5 +1,5 @@
+import type { AnimeSongWithImage } from '@music/types'
 import { useFetch } from '@shared/hooks/useFetch'
-import type { AnimeSongWithImage } from 'types'
 import { MusicCard } from '../music-card/music-card'
 
 interface Props {
