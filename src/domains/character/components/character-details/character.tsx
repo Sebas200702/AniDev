@@ -1,13 +1,14 @@
 import { CharacterAbout } from '@character/components/character-details/character-about'
 import { CharacterLoader } from '@character/components/character-details/character-loader'
 import { SeiyuuList } from '@character/components/character-details/seiyuu-list'
+import type { CharacterDetails } from '@character/types'
 import { DinamicBanner } from '@shared/components/ui/dinamic-banner'
+import type { PersonAbout } from '@user/types'
 import { getCharacterData } from '@utils/get-character-data'
 import { Aside } from 'domains/shared/components/layout/base/Aside'
 import { Header } from 'domains/shared/components/layout/base/Header'
 import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLayout'
 import { useEffect, useState } from 'react'
-import type { CharacterDetails, PersonAbout } from 'types'
 
 interface Props {
   slug: string
