@@ -7,7 +7,7 @@ import { UserIcon } from '@shared/components/icons/user/user-icon'
 import { usePreferencesFormStore } from '@auth/stores/preferences-form-store'
 import { parseResponse } from '@utils/parse-response'
 import { useState } from 'react'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
 
 /**
  * Step3 component handles user preferences and favorites collection.
