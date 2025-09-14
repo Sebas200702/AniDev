@@ -1,4 +1,4 @@
-import { AnimeTypes } from 'types'
+import { AnimeTypes } from '@anime/types'
 
 /**
  * Converts an anime type string to a standardized display format.
