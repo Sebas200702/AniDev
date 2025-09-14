@@ -1,6 +1,6 @@
 import { supabase } from '@libs/supabase'
 import { getSession } from 'auth-astro/server'
-import type { UserInfo } from 'types'
+import type { UserInfo } from '@user/types'
 
 /**
  * getSessionUserInfo retrieves user information from the current session.
