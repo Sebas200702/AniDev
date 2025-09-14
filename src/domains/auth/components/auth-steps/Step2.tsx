@@ -7,7 +7,7 @@ import { CalendarIcon } from '@shared/components/icons/schedule/calendar-icon'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
 import { UserInfo } from '@user/components/user-dashboard/user-info'
 import { parseResponse } from '@utils/parse-response'
-import { ToastType } from 'types'
+import { ToastType } from '@shared/types'
 
 interface Props {
   isSignUp: boolean
