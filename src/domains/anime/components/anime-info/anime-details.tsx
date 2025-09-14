@@ -16,7 +16,7 @@ import { StarIcon } from '@shared/components/icons/common/star-icon'
 import { CalendarIcon } from '@shared/components/icons/schedule/calendar-icon'
 import { ScoredByIcon } from '@shared/components/icons/anime/scored-by-icon'
 import { SourceIcon } from '@shared/components/icons/anime/source-icon'
-import { InfoSection } from 'domains/shared/components/layout/base/InfoSection'
+import { InfoSection } from '@shared/components/layout/base/InfoSection'
 import type { Anime } from '@anime/types'
 
 interface Props {
