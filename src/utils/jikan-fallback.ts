@@ -1,5 +1,5 @@
+import { type CreateJikanFallbackFn } from '@shared/ai/types'
 import { fetchRecomendations } from '@utils/fetch-recomendations'
-import { type CreateJikanFallbackFn } from 'types'
 
 export const createJikanFallback: CreateJikanFallbackFn = async (
   jikan,
