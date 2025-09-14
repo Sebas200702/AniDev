@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 /**
  * CollectionIcon component renders an icon representing a collection or folder.
  *
