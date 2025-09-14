@@ -1,3 +1,4 @@
+import type { BannerImage } from '@anime/types'
 import { NextPrevIcon } from '@shared/components/icons/watch/next-prev-icon'
 import { Picture } from '@shared/components/media/picture'
 import { useFetch } from '@shared/hooks/useFetch'
@@ -5,7 +6,6 @@ import { useWindowWidth } from '@shared/hooks/window-width'
 import { useUpdateProfile } from '@user/stores/update-profile'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import { useEffect, useRef } from 'react'
-import type { BannerImage } from 'types'
 interface Props {
   id: number
 }
