@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 export const ShareIcon = ({ className }: IconProps) => {
   return (
     <svg
