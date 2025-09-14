@@ -1,4 +1,4 @@
-import type { RecommendationContext } from 'types'
+import type { RecommendationContext } from '@shared/ai/types'
 
 export const generateContextualPrompt = (
   userProfile: any,
