@@ -1,6 +1,6 @@
 import { MusicCard } from '@music/components/music-card/music-card'
 import { InfoSection } from 'domains/shared/components/layout/base/InfoSection'
-import type { AnimeSongWithImage } from 'types'
+import type { AnimeSongWithImage } from '@music/types'
 
 interface Props {
   songs: AnimeSongWithImage[]
