@@ -1,3 +1,4 @@
+import type { IconProps } from '@shared/types'
 /**
  * WinterIcon component renders an icon representing the winter season.
  *
@@ -21,7 +22,7 @@
  * @example
  * <WinterIcon className="w-6 h-6 text-blue-300" />
  */
-export const WinterIcon = ({ className }: { className?: string }) => {
+export const WinterIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
