@@ -1,4 +1,4 @@
-import type { IconProps } from 'types'
+import type { IconProps } from '@shared/types'
 
 /**
  * SourceIcon component renders an SVG icon representing a source or book.
