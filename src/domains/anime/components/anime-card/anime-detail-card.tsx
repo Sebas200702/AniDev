@@ -9,7 +9,7 @@ import { MoreOptions } from '@shared/components/ui/more-options'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 
 import { normalizeString } from '@utils/normalize-string'
-import type { AnimeDetail } from 'types'
+import type { AnimeDetail } from '@anime/types'
 
 /**
  * AnimeDetailCard component displays a detailed view of an anime with a banner background and additional information.
@@ -61,11 +61,11 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   return (
     <article
       key={anime.mal_id}
-      className={`group relative anime-detail-card transition-all duration-300 ease-in-out md:hover:translate-x-1`}
+      className={`group relative anime-detail-card transition-all duration-300 ease-in-out md:hover:translate-x-1 overflow-hidden`}
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}
-        className="bg-Complementary  mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
+        className="bg-Complementary mx-auto flex aspect-[100/30] h-full w-full overflow-hidden rounded-lg md:max-h-36"
         title={anime.title}
       >
         <div className="absolute h-full w-full">
@@ -82,7 +82,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
           placeholder={anime.image_small_webp || ''}
           image={anime.image_webp || ''}
           alt={normalizeString(anime.title)}
-          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg "
+          styles="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative"
         />
 
         <div className="z-20 flex h-full w-[80%] flex-col justify-between px-2 py-4 md:p-4 xl:p-6">
