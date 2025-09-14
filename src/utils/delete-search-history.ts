@@ -1,6 +1,7 @@
 import { toast } from '@pheralb/toast'
+import type { UserInfo } from '@user/types'
 
-import { ToastType, type UserInfo } from 'types'
+import { ToastType } from '@shared/types'
 
 export const deleteSearchHistory = async (userInfo: UserInfo | null) => {
   try {
