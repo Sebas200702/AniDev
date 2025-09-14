@@ -2,7 +2,7 @@ import { Picture } from '@shared/components/media/picture'
 import { useUpdateProfile } from '@user/stores/update-profile'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 
-import type { CharacterImages } from 'types'
+import type { CharacterImages } from '@character/types'
 interface Props {
   character: CharacterImages
 }
