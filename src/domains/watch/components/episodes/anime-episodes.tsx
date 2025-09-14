@@ -3,7 +3,7 @@ import { useFetch } from '@shared/hooks/useFetch'
 import { AnimeEpisodesLoader } from 'domains/watch/components/episodes/anime-episodes-loader'
 import Pagination from 'domains/watch/components/episodes/pagination'
 import { useEffect, useState } from 'react'
-import type { AnimeEpisode } from 'types'
+import type {  AnimeEpisode } from '@watch/types'
 
 interface Props {
   mal_id: number
