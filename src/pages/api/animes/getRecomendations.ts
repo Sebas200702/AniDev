@@ -4,6 +4,7 @@ import { SchemaType, type Tool } from '@google/generative-ai'
 import { model } from '@libs/gemini'
 import { GeminiQuota } from '@libs/gemini-quota'
 import { safeRedisOperation } from '@libs/redis'
+import type { RecommendationContext } from '@shared/ai/types'
 import { fetchRecomendations } from '@utils/fetch-recomendations'
 import { getJikanRecommendations } from '@utils/get-jikan-recommendations'
 import { generateContextualPrompt } from '@utils/get-recomendation-context'
@@ -12,7 +13,6 @@ import { getSessionUserInfo } from '@utils/get_session_user_info'
 import { createJikanFallback } from '@utils/jikan-fallback'
 import { pickAnimeForJikan } from '@utils/pick-anime-for-jikan'
 import type { APIRoute } from 'astro'
-import type { RecommendationContext } from 'types'
 
 const functionTool: Tool = {
   functionDeclarations: [
