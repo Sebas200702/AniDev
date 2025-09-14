@@ -1,4 +1,4 @@
-import type { AnimeSongWithImage } from 'types'
+import type { AnimeSongWithImage } from '@music/types'
 
 /**
  * Extrae la información de las últimas canciones (OP y ED) de cada anime
