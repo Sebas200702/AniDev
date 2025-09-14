@@ -1,12 +1,8 @@
-import type {
-  AnimeCardInfo,
-  AnimeDetail,
-  AnimeSongWithImage,
-  AppliedFilters,
-  Character,
-  SearchHistory,
-} from 'types'
-import { SearchType } from 'types'
+import type { AnimeCardInfo, AnimeDetail } from '@anime/types'
+import type { Character } from '@character/types'
+import type { AnimeSongWithImage } from '@music/types'
+import { type AppliedFilters, SearchType } from '@search/types'
+import type { SearchHistory } from '@user/types'
 
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
