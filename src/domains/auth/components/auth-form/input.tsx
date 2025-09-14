@@ -1,8 +1,8 @@
 import { type FormValues, useAuthFormStore } from '@auth/stores/auth-form-store'
+import { InputType } from '@shared/types'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import type { ReactNode } from 'react'
 import { useState } from 'react'
-import { InputType } from 'types'
 
 /**
  * Props for the Input component.
