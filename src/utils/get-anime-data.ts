@@ -1,5 +1,5 @@
 import { navigate } from 'astro:transitions/client'
-import type { Anime } from 'types'
+import type { Anime } from '@anime/types'
 
 export interface AnimeResult {
   anime?: Anime
