@@ -3,7 +3,7 @@ import { MusicIcon } from '@shared/components/icons/music/music-icon'
 import { RelatedIcon } from '@shared/components/icons/anime/related-icon'
 import { SynopsisIcon } from '@shared/components/icons/anime/synopsis-icon'
 import { TrailerIcon } from '@shared/components/icons/anime/trailer-icon'
-import type { Section } from 'types'
+import type { Section } from '@shared/types'
 import { create } from 'zustand'
 
 /**
