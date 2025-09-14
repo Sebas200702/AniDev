@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { CloseIcon } from '@shared/components/icons/common/close-icon'
+import type { FilterOption } from '@search/types'
 import { CheckIcon } from '@shared/components/icons/common/check-icon'
+import { CloseIcon } from '@shared/components/icons/common/close-icon'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { FilterOption } from 'types'
 
 interface FilterDropdownProps {
   label: string
