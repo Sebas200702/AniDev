@@ -2,9 +2,9 @@ import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
+import { Filters } from '@shared/types'
 import { getFilters } from '@utils/get-filters-of-search-params'
 import type { APIRoute } from 'astro'
-import { Filters } from 'types'
 
 /**
  * Main anime listing endpoint with multiple format options.
