@@ -26,7 +26,7 @@ const popularGenres = [
   AnimeGenres.SUPERNATURAL,
   AnimeGenres.SLICE_OF_LIFE,
   AnimeGenres.SCI_FI,
-  AnimeGenres.YURI,
+  AnimeGenres.GIRLS_LOVE,
 ]
 
 // Géneros menos populares que pueden generar menos resultados
@@ -34,7 +34,6 @@ const lessPopularGenres = [
   AnimeGenres.GOURMET,
   AnimeGenres.HORROR,
   AnimeGenres.MYSTERY,
-
   AnimeGenres.SUSPENSE,
   AnimeGenres.AVANT_GARDE,
   AnimeGenres.AWARD_WINNING,
@@ -228,7 +227,7 @@ export const createDynamicUrl = (
         .replace('{filters}', filtersText)
     )
 
-    const baseUrl = `limit_count=${limit}&parental_control=${parentalControl}`
+    const baseUrl = `/api/animes?limit_count=${limit}&parental_control=${parentalControl}`
     const finalUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl
 
     return {
