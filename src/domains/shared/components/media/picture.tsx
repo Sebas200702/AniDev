@@ -51,8 +51,8 @@ export const Picture = ({
   useEffect(() => {
     let active = true
     const resolve = async () => {
-      const placeholderSrc = placeholder || `${baseUrl}/placeholder`
-      const imageSrc = image || `${baseUrl}/placeholder`
+      const placeholderSrc = placeholder || `${baseUrl}/placeholder.webp`
+      const imageSrc = image || `${baseUrl}/placeholder.webp`
       const widthMain = isBanner ? '1920' : '0'
 
       const [ph, im] = await Promise.all([
@@ -79,7 +79,7 @@ export const Picture = ({
         src={
           resolvedPlaceholder ||
           createImageUrlProxy(
-            placeholder || `${baseUrl}/placeholder`,
+            placeholder || `${baseUrl}/placeholder.webp`,
             '100',
             '0',
             'webp'
@@ -93,7 +93,7 @@ export const Picture = ({
         src={
           resolvedImage ||
           createImageUrlProxy(
-            image || `${baseUrl}/placeholder`,
+            image || `${baseUrl}/placeholder.webp`,
             `${isBanner ? '1920' : '0'}`,
             '75',
             'webp'
