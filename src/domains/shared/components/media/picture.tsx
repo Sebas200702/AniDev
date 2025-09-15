@@ -86,7 +86,9 @@ export const Picture = ({
           )
         }
         alt={alt}
-        loading="lazy"
+        decoding="async"
+        fetchPriority="high"
+        loading='eager'
       />
       <img
         className={` h-full w-full relative object-cover object-center`}
