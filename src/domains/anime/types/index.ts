@@ -32,7 +32,6 @@ export enum AnimeGenres {
   SPORTS = 'Sports',
   SUPERNATURAL = 'Supernatural',
   SUSPENSE = 'Suspense',
-  YURI = 'Yuri',
 }
 
 export enum AnimeFilters {
