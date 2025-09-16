@@ -63,7 +63,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
     }
 
     try {
-      const fullUrl = `/api/animes?${url}&banners_filter=true&limit_count=1&format=anime-banner`
+      const fullUrl = `${url}&banners_filter=true&limit_count=1&format=anime-banner`
       const response = await fetch(fullUrl)
 
       if (!response.ok) {
@@ -161,10 +161,10 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const slug = normalizeString(title)
 
   return (
-    <section
-      className={`anime-banner-${animationNumber} fade-out relative flex flex-row items-center md:px-20 md:py-4`}
-    >
-      <article className="group bg-Complementary relative w-full overflow-hidden transition-all duration-400 ease-in-out md:rounded-2xl md:hover:opacity-95">
+    <section className=" relative flex flex-row items-center md:px-20 md:py-4">
+      <article
+        className={`anime-banner-${animationNumber} fade-outgroup bg-Complementary relative w-full overflow-hidden transition-all duration-400 ease-in-out md:rounded-2xl md:hover:opacity-95`}
+      >
         <a
           href={`/anime/${slug}_${mal_id}`}
           aria-label={`View details for ${title}`}
