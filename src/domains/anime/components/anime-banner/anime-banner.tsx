@@ -1,15 +1,13 @@
 import '@anime/styles/anime-banner.css'
 import { BannerInfo } from '@anime/components/anime-banner/banner-info'
 import { BannerLoader } from '@anime/components/anime-banner/banner-loader'
+import type { AnimeBannerInfo } from '@anime/types'
 import { Picture } from '@shared/components/media/picture'
-import { useIndexStore } from '@shared/stores/index-store'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useFetch } from '@shared/hooks/useFetch'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { Overlay } from 'domains/shared/components/layout/overlay'
-import { useEffect, useState } from 'react'
-
-import { addFailedUrlClient } from '@utils/failed-urls-client'
 import { normalizeString } from '@utils/normalize-string'
+import { Overlay } from 'domains/shared/components/layout/overlay'
+import { useEffect, useMemo, useState } from 'react'
 
 /**
  * AnimeBanner component displays a banner for an anime.
@@ -36,128 +34,35 @@ import { normalizeString } from '@utils/normalize-string'
  * <AnimeBanner id={1} />
  */
 export const AnimeBanner = ({ id }: { id: number }) => {
-  const [bannerData, setBannerData] = useState<{
-    imageUrl: string
-    title: string
-    synopsis: string
-    mal_id: number
-  } | null>(null)
+  const [bannerData, setBannerData] = useState<AnimeBannerInfo | null>(null)
   const animationNumber = id % 2 === 0 ? 1 : 2
-  const { setAnimeBanners, animeBanners } = useIndexStore()
-  const [loading, setLoading] = useState(true)
-  const { parentalControl } = useGlobalUserPreferences()
 
-  const getBannerData = async (
-    url: string,
-    retryCount = 0
-  ): Promise<{
-    imageUrl: string
-    title: string
-    synopsis: string
-    mal_id: number
-  } | null> => {
-    const maxRetries = 10
+  const { url } = useMemo(() => createDynamicUrl(1), [])
 
-    if (retryCount >= maxRetries) {
-      return null
-    }
-
-    try {
-      const fullUrl = `${url}&banners_filter=true&limit_count=1&format=anime-banner`
-      const response = await fetch(fullUrl)
-
-      if (!response.ok) {
-        // Register the URL as failed through API call
-        await addFailedUrlClient(url)
-
-        if (retryCount < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(1, parentalControl)
-          return await getBannerData(newUrl, retryCount + 1)
-        }
-        return null
-      }
-
-      const responseData = await response.json()
-
-      if (
-        !responseData ||
-        !responseData.data ||
-        !Array.isArray(responseData.data)
-      ) {
-        // Register the URL as failed through API call
-        await addFailedUrlClient(url)
-
-        if (retryCount < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(1, parentalControl)
-          return await getBannerData(newUrl, retryCount + 1)
-        }
-        return null
-      }
-
-      const [anime] = responseData.data
-
-      if (!anime || animeBanners.includes(anime.mal_id)) {
-        if (retryCount < maxRetries - 1) {
-          const { url: newUrl } = createDynamicUrl(1, parentalControl)
-          return await getBannerData(newUrl, retryCount + 1)
-        }
-        return null
-      }
-
-      return {
-        imageUrl: anime.banner_image,
-        title: anime.title,
-        synopsis: anime.synopsis,
-        mal_id: anime.mal_id,
-      }
-    } catch (_error) {
-      await addFailedUrlClient(url)
-
-      if (retryCount < maxRetries - 1) {
-        const { url: newUrl } = createDynamicUrl(1, parentalControl)
-        return await getBannerData(newUrl, retryCount + 1)
-      }
-      return null
-    }
-  }
+  const { data, loading, error } = useFetch<AnimeBannerInfo[]>({
+    url: `${url}&banners_filter=true&format=anime-banner`,
+  })
 
   useEffect(() => {
-    const fetchBannerData = async () => {
-      const storedData = sessionStorage.getItem(`animeBanner_${id}`)
-      if (storedData) {
-        const parsedData = JSON.parse(storedData)
-        setBannerData(parsedData)
-        setTimeout(() => {
-          setLoading(false)
-        }, 100)
-        return
-      }
-
-      const { url } = createDynamicUrl(1, parentalControl)
-      const data = await getBannerData(url)
-
-      if (!data) {
-        setLoading(false)
-        return
-      }
-
-      setBannerData(data)
-      animeBanners.push(data.mal_id)
-      setAnimeBanners(animeBanners)
-      sessionStorage.setItem(`animeBanner_${id}`, JSON.stringify(data))
-
-      setTimeout(() => {
-        setLoading(false)
-      }, 200)
+    if (data) {
+      setBannerData(data[0])
     }
+  }, [data, setBannerData])
 
-    fetchBannerData()
-  }, [])
+  if (error) {
+    return (
+      <div>
+        <p className="text-white">
+          Failed to load banner. Please try again later.
+        </p>
+      </div>
+    )
+  }
 
   if (loading || !bannerData)
     return <BannerLoader animationNumber={animationNumber} />
 
-  const { imageUrl, title, synopsis, mal_id } = bannerData
+  const { banner_image, title, synopsis, mal_id } = bannerData
   const slug = normalizeString(title)
 
   return (
@@ -170,8 +75,8 @@ export const AnimeBanner = ({ id }: { id: number }) => {
           aria-label={`View details for ${title}`}
         >
           <Picture
-            image={imageUrl || ''}
-            placeholder={imageUrl || ''}
+            image={banner_image || ''}
+            placeholder={banner_image || ''}
             isBanner
             alt="Anime Banner"
             styles="aspect-[1080/500] h-full w-full  md:aspect-[1080/300] object-cover object-center relative"
@@ -182,7 +87,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
         </a>
         <BannerInfo
           title={title}
-          synopsis={synopsis}
+          synopsis={synopsis ?? 'No synopsis available.'}
           mal_id={mal_id}
           slug={slug}
         />
