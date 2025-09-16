@@ -161,7 +161,7 @@ export const AnimeCollection = ({ id }: Props) => {
 
     try {
       const response = await fetch(
-        `/api/animes?${url.replace('limit_count=30', 'limit_count=3')}&banners_filter=false&format=anime-collection`
+        `${url.replace('limit_count=30', 'limit_count=3')}&banners_filter=false&format=anime-collection`
       )
 
       if (!response.ok) {
