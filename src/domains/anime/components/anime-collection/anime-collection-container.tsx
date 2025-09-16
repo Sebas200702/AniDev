@@ -21,7 +21,7 @@ export const AnimeCollectionContainer = ({ id }: Props) => {
 
   if (error) return null
 
-  if (!animes || !animes.length || loading)
+  if (!animes?.length || loading)
     return (
       <li className="flex h-54 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800"></li>
     )
