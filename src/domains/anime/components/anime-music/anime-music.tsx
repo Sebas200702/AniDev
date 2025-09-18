@@ -1,6 +1,7 @@
 import { AnimeMusicItem } from '@music/components/music-card/music-detail-card'
-import { useEffect, useState } from 'react'
 import type { AnimeSong } from '@music/types'
+import { useFetch } from '@shared/hooks/useFetch'
+import { useEffect, useState } from 'react'
 
 /**
  * AnimeMusic component displays a list of music tracks associated with an anime.
@@ -50,8 +51,18 @@ export const AnimeMusic = ({
   anime_title: string
 }) => {
   const [songs, setSongs] = useState<AnimeSong[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+
+  const { data, error, loading } = useFetch<AnimeSong[]>({
+    url: `/api/getAnimeMusic?animeId=${animeId}`,
+  })
+
+    useEffect(() => {
+    if (data) {
+      const formattedSongs = formatSongs(data)
+      setSongs(formattedSongs)
+    }
+  }, [data])
+
   const formatSongs = (songs: AnimeSong[]) => {
     const songMap = new Map<string, AnimeSong>()
     songs.forEach((song) => {
@@ -76,19 +87,7 @@ export const AnimeMusic = ({
     })
   }
 
-  useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const response = await fetch(`/api/getAnimeMusic?animeId=${animeId}`)
-        const data = await response.json()
-        setSongs(formatSongs(data))
-        setLoading(false)
-      } catch (error) {
-        setError(error as string)
-      }
-    }
-    fetchSongs()
-  }, [])
+
 
   if (loading)
     return (
