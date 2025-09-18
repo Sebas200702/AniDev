@@ -37,13 +37,7 @@ import type { AnimeCardInfo } from '@anime/types'
  * <AnimeCard anime={animeData} context="search" />
  */
 interface Props {
-  /**
-   * The anime object containing details to display.
-   */
   anime: AnimeCardInfo
-  /**
-   * Optional context for the component.
-   */
 }
 
 export const AnimeCard = ({ anime }: Props) => {
@@ -63,44 +57,12 @@ export const AnimeCard = ({ anime }: Props) => {
   const isMobile = windowWidth && windowWidth < 768
   const shareText = `Watch ${anime.title} on AniDev`
 
-  let timer: NodeJS.Timeout
 
-  /**
-   * Handles the mouse enter event for the anime card.
-   *
-   * @description
-   * This function implements a debounced fetch request to load additional metadata
-   * for the anime when the user hovers over the card. It uses a 1-second delay to
-   * prevent excessive API calls during quick mouse movements.
-   *
-   * The function makes a request to the `/api/getAnimeMetadatas` endpoint with the
-   * anime's MAL ID to fetch additional information that can be used for tooltips
-   * or other hover interactions.
-   */
-  const handleMouseEnter = async () => {
-    timer = setTimeout(() => {
-      fetch(`/api/getAnimeMetadatas?id=${mal_id}`)
-    }, 1000)
-  }
-
-  /**
-   * Handles the mouse leave event for the anime card.
-   *
-   * @description
-   * This function cleans up the timer set by handleMouseEnter when the user's mouse
-   * leaves the card. It prevents the metadata fetch from occurring if the user moves
-   * away from the card before the debounce delay expires.
-   */
-  const handleMouseLeave = () => {
-    clearTimeout(timer)
-  }
 
   return (
     <li
       className="group anime-card relative transition-all duration-200 ease-in-out md:hover:scale-[1.01]"
       title={title}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <MoreOptions className="absolute top-2 left-2 z-10 hidden md:top-3 md:left-3 md:flex">
         <a
