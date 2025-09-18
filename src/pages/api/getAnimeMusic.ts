@@ -13,7 +13,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
     })
 
     if (cachedData) {
-      return new Response(JSON.stringify(JSON.parse(cachedData)), {
+      return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       return await redis.set(cacheKey, responseData, { EX: 60 * 60 * 24 })
     })
 
-    return new Response(responseData, {
+    return new Response(JSON.stringify({ data: responseData }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
