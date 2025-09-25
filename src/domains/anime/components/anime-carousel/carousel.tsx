@@ -91,7 +91,7 @@ export const Carousel = () => {
     }
   }, [banners, handleKeyDown, resetInterval])
 
-  if (error) {
+  if (error && !banners) {
     return (
       <div className="flex h-[70vh] items-center justify-center">
         <p className="text-red-500">
