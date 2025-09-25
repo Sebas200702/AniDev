@@ -4,14 +4,12 @@ import { useEffect, useRef, useState } from 'react'
 
 interface MoreOptionsProps {
   children: React.ReactNode
-
   onMenuStateChange?: (isOpen: boolean) => void
   className?: string
 }
 
 export const MoreOptions = ({
   children,
-
   className,
   onMenuStateChange,
 }: MoreOptionsProps) => {
