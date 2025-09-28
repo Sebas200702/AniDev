@@ -38,6 +38,9 @@ export const EditProfile = () => {
     setUsername(e.target.value)
   }
   useEffect(() => {
+    setUsername(userInfo?.name ?? '')
+  }, [setUsername, userInfo?.name])
+  useEffect(() => {
     const disabled =
       !userInfo ||
       (userInfo.avatar === avatar &&
@@ -228,10 +231,10 @@ export const EditProfile = () => {
 
           <footer className="w-full flex items-center  gap-4">
             <button
-              disabled={isDisabled}
+              disabled={isDisabled || isLoading}
               className="button-primary w-full disabled:opacity-30 disabled:pointer-events-none"
             >
-              Save
+              {isLoading ? 'Updating...' : 'Save Changes'}
             </button>
             <button
               type="button"
