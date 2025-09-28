@@ -1,4 +1,5 @@
 import { EditIcon } from '@shared/components/icons/common/edit-icon'
+import { UploadIcon } from '@shared/components/icons/common/upload-icon'
 import { Picture } from '@shared/components/media/picture'
 import { useDragAndDrop } from '@shared/hooks/useDragAndDrop'
 import { useModal } from '@shared/hooks/useModal'
@@ -9,6 +10,8 @@ import { useUpdateProfile } from '@user/stores/update-profile'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
 import type { DataImage } from '@anime/types'
+import { CameraIcon } from '@shared/components/icons/common/camera-icon'
+import { useCamera } from '@shared/hooks/useCamera'
 import { useMemo } from 'react'
 import { AnimeBannerColection } from './anime-banner-colection'
 import { CharacterImagesColection } from './character-images-colection'
@@ -19,9 +22,9 @@ export const ChangeImages = ({ type, url }: DataImage) => {
   const { openModal } = useModal()
   const { userInfo } = useGlobalUserPreferences()
   const malIds = [
-    33206, 37786, 21, 47917, 813, 16498, 52299, 38691, 40748, 40591, 30484,
-    30831, 54492, 44074, 49596, 57334, 34572, 58390, 35849, 53446, 15583, 32182,
-    2001,
+    33206, 37786, 21, 47917, 34382, 813, 16498, 52299, 38691, 40748, 40591,
+    30484, 30831, 54492, 44074, 49596, 57334, 34572, 58390, 35849, 53446, 15583,
+    32182, 2001,
   ]
   const {
     setAvatar,
@@ -65,10 +68,51 @@ export const ChangeImages = ({ type, url }: DataImage) => {
     }
     openModal(EditProfile)
   }
+  const handleUploadClick = () => {
+    const fileInput = document.createElement('input')
+    fileInput.type = 'file'
+    fileInput.accept = 'image/*'
+    fileInput.onchange = () => {
+      if (!fileInput.files || fileInput.files.length === 0) return
+      const file = fileInput.files[0]
+      const blobUrl = URL.createObjectURL(file)
+      if (isAvatar) {
+        setAvatar(blobUrl)
+        setAvatarType(file.type)
+      } else {
+        setBannerImage(blobUrl)
+        setBannerType(file.type)
+      }
+      openModal(ImageEditor, { type })
+    }
+    fileInput.click()
+  }
+  const { startCamera } = useCamera({
+    width: isAvatar ? 720 : 1920,
+    height: isAvatar ? 720 : 720,
+    quality: 0.95,
+    onPhotoTaken: (imageUrl, imageType) => {
+      if (isAvatar) {
+        setAvatar(imageUrl)
+        setAvatarType(imageType)
+      } else {
+        setBannerImage(imageUrl)
+        setBannerType(imageType)
+      }
+      openModal(ImageEditor, { type })
+    },
+    onCancel: () => {
+      openModal(ChangeImages, { type, url })
+    },
+  })
+
+  const handleCameraClick = () => {
+    startCamera()
+  }
 
   return (
     <ModalDefaultContainer>
-      <section className="xl:w-[35vw] md:w-[60vw] h-[80vh] overflow-y-scroll no-scrollbar ">
+      <section className="xl:w-[35vw] md:w-[60vw] h-[80vh] w-full overflow-y-hidden ">
         <header
           className={` flex ${isAvatar ? 'md:flex-row md:p-4 flex-col' : 'flex-col'} sticky py-4 z-30 md:top-0  left-0 right-0 gap-8 items-center   `}
         >
@@ -121,20 +165,35 @@ export const ChangeImages = ({ type, url }: DataImage) => {
                 Cancel
               </button>
               <button
-                className="button-secondary  "
+                className="button-secondary"
                 title={`Crop ${type} image `}
                 onClick={handleCropClick}
               >
-                <EditIcon className="h-5 w-5 " />
+                <EditIcon className="h-5 w-5" />
+              </button>
+              <button
+                className="button-secondary"
+                title={`Upload ${type} image `}
+                onClick={handleUploadClick}
+              >
+                <UploadIcon className="h-5 w-5" />
+              </button>
+              <button
+                className="button-secondary"
+                title={`Take ${type} image with camera `}
+                onClick={handleCameraClick}
+              >
+                <CameraIcon className="h-5 w-5" />
               </button>
             </div>
           </div>
         </header>
-
-        {isAvatar &&
-          malIds.map((id) => <CharacterImagesColection key={id} id={id} />)}
-        {type !== 'avatar' &&
-          malIds.map((id) => <AnimeBannerColection key={id} id={id} />)}
+        <ul className="mt-4 md:mx-8 flex flex-col gap-6 no-scrollbar overflow-y-auto h-full">
+          {isAvatar &&
+            malIds.map((id) => <CharacterImagesColection key={id} id={id} />)}
+          {type !== 'avatar' &&
+            malIds.map((id) => <AnimeBannerColection key={id} id={id} />)}
+        </ul>
       </section>
     </ModalDefaultContainer>
   )
