@@ -1,39 +1,37 @@
-import type { Collection } from '@collection/types'
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
-/**
- * IndexStore interface defines the global state for the index page.
- *
- * @description This store manages shared state across index page components including
- * anime banners and collections data. It provides methods to update these states
- * which are used by various components to maintain consistency across the application.
- *
- * The store tracks unique anime banner IDs to prevent duplicates when displaying
- * featured content. It also maintains collections data which can be accessed by
- * multiple components without requiring prop drilling or repeated API calls.
- *
- * The implementation uses Zustand for state management, providing a lightweight
- * and performant solution with a simple API for components to interact with.
- *
- * @property {number[]} animeBanners - Array of anime IDs used in banners to track uniqueness
- * @property {Collection[]} collections - Array of anime collections data
- * @property {Function} setAnimeBanners - Function to update the animeBanners state
- * @property {Function} setCollections - Function to update the collections state
- *
- * @example
- * const { collections, setCollections } = useIndexStore()
- * setCollections([newCollection])
- */
-interface IndexStore {
-  animeBanners: number[]
-  collections: Collection[]
-  setAnimeBanners: (animeBanners: number[]) => void
-  setCollections: (collections: Collection[]) => void
+export interface IndexSection {
+  id: number
+  title: string
+  url: string
+  type: 'slider' | 'banner' | 'collection'
 }
 
-export const useIndexStore = create<IndexStore>((set) => ({
-  animeBanners: [],
-  collections: [],
-  setAnimeBanners: (animeBanners) => set({ animeBanners }),
-  setCollections: (collections) => set({ collections }),
-}))
+interface IndexStore{
+  sections: IndexSection[]
+  setSections: (s: IndexSection[]) => void
+  fetchSections: () => Promise<void>
+}
+
+export const useHomeStore = create<IndexStore>()(
+  persist(
+    (set) => ({
+      sections: [],
+      setSections: (s) => set({ sections: s }),
+      fetchSections: async () => {
+        try {
+          const res = await fetch('/api/home-sections')
+          const data = await res.json()
+          set({ sections: data })
+        } catch (err) {
+          console.error('Error fetching sections', err)
+        }
+      },
+    }),
+    {
+      name: 'home-sections',
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)
