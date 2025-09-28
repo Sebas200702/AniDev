@@ -17,9 +17,8 @@ export const useHorizontalScroll = ({
 }: Options = {}) => {
   const listRef = useRef<HTMLDivElement | HTMLUListElement>(null)
   const [showPrev, setShowPrev] = useState(false)
-  const [showNext, setShowNext] = useState(true)
-  const [windowWidth, setWindowWidth] = useState(0)
-
+  const [showNext, setShowNext] = useState(false)
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
 
   const updateWindowWidth = useCallback(() => {
     setWindowWidth(window.innerWidth)
@@ -34,10 +33,13 @@ export const useHorizontalScroll = ({
     }
   }, [updateWindowWidth])
 
-
   const updateButtonsVisibility = useCallback(() => {
     const container = listRef.current
-    if (!container) return
+    if (!container) {
+      setShowPrev(false)
+      setShowNext(false)
+      return
+    }
 
     if (windowWidth < mobileBreakpoint) {
       setShowPrev(false)
@@ -48,26 +50,42 @@ export const useHorizontalScroll = ({
     const { scrollLeft, scrollWidth, clientWidth } = container
     const maxScroll = scrollWidth - clientWidth
 
+    if (maxScroll <= 1) {
+      setShowPrev(false)
+      setShowNext(false)
+      return
+    }
+
     setShowPrev(scrollLeft > 0)
     setShowNext(Math.ceil(scrollLeft) < maxScroll - 1)
   }, [windowWidth, mobileBreakpoint])
 
   useEffect(() => {
     const container = listRef.current
-    if (!container || windowWidth === 0) return
+    if (!container) return
 
     updateButtonsVisibility()
 
-    container.addEventListener('scroll', updateButtonsVisibility)
+    const handleScroll = () => {
+      updateButtonsVisibility()
+    }
+
+    container.addEventListener('scroll', handleScroll)
 
     return () => {
-      container.removeEventListener('scroll', updateButtonsVisibility)
+      container.removeEventListener('scroll', handleScroll)
     }
-  }, [updateButtonsVisibility, windowWidth])
+  }, [updateButtonsVisibility])
+
+  useEffect(() => {
+
+      updateButtonsVisibility()
+
+  }, [windowWidth, updateButtonsVisibility])
 
   const scrollNext = useCallback(() => {
     const container = listRef.current
-    if (!container) return
+    if (!container || windowWidth < mobileBreakpoint) return
 
     const clientWidth = container.clientWidth
     const groupWidth = clientWidth - scrollPadding
@@ -77,12 +95,12 @@ export const useHorizontalScroll = ({
       behavior: 'smooth'
     })
 
-    setTimeout(updateButtonsVisibility, 500)
-  }, [scrollPadding, updateButtonsVisibility])
+    setTimeout(updateButtonsVisibility, 100)
+  }, [scrollPadding, updateButtonsVisibility, windowWidth, mobileBreakpoint])
 
   const scrollPrev = useCallback(() => {
     const container = listRef.current
-    if (!container) return
+    if (!container || windowWidth < mobileBreakpoint) return
 
     const clientWidth = container.clientWidth
     const groupWidth = clientWidth - scrollPadding
@@ -92,15 +110,18 @@ export const useHorizontalScroll = ({
       behavior: 'smooth'
     })
 
-    setTimeout(updateButtonsVisibility, 500)
-  }, [scrollPadding, updateButtonsVisibility])
+    setTimeout(updateButtonsVisibility, 100)
+  }, [scrollPadding, updateButtonsVisibility, windowWidth, mobileBreakpoint])
+
+  const isMobile = windowWidth < mobileBreakpoint
 
   return {
     listRef,
-    showPrev,
-    showNext,
+    showPrev: isMobile ? false : showPrev,
+    showNext: isMobile ? false : showNext,
     scrollNext,
     scrollPrev,
-    windowWidth
+    windowWidth,
+    isMobile
   }
 }
