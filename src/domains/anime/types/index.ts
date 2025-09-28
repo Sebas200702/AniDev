@@ -135,7 +135,7 @@ export interface BannerImage {
 }
 
 export interface DataImage {
-  type: string
+  type: 'avatar' | 'banner'
   url?: string
 }
 
