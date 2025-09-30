@@ -1,5 +1,6 @@
-import { AnimeCaterList } from '@anime/components/anime-charcaters/anime-chatcater-list'
-import { useCharacterStore } from '@anime/stores/anime-character-store'
+import { AnimeCharacterLoader } from '@anime/components/anime-charcaters/anime-character-loader'
+import { AnimeCharacterList } from '@anime/components/anime-charcaters/anime-chatcater-list'
+import { useCharacterList } from '@anime/hooks/anime-charater/useCharacterList'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { languageOptions } from '@search/utils/constants'
 
@@ -8,13 +9,9 @@ interface Props {
 }
 
 export const CharacterSection = ({ animeId }: Props) => {
-  const {
-    currentLanguage,
-    setCurrentLanguage,
-    setIsLoading,
-    characters,
-    isLoading,
-  } = useCharacterStore()
+  const { language, setLanguage, characters, isLoading } = useCharacterList({
+    animeId,
+  })
 
   return (
     <section className="relative z-10 flex flex-col gap-8 rounded-lg p-4 md:p-6">
@@ -23,33 +20,26 @@ export const CharacterSection = ({ animeId }: Props) => {
         <FilterDropdown
           label="Language"
           styles="max-w-44 mx-0"
-          values={[currentLanguage]}
+          values={[language]}
           onChange={(values) => {
-            setIsLoading(true)
             if (values.length > 0) {
-              setCurrentLanguage(values[0])
+              setLanguage(values[0])
             } else {
-              setCurrentLanguage('')
+              setLanguage('')
             }
           }}
-          onClear={() => setCurrentLanguage('')}
+          onClear={() => setLanguage('')}
           options={languageOptions}
           singleSelect={true}
         />
       </header>
-      {characters.length === 0 && currentLanguage && !isLoading && (
-        <div className="h-full w-full rounded-lg p-6 text-white">
-          <p>Do not have characters for this anime on this language</p>
-        </div>
-      )}
+      <ul className="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+        {!characters || (isLoading && <AnimeCharacterLoader />)}
 
-      {currentLanguage ? (
-        <AnimeCaterList animeId={animeId} language={currentLanguage} />
-      ) : (
-        <div className="rounded-lg bg-zinc-700 p-6 text-white">
-          <p>Please select a language to see the characters.</p>
-        </div>
-      )}
+        {characters && !isLoading && (
+          <AnimeCharacterList characters={characters} />
+        )}
+      </ul>
     </section>
   )
 }
