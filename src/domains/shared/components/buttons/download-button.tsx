@@ -1,9 +1,9 @@
 import { toast } from '@pheralb/toast'
-import { useModal } from '@shared/hooks/useModal'
-import { DownloadModalContent } from 'domains/download/components/download-modal-content'
 import { DownloadIcon } from '@shared/components/icons/common/download-icon'
-import { useState } from 'react'
+import { useModal } from '@shared/hooks/useModal'
 import { ToastType } from '@shared/types'
+import { DownloadModalContent } from 'domains/download/components/download-modal-content'
+import { useState } from 'react'
 
 interface Props {
   url: string

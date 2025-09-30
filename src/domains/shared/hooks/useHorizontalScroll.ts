@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 interface Options {
   mobileBreakpoint?: number // default: 768
@@ -13,15 +13,22 @@ interface Options {
  */
 export const useHorizontalScroll = ({
   mobileBreakpoint = 768,
-  scrollPadding = 32
+  scrollPadding = 32,
 }: Options = {}) => {
   const listRef = useRef<HTMLDivElement | HTMLUListElement>(null)
   const [showPrev, setShowPrev] = useState(false)
   const [showNext, setShowNext] = useState(false)
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0)
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 0
+  )
+  const isMobile = useMemo(
+    () => windowWidth < mobileBreakpoint,
+    [windowWidth, mobileBreakpoint]
+  )
+  const container = listRef.current
 
   const updateWindowWidth = useCallback(() => {
-    setWindowWidth(window.innerWidth)
+    if (typeof window !== 'undefined') setWindowWidth(window.innerWidth)
   }, [])
 
   useEffect(() => {
@@ -34,34 +41,22 @@ export const useHorizontalScroll = ({
   }, [updateWindowWidth])
 
   const updateButtonsVisibility = useCallback(() => {
-    const container = listRef.current
-    if (!container) {
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container
+      const maxScroll = scrollWidth - clientWidth
+
+      setShowPrev(scrollLeft > 0)
+      setShowNext(Math.ceil(scrollLeft) < maxScroll - 1)
+    }
+
+    if (isMobile) {
       setShowPrev(false)
       setShowNext(false)
       return
     }
-
-    if (windowWidth < mobileBreakpoint) {
-      setShowPrev(false)
-      setShowNext(false)
-      return
-    }
-
-    const { scrollLeft, scrollWidth, clientWidth } = container
-    const maxScroll = scrollWidth - clientWidth
-
-    if (maxScroll <= 1) {
-      setShowPrev(false)
-      setShowNext(false)
-      return
-    }
-
-    setShowPrev(scrollLeft > 0)
-    setShowNext(Math.ceil(scrollLeft) < maxScroll - 1)
-  }, [windowWidth, mobileBreakpoint])
+  }, [windowWidth, mobileBreakpoint, container])
 
   useEffect(() => {
-    const container = listRef.current
     if (!container) return
 
     updateButtonsVisibility()
@@ -78,13 +73,10 @@ export const useHorizontalScroll = ({
   }, [updateButtonsVisibility])
 
   useEffect(() => {
-
-      updateButtonsVisibility()
-
+    updateButtonsVisibility()
   }, [windowWidth, updateButtonsVisibility])
 
   const scrollNext = useCallback(() => {
-    const container = listRef.current
     if (!container || windowWidth < mobileBreakpoint) return
 
     const clientWidth = container.clientWidth
@@ -92,14 +84,13 @@ export const useHorizontalScroll = ({
 
     container.scrollBy({
       left: groupWidth,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
 
     setTimeout(updateButtonsVisibility, 100)
   }, [scrollPadding, updateButtonsVisibility, windowWidth, mobileBreakpoint])
 
   const scrollPrev = useCallback(() => {
-    const container = listRef.current
     if (!container || windowWidth < mobileBreakpoint) return
 
     const clientWidth = container.clientWidth
@@ -107,13 +98,11 @@ export const useHorizontalScroll = ({
 
     container.scrollBy({
       left: -groupWidth,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
 
     setTimeout(updateButtonsVisibility, 100)
   }, [scrollPadding, updateButtonsVisibility, windowWidth, mobileBreakpoint])
-
-  const isMobile = windowWidth < mobileBreakpoint
 
   return {
     listRef,
@@ -122,6 +111,6 @@ export const useHorizontalScroll = ({
     scrollNext,
     scrollPrev,
     windowWidth,
-    isMobile
+    isMobile,
   }
 }

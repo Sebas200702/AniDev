@@ -29,7 +29,7 @@
       "types": ["types.d.ts"],
       "@middlewares/*": ["middlewares/*"],
       "@store/*": ["store/*"],
-      "@hooks/*" : ["hooks/*"]
+      "@hooks/*": ["hooks/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"

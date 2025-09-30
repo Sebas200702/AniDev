@@ -1,6 +1,5 @@
 import type { IconProps } from '@shared/types'
 
-
 export const PauseIcon = ({ className }: IconProps) => {
   return (
     <svg

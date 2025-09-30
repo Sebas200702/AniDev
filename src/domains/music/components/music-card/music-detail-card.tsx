@@ -67,7 +67,6 @@ export const AnimeMusicItem = ({
     }
   }
 
-
   const handleArtistClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
@@ -79,7 +78,6 @@ export const AnimeMusicItem = ({
     e.preventDefault()
     navigate(`/anime/${normalizeString(anime_title)}_${song.anime_id}`)
   }
-
 
   const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -108,16 +106,16 @@ export const AnimeMusicItem = ({
 
   return (
     <article
-      className={`anime-music-item  transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30]  overflow-hidden   max-h-36 w-full cursor-pointer flex-row items-start rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
+      className={`anime-music-item transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
       ref={setNodeRef}
       style={style}
     >
       <a
         href={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
-        className="w-full h-full flex focus:outline-none focus:ring-2 focus:ring-enfasisColor focus:ring-offset-2 focus:ring-offset-Primary-950 rounded-lg"
+        className="focus:ring-enfasisColor focus:ring-offset-Primary-950 flex h-full w-full rounded-lg focus:ring-2 focus:ring-offset-2 focus:outline-none"
         aria-label={`Play ${song.song_title} by ${song.artist_name || 'Unknown artist'}`}
       >
-        <div className="absolute h-full w-full ">
+        <div className="absolute h-full w-full">
           <Picture
             image={banner_image ?? image}
             isBanner
@@ -125,10 +123,10 @@ export const AnimeMusicItem = ({
             alt={song.song_title}
             styles="h-full w-full object-cover object-center blur-sm "
           />
-          <Overlay className="bg-Primary-950/90 h-full w-full  overflow-hidden " />
+          <Overlay className="bg-Primary-950/90 h-full w-full overflow-hidden" />
         </div>
 
-        <div className="aspect-[225/330] h-full overflow-hidden rounded-l-lg relative">
+        <div className="relative aspect-[225/330] h-full overflow-hidden rounded-l-lg">
           <Picture
             placeholder={placeholder ?? image}
             image={image}
@@ -146,7 +144,7 @@ export const AnimeMusicItem = ({
               ))}
 
               <button
-                className="text-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 disabled:pointer-events-none disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-enfasisColor"
+                className="text-enfasisColor focus:ring-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 focus:ring-2 focus:outline-none disabled:pointer-events-none disabled:cursor-not-allowed"
                 onClick={handlePlay}
                 disabled={!canPlay}
                 aria-label={isPlaying ? 'Pause song' : 'Play song'}
@@ -170,7 +168,7 @@ export const AnimeMusicItem = ({
           </span>
         )}
 
-        <footer className="z-10 flex w-full max-w-[65%] h-full flex-col items-start justify-between px-4 py-2 md:justify-center md:gap-4 md:p-4">
+        <footer className="z-10 flex h-full w-full max-w-[65%] flex-col items-start justify-between px-4 py-2 md:justify-center md:gap-4 md:p-4">
           <div className="flex w-full flex-col items-start space-x-1 truncate text-pretty ease-in-out select-none md:flex-row">
             <span className="text-m truncate text-white">
               {song.song_title}
@@ -181,16 +179,15 @@ export const AnimeMusicItem = ({
                 By
                 <button
                   onClick={handleArtistClick}
-                  onKeyDown={(e) => handleKeyDown(e, () => handleArtistClick(e as any))}
+                  onKeyDown={(e) =>
+                    handleKeyDown(e, () => handleArtistClick(e as any))
+                  }
                   tabIndex={0}
-
                   title={`View ${song.artist_name} profile`}
-                  className="text-Primary-100 text-m hover:text-enfasisColor cursor-pointer truncate transition-all duration-300 underline-offset-2 hover:underline focus:outline-none  "
+                  className="text-Primary-100 text-m hover:text-enfasisColor cursor-pointer truncate underline-offset-2 transition-all duration-300 hover:underline focus:outline-none"
                   aria-label={`Go to ${song.artist_name} profile`}
                 >
-                  <strong>
-                    {song.artist_name}
-                  </strong>
+                  <strong>{song.artist_name}</strong>
                 </button>
               </span>
             )}
@@ -200,14 +197,15 @@ export const AnimeMusicItem = ({
               From
               <button
                 onClick={handleAnimeClick}
-                onKeyDown={(e) => handleKeyDown(e, () => handleAnimeClick(e as any))}
+                onKeyDown={(e) =>
+                  handleKeyDown(e, () => handleAnimeClick(e as any))
+                }
                 tabIndex={0}
-
                 title={`View ${anime_title} details`}
-                className="ml-1 cursor-pointer truncate hover:text-enfasisColor transition-all duration-300 rounded"
+                className="hover:text-enfasisColor ml-1 cursor-pointer truncate rounded transition-all duration-300"
                 aria-label={`Go to ${anime_title} details`}
               >
-                <strong className="text-sx text-Primary-100 truncate hover:underline underline-offset-2">
+                <strong className="text-sx text-Primary-100 truncate underline-offset-2 hover:underline">
                   {anime_title}
                 </strong>
               </button>
@@ -218,11 +216,9 @@ export const AnimeMusicItem = ({
 
       {/* Elementos fuera del enlace principal */}
       <div
-        className={`absolute md:bottom-3 ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} bottom-2 z-20 pointer-events-auto`}
+        className={`absolute md:bottom-3 ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} pointer-events-auto bottom-2 z-20`}
       >
-        <MoreOptions
-          className="md:flex"
-        >
+        <MoreOptions className="md:flex">
           <AddToPlayListButton
             song={{
               image,
@@ -244,7 +240,7 @@ export const AnimeMusicItem = ({
             showLabel={false}
           />
           <ShareButton
-            className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-enfasisColor"
+            className="hover:text-enfasisColor group focus:ring-enfasisColor cursor-pointer rounded-md p-1 text-sm transition-all duration-300 focus:ring-2 focus:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
             title={song.song_title}
             text={`Listen ${song.song_title} on AniDev`}
@@ -255,7 +251,7 @@ export const AnimeMusicItem = ({
       {isInMusicPlayer && (
         <div
           {...handleProps}
-          className="bg-enfasisColor/50 absolute top-1/2 right-0 z-30 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-r-md p-1 shadow-lg backdrop-blur-sm transition-all duration-200 select-none active:cursor-grabbing focus:outline-none focus:ring-2 focus:ring-enfasisColor focus:ring-offset-2 focus:ring-offset-Primary-950"
+          className="bg-enfasisColor/50 focus:ring-enfasisColor focus:ring-offset-Primary-950 absolute top-1/2 right-0 z-30 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-r-md p-1 shadow-lg backdrop-blur-sm transition-all duration-200 select-none focus:ring-2 focus:ring-offset-2 focus:outline-none active:cursor-grabbing"
           style={{ touchAction: 'none' }}
           onClick={(e) => e.stopPropagation()}
           tabIndex={0}

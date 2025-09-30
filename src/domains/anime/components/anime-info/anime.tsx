@@ -4,10 +4,10 @@ import { AnimeLoader } from '@anime/components/anime-info/anime-loader'
 import { AnimeShowBox } from '@anime/components/anime-info/anime-show-box'
 import { SimilarToComponet } from '@anime/components/anime-info/anime-similar-to'
 import { AnimeTag } from '@anime/components/shared/anime-tag'
-import { useBlockedContent } from '@shared/hooks/useBlockedContent'
 import { AddToListButton } from '@shared/components/buttons/add-to-list-button'
 import { ShareButton } from '@shared/components/buttons/share-button'
 import { WatchAnimeButton } from '@shared/components/buttons/watch-anime'
+import { useBlockedContent } from '@shared/hooks/useBlockedContent'
 import { baseUrl } from '@utils/base-url'
 import { getAnimeData } from '@utils/get-anime-data'
 import { getAnimeType } from '@utils/getanime-type'
@@ -135,7 +135,7 @@ export const AnimeInfo = ({ id }: Props) => {
           />
         )}
       </Header>
-      <div className="xl:col-span-3 col-span-1 md:col-span-2 flex flex-col gap-6">
+      <div className="col-span-1 flex flex-col gap-6 md:col-span-2 xl:col-span-3">
         <AnimeShowBox
           animeId={animeData.mal_id}
           trailer_url={animeData.trailer_url ?? ''}

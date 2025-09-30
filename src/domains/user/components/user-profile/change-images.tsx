@@ -112,15 +112,15 @@ export const ChangeImages = ({ type, url }: DataImage) => {
 
   return (
     <ModalDefaultContainer>
-      <section className="xl:w-[35vw] md:w-[60vw] h-[80vh] w-full overflow-y-hidden ">
+      <section className="h-[80vh] w-full overflow-y-hidden md:w-[60vw] xl:w-[35vw]">
         <header
-          className={` flex ${isAvatar ? 'md:flex-row md:p-4 flex-col' : 'flex-col'} sticky py-4 z-30 md:top-0  left-0 right-0 gap-8 items-center   `}
+          className={`flex ${isAvatar ? 'flex-col md:flex-row md:p-4' : 'flex-col'} sticky right-0 left-0 z-30 items-center gap-8 py-4 md:top-0`}
         >
           <Overlay className="bg-Complementary h-full w-full" />
           <div
             {...dragDropProps}
             ref={dropTargetRef}
-            className={`${isAvatar ? 'md:max-h-32 md:max-w-32 max-w-24 max-h-24  w-full h-full relative rounded-full aspect-square' : 'absolute top-0 w-full rounded  aspect-[1080/300]'}  object-cover object-center overflow-hidden   `}
+            className={`${isAvatar ? 'relative aspect-square h-full max-h-24 w-full max-w-24 rounded-full md:max-h-32 md:max-w-32' : 'absolute top-0 aspect-[1080/300] w-full rounded'} overflow-hidden object-cover object-center`}
           >
             {isDragging && (
               <div className="bg-enfasisColor absolute inset-0 z-10 flex items-center justify-center opacity-80">
@@ -139,19 +139,19 @@ export const ChangeImages = ({ type, url }: DataImage) => {
             />
           </div>
           <div
-            className={`z-10 flex flex-col md:gap-6 gap-3 w-full ${isAvatar ? '' : 'mt-44'}`}
+            className={`z-10 flex w-full flex-col gap-3 md:gap-6 ${isAvatar ? '' : 'mt-44'}`}
           >
-            <h2 className="capitalize text-lx md:text-left text-center">
+            <h2 className="text-lx text-center capitalize md:text-left">
               Select Your {type}
             </h2>
-            <p className="text-m text-Primary-300 md:text-left text-center">
+            <p className="text-m text-Primary-300 text-center md:text-left">
               {type === 'avatar'
                 ? 'Select your profile image, you can change it when ever you want'
                 : 'Select your profile banner , you can change it when ever you want'}
             </p>
-            <div className="flex flex-row gap-2 text-s w-full">
+            <div className="text-s flex w-full flex-row gap-2">
               <button
-                className="button-primary w-full  disabled:opacity-30 disabled:pointer-events-none"
+                className="button-primary w-full disabled:pointer-events-none disabled:opacity-30"
                 title={`Save your ${type}`}
                 onClick={handleDoneClick}
               >
@@ -188,7 +188,7 @@ export const ChangeImages = ({ type, url }: DataImage) => {
             </div>
           </div>
         </header>
-        <ul className="mt-4 md:mx-8 flex flex-col gap-6 no-scrollbar overflow-y-auto h-full">
+        <ul className="no-scrollbar mt-4 flex h-full flex-col gap-6 overflow-y-auto md:mx-8">
           {isAvatar &&
             malIds.map((id) => <CharacterImagesColection key={id} id={id} />)}
           {type !== 'avatar' &&

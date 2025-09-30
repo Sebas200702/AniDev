@@ -1,8 +1,8 @@
 import { FallIcon } from '@shared/components/icons/anime/fall-icon'
 import { SpringIcon } from '@shared/components/icons/anime/spring-icon'
 import { SummerIcon } from '@shared/components/icons/anime/summer-icon'
-import { UnknownIcon } from '@shared/components/icons/common/unknown-icon'
 import { WinterIcon } from '@shared/components/icons/anime/winter-icon'
+import { UnknownIcon } from '@shared/components/icons/common/unknown-icon'
 import type { IconProps } from '@shared/types'
 interface SeasonIconProps extends IconProps {
   season: string

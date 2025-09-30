@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import type { AnimeSongWithImage } from '@music/types'
 import { normalizeString } from '@utils/normalize-string'
 import type { MediaPlayerInstance } from '@vidstack/react'
-import type { AnimeSongWithImage } from '@music/types'
 
 export const useMusicPlayerSync = (
   currentTime: number,

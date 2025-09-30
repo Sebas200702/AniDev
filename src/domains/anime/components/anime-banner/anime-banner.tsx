@@ -66,7 +66,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
   const slug = normalizeString(title)
 
   return (
-    <section className=" relative flex flex-row items-center md:px-20 md:py-4">
+    <section className="relative flex flex-row items-center md:px-20 md:py-4">
       <article
         className={`anime-banner-${animationNumber} fade-outgroup bg-Complementary relative w-full overflow-hidden transition-all duration-400 ease-in-out md:rounded-2xl md:hover:opacity-95`}
       >

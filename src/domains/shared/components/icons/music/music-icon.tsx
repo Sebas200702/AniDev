@@ -1,6 +1,5 @@
 import type { IconProps } from '@shared/types'
 
-
 export const MusicIcon = ({ className }: IconProps) => {
   return (
     <svg

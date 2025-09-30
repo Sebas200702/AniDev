@@ -2,6 +2,7 @@ import { useMusicPlayerSync } from '@music/hooks/useMusicPlayerSync'
 import { usePlayerBehavior } from '@music/hooks/usePlayerBehavior'
 import { usePlayerDragging } from '@music/hooks/usePlayerDragging'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { ToastType } from '@shared/types'
 import { createImageUrlProxy } from '@utils/create-image-url-proxy'
 import {
   type MediaPlayerInstance,
@@ -9,7 +10,6 @@ import {
   useMediaStore,
 } from '@vidstack/react'
 import { useEffect, useRef, useState } from 'react'
-import { ToastType } from '@shared/types'
 
 import { Cover } from '@music/components/music-player/music-info/cover'
 import { Header } from '@music/components/music-player/music-info/header'

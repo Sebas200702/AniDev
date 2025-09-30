@@ -25,19 +25,21 @@ import { NextPrevIcon } from '@shared/components/icons/watch/next-prev-icon'
 interface NexPrevBtnSlideListProps {
   label: string
   styles: string
+  onClick: () => void
 }
 export const NexPrevBtnSlideList = ({
   label,
   styles,
+  onClick,
 }: NexPrevBtnSlideListProps) => {
   return (
     <nav
       className={`${styles} to-Primary-950/90 absolute top-0 bottom-0 z-20 h-full w-20 items-center justify-start bg-gradient-to-l from-transparent md:flex`}
     >
       <button
-        className={`${label} group bg-enfasisColor z-10 my-auto flex h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out focus:outline-none"
-        aria-label="Next`}
+        className={`${label} group bg-enfasisColor focus:outline-none" aria-label="Next z-10 my-auto flex h-16 w-10 cursor-pointer items-center justify-center rounded-lg transition-all duration-300 ease-in-out`}
         title={label}
+        onClick={onClick}
       >
         <NextPrevIcon className="h-3 w-3 md:h-4 md:w-4" />
       </button>

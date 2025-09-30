@@ -1,6 +1,6 @@
+import type { Seiyuu } from '@seiyuu/types'
 import { Picture } from '@shared/components/media/picture'
 import { normalizeString } from '@utils/normalize-string'
-import type { Seiyuu } from '@seiyuu/types'
 
 interface Props {
   seiyuu: Seiyuu

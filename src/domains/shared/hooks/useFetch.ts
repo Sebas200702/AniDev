@@ -43,6 +43,7 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
   const [total, setTotal] = useState<number>(0)
   const [error, setError] = useState<Error>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [status, setStatus] = useState<number | null>(null)
 
   useEffect(() => {
     if (!url || skip) return
@@ -51,6 +52,8 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
       setLoading(true)
       try {
         const response = await fetch(url, options)
+
+        setStatus(response.status)
 
         if (!response.ok) {
           const errorMessage = `Error fetching data: ${response.statusText}`
@@ -75,5 +78,5 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
     fetchData()
   }, [url, options, skip])
 
-  return { data, total, error, loading }
+  return { data, total, error, loading , status}
 }

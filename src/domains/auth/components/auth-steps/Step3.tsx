@@ -1,13 +1,13 @@
 import { navigate } from 'astro:transitions/client'
 import { Input } from '@auth/components/auth-form/input'
+import { usePreferencesFormStore } from '@auth/stores/preferences-form-store'
 import { useStepsStore } from '@auth/stores/steps-store'
 import { toast } from '@pheralb/toast'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
-import { usePreferencesFormStore } from '@auth/stores/preferences-form-store'
+import { ToastType } from '@shared/types'
 import { parseResponse } from '@utils/parse-response'
 import { useState } from 'react'
-import { ToastType } from '@shared/types'
 
 /**
  * Step3 component handles user preferences and favorites collection.

@@ -1,6 +1,5 @@
 import type { IconProps } from '@shared/types'
 
-
 /**
  * ToWatchIcon component renders an icon representing a bookmark or "to watch" functionality.
  *

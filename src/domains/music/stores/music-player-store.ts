@@ -1,5 +1,5 @@
-import { type MediaPlayerInstance } from '@vidstack/react'
 import type { AnimeSongWithImage } from '@music/types'
+import { type MediaPlayerInstance } from '@vidstack/react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 

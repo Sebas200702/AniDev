@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { type AnimeSongWithImage } from '@music/types'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { DinamicBanner } from '@shared/components/ui/dinamic-banner'
 import { useFetch } from '@shared/hooks/useFetch'
@@ -7,7 +8,6 @@ import { getLatestSongs } from '@utils/music'
 import { shuffleArray } from '@utils/shuffle-array'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import { useEffect, useState } from 'react'
-import { type AnimeSongWithImage } from '@music/types'
 
 export const MusicBanner = () => {
   const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
@@ -46,15 +46,15 @@ export const MusicBanner = () => {
     <>
       <DinamicBanner banners={banners} />
       <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
-      <header className="absolute z-20 flex aspect-[1080/600] h-[45vh] p-4 w-full flex-col justify-center gap-6 overflow-hidden text-left md:h-[60vh] md:px-20">
+      <header className="absolute z-20 flex aspect-[1080/600] h-[45vh] w-full flex-col justify-center gap-6 overflow-hidden p-4 text-left md:h-[60vh] md:px-20">
         <h1 className="title">Openings that are playing now</h1>
 
         <ul className="flex gap-4">
           <button
-            className="button-primary px-4 flex gap-2"
+            className="button-primary flex gap-2 px-4"
             onClick={handleClick}
           >
-            <PlayIcon className="w-4 h-4" />
+            <PlayIcon className="h-4 w-4" />
             Play Now
           </button>
         </ul>

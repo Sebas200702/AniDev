@@ -1,6 +1,5 @@
 import type { IconProps } from '@shared/types'
 
-
 export const ZoomInIcon = ({ className }: IconProps) => {
   return (
     <svg

@@ -24,12 +24,15 @@ export const GET: APIRoute = rateLimit(
       )
 
       if (cachedCharacters) {
-        return new Response(JSON.stringify(JSON.parse(cachedCharacters)), {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        return new Response(
+          JSON.stringify({ data: JSON.parse(cachedCharacters) }),
+          {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
       }
 
       const characters = await getAnimeCharacters(animeId, language)
@@ -45,7 +48,7 @@ export const GET: APIRoute = rateLimit(
         client.set(cacheKey, JSON.stringify(characters), { EX: 60 * 60 * 24 })
       )
 
-      return new Response(JSON.stringify(characters), {
+      return new Response(JSON.stringify({ data: characters }), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',

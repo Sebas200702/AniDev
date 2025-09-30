@@ -5,7 +5,6 @@ import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
 import { AddToPlayList } from '@shared/components/icons/music/add-to-play-list-icon'
 import { ToastType } from '@shared/types'
 
-
 interface Props {
   song: AnimeSongWithImage
   isInPlayList: boolean

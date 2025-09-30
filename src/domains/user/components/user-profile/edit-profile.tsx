@@ -138,12 +138,12 @@ export const EditProfile = () => {
 
   return (
     <ModalDefaultContainer>
-      <h2 className="text-lx absolute text-center top-0 -translate-y-full w-full text-Primary-50 p-4">
+      <h2 className="text-lx text-Primary-50 absolute top-0 w-full -translate-y-full p-4 text-center">
         Edit Your Profile
       </h2>
-      <section className="xl:w-[25vw] md:w-[60vw] w-full max-h-[45vh]  flex justify-center">
+      <section className="flex max-h-[45vh] w-full justify-center md:w-[60vw] xl:w-[25vw]">
         <button
-          className="absolute top-0 w-full object-cover object-center md:aspect-[1080/300] aspect-[1080/500] rounded-t-lg overflow-hidden group"
+          className="group absolute top-0 aspect-[1080/500] w-full overflow-hidden rounded-t-lg object-cover object-center md:aspect-[1080/300]"
           onClick={() =>
             handleClickEdit({
               url:
@@ -168,23 +168,23 @@ export const EditProfile = () => {
             alt={`Banner of ${userInfo?.name}`}
             isBanner
           />
-          <span className="absolute top-1/2 left-1/2  group-hover:opacity-100 opacity-0 -translate-x-1/2 rounded-full -translate-y-1/2 z-50 text-s select-none">
+          <span className="text-s absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 select-none group-hover:opacity-100">
             {'Change banner image'}
           </span>
 
           <Overlay
-            className={`to-Complementary w-full bg-gradient-to-b h-1/2 group-hover:h-full   group-hover:via-Complementary/60 z-10`}
+            className={`to-Complementary group-hover:via-Complementary/60 z-10 h-1/2 w-full bg-gradient-to-b group-hover:h-full`}
           />
 
           <div
-            className="bg-Complementary border-Primary-300/20 absolute z-20 flex right-1 bottom-1   cursor-pointer items-center justify-center rounded-full border-1 md:p-2 p-1 transition-all duration-200 ease-in-out md:group-hover:opacity-95 "
+            className="bg-Complementary border-Primary-300/20 absolute right-1 bottom-1 z-20 flex cursor-pointer items-center justify-center rounded-full border-1 p-1 transition-all duration-200 ease-in-out md:p-2 md:group-hover:opacity-95"
             title="'Change banner image'"
           >
             <EditIcon className="group-hover:text-enfasisColor h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out group-hover:scale-110 md:h-5 md:w-5" />
           </div>
         </button>
         <div
-          className=" md:h-32 md:w-32 w-20 h-20 absolute top-28 z-20 group"
+          className="group absolute top-28 z-20 h-20 w-20 md:h-32 md:w-32"
           onClick={() =>
             handleClickEdit({
               url: userInfo?.avatar || `${baseUrl}/placeholder.webp`,
@@ -199,16 +199,16 @@ export const EditProfile = () => {
             alt={`Avatar of ${userInfo?.name}`}
           />
 
-          <span className="absolute top-1/2 left-1/2  group-hover:opacity-100 opacity-0 -translate-x-1/2 rounded-full -translate-y-1/2 z-50 text-s select-none">
+          <span className="text-s absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 select-none group-hover:opacity-100">
             {'Change'}
           </span>
 
           <Overlay
-            className={`to-Complementary/80 w-full bg-gradient-to-b h-1/2 group-hover:h-full   group-hover:via-Complementary/60 z-10`}
+            className={`to-Complementary/80 group-hover:via-Complementary/60 z-10 h-1/2 w-full bg-gradient-to-b group-hover:h-full`}
           />
 
           <div
-            className="bg-Complementary border-Primary-300/20 absolute z-20 flex right-0 bottom-1   cursor-pointer items-center justify-center rounded-full border-1 md:p-2 p-1 transition-all duration-200 ease-in-out md:group-hover:opacity-95  "
+            className="bg-Complementary border-Primary-300/20 absolute right-0 bottom-1 z-20 flex cursor-pointer items-center justify-center rounded-full border-1 p-1 transition-all duration-200 ease-in-out md:p-2 md:group-hover:opacity-95"
             title="Change Image"
           >
             <EditIcon className="group-hover:text-enfasisColor h-3.5 w-3.5 text-white transition-all duration-200 ease-in-out group-hover:scale-110 md:h-5 md:w-5" />
@@ -216,7 +216,7 @@ export const EditProfile = () => {
         </div>
 
         <form
-          className="md:mt-64 mt-50 w-full flex flex-col gap-6"
+          className="mt-50 flex w-full flex-col gap-6 md:mt-64"
           onSubmit={handleSubmit}
         >
           <Input
@@ -229,10 +229,10 @@ export const EditProfile = () => {
             <UserIcon className="h-5 w-5" />
           </Input>
 
-          <footer className="w-full flex items-center  gap-4">
+          <footer className="flex w-full items-center gap-4">
             <button
               disabled={isDisabled || isLoading}
-              className="button-primary w-full disabled:opacity-30 disabled:pointer-events-none"
+              className="button-primary w-full disabled:pointer-events-none disabled:opacity-30"
             >
               {isLoading ? 'Updating...' : 'Save Changes'}
             </button>

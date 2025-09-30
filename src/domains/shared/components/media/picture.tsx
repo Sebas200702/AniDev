@@ -73,9 +73,9 @@ export const Picture = ({
   }, [placeholder, image, isBanner])
 
   return (
-    <figure className={`${styles} overflow-hidden `}>
+    <figure className={`${styles} overflow-hidden`}>
       <img
-        className="absolute inset-0 h-full w-full  object-cover object-center  blur-lg filter"
+        className="absolute inset-0 h-full w-full object-cover object-center blur-lg filter"
         src={
           resolvedPlaceholder ||
           createImageUrlProxy(
@@ -88,10 +88,10 @@ export const Picture = ({
         alt={alt}
         decoding="async"
         fetchPriority="high"
-        loading='eager'
+        loading="eager"
       />
       <img
-        className={` h-full w-full relative object-cover object-center`}
+        className={`relative h-full w-full object-cover object-center`}
         src={
           resolvedImage ||
           createImageUrlProxy(

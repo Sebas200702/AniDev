@@ -3,11 +3,11 @@ import { FilterDropdown } from '@search/components/search-filters/filter-dropdow
 import { MusicIcon } from '@shared/components/icons/music/music-icon'
 import { VideoIcon } from '@shared/components/icons/watch/video-icon'
 import { Picture } from '@shared/components/media/picture'
+import { ToastType } from '@shared/types'
 import { getTypeMusicColor } from '@utils/get-type-music-color'
 import { DownloadModalSkeleton } from 'domains/download/components/download-modal-skeleton'
 import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
 import { useEffect, useState } from 'react'
-import { ToastType } from '@shared/types'
 
 interface MusicInfo {
   song_title: string

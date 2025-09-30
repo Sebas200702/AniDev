@@ -15,8 +15,8 @@ export const MusicMiniCardLayout = ({ title }: Props) => {
   if (latestLoading || !latest)
     return (
       <div>
-        <h2 className="mb-10 subtitle">{title}</h2>
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-4 md:grid-cols-3">
+        <h2 className="subtitle mb-10">{title}</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 12 }).map((_, i) => (
             <div
               key={i}
@@ -29,8 +29,8 @@ export const MusicMiniCardLayout = ({ title }: Props) => {
 
   return (
     <div>
-      <h2 className="mb-10 subtitle">{title}</h2>
-      <div className="grid xl:grid-cols-4 md:grid-cols-3 gap-4">
+      <h2 className="subtitle mb-10">{title}</h2>
+      <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
         {latest?.map((song) => (
           <MusicCard key={song.song_id} song={song} isMini />
         ))}

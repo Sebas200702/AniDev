@@ -1,5 +1,5 @@
-import { typeColors } from '@utils/type-colors'
 import type { IconProps } from '@shared/types'
+import { typeColors } from '@utils/type-colors'
 
 interface TypeIconProps extends IconProps {
   type: string

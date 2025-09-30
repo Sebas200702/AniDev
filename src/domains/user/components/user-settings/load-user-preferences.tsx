@@ -1,8 +1,8 @@
 import { useFetch } from '@shared/hooks/useFetch'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
+import type { UserInfo } from '@user/types'
 import { getWatchList } from '@utils/get-watch-list'
 import { useEffect } from 'react'
-import type { UserInfo } from '@user/types'
 
 /**
  * LoadTheme component applies user-specific theme colors based on global preferences.

@@ -50,7 +50,7 @@ export const AnimeBanner = ({
 }: Props) => {
   return (
     <div className="group">
-      <div className="fixed  h-[40vh] w-full overflow-hidden md:h-[60vh]">
+      <div className="fixed h-[40vh] w-full overflow-hidden md:h-[60vh]">
         <Picture
           image={banner_image || image_large_webp}
           placeholder={banner_image || image_large_webp}

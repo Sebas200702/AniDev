@@ -60,14 +60,12 @@ export const useAutoCloseModal = (
     const handleLinkClick = (event: Event) => {
       try {
         const target = event.target as HTMLElement
-        const link =
-          target.closest('a') ||
-          target.closest('.anime-music-item')
+        const link = target.closest('a') || target.closest('.anime-music-item')
 
         if (
-          link &&
-          (link.tagName === 'A' && link.href) || link?.classList?.contains('anime-music-item')) 
-         {
+          (link && link.tagName === 'A' && link.href) ||
+          link?.classList?.contains('anime-music-item')
+        ) {
           setTimeout(() => {
             if (isModalOpen) {
               closeModal()

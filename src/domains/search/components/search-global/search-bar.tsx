@@ -283,9 +283,9 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
         </div>
       </form>
       <div
-        className={`no-scrollbar no-scrollbar overflow-x-hidden bg-Primary-950 relative  overflow-y-scroll max-h-96 w-full max-w-xl  rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} mt-4 transition-all duration-300`}
+        className={`no-scrollbar no-scrollbar bg-Primary-950 relative max-h-96 w-full max-w-xl overflow-x-hidden overflow-y-scroll rounded-md p-4 shadow-lg ${(isLoading || results) && query ? 'h-full opacity-100' : 'h-0 opacity-0'} mt-4 transition-all duration-300`}
       >
-        <ul className="gap-4  flex w-full flex-col  ">
+        <ul className="flex w-full flex-col gap-4">
           {isLoadingFull &&
             Array.from({ length: 7 }, (_, i) => (
               <div

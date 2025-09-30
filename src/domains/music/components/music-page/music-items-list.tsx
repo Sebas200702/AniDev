@@ -1,5 +1,5 @@
-import { useFetch } from '@shared/hooks/useFetch'
 import type { AnimeSongWithImage } from '@music/types'
+import { useFetch } from '@shared/hooks/useFetch'
 import { AnimeMusicItem } from '../music-card/music-detail-card'
 
 export const MusicItemsLayout = () => {
@@ -12,7 +12,7 @@ export const MusicItemsLayout = () => {
   if (openingsLoading || !openings)
     return (
       <div>
-        <h2 className="mb-3 subtitle">Openings</h2>
+        <h2 className="subtitle mb-3">Openings</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {Array.from({ length: 12 }).map((_, i) => (
             <div
@@ -26,7 +26,7 @@ export const MusicItemsLayout = () => {
 
   return (
     <div>
-      <h2 className="mb-3 subtitle">Openings</h2>
+      <h2 className="subtitle mb-3">Openings</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {openings?.map((song) => (
           <AnimeMusicItem

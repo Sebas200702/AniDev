@@ -17,7 +17,6 @@ export const AnimeCollection = ({ animes, title, id }: Props) => {
   const style3 =
     'z-20 -translate-x-10 translate-y-1/2 rotate-[10deg] md:hover:translate-y-[35%] transition-transform duration-300 ease-in-out'
 
-
   const getPosition = (i: number) => {
     if (i === 0) return style1
     if (i === 1) return style2

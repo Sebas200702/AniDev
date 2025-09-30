@@ -1,5 +1,5 @@
-import { signIn } from 'auth-astro/client'
 import { GoogleIcon } from '@shared/components/icons/auth/google-icon'
+import { signIn } from 'auth-astro/client'
 
 /**
  * GoogleBtn component renders a button for Google authentication.

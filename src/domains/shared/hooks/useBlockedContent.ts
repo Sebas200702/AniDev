@@ -2,9 +2,9 @@ import { navigate } from 'astro:transitions/client'
 import { toast } from '@pheralb/toast'
 import { BlockedContent } from '@shared/components/ui/blocked-content'
 import { useModal } from '@shared/hooks/useModal'
+import { ToastType } from '@shared/types'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect, useState } from 'react'
-import { ToastType } from '@shared/types'
 
 interface UseBlockedContentProps {
   id: string

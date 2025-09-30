@@ -1,6 +1,6 @@
 import { AnimeDetailCard } from '@anime/components/anime-card/anime-detail-card'
-import { useFetch } from '@shared/hooks/useFetch'
 import type { AnimeDetail } from '@anime/types'
+import { useFetch } from '@shared/hooks/useFetch'
 
 /**
  * AnimeRelated component displays a grid of related anime recommendations.

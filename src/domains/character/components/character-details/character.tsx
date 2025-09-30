@@ -67,7 +67,7 @@ export const CharacterInfo = ({ slug }: Props) => {
         title={`${character.character_name} - ${character.character_name_kanji}`}
       >
         {nicknames.length > 0 && (
-          <p className="mt-2 text-l text-Primary-200">
+          <p className="text-l text-Primary-200 mt-2">
             <span className="font-semibol text-Primary-50">Nicknames:</span>{' '}
             {nicknames.join(', ')}
           </p>

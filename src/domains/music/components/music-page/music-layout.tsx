@@ -4,7 +4,7 @@ import { MusicMiniCardLayout } from '@music/components/music-page/music-mini-car
 
 export const MusicLayout = () => {
   return (
-    <section className="flex flex-col gap-8 mt-[45vh] md:px-20 z-20 p-4">
+    <section className="z-20 mt-[45vh] flex flex-col gap-8 p-4 md:px-20">
       <MusicMiniCardLayout title="Latest releases" />
       <MusicCardLayout />
       <MusicItemsLayout />

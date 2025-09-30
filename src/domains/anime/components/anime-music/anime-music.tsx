@@ -56,7 +56,7 @@ export const AnimeMusic = ({
     url: `/api/getAnimeMusic?animeId=${animeId}`,
   })
 
-    useEffect(() => {
+  useEffect(() => {
     if (data) {
       const formattedSongs = formatSongs(data)
       setSongs(formattedSongs)
@@ -86,8 +86,6 @@ export const AnimeMusic = ({
       return 0
     })
   }
-
-
 
   if (loading)
     return (

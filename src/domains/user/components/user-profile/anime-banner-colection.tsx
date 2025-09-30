@@ -81,44 +81,44 @@ export const AnimeBannerColection = ({ id }: Props) => {
   }, [windowWidth, groups.length])
   if (!data || loading)
     return (
-      <div className="py-4 flex flex-col gap-3">
-        <div className="w-1/3 rounded-md  bg-Primary-700 h-[30px] animate-pulse md:mx-8 duration-300 transition-all"></div>
-        <div className="flex flex-row w-full overflow-x-scroll gap-4 md:px-8  no-scrollbar ">
-          <div className="md:aspect-[1080/300] aspect-[1080/500] w-full rounded  bg-zinc-700  animate-pulse duration-300" />
+      <div className="flex flex-col gap-3 py-4">
+        <div className="bg-Primary-700 h-[30px] w-1/3 animate-pulse rounded-md transition-all duration-300 md:mx-8"></div>
+        <div className="no-scrollbar flex w-full flex-row gap-4 overflow-x-scroll md:px-8">
+          <div className="aspect-[1080/500] w-full animate-pulse rounded bg-zinc-700 duration-300 md:aspect-[1080/300]" />
         </div>
       </div>
     )
 
   return (
-    <section className="py-4 flex flex-col gap-3">
+    <section className="flex flex-col gap-3 py-4">
       <header>
         <h3 className="text-l line-clamp-1 px-8">{data[0].title}</h3>
       </header>
 
       <div className="relative overflow-hidden">
         <button
-          className={`absolute prev-button -left-2 top-1/2 transform -translate-y-1/2    group  z-10 my-auto flex h-10 w-10 cursor-pointer items-center justify-center transition-all duration-300 ease-in-out focus:outline-none    `}
+          className={`prev-button group absolute top-1/2 -left-2 z-10 my-auto flex h-10 w-10 -translate-y-1/2 transform cursor-pointer items-center justify-center transition-all duration-300 ease-in-out focus:outline-none`}
         >
           <NextPrevIcon className="h-3 w-3 md:h-5 md:w-5" />
         </button>
         <button
-          className={`absolute next-button -right-2 top-1/2 transform -translate-y-1/2 rotate-180   group  z-10 my-auto flex h-10 w-10 cursor-pointer items-center justify-center transition-all duration-300 ease-in-out focus:outline-none    `}
+          className={`next-button group absolute top-1/2 -right-2 z-10 my-auto flex h-10 w-10 -translate-y-1/2 rotate-180 transform cursor-pointer items-center justify-center transition-all duration-300 ease-in-out focus:outline-none`}
         >
           <NextPrevIcon className="h-3 w-3 md:h-5 md:w-5" />
         </button>
         <div
           ref={listRef}
-          className="flex flex-row w-full overflow-x-scroll md:px-8 gap-8 no-scrollbar  scroll-smooth"
+          className="no-scrollbar flex w-full flex-row gap-8 overflow-x-scroll scroll-smooth md:px-8"
         >
           {groups.map((group, groupIndex) => (
             <ul
               key={`group-${groupIndex + 1}`}
-              className="flex w-full  flex-none gap-4 "
+              className="flex w-full flex-none gap-4"
             >
               {group.map((banner) => (
                 <button
                   key={banner.mal_id}
-                  className={`w-full h-full relative border-3 ${banner.banner_image === bannerImage ? 'border-enfasisColor' : 'border-enfasisColor/0'} md:aspect-[1080/300] object-cover object-center aspect-[1080/500] transition-colors duration-300 rounded overflow-hidden ease-in-out    cursor-pointer group`}
+                  className={`relative h-full w-full border-3 ${banner.banner_image === bannerImage ? 'border-enfasisColor' : 'border-enfasisColor/0'} group aspect-[1080/500] cursor-pointer overflow-hidden rounded object-cover object-center transition-colors duration-300 ease-in-out md:aspect-[1080/300]`}
                   onClick={() => setBannerImage(banner.banner_image)}
                 >
                   <Picture
@@ -128,7 +128,7 @@ export const AnimeBannerColection = ({ id }: Props) => {
                     alt={`Banner of ${banner.title}`}
                     isBanner
                   />
-                  <Overlay className="group-hover:opacity-100 opacity-0 h-full w-full bg-enfasisColor/40 transition-opacity duration-200" />
+                  <Overlay className="bg-enfasisColor/40 h-full w-full opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                 </button>
               ))}
             </ul>

@@ -8,8 +8,8 @@ import { Picture } from '@shared/components/media/picture'
 import { MoreOptions } from '@shared/components/ui/more-options'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 
-import { normalizeString } from '@utils/normalize-string'
 import type { AnimeDetail } from '@anime/types'
+import { normalizeString } from '@utils/normalize-string'
 
 /**
  * AnimeDetailCard component displays a detailed view of an anime with a banner background and additional information.
@@ -61,7 +61,7 @@ export const AnimeDetailCard = ({ anime }: { anime: AnimeDetail }) => {
   return (
     <article
       key={anime.mal_id}
-      className={`group relative anime-detail-card transition-all duration-300 ease-in-out md:hover:translate-x-1 overflow-hidden`}
+      className={`group anime-detail-card relative overflow-hidden transition-all duration-300 ease-in-out md:hover:translate-x-1`}
     >
       <a
         href={`/anime/${normalizeString(anime.title)}_${anime.mal_id}`}

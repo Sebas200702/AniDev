@@ -71,7 +71,7 @@ export const AnimeTrailer = ({ trailer_url, banner_image, title }: Props) => {
         </MediaPlayer>
       ) : (
         <div className="flex w-full flex-col rounded-md md:max-w-5xl">
-          <div className="aspect-video h-full relative w-full rounded-sm overflow-hidden">
+          <div className="relative aspect-video h-full w-full overflow-hidden rounded-sm">
             <Picture
               image={banner_image}
               placeholder={banner_image}

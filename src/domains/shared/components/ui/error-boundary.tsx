@@ -1,8 +1,8 @@
 import type { ErrorInfo, ReactNode } from 'react'
 
 import { toast } from '@pheralb/toast'
-import { Component } from 'react'
 import { ToastType } from '@shared/types'
+import { Component } from 'react'
 
 /**
  * Props for the ErrorBoundary component.

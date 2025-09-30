@@ -1,6 +1,5 @@
 import type { IconProps } from '@shared/types'
 
-
 /**
  * HistoryIcon component renders an icon representing search history.
  *

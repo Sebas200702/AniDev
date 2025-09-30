@@ -1,9 +1,9 @@
 import { AnimeCard } from '@anime/components/anime-card/anime-card'
+import type { AnimeCardInfo } from '@anime/types'
 import { LoadingCard } from '@search/components/search-results/loading-card'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { MainInfo } from 'domains/shared/components/layout/base/MainInfo'
-import type { AnimeCardInfo } from '@anime/types'
 
 interface Props {
   title: string
@@ -22,7 +22,7 @@ export const SimilarToComponet = ({ title, mal_id }: Props) => {
       <div className="border-Primary-800/30 from-Primary-950/80 to-Complementary/80 relative z-20 flex-shrink-0 border-b bg-gradient-to-r p-6 backdrop-blur-md">
         <h3 className="text-lx">Similar To</h3>
       </div>
-      <ul className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 max-h-[600px] overflow-y-scroll no-scrollbar p-6">
+      <ul className="no-scrollbar grid max-h-[600px] grid-cols-2 gap-8 overflow-y-scroll p-6 md:grid-cols-3 xl:grid-cols-4">
         {loading || !data
           ? Array(10)
               .fill(null)

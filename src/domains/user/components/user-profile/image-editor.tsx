@@ -112,29 +112,29 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
 
   return (
     <ModalDefaultContainer>
-      <div className="flex flex-col items-center justify-center w-full min-w-[500px] max-w-[600px] gap-6">
+      <div className="flex w-full max-w-[600px] min-w-[500px] flex-col items-center justify-center gap-6">
         <header className="w-full">
-          <h2 className="text-xl font-semibold text-center w-full">
+          <h2 className="w-full text-center text-xl font-semibold">
             Edit your image
           </h2>
         </header>
         <div
           className={`img-preview relative z-20 overflow-hidden border-2 border-gray-200 ${
             isAvatar
-              ? 'rounded-full h-40 w-40'
-              : 'w-full aspect-[1080/300] rounded-lg'
+              ? 'h-40 w-40 rounded-full'
+              : 'aspect-[1080/300] w-full rounded-lg'
           }`}
         />
 
         <div
           {...dragDropProps}
           ref={dropTargetRef}
-          className="relative overflow-hidden rounded-lg w-full min-h-[350px] border border-gray-300 bg-gray-50"
+          className="relative min-h-[350px] w-full overflow-hidden rounded-lg border border-gray-300 bg-gray-50"
         >
           {isDragging && (
-            <div className="absolute inset-0 z-30 flex items-center justify-center bg-enfasisColor/80 backdrop-blur-sm">
+            <div className="bg-enfasisColor/80 absolute inset-0 z-30 flex items-center justify-center backdrop-blur-sm">
               <div className="text-center">
-                <span className="block text-lg font-medium text-white mb-2">
+                <span className="mb-2 block text-lg font-medium text-white">
                   Drop your image here
                 </span>
                 <span className="text-sm text-white/80">Release to upload</span>
@@ -157,7 +157,7 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
             initialAspectRatio={isAvatar ? 1 : 1080 / 300}
             aspectRatio={isAvatar ? 1 : 1080 / 300}
             guides={false}
-            className="w-full h-full"
+            className="h-full w-full"
             responsive={true}
             checkOrientation={false}
             background={false}
@@ -167,7 +167,7 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
 
         <footer className="flex w-full gap-3 pt-2">
           <button
-            className="flex-1 button-primary text-base font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:transform-none"
+            className="button-primary flex-1 rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 hover:scale-[1.02] hover:transform focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50"
             onClick={getCropData}
             disabled={!cropSrc}
           >
@@ -175,7 +175,7 @@ export const ImageEditor = ({ type = 'avatar' }: DataImage) => {
           </button>
 
           <button
-            className="flex-1 button-secondary text-base font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2"
+            className="button-secondary flex-1 rounded-lg px-4 py-3 text-base font-medium transition-all duration-200 hover:scale-[1.02] hover:transform focus:ring-2 focus:ring-offset-2 focus:outline-none"
             onClick={handleClickCancel}
           >
             Cancel

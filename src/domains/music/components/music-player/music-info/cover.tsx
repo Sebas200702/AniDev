@@ -25,7 +25,7 @@ export const Cover = () => {
       id="music-player-cover"
     >
       <div
-        className={` ${isPlaying ? '' : 'animation-pause'} disk flex items-center animate-spin-slow justify-center rounded-full p-6`}
+        className={` ${isPlaying ? '' : 'animation-pause'} disk animate-spin-slow flex items-center justify-center rounded-full p-6`}
       >
         <Picture
           image={currentSong.banner_image || currentSong.image}

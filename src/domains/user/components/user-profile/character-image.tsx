@@ -15,7 +15,7 @@ export const CharacterImage = ({ character }: Props) => {
   return (
     <button
       key={character.character_id}
-      className={`relative h-full w-full aspect-square rounded-full border-3 ${isSelected ? ' border-enfasisColor' : 'border-enfasisColor/0'} transition-colors duration-300 ease-in-out  overflow-hidden aspect-square cursor-pointer group`}
+      className={`relative aspect-square h-full w-full rounded-full border-3 ${isSelected ? 'border-enfasisColor' : 'border-enfasisColor/0'} group aspect-square cursor-pointer overflow-hidden transition-colors duration-300 ease-in-out`}
       onClick={handleClick}
     >
       <Picture
@@ -25,7 +25,7 @@ export const CharacterImage = ({ character }: Props) => {
         alt={character.character_name}
       />
 
-      <Overlay className="group-hover:opacity-100 opacity-0 h-full w-full bg-enfasisColor/40 transition-opacity duration-200" />
+      <Overlay className="bg-enfasisColor/40 h-full w-full opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
     </button>
   )
 }

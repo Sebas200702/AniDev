@@ -81,7 +81,7 @@ export const useCamera = ({
             <div className="flex flex-col gap-4 p-4">
               <video
                 ref={videoRef}
-                className=" rounded-lg h-full  object-center aspect-square"
+                className="aspect-square h-full rounded-lg object-center"
                 autoPlay
                 playsInline
                 muted

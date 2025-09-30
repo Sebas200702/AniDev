@@ -1,6 +1,6 @@
 import { supabase } from '@libs/supabase'
-import { getSession } from 'auth-astro/server'
 import type { UserInfo } from '@user/types'
+import { getSession } from 'auth-astro/server'
 
 /**
  * getSessionUserInfo retrieves user information from the current session.
@@ -43,7 +43,7 @@ export const getSessionUserInfo = async ({
 
   if (!session?.user) return null
 
-  const { data: metadata, error } = await supabase
+  const { data: metadata } = await supabase
     .from('public_users')
     .select('avatar_url , banner_image , name')
     .eq('id', session.user.id)

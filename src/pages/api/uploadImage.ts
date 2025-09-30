@@ -203,7 +203,9 @@ const uploadToPinata = async (
     size: buffer.length,
   })
 
-  const newFile = new File([new Uint8Array(buffer)], filename, { type: mimeType })
+  const newFile = new File([new Uint8Array(buffer)], filename, {
+    type: mimeType,
+  })
 
   try {
     const listAndDeleteByName = async () => {

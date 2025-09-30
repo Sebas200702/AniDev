@@ -5,9 +5,9 @@ import { toast } from '@pheralb/toast'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { CalendarIcon } from '@shared/components/icons/schedule/calendar-icon'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
+import { ToastType } from '@shared/types'
 import { UserInfo } from '@user/components/user-dashboard/user-info'
 import { parseResponse } from '@utils/parse-response'
-import { ToastType } from '@shared/types'
 
 interface Props {
   isSignUp: boolean
@@ -212,11 +212,11 @@ export const Step2 = ({ isSignUp }: Props) => {
   )
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full flex-col h-full p-4">
+    <form onSubmit={onSubmit} className="flex h-full w-full flex-col p-4">
       <div className="grid grid-cols-1 gap-4">
         {avatarField && renderField(avatarField)}
 
-        <div className="grid grid-cols-1 gap-4 ">
+        <div className="grid grid-cols-1 gap-4">
           {otherFields.map(renderField)}
         </div>
       </div>

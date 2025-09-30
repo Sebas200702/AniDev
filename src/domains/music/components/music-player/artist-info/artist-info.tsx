@@ -1,10 +1,10 @@
+import type { ArtistInfo } from '@artist/types'
 import { ArtistInfoLoader } from '@music/components/music-player/artist-info/artist-info-loader'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { Overlay } from '@shared/components/layout/overlay'
 import { Picture } from '@shared/components/media/picture'
 import { useFetch } from '@shared/hooks/useFetch'
 import { normalizeString } from '@utils/normalize-string'
-import { Overlay } from '@shared/components/layout/overlay'
-import type { ArtistInfo } from '@artist/types'
 
 export const ArtistInfoComponent = () => {
   const { currentSong } = useMusicPlayerStore()

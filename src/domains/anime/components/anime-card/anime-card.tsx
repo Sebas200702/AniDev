@@ -1,4 +1,5 @@
 import { AnimeTag } from '@anime/components/shared/anime-tag'
+import type { AnimeCardInfo } from '@anime/types'
 import { AddToListButton } from '@shared/components/buttons/add-to-list-button'
 import { ShareButton } from '@shared/components/buttons/share-button'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
@@ -10,7 +11,6 @@ import { genreToColor } from '@utils/genre-to-color'
 import { normalizeString } from '@utils/normalize-string'
 import { statusColors } from '@utils/status-colors'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import type { AnimeCardInfo } from '@anime/types'
 
 /**
  * AnimeCard component displays information about an anime including its title, image, and status.
@@ -56,8 +56,6 @@ export const AnimeCard = ({ anime }: Props) => {
   const { width: windowWidth } = useWindowWidth()
   const isMobile = windowWidth && windowWidth < 768
   const shareText = `Watch ${anime.title} on AniDev`
-
-
 
   return (
     <li

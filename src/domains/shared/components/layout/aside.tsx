@@ -21,7 +21,7 @@ export const AsideNav = () => {
   return (
     <>
       <aside
-        className={`fixed top-0 left-0 z-50 hidden h-full w-20 flex-col bg-Primary-950 border-r border-white/5 text-white md:flex`}
+        className={`bg-Primary-950 fixed top-0 left-0 z-50 hidden h-full w-20 flex-col border-r border-white/5 text-white md:flex`}
       >
         <nav className="mt-10 flex h-full w-full flex-col items-center gap-6">
           <Logo />
