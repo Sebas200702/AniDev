@@ -266,3 +266,52 @@
   --media-slider-value-gap: 0px;
   --media-slider-value-padding: 1px 10px;
 }
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9) rotate(-3deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.05) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9) rotate(3deg);
+  }
+}
+
+@keyframes pulsePlayer {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Utilidades */
+.animate-slideIn {
+  animation: slideIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-slideOut {
+  animation: slideOut 0.4s ease-in forwards;
+}
+
+.animate-pulse-player {
+  animation: pulsePlayer 2.5s infinite ease-in-out;
+}
