@@ -22,7 +22,7 @@ import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLa
  */
 interface Props {
   /** The anime slug in format 'title_id' (e.g., 'one-piece_21') */
-  id: string
+  id: number
 }
 
 /**
@@ -135,7 +135,7 @@ export const AnimeInfo = ({ id }: Props) => {
           />
         )}
       </Header>
-      <div className="col-span-1 flex flex-col gap-6 md:col-span-2 xl:col-span-3">
+      <div className="col-span-1 flex flex-col gap-10 md:col-span-2 xl:col-span-3">
         <AnimeShowBox
           animeId={animeData.mal_id}
           trailer_url={animeData.trailer_url ?? ''}
