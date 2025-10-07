@@ -97,7 +97,7 @@ export const DownloadModalContent = ({
     selectedResolution.length,
   ])
 
-  // Actualizar resolución cuando cambia la versión
+
   useEffect(() => {
     if (musicData.length > 0 && selectedVersion.length > 0) {
       const resolutionsForVersion = [
@@ -241,7 +241,7 @@ export const DownloadModalContent = ({
           autoDismiss: true,
         },
       })
-      onClose() // Cerrar el modal después de una descarga exitosa
+      onClose()
     } catch (error) {
       console.error('Error downloading file:', error)
       toast[ToastType.Error]({
@@ -252,7 +252,7 @@ export const DownloadModalContent = ({
     }
   }
 
-  // Show skeleton while loading data
+
   if (isLoadingData || !dataForVersion[0]) {
     return <DownloadModalSkeleton />
   }
