@@ -101,17 +101,18 @@ export const MusicPlayer = () => {
   return (
     <article
       ref={playerContainerRef}
-      className={`group flex rounded-xl transition-all duration-300 ease-in-out ${isHidden ? 'hidden' : ''} ${isMinimized ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80' : 'bg-Complementary/50 w-full flex-col-reverse'} ${
-        isDraggingPlayer && isMinimized
-          ? 'music-player-dragging cursor-grabbing select-none'
-          : ''
-      }`}
+      className={`group flex rounded-xl
+    ${isHidden ? 'animate-slideOut' : 'animate-slideIn'}
+    ${
+      isMinimized
+        ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80 animate-pulsePlayer'
+        : 'bg-Complementary/50 w-full flex-col-reverse'
+    }
+    ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''}
+  `}
       style={
         isMinimized
-          ? {
-              bottom: `${position.y}px`,
-              right: `${position.x}px`,
-            }
+          ? { bottom: `${position.y}px`, right: `${position.x}px` }
           : {}
       }
     >
