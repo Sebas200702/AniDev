@@ -214,7 +214,6 @@ export const AnimeMusicItem = ({
         </footer>
       </a>
 
-      {/* Elementos fuera del enlace principal */}
       <div
         className={`absolute md:bottom-3 ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} pointer-events-auto bottom-2 z-20`}
       >
@@ -229,18 +228,18 @@ export const AnimeMusicItem = ({
               ...song,
             }}
             isInPlayList={isInPlaylist}
-            clasName="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-enfasisColor"
+            clasName="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             isCurrentSong={isCurrentSong}
           />
           <DownloadButton
-            styles="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-enfasisColor"
+            styles="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             url={song.audio_url}
             title={song.song_title}
             themeId={song.theme_id ?? 0}
             showLabel={false}
           />
           <ShareButton
-            className="hover:text-enfasisColor group focus:ring-enfasisColor cursor-pointer rounded-md p-1 text-sm transition-all duration-300 focus:ring-2 focus:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="hover:text-enfasisColor group  cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
             title={song.song_title}
             text={`Listen ${song.song_title} on AniDev`}
@@ -253,7 +252,6 @@ export const AnimeMusicItem = ({
           {...handleProps}
           className="bg-enfasisColor/50 focus:ring-enfasisColor focus:ring-offset-Primary-950 absolute top-1/2 right-0 z-30 flex h-full -translate-y-1/2 cursor-grab touch-none items-center justify-center rounded-r-md p-1 shadow-lg backdrop-blur-sm transition-all duration-200 select-none focus:ring-2 focus:ring-offset-2 focus:outline-none active:cursor-grabbing"
           style={{ touchAction: 'none' }}
-          onClick={(e) => e.stopPropagation()}
           tabIndex={0}
           role="button"
           aria-label="Drag to reorder song"
