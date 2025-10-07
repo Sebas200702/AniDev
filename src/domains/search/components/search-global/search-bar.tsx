@@ -231,7 +231,7 @@ export const SearchBar = ({ visible = true }: { visible?: boolean }) => {
         id="search-bar"
         role="search"
         onSubmit={handleSubmit}
-        className="relative mt-24 flex w-full max-w-xl flex-col gap-6 shadow-lg"
+        className="relative mt-24 flex w-full max-w-xl flex-col gap-6"
       >
         <header className="flex items-center justify-between">
           <div className="hidden gap-4 text-gray-300 select-none md:flex">
