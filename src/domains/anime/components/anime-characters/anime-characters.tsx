@@ -1,4 +1,4 @@
-import { AnimeCharacterList } from '@anime/components/anime-charcaters/anime-characters-list'
+import { AnimeCharacterList } from '@anime/components/anime-characters/anime-characters-list'
 import { useCharacterList } from '@anime/hooks/anime-charater/useCharacterList'
 
 interface Props {
