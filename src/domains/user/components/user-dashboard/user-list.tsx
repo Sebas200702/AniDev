@@ -4,123 +4,18 @@ import { SectionList } from '@shared/components/buttons/section-list'
 import { UserListOptions } from '@user/components/user-dashboard/user-list-options'
 import { useUserListsStore } from '@user/stores/user-list-store'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { useEffect } from 'react'
-/**
- * UserList component displays a navigation bar with user list sections and options.
- *
- * @description This component provides a horizontal navigation interface for browsing different
- * sections of the user's anime lists. It retrieves the navigation sections from the user lists store
- * and renders them as interactive list items. The navigation bar is designed to be responsive,
- * with consistent styling and spacing to create a cohesive user interface.
- *
- * The component uses the useUserListsStore hook to access the current list of sections and
- * the function to update them. Each section is rendered as a SectionList component, which
- * handles the individual section's display and interaction logic. Additionally, the component
- * displays UserListOptions which provides additional functionality for managing the user's lists.
- *
- * The UI presents the sections in a horizontal row with appropriate spacing and alignment on the left,
- * while the options are positioned on the right side of the navigation bar. Each section can be
- * selected to display its corresponding content in the user's profile page.
- *
- * @returns {JSX.Element} The rendered navigation bar with interactive section links and options
- *
- * @example
- * <UserList />
- */
+
 export const UserList = () => {
-  const {
-    userList: sections,
-    setUserList,
-    isLoading,
-    setIsLoading,
-  } = useUserListsStore()
+  const { userList: sections, setUserList, isLoading } = useUserListsStore()
   const { userInfo, watchList } = useGlobalUserPreferences()
   const currentSection = sections.find((section) => section.selected)
 
-  useEffect(() => {
-    setIsLoading(true)
+  const filteredAnimes =
+    currentSection && watchList
+      ? watchList.filter((watch) => watch.type === currentSection.label)
+      : []
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 700)
-  }, [])
-
-  if (isLoading)
-    return (
-      <section className="flex flex-col gap-4">
-        <nav className="flex w-full flex-row items-center justify-between">
-          <ul className="text-m flex flex-row">
-            {sections.map((section) => (
-              <SectionList
-                key={section.label}
-                section={section}
-                sections={{ list: sections, set: setUserList }}
-              />
-            ))}
-          </ul>
-          <UserListOptions />
-        </nav>
-        <ul className="grid grid-cols-2 gap-6 p-4 md:grid-cols-3 md:gap-10 lg:grid-cols-4 xl:grid-cols-6">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <LoadingCard key={index} />
-          ))}
-        </ul>
-      </section>
-    )
-  if (!isLoading && !userInfo?.name)
-    return (
-      <section className="flex flex-col gap-4">
-        <nav className="flex w-full flex-row items-center justify-between">
-          <ul className="text-m flex flex-row">
-            {sections.map((section) => (
-              <SectionList
-                key={section.label}
-                section={section}
-                sections={{ list: sections, set: setUserList }}
-              />
-            ))}
-          </ul>
-          <UserListOptions />
-        </nav>
-        <ul className="grid grid-cols-2 gap-6 p-4 md:grid-cols-3 md:gap-10 lg:grid-cols-4 xl:grid-cols-6">
-          <div className="col-span-6 mt-20 flex flex-col items-center justify-center gap-4">
-            <p className="text-l">Log in to see your lists</p>
-            <a href="/signin" className="button-primary px-4 py-2">
-              Sign in
-            </a>
-          </div>
-        </ul>
-      </section>
-    )
-  if (
-    !isLoading &&
-    userInfo?.name &&
-    watchList.filter((watch) => watch.type === currentSection?.label).length ===
-      0
-  )
-    return (
-      <section className="flex flex-col gap-4">
-        <nav className="flex w-full flex-row items-center justify-between">
-          <ul className="text-m flex flex-row">
-            {sections.map((section) => (
-              <SectionList
-                key={section.label}
-                section={section}
-                sections={{ list: sections, set: setUserList }}
-              />
-            ))}
-          </ul>
-          <UserListOptions />
-        </nav>
-        <ul className="grid grid-cols-2 gap-6 p-4 md:grid-cols-3 md:gap-10 lg:grid-cols-4 xl:grid-cols-6">
-          <div className="col-span-6 mt-20 flex flex-col items-center justify-center gap-4">
-            <p className="text-l">No have animes in your list</p>
-          </div>
-        </ul>
-      </section>
-    )
-
-  return (
+  const ListLayout = ({ children }: { children: React.ReactNode }) => (
     <section className="flex flex-col gap-4">
       <nav className="flex w-full flex-row items-center justify-between">
         <ul className="text-m flex flex-row">
@@ -135,12 +30,56 @@ export const UserList = () => {
         <UserListOptions />
       </nav>
       <ul className="grid grid-cols-2 gap-6 p-4 md:grid-cols-3 md:gap-10 lg:grid-cols-4 xl:grid-cols-6">
-        {watchList
-          .filter((watch) => watch.type === currentSection?.label)
-          .map((anime) => (
-            <AnimeCard key={anime.mal_id} anime={anime} />
-          ))}
+        {children}
       </ul>
     </section>
+  )
+
+  const EmptyState = ({
+    message,
+    showButton = false,
+  }: { message: string; showButton?: boolean }) => (
+    <div className="col-span-6 mt-20 flex flex-col items-center justify-center gap-4">
+      <p className="text-l">{message}</p>
+      {showButton && (
+        <a href="/signin" className="button-primary px-4 py-2">
+          Sign in
+        </a>
+      )}
+    </div>
+  )
+
+  if (isLoading) {
+    return (
+      <ListLayout>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <LoadingCard key={index} />
+        ))}
+      </ListLayout>
+    )
+  }
+
+  if (!userInfo?.name) {
+    return (
+      <ListLayout>
+        <EmptyState message="Log in to see your lists" showButton />
+      </ListLayout>
+    )
+  }
+
+  if (filteredAnimes.length === 0 || isLoading) {
+    return (
+      <ListLayout>
+        <EmptyState message="No have animes in your list" />
+      </ListLayout>
+    )
+  }
+
+  return (
+    <ListLayout>
+      {filteredAnimes.map((anime) => (
+        <AnimeCard key={anime.mal_id} anime={anime} />
+      ))}
+    </ListLayout>
   )
 }
