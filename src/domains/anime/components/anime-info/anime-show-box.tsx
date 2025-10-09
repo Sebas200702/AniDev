@@ -1,4 +1,4 @@
-import { CharacterSection } from '@anime/components/anime-charcaters/anime-characters'
+import { CharacterSection } from '@anime/components/anime-characters/anime-characters'
 import { AnimeDescription } from '@anime/components/anime-info/anime-description'
 import { AnimeNavBar } from '@anime/components/anime-info/anime-nav-bar'
 import { AnimeRelated } from '@anime/components/anime-info/anime-related'
