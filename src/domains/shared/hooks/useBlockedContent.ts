@@ -1,18 +1,20 @@
-import { navigate } from 'astro:transitions/client'
-import { toast } from '@pheralb/toast'
-import { BlockedContent } from '@shared/components/ui/blocked-content'
-import { useModal } from '@shared/hooks/useModal'
-import { ToastType } from '@shared/types'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect, useState } from 'react'
 
+import { BlockedContent } from '@shared/components/ui/blocked-content'
+import { ToastType } from '@shared/types'
+import { navigate } from 'astro:transitions/client'
+import { toast } from '@pheralb/toast'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useModal } from '@shared/hooks/useModal'
+import type { Anime } from '@anime/types'
+
 interface UseBlockedContentProps {
-  id: string
-  getAnimeData: (id: string, parentalControl: boolean | null) => Promise<any>
+  id: number
+  getAnimeData: (id: number, parentalControl: boolean | null) => Promise<any>
 }
 
 interface UseBlockedContentReturn {
-  animeData: any | null
+  animeData: Anime | null
   isBlocked: boolean
   blockedMessage: string | undefined
   isLoading: boolean
