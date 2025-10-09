@@ -315,3 +315,13 @@
 .animate-pulse-player {
   animation: pulsePlayer 2.5s infinite ease-in-out;
 }
+@media (prefers-reduced-motion: reduce) {
+  .animate-slideIn,
+  .animate-slideOut {
+    animation-duration: 0.01ms;
+  }
+
+  .animate-pulse-player {
+    animation: none;
+  }
+}
