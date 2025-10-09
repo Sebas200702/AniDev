@@ -9,7 +9,7 @@ export const UserInfo = ({ isSignUp }: { isSignUp?: boolean }) => {
   const { userInfo } = useGlobalUserPreferences()
 
   return (
-    <section className={`${isSignUp ? 'relative mb-6 w-full md:mb-16' : ''}`}>
+    <section className={`${isSignUp ? 'relative mb-6 w-full h-30 md:mb-16' : ''}`}>
       <Picture
         styles={` ${isSignUp ? 'w-full h-30 rounded' : 'w-full h-[60vh]'} object-cover object-center z-0  absolute top-0 left-0 overflow-hidden `}
         image={
