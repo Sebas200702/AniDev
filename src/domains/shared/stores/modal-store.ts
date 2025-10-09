@@ -16,16 +16,19 @@ import { create } from 'zustand'
  *
  * @interface GlobalModal - The interface defining the store's state and actions
  */
+
 interface GlobalModal {
   isOpen: boolean
   Component: ComponentType<any> | null
   componentProps: Record<string, any>
   onCloseCallback?: (() => void) | null
+  setIsOpen: (isOpen: boolean) => void
   openModal: (
     Component: ComponentType<any>,
     props?: Record<string, any>
   ) => void
   closeModal: () => void
+  clearModal: () => void
   setOnClose: (callback?: (() => void) | null) => void
 }
 
@@ -34,19 +37,26 @@ export const useGlobalModal = create<GlobalModal>((set, get) => ({
   Component: null,
   componentProps: {},
   onCloseCallback: null,
+  setIsOpen: (isOpen) => set({ isOpen }),
   openModal: (Component, props = {}) =>
     set({ isOpen: true, Component, componentProps: props }),
   closeModal: () => {
     const { onCloseCallback } = get()
-    // Ejecutar el callback de onClose si existe y es una función
+
     if (onCloseCallback && typeof onCloseCallback === 'function') {
       onCloseCallback()
     }
+
     set({
       isOpen: false,
+      onCloseCallback: null,
+    })
+  },
+
+  clearModal: () => {
+    set({
       Component: null,
       componentProps: {},
-      onCloseCallback: null,
     })
   },
   setOnClose: (callback) => set({ onCloseCallback: callback }),
