@@ -24,13 +24,22 @@ import { normalizeString } from '@utils/normalize-string'
  * <RandomAnimeButton />
  */
 export const RandomAnimeButton = () => {
-  const { parentalControl } = useGlobalUserPreferences()
+  const { parentalControl, userInfo } = useGlobalUserPreferences()
   const handleClick = async () => {
-    const result = await fetch(
-      `/api/animes/random?parental_control=${parentalControl}`
-    ).then((res) => res.json())
+    try {
+      const response = await fetch(
+        `/api/animes/random?parental_control=${parentalControl}&user_id=${userInfo?.id}`
+      )
+      if (!response.ok) {
+        throw new Error('Failed to fetch random anime')
+      }
+      const result = await response.json()
+      navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
+    } catch (error) {
+      console.error('Error fetching random anime:', error)
+      // Optionally show user-facing error notification
+    }
 
-    navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
   }
   return (
     <button
