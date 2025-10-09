@@ -4,7 +4,7 @@ import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
 import { ToastType } from '@shared/types'
 import { useUserListsStore } from '@user/stores/user-list-store'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 
 export const AddToListButton = ({
   animeId,
@@ -15,15 +15,12 @@ export const AddToListButton = ({
   anime_title: string
   styles?: string
 }) => {
-  const { isLoading, setIsLoading, isInWatchList, setIsInWatchList } =
+  const { isLoading, setIsLoading } =
     useUserListsStore()
   const { watchList, setWatchList, userInfo } = useGlobalUserPreferences()
+  const isInWatchList = useMemo(() => watchList.some((watch) => watch.mal_id === animeId), [watchList, animeId])
 
-  useEffect(() => {
-    if (watchList.length > 0) {
-      setIsInWatchList(watchList.some((watch) => watch.mal_id === animeId))
-    }
-  }, [watchList])
+
 
   type Action = {
     type: 'ADD' | 'REMOVE'
@@ -41,7 +38,7 @@ export const AddToListButton = ({
 
     try {
       if (action.type === 'ADD') {
-        setIsInWatchList(true)
+
 
         await fetch('/api/watchList', {
           method: 'POST',
@@ -56,7 +53,6 @@ export const AddToListButton = ({
           (watch) => watch.mal_id !== action.animeId
         )
         setWatchList(newWatchList)
-        setIsInWatchList(false)
 
         try {
           await fetch('/api/watchList', {
@@ -68,15 +64,12 @@ export const AddToListButton = ({
           })
         } catch (_error) {
           setWatchList(action.previousWatchList)
-          setIsInWatchList(action.wasInList)
+
           throw _error
         }
       }
     } catch (error) {
       console.error(error)
-      if (action.type === 'ADD') {
-        setIsInWatchList(action.wasInList)
-      }
       throw error
     } finally {
       setIsLoading(false)
