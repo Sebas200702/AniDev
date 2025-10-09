@@ -228,18 +228,18 @@ export const AnimeMusicItem = ({
               ...song,
             }}
             isInPlayList={isInPlaylist}
-            clasName="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             isCurrentSong={isCurrentSong}
           />
           <DownloadButton
-            styles="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            styles="hover:text-enfasisColor focus:ring-enfasisColor focus:ring-offset-Primary-950 group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             url={song.audio_url}
             title={song.song_title}
             themeId={song.theme_id ?? 0}
             showLabel={false}
           />
           <ShareButton
-            className="hover:text-enfasisColor group  cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="hover:text-enfasisColor focus:ring-enfasisColor focus:ring-offset-Primary-950 group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
             title={song.song_title}
             text={`Listen ${song.song_title} on AniDev`}
