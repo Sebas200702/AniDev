@@ -1,4 +1,4 @@
-import { AnimeCharacterLoader } from '@anime/components/anime-charcaters/anime-characters-loader'
+import { AnimeCharacterLoader } from '@anime/components/anime-characters/anime-characters-loader'
 import { AnimeCharacterCard } from '@character/components/character-card/detail-character-card'
 import type { Character } from '@character/types'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
@@ -23,9 +23,9 @@ const Container = ({
       <h2 className="text-lxx font-bold text-white">Characters</h2>
       {actions}
     </header>
-    <ul className="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
       {children}
-    </ul>
+    </div>
   </section>
 )
 
