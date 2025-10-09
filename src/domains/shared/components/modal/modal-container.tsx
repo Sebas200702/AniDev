@@ -1,27 +1,33 @@
 import { useGlobalModal } from '@shared/stores/modal-store'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-/**
- * ModalContainer is the global modal renderer using React Portal.
- *
- * @description This component subscribes to the global modal store and renders dynamic
- * modal components using React Portal. It handles:
- * - Portal-based rendering for proper DOM isolation
- * - Backdrop clicks to close modal (but not content clicks)
- * - Escape key to close modal
- * - Dynamic component rendering with props
- * - Proper focus management
- * - Modal positioning and styling
- *
- * This component should be rendered once in the main layout and will handle
- * all modal rendering throughout the application using React Portal.
- *
- */
-
 export const ModalContainer = () => {
-  const { isOpen, Component, componentProps, closeModal } = useGlobalModal()
+  const { isOpen, Component, componentProps, closeModal, clearModal } =
+    useGlobalModal()
   const modalRef = useRef<HTMLDivElement>(null)
+  const [show, setShow] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setShow(true)
+      setIsClosing(false)
+    } else if (show && !isClosing) {
+      setIsClosing(true)
+    }
+  }, [isOpen, show, isClosing])
+
+  useEffect(() => {
+    if (isClosing) {
+      const timeout = setTimeout(() => {
+        setShow(false)
+        setIsClosing(false)
+        clearModal()
+      }, 300)
+      return () => clearTimeout(timeout)
+    }
+  }, [isClosing, clearModal])
 
   useEffect(() => {
     if (!isOpen) return
@@ -47,18 +53,30 @@ export const ModalContainer = () => {
     }
   }, [isOpen, closeModal])
 
-  if (!isOpen || !Component) return null
 
-  const modalElement = (
+
+  if (!show || !Component) return null
+
+  return createPortal(
     <div
       ref={modalRef}
-      className="fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+      className={`fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-sm
+      ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
       role="dialog"
       aria-modal="true"
     >
-      <Component {...componentProps} />
-    </div>
+      <div
+        className={`${isClosing ? 'animate-modal-scale-out' : 'animate-modal-scale'} w-full h-full flex flex-col items-center justify-center`}
+        onClick={(e) => {
+          e.stopPropagation()
+          if (e.target === e.currentTarget) {
+            closeModal()
+          }
+        }}
+      >
+        <Component {...componentProps} />
+      </div>
+    </div>,
+    document.body
   )
-
-  return createPortal(modalElement, document.body)
 }
