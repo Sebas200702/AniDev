@@ -33,6 +33,7 @@
     "astro-font": "^1.1.0",
     "auth-astro": "4.2.0",
     "cropperjs": "^2.0.0",
+    "framer-motion": "^12.23.22",
     "media-icons": "^1.1.5",
     "next-auth": "^4.24.11",
     "pinata": "^2.4.8",
