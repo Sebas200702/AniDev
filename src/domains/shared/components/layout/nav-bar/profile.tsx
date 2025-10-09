@@ -54,7 +54,7 @@ export const Profile = () => {
   }, [dropdownRef, buttonRef])
   return (
     <>
-      <article className="flex items-center justify-end">
+      <article className="flex items-center justify-end h-10 w-10">
         <button
           className="flex cursor-pointer flex-row items-center gap-2"
           title="Options"
@@ -62,7 +62,7 @@ export const Profile = () => {
           ref={buttonRef}
         >
           <Picture
-            styles="max-h-10 max-w-10 object-cover relative rounded-full object-center aspect-square"
+            styles=" object-cover relative rounded-full w-full h-full object-center aspect-square"
             image={userInfo?.avatar || ''}
             placeholder={userInfo?.avatar || ''}
             alt={`Avatar of  ${userInfo?.name}`}
