@@ -17,7 +17,7 @@ import { AsideNav } from 'domains/shared/components/layout/aside'
 import { ModalContainer } from 'domains/shared/components/modal/modal-container'
 
 interface Props {
-  animeId?: string
+  animeId?: number
   title?: string
   description?: string
   image?: string
@@ -39,7 +39,7 @@ if (animeId) {
   const metadata = await extractMetadata(
     {
       ...METADATA_CONFIGS.anime,
-      value: animeId,
+      value: animeId.toString(),
     },
     metaTitle,
     metaDesc,
@@ -185,7 +185,7 @@ if (artistName) {
         class="relative flex max-w-[100dvw] flex-col [grid-area:main]"
       >
         <MusicPlayerContainer
-          client:idle
+          client:load
           transition:persist
           className="col-start-1 row-start-1"
         />
@@ -193,7 +193,7 @@ if (artistName) {
         <CustomToaster client:load />
       </main>
       <Footer />
-      <ModalContainer client:load />
+      <ModalContainer client:only />
     </div>
   </body>
 </html>
