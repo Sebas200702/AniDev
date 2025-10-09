@@ -1,7 +1,7 @@
 import { DownloadIcon } from '@shared/components/icons/common/download-icon'
+import { useDownloadManager } from '@shared/hooks/useDownloadManager'
 import { useModal } from '@shared/hooks/useModal'
 import { DownloadModalContent } from 'domains/download/components/download-modal-content'
-import { useDownloadManager } from '@shared/hooks/useDownloadManager'
 
 interface Props {
   url: string
