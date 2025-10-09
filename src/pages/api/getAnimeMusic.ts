@@ -47,7 +47,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       return await redis.set(cacheKey, responseData, { EX: 60 * 60 * 24 })
     })
 
-    return new Response(JSON.stringify({ data: responseData }), {
+    return new Response(JSON.stringify({ data: data }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
