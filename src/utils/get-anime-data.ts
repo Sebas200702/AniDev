@@ -47,7 +47,7 @@ export interface AnimeResult {
  *   })
  */
 export const getAnimeData = async (
-  id: string,
+  id: number,
   parentalControl: boolean | null
 ): Promise<AnimeResult | undefined> => {
   try {
