@@ -20,10 +20,12 @@ import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLa
 /**
  * Props interface for the AnimeInfo component
  */
-interface Props {
-  /** The anime slug in format 'title_id' (e.g., 'one-piece_21') */
-  id: number
-}
+
+ interface Props {
+  /** The numeric anime ID (e.g., 21) */
+   id: number
+ }
+
 
 /**
  * AnimeInfo component displays detailed information about a specific anime.
