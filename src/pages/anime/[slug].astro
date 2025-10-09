@@ -3,7 +3,12 @@ import { AnimeInfo } from '@anime/components/anime-info/anime'
 import Layout from '@layouts/base.astro'
 
 const slug = Astro.params.slug ?? ''
-const mal_id = slug.split('_')[1]
+const segments = slug.split('_')
+const mal_id = segments.length > 1 ? parseInt(segments[1], 10) : null
+
+if (!mal_id || isNaN(mal_id)) {
+  return Astro.redirect('/404')
+}
 ---
 
 <Layout animeId={mal_id}>
