@@ -9,6 +9,7 @@ import {
   Spinner,
   useMediaStore,
 } from '@vidstack/react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
 import { Cover } from '@music/components/music-player/music-info/cover'
@@ -88,89 +89,104 @@ export const MusicPlayer = () => {
       })
       setToastShown(true)
     }
-  }, [currentTime, duration, currentSong, list, currentSongIndex, toastShown])
+  }, [
+    currentTime,
+    duration,
+    currentSong,
+    list,
+    currentSongIndex,
+    toastShown,
+    isPlaying,
+  ])
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setToastShown(false)
     }, 8000)
+    return () => clearTimeout(timeout)
   }, [currentSong?.song_id])
 
-  if (!currentSong) return
+  if (!currentSong) return null
 
   return (
-    <article
-      ref={playerContainerRef}
-      className={`group flex rounded-xl
-    ${isHidden ? 'animate-slideOut' : 'animate-slideIn'}
-    ${
-      isMinimized
-        ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80 animate-pulsePlayer'
-        : 'bg-Complementary/50 w-full flex-col-reverse'
-    }
-    ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''}
-  `}
-      style={
-        isMinimized
-          ? { bottom: `${position.y}px`, right: `${position.x}px` }
-          : {}
-      }
-    >
-      <Header playerContainerRef={playerContainerRef} />
-
-      <MediaPlayer
-        ref={player}
-        src={src || undefined}
-        aspectRatio={isMinimized ? 'auto' : 'video'}
-        viewType="video"
-        streamType="on-demand"
-        logLevel="silent"
-        playsInline
-        autoPlay
-        title={currentSong.song_title}
-        onCanPlay={() => {
-          if (player.current && savedTime > 0) {
-            player.current.currentTime = savedTime
-          }
+    <AnimatePresence>
+      <motion.article
+        ref={playerContainerRef}
+        animate={{
+          opacity: isHidden ? 0 : 1,
+          y: isHidden ? 30 : 0,
         }}
-        poster={createImageUrlProxy(
-          currentSong.banner_image ?? currentSong.image,
-          isMinimized ? '300' : '1980',
-          '75',
-          'webp'
-        )}
-        className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className={`group flex rounded-xl
+            ${
+              isMinimized
+                ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80 animate-pulsePlayer'
+                : 'bg-Complementary/50 w-full flex-col-reverse'
+            }
+            ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''}
+          `}
+        style={
+          isMinimized
+            ? { bottom: `${position.y}px`, right: `${position.x}px` }
+            : {}
+        }
       >
-        <MediaProvider
-          className={`${type === 'audio' && isMinimized ? 'mt-12 hidden md:flex' : 'aspect-video'}`}
+        <Header playerContainerRef={playerContainerRef} />
+
+        <MediaPlayer
+          ref={player}
+          src={src || undefined}
+          aspectRatio={isMinimized ? 'auto' : 'video'}
+          viewType="video"
+          streamType="on-demand"
+          logLevel="silent"
+          playsInline
+          autoPlay
+          title={currentSong.song_title}
+          onCanPlay={() => {
+            if (player.current && savedTime > 0) {
+              player.current.currentTime = savedTime
+            }
+          }}
+          poster={createImageUrlProxy(
+            currentSong.banner_image ?? currentSong.image,
+            isMinimized ? '300' : '1980',
+            '75',
+            'webp'
+          )}
+          className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
         >
-          {type === 'audio' && !isMinimized && (
-            <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
-          )}
-          {type === 'audio' && isMinimized && (
-            <div className="absolute h-full w-full">
-              <Cover />
-            </div>
-          )}
+          <MediaProvider
+            className={`${type === 'audio' && isMinimized ? 'mt-12 hidden md:flex' : 'aspect-video'}`}
+          >
+            {type === 'audio' && !isMinimized && (
+              <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
+            )}
+            {type === 'audio' && isMinimized && (
+              <div className="absolute h-full w-full">
+                <Cover />
+              </div>
+            )}
 
-          <Poster className="vds-poster" />
+            <Poster className="vds-poster" />
 
-          {isMinimized && (
-            <div className="vds-buffering-indicator">
-              <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
-                <Spinner.Track className="vds-buffering-track" />
-                <Spinner.TrackFill className="vds-buffering-track-fill" />
-              </Spinner.Root>
-            </div>
+            {isMinimized && (
+              <div className="vds-buffering-indicator">
+                <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
+                  <Spinner.Track className="vds-buffering-track" />
+                  <Spinner.TrackFill className="vds-buffering-track-fill" />
+                </Spinner.Root>
+              </div>
+            )}
+          </MediaProvider>
+
+          {!isMinimized ? (
+            <CustomLayout />
+          ) : (
+            <CustomControls volume={volume} muted={muted} />
           )}
-        </MediaProvider>
-
-        {!isMinimized ? (
-          <CustomLayout />
-        ) : (
-          <CustomControls volume={volume} muted={muted} />
-        )}
-      </MediaPlayer>
-    </article>
+        </MediaPlayer>
+      </motion.article>
+    </AnimatePresence>
   )
 }
