@@ -8,7 +8,7 @@ import { ToastType } from '@shared/types'
 interface Props {
   song: AnimeSongWithImage
   isInPlayList: boolean
-  clasName?: string
+  className?: string
   label?: string
   isCurrentSong?: boolean
 }
@@ -22,7 +22,7 @@ type Action = {
 export const AddToPlayListButton = ({
   song,
   isInPlayList,
-  clasName,
+  className,
   label,
   isCurrentSong,
 }: Props) => {
@@ -99,7 +99,7 @@ export const AddToPlayListButton = ({
 
   return (
     <button
-      className={clasName}
+      className={className}
       title={`${isInPlayList ? 'Remove' : 'Add'} to playlist ${song.song_title}`}
       onClick={(e) => {
         e.stopPropagation()
