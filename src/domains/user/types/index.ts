@@ -63,9 +63,3 @@ export interface UserInfo {
   avatar: string | null
   banner_image: string | null
 }
-
-export interface SearchHistory {
-  query: string
-  appliedFilters: AppliedFilters
-  totalResults: number
-}
