@@ -21,11 +21,10 @@ import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLa
  * Props interface for the AnimeInfo component
  */
 
- interface Props {
+interface Props {
   /** The numeric anime ID (e.g., 21) */
-   id: number
- }
-
+  id: number
+}
 
 /**
  * AnimeInfo component displays detailed information about a specific anime.
