@@ -62,9 +62,7 @@ export const useAutoCloseModal = (
         const target = event.target as HTMLElement
         const link = target.closest('a')
 
-        if (
-          (link && link.tagName === 'A' && link.href) 
-        ) {
+        if (link && link.tagName === 'A' && link.href) {
           setTimeout(() => {
             if (isModalOpen) {
               closeModal()
