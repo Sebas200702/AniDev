@@ -15,12 +15,12 @@ export const AddToListButton = ({
   anime_title: string
   styles?: string
 }) => {
-  const { isLoading, setIsLoading } =
-    useUserListsStore()
+  const { isLoading, setIsLoading } = useUserListsStore()
   const { watchList, setWatchList, userInfo } = useGlobalUserPreferences()
-  const isInWatchList = useMemo(() => watchList.some((watch) => watch.mal_id === animeId), [watchList, animeId])
-
-
+  const isInWatchList = useMemo(
+    () => watchList.some((watch) => watch.mal_id === animeId),
+    [watchList, animeId]
+  )
 
   type Action = {
     type: 'ADD' | 'REMOVE'
@@ -38,8 +38,6 @@ export const AddToListButton = ({
 
     try {
       if (action.type === 'ADD') {
-
-
         await fetch('/api/watchList', {
           method: 'POST',
           body: JSON.stringify({ animeId: action.animeId, type: 'To Watch' }),
