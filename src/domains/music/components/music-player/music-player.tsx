@@ -117,14 +117,11 @@ export const MusicPlayer = () => {
           y: isHidden ? 30 : 0,
         }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`group flex rounded-xl
-            ${
-              isMinimized
-                ? 'from-Complementary/50 to-Complementary/80 fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80 animate-pulsePlayer'
-                : 'bg-Complementary/50 w-full flex-col-reverse'
-            }
-            ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''}
-          `}
+        className={`group flex rounded-xl ${
+          isMinimized
+            ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
+            : 'bg-Complementary/50 w-full flex-col-reverse'
+        } ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
         style={
           isMinimized
             ? { bottom: `${position.y}px`, right: `${position.x}px` }
