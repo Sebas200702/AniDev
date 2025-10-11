@@ -106,7 +106,7 @@ export const AnimeMusicItem = ({
 
   return (
     <article
-      className={`anime-music-item transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
+      className={`transition-all duration-200 ease-out ${isDragging ? 'z-50' : ''} group group border-enfasisColor group relative flex aspect-[100/30] max-h-36 w-full cursor-pointer flex-row items-start overflow-hidden rounded-lg border-l-4 transition-all duration-300 ease-in-out md:gap-2 md:hover:translate-x-1`}
       ref={setNodeRef}
       style={style}
     >
@@ -228,7 +228,7 @@ export const AnimeMusicItem = ({
               ...song,
             }}
             isInPlayList={isInPlaylist}
-            className="hover:text-enfasisColor group  cursor-pointer rounded-md  p-1 text-sm transition-all duration-300  disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             isCurrentSong={isCurrentSong}
           />
           <DownloadButton
