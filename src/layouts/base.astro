@@ -164,6 +164,7 @@ if (artistName) {
     <ClientRouter />
   </head>
   <body>
+    <div id="modal-root"></div>
     <div
       id="app"
       class="bg-Primary-950 text-Primary-50 no-scrollbar max-w-[100dvw] overflow-x-hidden overflow-y-scroll"
@@ -176,7 +177,7 @@ if (artistName) {
         <ProgressBar client:load />
       </header>
 
-      <SearchBar client:load visible={false} />
+      <SearchBar client:only visible={false} />
       <LoadUserPrefences client:load />
       <LoadWindowWidth client:load />
 
