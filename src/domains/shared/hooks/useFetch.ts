@@ -78,5 +78,5 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
     fetchData()
   }, [url, options, skip])
 
-  return { data, total, error, loading , status}
+  return { data, total, error, loading, status }
 }
