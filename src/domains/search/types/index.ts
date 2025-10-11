@@ -16,6 +16,7 @@ export enum SearchType {
 export interface SearchHistory {
   query: string
   appliedFilters: AppliedFilters
+  type: SearchType
   totalResults: number
 }
 
