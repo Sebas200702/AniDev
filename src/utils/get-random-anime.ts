@@ -5,7 +5,7 @@ export const getRandomAnime = async (
   parentalControl: boolean | null,
   retryCount = 0
 ): Promise<RandomAnime> => {
-    const MAX_RETRIES = 3
+  const MAX_RETRIES = 3
 
   const { data, error } = await supabase.rpc(
     'get_random_anime_recommendation',
