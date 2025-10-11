@@ -97,7 +97,6 @@ export const DownloadModalContent = ({
     selectedResolution.length,
   ])
 
-
   useEffect(() => {
     if (musicData.length > 0 && selectedVersion.length > 0) {
       const resolutionsForVersion = [
@@ -251,7 +250,6 @@ export const DownloadModalContent = ({
       setIsLoading(false)
     }
   }
-
 
   if (isLoadingData || !dataForVersion[0]) {
     return <DownloadModalSkeleton />
