@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useState } from 'react'
 
 import { AnimeCard } from '@anime/components/anime-card/anime-card'
 import { AnimeSliderLoader } from '@anime/components/anime-slider/anime-slider-loader'
 import { NexPrevBtnSlideList } from '@anime/components/anime-slider/next-prev-btn-slider-list'
 import { SliderHeader } from '@anime/components/anime-slider/slider-header'
 import type { AnimeCardInfo } from '@anime/types'
+import { createGroups } from '@anime/utils/create-groups'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useHorizontalScroll } from '@shared/hooks/useHorizontalScroll'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { createGroups } from '@anime/utils/create-groups'
 
 interface Props {
   url: string
@@ -41,9 +40,7 @@ interface Props {
  * <AnimeSlider url="/api/animes?limit_count=24&genre_filter=action&banners_filter=false" title="Action Anime" />
  */
 export const AnimeSlider = ({ url, title, context }: Props) => {
-
   const { parentalControl } = useGlobalUserPreferences()
-
 
   const { listRef, showPrev, showNext, scrollNext, scrollPrev, windowWidth } =
     useHorizontalScroll({
@@ -51,21 +48,14 @@ export const AnimeSlider = ({ url, title, context }: Props) => {
       scrollPadding: 120,
     })
 
-
   const { data: animes, loading } = useFetch<AnimeCardInfo[]>({
     url: url + `&parental_control=${parentalControl}`,
   })
-    if (loading || !animes) {
+  if (loading || !animes) {
     return <AnimeSliderLoader context={context} />
   }
 
-
-
-  const groups = createGroups(animes,  windowWidth , context)
-
-
-
-
+  const groups = createGroups(animes, windowWidth, context)
 
   return (
     <section className="anime-slider fade-out relative mx-auto w-full">
