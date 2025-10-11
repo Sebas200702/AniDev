@@ -38,7 +38,10 @@ export const UserList = () => {
   const EmptyState = ({
     message,
     showButton = false,
-  }: { message: string; showButton?: boolean }) => (
+  }: {
+    message: string
+    showButton?: boolean
+  }) => (
     <div className="col-span-6 mt-20 flex flex-col items-center justify-center gap-4">
       <p className="text-l">{message}</p>
       {showButton && (
