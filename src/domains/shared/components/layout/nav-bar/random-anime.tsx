@@ -39,7 +39,6 @@ export const RandomAnimeButton = () => {
       console.error('Error fetching random anime:', error)
       // Optionally show user-facing error notification
     }
-
   }
   return (
     <button
