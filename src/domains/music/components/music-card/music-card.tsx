@@ -144,7 +144,7 @@ export const MusicCard = ({
           <AddToPlayListButton
             song={song}
             isInPlayList={isInPlaylist}
-            className={`hover:text-enfasisColor group cursor-pointer rounded-md transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 p-1 text-sm`}
+            className={`hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50`}
           />
 
           <DownloadButton
