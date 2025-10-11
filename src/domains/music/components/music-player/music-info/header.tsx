@@ -150,47 +150,65 @@ export const Header = ({ playerContainerRef }: Props) => {
             )}
 
             {!isMinimized && (
-              <div className="flex flex-row items-center justify-end gap-4 md:w-60 md:gap-8 xl:w-80">
-                <div className="hidden w-full max-w-40 flex-col gap-2 md:flex">
-                  <span className="text-Primary-200 text-s">Select Type</span>
-                  <div className="flex w-full -skew-x-8 transform flex-row overflow-hidden rounded-sm">
+              <div className="flex items-center gap-4 md:gap-6">
+                {/* Desktop Type Selector - Enhanced */}
+                <div className="hidden md:flex flex-col gap-2 min-w-[140px]">
+                  <span className="text-Primary-300 text-xs font-medium uppercase tracking-wider">
+                    Media Type
+                  </span>
+                  <div className="relative flex rounded-lg overflow-hidden bg-white/5 p-1 backdrop-blur-sm">
                     <button
-                      title={`Select Audio Type`}
                       onClick={(e) => {
                         e.stopPropagation()
                         setType('audio')
                       }}
-                      className={`text-Primary-100 text-m flex w-full cursor-pointer items-center justify-center py-1.5 transition-colors ${
-                        type === 'audio'
-                          ? 'bg-enfasisColor/80'
-                          : 'bg-enfasisColor/20 hover:bg-enfasisColor/40'
-                      }`}
+                      className={`
+                        relative z-10 flex-1 px-4 py-2 rounded-md
+                        text-sm font-semibold transition-all duration-200
+                        ${type === 'audio'
+                          ? 'text-white bg-enfasisColor shadow-lg'
+                          : 'text-Primary-300 hover:text-white'
+                        }
+                      `}
                     >
-                      <span className="flex skew-x-8">Audio</span>
+                      Audio
                     </button>
                     <button
-                      title={`Select Video Type`}
                       onClick={(e) => {
                         e.stopPropagation()
                         setType('video')
                         setSrc(currentSong?.video_url)
                       }}
-                      className={`text-Primary-100 text-m flex w-full cursor-pointer items-center justify-center py-1.5 transition-colors ${
-                        type === 'video'
-                          ? 'bg-enfasisColor/80'
-                          : 'bg-enfasisColor/20 hover:bg-enfasisColor/40'
-                      }`}
+                      className={`
+                        relative z-10 flex-1 px-4 py-2 rounded-md
+                        text-sm font-semibold transition-all duration-200
+                        ${type === 'video'
+                          ? 'text-white bg-enfasisColor shadow-lg'
+                          : 'text-Primary-300 hover:text-white'
+                        }
+                      `}
                     >
-                      <span className="flex skew-x-8">Video</span>
+                      Video
                     </button>
                   </div>
                 </div>
+
+                {/* Mobile Type Toggle */}
                 <button
-                  className="text-sx button-primary mt-6 flex h-min cursor-pointer rounded-sm p-1 md:mt-0 md:hidden md:p-4"
+                  className="
+                    md:hidden px-4 py-2 rounded-lg
+                    bg-enfasisColor/20 hover:bg-enfasisColor/30
+                    text-white font-bold text-xs tracking-wider
+                    transition-all duration-200
+                    ring-1 ring-white/10 hover:ring-white/20
+                    shadow-md
+                  "
                   onClick={handleChangeType}
                 >
                   {type.toUpperCase()}
                 </button>
+
+                {/* Version Selector */}
                 {versions.length > 1 && (
                   <FilterDropdown
                     label="Version"
@@ -198,12 +216,12 @@ export const Header = ({ playerContainerRef }: Props) => {
                     onChange={(value) => setVersionNumber(parseInt(value[0]))}
                     options={
                       versions.map((version) => ({
-                        label: `${version.version}`,
+                        label: `V${version.version}`,
                         value: version.version.toString(),
                       })) ?? []
                     }
                     onClear={() => setVersionNumber(1)}
-                    styles={`${isMinimized ? 'hidden' : 'flex'} md:flex  md:min-w-24  min-w-16`}
+                    styles={`${isMinimized ? 'hidden' : 'flex'} md:flex min-w-[100px]`}
                     singleSelect
                     InputText={false}
                   />
