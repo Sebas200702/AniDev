@@ -1,6 +1,6 @@
 import { useGlobalModal } from '@shared/stores/modal-store'
 import { useEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+
 
 export const ModalContainer = () => {
   const { isOpen, Component, componentProps, closeModal, clearModal } =
@@ -8,6 +8,8 @@ export const ModalContainer = () => {
   const modalRef = useRef<HTMLDivElement>(null)
   const [show, setShow] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
+
+  const modalRoot = document.getElementById('modal-root')
 
   useEffect(() => {
     if (isOpen) {
@@ -53,22 +55,18 @@ export const ModalContainer = () => {
     }
   }, [isOpen, closeModal])
 
+  if (!show || !Component || !modalRoot) return null
 
-
-  if (!show || !Component) return null
-
-  return createPortal(
+  return (
     <div
       ref={modalRef}
-      className={`fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-sm
-      ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
+      className={`fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-sm ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className={`${isClosing ? 'animate-modal-scale-out' : 'animate-modal-scale'} w-full h-full flex flex-col items-center justify-center`}
+        className={`${isClosing ? 'animate-modal-scale-out' : 'animate-modal-scale'} flex h-full w-full flex-col items-center justify-center`}
         onClick={(e) => {
-          e.stopPropagation()
           if (e.target === e.currentTarget) {
             closeModal()
           }
@@ -76,7 +74,6 @@ export const ModalContainer = () => {
       >
         <Component {...componentProps} />
       </div>
-    </div>,
-    document.body
+    </div>
   )
 }
