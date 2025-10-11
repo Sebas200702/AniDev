@@ -54,7 +54,7 @@ export const Profile = () => {
   }, [dropdownRef, buttonRef])
   return (
     <>
-      <article className="flex items-center justify-end h-10 w-10">
+      <article className="flex h-10 w-10 items-center justify-end">
         <button
           className="flex cursor-pointer flex-row items-center gap-2"
           title="Options"
