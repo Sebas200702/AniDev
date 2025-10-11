@@ -21,7 +21,7 @@ export const useDownloadManager = () => {
     try {
       const filename = generateFilename(title, version, type, resolution)
 
-     toast[ToastType.Loading]({
+      toast[ToastType.Loading]({
         text: 'Downloading',
         options: {
           promise: performDownload(url, filename),
