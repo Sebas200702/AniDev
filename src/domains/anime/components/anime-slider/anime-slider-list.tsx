@@ -1,4 +1,3 @@
-
 import { AnimeCard } from '@anime/components/anime-card/anime-card'
 import { AnimeSliderLoader } from '@anime/components/anime-slider/anime-slider-loader'
 import { NexPrevBtnSlideList } from '@anime/components/anime-slider/next-prev-btn-slider-list'
