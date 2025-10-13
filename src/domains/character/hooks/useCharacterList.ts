@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 export const useCharacterList = ({ animeId }: { animeId: number }) => {
   const [language, setLanguage] = useState('Japanese')
-  const { data, loading } = useFetch<Character[]>({
+  const { data, loading, error } = useFetch<Character[]>({
     url: `/api/getAnimeCharacters?animeId=${animeId}&language=${language}`,
   })
 
@@ -13,5 +13,6 @@ export const useCharacterList = ({ animeId }: { animeId: number }) => {
     setLanguage,
     characters: data,
     isLoading: loading,
+    error,
   }
 }
