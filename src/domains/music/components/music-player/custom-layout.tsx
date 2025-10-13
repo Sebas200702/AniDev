@@ -50,7 +50,7 @@ export const CustomLayout = () => {
                 stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
+                strokeWidth="1.75"
                 className="vds-menu-item-icon vds-icon"
               >
                 <path stroke="none" d="M0 0h24v24H0z" />
@@ -88,7 +88,7 @@ export const CustomLayout = () => {
                       stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="2"
+                      strokeWidth="1.75"
                       className="h-6 w-6"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" />
