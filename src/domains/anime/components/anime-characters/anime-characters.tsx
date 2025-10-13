@@ -1,5 +1,5 @@
 import { AnimeCharacterList } from '@anime/components/anime-characters/anime-characters-list'
-import { useCharacterList } from '@anime/hooks/anime-charater/useCharacterList'
+import { useCharacterList } from '@character/hooks/useCharacterList'
 
 interface Props {
   animeId: number
@@ -12,7 +12,7 @@ export const CharacterSection = ({ animeId }: Props) => {
 
   return (
     <AnimeCharacterList
-      characters={characters}
+      characters={characters!}
       language={language}
       setLanguage={setLanguage}
       isLoading={isLoading}
