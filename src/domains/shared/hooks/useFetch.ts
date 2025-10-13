@@ -6,8 +6,6 @@ interface Params {
   skip?: boolean
 }
 
-type Error = string | null
-
 /**
  * useFetch is a custom hook that fetches data from a given URL and manages loading and error states.
  *
@@ -41,7 +39,7 @@ type Error = string | null
 export const useFetch = <T>({ url, options, skip }: Params) => {
   const [data, setData] = useState<T | null>(null)
   const [total, setTotal] = useState<number>(0)
-  const [error, setError] = useState<Error>(null)
+  const [error, setError] = useState<Error | null | undefined>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [status, setStatus] = useState<number | null>(null)
 
@@ -67,9 +65,7 @@ export const useFetch = <T>({ url, options, skip }: Params) => {
         setData(json)
         setTotal(total)
       } catch (error: any) {
-        const errorMessage =
-          error instanceof Error ? error.message : 'An unknown error occurred'
-        setError(errorMessage)
+        setError(error)
       } finally {
         setLoading(false)
       }
