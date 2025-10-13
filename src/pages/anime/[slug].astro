@@ -1,5 +1,5 @@
 ---
-import { AnimeInfo } from '@anime/components/anime-info/anime'
+import { AnimeInfoContainer } from '@anime/components/anime-info/anime-info-container'
 import Layout from '@layouts/base.astro'
 
 const slug = Astro.params.slug ?? ''
@@ -13,6 +13,6 @@ if (!mal_id || isNaN(mal_id)) {
 
 <Layout animeId={mal_id}>
   <section class="flex w-full flex-col text-white">
-    <AnimeInfo client:visible id={mal_id} />
+    <AnimeInfoContainer client:load id={mal_id} />
   </section>
 </Layout>
