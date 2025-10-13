@@ -1,5 +1,7 @@
+import { AnimeCollectionLoader } from '@anime/components/anime-collection/anime-coletion-loader'
 import { AnimeCollection } from '@anime/components/anime-collection/anime-collection'
 import type { AnimeCollectionInfo } from '@anime/types'
+import { DataWrapper } from '@shared/components/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { useMemo } from 'react'
@@ -11,20 +13,19 @@ interface Props {
 export const AnimeCollectionContainer = ({ id }: Props) => {
   const { url, title } = useMemo(() => createDynamicUrl(3), [])
 
-  const {
-    data: animes,
-    loading,
-    error,
-  } = useFetch<AnimeCollectionInfo[]>({
+  const { data, loading, error } = useFetch<AnimeCollectionInfo[]>({
     url: `${url}&format=anime-collection`,
   })
 
-  if (error) return null
-
-  if (!animes?.length || loading)
-    return (
-      <li className="flex h-54 w-full animate-pulse items-center justify-center rounded-lg bg-zinc-800"></li>
-    )
-
-  return <AnimeCollection animes={animes ?? []} title={title} id={`${id}`} />
+  return (
+    <DataWrapper
+      data={data}
+      loading={loading}
+      error={error}
+      loadingFallback={<AnimeCollectionLoader />}
+      noDataFallback={null}
+    >
+      {(data) => <AnimeCollection animes={data!} title={title} id={id} />}
+    </DataWrapper>
+  )
 }
