@@ -7,7 +7,7 @@ import { normalizeString } from '@utils/normalize-string'
 interface Props {
   animes: AnimeCollectionInfo[]
   title: string
-  id: string
+  id: number
 }
 export const AnimeCollection = ({ animes, title, id }: Props) => {
   const style1 =
