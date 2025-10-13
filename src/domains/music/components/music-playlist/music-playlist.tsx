@@ -78,7 +78,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll p-4 md:max-h-[700px] md:rounded-xl md:p-6">
+    <section className="no-scrollbar bg-Complementary  sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll p-4 md:max-h-[700px] md:rounded-xl md:p-6">
       <header className="mb-10">
         <h2 className="text-lx font-semibold text-zinc-100">
           Currently Playing
