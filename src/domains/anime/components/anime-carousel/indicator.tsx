@@ -59,4 +59,3 @@ export const Indicator = memo(
   }
 )
 
-Indicator.displayName = 'Indicator'
