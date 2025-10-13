@@ -1,8 +1,8 @@
-import { CarouselItem } from '@anime/components/anime-carousel/carousel-item'
-import { LoadingCarousel } from '@anime/components/anime-carousel/carousel-loader'
+import { CarouselItem } from '@anime/components/anime-carousel/anime-carousel-item'
+import { LoadingCarousel } from '@anime/components/anime-carousel/anime-carousel-loader'
 import { Indicator } from '@anime/components/anime-carousel/indicator'
-import { NexPrevBtnCarousel } from '@anime/components/anime-carousel/nex-prev-btn-carousel'
-import { useCarouselScroll } from '@anime/hooks/anime-carousel/useCarouselScroll'
+import { NexPrevBtnCarousel } from '@anime/components/anime-carousel/anime-carousel-buttons'
+import { useCarouselScroll } from '@anime/hooks/useCarouselScroll'
 import { useCarouselStore } from '@anime/stores/carousel-store'
 import type { AnimeBannerInfo } from '@anime/types'
 import { Overlay } from '@shared/components/layout/overlay'
@@ -10,30 +10,7 @@ import { useFetch } from '@shared/hooks/useFetch'
 import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { useCallback, useEffect, useMemo } from 'react'
 
-/**
- * Carousel component displays a rotating banner of featured anime content.
- *
- * @description This component manages the loading state, fetches banner data, and provides interactive
- * navigation controls. It uses session storage to cache the fetched data for faster access on subsequent
- * visits. The component implements touch gestures, keyboard navigation, and automatic rotation for an
- * engaging user experience.
- *
- * The component maintains state through the useCarouselStore for banners data, loading status, current
- * index, and animation effects. It implements an efficient image preloading mechanism to ensure smooth
- * transitions between carousel items. When no cached data is available, it dynamically generates a URL
- * and fetches a new set of banner images.
- *
- * Now includes intelligent retry system that registers failed URL combinations through API calls.
- *
- * The UI features a responsive layout that adapts to different screen sizes, with full-width banner
- * images, navigation indicators, and next/previous buttons. During loading, a skeleton loader is
- * displayed to improve user experience.
- *
- * @returns {JSX.Element} The rendered carousel with banner items, indicators, and navigation controls
- *
- * @example
- * <Carousel />
- */
+
 export const Carousel = () => {
   const {
     banners,
