@@ -32,7 +32,7 @@ export const StudioIcon = ({ className }: IconProps) => {
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2"
+      strokeWidth="1.75"
       className={className}
     >
       <path stroke="none" d="M0 0h24v24H0z" />

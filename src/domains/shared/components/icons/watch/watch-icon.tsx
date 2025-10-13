@@ -28,7 +28,7 @@ export const WatchingIcon = ({ className }: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}

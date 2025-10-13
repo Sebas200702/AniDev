@@ -25,6 +25,7 @@ import { useModal } from '@shared/hooks/useModal'
 export const SearchButton = () => {
   const { openModal } = useModal()
 
+
   const handleClick = () => {
     openModal(SearchBar)
   }

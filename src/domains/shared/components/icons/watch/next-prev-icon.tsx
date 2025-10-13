@@ -34,7 +34,7 @@ export const NextPrevIcon = ({ className }: IconProps) => (
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2"
+      strokeWidth="1.75"
       d="M5 1 1 5l4 4"
     />
   </svg>

@@ -10,7 +10,7 @@ export const MenuIcon = ({ className }: IconProps) => (
     <path
       d="M4 6H20M4 12H20M4 18H11"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
     />

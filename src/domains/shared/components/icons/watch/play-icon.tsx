@@ -27,7 +27,7 @@ export const PlayIcon = ({ className }: IconProps) => (
     fill="none"
     className={className}
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="1.75"
     strokeLinecap="round"
     strokeLinejoin="round"
     viewBox="0 0 24 24"
