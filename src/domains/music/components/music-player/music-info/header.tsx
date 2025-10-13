@@ -152,24 +152,21 @@ export const Header = ({ playerContainerRef }: Props) => {
             {!isMinimized && (
               <div className="flex items-center gap-4 md:gap-6">
                 {/* Desktop Type Selector - Enhanced */}
-                <div className="hidden md:flex flex-col gap-2 min-w-[140px]">
-                  <span className="text-Primary-300 text-xs font-medium uppercase tracking-wider">
+                <div className="hidden min-w-[140px] flex-col gap-2 md:flex">
+                  <span className="text-Primary-300 text-xs font-medium tracking-wider uppercase">
                     Media Type
                   </span>
-                  <div className="relative flex rounded-lg overflow-hidden bg-white/5 p-1 backdrop-blur-sm">
+                  <div className="relative flex overflow-hidden rounded-lg bg-white/5 p-1 backdrop-blur-sm">
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
                         setType('audio')
                       }}
-                      className={`
-                        relative z-10 flex-1 px-4 py-2 rounded-md
-                        text-sm font-semibold transition-all duration-200
-                        ${type === 'audio'
-                          ? 'text-white bg-enfasisColor shadow-lg'
+                      className={`relative z-10 flex-1 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                        type === 'audio'
+                          ? 'bg-enfasisColor text-white shadow-lg'
                           : 'text-Primary-300 hover:text-white'
-                        }
-                      `}
+                      } `}
                     >
                       Audio
                     </button>
@@ -179,14 +176,11 @@ export const Header = ({ playerContainerRef }: Props) => {
                         setType('video')
                         setSrc(currentSong?.video_url)
                       }}
-                      className={`
-                        relative z-10 flex-1 px-4 py-2 rounded-md
-                        text-sm font-semibold transition-all duration-200
-                        ${type === 'video'
-                          ? 'text-white bg-enfasisColor shadow-lg'
+                      className={`relative z-10 flex-1 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                        type === 'video'
+                          ? 'bg-enfasisColor text-white shadow-lg'
                           : 'text-Primary-300 hover:text-white'
-                        }
-                      `}
+                      } `}
                     >
                       Video
                     </button>
@@ -194,15 +188,8 @@ export const Header = ({ playerContainerRef }: Props) => {
                 </div>
 
                 {/* Mobile Type Toggle */}
-                <button
-                  className="
-                    md:hidden px-4 py-2 rounded-lg
-                    bg-enfasisColor/20 hover:bg-enfasisColor/30
-                    text-white font-bold text-xs tracking-wider
-                    transition-all duration-200
-                    ring-1 ring-white/10 hover:ring-white/20
-                    shadow-md
-                  "
+                 <button
+                  className="text-sxx button-primary mt-6 h-min cursor-pointer rounded-sm p-1 md:mt-0 md:hidden md:p-4"
                   onClick={handleChangeType}
                 >
                   {type.toUpperCase()}
