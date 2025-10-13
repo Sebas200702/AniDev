@@ -89,7 +89,7 @@ export const Profile = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.75"
               >
                 <path
                   strokeLinecap="round"
@@ -115,7 +115,7 @@ export const Profile = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.75"
               >
                 <path
                   strokeLinecap="round"
@@ -138,7 +138,7 @@ export const Profile = () => {
                   fill="none"
                   className="h-5 w-5"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="1.75"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   viewBox="0 0 24 24"
