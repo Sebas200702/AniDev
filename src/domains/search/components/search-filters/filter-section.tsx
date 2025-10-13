@@ -205,7 +205,7 @@ export const FilterSection = () => {
               <svg
                 className="h-4 w-4 md:h-5 md:w-5"
                 fill="none"
-                strokeWidth="2"
+                strokeWidth="1.75"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -222,7 +222,7 @@ export const FilterSection = () => {
               <svg
                 className={`h-4 w-4 transition-all duration-200 md:h-5 md:w-5 ${isOpen ? 'rotate-180' : ''}`}
                 fill="none"
-                strokeWidth="2"
+                strokeWidth="1.75"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
