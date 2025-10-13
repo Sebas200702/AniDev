@@ -1,7 +1,6 @@
 import { useGlobalModal } from '@shared/stores/modal-store'
 import { useEffect, useRef, useState } from 'react'
 
-
 export const ModalContainer = () => {
   const { isOpen, Component, componentProps, closeModal, clearModal } =
     useGlobalModal()
