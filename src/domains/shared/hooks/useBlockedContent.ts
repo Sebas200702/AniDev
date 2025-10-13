@@ -8,18 +8,6 @@ import { useModal } from '@shared/hooks/useModal'
 import { ToastType } from '@shared/types'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
-interface UseBlockedContentProps {
-  id: number
-  getAnimeData: (id: number, parentalControl: boolean | null) => Promise<any>
-}
-
-interface UseBlockedContentReturn {
-  animeData: Anime | null
-  isBlocked: boolean
-  blockedMessage: string | undefined
-  isLoading: boolean
-  isMounted: boolean
-}
 
 /**
  * Custom hook para manejar la lógica de contenido bloqueado por control parental
@@ -35,15 +23,34 @@ interface UseBlockedContentReturn {
  * @param getAnimeData - Función para obtener los datos del anime
  * @returns Objeto con el estado y funciones relacionadas con el bloqueo
  */
+
+interface UseBlockedContentProps {
+  id: number
+  getAnimeData: (id: number, parentalControl: boolean | null) => Promise<any>
+}
+
+interface UseBlockedContentReturn {
+  animeData: Anime | null
+  isBlocked: boolean
+  blockedMessage: string | undefined
+  isLoading: boolean
+  isMounted: boolean
+  error: Error | null
+}
+
+/**
+ * Custom hook para manejar la lógica de contenido bloqueado por control parental
+ */
 export const useBlockedContent = ({
   id,
   getAnimeData,
 }: UseBlockedContentProps): UseBlockedContentReturn => {
-  const [animeData, setAnimeData] = useState<any | null>(null)
-  const [isBlocked, setIsBlocked] = useState<boolean>(false)
+  const [animeData, setAnimeData] = useState<Anime | null>(null)
+  const [isBlocked, setIsBlocked] = useState(false)
   const [blockedMessage, setBlockedMessage] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState(true)
   const [isMounted, setIsMounted] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
   const { parentalControl, setParentalControl } = useGlobalUserPreferences()
   const { openModal, closeModal, onClose } = useModal()
@@ -57,24 +64,31 @@ export const useBlockedContent = ({
 
     const fetchData = async () => {
       setIsLoading(true)
+      setError(null) // Limpia errores previos antes de cada fetch
 
-      const response = await getAnimeData(id, parentalControl)
+      try {
+        const response = await getAnimeData(id, parentalControl)
 
-      if (!response) {
+        if (!response) {
+          throw new Error('No se obtuvo respuesta del servidor.')
+        }
+
+        const { anime, blocked, message } = response
+
+        if (blocked) {
+          setIsBlocked(true)
+          setBlockedMessage(message)
+        } else if (anime) {
+          setAnimeData(anime)
+        } else {
+          throw new Error('Datos del anime no encontrados.')
+        }
+      } catch (err) {
+        console.error('Error al obtener datos del anime:', err)
+        setError(err instanceof Error ? err : new Error('Error desconocido'))
+      } finally {
         setIsLoading(false)
-        return
       }
-
-      const { anime, blocked, message } = response
-
-      if (blocked) {
-        setIsBlocked(true)
-        setBlockedMessage(message)
-      } else if (anime) {
-        setAnimeData(anime)
-      }
-
-      setIsLoading(false)
     }
 
     fetchData()
@@ -120,5 +134,6 @@ export const useBlockedContent = ({
     blockedMessage,
     isLoading,
     isMounted,
+    error,
   }
 }
