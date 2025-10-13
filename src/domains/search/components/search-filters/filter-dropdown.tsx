@@ -182,7 +182,7 @@ export const FilterDropdown = ({
           >
             <svg
               fill="none"
-              strokeWidth="2"
+              strokeWidth="1.75"
               stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
