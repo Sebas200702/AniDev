@@ -38,26 +38,10 @@ import sharp from 'sharp'
  * @param {string} [context.url.searchParams.get('q')] - Quality setting (1-100, default: 50)
  * @param {string} [context.url.searchParams.get('format')] - Output format ('webp' or 'avif')
  * @returns {Promise<Response>} A Response object containing the optimized image or error message
- *
- * @example
- * // Request
- * GET /api/proxy?url=https://example.com/image.jpg&w=800&q=75&format=webp
- *
- * // Success Response (200)
- * // Returns the optimized image with appropriate headers
- *
- * // Error Response (400)
- * {
- *   "error": "Missing 'url' parameter"
- * }
  */
 
 const getPlaceholderBuffer = async () => {
-  const placeholderPath = path.resolve(
-    process.cwd(),
-    'public',
-    'placeholder.webp'
-  )
+  const placeholderPath = path.resolve(process.cwd(), 'public', 'placeholder.webp')
   return fs.readFile(placeholderPath)
 }
 
@@ -65,15 +49,35 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
 
   const width = parseInt(url.searchParams.get('w') ?? '0', 10)
-  const quality = Math.min(
-    Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1),
-    100
-  )
+  const quality = Math.min(Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1), 100)
   const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
   const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
+
   if (!imageUrl) {
     throw new Error('Missing image URL')
   }
+
+
+  const malIcon = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png'
+  if (imageUrl === malIcon) {
+
+    const placeholderPath = path.resolve(process.cwd(), 'public', 'placeholder.webp')
+    const placeholderBuffer = await fs.readFile(placeholderPath)
+
+    const optimizedBuffer = await sharp(placeholderBuffer)
+      .toFormat(format, { quality })
+      .toBuffer()
+
+    return new Response(new Uint8Array(optimizedBuffer), {
+      status: 200,
+      headers: {
+        'Content-Type': mimeType,
+        'Content-Length': optimizedBuffer.length.toString(),
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    })
+  }
+
 
   if (imageUrl.startsWith('blob:')) {
     return new Response(
@@ -88,9 +92,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {
     const cacheKey = `img:${Buffer.from(imageUrl).toString('base64')}:${width}:${quality}:${format}`
 
-    const cachedData = await safeRedisOperation((client) =>
-      client.get(cacheKey)
-    )
+    const cachedData = await safeRedisOperation((client) => client.get(cacheKey))
 
     if (cachedData) {
       const imageBuffer = Buffer.from(cachedData, 'base64')
@@ -122,13 +124,13 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       image = image.resize({ width })
     }
 
-    image =
-      format === 'avif' ? image.avif({ quality }) : image.webp({ quality })
+    image = format === 'avif' ? image.avif({ quality }) : image.webp({ quality })
 
     const optimizedBuffer = await image.toBuffer()
     if (!optimizedBuffer) {
       throw new Error('Image optimization failed')
     }
+
     await safeRedisOperation((client) =>
       client.set(cacheKey, optimizedBuffer.toString('base64'), { EX: 31536000 })
     )
@@ -158,10 +160,7 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 export const POST: APIRoute = redisConnection(async ({ request, url }) => {
   try {
     const width = parseInt(url.searchParams.get('w') ?? '0', 10)
-    const quality = Math.min(
-      Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1),
-      100
-    )
+    const quality = Math.min(Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1), 100)
     const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
     const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
@@ -177,9 +176,7 @@ export const POST: APIRoute = redisConnection(async ({ request, url }) => {
     const hash = crypto.createHash('sha256').update(buffer).digest('hex')
     const cacheKey = `img:body:${hash}:${width}:${quality}:${format}`
 
-    const cachedData = await safeRedisOperation((client) =>
-      client.get(cacheKey)
-    )
+    const cachedData = await safeRedisOperation((client) => client.get(cacheKey))
     if (cachedData) {
       const imageBuffer = Buffer.from(cachedData, 'base64')
       return new Response(imageBuffer, {
@@ -197,8 +194,7 @@ export const POST: APIRoute = redisConnection(async ({ request, url }) => {
     if (width > 0) {
       image = image.resize({ width })
     }
-    image =
-      format === 'avif' ? image.avif({ quality }) : image.webp({ quality })
+    image = format === 'avif' ? image.avif({ quality }) : image.webp({ quality })
 
     const optimizedBuffer = await image.toBuffer()
     if (!optimizedBuffer) {
