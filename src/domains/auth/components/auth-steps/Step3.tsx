@@ -1,13 +1,13 @@
-import { navigate } from 'astro:transitions/client'
-import { Input } from '@auth/components/auth-form/input'
-import { usePreferencesFormStore } from '@auth/stores/preferences-form-store'
-import { useStepsStore } from '@auth/stores/steps-store'
-import { toast } from '@pheralb/toast'
+import { AuthInput } from '@auth/components/auth-form/auth-form-input'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
-import { UserIcon } from '@shared/components/icons/user/user-icon'
 import { ToastType } from '@shared/types'
+import { UserIcon } from '@shared/components/icons/user/user-icon'
+import { navigate } from 'astro:transitions/client'
 import { parseResponse } from '@utils/parse-response'
+import { toast } from '@pheralb/toast'
+import { usePreferencesFormStore } from '@auth/stores/preferences-form-store'
 import { useState } from 'react'
+import { useStepsStore } from '@auth/stores/steps-store'
 
 /**
  * Step3 component handles user preferences and favorites collection.
@@ -144,7 +144,7 @@ export const Step3 = () => {
   const renderField = (field: any) => {
     if (field.type === 'text' || field.type === 'date') {
       return (
-        <Input
+        <AuthInput
           key={field.name}
           name={field.name}
           type={field.type}
@@ -154,7 +154,7 @@ export const Step3 = () => {
           onChange={handleInputChange}
         >
           <UserIcon className="h-5 w-5" />
-        </Input>
+        </AuthInput>
       )
     }
 
