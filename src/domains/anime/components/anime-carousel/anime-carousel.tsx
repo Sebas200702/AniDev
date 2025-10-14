@@ -1,87 +1,36 @@
+import type { AnimeBannerInfo } from '@anime/types'
 import { CarouselItem } from '@anime/components/anime-carousel/anime-carousel-item'
-import { LoadingCarousel } from '@anime/components/anime-carousel/anime-carousel-loader'
 import { Indicator } from '@anime/components/anime-carousel/indicator'
 import { NexPrevBtnCarousel } from '@anime/components/anime-carousel/anime-carousel-buttons'
-import { useCarouselScroll } from '@anime/hooks/useCarouselScroll'
-import { useCarouselStore } from '@anime/stores/carousel-store'
-import type { AnimeBannerInfo } from '@anime/types'
 import { Overlay } from '@shared/components/layout/overlay'
-import { useFetch } from '@shared/hooks/useFetch'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
-import { useCallback, useEffect, useMemo } from 'react'
+import type { TouchEventHandler } from 'react'
 
-
-export const Carousel = () => {
-  const {
-    banners,
-    setBanners,
-    currentIndex,
-    setCurrentIndex,
-    fadeIn,
-    setFadeIn,
-  } = useCarouselStore()
-  const {
-    bannerContainerRef,
-    intervalRef,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    handlePrev,
-    handleNext,
-    handleScroll,
-    resetInterval,
-    handleKeyDown,
-  } = useCarouselScroll(banners, currentIndex, setCurrentIndex)
-  const { url } = useMemo(() => createDynamicUrl(6), [])
-
-  const { data, loading, error } = useFetch<AnimeBannerInfo[]>({
-    url: `${url}&banners_filter=true&format=anime-banner`,
-  })
-
-  useEffect(() => {
-    if (data) {
-      setBanners(data)
-    }
-  }, [data, setBanners])
-
-  const handleIndicatorClick = useCallback(
-    (index: number) => {
-      setCurrentIndex(index)
-      handleScroll(index)
-      resetInterval()
-    },
-    [setCurrentIndex, handleScroll, resetInterval]
-  )
-
-  useEffect(() => {
-    resetInterval()
-  }, [resetInterval])
-
-  useEffect(() => {
-    if (!banners || banners.length === 0) return
-    setFadeIn(true)
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      clearInterval(intervalRef.current!)
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [banners, handleKeyDown, resetInterval])
-
-  if (error && !banners) {
-    return (
-      <div className="flex h-[70vh] items-center justify-center">
-        <p className="text-red-500">
-          Failed to load carousel content. Please try again later.
-        </p>
-      </div>
-    )
-  }
-
-  if (loading || !banners || banners.length === 0) return <LoadingCarousel />
+interface AnimeCarouselProps {
+  banners: AnimeBannerInfo[]
+  bannerContainerRef: React.RefObject<HTMLDivElement | null>
+  handleTouchStart: TouchEventHandler<HTMLDivElement>
+  handleTouchMove: TouchEventHandler<HTMLDivElement>
+  handleTouchEnd: TouchEventHandler<HTMLDivElement>
+  handlePrev: () => void
+  handleNext: () => void
+  handleIndicatorClick: (index: number) => void
+  currentIndex: number
+  
+}
+export const AnimeCarousel = ({
+  banners,
+  bannerContainerRef,
+  handleTouchStart,
+  handleTouchMove,
+  handleTouchEnd,
+  handlePrev,
+  handleNext,
+  handleIndicatorClick,
+  currentIndex,
+}: AnimeCarouselProps) => {
   return (
     <section
-      className={`fade-out relative right-0 left-0 h-[70vh] md:h-[650px] xl:h-[90vh] ${fadeIn ? 'opacity-100 transition-all duration-200' : 'opacity-0'} `}
+      className={`fade-out relative right-0 left-0 h-[70vh] md:h-[650px] xl:h-[90vh]`}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
