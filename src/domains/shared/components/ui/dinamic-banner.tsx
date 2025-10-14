@@ -1,5 +1,6 @@
-import { Picture } from '@shared/components/media/picture'
 import { useEffect, useState } from 'react'
+
+import { Picture } from '@shared/components/media/picture'
 
 interface Props {
   banners: string[]
