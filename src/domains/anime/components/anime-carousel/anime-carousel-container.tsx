@@ -1,21 +1,17 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
-import type { AnimeBannerInfo } from '@anime/types'
 import { AnimeCarousel } from '@anime/components/anime-carousel/anime-carousel'
-import { DataWrapper } from '@shared/components/data-wrapper'
-import { LoadingCarousel } from './anime-carousel-loader'
-import { createDynamicUrl } from '@utils/create-dynamic-url'
 import { useCarouselScroll } from '@anime/hooks/useCarouselScroll'
 import { useCarouselStore } from '@anime/stores/carousel-store'
+import type { AnimeBannerInfo } from '@anime/types'
+import { DataWrapper } from '@shared/components/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
+import { createDynamicUrl } from '@utils/create-dynamic-url'
+import { LoadingCarousel } from './anime-carousel-loader'
 
 export const AnimeCarouselContainer = () => {
-  const {
-    banners,
-    setBanners,
-    currentIndex,
-    setCurrentIndex,
-  } = useCarouselStore()
+  const { banners, setBanners, currentIndex, setCurrentIndex } =
+    useCarouselStore()
   const {
     bannerContainerRef,
     intervalRef,
