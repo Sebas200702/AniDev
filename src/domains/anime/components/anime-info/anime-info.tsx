@@ -1,9 +1,9 @@
 import { AnimeBanner } from '@anime/components/anime-info/anime-info-banner'
 import { AnimeDetails } from '@anime/components/anime-info/anime-info-details'
 import { AnimeShowBoxContainer } from '@anime/components/anime-info/anime-info-show-box/anime-info-show-box-container'
-import { SimilarToComponet } from '@anime/components/anime-info/anime-info-similar-to'
+import { AnimeSimilarToContainer } from '@anime/components/anime-info/anime-info-similar-to/anime-info-similar-to-container'
 import { AnimeTag } from '@anime/components/shared/anime-tag'
-import type { Anime } from '@anime/types' // ejemplo
+import type { Anime } from '@anime/types'
 import { AddToListButton } from '@shared/components/buttons/add-to-list-button'
 import { ShareButton } from '@shared/components/buttons/share-button'
 import { WatchAnimeButton } from '@shared/components/buttons/watch-anime'
@@ -97,7 +97,10 @@ export const AnimeInfo = ({ animeData }: Props) => {
           title={animeData.title}
           synopsis={animeData.synopsis ?? 'No synopsis available'}
         />
-        <SimilarToComponet title={animeData.title} mal_id={animeData.mal_id} />
+        <AnimeSimilarToContainer
+          title={animeData.title}
+          mal_id={animeData.mal_id}
+        />
       </div>
 
       <AnimeDetails animeData={animeData} />
