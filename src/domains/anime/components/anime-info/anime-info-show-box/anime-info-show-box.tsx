@@ -1,10 +1,10 @@
-import { CharacterSection } from '@anime/components/anime-characters/anime-characters'
 import { AnimeDescription } from '@anime/components/anime-info/anime-info-description'
+import { AnimeMusicContainer } from '@anime/components/anime-music/anime-music-container'
 import { AnimeNavBar } from '@anime/components/anime-info/anime-info-nav-bar'
-import { AnimeTrailer } from '@anime/components/anime-info/anime-info-trailer'
-import { AnimeMusic } from '@anime/components/anime-music/anime-music'
-import { MainInfo } from 'domains/shared/components/layout/base/MainInfo'
 import { AnimeRelatedContainer } from '@anime/components/anime-info/anime-info-related/anime-info-related-container'
+import { AnimeTrailer } from '@anime/components/anime-info/anime-info-trailer'
+import { CharacterSection } from '@anime/components/anime-characters/anime-characters'
+import { MainInfo } from 'domains/shared/components/layout/base/MainInfo'
 
 interface Props {
   animeId: number
@@ -50,7 +50,7 @@ export const AnimeShowBox = ({
         return <CharacterSection animeId={animeId} />
       case 'Music':
         return (
-          <AnimeMusic
+          <AnimeMusicContainer
             animeId={animeId}
             image={image}
             placeholder={image_small_webp}
