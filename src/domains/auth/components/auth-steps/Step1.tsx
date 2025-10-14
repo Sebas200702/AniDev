@@ -1,6 +1,6 @@
+import { AuthInput } from '@auth/components/auth-form/auth-form-input'
 import { EmailIcon } from '@shared/components/icons/auth/email-icon'
 import { GoogleBtnContainer } from '@auth/components/auth-button/auth-button-google-container'
-import { Input } from '@auth/components/auth-form/input'
 import { PasswordIcon } from '@shared/components/icons/auth/password-icon'
 import { ToastType } from '@shared/types'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
@@ -16,8 +16,6 @@ interface Props {
   title: string
   isSignUp: boolean
 }
-
-
 
 export const Step1 = ({ isLoading, title, isSignUp }: Props) => {
   const {
@@ -104,7 +102,7 @@ export const Step1 = ({ isLoading, title, isSignUp }: Props) => {
       field.type === 'password'
     ) {
       return (
-        <Input
+        <AuthInput
           key={field.name}
           name={field.name}
           type={field.type}
@@ -114,7 +112,7 @@ export const Step1 = ({ isLoading, title, isSignUp }: Props) => {
           {field.type === 'email' && <EmailIcon className="h-5 w-5" />}
           {field.type === 'password' && <PasswordIcon className="h-5 w-5" />}
           {field.type === 'text' && <UserIcon className="h-5 w-5" />}
-        </Input>
+        </AuthInput>
       )
     }
     return null
