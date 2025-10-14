@@ -1,11 +1,11 @@
 ---
-import { Formulary } from '@auth/components/auth-form/formulary'
+import { Formulary } from '@auth/components/auth-form/auth-form-container'
 import Layout from '@layouts/base.astro'
 import { baseTitle } from '@utils/base-url'
 const title = `Sign In - ${baseTitle}`
 const description =
   'Sign in to your AniDev account to access personalized anime recommendations, manage your watchlist, and enjoy seamless streaming across all your devices.'
-const action = '/api/auth/signin'
+
 const bgImage = '/sign-in.webp'
 ---
 
@@ -14,7 +14,6 @@ const bgImage = '/sign-in.webp'
     <Formulary
       client:load
       title={'Sign In'}
-      action={action}
       bgImage={bgImage}
     />
   </section>
