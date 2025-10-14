@@ -1,20 +1,21 @@
-import type { DataImage } from '@anime/types'
-import { Input } from '@auth/components/auth-form/input'
-import { toast } from '@pheralb/toast'
-import { EditIcon } from '@shared/components/icons/common/edit-icon'
-import { UserIcon } from '@shared/components/icons/user/user-icon'
-import { Picture } from '@shared/components/media/picture'
-import { useModal } from '@shared/hooks/useModal'
 import { InputType, ToastType } from '@shared/types'
+import { useEffect, useState } from 'react'
+
 import { ChangeImages } from '@user/components/user-profile/change-images'
-import { useUpdateProfile } from '@user/stores/update-profile'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
+import type { DataImage } from '@anime/types'
+import { EditIcon } from '@shared/components/icons/common/edit-icon'
+import { AuthInput } from '@auth/components/auth-form/auth-form-input'
+import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
+import { Overlay } from 'domains/shared/components/layout/overlay'
+import { Picture } from '@shared/components/media/picture'
+import { UserIcon } from '@shared/components/icons/user/user-icon'
 import type { UserInfo } from '@user/types'
 import { baseUrl } from '@utils/base-url'
+import { toast } from '@pheralb/toast'
 import { uploadImages } from '@utils/upload-images'
-import { Overlay } from 'domains/shared/components/layout/overlay'
-import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
-import { useEffect, useState } from 'react'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useModal } from '@shared/hooks/useModal'
+import { useUpdateProfile } from '@user/stores/update-profile'
 
 export const EditProfile = () => {
   const { userInfo, setUserInfo } = useGlobalUserPreferences()
@@ -219,7 +220,7 @@ export const EditProfile = () => {
           className="mt-50 flex w-full flex-col gap-6 md:mt-64"
           onSubmit={handleSubmit}
         >
-          <Input
+          <AuthInput
             name="Username"
             placeholder="UserName"
             type={InputType.TEXT}
@@ -227,7 +228,7 @@ export const EditProfile = () => {
             onChange={handleInput}
           >
             <UserIcon className="h-5 w-5" />
-          </Input>
+          </AuthInput>
 
           <footer className="flex w-full items-center gap-4">
             <button
