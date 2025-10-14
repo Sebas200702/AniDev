@@ -1,42 +1,42 @@
 ---
 import { AnimeBanner } from '@anime/components/anime-banner/anime-banner'
-import { Carousel } from '@anime/components/anime-carousel/anime-carousel'
+import { AnimeCarouselContainer } from '@anime/components/anime-carousel/anime-carousel-container'
 import { AnimeColectionList } from '@anime/components/anime-collection/anime-colection-list'
-import { AnimeSlider } from '@anime/components/anime-slider/anime-slider-list'
-import { AnimeTop } from '@anime/components/anime-top/top-anime'
+import { AnimeSliderContainer } from '@anime/components/anime-slider/anime-slider-container'
+import { AnimeTopContainer } from '@anime/components/anime-top/anime-top-container'
 import Layout from '@layouts/base.astro'
 ---
 
 <Layout>
   <section class="max-w-[100dvw] [grid-area:main] md:max-w-[calc(100dvw-80px)]">
-    <Carousel client:load />
+    <AnimeCarouselContainer client:load />
     <article class="-mt-16 mb-10 flex flex-col gap-y-6 md:mb-20 md:gap-y-20">
-      <AnimeSlider
+      <AnimeSliderContainer
         client:load
         url="/api/animes/getRecomendations?count=24"
         title="Special for you"
       />
-      <AnimeTop client:visible />
-      <AnimeSlider
+      <AnimeTopContainer client:visible />
+      <AnimeSliderContainer
         client:visible
         url="/api/animes?limit_count=24&year_filter=2025&type_filter=tv&banners_filter=false"
         title="Top 2025"
       />
       <AnimeColectionList client:visible id={1} />
       <AnimeBanner id={1} client:visible />
-      <AnimeSlider
+      <AnimeSliderContainer
         client:visible
         url="/api/animes?limit_count=24&genre_filter=action&banners_filter=false"
         title="Action"
       />
-      <AnimeSlider
+      <AnimeSliderContainer
         client:visible
         url="/api/animes?limit_count=24&type_filter=movie&banners_filter=false"
         title="Top Movies"
       />
       <AnimeBanner id={2} client:visible />
 
-      <AnimeSlider
+      <AnimeSliderContainer
         client:visible
         url="/api/animes?limit_count=24&genre_filter=comedy&banners_filter=false"
         title="Comedy"
@@ -44,7 +44,7 @@ import Layout from '@layouts/base.astro'
 
       <AnimeColectionList client:visible id={2} />
       <AnimeBanner id={3} client:visible />
-      <AnimeSlider
+      <AnimeSliderContainer
         client:visible
         url="/api/animes?limit_count=24&genre_filter=drama&banners_filter=false"
         title="Drama"
