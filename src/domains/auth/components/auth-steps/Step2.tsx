@@ -1,13 +1,13 @@
-import { Input } from '@auth/components/auth-form/input'
-import { useProfileFormStore } from '@auth/stores/profile-form-store'
-import { useStepsStore } from '@auth/stores/steps-store'
-import { toast } from '@pheralb/toast'
-import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
+import { AuthInput } from '@auth/components/auth-form/auth-form-input'
 import { CalendarIcon } from '@shared/components/icons/schedule/calendar-icon'
-import { UserIcon } from '@shared/components/icons/user/user-icon'
+import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { ToastType } from '@shared/types'
+import { UserIcon } from '@shared/components/icons/user/user-icon'
 import { UserInfo } from '@user/components/user-dashboard/user-info'
 import { parseResponse } from '@utils/parse-response'
+import { toast } from '@pheralb/toast'
+import { useProfileFormStore } from '@auth/stores/profile-form-store'
+import { useStepsStore } from '@auth/stores/steps-store'
 
 interface Props {
   isSignUp: boolean
@@ -150,7 +150,7 @@ export const Step2 = ({ isSignUp }: Props) => {
 
     if (field.type === 'text') {
       return (
-        <Input
+        <AuthInput
           key={field.name}
           name={field.name}
           type={field.type}
@@ -160,13 +160,13 @@ export const Step2 = ({ isSignUp }: Props) => {
           onChange={handleInputChange}
         >
           <UserIcon className="h-5 w-5" />
-        </Input>
+        </AuthInput>
       )
     }
 
     if (field.type === 'date') {
       return (
-        <Input
+        <AuthInput
           key={field.name}
           name={field.name}
           type={field.type}
@@ -176,7 +176,7 @@ export const Step2 = ({ isSignUp }: Props) => {
           onChange={handleInputChange}
         >
           <CalendarIcon className="h-5 w-5" />
-        </Input>
+        </AuthInput>
       )
     }
 
