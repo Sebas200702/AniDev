@@ -21,11 +21,7 @@ export const AnimeBanner = ({ id }: { id: number }) => {
       loading={loading}
       error={error}
       loadingFallback={<BannerLoader animationNumber={animationNumber} />}
-      noDataFallback={
-        <div className="text-center text-gray-300 p-6">
-          No se encontró ningún banner.
-        </div>
-      }
+      noDataFallback={<BannerLoader animationNumber={animationNumber} />}
     >
       {(data) => (
         <BannerInfo banner={data![0]} animationNumber={animationNumber} />
