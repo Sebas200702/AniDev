@@ -1,8 +1,9 @@
 export const createGroups = (
-  items: any[],
+  items: any[] | null,
   windowWidth: number,
   context?: string
 ) => {
+  if (!items) return []
   let itemsPerGroup = 2
 
   if (windowWidth >= 1280) {
