@@ -39,12 +39,10 @@ export const AnimeSliderLoader = ({ context }: { context?: string }) => {
       } else if (windowWidth && windowWidth >= 768) {
         itemsPerGroup = 3
       }
-    } else {
-      if (windowWidth && windowWidth >= 1280) {
-        itemsPerGroup = 6
-      } else if (windowWidth && windowWidth >= 768) {
-        itemsPerGroup = 4
-      }
+    } else if (windowWidth && windowWidth >= 1280) {
+      itemsPerGroup = 6
+    } else if (windowWidth && windowWidth >= 768) {
+      itemsPerGroup = 4
     }
 
     return Array.from({ length: Math.ceil(animes.length / itemsPerGroup) }).map(
