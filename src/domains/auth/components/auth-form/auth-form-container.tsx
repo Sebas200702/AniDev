@@ -1,51 +1,34 @@
 import { AuthFormulary } from '@auth/components/auth-form/auth-form'
-import { useAuthFormStore } from '@auth/stores/auth-form-store'
-import { useStepsStore } from '@auth/stores/steps-store'
-import { toast } from '@pheralb/toast'
-import { ToastType } from '@shared/types'
+import { useAuthFormStore } from '@auth/stores/auth-store'
 import { useEffect } from 'react'
 
-interface Props {
-  title: string
-  bgImage?: string
-  step?: string
-}
+export const AuthFormContainer = () => {
+  const { mode, setMode, setCurrentStep } = useAuthFormStore()
 
-export const Formulary = ({ title, bgImage, step }: Props) => {
-  const { resetForm, isLoading, errorMessage, successMessage } =
-    useAuthFormStore()
 
-  const { setCurrentStep } = useStepsStore()
+  const bgImage = mode === 'signIn' ? '/sign-in.webp' : '/sign-up.webp'
 
   useEffect(() => {
-    if (step) {
-      setCurrentStep(parseInt(step))
-    }
-  }, [step])
+    if (typeof window === 'undefined') return
 
-  if (errorMessage) {
-    toast[ToastType.Error]({
-      text: errorMessage,
-    })
-  }
+    const pathName = window.location.pathname
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const step = urlParams.get('step')
 
-  if (successMessage) {
-    toast[ToastType.Success]({
-      text: successMessage,
-    })
-  }
 
-  useEffect(() => {
-    resetForm()
-  }, [resetForm])
+    setCurrentStep(Number.parseInt(step ?? '1'))
 
-  const isSignUp = title === 'Sign Up'
+    if (pathName.includes('signup')) setMode('signUp')
+    if (pathName.includes('signin')) setMode('signIn')
+  }, [])
+
+  if (!mode) return
+
   return (
     <AuthFormulary
-      isSignUp={isSignUp}
-      isLoading={isLoading}
-      bgImage={bgImage ?? ''}
-      title={title}
+      bgImage={bgImage}
+      isSignUp={mode === 'signUp'}
     />
   )
 }
