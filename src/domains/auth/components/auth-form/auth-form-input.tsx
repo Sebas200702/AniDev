@@ -1,7 +1,7 @@
 
 import { InputBase } from '@shared/components/input'
 import { InputType } from '@shared/types'
-import { useAuthFormStore, type FormValues } from '@auth/stores/auth-form-store'
+
 import type { ReactNode } from 'react'
 
 interface Props {
@@ -12,10 +12,7 @@ interface Props {
   children?: ReactNode
   value?: string | string[]
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  options?: {
-    label: string
-    value: string
-  }[]
+
 }
 
 export const AuthInput = ({
@@ -24,14 +21,9 @@ export const AuthInput = ({
   placeholder,
   value,
   required,
+  onChange,
   children,
 }: Props) => {
-  const { setValue, clearMessages } = useAuthFormStore()
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(name as keyof FormValues, e.target.value)
-    clearMessages()
-  }
 
   return (
     <InputBase
@@ -40,7 +32,8 @@ export const AuthInput = ({
       placeholder={placeholder}
       required={required}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
+
     >
       {children}
     </InputBase>
