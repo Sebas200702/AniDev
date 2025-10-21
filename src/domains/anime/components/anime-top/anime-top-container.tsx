@@ -6,7 +6,7 @@ import { useFetch } from '@shared/hooks/useFetch'
 
 export const AnimeTopContainer = () => {
   const { data, loading, error } = useFetch<AnimeTopInfo[]>({
-    url: '/api/animes?order_by=score&limit_count=10&type_filter=tv&banner_filter=false&format=top-anime',
+    url: '/animes?order_by=score&limit_count=10&type_filter=tv&banner_filter=false&format=top-anime',
   })
 
   return (
