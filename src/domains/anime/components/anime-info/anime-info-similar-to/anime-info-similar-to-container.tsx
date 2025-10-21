@@ -11,7 +11,7 @@ interface Props {
 export const AnimeSimilarToContainer = ({ title, mal_id }: Props) => {
   const { parentalControl } = useGlobalUserPreferences()
   const { data, loading, error } = useFetch<AnimeCardInfo[]>({
-    url: `/api/animes/getRecomendations?similar_to=${title}&currentAnime=${mal_id}&parental_control=${parentalControl}`,
+    url: `/animes/getRecomendations?similar_to=${title}&currentAnime=${mal_id}&parental_control=${parentalControl}`,
   })
 
   return <AnimeSimilarTo loading={loading} data={data!} error={error!} />
