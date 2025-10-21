@@ -25,7 +25,7 @@ export const ArtistInfoContainer = ({ name }: Props) => {
     loading: infoLoading,
     error: infoError,
   } = useFetch<ArtistInfoType>({
-    url: `/api/getArtistInfo?artistName=${name}`,
+    url: `/getArtistInfo?artistName=${name}`,
   })
 
   const {
@@ -33,7 +33,7 @@ export const ArtistInfoContainer = ({ name }: Props) => {
     loading: songsLoading,
     error: songsError,
   } = useFetch<AnimeSongWithImage[]>({
-    url: `/api/music?artist_filter=${name}`,
+    url: `/music?artist_filter=${name}`,
   })
 
   const banners = songs?.map((song) => song.banner_image) ?? []
@@ -43,7 +43,7 @@ export const ArtistInfoContainer = ({ name }: Props) => {
 
     const fetchFormatAbout = async () => {
       const res = await fetch(
-        `/api/about?about=${encodeURIComponent(artistInfo.about)}`
+        `about?about=${encodeURIComponent(artistInfo.about)}`
       )
       const about = await res.json()
       setAbout(about)
