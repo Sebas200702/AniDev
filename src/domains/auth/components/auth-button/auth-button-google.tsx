@@ -1,5 +1,3 @@
-// google-btn.render.tsx
-
 import { GoogleIcon } from '@shared/components/icons/auth/google-icon'
 
 interface GoogleBtnRenderProps {
