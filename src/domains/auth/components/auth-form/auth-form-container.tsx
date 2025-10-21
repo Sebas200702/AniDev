@@ -1,34 +1,20 @@
 import { AuthFormulary } from '@auth/components/auth-form/auth-form'
-import { useAuthFormStore } from '@auth/stores/auth-store'
-import { useEffect } from 'react'
+import { useAuthFormState } from '@auth/hooks/use-auth-form-state'
+import { useAuthInitialization } from '@auth/hooks/use-auth-initialization'
+import { useAuthUrlSync } from '@auth/hooks/use-auth-url-sync'
 
 export const AuthFormContainer = () => {
-  const { mode, setMode, setCurrentStep } = useAuthFormStore()
+  const { mode, isSignUp } = useAuthFormState()
 
+  // Inicializar el estado basado en la URL
+  useAuthInitialization()
+
+  // Sincronizar la URL con el paso actual
+  useAuthUrlSync()
 
   const bgImage = mode === 'signIn' ? '/sign-in.webp' : '/sign-up.webp'
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const pathName = window.location.pathname
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
-    const step = urlParams.get('step')
-
-
-    setCurrentStep(Number.parseInt(step ?? '1'))
-
-    if (pathName.includes('signup')) setMode('signUp')
-    if (pathName.includes('signin')) setMode('signIn')
-  }, [])
-
   if (!mode) return
 
-  return (
-    <AuthFormulary
-      bgImage={bgImage}
-      isSignUp={mode === 'signUp'}
-    />
-  )
+  return <AuthFormulary bgImage={bgImage} isSignUp={isSignUp} />
 }
