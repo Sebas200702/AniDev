@@ -23,7 +23,7 @@ export const AnimeCollectionContainer = ({ id }: Props) => {
       loading={loading}
       error={error}
       loadingFallback={<AnimeCollectionLoader />}
-      noDataFallback={null}
+      noDataFallback={<AnimeCollectionLoader />}
     >
       {(data) => <AnimeCollection animes={data!} title={title} id={id} />}
     </DataWrapper>
