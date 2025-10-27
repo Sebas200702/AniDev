@@ -15,15 +15,10 @@ export const useAuthUrlSync = () => {
     if (globalThis.window === undefined || !mode) return
 
     const url = new URL(globalThis.window.location.href)
-
-    // Solo actualizar si el paso es diferente al de la URL
     const urlStep = url.searchParams.get('step')
     if (urlStep !== currentStep.toString()) {
       url.searchParams.set('step', currentStep.toString())
-
-      // Usar replaceState para no crear entradas en el historial
       globalThis.window.history.replaceState({}, '', url.toString())
     }
   }, [mode, currentStep])
 }
-
