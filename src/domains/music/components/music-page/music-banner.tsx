@@ -15,7 +15,7 @@ export const MusicBanner = () => {
 
   const { setCurrentSong, setList } = useMusicPlayerStore()
   const { data, loading } = useFetch<AnimeSongWithImage[]>({
-    url: '/api/music?anime_status=Currently Airing&order_by=score desc&type_music=op',
+    url: '/music?anime_status=Currently Airing&order_by=score desc&type_music=op',
   })
 
   useEffect(() => {
