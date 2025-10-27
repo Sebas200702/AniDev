@@ -15,7 +15,7 @@ export const GoogleBtnContainer = ({
     try {
       setLoading(true)
       await signIn('google', {
-        callbackUrl: isSignUp ? '/signup?step=2' : '/',
+        callbackUrl: isSignUp ? '/signup?step=2&google=true' : '/',
       })
     } catch (err) {
       setError(
@@ -27,7 +27,12 @@ export const GoogleBtnContainer = ({
   }
 
   return (
-    <DataWrapper loading={loading} error={error} onRetry={handleClick} data={' '}>
+    <DataWrapper
+      loading={loading}
+      error={error}
+      onRetry={handleClick}
+      data={' '}
+    >
       {() => <AuthGoogleBtn onClick={handleClick} />}
     </DataWrapper>
   )
