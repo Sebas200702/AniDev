@@ -34,7 +34,7 @@ export const CharacterInfo = ({ slug }: Props) => {
 
     const fetchFormatAbout = async () => {
       const about = await fetch(
-        `/api/about?about=${encodeURIComponent(character.character_about ?? '')}`
+        `/about?about=${encodeURIComponent(character.character_about ?? '')}`
       ).then((data) => data.json())
 
       setAbout(about)
