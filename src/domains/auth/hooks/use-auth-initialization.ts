@@ -19,14 +19,11 @@ export const useAuthInitialization = () => {
     const step = urlParams.get('step')
     const isGoogle = urlParams.get('google') === 'true'
 
-    // Establecer el modo basado en la ruta
     if (pathName.includes('signup')) setMode('signUp')
     if (pathName.includes('signin')) setMode('signIn')
 
-    // Detectar si viene de Google
     setGoogleAuth(isGoogle)
 
-    // Si viene de Google y es signup, ir directamente al paso 2
     if (isGoogle && pathName.includes('signup')) {
       setCurrentStep(2)
     } else {
@@ -34,4 +31,3 @@ export const useAuthInitialization = () => {
     }
   }, [setMode, setCurrentStep, setGoogleAuth])
 }
-
