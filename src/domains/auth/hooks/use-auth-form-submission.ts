@@ -1,6 +1,7 @@
 import { toast } from '@pheralb/toast'
 import { ToastType } from '@shared/types'
 import { useAuthFormState } from './use-auth-form-state'
+import { navigate } from 'astro:transitions/client'
 
 export const useAuthFormSubmission = () => {
   const { submit, error, loading } = useAuthFormState()
@@ -8,14 +9,18 @@ export const useAuthFormSubmission = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await submit()
+      const {success, message} = await submit()
+      if (success){
+        toast[ToastType.Success]({text:message })
+        navigate('/profile')
+
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unexpected error'
       toast[ToastType.Error]({ text: message })
     }
   }
 
-  // Mostrar error si existe
   if (error) {
     toast[ToastType.Error]({ text: error })
   }
