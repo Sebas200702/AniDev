@@ -9,7 +9,7 @@ export const MusicMiniCardLayout = ({ title }: Props) => {
   const { data: latest, loading: latestLoading } = useFetch<
     AnimeSongWithImage[]
   >({
-    url: `/api/music?order_by=song_id desc&limit_count=12&anime_status=Currently Airing&unique_per_anime=true`,
+    url: `/music?order_by=song_id desc&limit_count=12&anime_status=Currently Airing&unique_per_anime=true`,
   })
 
   if (latestLoading || !latest)
