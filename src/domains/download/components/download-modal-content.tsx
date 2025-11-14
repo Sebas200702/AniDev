@@ -126,7 +126,7 @@ export const DownloadModalContent = ({
     if (!themeId) return
     setIsLoadingData(true)
     try {
-      const response = await fetch(`/api/getMusicInfo?themeId=${themeId}`)
+      const response = await fetch(`/api/music/getMusicInfo?themeId=${themeId}`)
       if (!response.ok) throw new Error('Failed to fetch music data')
       const data = await response.json()
       if (Array.isArray(data) && data.length > 0) {
