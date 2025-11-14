@@ -1,11 +1,11 @@
-import { useSearchStoreResults } from '@search/stores/search-results-store'
+import { useEffect, useRef } from 'react'
+
 import type { AppliedFilters } from '@search/types'
 import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
 import { HistoryIcon } from '@shared/components/icons/search/history-icon'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { deleteSearchHistory } from '@utils/delete-search-history'
-import { saveSearchHistory } from '@utils/save-search-history'
-import { useEffect, useRef } from 'react'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useSearchStoreResults } from '@search/stores/search-results-store'
 
 interface SearchHistoryModalProps {
   isOpen: boolean
@@ -112,7 +112,7 @@ export const SearchHistoryModal = ({
                         )
                         setSearchHistory(updatedHistory)
                         if (!trackSearchHistory) return
-                        saveSearchHistory(updatedHistory, userInfo)
+
                       }}
                     >
                       <DeleteIcon className="h-6 w-6" />
