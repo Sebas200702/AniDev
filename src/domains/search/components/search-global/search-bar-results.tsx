@@ -8,7 +8,7 @@ import {
   isCharacterData,
   isMusicData,
 } from '@search/utils/search-bar'
-import { baseUrl } from '@utils/base-url'
+import { baseUrl } from '@shared/utils/base-url'
 import { useMemo } from 'react'
 
 // Componente para el skeleton de carga
