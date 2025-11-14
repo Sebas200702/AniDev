@@ -15,7 +15,7 @@ import {
 } from '@search/utils/constants'
 import { useWindowWidth } from '@shared/hooks/window-width'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { studioOptions } from '@utils/create-studios-options'
+import { studioOptions } from '@search/utils/create-studios-options'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import { useCallback, useState } from 'react'
 
