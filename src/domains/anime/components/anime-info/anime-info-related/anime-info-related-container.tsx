@@ -8,7 +8,7 @@ interface Props {
 
 export const AnimeRelatedContainer = ({ animeId }: Props) => {
   const { data, loading, error } = useFetch<AnimeDetail[]>({
-    url: `/getAnimeRelations?animeId=${animeId}`,
+    url: `/animes/getAnimeRelations?animeId=${animeId}`,
   })
 
   return <AnimeRelated related={data!} isLoading={loading} error={error} />
