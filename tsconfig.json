@@ -29,6 +29,8 @@
       "types": ["types.d.ts"],
       "@middlewares/*": ["middlewares/*"],
       "@store/*": ["store/*"],
+      "@recomendations/*": ["domains/recomendations/*"],
+      "@ai/*": ["domains/ai/*"],
       "@hooks/*": ["hooks/*"]
     },
     "jsx": "react-jsx",
