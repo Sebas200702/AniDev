@@ -5,8 +5,8 @@ import type { Anime } from '@anime/types'
 import { PageCollectionLoader } from '@collection/components/collection-list/colletion-loader'
 import { Overlay } from '@shared/components/layout/overlay'
 import { DinamicBanner } from '@shared/components/ui/dinamic-banner'
-import { baseUrl } from '@utils/base-url'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { baseUrl } from '@shared/utils/base-url'
+import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
 
 /**
  * Props for the PageColectionList component.
