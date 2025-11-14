@@ -6,7 +6,7 @@ import { ExpandIcon } from '@shared/components/icons/common/expand-icon'
 import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { MoreOptions } from '@shared/components/ui/more-options'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
 import { useCallback } from 'react'
 
@@ -188,7 +188,7 @@ export const Header = ({ playerContainerRef }: Props) => {
                 </div>
 
                 {/* Mobile Type Toggle */}
-                 <button
+                <button
                   className="text-sxx button-primary mt-6 h-min cursor-pointer rounded-sm p-1 md:mt-0 md:hidden md:p-4"
                   onClick={handleChangeType}
                 >
