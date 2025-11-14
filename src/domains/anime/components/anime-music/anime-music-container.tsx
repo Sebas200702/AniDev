@@ -21,7 +21,7 @@ export const AnimeMusicContainer = ({
   const [songs, setSongs] = useState<AnimeSong[]>([])
 
   const { data, error, loading } = useFetch<AnimeSong[]>({
-    url: `/getAnimeMusic?animeId=${animeId}`,
+    url: `/music/getAnimeMusic?animeId=${animeId}`,
   })
 
   useEffect(() => {
