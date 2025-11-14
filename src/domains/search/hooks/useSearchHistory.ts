@@ -1,7 +1,7 @@
 import type { AppliedFilters, SearchHistory } from '@search/types'
+
 import type { UserInfo } from '@user/types'
 import { loadSearchHistory } from '@utils/load-search-history'
-import { saveSearchHistory } from '@utils/save-search-history'
 import { useEffect } from 'react'
 
 export const useSearchHistory = (
@@ -19,7 +19,7 @@ export const useSearchHistory = (
       (!query && Object.keys(appliedFilters).length === 0)
     )
       return
-    saveSearchHistory(searchHistory, userInfo)
+
   }, [searchHistory, trackSearchHistory, query, appliedFilters, userInfo])
 
   // Cargar historial
