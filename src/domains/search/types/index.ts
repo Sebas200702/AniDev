@@ -25,3 +25,22 @@ export type SearchQueryOptions = {
   filters?: AppliedFilters
   type?: SearchType
 }
+
+export interface SearchFilters {
+  search_query?: string
+  genre_filter?: string[]
+  studio_filter?: string[]
+  type_filter?: string[]
+  status_filter?: string[]
+  rating_filter?: string[]
+  year_filter?: string[]
+  season_filter?: string[]
+  aired_day_filter?: string[]
+  score_filter?: [number, number]
+  parental_control?: boolean
+  banners_filter?: boolean
+  sort_column?: string
+  sort_direction?: 'ASC' | 'DESC'
+  limit_count?: number
+  page_number?: number
+}
