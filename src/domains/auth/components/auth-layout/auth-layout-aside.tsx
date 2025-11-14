@@ -2,7 +2,7 @@ import { StepsContainer } from '@auth/components/auth-steps/auth-steps-container
 import { Favicon } from '@shared/components/icons/common/favicon'
 import { Overlay } from '@shared/components/layout/overlay'
 import { Picture } from '@shared/components/media/picture'
-import { baseUrl } from '@utils/base-url'
+import { baseUrl } from '@shared/utils/base-url'
 
 export const Aside = ({
   bgImage,
