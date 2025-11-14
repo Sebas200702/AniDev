@@ -7,7 +7,7 @@ export const useThemeId = () => {
   const extractThemeIdFromPath = () => {
     if (
       typeof window === 'undefined' ||
-      !window.location.pathname.includes('/music')
+      !window.location.pathname.includes('/music/')
     )
       return null
     const parts = window.location.pathname.split('_')
