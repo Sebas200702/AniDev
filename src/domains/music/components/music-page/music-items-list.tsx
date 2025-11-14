@@ -6,7 +6,7 @@ export const MusicItemsLayout = () => {
   const { data: openings, loading: openingsLoading } = useFetch<
     AnimeSongWithImage[]
   >({
-    url: `/api/music?limit_count=12&unique_per_anime=true&order_by=score&artist_filter=Flow`,
+    url: `/music?limit_count=12&unique_per_anime=true&order_by=score&artist_filter=Flow`,
   })
 
   if (openingsLoading || !openings)
