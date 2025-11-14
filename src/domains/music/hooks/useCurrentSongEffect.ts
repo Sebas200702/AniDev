@@ -1,7 +1,7 @@
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import { normalizeString } from '@utils/normalize-string'
 import type { MediaPlayerInstance } from '@vidstack/react'
+import { normalizeString } from '@utils/normalize-string'
 import { useEffect } from 'react'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 
 type ChangingRefs = {
   isChangingSong: boolean
@@ -22,7 +22,6 @@ export const useCurrentSongEffect = (
     currentSongIndex,
     setCurrentSongIndex,
     isMinimized,
-
     setVariants,
     versions,
     versionNumber,
@@ -73,7 +72,7 @@ export const useCurrentSongEffect = (
       const newUrl = `/music/${normalizeString(
         nextSong.song_title
       )}_${nextSong.theme_id}`
-      import('@utils/sycronize-player-metadata').then((module) => {
+      import('@music/utils/sycronize-player-metadata').then((module) => {
         module.SyncronizePlayerMetadata({
           title: nextSong.song_title,
           url: newUrl,
