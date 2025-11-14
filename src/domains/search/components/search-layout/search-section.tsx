@@ -1,17 +1,15 @@
 import '@search/styles/search-section.css'
 
-import { AppliedFiltersComponent } from '@search/components/search-filters/applied-filters'
 import { useEffect, useRef, useState } from 'react'
 
+import { AppliedFiltersComponent } from '@search/components/search-filters/applied-filters'
 import { FilterSection } from '@search/components/search-filters/filter-section'
 import { SearchHistoryModal } from '@search/components/search-history/search-history-modal'
 import { SearchResults } from '@search/components/search-results/search-results'
-import { SearchStats } from '@search/components/search-stats/search-stats'
 import { SearchResultsErrorBoundary } from '@shared/components/ui/error-boundary'
-
-import { useUrlSync } from '@shared/hooks/useUrlSync'
-
+import { SearchStats } from '@search/components/search-stats/search-stats'
 import { useSearchStoreResults } from '@search/stores/search-results-store'
+import { useUrlSync } from '@shared/hooks/useUrlSync'
 
 /**
  * SearchComponent handles the anime search functionality with filters and results display.
@@ -70,7 +68,7 @@ export const SearchComponent = () => {
     isFetching.current = true
     setIsLoadingMore(true)
     const moreAnime = await fetch(
-      `${url.replace('limit_count=30', 'limit_count=10')}&page_number=${page}`
+      `/api${url.replace('limit_count=30', 'limit_count=10')}&page_number=${page}`
     )
       .then((res) => res.json())
       .then((data) => data.data)
