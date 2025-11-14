@@ -1,13 +1,12 @@
 import { AnimeTag } from '@anime/components/shared/anime-tag'
 import type { AnimeTopInfo } from '@anime/types'
 import { EpisodeIcon } from '@shared/components/icons/anime/episode-icon'
+import { Overlay } from '@shared/components/layout/overlay'
+import { Picture } from '@shared/components/media/picture'
 import { SeasonIcon } from '@shared/components/icons/anime/season-icon'
 import { StarIcon } from '@shared/components/icons/common/star-icon'
-import { Picture } from '@shared/components/media/picture'
-import { capitalize } from '@utils/capitalize'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
-import { Overlay } from 'domains/shared/components/layout/overlay'
 
 /**
  * AnimeTopItem component displays a single item in the top anime list.
@@ -92,14 +91,14 @@ export const AnimeTopItem = ({ anime, index }: AnimeTopItemProps) => {
                   {formatScore(anime.score ?? 0)}
                 </span>
                 <span
-                  className="flex flex-row items-center justify-center gap-2"
+                  className="flex flex-row items-center justify-center gap-2 capitalize"
                   title={`Type: ${anime.type ?? 'N/A'}`}
                 >
                   <SeasonIcon
                     season={anime.season ?? 'spring'}
                     className="h-4 w-4"
                   />
-                  {capitalize(anime.season ?? '')}
+                  {anime.season ?? ''}
                 </span>
                 <span
                   className="flex flex-row items-center justify-center gap-2"
