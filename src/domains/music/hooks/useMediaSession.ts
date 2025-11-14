@@ -1,9 +1,9 @@
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import type { AnimeSongWithImage } from '@music/types'
-import { normalizeString } from '@utils/normalize-string'
 import type { MediaPlayerInstance } from '@vidstack/react'
+import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
+import { normalizeString } from '@utils/normalize-string'
 import { useEffect } from 'react'
-import { createImageUrlProxy } from './../../../utils/create-image-url-proxy'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 
 type ChangingRefs = {
   isChangingSong: boolean
@@ -51,7 +51,7 @@ export const useMediaSession = (
 
       if (!isMinimized) {
         const newUrl = `/music/${normalizeString(song.song_title)}_${song.theme_id}`
-        import('@utils/sycronize-player-metadata').then((module) => {
+        import('@music/utils/sycronize-player-metadata').then((module) => {
           module.SyncronizePlayerMetadata({
             title: song.song_title,
             url: newUrl,
