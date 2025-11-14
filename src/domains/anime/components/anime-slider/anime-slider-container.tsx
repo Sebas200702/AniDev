@@ -22,8 +22,10 @@ export const AnimeSliderContainer = ({ url, title, context }: Props) => {
       scrollPadding: 120,
     })
 
-  const { data, loading, error } = useFetch<AnimeCardInfo[]>({
+  const { data, loading, error, refetch } = useFetch<AnimeCardInfo[]>({
     url: url + `&parental_control=${parentalControl}`,
+    skip:  parentalControl == null
+
   })
 
   const groups = createGroups(data, windowWidth, context)
@@ -33,6 +35,7 @@ export const AnimeSliderContainer = ({ url, title, context }: Props) => {
       data={data}
       loading={loading}
       error={error}
+      onRetry={refetch}
       loadingFallback={<AnimeSliderLoader context={context} />}
       noDataFallback={<AnimeSliderLoader context={context} />}
     >
