@@ -24,6 +24,7 @@ export const useMusicPlayerSync = (
     prevSongId: null,
   })
   const themeId = useThemeId()
+  const hasFetchedRef = useRef(false)
 
   const {
     setSavedTime,
@@ -56,7 +57,6 @@ export const useMusicPlayerSync = (
   })
 
   // Efectos principales de cambio de canción y versiones
-
   useCurrentSongEffect(player, type, changingRefs)
 
   // Control del MediaSession API
@@ -66,7 +66,20 @@ export const useMusicPlayerSync = (
   useEffect(() => {
     setDuration(duration)
   }, [duration, setDuration])
+
+  // Fetch music solo cuando themeId cambia y no se ha fetcheado ya
   useEffect(() => {
-    if (themeId) fetchMusic(themeId)
-  }, [themeId || currentSong?.theme_id])
+    if (!themeId) return
+
+    // Si ya hay una canción actual con el mismo themeId, no hacer fetch
+    if (
+      currentSong?.theme_id?.toString() === themeId &&
+      hasFetchedRef.current
+    ) {
+      return
+    }
+
+    hasFetchedRef.current = true
+    fetchMusic(themeId)
+  }, [themeId])
 }
