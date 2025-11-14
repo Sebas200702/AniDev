@@ -19,7 +19,7 @@ import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { useEffect, useState } from 'react'
 
 export const MusicPlayList = () => {
-  const { list, currentSongIndex, setList } = useMusicPlayerStore()
+  const { list, currentSongIndex, setList, currentSong } = useMusicPlayerStore()
   const [_, setActiveId] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -46,9 +46,11 @@ export const MusicPlayList = () => {
     })
   )
 
-  const filteredList = list.slice(currentSongIndex)
-  const currentSong = filteredList[0]
-  const upcomingList = filteredList.slice(1)
+
+
+  const upcomingList = list.slice(currentSongIndex + 1)
+
+
 
   const handleDragStart = (event: any) => {
     setActiveId(event.active.id)
@@ -69,8 +71,7 @@ export const MusicPlayList = () => {
 
     const newUpcomingList = arrayMove(upcomingList, oldIndex, newIndex)
     const newCompleteList = [
-      ...list.slice(0, currentSongIndex),
-      currentSong,
+      ...list.slice(0, currentSongIndex +1),
       ...newUpcomingList,
     ]
 
