@@ -3,7 +3,7 @@ import { usePlayerBehavior } from '@music/hooks/usePlayerBehavior'
 import { usePlayerDragging } from '@music/hooks/usePlayerDragging'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { ToastType } from '@shared/types'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
 import {
   type MediaPlayerInstance,
   Spinner,
@@ -119,7 +119,7 @@ export const MusicPlayer = () => {
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className={`group flex rounded-xl ${
           isMinimized
-            ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-30 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
+            ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
             : 'bg-Complementary/50 w-full flex-col-reverse'
         } ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
         style={
