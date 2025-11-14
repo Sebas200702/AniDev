@@ -6,7 +6,7 @@ export const MusicCardLayout = () => {
   const { data: trending, loading: trendingLoading } = useFetch<
     AnimeSongWithImage[]
   >({
-    url: `/api/music?order_by=score&limit_count=12&anime_year=2025&unique_per_anime=true`,
+    url: `/music?order_by=score&limit_count=12&anime_year=2025&unique_per_anime=true`,
   })
 
   if (trendingLoading || !trending)
