@@ -16,8 +16,6 @@ export const usePlaybackSync = ({
   setIsPlaying,
 }: PlaybackSyncProps) => {
   const mediaUpdateInterval = useRef<number | null>(null)
-
-  // Actualiza mediaSession cada segundo
   useEffect(() => {
     if (!('mediaSession' in navigator)) return
 
