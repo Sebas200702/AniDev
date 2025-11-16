@@ -1,9 +1,9 @@
-import crypto from 'crypto'
-import path from 'path'
-import { safeRedisOperation } from '@libs/redis'
-import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
+import crypto from 'crypto'
 import fs from 'fs/promises'
+import path from 'path'
+import { redisConnection } from '@middlewares/redis-connection'
+import { safeRedisOperation } from '@libs/redis'
 import sharp from 'sharp'
 
 /**
@@ -48,8 +48,8 @@ const getPlaceholderBuffer = async () => {
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   const imageUrl = url.searchParams.get('url')
 
-  const width = parseInt(url.searchParams.get('w') ?? '0', 10)
-  const quality = Math.min(Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1), 100)
+  const width = Number.parseInt(url.searchParams.get('w') ?? '0', 10)
+  const quality = Math.min(Math.max(Number.parseInt(url.searchParams.get('q') ?? '50', 10), 1), 100)
   const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
   const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
@@ -159,8 +159,8 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
 
 export const POST: APIRoute = redisConnection(async ({ request, url }) => {
   try {
-    const width = parseInt(url.searchParams.get('w') ?? '0', 10)
-    const quality = Math.min(Math.max(parseInt(url.searchParams.get('q') ?? '50', 10), 1), 100)
+    const width = Number.parseInt(url.searchParams.get('w') ?? '0', 10)
+    const quality = Math.min(Math.max(Number.parseInt(url.searchParams.get('q') ?? '50', 10), 1), 100)
     const format = url.searchParams.get('format') === 'avif' ? 'avif' : 'webp'
     const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
 
