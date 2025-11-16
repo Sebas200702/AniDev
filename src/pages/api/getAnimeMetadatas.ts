@@ -2,7 +2,7 @@ import { safeRedisOperation } from '@libs/redis'
 import { supabase } from '@libs/supabase'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
-import { baseTitle } from '@utils/base-url'
+import { baseTitle } from '@shared/utils/base-url'
 
 import type { APIRoute } from 'astro'
 
