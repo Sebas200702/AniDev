@@ -1,16 +1,16 @@
+import type { APIRoute } from 'astro'
+import { getRandomAnime } from '@anime/utils/get-random-anime'
 import { rateLimit } from '@middlewares/rate-limit'
 
-import { getRandomAnime } from '@utils/get-random-anime'
-import type { APIRoute } from 'astro'
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   const parentalControl =
-    url.searchParams.get('parental_control') === 'false' ? false : true
+    url.searchParams.get('parental_control') !== 'false'
 
   const userId = url.searchParams.get('user_id')
 
   try {
     const result = await getRandomAnime(userId, parentalControl)
-    console.log(result)
+
     if (!result) {
       return new Response(
         JSON.stringify({ error: 'No se encontró un anime aleatorio.' }),
