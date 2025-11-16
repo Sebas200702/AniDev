@@ -25,7 +25,7 @@ export const getCharacterData = async (
   slug: string
 ): Promise<CharacterDetails | undefined> => {
   try {
-    const response = await fetch(`/api/getCharacter?slug=${slug}`, {})
+    const response = await fetch(`/api/characters/getCharacter?slug=${slug}`, {})
 
     if (response.status === 404) {
       navigate('/404')
