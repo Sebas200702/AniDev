@@ -1,5 +1,6 @@
-import { navigate } from 'astro:transitions/client'
 import type { Anime } from '@anime/types'
+import { api } from '@libs/api'
+import { navigate } from 'astro:transitions/client'
 
 export interface AnimeResult {
   anime?: Anime
@@ -8,11 +9,10 @@ export interface AnimeResult {
 }
 
 /**
- * Fetches anime data based on the provided slug.
+ * Fetches anime data from the API.
  *
- * @description This utility function retrieves anime data from the API using the given slug.
- * It sends a request to the `/api/animes/getAnime` endpoint and attempts to fetch the corresponding
- * anime information. The function handles multiple scenarios:
+ * @description This utility function retrieves anime data from the getAnime API endpoint.
+ * It sends a request and handles multiple scenarios:
  * - Returns anime data if found and accessible
  * - Returns blocked status if content is restricted by parental controls (403)
  * - Redirects to 404 page if anime doesn't exist (404)
@@ -21,16 +21,16 @@ export interface AnimeResult {
  * The function is designed to handle API responses gracefully and ensure proper error handling
  * for all possible scenarios including parental control restrictions.
  *
- * @param {string} slug - The unique identifier (slug) of the anime to fetch data for.
+ * @param {number} id - The MAL ID of the anime to fetch data for.
  * @param {boolean} parentalControl - Whether parental controls are enabled.
  * @returns {Promise<AnimeResult | undefined>} A promise that resolves to:
  * - `{ anime: Anime }` if the anime is found and accessible
  * - `{ blocked: true, message: string }` if the content is blocked by parental controls
- * - `undefined` if an error occurs or the anime is not found
+ * - `undefined` if the anime is not found (triggers navigation to 404)
  *
  * @example
  * // Normal case - anime found
- * getAnimeData('naruto', false)
+ * getAnimeData(21, false)
  *   .then((result) => {
  *     if (result?.anime) {
  *       console.log('Anime data:', result.anime)
@@ -39,7 +39,7 @@ export interface AnimeResult {
  *
  * @example
  * // Parental control case - content blocked
- * getAnimeData('adult-anime', true)
+ * getAnimeData(12345, true)
  *   .then((result) => {
  *     if (result?.blocked) {
  *       console.log('Blocked:', result.message)
@@ -51,32 +51,37 @@ export const getAnimeData = async (
   parentalControl: boolean | null
 ): Promise<AnimeResult | undefined> => {
   try {
-    const response = await fetch(
-      `/api/animes/getAnime?id=${id}&parentalControl=${parentalControl}`
-    )
+    const response = await api.get<
+      | { data: Anime }
+      | { blocked: boolean; message: string }
+      | { error: string }
+    >(`/animes/getAnime?id=${id}&parentalControl=${parentalControl ?? true}`)
 
+    // Anime no encontrado
     if (response.status === 404) {
       navigate('/404')
       return undefined
     }
 
-    if (response.status === 403) {
-      const data = await response.json()
+    // Anime bloqueado por control parental
+    if (response.status === 403 && response.data) {
+      const data = response.data as { blocked: boolean; message: string }
       return {
         blocked: data.blocked,
         message: data.message,
       }
     }
 
-    if (!response.ok) {
-      console.error(`API error: ${response.status}`)
+    // Error de la API
+    if (response.status !== 200 || !response.data) {
+      console.error(`[getAnimeData] API error: ${response.status}`)
       return undefined
     }
 
-    const data = await response.json()
+    const data = response.data as { data: Anime }
     return { anime: data.data }
   } catch (error) {
-    console.error('Error fetching anime data:', error)
+    console.error('[getAnimeData] Error fetching anime:', error)
     return undefined
   }
 }
