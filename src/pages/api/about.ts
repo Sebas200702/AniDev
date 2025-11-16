@@ -1,7 +1,7 @@
-import { safeRedisOperation } from '@libs/redis'
-import { redisConnection } from '@middlewares/redis-connection'
-import { formatAbout } from '@utils/format-about'
 import type { APIRoute } from 'astro'
+import { formatAbout } from '@shared/utils/format-about'
+import { redisConnection } from '@middlewares/redis-connection'
+import { safeRedisOperation } from '@libs/redis'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {
