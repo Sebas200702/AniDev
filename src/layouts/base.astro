@@ -4,9 +4,9 @@ import { ClientRouter } from 'astro:transitions'
 import { SearchBar } from '@search/components/search-global/search-bar'
 import { LoadWindowWidth } from '@shared/components/ui/load-window-width'
 import { ProgressBar } from '@shared/components/ui/progres-bar'
+import { MetadataService } from '@shared/services/metadata-service'
 import { baseTitle, baseUrl } from '@shared/utils/base-url'
 import { LoadUserPrefences } from '@user/components/user-settings/load-user-preferences'
-import { METADATA_CONFIGS, extractMetadata } from '@utils/get-metadata'
 import { AstroFont } from 'astro-font'
 import Footer from 'domains/shared/components/layout/footer.astro'
 import NavBar from 'domains/shared/components/layout/nav-bar/nav-bar.astro'
@@ -29,68 +29,44 @@ interface Props {
 const { animeId, title, description, image, themeId, characterId, artistName } =
   Astro.props
 
-let metaTitle = title || `${baseTitle}`
+let metaTitle = title || baseTitle
 let metaDesc =
   description ||
   'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 let metaImage = image || `${baseUrl}/og-image.png`
 
+// Fetch metadata using the new MetadataService
 if (animeId) {
-  const metadata = await extractMetadata(
-    {
-      ...METADATA_CONFIGS.anime,
-      value: animeId.toString(),
-    },
-    metaTitle,
-    metaDesc,
-    metaImage
-  )
+  const metadata = await MetadataService.getAnimeMetadata(animeId)
   metaTitle = metadata.title
   metaDesc = metadata.description
   metaImage = metadata.image
 }
 
 if (themeId) {
-  const metadata = await extractMetadata(
-    {
-      ...METADATA_CONFIGS.music,
-      value: themeId,
-    },
-    metaTitle,
-    metaDesc,
-    metaImage
-  )
+  const metadata = await MetadataService.getMusicMetadata(Number(themeId))
   metaTitle = metadata.title
   metaDesc = metadata.description
   metaImage = metadata.image
 }
 
 if (characterId) {
+  // Extract character ID from slug (format: name_id)
   const fullSlug = Astro.url.pathname.split('/').pop() || ''
-  const metadata = await extractMetadata(
-    {
-      ...METADATA_CONFIGS.character,
-      value: fullSlug,
-    },
-    metaTitle,
-    metaDesc,
-    metaImage
-  )
+  const lastUnderscoreIndex = fullSlug.lastIndexOf('_')
+  const charId =
+    lastUnderscoreIndex === -1
+      ? Number(characterId)
+      : Number(fullSlug.slice(lastUnderscoreIndex + 1))
+
+  const metadata = await MetadataService.getCharacterMetadata(charId)
   metaTitle = metadata.title
   metaDesc = metadata.description
   metaImage = metadata.image
 }
 
 if (artistName) {
-  const metadata = await extractMetadata(
-    {
-      ...METADATA_CONFIGS.artist,
-      value: artistName,
-    },
-    metaTitle,
-    metaDesc,
-    metaImage
-  )
+  const metadata = await MetadataService.getArtistMetadata(artistName)
   metaTitle = metadata.title
   metaDesc = metadata.description
   metaImage = metadata.image
@@ -141,7 +117,6 @@ if (artistName) {
     worker-src 'self' blob:;
   "
     />
-
 
     <AstroFont
       config={[
