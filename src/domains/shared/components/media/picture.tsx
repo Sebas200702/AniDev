@@ -103,7 +103,8 @@ export const Picture = ({
           )
         }
         alt={alt}
-        loading="lazy"
+        loading={isBanner ? 'eager' : 'lazy'}
+        fetchPriority={isBanner ? 'high' : undefined}
       />
     </figure>
   )
