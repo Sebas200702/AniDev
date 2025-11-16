@@ -1,7 +1,7 @@
-import { toast } from '@pheralb/toast'
-import type { UserInfo } from '@user/types'
-
 import { ToastType } from '@shared/types'
+import type { UserInfo } from '@user/types'
+import { api } from '@libs/api'
+import { toast } from '@pheralb/toast'
 
 export const deleteSearchHistory = async (userInfo: UserInfo | null) => {
   try {
@@ -9,20 +9,22 @@ export const deleteSearchHistory = async (userInfo: UserInfo | null) => {
       localStorage.removeItem('searchHistory')
       return
     }
-    const response = await fetch('/api/searchHistory', {
-      method: 'DELETE',
+
+    const response = await api.delete('/searchHistory', {
       credentials: 'include',
     })
-    if (response.ok) {
-      toast[ToastType.Success]({
-        text: 'Search history deleted successfully',
-      })
-    } else {
-      toast[ToastType.Error]({
-        text: 'Failed to delete search history',
-      })
+
+    if (response.error) {
+      throw new Error(response.error.message || 'Error deleting search history')
     }
-  } catch (_error) {
-    console.error('Failed to delete search history')
+
+    return toast[ToastType.Success]({
+      text: 'Search history delete successfully',
+    })
+  } catch (error) {
+    console.error('Failed to delete search history', error)
+    return toast[ToastType.Error]({
+      text: 'Failed to delete search history',
+    })
   }
 }
