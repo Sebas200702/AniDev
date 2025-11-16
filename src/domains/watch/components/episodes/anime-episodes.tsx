@@ -61,7 +61,7 @@ export const AnimeEpisodes = ({
   const [shouldScroll, setShouldScroll] = useState(false)
   const totalPages = Math.ceil(totalEpisodes / 100)
   const { data: episodes, loading } = useFetch<AnimeEpisode[]>({
-    url: `/api/episodes?id=${mal_id}&page=${page}`,
+    url: `/episodes?id=${mal_id}&page=${page}`,
   })
 
   useEffect(() => {
