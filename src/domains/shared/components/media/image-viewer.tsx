@@ -8,7 +8,7 @@ import { NextIcon } from '@shared/components/icons/watch/next-icon'
 import { PreviousIcon } from '@shared/components/icons/watch/previous-icon'
 import { ResetIcon } from '@shared/components/icons/watch/reset-icon'
 import type { ImageType } from '@shared/types'
-import { createImageUrlProxy } from '@utils/create-image-url-proxy'
+import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface ImageViewerProps {
