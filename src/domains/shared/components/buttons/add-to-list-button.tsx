@@ -18,7 +18,7 @@ export const AddToListButton = ({
   const { isLoading, setIsLoading } = useUserListsStore()
   const { watchList, setWatchList, userInfo } = useGlobalUserPreferences()
   const isInWatchList = useMemo(
-    () => watchList.some((watch) => watch.mal_id === animeId),
+    () => watchList?.some((watch) => watch.mal_id === animeId),
     [watchList, animeId]
   )
 
