@@ -1,8 +1,10 @@
-import { baseUrl } from '@utils/base-url'
+import { baseUrl } from '@shared/utils/base-url'
+
 export interface ApiResponse<T> {
   data: T | null
   status: number
   error?: Error
+  meta?: Record<string, any> 
 }
 
 class Api {
@@ -38,8 +40,20 @@ class Api {
         return { data: null, status, error: json.message || res.statusText }
       }
 
-      const payload = 'data' in json ? json.data : json
 
+      if (
+        json &&
+        typeof json === 'object' &&
+        'data' in json &&
+        ('total_items' in json ||
+          'current_page' in json ||
+          'last_page' in json)
+      ) {
+        const { data, ...meta } = json
+        return { data, meta, status }
+      }
+
+      const payload = 'data' in json ? json.data : json
       return { data: payload, status }
     } catch (err: any) {
       return { data: null, status: 0, error: err || 'Network error' }
