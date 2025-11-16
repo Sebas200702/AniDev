@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import { getRandomAnime } from '@anime/utils/get-random-anime'
+import { AnimeService } from '@anime/services'
 import { rateLimit } from '@middlewares/rate-limit'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
@@ -9,7 +9,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
   const userId = url.searchParams.get('user_id')
 
   try {
-    const result = await getRandomAnime(userId, parentalControl)
+    const result = await AnimeService.getRandomAnime(userId, parentalControl)
 
     if (!result) {
       return new Response(
