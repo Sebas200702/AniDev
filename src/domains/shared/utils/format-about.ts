@@ -1,4 +1,4 @@
-import { model } from '@libs/gemini'
+import { aiService } from '@ai/services'
 
 export const formatAbout = async (about: string) => {
   const prompt = `Eres un formateador de datos.
@@ -44,18 +44,24 @@ export const formatAbout = async (about: string) => {
     ${about}
     """
     `
+
   try {
-    const result = await model.generateContent(prompt)
-    const text = result.response.text()
+    const result = await aiService.generateJSON<Record<string, any>>(prompt)
+    if (!result) {
+      // Si la IA no devolvió JSON parseable, devolvemos la estructura vacía por seguridad
+      return {
+        description: '',
+        members: [],
+        details: {},
+        favorites: {},
+        awards: [],
+        links: {},
+      }
+    }
 
-    const clean = text
-      .replace(/```json/g, '')
-      .replace(/```/g, '')
-      .trim()
-
-    return JSON.parse(clean)
+    return result
   } catch (error) {
-    console.error(error)
-    throw new Error(error as string)
+    console.error('[formatAbout] Error:', error)
+    throw new Error('Error formatting about text')
   }
 }
