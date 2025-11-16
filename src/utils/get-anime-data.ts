@@ -11,7 +11,7 @@ export interface AnimeResult {
  * Fetches anime data based on the provided slug.
  *
  * @description This utility function retrieves anime data from the API using the given slug.
- * It sends a request to the `/api/getAnime` endpoint and attempts to fetch the corresponding
+ * It sends a request to the `/api/animes/getAnime` endpoint and attempts to fetch the corresponding
  * anime information. The function handles multiple scenarios:
  * - Returns anime data if found and accessible
  * - Returns blocked status if content is restricted by parental controls (403)
@@ -52,7 +52,7 @@ export const getAnimeData = async (
 ): Promise<AnimeResult | undefined> => {
   try {
     const response = await fetch(
-      `/api/getAnime?id=${id}&parentalControl=${parentalControl}`
+      `/api/animes/getAnime?id=${id}&parentalControl=${parentalControl}`
     )
 
     if (response.status === 404) {
