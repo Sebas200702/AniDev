@@ -15,7 +15,7 @@ export const AnimeBannerColection = ({ id }: Props) => {
   const listRef = useRef<HTMLDivElement>(null)
 
   const { data, loading } = useFetch<BannerImage[]>({
-    url: `/api/getBanner?anime_id=${id}&limit_count=8`,
+    url: `/getBanner?anime_id=${id}&limit_count=8`,
   })
 
   const createGroups = (banners: BannerImage[]) => {
