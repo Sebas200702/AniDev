@@ -52,12 +52,10 @@ import type { APIRoute } from 'astro'
  * "Email, password and username are required"
  */
 
-export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
-  const formData = await request.formData()
+export const POST: APIRoute = async ({ request, cookies }) => {
+  const body = await request.json()
 
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-  const user_name = formData.get('user_name') as string
+  const { email, password, user_name } = body
 
   if (!email || !password || !user_name) {
     return new Response('Email, password and username are required', {
@@ -153,4 +151,4 @@ export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
       }
     )
   }
-})
+}
