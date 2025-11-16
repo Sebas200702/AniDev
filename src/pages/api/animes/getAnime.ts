@@ -1,5 +1,5 @@
-import { safeRedisOperation } from '@libs/redis'
 import { AnimeService } from '@anime/services'
+import { safeRedisOperation } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
 import type { APIRoute } from 'astro'
 
@@ -121,7 +121,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     const id = url.searchParams.get('id')
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam !== 'false'
-    
+
     const validation = validateId(id)
 
     if (!validation.valid) {
@@ -151,13 +151,10 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
 
     // Anime no encontrado
     if (!result.anime) {
-      return new Response(
-        JSON.stringify({ error: 'Anime not found' }),
-        {
-          status: 404,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      return new Response(JSON.stringify({ error: 'Anime not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      })
     }
 
     return new Response(JSON.stringify({ data: result.anime }), {
