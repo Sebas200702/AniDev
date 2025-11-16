@@ -177,10 +177,10 @@ export const MusicPlayer = () => {
             )}
           </MediaProvider>
 
-          {!isMinimized ? (
-            <CustomLayout />
-          ) : (
+          {isMinimized ? (
             <CustomControls volume={volume} muted={muted} />
+          ) : (
+            <CustomLayout />
           )}
         </MediaPlayer>
       </motion.article>
