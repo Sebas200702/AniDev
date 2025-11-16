@@ -1,7 +1,7 @@
 import { safeRedisOperation } from '@libs/redis'
-import { MetadataService } from '@shared/services/metadata-service'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
+import { MetadataService } from '@shared/services/metadata-service'
 
 import type { APIRoute } from 'astro'
 
@@ -69,7 +69,7 @@ export const GET: APIRoute = rateLimit(
       // Check cache first
       const cacheKey = `anime-metadatas:${id}`
       const cached = await safeRedisOperation((client) => client.get(cacheKey))
-      
+
       if (cached) {
         return new Response(JSON.stringify(JSON.parse(cached)), {
           status: 200,
@@ -98,7 +98,7 @@ export const GET: APIRoute = rateLimit(
       })
     } catch (error) {
       console.error('[getAnimeMetadatas] Error:', error)
-      
+
       if (error instanceof Error && error.message.includes('not found')) {
         return new Response(
           JSON.stringify({ error: 'No se encontraron metadatos del anime' }),
