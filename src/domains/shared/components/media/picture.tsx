@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { baseUrl } from '@shared/utils/base-url'
 import { buildProxiedImageSrc } from '@shared/utils/proxy-image'
 import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
+
 /**
  * Picture component displays an image with a background placeholder for progressive loading.
  *
