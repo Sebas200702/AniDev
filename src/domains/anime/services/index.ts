@@ -1,5 +1,5 @@
-import { AnimeRepository } from '@anime/repositories'
 import type { Anime } from '@anime/types'
+import { AnimeRepository } from '@anime/repositories'
 
 export interface AnimeResult {
   anime?: Anime
@@ -34,7 +34,7 @@ export const AnimeService = {
   async getRandomAnime(userId: string | null, parentalControl: boolean | null) {
     try {
       const result = await AnimeRepository.getRandom(userId, parentalControl)
-      
+
       if (!result) {
         return null
       }
@@ -92,7 +92,10 @@ export const AnimeService = {
    * @param parentalControl - Whether parental control is enabled
    * @returns AnimeResult object containing anime data, or blocked/not found status
    */
-  async getById(animeId: number, parentalControl: boolean = true): Promise<AnimeResult> {
+  async getById(
+    animeId: number,
+    parentalControl: boolean = true
+  ): Promise<AnimeResult> {
     try {
       const result = await AnimeRepository.getById(animeId, parentalControl)
 
