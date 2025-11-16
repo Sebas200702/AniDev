@@ -1,4 +1,6 @@
-import { baseTitle, baseUrl } from '@utils/base-url'
+import { baseTitle, baseUrl } from '@shared/utils/base-url'
+
+import { MetadataService } from '@shared/services/metadata-service'
 
 interface MetadataResult {
   title: string
@@ -16,11 +18,13 @@ interface MetadataConfig {
 }
 
 /**
- * Fetches and formats metadata for different content types.
+ * Fetches and formats metadata for different content types using the metadata service.
  *
- * @description This utility function abstracts the repetitive metadata extraction logic
- * used across different page types (anime, music, character). It handles API requests,
- * error handling, and metadata formatting in a consistent way.
+ * @description This utility function has been refactored to use the MetadataService,
+ * which leverages domain-specific repositories for data fetching. This provides better
+ * separation of concerns and follows the domain-driven design pattern of the application.
+ *
+ * @deprecated Consider using MetadataService directly for new implementations
  *
  * @param {MetadataConfig} config - Configuration for metadata extraction
  * @param {string} defaultTitle - Default title if extraction fails
@@ -35,25 +39,35 @@ export const extractMetadata = async (
   defaultImage: string = `${baseUrl}/og-image.png`
 ): Promise<MetadataResult> => {
   try {
-    const url = `${baseUrl}${config.endpoint}?${config.param}=${config.value}`
-    const response = await fetch(url)
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`)
+    // Determine the type based on endpoint
+    if (config.endpoint.includes('getAnimeMetadatas')) {
+      return await MetadataService.getAnimeMetadata(Number(config.value))
     }
 
-    const data = await response.json()
+    if (config.endpoint.includes('getMusicInfo')) {
+      return await MetadataService.getMusicMetadata(Number(config.value))
+    }
 
+    if (config.endpoint.includes('getCharacter')) {
+      // Extract character ID from slug (format: name_id)
+      const lastUnderscoreIndex = config.value.lastIndexOf('_')
+      const characterId =
+        lastUnderscoreIndex === -1
+          ? Number(config.value)
+          : Number(config.value.slice(lastUnderscoreIndex + 1))
+
+      return await MetadataService.getCharacterMetadata(characterId)
+    }
+
+    if (config.endpoint.includes('getArtistInfo')) {
+      return await MetadataService.getArtistMetadata(config.value)
+    }
+
+    // Fallback to default metadata
     return {
-      title: config.titleFormatter
-        ? config.titleFormatter(data)
-        : data.title || defaultTitle,
-      description: config.descriptionFormatter
-        ? config.descriptionFormatter(data)
-        : data.description || defaultDescription,
-      image: config.imageExtractor
-        ? config.imageExtractor(data)
-        : data.image || defaultImage,
+      title: defaultTitle,
+      description: defaultDescription,
+      image: defaultImage,
     }
   } catch (error) {
     console.error(`Error extracting metadata from ${config.endpoint}:`, error)
@@ -77,7 +91,7 @@ export const METADATA_CONFIGS = {
     imageExtractor: (data: any) => data.image,
   },
   music: {
-    endpoint: '/api/getMusicInfo',
+    endpoint: '/api/music/getMusicInfo',
     param: 'themeId',
     titleFormatter: (data: any) => `${data[0]?.song_title} - ${baseTitle}`,
     descriptionFormatter: (data: any) => {
@@ -90,7 +104,7 @@ export const METADATA_CONFIGS = {
     imageExtractor: (data: any) => data[0]?.image,
   },
   character: {
-    endpoint: '/api/getCharacter',
+    endpoint: '/api/characters/getCharacter',
     param: 'slug',
     titleFormatter: (data: any) =>
       `${data.character?.character_name} - ${baseTitle}`,
@@ -100,7 +114,10 @@ export const METADATA_CONFIGS = {
       const about = char.character_about
         ? ` ${char.character_about.slice(0, 150)}...`
         : ''
-      return `Learn about ${char.character_name}${char.character_name_kanji ? ` (${char.character_name_kanji})` : ''}.${about}`
+      const kanjiPart = char.character_name_kanji
+        ? ` (${char.character_name_kanji})`
+        : ''
+      return `Learn about ${char.character_name}${kanjiPart}.${about}`
     },
     imageExtractor: (data: any) => data.character?.character_image_url,
   },
