@@ -1,5 +1,5 @@
 import { safeRedisOperation } from '@libs/redis'
-import { type BuildResponseOptions } from '@shared/ai/types'
+import { type BuildResponseOptions } from '@ai/types'
 
 export const buildResponse = ({
   data,
