@@ -1,6 +1,9 @@
+import { useEffect, useRef } from 'react'
+
 import { ErrorBoundary } from '@shared/components/error-boundary'
-import { ErrorFallback } from '@shared/components/error-fallback'
 import type { ReactNode } from 'react'
+import { ToastType } from '@shared/types'
+import { toast } from '@pheralb/toast'
 
 interface DataWrapperProps<T> {
   data?: T
@@ -12,23 +15,6 @@ interface DataWrapperProps<T> {
   children: (data: T) => ReactNode
 }
 
-/**
- * DataWrapper
- *
- * Componente genérico para manejar estados de carga, error y datos vacíos.
- * Simplifica la lógica de renderizado condicional en componentes que consumen datos.
- *
- * @example
- * <DataWrapper
- *   data={users}
- *   loading={loading}
- *   error={error}
- *   onRetry={refetch}
- *   noDataFallback={<p>No users found.</p>}
- * >
- *   {(users) => users.map(u => <UserCard key={u.id} {...u} />)}
- * </DataWrapper>
- */
 export function DataWrapper<T>({
   data,
   loading,
@@ -38,31 +24,45 @@ export function DataWrapper<T>({
   noDataFallback,
   children,
 }: Readonly<DataWrapperProps<T>>) {
-  return (
-    <ErrorBoundary
-      fallback={
-        <ErrorFallback error={error || undefined} resetError={onRetry} />
-      }
-    >
-      {loading &&
-        (loadingFallback || (
+  const lastErrorRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (error && error.message !== lastErrorRef.current) {
+      lastErrorRef.current = error.message
+
+      toast[ToastType.Error]({
+        text: error.message || 'Ocurrió un error inesperado',
+        action: onRetry
+          ? {
+              content: 'Reintentar',
+              onClick: () => onRetry(),
+            }
+          : undefined,
+      })
+    }
+  }, [error, onRetry])
+
+  if (loading) {
+    return (
+      <>
+        {loadingFallback || (
           <div className="flex items-center justify-center p-6 text-gray-300">
             Cargando...
           </div>
-        ))}
+        )}
+      </>
+    )
+  }
 
-      {!loading && error && (
-        <ErrorFallback error={error} resetError={onRetry} />
-      )}
-
-      {!loading &&
-        !error &&
-        !data &&
-        (noDataFallback || (
+  if (!data && !error) {
+    return (
+      <>
+        {noDataFallback || (
           <div className="text-gray-400">Sin datos para mostrar.</div>
-        ))}
+        )}
+      </>
+    )
+  }
 
-      {!loading && !error && data && <>{children(data)}</>}
-    </ErrorBoundary>
-  )
+  return <ErrorBoundary>{data && children(data)}</ErrorBoundary>
 }
