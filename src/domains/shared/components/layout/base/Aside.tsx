@@ -1,4 +1,4 @@
-import { createAnimeImageList } from '@utils/create-image-list'
+import { createAnimeImageList } from '@shared/utils/create-image-list'
 
 import { GaleryImage } from '@shared/components/media/galery-image'
 import { Picture } from '@shared/components/media/picture'
