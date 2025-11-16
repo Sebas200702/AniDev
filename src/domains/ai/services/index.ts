@@ -29,7 +29,7 @@ export const aiService = {
     const result = await aiRepository.generateText(keywordPrompt)
     return result
       .split(',')
-      .map(k => k.trim())
+      .map((k) => k.trim())
       .filter(Boolean)
   },
 
@@ -45,6 +45,14 @@ export const aiService = {
     `
 
     return await aiRepository.generateJSON(schemaPrompt)
+  },
+
+  /**
+   * Genera y parsea un JSON a partir de un prompt arbitrario.
+   * Retorna null si falla el parseo o la llamada.
+   */
+  async generateJSON<T = any>(prompt: string): Promise<T | null> {
+    return await aiRepository.generateJSON<T>(prompt)
   },
 
   /**
