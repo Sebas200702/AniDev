@@ -1,0 +1,104 @@
+/**
+ * Script de Prueba para MetadataService
+ * 
+ * Este script puede ser usado para verificar que el MetadataService
+ * funciona correctamente antes de implementarlo en producción.
+ */
+
+import { MetadataService } from '@shared/services/metadata-service'
+
+async function testMetadataService() {
+  console.log('🧪 Testing MetadataService...\n')
+
+  // Test 1: Anime Metadata
+  console.log('1️⃣ Testing Anime Metadata (ID: 21 - One Piece)')
+  try {
+    const animeMetadata = await MetadataService.getAnimeMetadata(21)
+    console.log('✅ Success:', {
+      title: animeMetadata.title.substring(0, 50) + '...',
+      hasDescription: !!animeMetadata.description,
+      hasImage: !!animeMetadata.image,
+    })
+  } catch (error) {
+    console.error('❌ Error:', error)
+  }
+
+  console.log('\n')
+
+  // Test 2: Music Metadata
+  console.log('2️⃣ Testing Music Metadata (Theme ID: 123)')
+  try {
+    const musicMetadata = await MetadataService.getMusicMetadata(123)
+    console.log('✅ Success:', {
+      title: musicMetadata.title,
+      hasDescription: !!musicMetadata.description,
+      hasImage: !!musicMetadata.image,
+    })
+  } catch (error) {
+    console.error('❌ Error (expected if theme does not exist):', error)
+  }
+
+  console.log('\n')
+
+  // Test 3: Character Metadata
+  console.log('3️⃣ Testing Character Metadata (ID: 456)')
+  try {
+    const characterMetadata = await MetadataService.getCharacterMetadata(456)
+    console.log('✅ Success:', {
+      title: characterMetadata.title,
+      hasDescription: !!characterMetadata.description,
+      hasImage: !!characterMetadata.image,
+    })
+  } catch (error) {
+    console.error('❌ Error (expected if character does not exist):', error)
+  }
+
+  console.log('\n')
+
+  // Test 4: Artist Metadata
+  console.log('4️⃣ Testing Artist Metadata (Name: "LiSA")')
+  try {
+    const artistMetadata = await MetadataService.getArtistMetadata('LiSA')
+    console.log('✅ Success:', {
+      title: artistMetadata.title,
+      hasDescription: !!artistMetadata.description,
+      hasImage: !!artistMetadata.image,
+    })
+  } catch (error) {
+    console.error('❌ Error (expected if artist does not exist):', error)
+  }
+
+  console.log('\n')
+
+  // Test 5: Default Metadata (Fallback)
+  console.log('5️⃣ Testing Default Metadata (Fallback)')
+  const defaultMetadata = MetadataService.getDefaultMetadata()
+  console.log('✅ Success:', {
+    title: defaultMetadata.title,
+    description: defaultMetadata.description.substring(0, 50) + '...',
+    image: defaultMetadata.image,
+  })
+
+  console.log('\n')
+
+  // Test 6: Invalid ID (Should return default)
+  console.log('6️⃣ Testing Invalid ID (Should fallback to default)')
+  try {
+    const invalidMetadata = await MetadataService.getAnimeMetadata(999999999)
+    console.log('✅ Fallback Success:', {
+      title: invalidMetadata.title,
+      isDefault: invalidMetadata.title === MetadataService.getDefaultMetadata().title,
+    })
+  } catch (error) {
+    console.error('❌ Error:', error)
+  }
+
+  console.log('\n✨ Tests completed!')
+}
+
+// Ejecutar tests si este archivo es llamado directamente
+if (import.meta.url === `file://${process.argv[1]}`) {
+  testMetadataService().catch(console.error)
+}
+
+export { testMetadataService }
