@@ -1,8 +1,7 @@
 import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
+import { MetadataService } from '@shared/services/metadata-service'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
-import { baseTitle } from '@shared/utils/base-url'
 
 import type { APIRoute } from 'astro'
 
@@ -29,7 +28,7 @@ import type { APIRoute } from 'astro'
  * - SEO optimization: Properly formatted metadata
  * - Error handling: Comprehensive error handling
  * - Cache headers: Proper cache control headers for CDN and browser
- * - Performance: Efficient database queries with proper indexing
+ * - Performance: Uses MetadataService for business logic
  *
  * @param {APIRoute} context - The API context containing request information
  * @param {URL} context.url - The request URL containing query parameters
@@ -62,9 +61,15 @@ export const GET: APIRoute = rateLimit(
         return new Response('Not found', { status: 404 })
       }
 
-      const cached = await safeRedisOperation((client) =>
-        client.get(`anime-metadatas:${id}`)
-      )
+      const animeId = Number(id)
+      if (Number.isNaN(animeId)) {
+        return new Response('Invalid anime ID', { status: 400 })
+      }
+
+      // Check cache first
+      const cacheKey = `anime-metadatas:${id}`
+      const cached = await safeRedisOperation((client) => client.get(cacheKey))
+      
       if (cached) {
         return new Response(JSON.stringify(JSON.parse(cached)), {
           status: 200,
@@ -74,17 +79,27 @@ export const GET: APIRoute = rateLimit(
         })
       }
 
-      const { data, error } = await supabase
-        .from('anime')
-        .select('title, synopsis, image_large_webp')
-        .eq('mal_id', id)
-        .single()
+      // Fetch from MetadataService
+      const animeMetadatas = await MetadataService.getAnimeMetadata(animeId)
 
-      if (error) {
-        console.error('Error al obtener metadatos del anime:', error)
-        return new Response('Internal server error', { status: 500 })
-      }
-      if (!data) {
+      // Cache the result
+      await safeRedisOperation((client) =>
+        client.set(cacheKey, JSON.stringify(animeMetadatas), {
+          EX: 60 * 60 * 24, // 24 hours
+        })
+      )
+
+      return new Response(JSON.stringify(animeMetadatas), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          Vary: 'Accept-Encoding',
+        },
+      })
+    } catch (error) {
+      console.error('[getAnimeMetadatas] Error:', error)
+      
+      if (error instanceof Error && error.message.includes('not found')) {
         return new Response(
           JSON.stringify({ error: 'No se encontraron metadatos del anime' }),
           {
@@ -93,26 +108,7 @@ export const GET: APIRoute = rateLimit(
           }
         )
       }
-      const animeMetadatas = {
-        title: `${data.title} - ${baseTitle}`,
-        description: data.synopsis,
-        image: data.image_large_webp,
-      }
-      await safeRedisOperation((client) =>
-        client.set(`anime-metadatas:${id}`, JSON.stringify(animeMetadatas), {
-          EX: 60 * 60 * 24,
-        })
-      )
-      return new Response(JSON.stringify(animeMetadatas), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
 
-          Vary: 'Accept-Encoding',
-        },
-      })
-    } catch (error) {
-      console.error('Error al obtener metadatos del anime:', error)
       return new Response('Internal server error', { status: 500 })
     }
   })
