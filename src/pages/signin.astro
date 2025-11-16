@@ -1,20 +1,14 @@
 ---
-import { Formulary } from '@auth/components/auth-form/auth-form-container'
+import { AuthFormContainer } from '@auth/components/auth-form/auth-form-container'
 import Layout from '@layouts/base.astro'
-import { baseTitle } from '@utils/base-url'
+import { baseTitle } from '@shared/utils/base-url'
 const title = `Sign In - ${baseTitle}`
 const description =
   'Sign in to your AniDev account to access personalized anime recommendations, manage your watchlist, and enjoy seamless streaming across all your devices.'
-
-const bgImage = '/sign-in.webp'
 ---
 
 <Layout title={title} description={description}>
   <section class="mt-20 h-full w-full md:mt-0">
-    <Formulary
-      client:load
-      title={'Sign In'}
-      bgImage={bgImage}
-    />
+    <AuthFormContainer client:load />
   </section>
 </Layout>
