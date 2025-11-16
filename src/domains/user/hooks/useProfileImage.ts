@@ -1,6 +1,7 @@
-import { useUpdateProfile } from '@user/stores/update-profile'
-import { buildProxiedImageSrc } from '@utils/proxy-image'
 import { useEffect, useState } from 'react'
+
+import { buildProxiedImageSrc } from '@shared/utils/proxy-image'
+import { useUpdateProfile } from '@user/stores/update-profile'
 
 interface Params {
   type: 'avatar' | 'banner'
