@@ -1,13 +1,11 @@
-import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
-import { redisConnection } from '@middlewares/redis-connection'
 import type { APIRoute } from 'astro'
+import { supabase } from '@libs/supabase'
 
 export const GET: APIRoute = async ({ url }) => {
-  const anime_id = parseInt(url.searchParams.get('anime_id') ?? '')
-  const limit_count = parseInt(url.searchParams.get('limit_count') ?? '10')
+  const anime_id = Number.parseInt(url.searchParams.get('anime_id') ?? '')
+  const limit_count = Number.parseInt(url.searchParams.get('limit_count') ?? '10')
   try {
-    if (!anime_id || isNaN(anime_id)) {
+    if (!anime_id || Number.isNaN(anime_id)) {
       return new Response(
         JSON.stringify({ message: 'Error anime_id is required ' }),
         { status: 400 }
