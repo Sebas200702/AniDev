@@ -1,5 +1,5 @@
 import { GaleryImage } from '@shared/components/media/galery-image'
-import { createSingleImageList } from '@utils/create-image-list'
+import { createSingleImageList } from '@shared/utils/create-image-list'
 
 interface SingleImageGalleryProps {
   children: React.ReactNode
