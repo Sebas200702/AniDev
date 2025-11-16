@@ -1,26 +1,21 @@
-
-import { model } from '@libs/gemini'
-import { type GenerateRecommendationsProps, functionTool } from '@recomendations/types'
+import { aiService } from '@ai/services'
+import {
+  type GenerateRecommendationsProps,
+  functionTool,
+} from '@recomendations/types'
 import { fetchRecomendations } from './fetch-recomendations'
 
 export const generateUserRecomendations = async ({
   context,
   prompt,
   jikanRecommendations,
-}:GenerateRecommendationsProps) => {
-  const response = await model.generateContent({
-    contents: [
-      {
-        role: 'user',
-        parts: [
-          {
-            text: `${prompt}\n\nINSTRUCCIÓN CRÍTICA: Debes usar "fetch_recommendations" y generar una lista de IDs (mal_ids) de anime. Responde ÚNICAMENTE con la llamada a la función "fetch_recommendations".`,
-          },
-        ],
-      },
-    ],
-    tools: [functionTool],
-  })
+}: GenerateRecommendationsProps) => {
+  // Use aiService.callFunction which delegates to the repository functionCall wrapper
+  const response = await aiService.callFunction(
+    prompt,
+    functionTool,
+    'fetch_recommendations'
+  )
 
   const functionCall = response.response?.candidates?.[0]?.content?.parts?.find(
     (part) => part.functionCall
@@ -38,12 +33,11 @@ export const generateUserRecomendations = async ({
     )
   }
 
-    const args = functionCall.args as { mal_ids?: string[] }
+  const args = functionCall.args as { mal_ids?: string[] }
 
   if (!args?.mal_ids?.length) {
     throw new Error('No se generaron mal_ids en la respuesta del modelo.')
   }
-
 
   const result = await fetchRecomendations({
     mal_ids: args.mal_ids,
