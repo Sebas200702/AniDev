@@ -1,10 +1,10 @@
-import type { APIRoute } from 'astro'
 import { AnimeService } from '@anime/services'
-import { Filters } from '@shared/types'
-import { getFilters } from '@utils/get-filters-of-search-params'
+import { safeRedisOperation } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
-import { safeRedisOperation } from '@libs/redis'
+import { Filters } from '@shared/types'
+import { getFilters } from '@utils/get-filters-of-search-params'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
