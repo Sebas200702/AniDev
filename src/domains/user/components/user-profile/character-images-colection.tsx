@@ -11,7 +11,7 @@ interface Props {
 
 export const CharacterImagesColection = ({ id }: Props) => {
   const { data, loading } = useFetch<CharacterImages[]>({
-    url: `api/getCharacterImage?anime_id=${id}&limit_count=12`,
+    url: `/characters/getCharacterImage?anime_id=${id}&limit_count=12`,
   })
   const { width: windowWidth } = useWindowWidth()
 
