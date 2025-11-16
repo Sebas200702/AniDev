@@ -1,6 +1,6 @@
 import type { AnimeDetail } from '@anime/types'
-import type { Character } from '@character/types'
 import type { AnimeSongWithImage } from '@music/types'
+import type { Character } from '@character/types'
 import { SearchType } from '@search/types'
 
 export const getDefaultFilters = (
@@ -27,7 +27,7 @@ export const buildSearchUrl = (
   parentalControl: boolean | null
 ) => {
   const defaultFilters = getDefaultFilters(type, parentalControl)
-  const baseQuery = `/api/${type}?${defaultFilters}`
+  const baseQuery = `/${type}?${defaultFilters}`
   const searchQuery = debouncedQuery
     ? `&search_query=${encodeURIComponent(debouncedQuery)}`
     : ''
