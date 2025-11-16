@@ -1,10 +1,9 @@
-import type { APIRoute } from 'astro'
 import { AnimeService } from '@anime/services'
 import { rateLimit } from '@middlewares/rate-limit'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
-  const parentalControl =
-    url.searchParams.get('parental_control') !== 'false'
+  const parentalControl = url.searchParams.get('parental_control') !== 'false'
 
   const userId = url.searchParams.get('user_id')
 
