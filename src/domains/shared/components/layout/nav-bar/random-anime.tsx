@@ -37,7 +37,6 @@ export const RandomAnimeButton = () => {
       navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
     } catch (error) {
       console.error('Error fetching random anime:', error)
-      // Optionally show user-facing error notification
     }
   }
   return (
