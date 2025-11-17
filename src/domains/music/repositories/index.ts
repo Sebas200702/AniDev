@@ -17,6 +17,26 @@ export const MusicRepository = {
     return data
   },
 
+  async getMusicList(filters: Record<string, any>) {
+    const { data, error } = await supabase.rpc('get_music', filters)
+
+    if (error) {
+      throw new Error(`Failed to fetch music list: ${error.message}`)
+    }
+
+    return data ?? []
+  },
+
+  async getMusicCount(filters: Record<string, any>) {
+    const { data, error } = await supabase.rpc('get_music_count', filters)
+
+    if (error) {
+      throw new Error(`Failed to fetch music count: ${error.message}`)
+    }
+
+    return data ?? 0
+  },
+
   async getMetadata(themeId: number) {
     const musicData = await this.getMusicInfo(themeId)
     const track = musicData[0]
@@ -34,5 +54,18 @@ export const MusicRepository = {
       artistName: track.artist_name,
       animeTitle: track.anime_title,
     }
+  },
+
+  async getMusicByAnimeId(animeId: number) {
+    const { data, error } = await supabase
+      .from('music')
+      .select('*')
+      .eq('anime_id', animeId)
+
+    if (error) {
+      throw new Error(`Failed to fetch anime music: ${error.message}`)
+    }
+
+    return data ?? []
   },
 }
