@@ -1,45 +1,26 @@
-import type { APIRoute } from 'astro'
-import { formatAbout } from '@shared/utils/format-about'
 import { redisConnection } from '@middlewares/redis-connection'
-import { safeRedisOperation } from '@libs/redis'
+import { formatAbout } from '@shared/utils/format-about'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {
     const about = url.searchParams.get('about')
-    const cacheKey = `about:${url.searchParams}`
-    const cached = await safeRedisOperation((client) => client.get(cacheKey))
-    if (cached) {
-      return new Response(JSON.stringify(JSON.parse(cached)), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-    }
 
     if (!about) {
-      return new Response(
-        JSON.stringify({ error: 'Missing about parameter.' }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      return ResponseBuilder.validationError('Missing about parameter')
     }
-    const aboutFormatted = await formatAbout(about)
 
-    await safeRedisOperation((client) =>
-      client.set(cacheKey, JSON.stringify(aboutFormatted), { EX: 24 * 60 * 60 })
+    const cacheKey = CacheUtils.generateKey('about', url.searchParams)
+    const formatted = await CacheUtils.withCache(
+      cacheKey,
+      () => formatAbout(about),
+      { ttl: CacheTTL.ONE_DAY }
     )
-    return new Response(JSON.stringify(aboutFormatted), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
+
+    return ResponseBuilder.success(formatted)
   } catch (error) {
-    console.log(error)
-    return new Response(JSON.stringify({ error: 'Failed to format about.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return ResponseBuilder.fromError(error, 'GET /api/about')
   }
 })
