@@ -1,5 +1,5 @@
-import type { Anime } from '@anime/types'
 import { AnimeRepository } from '@anime/repositories'
+import type { Anime } from '@anime/types'
 
 export interface AnimeResult {
   anime?: Anime
@@ -119,6 +119,30 @@ export const AnimeService = {
     } catch (error) {
       console.error('[AnimeService.getById] Error:', error)
       throw new Error('Failed to fetch anime by ID')
+    }
+  },
+
+  /**
+   * Get unique anime studios
+   */
+  async getStudios() {
+    try {
+      return await AnimeRepository.getUniqueStudios()
+    } catch (error) {
+      console.error('[AnimeService.getStudios] Error:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Get anime banner images
+   */
+  async getAnimeBanner(animeId: number, limitCount: number = 8) {
+    try {
+      return await AnimeRepository.getAnimeBanner(animeId, limitCount)
+    } catch (error) {
+      console.error('[AnimeService.getAnimeBanner] Error:', error)
+      throw error
     }
   },
 }
