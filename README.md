@@ -158,8 +158,8 @@ AniDev provides various API endpoints for fetching anime data:
 - `/api/animes/full` - Get animes with filtering options
 - `/api/animes/random` - Get a random anime
 - `/api/animes` - Get anime list with pagination
-- `/api/getAnime` - Get detailed information about a specific anime
-- `/api/getAnimeMetadatas` - Get SEO metadata for an anime
+- `/api/animes/getAnime` - Get detailed information about a specific anime
+- `/api/animes/getAnimeMetadatas` - Get SEO metadata for an anime
 - `/api/episodes` - Get episodes list for an anime
 - `/api/getEpisode` - Get specific episode details
 - `/api/studios` - Get anime studios information
