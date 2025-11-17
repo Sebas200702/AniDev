@@ -1,8 +1,8 @@
 import { AnimeInfo } from '@anime/components/anime-info/anime-info'
 import { AnimeLoader } from '@anime/components/anime-info/anime-info-loader'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { useBlockedContent } from '@shared/hooks/useBlockedContent'
 import { getAnimeData } from '@utils/get-anime-data'
+import { useBlockedContent } from '@shared/hooks/useBlockedContent'
 
 interface Props {
   id: number
@@ -20,7 +20,7 @@ export const AnimeInfoContainer = ({ id }: Props) => {
 
   return (
     <DataWrapper
-      data={!isBlocked ? animeData : null}
+      data={isBlocked ? null : animeData}
       loading={isLoading}
       error={error}
       loadingFallback={<AnimeLoader />}
