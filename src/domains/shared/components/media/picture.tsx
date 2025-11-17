@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { baseUrl } from '@shared/utils/base-url'
-import { buildProxiedImageSrc } from '@shared/utils/proxy-image'
 import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
+import { buildProxiedImageSrc } from '@shared/utils/proxy-image'
 
 /**
  * Picture component displays an image with a background placeholder for progressive loading.
@@ -87,9 +87,10 @@ export const Picture = ({
             'webp'
           )
         }
-        alt={alt}
+        alt=""
+        aria-hidden="true"
         decoding="async"
-        fetchPriority="high"
+        fetchPriority="low"
         loading="eager"
       />
       <img
@@ -104,8 +105,11 @@ export const Picture = ({
           )
         }
         alt={alt}
+        width={isBanner ? 1920 : undefined}
+        height={isBanner ? 1080 : undefined}
         loading={isBanner ? 'eager' : 'lazy'}
-        fetchPriority={isBanner ? 'high' : undefined}
+        fetchPriority={isBanner ? 'high' : 'low'}
+        decoding="async"
       />
     </figure>
   )
