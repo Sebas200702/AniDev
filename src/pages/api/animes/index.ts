@@ -1,25 +1,19 @@
 import { AnimeService } from '@anime/services'
-import { safeRedisOperation } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { Filters } from '@shared/types'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { getFilters } from '@utils/get-filters-of-search-params'
+import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cacheKey = `animes-partial:${url.searchParams}`
-      const cached = await safeRedisOperation(async (redis) => {
-        return await redis.get(cacheKey)
-      })
-
-      if (cached) {
-        return new Response(cached, {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        })
-      }
+      const cacheKey = CacheUtils.generateKey(
+        'animes-partial',
+        url.searchParams
+      )
 
       const format = url.searchParams.get('format') ?? 'anime-card'
       const limit = Number.parseInt(url.searchParams.get('limit_count') ?? '10')
@@ -33,40 +27,32 @@ export const GET: APIRoute = rateLimit(
       const filters = getFilters(Object.values(Filters), url, true)
       const countFilters = getFilters(CountFilters, url, false)
 
-      const { data, total } = await AnimeService.searchAnime({
-        format,
-        filters,
-        countFilters,
-      })
+      const result = await CacheUtils.withCache(
+        cacheKey,
+        async () => {
+          const { data, total } = await AnimeService.searchAnime({
+            format,
+            filters,
+            countFilters,
+          })
 
-      if (!data || data.length === 0) {
-        return new Response(
-          JSON.stringify({ error: 'No se encontraron animes.' }),
-          { status: 404 }
-        )
-      }
+          if (!data || data.length === 0) {
+            throw new Error('No se encontraron animes.')
+          }
 
-      const response = {
-        total_items: total,
-        data,
-        current_page: page,
-        last_page: Math.ceil(total / limit),
-      }
-
-      await safeRedisOperation(async (redis) => {
-        return await redis.set(cacheKey, JSON.stringify(response), { EX: 7200 })
-      })
-
-      return new Response(JSON.stringify(response), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    } catch (error) {
-      console.error('Error en el endpoint:', error)
-      return new Response(
-        JSON.stringify({ error: 'Ocurrió un error en el servidor.' }),
-        { status: 500 }
+          return {
+            total_items: total,
+            data,
+            current_page: page,
+            last_page: Math.ceil(total / limit),
+          }
+        },
+        { ttl: CacheTTL.ONE_HOUR * 2 }
       )
+
+      return ResponseBuilder.success(result)
+    } catch (error) {
+      return ResponseBuilder.fromError(error, 'GET /api/animes')
     }
   })
 )
