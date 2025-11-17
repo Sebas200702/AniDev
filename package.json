@@ -55,6 +55,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.12",
+    "terser": "^5.36.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.3"
   }
