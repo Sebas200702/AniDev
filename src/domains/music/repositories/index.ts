@@ -72,8 +72,7 @@ export const MusicRepository = {
   async getTopMusicForSitemap(limit: number = 1000) {
     const { data, error } = await supabase
       .from('music')
-      .select('theme_id, song_title, updated_at')
-      .order('updated_at', { ascending: false })
+      .select('theme_id, song_title')
       .limit(limit)
 
     if (error) {

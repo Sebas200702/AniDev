@@ -23,9 +23,7 @@ export const GET: APIRoute = async () => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${musicList
     .map((music) => {
-      const lastmod = music.updated_at
-        ? new Date(music.updated_at).toISOString()
-        : new Date().toISOString()
+      const lastmod = new Date().toISOString()
       const slug = `${normalizeString(music.song_title)}_${music.theme_id}`
       return `
   <url>

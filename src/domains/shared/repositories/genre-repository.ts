@@ -3,7 +3,7 @@ import { supabase } from '@libs/supabase'
 export const GenreRepository = {
   async getAllGenres() {
     const { data, error } = await supabase
-      .from('genre')
+      .from('genres')
       .select('mal_id, name')
       .order('name', { ascending: true })
 
