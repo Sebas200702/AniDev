@@ -39,11 +39,11 @@ interface PaginationProps {
  * @example
  * <Pagination totalPages={10} initialPage={1} onPageChange={(page) => console.log(`Page changed to ${page}`)} />
  */
-export default function Pagination({
+export const Pagination = ({
   totalPages,
   initialPage = 1,
   onPageChange,
-}: PaginationProps) {
+}: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(initialPage)
 
   const handlePageChange = (page: number) => {
