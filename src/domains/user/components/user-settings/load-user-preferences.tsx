@@ -38,7 +38,7 @@ export const LoadUserPrefences = () => {
     setWatchList,
   } = useGlobalUserPreferences()
 
-  const { data: userInfo } = useFetch<UserInfo>({ url: '/session' })
+  const { data: userInfo } = useFetch<UserInfo>({ url: '/auth/session' })
 
   useEffect(() => {
     const savedEnfasis = localStorage.getItem('enfasis')
