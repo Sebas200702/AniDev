@@ -5,4 +5,3 @@ Disallow: /api/
 Allow: /
 Sitemap: https://anidev.app/sitemap-index.xml
 Crawl-delay: 0
-

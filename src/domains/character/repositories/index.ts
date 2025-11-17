@@ -90,7 +90,9 @@ export const CharacterRepository = {
       .limit(limit)
 
     if (error) {
-      throw new Error(`Failed to fetch characters for sitemap: ${error.message}`)
+      throw new Error(
+        `Failed to fetch characters for sitemap: ${error.message}`
+      )
     }
 
     return data ?? []
