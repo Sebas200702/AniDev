@@ -1,9 +1,10 @@
-import { authService } from '@auth/services/auth-service'
-import type { AuthStep } from '@auth/types'
 import { stepsSignIn, stepsSignUp } from '@auth/utils/steps'
-import { userProfileService } from '@user/services/user-profile-service'
-import { z } from 'zod'
+
+import type { AuthStep } from '@auth/types'
+import { authApiClient } from '@auth/helpers/api-client'
+import { userApiClient } from '@user/helpers/api-client'
 import { create } from 'zustand'
+import { z } from 'zod'
 
 type AuthMode = 'signIn' | 'signUp'
 
@@ -75,21 +76,21 @@ export const useAuthFormStore = create<AuthFormState>((set, get) => ({
         const { email, password, user_name, ...profileData } = values
 
         if (!isGoogleAuth) {
-          await authService.signUp({ email, password, user_name })
+          await authApiClient.signUp({ email, password, user_name })
         }
 
-        await userProfileService.createProfile(profileData)
+        await userApiClient.createProfile(profileData)
         return { success: true, message: 'Account created successfully 🎉' }
       } else {
         const { email, password } = values
-        await authService.signIn({ email, password })
+        await authApiClient.signIn({ email, password })
         return { success: true, message: 'Login successful 🎉' }
       }
     } catch (err: any) {
         const message =
         err instanceof z.ZodError
           ? err.errors[0]?.message
-          : err.message 
+          : err.message
       set({ error: message })
       return { success: false, message }
     } finally {
