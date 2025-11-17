@@ -5,7 +5,7 @@ import { api } from '@libs/api'
 export const authApiClient = {
   async signUp(values: SignUpSchema) {
     const res = await api.post('/auth/signup', values)
-    
+
     if (res.status !== 200) {
       throw new Error(res.error?.message || 'Error en el registro')
     }
@@ -15,7 +15,7 @@ export const authApiClient = {
 
   async signIn(values: SignInSchema) {
     const res = await api.post('/auth/signin', values)
-    
+
     if (res.status !== 200) {
       throw new Error(res.error?.message || 'Error al iniciar sesión')
     }
