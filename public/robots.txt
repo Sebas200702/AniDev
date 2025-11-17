@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /admin/
 Disallow: /private/
 Allow: /
-Sitemap: https://ani-dev.vercel.app/sitemap-index.xml
+Sitemap: https://anidev.app/sitemap-index.xml
