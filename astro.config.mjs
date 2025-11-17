@@ -6,17 +6,50 @@ import { defineConfig } from 'astro/config'
 import auth from 'auth-astro'
 
 export default defineConfig({
-  output: 'server',
-  site: 'https://ani-dev.vercel.app',
-  adapter: vercel(),
-  integrations: [react(), sitemap(), auth()],
-  compressHTML: true,
-  compressPublicAssets: true,
-  prefetch: {
-    prefetchAll: true,
-  },
+    output: 'server',
+    site: 'https://ani-dev.vercel.app',
+    adapter: vercel(),
+    integrations: [react(), sitemap(), auth()],
+    compressHTML: true,
+    build: {
+        inlineStylesheets: 'auto',
+    },
+    prefetch: {
+        prefetchAll: true,
+        defaultStrategy: 'viewport',
+    },
 
-  vite: {
-    plugins: [tailwindcss()],
-  },
+    vite: {
+        plugins: [tailwindcss()],
+        build: {
+            cssCodeSplit: true,
+            rollupOptions: {
+                output: {
+                    manualChunks: {
+                        'vidstack': ['@vidstack/react'],
+                        'react-vendor': ['react', 'react-dom'],
+                        'zustand': ['zustand'],
+                        'framer': ['framer-motion'],
+                        'dnd-kit': ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities']
+                    },
+                    assetFileNames: (assetInfo) => {
+                        if (assetInfo.name.endsWith('.css')) {
+                            return 'assets/css/[name]-[hash][extname]';
+                        }
+                        return 'assets/[name]-[hash][extname]';
+                    },
+                }
+            },
+            minify: 'terser',
+            terserOptions: {
+                compress: {
+                    drop_console: true,
+                    drop_debugger: true,
+                },
+            },
+        },
+        ssr: {
+            noExternal: ['@vidstack/react']
+        }
+    },
 })
