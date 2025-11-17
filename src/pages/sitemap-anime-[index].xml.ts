@@ -1,5 +1,6 @@
 import { AnimeService } from '@anime/services'
 import { baseUrl } from '@shared/utils/base-url'
+import { normalizeString } from '@utils/normalize-string'
 import type { APIRoute } from 'astro'
 
 /**
@@ -36,12 +37,10 @@ export const GET: APIRoute = async ({ params }) => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   ${animes
     .map((anime) => {
-      const lastmod = anime.updated_at
-        ? new Date(anime.updated_at).toISOString()
-        : new Date().toISOString()
+      const lastmod = new Date().toISOString()
       return `
   <url>
-    <loc>${baseUrl}/anime/${anime.slug}</loc>
+    <loc>${baseUrl}/anime/${normalizeString(anime.title)}_${anime.mal_id}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

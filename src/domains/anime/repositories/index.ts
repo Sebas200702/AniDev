@@ -103,7 +103,7 @@ export const AnimeRepository = {
   async getAnimesForSitemap(offset: number, limit: number = 5000) {
     const { data, error } = await supabase
       .from('anime')
-      .select('slug, updated_at, score')
+      .select('mal_id, title, score ')
       .order('score', { ascending: false })
       .range(offset, offset + limit - 1)
 

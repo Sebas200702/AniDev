@@ -4,19 +4,31 @@ import { normalizeString } from '@utils/normalize-string'
 import type { APIRoute } from 'astro'
 
 /**
- * Music Sitemap
+ * Music Sitemap (Paginated)
  *
  * @description
- * Generates sitemap for top music/theme pages.
- * Includes the top 1000 most recently updated music themes.
+ * Generates paginated sitemaps for music/theme pages. Each sitemap contains up to 5000 URLs
+ * to comply with Google's sitemap best practices.
+ *
+ * Route: /sitemap-music-[index].xml
+ * - sitemap-music-0.xml: Music 0-4999
+ * - sitemap-music-1.xml: Music 5000-9999
+ * - etc...
  */
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ params }) => {
+  const index = Number.parseInt(params.index || '0')
+  const ITEMS_PER_SITEMAP = 5000
+  const offset = index * ITEMS_PER_SITEMAP
+
   try {
-    // Fetch top 1000 music themes
-    const musicList = await MusicService.getTopMusicForSitemap(1000)
+    // Fetch music with pagination
+    const musicList = await MusicService.getMusicForSitemap(
+      offset,
+      ITEMS_PER_SITEMAP
+    )
 
     if (!musicList || musicList.length === 0) {
-      return new Response('No music found', { status: 404 })
+      return new Response('No music found for this index', { status: 404 })
     }
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -47,4 +59,12 @@ export const GET: APIRoute = async () => {
     console.error('Error generating music sitemap:', error)
     return new Response('Error generating sitemap', { status: 500 })
   }
+}
+
+export async function getStaticPaths() {
+  // Generate paths for music sitemaps (estimate: 10k music / 5k per sitemap = 2 sitemaps)
+  const TOTAL_SITEMAPS = 4
+  return Array.from({ length: TOTAL_SITEMAPS }, (_, i) => ({
+    params: { index: i.toString() },
+  }))
 }

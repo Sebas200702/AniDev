@@ -69,11 +69,11 @@ export const MusicRepository = {
     return data ?? []
   },
 
-  async getTopMusicForSitemap(limit: number = 1000) {
+  async getMusicForSitemap(offset: number, limit: number = 5000) {
     const { data, error } = await supabase
       .from('music')
       .select('theme_id, song_title')
-      .limit(limit)
+      .range(offset, offset + limit - 1)
 
     if (error) {
       throw new Error(`Failed to fetch music for sitemap: ${error.message}`)

@@ -79,13 +79,13 @@ export const MusicService = {
   },
 
   /**
-   * Get top music for sitemap generation
+   * Get music for sitemap generation with pagination
    */
-  async getTopMusicForSitemap(limit: number = 1000) {
+  async getMusicForSitemap(offset: number, limit: number = 5000) {
     try {
-      return await MusicRepository.getTopMusicForSitemap(limit)
+      return await MusicRepository.getMusicForSitemap(offset, limit)
     } catch (error) {
-      console.error('[MusicService.getTopMusicForSitemap] Error:', error)
+      console.error('[MusicService.getMusicForSitemap] Error:', error)
       throw error
     }
   },
