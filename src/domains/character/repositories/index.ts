@@ -20,6 +20,26 @@ export const CharacterRepository = {
     return data[0]
   },
 
+  async getCharactersList(filters: Record<string, any>) {
+    const { data, error } = await supabase.rpc('get_characters_list', filters)
+
+    if (error) {
+      throw new Error(`Failed to fetch characters list: ${error.message}`)
+    }
+
+    return data ?? []
+  },
+
+  async getCharactersCount(filters: Record<string, any>) {
+    const { data, error } = await supabase.rpc('get_characters_count', filters)
+
+    if (error) {
+      throw new Error(`Failed to fetch characters count: ${error.message}`)
+    }
+
+    return data ?? 0
+  },
+
   async getMetadata(characterId: number) {
     const character = await this.getCharacterDetails(characterId)
 
@@ -43,5 +63,22 @@ export const CharacterRepository = {
       image: char.character_image_url,
       about: char.character_about,
     }
+  },
+
+  async getCharacterImages(animeId: number, limitCount: number = 10) {
+    const { data, error } = await supabase.rpc('get_character_images', {
+      p_anime_id: animeId,
+      p_limit_count: limitCount,
+    })
+
+    if (error) {
+      throw new Error(`Failed to fetch character images: ${error.message}`)
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error('Data not found')
+    }
+
+    return data
   },
 }
