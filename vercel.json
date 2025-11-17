@@ -1,11 +1,15 @@
 {
+  "images": {
+    "formats": ["image/avif", "image/webp"],
+    "minimumCacheTTL": 31536000
+  },
   "headers": [
     {
       "source": "/(.*)\\.css",
       "headers": [
         {
           "key": "Content-Type",
-          "value": "text/css"
+          "value": "text/css; charset=utf-8"
         },
         {
           "key": "Cache-Control",
