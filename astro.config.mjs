@@ -21,24 +21,6 @@ export default defineConfig({
 
     vite: {
         plugins: [tailwindcss()],
-        build: {
-            cssCodeSplit: true,
-            rollupOptions: {
-                output: {
-                    manualChunks: {
-                        'vidstack': ['@vidstack/react'],
-                        'zustand': ['zustand'],
-                    }
-                }
-            },
-            minify: 'terser',
-            terserOptions: {
-                compress: {
-                    drop_console: true,
-                    drop_debugger: true,
-                },
-            },
-        },
         ssr: {
             noExternal: ['@vidstack/react']
         }
