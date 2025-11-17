@@ -1,6 +1,7 @@
 import { AnimeService } from '@anime/services'
-import { safeRedisOperation } from '@libs/redis'
 import { rateLimit } from '@middlewares/rate-limit'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
 /**
@@ -16,104 +17,32 @@ import type { APIRoute } from 'astro'
  * to prevent abuse and implements proper error handling for various scenarios including
  * parental control restrictions.
  *
- * The endpoint uses a two-level caching strategy:
- * 1. Redis cache with a TTL of 1 hour
- * 2. In-memory request deduplication to prevent duplicate requests
- *
  * @features
  * - Rate limiting: Prevents API abuse with configurable limits
  * - Caching: Redis-based caching with 1-hour TTL
- * - Request deduplication: Prevents duplicate requests for the same anime
  * - Input validation: Validates ID format
  * - Error handling: Comprehensive error handling with appropriate status codes
  * - Parental control: Blocks content based on parental control settings
- * - Cache headers: Proper cache control headers for CDN and browser caching
  *
  * @param {APIRoute} context - The API context containing request information
  * @param {URL} context.url - The request URL containing query parameters
  * @param {string} context.url.searchParams.get('id') - The anime MAL ID
  * @param {string} context.url.searchParams.get('parentalControl') - Parental control flag
  * @returns {Promise<Response>} A Response object containing the anime data or error message
- *
- * @example
- * // Request
- * GET /api/animes/getAnime?id=21&parentalControl=true
- *
- * // Success Response (200)
- * {
- *   "data": {
- *     "mal_id": 21,
- *     "title": "One Piece",
- *     // ... other anime details
- *   }
- * }
- *
- * // Blocked Response (403)
- * {
- *   "blocked": true,
- *   "message": "This content is blocked by parental controls"
- * }
- *
- * // Error Response (404)
- * {
- *   "error": "Anime not found"
- * }
  */
 
-interface ValidationResult {
-  valid: boolean
-  error?: string
-  idResult?: number
-}
-
-const CACHE_PREFIX = 'anime_'
-const CACHE_TTL = 60 * 60
-
-const pendingRequests = new Map<string, Promise<any>>()
-
-const validateId = (id: string | null): ValidationResult => {
+const validateId = (id: string | null): number => {
   if (!id) {
-    return { valid: false, error: 'ID is required' }
+    throw new Error('ID is required')
   }
 
   const idResult = Number.parseInt(id)
 
   if (Number.isNaN(idResult) || idResult <= 0) {
-    return { valid: false, error: 'Invalid anime ID' }
+    throw new Error('Invalid anime ID')
   }
 
-  return { valid: true, idResult }
-}
-
-const fetchAnimeData = async (id: number, parentalControl = true) => {
-  const cacheKey = `${CACHE_PREFIX}${id}${parentalControl ? '_pc' : ''}`
-
-  const cached = await safeRedisOperation(async (redis) => {
-    return await redis.get(cacheKey)
-  })
-
-  if (cached) return JSON.parse(cached)
-
-  if (pendingRequests.has(cacheKey)) {
-    return pendingRequests.get(cacheKey)!
-  }
-
-  const fetchPromise = AnimeService.getById(id, parentalControl)
-    .then(async (result) => {
-      await safeRedisOperation(async (redis) => {
-        return await redis.set(cacheKey, JSON.stringify(result), {
-          EX: CACHE_TTL,
-        })
-      })
-
-      return result
-    })
-    .finally(() => {
-      pendingRequests.delete(cacheKey)
-    })
-
-  pendingRequests.set(cacheKey, fetchPromise)
-  return fetchPromise
+  return idResult
 }
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
@@ -122,53 +51,27 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam !== 'false'
 
-    const validation = validateId(id)
+    const animeId = validateId(id)
+    const cacheKey = `anime_${animeId}${parentalControl ? '_pc' : ''}`
 
-    if (!validation.valid) {
-      return new Response(JSON.stringify({ error: validation.error }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    }
-
-    const result = await fetchAnimeData(validation.idResult!, parentalControl)
+    const result = await CacheUtils.withCache(
+      cacheKey,
+      () => AnimeService.getById(animeId, parentalControl),
+      { ttl: CacheTTL.ONE_HOUR }
+    )
 
     // Anime bloqueado por control parental
     if (result.blocked) {
-      return new Response(
-        JSON.stringify({
-          blocked: true,
-          message: result.message,
-        }),
-        {
-          status: 403,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      return ResponseBuilder.forbidden(result.message)
     }
 
     // Anime no encontrado
     if (!result.anime) {
-      return new Response(JSON.stringify({ error: 'Anime not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return ResponseBuilder.notFound('Anime not found')
     }
 
-    return new Response(JSON.stringify({ data: result.anime }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    return ResponseBuilder.success({ data: result.anime })
   } catch (error: any) {
-    console.error('[getAnime] Error:', error)
-
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return ResponseBuilder.fromError(error, 'GET /api/animes/getAnime')
   }
 })
