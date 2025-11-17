@@ -36,7 +36,7 @@ export const useSearchBarLogic = () => {
 
   const pathName = window.location.pathname
   const isSearchPage = pathName === '/search'
-  const debouncedQuery = useDebounce(query, 600)
+  const debouncedQuery = useDebounce(query, 500)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useAutoCloseModal(isModalOpen, closeModal, { debounceMs: 500 })
