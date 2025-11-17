@@ -24,7 +24,7 @@
  */
 const getProductionUrl = () => {
   if (globalThis.window === undefined) {
-    return 'https://ani-dev.vercel.app'
+    return 'https://anidev.app'
   }
   return globalThis.window.location.origin
 }
