@@ -1,7 +1,7 @@
-import { checkSession } from '@middlewares/auth'
-import { UserController } from '@user/controlers'
-import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
+import { ResponseBuilder } from '@utils/response-builder'
+import { UserController } from '@user/controlers'
+import { checkSession } from '@middlewares/auth'
 
 export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   try {
@@ -11,6 +11,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
       data,
     })
   } catch (error) {
-    return ResponseBuilder.fromError(error, 'POST /api/updateProfile')
+    return ResponseBuilder.fromError(error, 'POST /api/user/updateProfile')
   }
 })
