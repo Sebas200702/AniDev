@@ -7,8 +7,11 @@ export const ModalContainer = () => {
   const modalRef = useRef<HTMLDivElement>(null)
   const [show, setShow] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
+  const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null)
 
-  const modalRoot = document.getElementById('modal-root')
+  useEffect(() => {
+    setModalRoot(document.getElementById('modal-root'))
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
