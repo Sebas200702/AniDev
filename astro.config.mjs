@@ -31,13 +31,7 @@ export default defineConfig({
                         'zustand': ['zustand'],
                         'framer': ['framer-motion'],
                         'dnd-kit': ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities']
-                    },
-                    assetFileNames: (assetInfo) => {
-                        if (assetInfo.name.endsWith('.css')) {
-                            return 'assets/css/[name]-[hash][extname]';
-                        }
-                        return 'assets/[name]-[hash][extname]';
-                    },
+                    }
                 }
             },
             minify: 'terser',
