@@ -13,6 +13,6 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     })
     return ResponseBuilder.success({ data: session })
   } catch (error) {
-    return ResponseBuilder.fromError(error, 'GET /api/session')
+    return ResponseBuilder.fromError(error, 'GET /api/auth/session')
   }
 }
