@@ -1,3 +1,4 @@
+import { normalizeString } from '@utils/normalize-string';
 import { GenreService } from '@shared/services/genre-service'
 import { baseUrl } from '@shared/utils/base-url'
 import type { APIRoute } from 'astro'
@@ -26,7 +27,7 @@ export const GET: APIRoute = async () => {
     .map(
       (genre) => `
   <url>
-    <loc>${baseUrl}/search?genres=${genre.mal_id}</loc>
+    <loc>${baseUrl}/search?genre_filter==${normalizeString(genre.name, false, false, true)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
