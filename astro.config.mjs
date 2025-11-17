@@ -7,7 +7,7 @@ import auth from 'auth-astro'
 
 export default defineConfig({
     output: 'server',
-    site: 'https://ani-dev.vercel.app',
+    site: 'https://anidev.app',
     adapter: vercel(),
     integrations: [react(), sitemap(), auth()],
     compressHTML: true,
