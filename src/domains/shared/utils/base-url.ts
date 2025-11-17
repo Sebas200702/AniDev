@@ -22,9 +22,16 @@
  * import { baseUrl } from '@utils/base-url';
  * const apiEndpoint = `${baseUrl}/api/animes/full`;
  */
+const getProductionUrl = () => {
+  if (globalThis.window === undefined) {
+    return 'https://ani-dev.vercel.app'
+  }
+  return globalThis.window.location.origin
+}
+
 export const baseUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://ani-dev.vercel.app'
+    ? getProductionUrl()
     : 'http://localhost:4321'
 
 export const baseTitle = 'AniDev - Watch anime online free'
