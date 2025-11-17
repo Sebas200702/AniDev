@@ -1,5 +1,5 @@
 import react from '@astrojs/react'
-import sitemap from '@astrojs/sitemap'
+
 import vercel from '@astrojs/vercel'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
@@ -9,7 +9,7 @@ export default defineConfig({
     output: 'server',
     site: 'https://anidev.app',
     adapter: vercel(),
-    integrations: [react(), sitemap(), auth()],
+    integrations: [react(), auth()],
     compressHTML: true,
     build: {
         inlineStylesheets: 'auto',
