@@ -38,7 +38,7 @@ export const AddToListButton = ({
 
     try {
       if (action.type === 'ADD') {
-        await fetch('/api/watchList', {
+        await fetch('/api/user/watchList', {
           method: 'POST',
           body: JSON.stringify({ animeId: action.animeId, type: 'To Watch' }),
           credentials: 'include',
@@ -53,7 +53,7 @@ export const AddToListButton = ({
         setWatchList(newWatchList)
 
         try {
-          await fetch('/api/watchList', {
+          await fetch('/api/user/watchList', {
             method: 'DELETE',
             body: JSON.stringify({ animeId: action.animeId }),
             credentials: 'include',
