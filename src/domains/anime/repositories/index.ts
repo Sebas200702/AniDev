@@ -82,4 +82,21 @@ export const AnimeRepository = {
 
     return data
   },
+
+  async getAnimeBanner(animeId: number, limitCount: number = 8) {
+    const { data, error } = await supabase.rpc('get_anime_banner', {
+      p_anime_id: animeId,
+      p_limit_count: limitCount,
+    })
+
+    if (error) {
+      throw new Error(`Failed to fetch anime banner: ${error.message}`)
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error('Data not found')
+    }
+
+    return data
+  },
 }
