@@ -81,4 +81,18 @@ export const CharacterRepository = {
 
     return data
   },
+
+  async getCharactersForSitemap(limit: number = 1000) {
+    const { data, error } = await supabase
+      .from('character')
+      .select('slug, updated_at')
+      .order('favorites', { ascending: false })
+      .limit(limit)
+
+    if (error) {
+      throw new Error(`Failed to fetch characters for sitemap: ${error.message}`)
+    }
+
+    return data ?? []
+  },
 }

@@ -141,7 +141,23 @@ export const AnimeService = {
     try {
       return await AnimeRepository.getAnimeBanner(animeId, limitCount)
     } catch (error) {
-      console.error('[AnimeService.getAnimeBanner] Error:', error)
+      console.error('[AnimeService.getById] Error:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Gets animes for sitemap generation
+   *
+   * @param offset - Starting position for pagination
+   * @param limit - Number of items to fetch (default 5000)
+   * @returns List of animes with slug, updated_at, and score
+   */
+  async getAnimesForSitemap(offset: number, limit: number = 5000) {
+    try {
+      return await AnimeRepository.getAnimesForSitemap(offset, limit)
+    } catch (error) {
+      console.error('[AnimeService.getAnimesForSitemap] Error:', error)
       throw error
     }
   },

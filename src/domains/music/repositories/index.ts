@@ -68,4 +68,18 @@ export const MusicRepository = {
 
     return data ?? []
   },
+
+  async getTopMusicForSitemap(limit: number = 1000) {
+    const { data, error } = await supabase
+      .from('music')
+      .select('theme_id, song_title, updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(limit)
+
+    if (error) {
+      throw new Error(`Failed to fetch music for sitemap: ${error.message}`)
+    }
+
+    return data ?? []
+  },
 }

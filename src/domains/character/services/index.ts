@@ -77,4 +77,16 @@ export const CharacterService = {
       throw error
     }
   },
+
+  /**
+   * Get top characters for sitemap generation
+   */
+  async getCharactersForSitemap(limit: number = 1000) {
+    try {
+      return await CharacterRepository.getCharactersForSitemap(limit)
+    } catch (error) {
+      console.error('[CharacterService.getCharactersForSitemap] Error:', error)
+      throw error
+    }
+  },
 }
