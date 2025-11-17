@@ -49,7 +49,6 @@ export const LoadUserPrefences = () => {
     setParentalControl(JSON.parse(savedParentalControl ?? 'true'))
     setTrackSearchHistory(JSON.parse(savedTrackSearchHistory ?? 'true'))
     const fetchWatchList = async () => {
-        console.log(userInfo)
       if (!userInfo) return setWatchList([])
       const watchList = await getWatchList()
       setWatchList(watchList)
