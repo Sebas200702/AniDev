@@ -73,7 +73,9 @@ export const MusicRepository = {
     const { data, error } = await supabase
       .from('music')
       .select('theme_id, song_title')
+      .order('theme_id', { ascending: true })
       .range(offset, offset + limit - 1)
+      .limit(limit)
 
     if (error) {
       throw new Error(`Failed to fetch music for sitemap: ${error.message}`)
