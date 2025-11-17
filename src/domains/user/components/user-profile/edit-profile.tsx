@@ -1,21 +1,21 @@
 import { InputType, ToastType } from '@shared/types'
 import { useEffect, useState } from 'react'
 
-import type { DataImage } from '@anime/types'
 import { AuthInput } from '@auth/components/auth-form/auth-form-input'
-import { toast } from '@pheralb/toast'
-import { EditIcon } from '@shared/components/icons/common/edit-icon'
-import { UserIcon } from '@shared/components/icons/user/user-icon'
-import { Picture } from '@shared/components/media/picture'
-import { useModal } from '@shared/hooks/useModal'
-import { baseUrl } from '@shared/utils/base-url'
 import { ChangeImages } from '@user/components/user-profile/change-images'
-import { useUpdateProfile } from '@user/stores/update-profile'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
-import type { UserInfo } from '@user/types'
-import { uploadImages } from '@utils/upload-images'
-import { Overlay } from 'domains/shared/components/layout/overlay'
+import type { DataImage } from '@anime/types'
+import { EditIcon } from '@shared/components/icons/common/edit-icon'
 import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
+import { Overlay } from 'domains/shared/components/layout/overlay'
+import { Picture } from '@shared/components/media/picture'
+import { UserIcon } from '@shared/components/icons/user/user-icon'
+import type { UserInfo } from '@user/types'
+import { baseUrl } from '@shared/utils/base-url'
+import { toast } from '@pheralb/toast'
+import { uploadImages } from '@utils/upload-images'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useModal } from '@shared/hooks/useModal'
+import { useUpdateProfile } from '@user/stores/update-profile'
 
 export const EditProfile = () => {
   const { userInfo, setUserInfo } = useGlobalUserPreferences()
@@ -90,7 +90,7 @@ export const EditProfile = () => {
         name: userName,
       }
 
-      const response = await fetch('/api/updateProfile', {
+      const response = await fetch('/api/user/updateProfile', {
         method: 'POST',
         body: JSON.stringify(profile),
       })
