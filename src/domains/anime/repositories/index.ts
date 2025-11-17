@@ -68,4 +68,18 @@ export const AnimeRepository = {
       image: anime.main_picture,
     }
   },
+
+  async getUniqueStudios() {
+    const { data, error } = await supabase.rpc('get_unique_studios')
+
+    if (error) {
+      throw new Error(`Failed to fetch studios: ${error.message}`)
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error('No studios found')
+    }
+
+    return data
+  },
 }
