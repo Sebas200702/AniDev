@@ -103,9 +103,10 @@ export const AnimeRepository = {
   async getAnimesForSitemap(offset: number, limit: number = 5000) {
     const { data, error } = await supabase
       .from('anime')
-      .select('mal_id, title, score ')
+      .select('mal_id, title, score')
       .order('score', { ascending: false })
       .range(offset, offset + limit - 1)
+      .limit(limit)
 
     if (error) {
       throw new Error(`Failed to fetch animes for sitemap: ${error.message}`)
