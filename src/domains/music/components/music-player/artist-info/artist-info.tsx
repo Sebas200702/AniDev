@@ -11,7 +11,7 @@ export const ArtistInfoComponent = () => {
 
   const artistName = currentSong?.artist_name ?? ''
   const { data: artist, loading } = useFetch<ArtistInfo>({
-    url: `/getArtistInfo?artistName=${encodeURIComponent(artistName)}`,
+    url: `/artist/getArtistInfo?artistName=${encodeURIComponent(artistName)}`,
     skip: !artistName,
   })
 
