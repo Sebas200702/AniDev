@@ -25,7 +25,7 @@ export const ArtistInfoContainer = ({ name }: Props) => {
     loading: infoLoading,
     error: infoError,
   } = useFetch<ArtistInfoType>({
-    url: `/getArtistInfo?artistName=${name}`,
+    url: `/artist/getArtistInfo?artistName=${name}`,
   })
 
   const {
