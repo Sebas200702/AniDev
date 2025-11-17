@@ -1,50 +1,22 @@
-import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
+import { ArtistController } from '@artist/controlers'
 import { redisConnection } from '@middlewares/redis-connection'
-import { normalizeString } from '@utils/normalize-string'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
-  const artistName = normalizeString(
-    url.searchParams.get('artistName') ?? '',
-    false,
-    true,
-    true
-  )
+  try {
+    const artistName = ArtistController.validateArtistName(url)
+    const cacheKey = CacheUtils.generateKey('artist-info', artistName)
 
-  const cacheKey = `ArtistInfo_${artistName}`
+    const data = await CacheUtils.withCache(
+      cacheKey,
+      () => ArtistController.handleGetArtistInfo(url),
+      { ttl: CacheTTL.ONE_DAY }
+    )
 
-  const cachedData = await safeRedisOperation((client) => client.get(cacheKey))
-  if (cachedData) {
-    return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    return ResponseBuilder.success({ data })
+  } catch (error) {
+    return ResponseBuilder.fromError(error, 'GET /api/getArtistInfo')
   }
-
-  if (!artistName) {
-    return new Response('Artists Name is required', { status: 400 })
-  }
-
-  const { data, error } = await supabase.rpc('get_artist_info', {
-    artist_name: artistName,
-  })
-
-  if (error) {
-    console.error('Error fetching artist info:', error)
-    return new Response(error.message, { status: 500 })
-  }
-
-  await safeRedisOperation((client) =>
-    client.set(cacheKey, JSON.stringify(data[0]), { EX: 60 * 60 * 24 })
-  )
-
-  return new Response(JSON.stringify({ data: data[0] }), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
 })
