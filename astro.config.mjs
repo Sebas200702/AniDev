@@ -23,21 +23,12 @@ export default defineConfig({
         plugins: [tailwindcss()],
         build: {
             cssCodeSplit: true,
-            chunkSizeWarningLimit: 1000,
             rollupOptions: {
                 output: {
-                    manualChunks: (id) => {
-                        if (id.includes('node_modules')) {
-                            if (id.includes('@vidstack')) return 'vidstack';
-                            if (id.includes('react') || id.includes('react-dom')) return 'react-vendor';
-                            if (id.includes('zustand')) return 'zustand';
-                            if (id.includes('framer-motion')) return 'framer';
-                            if (id.includes('@dnd-kit')) return 'dnd-kit';
-                            if (id.includes('@supabase')) return 'supabase';
-                            return 'vendor';
-                        }
-                    },
-                    experimentalMinChunkSize: 20000,
+                    manualChunks: {
+                        'vidstack': ['@vidstack/react'],
+                        'zustand': ['zustand'],
+                    }
                 }
             },
             minify: 'terser',
@@ -45,19 +36,11 @@ export default defineConfig({
                 compress: {
                     drop_console: true,
                     drop_debugger: true,
-                    pure_funcs: ['console.log', 'console.info', 'console.debug'],
-                    passes: 2,
-                },
-                mangle: {
-                    safari10: true,
                 },
             },
         },
         ssr: {
             noExternal: ['@vidstack/react']
-        },
-        optimizeDeps: {
-            exclude: ['@astrojs/react'],
-        },
+        }
     },
 })
