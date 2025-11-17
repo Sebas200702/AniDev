@@ -1,10 +1,10 @@
 import { stepsSignIn, stepsSignUp } from '@auth/utils/steps'
 
-import type { AuthStep } from '@auth/types'
 import { authApiClient } from '@auth/helpers/api-client'
+import type { AuthStep } from '@auth/types'
 import { userApiClient } from '@user/helpers/api-client'
-import { create } from 'zustand'
 import { z } from 'zod'
+import { create } from 'zustand'
 
 type AuthMode = 'signIn' | 'signUp'
 
@@ -22,7 +22,7 @@ interface AuthFormState {
   setGoogleAuth: (isGoogle: boolean) => void
   nextStep: () => void
   prevStep: () => void
-  submit: () => Promise<{ success : boolean, message: string }>
+  submit: () => Promise<{ success: boolean; message: string }>
   reset: () => void
 }
 
@@ -87,10 +87,8 @@ export const useAuthFormStore = create<AuthFormState>((set, get) => ({
         return { success: true, message: 'Login successful 🎉' }
       }
     } catch (err: any) {
-        const message =
-        err instanceof z.ZodError
-          ? err.errors[0]?.message
-          : err.message
+      const message =
+        err instanceof z.ZodError ? err.errors[0]?.message : err.message
       set({ error: message })
       return { success: false, message }
     } finally {
