@@ -1,78 +1,24 @@
-import type { APIRoute } from 'astro'
-import { CharacterFilters } from '@character/types'
-import { getFilters } from '@utils/get-filters-of-search-params'
+import { CharacterController } from '@character/controlers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
-import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cacheKey = `characters:${url.searchParams}`
-      const cached = await safeRedisOperation((client) => client.get(cacheKey))
-      if (cached) {
-        return new Response(JSON.stringify(JSON.parse(cached)), {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      }
+      const cacheKey = CacheUtils.generateKey('characters', url.searchParams)
 
-      const limit = Number.parseInt(url.searchParams.get('limit_count') ?? '20')
-      const page = Number.parseInt(url.searchParams.get('page_number') ?? '1')
-
-      const filters = getFilters(Object.values(CharacterFilters), url, false)
-
-      const { data, error } = await supabase.rpc(
-        'get_characters_list',
-        filters
+      const response = await CacheUtils.withCache(
+        cacheKey,
+        () => CharacterController.handleSearch(url),
+        { ttl: CacheTTL.ONE_DAY }
       )
 
-      const { role_filter, search_query, language_filter } = getFilters(
-        ['role_filter', 'search_query', 'language_filter'],
-        url
-      )
-
-      const { data: count, error: countError } = await supabase.rpc(
-        'get_characters_count',
-        { role_filter, search_query, language_filter }
-      )
-
-      if (countError) {
-        console.error('Error al contar personajes:', countError)
-      }
-
-      if (error) {
-        console.error('Error al obtener los personajes:', error)
-        throw new Error('Ocurrió un error al obtener los personajes.')
-      }
-
-      const response = {
-        total_items: count ?? 0,
-        data,
-        current_page: page,
-        last_page: Math.ceil((count ?? 0) / limit),
-      }
-
-      await safeRedisOperation((client) =>
-        client.set(cacheKey, JSON.stringify(response), { EX: 24 * 60 * 60 })
-      )
-
-      return new Response(JSON.stringify(response), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return ResponseBuilder.success(response)
     } catch (err) {
-      console.error('Error en el endpoint de personajes:', err)
-      return new Response(
-        JSON.stringify({ error: 'Ocurrió un error en el servidor.' }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      return ResponseBuilder.fromError(err, 'GET /api/characters')
     }
   })
 )
