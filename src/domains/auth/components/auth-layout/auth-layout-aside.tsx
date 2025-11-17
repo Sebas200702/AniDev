@@ -15,8 +15,8 @@ export const Aside = ({
     <section className="absolute h-full w-full md:relative overflow-hidden">
       <div className="absolute inset-0 h-full w-full  rounded-md md:static">
         <Picture
-          image={`${baseUrl}/${bgImage}`}
-          placeholder={`${baseUrl}/${bgImage}`}
+          image={`${baseUrl}${bgImage}`}
+          placeholder={`${baseUrl}${bgImage}`}
           styles="w-full h-full "
           alt="background image"
         />
