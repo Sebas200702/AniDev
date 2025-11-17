@@ -45,10 +45,6 @@ export const GET: APIRoute = async () => {
 	</sitemap>`
   ).join('')}
 	<sitemap>
-		<loc>${baseUrl}/sitemap-characters.xml</loc>
-		<lastmod>${lastmod}</lastmod>
-	</sitemap>
-	<sitemap>
 		<loc>${baseUrl}/sitemap-genres.xml</loc>
 		<lastmod>${lastmod}</lastmod>
 	</sitemap>
