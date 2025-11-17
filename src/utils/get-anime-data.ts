@@ -52,9 +52,7 @@ export const getAnimeData = async (
 ): Promise<AnimeResult | undefined> => {
   try {
     const response = await api.get<
-      | { data: Anime }
-      | { blocked: boolean; message: string }
-      | { error: string }
+      Anime | { blocked: boolean; message: string } | { error: string }
     >(`/animes/getAnime?id=${id}&parentalControl=${parentalControl ?? true}`)
 
     // Anime no encontrado
@@ -78,8 +76,7 @@ export const getAnimeData = async (
       return undefined
     }
 
-    const data = response.data as { data: Anime }
-    return { anime: data.data }
+    return { anime: response.data as Anime }
   } catch (error) {
     console.error('[getAnimeData] Error fetching anime:', error)
     return undefined
