@@ -101,17 +101,35 @@ export const AnimeRepository = {
   },
 
   async getAnimesForSitemap(offset: number, limit: number = 5000) {
-    const { data, error } = await supabase
-      .from('anime')
-      .select('mal_id, title, score')
-      .order('score', { ascending: false })
-      .range(offset, offset + limit - 1)
-      .limit(limit)
+    // Supabase has a max limit per request, so we need to batch
+    const BATCH_SIZE = 1000
+    const batches = Math.ceil(limit / BATCH_SIZE)
+    const allData: {mal_id: number; title: string; score: number}[] = []
 
-    if (error) {
-      throw new Error(`Failed to fetch animes for sitemap: ${error.message}`)
+    for (let i = 0; i < batches; i++) {
+      const batchOffset = offset + i * BATCH_SIZE
+      const batchLimit = Math.min(BATCH_SIZE, limit - i * BATCH_SIZE)
+
+      const { data, error } = await supabase
+        .from('anime')
+        .select('mal_id, title, score')
+        .order('score', { ascending: false })
+        .range(batchOffset, batchOffset + batchLimit - 1)
+
+      if (error) {
+        throw new Error(`Failed to fetch animes for sitemap: ${error.message}`)
+      }
+
+      if (data) {
+        allData.push(...data)
+      }
+
+      // Stop if we got less than expected (no more data)
+      if (!data || data.length < batchLimit) {
+        break
+      }
     }
 
-    return data ?? []
+    return allData
   },
 }

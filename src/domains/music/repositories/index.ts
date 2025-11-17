@@ -70,17 +70,35 @@ export const MusicRepository = {
   },
 
   async getMusicForSitemap(offset: number, limit: number = 5000) {
-    const { data, error } = await supabase
-      .from('music')
-      .select('theme_id, song_title')
-      .order('theme_id', { ascending: true })
-      .range(offset, offset + limit - 1)
-      .limit(limit)
+    // Supabase has a max limit per request, so we need to batch
+    const BATCH_SIZE = 1000
+    const batches = Math.ceil(limit / BATCH_SIZE)
+    const allData: { theme_id: number; song_title: string }[] = []
 
-    if (error) {
-      throw new Error(`Failed to fetch music for sitemap: ${error.message}`)
+    for (let i = 0; i < batches; i++) {
+      const batchOffset = offset + i * BATCH_SIZE
+      const batchLimit = Math.min(BATCH_SIZE, limit - i * BATCH_SIZE)
+
+      const { data, error } = await supabase
+        .from('music')
+        .select('theme_id, song_title')
+        .order('theme_id', { ascending: true })
+        .range(batchOffset, batchOffset + batchLimit - 1)
+
+      if (error) {
+        throw new Error(`Failed to fetch music for sitemap: ${error.message}`)
+      }
+
+      if (data) {
+        allData.push(...data)
+      }
+
+      // Stop if we got less than expected (no more data)
+      if (!data || data.length < batchLimit) {
+        break
+      }
     }
 
-    return data ?? []
+    return allData
   },
 }
