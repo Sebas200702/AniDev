@@ -1,63 +1,22 @@
-import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
 import { redisConnection } from '@middlewares/redis-connection'
+import { MusicController } from '@music/controlers'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {
-    const animeId = url.searchParams.get('animeId')
-    const cacheKey = `AnimeMusic_${animeId}`
+    const animeId = MusicController.validateAnimeId(url)
+    const cacheKey = CacheUtils.generateKey('anime-music', String(animeId))
 
-    const cachedData = await safeRedisOperation(async (redis) => {
-      return await redis.get(cacheKey)
-    })
+    const data = await CacheUtils.withCache(
+      cacheKey,
+      () => MusicController.handleGetAnimeMusic(url),
+      { ttl: CacheTTL.ONE_DAY }
+    )
 
-    if (cachedData) {
-      return new Response(JSON.stringify({ data: JSON.parse(cachedData) }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-    }
-
-    if (!animeId) {
-      return new Response(JSON.stringify({ error: 'Anime ID is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    }
-
-    const { data, error } = await supabase
-      .from('music')
-      .select('*')
-      .eq('anime_id', animeId)
-
-    if (error) {
-      console.error('Supabase error:', error)
-      return new Response(JSON.stringify({ error: 'Database error' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    }
-
-    const responseData = JSON.stringify(data)
-
-    await safeRedisOperation(async (redis) => {
-      return await redis.set(cacheKey, responseData, { EX: 60 * 60 * 24 })
-    })
-
-    return new Response(JSON.stringify({ data: data }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    return ResponseBuilder.success({ data })
   } catch (error) {
-    console.error('getAnimeMusic error:', error)
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return ResponseBuilder.fromError(error, 'GET /api/music/getAnimeMusic')
   }
 })
