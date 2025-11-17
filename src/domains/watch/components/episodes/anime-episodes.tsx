@@ -1,8 +1,8 @@
 import { Picture } from '@shared/components/media/picture'
 import { useFetch } from '@shared/hooks/useFetch'
 import type { AnimeEpisode } from '@watch/types'
-import { AnimeEpisodesLoader } from 'domains/watch/components/episodes/anime-episodes-loader'
-import Pagination from 'domains/watch/components/episodes/pagination'
+import { AnimeEpisodesLoader } from '@watch/components/episodes/anime-episodes-loader'
+import {Pagination} from '@watch/components/episodes/pagination'
 import { useEffect, useState } from 'react'
 
 interface Props {
