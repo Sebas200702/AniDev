@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
     .map(
       (genre) => `
   <url>
-    <loc>${baseUrl}/search?genre_filter==${normalizeString(genre.name, false, false, true)}</loc>
+    <loc>${baseUrl}/search?genre_filter=${normalizeString(genre.name, false, false, true)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
