@@ -31,9 +31,12 @@ export const AnimeService = {
    * @param parentalControl - Whether parental control is enabled
    * @returns Random anime data or null if not found
    */
-  async getRandomAnime(userId: string | null, parentalControl: boolean | null) {
+  async getRandomAnime(
+    parentalControl: boolean | null,
+    userId?: string | null
+  ) {
     try {
-      const result = await AnimeRepository.getRandom(userId, parentalControl)
+      const result = await AnimeRepository.getRandom(parentalControl, userId)
 
       if (!result) {
         return null

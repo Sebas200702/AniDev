@@ -8,7 +8,7 @@ export const GET: APIRoute = rateLimit(async ({ url }) => {
     const parentalControl = url.searchParams.get('parental_control') !== 'false'
     const userId = url.searchParams.get('user_id')
 
-    const result = await AnimeService.getRandomAnime(userId, parentalControl)
+    const result = await AnimeService.getRandomAnime(parentalControl, userId)
 
     if (!result) {
       return ResponseBuilder.notFound('No se encontró un anime aleatorio.')

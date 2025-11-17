@@ -4,8 +4,8 @@ import { getRandomAnime } from '@anime/utils/get-random-anime'
 import { supabase } from '@libs/supabase'
 
 export const AnimeRepository = {
-  async getRandom(userId: string | null, parentalControl: boolean | null) {
-    return await getRandomAnime(userId, parentalControl)
+  async getRandom(parentalControl: boolean | null, userId?: string | null) {
+    return await getRandomAnime(parentalControl, 3, userId)
   },
 
   async searchAnime({

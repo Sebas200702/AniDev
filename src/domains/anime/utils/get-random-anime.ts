@@ -2,9 +2,9 @@ import type { RandomAnime } from '@anime/types'
 import { supabase } from '@libs/supabase'
 
 export const getRandomAnime = async (
-  userId: string | null,
-  parentalControl: boolean | null,
-  retryCount = 0
+    parentalControl: boolean | null,
+    retryCount = 0,
+    userId?: string | null,
 ): Promise<RandomAnime> => {
   const MAX_RETRIES = 3
 
@@ -21,7 +21,7 @@ export const getRandomAnime = async (
       console.error('Failed to fetch random anime after retries:', error)
       throw new Error('Unable to fetch random anime recommendation')
     }
-    return await getRandomAnime(userId, parentalControl, retryCount + 1)
+    return await getRandomAnime(parentalControl, retryCount + 1, userId)
   }
 
   const randomAnime = data[0] as RandomAnime
