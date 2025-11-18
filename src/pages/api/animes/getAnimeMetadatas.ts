@@ -19,7 +19,10 @@ export const GET: APIRoute = rateLimit(
 
       return ResponseBuilder.success(metadata)
     } catch (error) {
-      return ResponseBuilder.fromError(error, 'GET /api/animes/getAnimeMetadatas')
+      return ResponseBuilder.fromError(
+        error,
+        'GET /api/animes/getAnimeMetadatas'
+      )
     }
   })
 )
