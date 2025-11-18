@@ -42,7 +42,7 @@ export const ArtistInfoComponent = () => {
           placeholder={artist.image_small_url || artist.alternative_image_url}
           image={artist.image_url || artist.alternative_image_url}
           alt={artist.name}
-          styles=" relative overflow-hidden object-cover object-center max-w-20 max-h-20 rounded-full w-full h-full overflow-hidden"
+          styles=" relative overflow-hidden object-cover object-center w-20 h-20 rounded-full  overflow-hidden"
         />
 
         <header className="z-20 flex flex-col gap-2">
