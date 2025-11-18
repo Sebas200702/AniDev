@@ -28,7 +28,10 @@ export const SearchQueryService = {
   /**
    * Check if search should be skipped (no query and no filters)
    */
-  shouldSkipSearch(debouncedQuery: string, filtersToApply: string | null): boolean {
+  shouldSkipSearch(
+    debouncedQuery: string,
+    filtersToApply: string | null
+  ): boolean {
     return !(Boolean(debouncedQuery) || Boolean(filtersToApply))
   },
 

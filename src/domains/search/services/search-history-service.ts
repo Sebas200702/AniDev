@@ -1,8 +1,8 @@
-import type { SearchHistory } from '@search/types'
-import type { UserInfo } from '@user/types'
 import { api } from '@libs/api'
 import { toast } from '@pheralb/toast'
+import type { SearchHistory } from '@search/types'
 import { ToastType } from '@shared/types'
+import type { UserInfo } from '@user/types'
 
 const STORAGE_KEY = 'searchHistory'
 const MAX_HISTORY_ITEMS = 50

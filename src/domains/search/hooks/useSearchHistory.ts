@@ -1,7 +1,7 @@
+import { SearchHistoryService } from '@search/services/search-history-service'
 import type { SearchHistory } from '@search/types'
 import type { UserInfo } from '@user/types'
-import { SearchHistoryService } from '@search/services/search-history-service'
-import { useEffect, useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 interface UseSearchHistoryParams {
   trackSearchHistory: boolean

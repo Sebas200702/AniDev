@@ -66,7 +66,10 @@ export const SearchUrlService = {
     filters: Record<string, string>
   } {
     try {
-      const urlObj = new URL(url, globalThis.location?.origin || 'http://localhost')
+      const urlObj = new URL(
+        url,
+        globalThis.location?.origin || 'http://localhost'
+      )
       const params = new URLSearchParams(urlObj.search)
 
       const type = urlObj.pathname.replace('/', '') as SearchType
@@ -91,7 +94,10 @@ export const SearchUrlService = {
    */
   updateUrlParam(url: string, key: string, value: string): string {
     try {
-      const urlObj = new URL(url, globalThis.location?.origin || 'http://localhost')
+      const urlObj = new URL(
+        url,
+        globalThis.location?.origin || 'http://localhost'
+      )
       urlObj.searchParams.set(key, value)
       return urlObj.pathname + urlObj.search
     } catch (error) {
@@ -105,7 +111,10 @@ export const SearchUrlService = {
    */
   removeUrlParam(url: string, key: string): string {
     try {
-      const urlObj = new URL(url, globalThis.location?.origin || 'http://localhost')
+      const urlObj = new URL(
+        url,
+        globalThis.location?.origin || 'http://localhost'
+      )
       urlObj.searchParams.delete(key)
       return urlObj.pathname + urlObj.search
     } catch (error) {

@@ -1,9 +1,9 @@
 import type { AnimeDetail } from '@anime/types'
-import type { SearchType, SearchResultData } from '@search/types'
-import { SearchUrlService } from '@search/services/search-url-service'
-import { SearchQueryService } from '@search/services/search-query-service'
-import type { AnimeSongWithImage } from '@music/types'
 import type { Character } from '@character/types'
+import type { AnimeSongWithImage } from '@music/types'
+import { SearchQueryService } from '@search/services/search-query-service'
+import { SearchUrlService } from '@search/services/search-url-service'
+import type { SearchResultData, SearchType } from '@search/types'
 
 /**
  * Get default filters based on search type

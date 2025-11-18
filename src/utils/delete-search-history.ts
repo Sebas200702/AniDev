@@ -1,5 +1,5 @@
-import type { UserInfo } from '@user/types'
 import { SearchHistoryService } from '@search/services/search-history-service'
+import type { UserInfo } from '@user/types'
 
 /**
  * Delete all search history for the current user

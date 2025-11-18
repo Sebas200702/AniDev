@@ -1,5 +1,5 @@
-import type { AppliedFilters, SearchType } from '@search/types'
 import { SearchUrlService } from '@search/services/search-url-service'
+import type { AppliedFilters, SearchType } from '@search/types'
 import { createFiltersToApply } from '@utils/filters-to-apply'
 import { useMemo } from 'react'
 
