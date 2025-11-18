@@ -33,10 +33,10 @@ class RedisConnectionPool {
 
   constructor(config: Partial<RedisPoolConfig> = {}) {
     this.config = {
-      maxConnections: config.maxConnections ?? 10, // Default 10 para manejar proxy de imágenes
-      minConnections: config.minConnections ?? 1, // Mantener 1 conexión lista
+      maxConnections: config.maxConnections ?? 2, // Ultra-conservative: only 2 connections
+      minConnections: config.minConnections ?? 0, // No minimum to avoid wasted connections
       acquireTimeout: config.acquireTimeout ?? 15000, // Default 15s
-      idleTimeout: config.idleTimeout ?? 120000, // Default 2 minutos
+      idleTimeout: config.idleTimeout ?? 30000, // 30s - close idle connections quickly
     }
 
     // Implementar limpieza de conexiones idle
@@ -52,14 +52,11 @@ class RedisConnectionPool {
       socket: {
         host: 'redis-14957.crce181.sa-east-1-2.ec2.redns.redis-cloud.com',
         port: 14957,
-        reconnectStrategy: (retries: number) => {
-          if (retries > 2) return false // Reducido a 2 intentos
-          return Math.min(retries * 1000, 3000)
-        },
-        connectTimeout: 5000, // Reducido timeout
-        keepAlive: true,
+        reconnectStrategy: false, // Disable auto-reconnect to avoid max clients
+        connectTimeout: 10000,
+        keepAlive: false, // Disable keepAlive to reduce connection overhead
       },
-      pingInterval: 60000, // Ping cada minuto para mantener viva la conexión
+      // No pingInterval - reduces Redis Cloud load
     })
 
     // Manejo de errores por cliente
@@ -360,10 +357,10 @@ declare global {
 const redisPool =
   (globalThis as any).__redisPool ??
   new RedisConnectionPool({
-    maxConnections: 10, // Aumentado para proxy de imágenes con alta concurrencia
-    minConnections: 2, // Mantener 2 conexiones siempre listas
-    acquireTimeout: 15000, // 15s timeout para operaciones lentas
-    idleTimeout: 120000, // 2 minutos para evitar crear/destruir conexiones frecuentemente
+    maxConnections: 2, // ULTRA-CONSERVATIVE: Only 2 to avoid Redis Cloud limits
+    minConnections: 0, // No minimum connections
+    acquireTimeout: 15000,
+    idleTimeout: 20000, // Close idle connections after 20s
   })
 
 if (!(globalThis as any).__redisPool) {

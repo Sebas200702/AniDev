@@ -11,7 +11,7 @@ interface CacheOptions {
  */
 class MemoryCache {
   private cache = new Map<string, { data: any; expiresAt: number }>()
-  private maxSize = 200 // Increased to 200 to reduce pressure on Redis
+  private maxSize = 500 // Increased to 500 - rely heavily on memory cache to avoid Redis
 
   set(key: string, data: any, ttlSeconds: number): void {
     // True LRU: delete existing key first to update its position
@@ -211,40 +211,42 @@ export const CacheUtils = {
   ): Promise<{ buffer: Buffer; mimeType: string }> {
     const { ttl = 3600 } = options
 
-    // Level 1: Check memory cache first (fastest, no Redis connection needed)
+    // Level 1: Check memory cache first (PRIMARY - fastest, no Redis needed)
     const memCached = memoryCache.get(key)
     if (memCached) {
       return memCached
     }
 
-    // Level 2: Try Redis cache (but don't block if Redis is slow)
+    // Level 2: Try Redis cache ONLY if connection available (SECONDARY - optional)
+    // Skip Redis if it's causing problems - memory cache is sufficient
+    let fromRedis = false
     try {
       const cached = await this.getBuffer(key)
       if (cached) {
+        fromRedis = true
         // Store in memory for next time
-        memoryCache.set(key, cached, Math.min(ttl, 300)) // Max 5min in memory
+        memoryCache.set(key, cached, Math.min(ttl, 600)) // 10min in memory
         return cached
       }
     } catch (error) {
-      console.warn(
-        '[CacheUtils.withBufferCache] Redis cache check failed, proceeding to fetch:',
-        error
-      )
+      // Redis unavailable - not critical, continue without it
+      console.warn('[Cache] Redis unavailable, using memory-only mode')
     }
 
     // Level 3: Execute function and cache result
     const data = await fetchFn()
 
-    // Store in memory cache immediately (synchronous, fast)
-    memoryCache.set(key, data, Math.min(ttl, 300))
+    // ALWAYS store in memory cache (PRIMARY)
+    memoryCache.set(key, data, Math.min(ttl, 600)) // 10min in memory
 
-    // Store in Redis cache asynchronously (don't wait for it)
-    this.setBuffer(key, data, options).catch((err) => {
-      console.warn(
-        '[CacheUtils.withBufferCache] Background Redis cache failed:',
-        err.message
-      )
-    })
+    // Optionally try to store in Redis (SECONDARY - fire & forget)
+    // Only attempt if we successfully read from Redis before
+    if (fromRedis || Math.random() < 0.1) {
+      // 10% chance to attempt write
+      this.setBuffer(key, data, options).catch(() => {
+        // Silent fail - Redis is optional backup
+      })
+    }
 
     return data
   },
