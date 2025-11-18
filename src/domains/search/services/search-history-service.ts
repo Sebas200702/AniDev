@@ -73,14 +73,18 @@ export const SearchHistoryService = {
       }
 
       const history = await loadFromAPI()
-      toast[ToastType.Success]({
-        text: 'Search history loaded successfully',
-      })
+
       return history
     } catch (error) {
       console.error('[SearchHistoryService.load] Error:', error)
       toast[ToastType.Error]({
         text: 'Failed to load search history',
+        action: {
+          content: 'Retry',
+          onClick: () => {
+            SearchHistoryService.load(userInfo)
+          },
+        },
       })
       return []
     }
