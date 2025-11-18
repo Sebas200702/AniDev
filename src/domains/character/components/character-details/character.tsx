@@ -16,7 +16,7 @@ interface Props {
 
 export const CharacterInfo = ({ slug }: Props) => {
   const [character, setCharacter] = useState<CharacterDetails>()
-  const [about, setAbout] = useState<PersonAbout>()
+  const [about, setAbout] = useState<PersonAbout| null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
