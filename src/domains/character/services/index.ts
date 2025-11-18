@@ -89,4 +89,34 @@ export const CharacterService = {
       throw error
     }
   },
+
+  /**
+   * Get character details with animes by ID
+   */
+  async getCharacterDetails(id: number) {
+    try {
+      const character = await CharacterRepository.getCharacterDetails(id)
+
+      if (!character) {
+        throw new Error('Data not found')
+      }
+
+      return character
+    } catch (error) {
+      console.error('[CharacterService.getCharacterDetails] Error:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Get anime characters by anime ID and language
+   */
+  async getAnimeCharacters(animeId: string, language: string) {
+    try {
+      return await CharacterRepository.getAnimeCharacters(animeId, language)
+    } catch (error) {
+      console.error('[CharacterService.getAnimeCharacters] Error:', error)
+      throw error
+    }
+  },
 }
