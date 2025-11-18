@@ -6,7 +6,7 @@ import type { APIRoute } from 'astro'
 export const GET: APIRoute = rateLimit(async ({ url, request }) => {
   try {
     const rangeHeader = request.headers.get('Range')
-    
+
     const result = await VideoProxyController.handleProxyRequest(
       url,
       url.origin,
