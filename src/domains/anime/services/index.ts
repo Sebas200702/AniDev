@@ -164,4 +164,34 @@ export const AnimeService = {
       throw error
     }
   },
+
+  /**
+   * Get related anime by anime ID
+   *
+   * @param animeId - The anime MAL ID
+   * @returns List of related animes
+   */
+  async getAnimeRelations(animeId: string) {
+    try {
+      return await AnimeRepository.getAnimeRelations(animeId)
+    } catch (error) {
+      console.error('[AnimeService.getAnimeRelations] Error:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Get full anime data with filters
+   *
+   * @param filters - Search filters to apply
+   * @returns Full anime data
+   */
+  async getAnimesFull(filters: Record<string, any>) {
+    try {
+      return await AnimeRepository.getAnimesFull(filters)
+    } catch (error) {
+      console.error('[AnimeService.getAnimesFull] Error:', error)
+      throw error
+    }
+  },
 }
