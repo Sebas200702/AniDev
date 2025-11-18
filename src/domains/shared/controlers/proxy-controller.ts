@@ -1,3 +1,4 @@
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ProxyService } from '@shared/services/proxy-service'
 
 /**
@@ -42,16 +43,57 @@ export const ProxyController = {
   },
 
   /**
-   * Handle proxy request
+   * Handle proxy request with caching and timeout
    */
-  async handleProxy(url: URL) {
+  async handleProxyRequest(
+    url: URL
+  ): Promise<{ buffer: Buffer; mimeType: string }> {
     const { imageUrl, width, quality, format } = this.validateParams(url)
 
-    return await ProxyService.fetchAndOptimize(
-      imageUrl,
-      width > 0 ? width : undefined,
-      quality,
-      format
+    // Generate cache key
+    const cacheKey = CacheUtils.generateKey(
+      'img-proxy',
+      `${imageUrl}:${width}:${quality}:${format}`
     )
+
+    // Add timeout wrapper (20s to give margin before Vercel timeout)
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Proxy timeout ')), 20000)
+    )
+
+    // Try to get from cache or fetch with timeout
+    const resultPromise = CacheUtils.withBufferCache(
+      cacheKey,
+      async () => {
+        return await ProxyService.fetchAndOptimize(
+          imageUrl,
+          width > 0 ? width : undefined,
+          quality,
+          format
+        )
+      },
+      { ttl: CacheTTL.ONE_DAY }
+    )
+
+    const result = await Promise.race([resultPromise, timeoutPromise])
+
+    // Validate result
+    if (!result) {
+      throw new Error('No result from proxy operation')
+    }
+
+    if (!result.buffer || !Buffer.isBuffer(result.buffer)) {
+      throw new Error('Invalid buffer in proxy result')
+    }
+
+    if (result.buffer.length === 0) {
+      throw new Error('Empty buffer in proxy result')
+    }
+
+    if (!result.mimeType) {
+      throw new Error('Missing mimeType in proxy result')
+    }
+
+    return result
   },
 }
