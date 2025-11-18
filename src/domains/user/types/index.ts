@@ -1,5 +1,5 @@
 import type { AnimeCardInfo } from '@anime/types'
-import type { AppliedFilters } from '@search/types'
+
 
 export interface Session {
   name: string | null
