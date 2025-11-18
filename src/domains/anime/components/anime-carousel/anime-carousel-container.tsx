@@ -52,7 +52,6 @@ export const AnimeCarouselContainer = () => {
   }, [resetInterval])
 
   useEffect(() => {
-
     globalThis.addEventListener('keydown', handleKeyDown)
     return () => {
       clearInterval(intervalRef.current!)
