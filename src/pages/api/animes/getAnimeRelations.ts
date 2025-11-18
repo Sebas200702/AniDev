@@ -19,7 +19,10 @@ export const GET: APIRoute = rateLimit(
 
       return ResponseBuilder.success({ data })
     } catch (error) {
-      return ResponseBuilder.fromError(error, 'GET /api/animes/getAnimeRelations')
+      return ResponseBuilder.fromError(
+        error,
+        'GET /api/animes/getAnimeRelations'
+      )
     }
   })
 )
