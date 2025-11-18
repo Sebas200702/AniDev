@@ -55,57 +55,84 @@ export const ProxyService = {
     quality: number = 50,
     format: 'webp' | 'avif' = 'webp'
   ): Promise<{ buffer: Buffer; mimeType: string }> {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15000) // 15s timeout
+
     try {
       // Handle MyAnimeList icon
       const malIcon =
         'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png'
       if (imageUrl === malIcon) {
+        clearTimeout(timeoutId)
         const placeholderBuffer = await ImageRepository.getPlaceholder()
         return this.optimizeImage(placeholderBuffer, width, quality, format)
       }
 
-      // Fetch image with timeout
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10s timeout
-
-      try {
-        const response = await fetch(imageUrl, {
-          signal: controller.signal,
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; AniDevBot/1.0)',
-          },
-        })
-
-        clearTimeout(timeoutId)
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch image: ${response.status}`)
-        }
-
-        // Check content length before downloading
-        const contentLength = response.headers.get('content-length')
-        if (
-          contentLength &&
-          Number.parseInt(contentLength) > 10 * 1024 * 1024
-        ) {
-          throw new Error('Image too large')
-        }
-
-        const arrayBuffer = await response.arrayBuffer()
-        const buffer = Buffer.from(arrayBuffer)
-
-        // Optimize
-        return this.optimizeImage(buffer, width, quality, format)
-      } catch (fetchError: any) {
-        clearTimeout(timeoutId)
-        if (fetchError.name === 'AbortError') {
-          throw new Error('Image fetch timeout')
-        }
-        throw fetchError
+      // Validate URL
+      if (!imageUrl || typeof imageUrl !== 'string') {
+        throw new Error('Invalid image URL')
       }
-    } catch (error) {
-      console.error('[ProxyService.fetchAndOptimize] Error:', error)
-      throw error
+
+      // Fetch image with proper headers to avoid blocks
+      const response = await fetch(imageUrl, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          Accept: 'image/webp,image/avif,image/apng,image/*,*/*;q=0.8',
+          'Accept-Encoding': 'gzip, deflate, br',
+          Referer: 'https://myanimelist.net/',
+        },
+      })
+
+      clearTimeout(timeoutId)
+
+      // Handle errors with fallback to placeholder
+      if (!response.ok) {
+        console.error(
+          `[ProxyService] Fetch failed: ${response.status} for ${imageUrl}`
+        )
+
+        // Use placeholder for errors
+        if (response.status >= 400) {
+          const placeholderBuffer = await ImageRepository.getPlaceholder()
+          return this.optimizeImage(placeholderBuffer, width, quality, format)
+        }
+
+        throw new Error(`HTTP ${response.status}`)
+      }
+
+      // Validate content type
+      const contentType = response.headers.get('content-type')
+      if (contentType && !contentType.startsWith('image/')) {
+        throw new Error(`Invalid content type: ${contentType}`)
+      }
+
+      // Check size before downloading
+      const contentLength = response.headers.get('content-length')
+      if (contentLength && Number.parseInt(contentLength) > 10 * 1024 * 1024) {
+        throw new Error('Image too large')
+      }
+
+      const arrayBuffer = await response.arrayBuffer()
+
+      if (arrayBuffer.byteLength === 0) {
+        throw new Error('Empty response')
+      }
+
+      const buffer = Buffer.from(arrayBuffer)
+
+      // Optimize
+      return this.optimizeImage(buffer, width, quality, format)
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId)
+
+      if (fetchError.name === 'AbortError') {
+        throw new Error('Image fetch timeout')
+      }
+
+      console.error('[ProxyService.fetchAndOptimize] Error:', fetchError)
+      throw fetchError
     }
   },
 }
