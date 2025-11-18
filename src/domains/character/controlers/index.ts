@@ -101,7 +101,10 @@ export const CharacterController = {
   /**
    * Validate anime characters request
    */
-  validateAnimeCharactersParams(url: URL): { animeId: string; language: string } {
+  validateAnimeCharactersParams(url: URL): {
+    animeId: string
+    language: string
+  } {
     const animeId = url.searchParams.get('animeId')
     const language = url.searchParams.get('language')
 
