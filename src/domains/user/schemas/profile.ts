@@ -12,7 +12,7 @@ export const userProfileSchema = z.object({
   frequency: z.string().optional(),
   fanatic_level: z.string().optional(),
   preferred_format: z.string().optional(),
-  watched_animes: z.array(z.string()).optional()
+  watched_animes: z.array(z.string()).optional(),
 })
 
 export type UserProfileSchema = z.infer<typeof userProfileSchema>

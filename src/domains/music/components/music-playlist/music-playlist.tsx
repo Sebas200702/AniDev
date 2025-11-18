@@ -46,11 +46,7 @@ export const MusicPlayList = () => {
     })
   )
 
-
-
   const upcomingList = list.slice(currentSongIndex + 1)
-
-
 
   const handleDragStart = (event: any) => {
     setActiveId(event.active.id)
@@ -71,7 +67,7 @@ export const MusicPlayList = () => {
 
     const newUpcomingList = arrayMove(upcomingList, oldIndex, newIndex)
     const newCompleteList = [
-      ...list.slice(0, currentSongIndex +1),
+      ...list.slice(0, currentSongIndex + 1),
       ...newUpcomingList,
     ]
 
@@ -79,7 +75,7 @@ export const MusicPlayList = () => {
   }
 
   return (
-    <section className="no-scrollbar bg-Complementary  sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll p-4 md:max-h-[700px] md:rounded-xl md:p-6">
+    <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll p-4 md:max-h-[700px] md:rounded-xl md:p-6">
       <header className="mb-10">
         <h2 className="text-lx font-semibold text-zinc-100">
           Currently Playing

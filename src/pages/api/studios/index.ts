@@ -1,9 +1,9 @@
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 
-import type { APIRoute } from 'astro'
 import { AnimeService } from '@anime/services'
-import { ResponseBuilder } from '@utils/response-builder'
 import { rateLimit } from '@middlewares/rate-limit'
+import { ResponseBuilder } from '@utils/response-builder'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async () => {
   try {

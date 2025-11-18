@@ -1,4 +1,3 @@
-
 import { InputBase } from '@shared/components/input'
 import { InputType } from '@shared/types'
 
@@ -12,7 +11,6 @@ interface Props {
   children?: ReactNode
   value?: string | string[]
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-
 }
 
 export const AuthInput = ({
@@ -24,7 +22,6 @@ export const AuthInput = ({
   onChange,
   children,
 }: Props) => {
-
   return (
     <InputBase
       name={name}
@@ -33,7 +30,6 @@ export const AuthInput = ({
       required={required}
       value={value}
       onChange={onChange}
-
     >
       {children}
     </InputBase>

@@ -9,7 +9,7 @@ export function buildContextFromUrl(url: URL): RecommendationContext {
       searchQuery: url.searchParams.get('searchQuery') || undefined,
       currentAnime: {
         title: url.searchParams.get('currentAnimeTitle') || '',
-        mal_id:  parseInt(url.searchParams.get('currentAnimeId') || '')
+        mal_id: parseInt(url.searchParams.get('currentAnimeId') || ''),
       },
       mood: url.searchParams.get('mood') || undefined,
       referenceAnime: url.searchParams.get('referenceAnime') || undefined,

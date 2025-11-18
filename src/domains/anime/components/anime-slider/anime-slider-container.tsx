@@ -1,11 +1,11 @@
-import type { AnimeCardInfo } from '@anime/types'
 import { AnimeSlider } from '@anime/components/anime-slider/anime-slider'
 import { AnimeSliderLoader } from '@anime/components/anime-slider/anime-slider-loader'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import type { AnimeCardInfo } from '@anime/types'
 import { createGroups } from '@anime/utils/create-groups'
+import { DataWrapper } from '@shared/components/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useHorizontalScroll } from '@shared/hooks/useHorizontalScroll'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
 
 interface Props {
   url: string
@@ -24,8 +24,7 @@ export const AnimeSliderContainer = ({ url, title, context }: Props) => {
 
   const { data, loading, error, refetch } = useFetch<AnimeCardInfo[]>({
     url: url + `&parental_control=${parentalControl}`,
-    skip:  parentalControl == null
-
+    skip: parentalControl == null,
   })
 
   const groups = createGroups(data, windowWidth, context)

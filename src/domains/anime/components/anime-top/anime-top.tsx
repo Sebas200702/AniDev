@@ -1,5 +1,5 @@
-import type { AnimeTopInfo } from '@anime/types'
 import { AnimeTopItem } from '@anime/components/anime-top/anime-top-item'
+import type { AnimeTopInfo } from '@anime/types'
 
 interface Props {
   animes: AnimeTopInfo[]

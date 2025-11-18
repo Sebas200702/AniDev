@@ -1,7 +1,7 @@
-import type { APIRoute } from 'astro'
 import { AuthController } from '@auth/controlers'
-import { ResponseBuilder } from '@utils/response-builder'
 import { rateLimit } from '@middlewares/rate-limit'
+import { ResponseBuilder } from '@utils/response-builder'
+import type { APIRoute } from 'astro'
 
 export const POST: APIRoute = rateLimit(async ({ request, cookies }) => {
   try {

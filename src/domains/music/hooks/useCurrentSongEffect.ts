@@ -1,7 +1,7 @@
-import type { MediaPlayerInstance } from '@vidstack/react'
-import { normalizeString } from '@utils/normalize-string'
-import { useEffect } from 'react'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { normalizeString } from '@utils/normalize-string'
+import type { MediaPlayerInstance } from '@vidstack/react'
+import { useEffect } from 'react'
 
 type ChangingRefs = {
   isChangingSong: boolean

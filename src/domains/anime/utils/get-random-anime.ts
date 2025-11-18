@@ -2,9 +2,9 @@ import type { RandomAnime } from '@anime/types'
 import { supabase } from '@libs/supabase'
 
 export const getRandomAnime = async (
-    parentalControl: boolean | null,
-    retryCount = 0,
-    userId?: string | null,
+  parentalControl: boolean | null,
+  retryCount = 0,
+  userId?: string | null
 ): Promise<RandomAnime> => {
   const MAX_RETRIES = 3
 

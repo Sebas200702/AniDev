@@ -6,7 +6,16 @@ export interface AuthStep {
   description: string
   fields: Field[]
 }
-type FieldType = 'text' | 'email' | 'password' | 'date' | 'select' | 'checkbox' | 'image' | 'button'| 'google'
+type FieldType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'date'
+  | 'select'
+  | 'checkbox'
+  | 'image'
+  | 'button'
+  | 'google'
 
 export interface Field {
   name: string

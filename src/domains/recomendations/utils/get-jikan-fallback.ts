@@ -1,5 +1,5 @@
-import type { JikanRecommendations } from '@recomendations/types'
 import { recommendationsRepository } from '@recomendations/repositories'
+import type { JikanRecommendations } from '@recomendations/types'
 import { shuffleArray } from '@utils/shuffle-array'
 
 export async function getJikanFallback(

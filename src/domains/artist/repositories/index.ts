@@ -1,5 +1,5 @@
-import { normalizeString } from '@utils/normalize-string'
 import { supabase } from '@libs/supabase'
+import { normalizeString } from '@utils/normalize-string'
 
 export const ArtistRepository = {
   async getArtistInfo(artistName: string) {

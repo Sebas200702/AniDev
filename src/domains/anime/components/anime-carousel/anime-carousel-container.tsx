@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
-import type { AnimeBannerInfo } from '@anime/types'
 import { AnimeCarousel } from '@anime/components/anime-carousel/anime-carousel'
-import { DataWrapper } from '@shared/components/data-wrapper'
-import { LoadingCarousel } from './anime-carousel-loader'
-import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
 import { useCarouselScroll } from '@anime/hooks/useCarouselScroll'
 import { useCarouselStore } from '@anime/stores/carousel-store'
+import type { AnimeBannerInfo } from '@anime/types'
+import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
+import { DataWrapper } from '@shared/components/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
+import { LoadingCarousel } from './anime-carousel-loader'
 
 export const AnimeCarouselContainer = () => {
   const { banners, setBanners, currentIndex, setCurrentIndex } =
@@ -64,7 +64,7 @@ export const AnimeCarouselContainer = () => {
       data={banners}
       loadingFallback={<LoadingCarousel />}
       noDataFallback={<LoadingCarousel />}
-      onRetry={refetch} 
+      onRetry={refetch}
     >
       {() => (
         <AnimeCarousel

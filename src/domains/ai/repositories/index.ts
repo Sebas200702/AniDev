@@ -1,8 +1,7 @@
-import { model } from '@libs/gemini'
 import { type Tool } from '@google/generative-ai'
+import { model } from '@libs/gemini'
 
 export const aiRepository = {
-
   async generateText(prompt: string): Promise<string> {
     try {
       const response = await model.generateContent(prompt)
@@ -12,7 +11,6 @@ export const aiRepository = {
       return ''
     }
   },
-
 
   async generateJSON<T>(prompt: string): Promise<T | null> {
     try {
@@ -28,7 +26,6 @@ export const aiRepository = {
       return null
     }
   },
-
 
   async summarizeText(content: string): Promise<string> {
     const prompt = `Resume el siguiente texto en 3 líneas o menos:\n\n${content}`

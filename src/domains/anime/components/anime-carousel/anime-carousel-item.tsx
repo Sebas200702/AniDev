@@ -9,7 +9,6 @@ interface CarouselItemProps {
   index: number
 }
 
-
 export const CarouselItem = ({ anime, index }: CarouselItemProps) => {
   return (
     <li

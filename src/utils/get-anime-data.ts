@@ -1,6 +1,6 @@
+import { navigate } from 'astro:transitions/client'
 import type { Anime } from '@anime/types'
 import { api } from '@libs/api'
-import { navigate } from 'astro:transitions/client'
 
 export interface AnimeResult {
   anime?: Anime

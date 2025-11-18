@@ -22,7 +22,8 @@ class RedisConnectionPool {
   private pool: ExtendedRedisClient[] = []
   private availableConnections: ExtendedRedisClient[] = []
   private readonly busyConnections: Set<ExtendedRedisClient> = new Set()
-  private readonly connectionLastUsed: Map<ExtendedRedisClient, number> = new Map()
+  private readonly connectionLastUsed: Map<ExtendedRedisClient, number> =
+    new Map()
   private readonly config: RedisPoolConfig
   private isShuttingDown = false
   private idleCleanupInterval: NodeJS.Timeout | null = null
@@ -286,7 +287,7 @@ const redisPool =
   })
 
 if (!(globalThis as any).__redisPool) {
-  (globalThis as any).__redisPool = redisPool
+  ;(globalThis as any).__redisPool = redisPool
 
   try {
     await redisPool.initialize()

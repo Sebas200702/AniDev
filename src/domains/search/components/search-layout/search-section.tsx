@@ -6,9 +6,9 @@ import { AppliedFiltersComponent } from '@search/components/search-filters/appli
 import { FilterSection } from '@search/components/search-filters/filter-section'
 import { SearchHistoryModal } from '@search/components/search-history/search-history-modal'
 import { SearchResults } from '@search/components/search-results/search-results'
-import { SearchResultsErrorBoundary } from '@shared/components/ui/error-boundary'
 import { SearchStats } from '@search/components/search-stats/search-stats'
 import { useSearchStoreResults } from '@search/stores/search-results-store'
+import { SearchResultsErrorBoundary } from '@shared/components/ui/error-boundary'
 import { useUrlSync } from '@shared/hooks/useUrlSync'
 
 /**

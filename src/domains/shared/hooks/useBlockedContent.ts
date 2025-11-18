@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import type { Anime } from '@anime/types'
-import { BlockedContent } from '@shared/components/ui/blocked-content'
-import { ToastType } from '@shared/types'
 import { navigate } from 'astro:transitions/client'
+import type { Anime } from '@anime/types'
 import { toast } from '@pheralb/toast'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { BlockedContent } from '@shared/components/ui/blocked-content'
 import { useModal } from '@shared/hooks/useModal'
+import { ToastType } from '@shared/types'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
 
 /**
  * Custom hook para manejar la lógica de contenido bloqueado por control parental
@@ -73,7 +73,6 @@ export const useBlockedContent = ({
         }
 
         const { anime, blocked, message } = response
-
 
         if (blocked) {
           setIsBlocked(true)

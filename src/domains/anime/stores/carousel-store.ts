@@ -31,7 +31,6 @@ interface CarouselStore {
   setLoading: (loading: boolean) => void
   currentIndex: number
   setCurrentIndex: (index: number) => void
-
 }
 
 export const useCarouselStore = create<CarouselStore>((set) => ({
@@ -43,5 +42,4 @@ export const useCarouselStore = create<CarouselStore>((set) => ({
   setLoading: (loading: boolean) => set({ loading }),
   currentIndex: 0,
   setCurrentIndex: (index: number) => set({ currentIndex: index }),
-
 }))

@@ -13,9 +13,9 @@ import {
   typeMusic,
   yearOptions,
 } from '@search/utils/constants'
+import { studioOptions } from '@search/utils/create-studios-options'
 import { useWindowWidth } from '@shared/hooks/window-width'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { studioOptions } from '@search/utils/create-studios-options'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 import { useCallback, useState } from 'react'
 

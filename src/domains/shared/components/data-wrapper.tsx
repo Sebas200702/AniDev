@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 
-import { ErrorBoundary } from '@shared/components/error-boundary'
-import type { ReactNode } from 'react'
-import { ToastType } from '@shared/types'
 import { toast } from '@pheralb/toast'
+import { ErrorBoundary } from '@shared/components/error-boundary'
+import { ToastType } from '@shared/types'
+import type { ReactNode } from 'react'
 
 interface DataWrapperProps<T> {
   data?: T

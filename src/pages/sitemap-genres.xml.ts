@@ -1,6 +1,6 @@
-import { normalizeString } from '@utils/normalize-string';
 import { GenreService } from '@shared/services/genre-service'
 import { baseUrl } from '@shared/utils/base-url'
+import { normalizeString } from '@utils/normalize-string'
 import type { APIRoute } from 'astro'
 
 /**

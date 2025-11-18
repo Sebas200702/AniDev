@@ -28,7 +28,7 @@ export const Main = ({
   isFirstStep,
 }: Props) => {
   return (
-    <section className="bg-Complementary/50 z-10 flex h-full w-full flex-col  rounded-md  backdrop-blur-sm ">
+    <section className="bg-Complementary/50 z-10 flex h-full w-full flex-col rounded-md backdrop-blur-sm">
       <form
         onSubmit={(e) => {
           if (isLastStep) {
@@ -38,7 +38,7 @@ export const Main = ({
           e.preventDefault()
           onNext()
         }}
-        className="flex flex-col w-full h-full md:p-8 p-4"
+        className="flex h-full w-full flex-col p-4 md:p-8"
       >
         <div className="flex-1">
           <StepContent step={step} />

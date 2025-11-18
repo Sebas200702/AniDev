@@ -1,8 +1,8 @@
 import { AnimeInfo } from '@anime/components/anime-info/anime-info'
 import { AnimeLoader } from '@anime/components/anime-info/anime-info-loader'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { getAnimeData } from '@utils/get-anime-data'
 import { useBlockedContent } from '@shared/hooks/useBlockedContent'
+import { getAnimeData } from '@utils/get-anime-data'
 
 interface Props {
   id: number
@@ -14,7 +14,6 @@ export const AnimeInfoContainer = ({ id }: Props) => {
       id,
       getAnimeData,
     })
-
 
   if (!isMounted) return null
 

@@ -1,6 +1,6 @@
 /**
  * Script de Prueba para MetadataService
- * 
+ *
  * Este script puede ser usado para verificar que el MetadataService
  * funciona correctamente antes de implementarlo en producción.
  */
@@ -87,7 +87,8 @@ async function testMetadataService() {
     const invalidMetadata = await MetadataService.getAnimeMetadata(999999999)
     console.log('✅ Fallback Success:', {
       title: invalidMetadata.title,
-      isDefault: invalidMetadata.title === MetadataService.getDefaultMetadata().title,
+      isDefault:
+        invalidMetadata.title === MetadataService.getDefaultMetadata().title,
     })
   } catch (error) {
     console.error('❌ Error:', error)

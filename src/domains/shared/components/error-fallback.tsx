@@ -6,7 +6,7 @@ export const ErrorFallback = ({
   resetError?: () => void
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-Primary-800 bg-Primary-950 p-6 text-center text-white shadow-lg">
+    <div className="border-Primary-800 bg-Primary-950 flex flex-col items-center justify-center gap-4 rounded-xl border p-6 text-center text-white shadow-lg">
       <h2 className="text-xl font-bold text-red-400">
         Something went wrong 😢
       </h2>

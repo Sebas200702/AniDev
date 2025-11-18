@@ -58,4 +58,3 @@ export const Indicator = memo(
     )
   }
 )
-

@@ -15,4 +15,3 @@ export const signUpSchema = z.object({
 })
 
 export type SignUpSchema = z.infer<typeof signUpSchema>
-

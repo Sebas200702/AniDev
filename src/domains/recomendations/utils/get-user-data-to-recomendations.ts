@@ -28,7 +28,7 @@ const userPlaceholder = {
 }
 
 export const getUserDataToRecomendations = async (
-  userId: string | null | undefined,
+  userId: string | null | undefined
 ) => {
   if (!userId) {
     return {

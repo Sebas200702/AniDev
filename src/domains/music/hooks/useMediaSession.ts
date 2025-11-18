@@ -1,9 +1,9 @@
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import type { AnimeSongWithImage } from '@music/types'
-import type { MediaPlayerInstance } from '@vidstack/react'
 import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
 import { normalizeString } from '@utils/normalize-string'
+import type { MediaPlayerInstance } from '@vidstack/react'
 import { useEffect } from 'react'
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
 
 type ChangingRefs = {
   isChangingSong: boolean

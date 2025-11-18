@@ -2,19 +2,19 @@
 import '@shared/styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import { SearchBar } from '@search/components/search-global/search-bar'
+import Footer from '@shared/components/layout/footer.astro'
+import NavBar from '@shared/components/layout/nav-bar/nav-bar.astro'
 import { LoadWindowWidth } from '@shared/components/ui/load-window-width'
 import { ProgressBar } from '@shared/components/ui/progres-bar'
 import { MetadataService } from '@shared/services/metadata-service'
 import { baseTitle, baseUrl } from '@shared/utils/base-url'
 import { LoadUserPrefences } from '@user/components/user-settings/load-user-preferences'
 import { AstroFont } from 'astro-font'
-import Footer from '@shared/components/layout/footer.astro'
-import NavBar from '@shared/components/layout/nav-bar/nav-bar.astro'
 import '@shared/styles/fade-out.css'
-import { CustomToaster } from '@shared/components/ui/custom-toaster'
 import { MusicPlayerContainer } from '@music/components/music-player/music-player-container'
 import { AsideNav } from '@shared/components/layout/aside'
 import { ModalContainer } from '@shared/components/modal/modal-container'
+import { CustomToaster } from '@shared/components/ui/custom-toaster'
 
 interface Props {
   animeId?: number

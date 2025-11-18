@@ -16,7 +16,7 @@ interface Props {
 
 export const CharacterInfo = ({ slug }: Props) => {
   const [character, setCharacter] = useState<CharacterDetails>()
-  const [about, setAbout] = useState<PersonAbout| null>(null)
+  const [about, setAbout] = useState<PersonAbout | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +42,7 @@ export const CharacterInfo = ({ slug }: Props) => {
     fetchFormatAbout()
   }, [character])
 
-  if (!character ) {
+  if (!character) {
     return <CharacterLoader />
   }
 

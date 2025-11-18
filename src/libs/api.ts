@@ -4,7 +4,7 @@ export interface ApiResponse<T> {
   data: T | null
   status: number
   error?: Error
-  meta?: Record<string, any> 
+  meta?: Record<string, any>
 }
 
 class Api {
@@ -40,14 +40,11 @@ class Api {
         return { data: null, status, error: json.message || res.statusText }
       }
 
-
       if (
         json &&
         typeof json === 'object' &&
         'data' in json &&
-        ('total_items' in json ||
-          'current_page' in json ||
-          'last_page' in json)
+        ('total_items' in json || 'current_page' in json || 'last_page' in json)
       ) {
         const { data, ...meta } = json
         return { data, meta, status }

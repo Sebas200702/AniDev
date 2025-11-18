@@ -7,7 +7,7 @@ import { AnimeSimilarToLoader } from './anime-info-similar-to-loader'
 interface Props {
   loading: boolean
   data: AnimeCardInfo[]
-  error: Error 
+  error: Error
 }
 export const AnimeSimilarTo = ({ loading, data, error }: Props) => {
   return (

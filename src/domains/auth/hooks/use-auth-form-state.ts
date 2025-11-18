@@ -1,6 +1,5 @@
 import { useAuthFormStore } from '@auth/stores/auth-store'
 
-
 export const useAuthFormState = () => {
   const {
     mode,

@@ -19,7 +19,6 @@ export const useSearchHistory = (
       (!query && Object.keys(appliedFilters).length === 0)
     )
       return
-
   }, [searchHistory, trackSearchHistory, query, appliedFilters, userInfo])
 
   // Cargar historial

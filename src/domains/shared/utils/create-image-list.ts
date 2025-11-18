@@ -17,7 +17,6 @@ export const createImage = ({
   maxWidth,
 })
 
-
 export const createAnimeImageList = ({
   title,
   posterImage,
@@ -51,7 +50,6 @@ export const createAnimeImageList = ({
 
   return images
 }
-
 
 export const createSingleImageList = ({
   src,

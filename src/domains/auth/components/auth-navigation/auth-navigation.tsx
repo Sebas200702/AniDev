@@ -25,10 +25,10 @@ export const AuthNavigation = ({
           type="button"
           onClick={onPrev}
           disabled={loading}
-          className="group flex items-center gap-2 px-4 py-2 text-sm font-medium text-Primary-300 hover:text-enfasisColor transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="group text-Primary-300 hover:text-enfasisColor flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <svg
-            className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5"
+            className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -50,13 +50,13 @@ export const AuthNavigation = ({
           {Array.from({ length: 3 }, (_, i) => (
             <div
               key={i}
-              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+              className={`h-2 w-2 rounded-full transition-colors duration-300 ${
                 i + 1 <= currentStep ? 'bg-enfasisColor' : 'bg-Primary-600/30'
               }`}
             />
           ))}
         </div>
-        <span className="text-xs text-Primary-400 font-medium">
+        <span className="text-Primary-400 text-xs font-medium">
           {currentStep} of 3
         </span>
       </div>
@@ -66,12 +66,12 @@ export const AuthNavigation = ({
         <button
           type="submit"
           disabled={loading}
-          className="group flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-enfasisColor to-enfasisColor/80 text-white text-sm font-medium rounded-lg hover:from-enfasisColor/90 hover:to-enfasisColor/70 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-enfasisColor/25"
+          className="group from-enfasisColor to-enfasisColor/80 hover:from-enfasisColor/90 hover:to-enfasisColor/70 hover:shadow-enfasisColor/25 flex items-center gap-2 rounded-lg bg-gradient-to-r px-6 py-2 text-sm font-medium text-white shadow-lg transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? (
             <>
               <svg
-                className="w-4 h-4 animate-spin"
+                className="h-4 w-4 animate-spin"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -95,7 +95,7 @@ export const AuthNavigation = ({
             <>
               {isSignUp ? 'Create account' : 'Sign in'}
               <svg
-                className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -114,12 +114,12 @@ export const AuthNavigation = ({
         <button
           type="submit"
           disabled={loading}
-          className="group flex items-center gap-2 px-6 py-2 bg-enfasisColor/10 text-enfasisColor text-sm font-medium rounded-lg hover:bg-enfasisColor/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-enfasisColor/30 hover:border-enfasisColor/50"
+          className="group bg-enfasisColor/10 text-enfasisColor hover:bg-enfasisColor/20 border-enfasisColor/30 hover:border-enfasisColor/50 flex items-center gap-2 rounded-lg border px-6 py-2 text-sm font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? (
             <>
               <svg
-                className="w-4 h-4 animate-spin"
+                className="h-4 w-4 animate-spin"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -143,7 +143,7 @@ export const AuthNavigation = ({
             <>
               Next
               <svg
-                className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

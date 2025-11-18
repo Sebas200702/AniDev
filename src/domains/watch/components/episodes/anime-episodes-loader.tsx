@@ -1,4 +1,4 @@
-import {Pagination} from '@watch/components/episodes/pagination'
+import { Pagination } from '@watch/components/episodes/pagination'
 
 /**
  * AnimeEpisodesLoader component displays a loading state for anime episodes list.
@@ -40,17 +40,15 @@ export const AnimeEpisodesLoader = ({
   return (
     <div className="z-10 h-full w-full p-2">
       <div className="anime-list custom-scrollbar relative grid max-h-[500px] w-full grid-cols-1 gap-4 overflow-y-auto p-2 md:grid-cols-3 md:overflow-y-auto xl:mt-0 xl:max-h-[90%] xl:grid-cols-1 xl:overflow-y-auto">
-        {new Array(10)
-          .fill(0)
-          .map((_, i) => (
-            <div
-              className="flex h-full w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-700 p-2 transition-all duration-300 ease-in-out md:max-w-[400px]"
-              key={i + 1}
-            >
-              <div className="aspect-[16/9] h-full w-full animate-pulse rounded-md bg-zinc-800 object-cover transition-all duration-200 ease-in-out"></div>
-              <div className="h-8 w-full animate-pulse rounded-md bg-zinc-800 transition-all duration-200 ease-in-out"></div>
-            </div>
-          ))}
+        {new Array(10).fill(0).map((_, i) => (
+          <div
+            className="flex h-full w-full animate-pulse flex-col gap-4 rounded-lg bg-zinc-700 p-2 transition-all duration-300 ease-in-out md:max-w-[400px]"
+            key={i + 1}
+          >
+            <div className="aspect-[16/9] h-full w-full animate-pulse rounded-md bg-zinc-800 object-cover transition-all duration-200 ease-in-out"></div>
+            <div className="h-8 w-full animate-pulse rounded-md bg-zinc-800 transition-all duration-200 ease-in-out"></div>
+          </div>
+        ))}
       </div>
       <div className={`w-full ${totalPages > 1 ? '' : 'hidden'}`}>
         <Pagination

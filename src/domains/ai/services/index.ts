@@ -1,5 +1,5 @@
-import type { Tool } from '@google/generative-ai'
 import { aiRepository } from '@ai/repositories'
+import type { Tool } from '@google/generative-ai'
 
 export const aiService = {
   /**

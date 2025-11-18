@@ -82,8 +82,6 @@ export const orderByOptions: FilterOption[] = [
   { value: 'title', label: 'Z-A ' },
 ]
 
-
-
 export const studioOptions: FilterOption[] = studios.map((studio) => ({
   value: studio.toLowerCase(),
   label: studio,

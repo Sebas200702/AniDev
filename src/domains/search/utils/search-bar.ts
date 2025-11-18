@@ -1,6 +1,6 @@
 import type { AnimeDetail } from '@anime/types'
-import type { AnimeSongWithImage } from '@music/types'
 import type { Character } from '@character/types'
+import type { AnimeSongWithImage } from '@music/types'
 import { SearchType } from '@search/types'
 
 export const getDefaultFilters = (

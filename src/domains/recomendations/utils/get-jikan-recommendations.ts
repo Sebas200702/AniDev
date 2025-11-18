@@ -23,7 +23,6 @@ interface JikanRecommendationsResponse {
   data: JikanRecommendation[]
 }
 
-
 export const fetchJikanRecommendations = async (
   malId: string
 ): Promise<{

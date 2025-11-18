@@ -1,9 +1,9 @@
 import { excludeCurrent, sanitizeIds } from '@recomendations/utils/filter-utils'
 
+import { recommendationsRepository } from '@recomendations/repositories'
 import type { FetchRecommendationProps } from '@recomendations/types'
 import { getAlternativeFallback } from '@recomendations/utils/get-alternative-fallback'
 import { getJikanFallback } from '@recomendations/utils/get-jikan-fallback'
-import { recommendationsRepository } from '@recomendations/repositories'
 import { shuffleArray } from '@utils/shuffle-array'
 
 export const fetchRecomendations = async ({

@@ -48,7 +48,7 @@ export const UserController = {
    */
   async handleRemoveFromWatchList(request: Request, cookies: AstroCookies) {
     const userInfo = await this.getUserFromSession(request, cookies)
-    const userId = userInfo.id 
+    const userId = userInfo.id
     const body = await request.json()
     const { animeId } = body
 

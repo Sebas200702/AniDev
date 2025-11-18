@@ -9,6 +9,6 @@ export async function pickAnimeForJikan(userProfile: UserProfile) {
   const idx = Math.floor(Math.random() * favs.mal_ids.length)
   return {
     selectedFavoriteTitle: favs.matchedTitles[idx],
-    selectedFavoriteId: favs.mal_ids[idx]
+    selectedFavoriteId: favs.mal_ids[idx],
   }
 }

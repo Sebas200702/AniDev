@@ -1,15 +1,10 @@
 import { type SignInSchema, signInSchema } from '@auth/schemas/sigin'
-import {
-  type SignUpSchema,
-  signUpSchema,
-} from '@auth/schemas/signup'
+import { type SignUpSchema, signUpSchema } from '@auth/schemas/signup'
 import { api } from '@libs/api'
 
 export const authService = {
-  async signUp(
-    values:  SignUpSchema,
-  ) {
-    const schema =  signUpSchema
+  async signUp(values: SignUpSchema) {
+    const schema = signUpSchema
     const parsed = schema.parse(values)
 
     const res = await api.post('/auth/signup', parsed)

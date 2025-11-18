@@ -1,5 +1,5 @@
-import { MainInfo } from 'domains/shared/components/layout/base/MainInfo'
 import type { PersonAbout } from '@user/types'
+import { MainInfo } from 'domains/shared/components/layout/base/MainInfo'
 
 interface Props {
   about: PersonAbout

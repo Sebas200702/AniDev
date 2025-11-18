@@ -39,7 +39,7 @@ export enum InputType {
   EMAIL = 'email',
   PASSWORD = 'password',
   FILE = 'file',
-  DATE= 'date'
+  DATE = 'date',
 }
 
 export type HTMLInputTypeAttribute =

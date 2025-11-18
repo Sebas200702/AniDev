@@ -47,7 +47,3 @@ export const useFieldRendering = () => {
     isGoogleAuth,
   }
 }
-
-
-
-

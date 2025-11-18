@@ -40,7 +40,7 @@ export const AnimeCharacterList = ({
           loading={isLoading}
           error={error}
           noDataFallback={
-            <div className="text-gray-400 p-6 text-center">
+            <div className="p-6 text-center text-gray-400">
               No characters found
             </div>
           }

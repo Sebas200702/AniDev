@@ -1,9 +1,9 @@
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 
-import type { APIRoute } from 'astro'
 import { ArtistController } from '@artist/controlers'
-import { ResponseBuilder } from '@utils/response-builder'
 import { redisConnection } from '@middlewares/redis-connection'
+import { ResponseBuilder } from '@utils/response-builder'
+import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {

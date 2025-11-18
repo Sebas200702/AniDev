@@ -1,15 +1,15 @@
-import { useAutoCloseModal } from '@shared/hooks/useAutoCloseModal'
-import { useDebounce } from '@search/stores/useDebounce'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { useModal } from '@shared/hooks/useModal'
-import { useRef } from 'react'
 import { useSearchFilters } from '@search/hooks/useSearchFilters'
 import { useSearchHistory } from '@search/hooks/useSearchHistory'
 import { useSearchInput } from '@search/hooks/useSearchInput'
 import { useSearchResults } from '@search/hooks/useSearchResults'
 import { useSearchShortcuts } from '@search/hooks/useSearchShortcuts'
-import { useSearchStoreResults } from '@search/stores/search-results-store'
 import { useSearchUrl } from '@search/hooks/useSearchUrl'
+import { useSearchStoreResults } from '@search/stores/search-results-store'
+import { useDebounce } from '@search/stores/useDebounce'
+import { useAutoCloseModal } from '@shared/hooks/useAutoCloseModal'
+import { useModal } from '@shared/hooks/useModal'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useRef } from 'react'
 
 export const useSearchBarLogic = () => {
   const {

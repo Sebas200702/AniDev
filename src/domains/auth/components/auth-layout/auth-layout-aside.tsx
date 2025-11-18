@@ -12,8 +12,8 @@ export const Aside = ({
   isSignUp: boolean
 }) => {
   return (
-    <section className="absolute h-full w-full md:relative overflow-hidden">
-      <div className="absolute inset-0 h-full w-full  rounded-md md:static">
+    <section className="absolute h-full w-full overflow-hidden md:relative">
+      <div className="absolute inset-0 h-full w-full rounded-md md:static">
         <Picture
           image={`${baseUrl}${bgImage}`}
           placeholder={`${baseUrl}${bgImage}`}

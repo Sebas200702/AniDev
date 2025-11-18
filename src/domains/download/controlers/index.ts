@@ -48,9 +48,7 @@ export const DownloadController = {
   /**
    * Handle complete download request with caching
    */
-  async handleDownloadRequest(
-    url: URL
-  ): Promise<
+  async handleDownloadRequest(url: URL): Promise<
     | {
         type: 'data'
         buffer: Buffer

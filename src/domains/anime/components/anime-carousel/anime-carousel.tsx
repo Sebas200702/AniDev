@@ -1,7 +1,7 @@
-import type { AnimeBannerInfo } from '@anime/types'
+import { NexPrevBtnCarousel } from '@anime/components/anime-carousel/anime-carousel-buttons'
 import { CarouselItem } from '@anime/components/anime-carousel/anime-carousel-item'
 import { Indicator } from '@anime/components/anime-carousel/indicator'
-import { NexPrevBtnCarousel } from '@anime/components/anime-carousel/anime-carousel-buttons'
+import type { AnimeBannerInfo } from '@anime/types'
 import { Overlay } from '@shared/components/layout/overlay'
 import type { TouchEventHandler } from 'react'
 
@@ -15,7 +15,6 @@ interface AnimeCarouselProps {
   handleNext: () => void
   handleIndicatorClick: (index: number) => void
   currentIndex: number
-  
 }
 export const AnimeCarousel = ({
   banners,

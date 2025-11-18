@@ -1,7 +1,7 @@
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { NextIcon } from '@shared/components/icons/watch/next-icon'
 import { PreviousIcon } from '@shared/components/icons/watch/previous-icon'
 import { normalizeString } from '@utils/normalize-string'
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
 
 interface Props {
   direction: 'Next' | 'Prev'

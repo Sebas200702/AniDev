@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import type { AnimeSongWithImage } from '@music/types'
-import { ArtistInfo } from './artist-info'
-import type { ArtistInfo as ArtistInfoType } from '@artist/types'
 import { ArtistLoader } from '@artist/components/artist-info/artist-info-loader'
+import type { ArtistInfo as ArtistInfoType } from '@artist/types'
+import type { AnimeSongWithImage } from '@music/types'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import type { PersonAbout } from '@user/types'
 import { useFetch } from '@shared/hooks/useFetch'
+import type { PersonAbout } from '@user/types'
+import { ArtistInfo } from './artist-info'
 
 interface Props {
   name: string

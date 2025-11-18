@@ -100,7 +100,7 @@ export const RenderField = ({ field }: RenderFieldParams) => {
 
   if (field.type === 'button') {
     return (
-      <button className="w-full button-primary" type="submit">
+      <button className="button-primary w-full" type="submit">
         {field.placeholder}
       </button>
     )

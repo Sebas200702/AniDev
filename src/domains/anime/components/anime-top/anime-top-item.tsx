@@ -1,10 +1,10 @@
 import { AnimeTag } from '@anime/components/shared/anime-tag'
 import type { AnimeTopInfo } from '@anime/types'
 import { EpisodeIcon } from '@shared/components/icons/anime/episode-icon'
-import { Overlay } from '@shared/components/layout/overlay'
-import { Picture } from '@shared/components/media/picture'
 import { SeasonIcon } from '@shared/components/icons/anime/season-icon'
 import { StarIcon } from '@shared/components/icons/common/star-icon'
+import { Overlay } from '@shared/components/layout/overlay'
+import { Picture } from '@shared/components/media/picture'
 import { formatScore } from '@utils/format-score'
 import { normalizeString } from '@utils/normalize-string'
 
