@@ -63,7 +63,7 @@ export const AnimeCarouselContainer = () => {
     <DataWrapper
       loading={loading}
       error={error}
-      data={banners && banners.length > 0 ? banners : null}
+      data={banners}
       loadingFallback={<LoadingCarousel />}
       noDataFallback={<LoadingCarousel />}
       onRetry={refetch}

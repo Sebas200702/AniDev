@@ -36,7 +36,7 @@ interface CarouselStore {
 export const useCarouselStore = create<CarouselStore>((set) => ({
   url: '',
   setUrl: (url: string) => set({ url }),
-  banners: [],
+  banners: null,
   setBanners: (banners: AnimeBannerInfo[]) => set({ banners }),
   loading: true,
   setLoading: (loading: boolean) => set({ loading }),
