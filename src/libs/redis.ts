@@ -29,10 +29,10 @@ class RedisConnectionPool {
 
   constructor(config: Partial<RedisPoolConfig> = {}) {
     this.config = {
-      maxConnections: config.maxConnections ?? 5, // Más conservador para plan gratuito
-      minConnections: config.minConnections ?? 1,
-      acquireTimeout: config.acquireTimeout ?? 3000,
-      idleTimeout: config.idleTimeout ?? 120000, // 2 minutos
+      maxConnections: config.maxConnections ?? 3, // Reducido a 3 para evitar límites
+      minConnections: config.minConnections ?? 0, // Sin conexiones mínimas
+      acquireTimeout: config.acquireTimeout ?? 5000,
+      idleTimeout: config.idleTimeout ?? 30000, // Reducido a 30 segundos
     }
 
     // Implementar limpieza de conexiones idle
@@ -47,11 +47,13 @@ class RedisConnectionPool {
         host: 'redis-14957.crce181.sa-east-1-2.ec2.redns.redis-cloud.com',
         port: 14957,
         reconnectStrategy: (retries: number) => {
-          if (retries > 3) return false
-          return Math.min(retries * 500, 2000)
+          if (retries > 2) return false // Reducido a 2 intentos
+          return Math.min(retries * 1000, 3000)
         },
-        connectTimeout: 8000,
+        connectTimeout: 5000, // Reducido timeout
+        keepAlive: 5000,
       },
+      pingInterval: 60000, // Ping cada minuto para mantener viva la conexión
     })
 
     // Manejo de errores por cliente
@@ -85,7 +87,7 @@ class RedisConnectionPool {
   private startIdleConnectionCleaner(): void {
     this.idleCleanupInterval = setInterval(() => {
       this.cleanupIdleConnections()
-    }, 60000)
+    }, 15000) // Reducido a 15 segundos
   }
 
   private cleanupIdleConnections(): void {
@@ -209,6 +211,15 @@ class RedisConnectionPool {
     this.busyConnections.delete(client)
     this.connectionLastUsed.set(client, Date.now())
 
+    // Si tenemos muchas conexiones disponibles, cerrar esta en lugar de mantenerla
+    if (
+      this.availableConnections.length >= 2 ||
+      this.pool.length > this.config.minConnections
+    ) {
+      this.removeClientFromPool(client)
+      return
+    }
+
     if (client.isReady && !this.isShuttingDown) {
       this.availableConnections.push(client)
     } else {
@@ -267,10 +278,10 @@ declare global {
 const redisPool =
   global.__redisPool ??
   new RedisConnectionPool({
-    maxConnections: 5,
-    minConnections: 1,
-    acquireTimeout: 3000,
-    idleTimeout: 120000,
+    maxConnections: 3, // Reducido significativamente
+    minConnections: 0, // Sin mínimo
+    acquireTimeout: 5000,
+    idleTimeout: 30000, // Cerrar conexiones idle después de 30s
   })
 
 if (!global.__redisPool) {
