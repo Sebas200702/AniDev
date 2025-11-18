@@ -132,4 +132,27 @@ export const AnimeRepository = {
 
     return allData
   },
+
+  async getAnimeRelations(animeId: string) {
+    const { data, error } = await supabase.rpc('get_related_anime', {
+      p_mal_id: animeId,
+    })
+
+    if (error) {
+      console.error(error)
+      return []
+    }
+
+    return data ?? []
+  },
+
+  async getAnimesFull(filters: Record<string, any>) {
+    const { data, error } = await supabase.rpc('get_animes_full', filters)
+
+    if (error) {
+      throw new Error(`Failed to fetch animes full: ${error.message}`)
+    }
+
+    return data ?? []
+  },
 }
