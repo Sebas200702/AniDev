@@ -25,7 +25,7 @@ import { create } from 'zustand'
 interface CarouselStore {
   url: string
   setUrl: (url: string) => void
-  banners: AnimeBannerInfo[]
+  banners: AnimeBannerInfo[] | null
   setBanners: (banners: AnimeBannerInfo[]) => void
   loading: boolean
   setLoading: (loading: boolean) => void
@@ -38,7 +38,7 @@ export const useCarouselStore = create<CarouselStore>((set) => ({
   setUrl: (url: string) => set({ url }),
   banners: [],
   setBanners: (banners: AnimeBannerInfo[]) => set({ banners }),
-  loading: false,
+  loading: true,
   setLoading: (loading: boolean) => set({ loading }),
   currentIndex: 0,
   setCurrentIndex: (index: number) => set({ currentIndex: index }),
