@@ -65,4 +65,58 @@ export const CharacterController = {
     const { animeId, limitCount } = this.validateImageParams(url)
     return await CharacterService.getCharacterImages(animeId, limitCount)
   },
+
+  /**
+   * Validate character slug
+   */
+  validateSlug(slug: string | null): number {
+    if (!slug) {
+      throw new Error('Slug is required')
+    }
+
+    const lastUnderscoreIndex = slug.lastIndexOf('_')
+    if (lastUnderscoreIndex === -1) {
+      throw new Error('Invalid slug format')
+    }
+
+    const idStr = slug.slice(lastUnderscoreIndex + 1)
+    const id = Number.parseInt(idStr)
+
+    if (Number.isNaN(id) || id <= 0) {
+      throw new Error('Invalid character ID')
+    }
+
+    return id
+  },
+
+  /**
+   * Handle get character request
+   */
+  async handleGetCharacter(url: URL) {
+    const slug = url.searchParams.get('slug')
+    const id = this.validateSlug(slug)
+    return await CharacterService.getCharacterDetails(id)
+  },
+
+  /**
+   * Validate anime characters request
+   */
+  validateAnimeCharactersParams(url: URL): { animeId: string; language: string } {
+    const animeId = url.searchParams.get('animeId')
+    const language = url.searchParams.get('language')
+
+    if (!animeId || !language) {
+      throw new Error('Anime ID and language are required')
+    }
+
+    return { animeId, language }
+  },
+
+  /**
+   * Handle get anime characters request
+   */
+  async handleGetAnimeCharacters(url: URL) {
+    const { animeId, language } = this.validateAnimeCharactersParams(url)
+    return await CharacterService.getAnimeCharacters(animeId, language)
+  },
 }
