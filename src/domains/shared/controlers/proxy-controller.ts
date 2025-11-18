@@ -1,5 +1,6 @@
 import { ProxyService } from '@shared/services/proxy-service'
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { imageProxyDeduplicator } from '@utils/request-deduplicator'
 
 /**
  * Proxy Controller
@@ -58,21 +59,28 @@ export const ProxyController = {
 
     // Add timeout wrapper (20s to give margin before Vercel timeout)
     const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Proxy timeout ')), 20000)
+      setTimeout(() => reject(new Error('Proxy timeout')), 20000)
     )
 
-    // Try to get from cache or fetch with timeout
-    const resultPromise = CacheUtils.withBufferCache(
+    // Deduplicate concurrent requests for the same image
+    // This prevents multiple Redis operations for identical images
+    const resultPromise = imageProxyDeduplicator.deduplicate(
       cacheKey,
       async () => {
-        return await ProxyService.fetchAndOptimize(
-          imageUrl,
-          width > 0 ? width : undefined,
-          quality,
-          format
+        // Try to get from cache or fetch with timeout
+        return await CacheUtils.withBufferCache(
+          cacheKey,
+          async () => {
+            return await ProxyService.fetchAndOptimize(
+              imageUrl,
+              width > 0 ? width : undefined,
+              quality,
+              format
+            )
+          },
+          { ttl: CacheTTL.SIX_HOURS } // Reducido de 1 día a 6 horas para operaciones más rápidas
         )
-      },
-      { ttl: CacheTTL.ONE_DAY }
+      }
     )
 
     const result = await Promise.race([resultPromise, timeoutPromise])

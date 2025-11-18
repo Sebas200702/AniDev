@@ -1,5 +1,51 @@
 import { safeRedisOperation } from '@libs/redis'
 
+interface CacheOptions {
+  ttl?: number // Time to live in seconds
+  prefix?: string // Cache key prefix
+}
+
+/**
+ * In-memory LRU cache for high-frequency requests (like image proxy)
+ * Reduces Redis pressure for frequently accessed items
+ */
+class MemoryCache {
+  private cache = new Map<string, { data: any; expiresAt: number }>()
+  private maxSize = 200 // Aumentado a 200 para reducir presión sobre Redis
+
+  set(key: string, data: any, ttlSeconds: number): void {
+    // Simple LRU: remove oldest if at capacity
+    if (this.cache.size >= this.maxSize) {
+      const firstKey = this.cache.keys().next().value
+      if (firstKey) this.cache.delete(firstKey)
+    }
+
+    this.cache.set(key, {
+      data,
+      expiresAt: Date.now() + ttlSeconds * 1000,
+    })
+  }
+
+  get(key: string): any | null {
+    const entry = this.cache.get(key)
+    if (!entry) return null
+
+    // Check expiration
+    if (Date.now() > entry.expiresAt) {
+      this.cache.delete(key)
+      return null
+    }
+
+    return entry.data
+  }
+
+  clear(): void {
+    this.cache.clear()
+  }
+}
+
+const memoryCache = new MemoryCache()
+
 /**
  * Cache utilities for API endpoints
  *
@@ -7,11 +53,6 @@ import { safeRedisOperation } from '@libs/redis'
  * Provides reusable cache operations for API endpoints using Redis.
  * Implements a consistent caching strategy across all endpoints.
  */
-
-interface CacheOptions {
-  ttl?: number // Time to live in seconds
-  prefix?: string // Cache key prefix
-}
 
 export const CacheUtils = {
   /**
@@ -100,6 +141,15 @@ export const CacheUtils = {
   ): Promise<void> {
     try {
       const { ttl = 3600 } = options
+
+      // Skip Redis cache for very large buffers (> 5MB) - too slow
+      if (data.buffer.length > 5 * 1024 * 1024) {
+        console.warn(
+          `[CacheUtils.setBuffer] Skipping Redis cache for large buffer: ${(data.buffer.length / 1024 / 1024).toFixed(2)}MB`
+        )
+        return
+      }
+
       // Convert Buffer to base64 for compact JSON serialization
       const serializable = {
         buffer: data.buffer.toString('base64'),
@@ -149,17 +199,51 @@ export const CacheUtils = {
     fetchFn: () => Promise<{ buffer: Buffer; mimeType: string }>,
     options: CacheOptions = {}
   ): Promise<{ buffer: Buffer; mimeType: string }> {
-    // Try to get from cache
-    const cached = await this.getBuffer(key)
-    if (cached) {
-      return cached
+    const { ttl = 3600 } = options
+
+    // Level 1: Check memory cache first (fastest, no Redis connection needed)
+    const memCached = memoryCache.get(key)
+    if (memCached) {
+      return memCached
     }
 
-    // Execute function and cache result
+    // Level 2: Try Redis cache (but don't block if Redis is slow)
+    try {
+      const cached = await this.getBuffer(key)
+      if (cached) {
+        // Store in memory for next time
+        memoryCache.set(key, cached, Math.min(ttl, 300)) // Max 5min in memory
+        return cached
+      }
+    } catch (error) {
+      console.warn(
+        '[CacheUtils.withBufferCache] Redis cache check failed, proceeding to fetch:',
+        error
+      )
+    }
+
+    // Level 3: Execute function and cache result
     const data = await fetchFn()
-    await this.setBuffer(key, data, options)
+
+    // Store in memory cache immediately (synchronous, fast)
+    memoryCache.set(key, data, Math.min(ttl, 300))
+
+    // Store in Redis cache asynchronously (don't wait for it)
+    this.setBuffer(key, data, options).catch((err) => {
+      console.warn(
+        '[CacheUtils.withBufferCache] Background Redis cache failed:',
+        err.message
+      )
+    })
 
     return data
+  },
+
+  /**
+   * Clear memory cache (useful for testing or memory management)
+   */
+  clearMemoryCache(): void {
+    memoryCache.clear()
   },
 }
 
