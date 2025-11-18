@@ -1,5 +1,5 @@
 import { type BuildResponseOptions } from '@ai/types'
-import { safeRedisOperation } from '@libs/redis'
+import { RedisCacheService } from '@shared/services/redis-cache-service'
 
 export const buildResponse = ({
   data,
@@ -34,9 +34,7 @@ export const buildResponse = ({
 }
 
 export async function cacheAndRespond(key: string, payload: any, headers = {}) {
-  await safeRedisOperation((c) =>
-    c.set(key, JSON.stringify(payload), { EX: 21600 })
-  )
+  await RedisCacheService.set(key, payload, { ttl: 21600 })
   return new Response(JSON.stringify(payload), {
     status: 200,
     headers: { 'Content-Type': 'application/json', ...headers },
