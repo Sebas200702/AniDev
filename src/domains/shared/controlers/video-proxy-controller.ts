@@ -25,7 +25,8 @@ export const VideoProxyController = {
    */
   async handleProxyRequest(
     url: URL,
-    origin: string
+    origin: string,
+    rangeHeader?: string | null
   ): Promise<{
     type: 'playlist' | 'stream'
     content?: string
@@ -33,9 +34,17 @@ export const VideoProxyController = {
     contentType: string
     cacheControl: string
     expires?: string
+    status: number
+    contentLength?: string | null
+    contentRange?: string | null
+    acceptRanges?: string
   }> {
     const { resourceUrl } = this.validateParams(url)
-    const result = await VideoProxyService.fetchResource(resourceUrl, origin)
+    const result = await VideoProxyService.fetchResource(
+      resourceUrl,
+      origin,
+      rangeHeader
+    )
 
     if (result.type === 'playlist') {
       return {
@@ -44,26 +53,48 @@ export const VideoProxyController = {
         contentType: result.contentType,
         cacheControl: 'public, max-age=86400, s-maxage=86400',
         expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
+        status: result.status,
+        contentLength: result.headers['Content-Length'],
       }
     }
 
     // Create stream for video
-    const stream = new ReadableStream({
-      start(controller) {
-        const reader = result.stream.getReader()
+    let reader: ReadableStreamDefaultReader<Uint8Array> | null = null
 
-        function push() {
-          reader.read().then(({ done, value }) => {
+    const stream = new ReadableStream({
+      async start(controller) {
+        reader = result.stream.getReader()
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read()
+
             if (done) {
               controller.close()
-              return
+              break
             }
-            controller.enqueue(value)
-            push()
-          })
-        }
 
-        push()
+            controller.enqueue(value)
+          }
+        } catch (error) {
+          controller.error(error)
+        } finally {
+          reader.releaseLock()
+          reader = null
+        }
+      },
+      async cancel(reason) {
+        // Cleanup when stream is cancelled
+        try {
+          if (reader) {
+            await reader.cancel(reason)
+            reader.releaseLock()
+            reader = null
+          }
+        } catch (error) {
+          // Ignore errors during cancellation
+          console.warn('[VideoProxyController] Cancel error:', error)
+        }
       },
     })
 
@@ -72,6 +103,10 @@ export const VideoProxyController = {
       stream,
       contentType: result.contentType,
       cacheControl: 'public, max-age=86400',
+      status: result.status,
+      contentLength: result.headers['Content-Length'],
+      contentRange: result.headers['Content-Range'],
+      acceptRanges: result.headers['Accept-Ranges'],
     }
   },
 }
