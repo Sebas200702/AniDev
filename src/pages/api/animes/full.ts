@@ -72,9 +72,11 @@ export const GET: APIRoute = rateLimit(
       return ResponseBuilder.success(
         { data },
         {
-          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-          Vary: 'Accept-Encoding',
+          headers: {
+            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+            Vary: 'Accept-Encoding',
+          },
         }
       )
     } catch (error) {
