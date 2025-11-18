@@ -3,7 +3,7 @@ import { AnimeSliderLoader } from '@anime/components/anime-slider/anime-slider-l
 import type { AnimeCardInfo } from '@anime/types'
 import { createGroups } from '@anime/utils/create-groups'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { useFetch } from '@shared/hooks/useFetch'
+import { useFetchWithCache } from '@shared/hooks/useFetchWithCache'
 import { useHorizontalScroll } from '@shared/hooks/useHorizontalScroll'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
@@ -22,9 +22,13 @@ export const AnimeSliderContainer = ({ url, title, context }: Props) => {
       scrollPadding: 120,
     })
 
-  const { data, loading, error, refetch } = useFetch<AnimeCardInfo[]>({
-    url: url + `&parental_control=${parentalControl}`,
+  const fullUrl = url + `&parental_control=${parentalControl}`
+  
+  const { data, loading, error, refetch, retryCount, maxRetries } = useFetchWithCache<AnimeCardInfo[]>({
+    url: fullUrl,
     skip: parentalControl == null,
+    sectionId: context || 'slider-default',
+    limit: 24,
   })
 
   const groups = createGroups(data, windowWidth, context)
@@ -37,6 +41,7 @@ export const AnimeSliderContainer = ({ url, title, context }: Props) => {
       onRetry={refetch}
       loadingFallback={<AnimeSliderLoader context={context} />}
       noDataFallback={<AnimeSliderLoader context={context} />}
+      retryCount={maxRetries - retryCount}
     >
       {() => (
         <AnimeSlider
