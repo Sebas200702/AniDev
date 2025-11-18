@@ -5,46 +5,25 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    const result = await VideoProxyController.handleProxy(url, url.origin)
+    const result = await VideoProxyController.handleProxyRequest(
+      url,
+      url.origin
+    )
 
-    if (result.type === 'playlist') {
-      return new Response(result.content, {
-        status: 200,
-        headers: {
-          'Content-Type': result.contentType,
-          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-          Expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
-        },
-      })
+    const headers: Record<string, string> = {
+      'Content-Type': result.contentType,
+      'Cache-Control': result.cacheControl,
     }
 
-    // Stream
-    const stream = new ReadableStream({
-      start(controller) {
-        const reader = result.stream.getReader()
+    if (result.expires) {
+      headers.Expires = result.expires
+    }
 
-        function push() {
-          reader.read().then(({ done, value }) => {
-            if (done) {
-              controller.close()
-              return
-            }
-            controller.enqueue(value)
-            push()
-          })
-        }
+    if (result.type === 'playlist') {
+      return new Response(result.content, { status: 200, headers })
+    }
 
-        push()
-      },
-    })
-
-    return new Response(stream, {
-      status: 200,
-      headers: {
-        'Content-Type': result.contentType,
-        'Cache-Control': 'public, max-age=86400',
-      },
-    })
+    return new Response(result.stream, { status: 200, headers })
   } catch (error) {
     return ResponseBuilder.fromError(error, 'GET /api/videoProxy')
   }
