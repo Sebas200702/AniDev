@@ -1,4 +1,4 @@
-import { safeRedisOperation } from '@libs/redis'
+import { RedisCacheService } from '@shared/services/redis-cache-service'
 
 interface CacheOptions {
   ttl?: number // Time to live in seconds
@@ -69,13 +69,7 @@ export const CacheUtils = {
    * Get data from cache
    */
   async get<T>(key: string): Promise<T | null> {
-    try {
-      const cached = await safeRedisOperation((client) => client.get(key))
-      return cached ? JSON.parse(cached) : null
-    } catch (error) {
-      console.error('[CacheUtils.get] Error:', error)
-      return null
-    }
+    return await RedisCacheService.get<T>(key)
   },
 
   /**
@@ -85,10 +79,8 @@ export const CacheUtils = {
     key: string
   ): Promise<{ buffer: Buffer; mimeType: string } | null> {
     try {
-      const cached = await safeRedisOperation((client) => client.get(key))
-      if (!cached) return null
-
-      const parsed = JSON.parse(cached)
+      const parsed = await RedisCacheService.get<any>(key)
+      if (!parsed) return null
 
       // Defensive type checking
       if (!parsed || typeof parsed !== 'object') {
@@ -131,14 +123,8 @@ export const CacheUtils = {
     data: T,
     options: CacheOptions = {}
   ): Promise<void> {
-    try {
-      const { ttl = 3600 } = options // Default 1 hour
-      await safeRedisOperation((client) =>
-        client.set(key, JSON.stringify(data), { EX: ttl })
-      )
-    } catch (error) {
-      console.error('[CacheUtils.set] Error:', error)
-    }
+    const { ttl = 3600 } = options
+    await RedisCacheService.set(key, data, { ttl })
   },
 
   /**
@@ -165,9 +151,7 @@ export const CacheUtils = {
         buffer: data.buffer.toString('base64'),
         mimeType: data.mimeType,
       }
-      await safeRedisOperation((client) =>
-        client.set(key, JSON.stringify(serializable), { EX: ttl })
-      )
+      await RedisCacheService.set(key, serializable, { ttl })
     } catch (error) {
       console.error('[CacheUtils.setBuffer] Error:', error)
     }
@@ -219,16 +203,14 @@ export const CacheUtils = {
 
     // Level 2: Try Redis cache ONLY if connection available (SECONDARY - optional)
     // Skip Redis if it's causing problems - memory cache is sufficient
-    let fromRedis = false
     try {
       const cached = await this.getBuffer(key)
       if (cached) {
-        fromRedis = true
         // Store in memory for next time
         memoryCache.set(key, cached, Math.min(ttl, 600)) // 10min in memory
         return cached
       }
-    } catch (error) {
+    } catch {
       // Redis unavailable - not critical, continue without it
       console.warn('[Cache] Redis unavailable, using memory-only mode')
     }
@@ -240,13 +222,9 @@ export const CacheUtils = {
     memoryCache.set(key, data, Math.min(ttl, 600)) // 10min in memory
 
     // Optionally try to store in Redis (SECONDARY - fire & forget)
-    // Only attempt if we successfully read from Redis before
-    if (fromRedis || Math.random() < 0.1) {
-      // 10% chance to attempt write
-      this.setBuffer(key, data, options).catch(() => {
-        // Silent fail - Redis is optional backup
-      })
-    }
+    this.setBuffer(key, data, options).catch(() => {
+      // Silent fail - Redis is optional backup
+    })
 
     return data
   },
