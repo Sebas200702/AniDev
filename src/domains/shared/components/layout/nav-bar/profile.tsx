@@ -4,32 +4,8 @@ import { Picture } from '@shared/components/media/picture'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { signOut } from 'auth-astro/client'
 import { useEffect, useRef } from 'react'
+import { ProfileLoader } from '@shared/components/layout/nav-bar/profil-loader'
 
-/**
- * Profile component renders the user's profile information and a dropdown menu.
- *
- * @description This component displays the user's avatar and name in the navigation bar,
- * providing access to a dropdown menu with navigation options and authentication actions.
- * The dropdown menu contains links to the user's profile page, settings, and a logout button
- * or sign up link depending on authentication status.
- *
- * The component is fully responsive, adapting to different screen sizes by showing or hiding
- * the username based on available space. The dropdown menu is toggled by clicking on the user's
- * avatar, providing a clean and intuitive user interface. The menu appears below the avatar with
- * a subtle animation and contains easily recognizable icons for each action.
- *
- * For authenticated users, the component displays the user's avatar and name, with options to
- * navigate to profile settings, view their profile page, or sign out. For guests, it shows a
- * default avatar and provides a sign-up option. The component handles the authentication state
- * transition by calling the appropriate sign-out function when requested.
- *
- * @param {Props} props - The component props
- * @param {Session | null} props.userInfo - The user session information, or null if not logged in
- * @returns {JSX.Element} The rendered profile component with dropdown menu
- *
- * @example
- * <Profile userInfo={session} />
- */
 export const Profile = () => {
   const { userInfo } = useGlobalUserPreferences()
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -41,7 +17,7 @@ export const Profile = () => {
     await signOut()
   }
   useEffect(() => {
-    window.addEventListener('click', (e) => {
+    globalThis.addEventListener('click', (e) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(e.target as Node) &&
@@ -52,6 +28,8 @@ export const Profile = () => {
       }
     })
   }, [dropdownRef, buttonRef])
+
+  if (!userInfo) return <ProfileLoader />
   return (
     <>
       <article className="flex h-10 w-10 items-center justify-end">
