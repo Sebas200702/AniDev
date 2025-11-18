@@ -11,15 +11,21 @@ interface CacheOptions {
  */
 class MemoryCache {
   private cache = new Map<string, { data: any; expiresAt: number }>()
-  private maxSize = 200 // Aumentado a 200 para reducir presión sobre Redis
+  private maxSize = 200 // Increased to 200 to reduce pressure on Redis
 
   set(key: string, data: any, ttlSeconds: number): void {
-    // Simple LRU: remove oldest if at capacity
+    // True LRU: delete existing key first to update its position
+    if (this.cache.has(key)) {
+      this.cache.delete(key)
+    }
+
+    // Evict oldest (first) entry if at capacity
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value
       if (firstKey) this.cache.delete(firstKey)
     }
 
+    // Insert at end (most recently used)
     this.cache.set(key, {
       data,
       expiresAt: Date.now() + ttlSeconds * 1000,
@@ -35,6 +41,10 @@ class MemoryCache {
       this.cache.delete(key)
       return null
     }
+
+    // True LRU: move accessed item to end (most recently used)
+    this.cache.delete(key)
+    this.cache.set(key, entry)
 
     return entry.data
   }
