@@ -104,7 +104,7 @@ export const AnimeRepository = {
     // Supabase has a max limit per request, so we need to batch
     const BATCH_SIZE = 1000
     const batches = Math.ceil(limit / BATCH_SIZE)
-    const allData: {mal_id: number; title: string; score: number}[] = []
+    const allData: { mal_id: number; title: string; score: number }[] = []
 
     for (let i = 0; i < batches; i++) {
       const batchOffset = offset + i * BATCH_SIZE
