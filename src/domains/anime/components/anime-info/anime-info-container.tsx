@@ -9,13 +9,13 @@ interface Props {
 }
 
 export const AnimeInfoContainer = ({ id }: Props) => {
-  const { animeData, isBlocked, isLoading, isMounted, error } =
+  const { animeData, isBlocked, isLoading, error } =
     useBlockedContent({
       id,
       getAnimeData,
     })
 
-  if (!isMounted) return null
+
 
   return (
     <DataWrapper
