@@ -2,7 +2,7 @@ import type { MediaPlayerInstance } from '@vidstack/react'
 import { useEffect, useState } from 'react'
 
 export const usePictureInPicture = (
-  playerRef: React.RefObject<MediaPlayerInstance>
+  playerRef: React.RefObject<MediaPlayerInstance | null>
 ) => {
   const [isPiPActive, setIsPiPActive] = useState(false)
   const [isPiPSupported, setIsPiPSupported] = useState(false)
