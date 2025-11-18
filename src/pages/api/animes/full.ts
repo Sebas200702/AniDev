@@ -1,9 +1,8 @@
-import { safeRedisOperation } from '@libs/redis'
-import { supabase } from '@libs/supabase'
+import { AnimeController } from '@anime/controlers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
-import { Filters } from '@shared/types'
-import { getFilters } from '@utils/get-filters-of-search-params'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
 /**
@@ -20,9 +19,8 @@ import type { APIRoute } from 'astro'
  * database queries using stored procedures.
  *
  * The endpoint features:
- * - Server-side Redis caching (1 hour TTL)
- * - CDN caching (1 hour TTL)
- * - Browser caching (10 minutes TTL)
+ * - Server-side Redis caching (2 hours TTL)
+ * - CDN caching (2 hours TTL)
  * - Dynamic sorting and filtering
  * - Rate limiting protection
  *
@@ -58,62 +56,29 @@ import type { APIRoute } from 'astro'
  *     }
  *   ]
  * }
- *
- * // Error Response (500)
- * {
- *   "error": "Ups something went wrong"
- * }
  */
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const cachedData = await safeRedisOperation((client) =>
-        client.get(`animes:${url.searchParams}`)
+      const cacheKey = CacheUtils.generateKey('animes-full', url.searchParams)
+
+      const data = await CacheUtils.withCache(
+        cacheKey,
+        () => AnimeController.handleGetAnimesFull(url),
+        { ttl: CacheTTL.ONE_HOUR * 2 }
       )
-      if (cachedData) {
-        return new Response(JSON.stringify(JSON.parse(cachedData)), {
-          status: 200,
-          headers: {
-            'content-type': 'application/json',
-            'Cache-Control': 'public, max-age=7200, s-maxage=7200',
-            Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
-          },
-        })
-      }
 
-      const filters = getFilters(Object.values(Filters), url)
-
-      const { data, error } = await supabase.rpc('get_animes_full', filters)
-      if (error) {
-        console.error('Error al obtener los animes:', error)
-        throw new Error('Ocurrió un error al obtener los animes.')
-      }
-
-      await safeRedisOperation((client) =>
-        client.set(`animes:${url.searchParams}`, JSON.stringify({ data }), {
-          EX: 3600,
-        })
-      )
-      return new Response(JSON.stringify({ data }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-
-          Vary: 'Accept-Encoding',
-        },
-      })
-    } catch (error) {
-      console.error('Error en el endpoint:', error)
-      return new Response(
-        JSON.stringify({ error: 'Ups something went wrong' }),
+      return ResponseBuilder.success(
+        { data },
         {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          'Cache-Control': 'public, max-age=7200, s-maxage=7200',
+          Expires: new Date(Date.now() + 7200 * 1000).toUTCString(),
+          Vary: 'Accept-Encoding',
         }
       )
+    } catch (error) {
+      return ResponseBuilder.fromError(error, 'GET /api/animes/full')
     }
   })
 )
