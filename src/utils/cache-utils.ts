@@ -38,9 +38,24 @@ export const CacheUtils = {
       if (!cached) return null
 
       const parsed = JSON.parse(cached)
-      if (!parsed?.buffer || !parsed?.mimeType) return null
 
-      // Convert array back to Buffer
+      // Defensive type checking
+      if (!parsed || typeof parsed !== 'object') {
+        console.error('[CacheUtils.getBuffer] Invalid cached data: not an object')
+        return null
+      }
+
+      if (typeof parsed.buffer !== 'string') {
+        console.error('[CacheUtils.getBuffer] Invalid cached data: buffer is not a string')
+        return null
+      }
+
+      if (typeof parsed.mimeType !== 'string') {
+        console.error('[CacheUtils.getBuffer] Invalid cached data: mimeType is not a string')
+        return null
+      }
+
+      // Convert base64 string back to Buffer
       return {
         buffer: Buffer.from(parsed.buffer, 'base64'),
         mimeType: parsed.mimeType,
@@ -79,9 +94,9 @@ export const CacheUtils = {
   ): Promise<void> {
     try {
       const { ttl = 3600 } = options
-      // Convert Buffer to array for JSON serialization
+      // Convert Buffer to base64 for compact JSON serialization
       const serializable = {
-        buffer: Array.from(data.buffer),
+        buffer: data.buffer.toString('base64'),
         mimeType: data.mimeType,
       }
       await safeRedisOperation((client) =>
