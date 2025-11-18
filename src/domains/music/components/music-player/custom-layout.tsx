@@ -1,7 +1,7 @@
 import { NextPrevButton } from '@music/components/music-player/button/next-prev-button'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import type { AnimeSongWithImage } from '@music/types'
-import { PipIcon } from '@shared/components/icons/watch/pip-icon'
+import { PipIconOff, PipIconOn } from '@shared/components/icons/watch/pip-icon'
 import { Menu, PIPButton, Tooltip } from '@vidstack/react'
 import { DefaultVideoLayout } from '@vidstack/react/player/layouts/default'
 import { customIcons } from './custom-icons/custom-icons'
@@ -9,9 +9,14 @@ import { customIcons } from './custom-icons/custom-icons'
 interface Props {
   onPiPToggle?: () => void
   isPiPSupported?: boolean
+  isPiPActive?: boolean
 }
 
-export const CustomLayout = ({ onPiPToggle, isPiPSupported }: Props) => {
+export const CustomLayout = ({
+  onPiPToggle,
+  isPiPSupported,
+  isPiPActive,
+}: Props) => {
   const { variants, src, setSrc, type } = useMusicPlayerStore()
 
   const handleQualityChange = (variant: AnimeSongWithImage) => {
@@ -41,7 +46,11 @@ export const CustomLayout = ({ onPiPToggle, isPiPSupported }: Props) => {
                     onPiPToggle()
                   }}
                 >
-                  <PipIcon className="vds-icon" />
+                  {isPiPActive ? (
+                    <PipIconOff className="vds-icon" />
+                  ) : (
+                    <PipIconOn className="vds-icon" />
+                  )}
                 </PIPButton>
               </Tooltip.Trigger>
               <Tooltip.Content className="vds-tooltip-content" placement="top">

@@ -192,6 +192,7 @@ export const MusicPlayer = () => {
             <CustomLayout
               onPiPToggle={togglePiP}
               isPiPSupported={isPiPSupported}
+              isPiPActive={isPiPActive}
             />
           )}
         </MediaPlayer>

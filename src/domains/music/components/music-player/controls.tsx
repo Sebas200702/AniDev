@@ -4,7 +4,7 @@ import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { ExpandIcon } from '@shared/components/icons/common/expand-icon'
 import { MuteIcon } from '@shared/components/icons/watch/muted-icon'
 import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
-import { PipIcon } from '@shared/components/icons/watch/pip-icon'
+import { PipIconOff, PipIconOn } from '@shared/components/icons/watch/pip-icon'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { VolumeHighIcon } from '@shared/components/icons/watch/volumen-high-icon'
 import { VolumeLowIcon } from '@shared/components/icons/watch/volumen-low-icon'
@@ -33,7 +33,7 @@ export const CustomControls = ({
   isPiPSupported,
   isPiPActive,
 }: Props) => {
-  const { isPlaying, currentSong, type } = useMusicPlayerStore()
+  const { isPlaying, currentSong } = useMusicPlayerStore()
 
   if (!currentSong) return null
 
@@ -86,7 +86,7 @@ export const CustomControls = ({
           </VolumeSlider.Root>
         </div>
         <div className="flex items-center gap-2">
-          {type === 'video' && isPiPSupported && onPiPToggle && (
+          {isPiPSupported && onPiPToggle && (
             <button
               onClick={onPiPToggle}
               className={`cursor-pointer p-2 transition-colors ${isPiPActive ? 'text-enfasisColor' : ''}`}
@@ -96,7 +96,11 @@ export const CustomControls = ({
                   : 'Enter Picture-in-Picture'
               }
             >
-              <PipIcon className="h-5 w-5" />
+              {isPiPActive ? (
+                <PipIconOff className="h-5 w-5" />
+              ) : (
+                <PipIconOn className="h-5 w-5" />
+              )}
             </button>
           )}
           <button
