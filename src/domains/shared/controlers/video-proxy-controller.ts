@@ -21,10 +21,57 @@ export const VideoProxyController = {
   },
 
   /**
-   * Handle video proxy request
+   * Handle video proxy request and prepare response
    */
-  async handleProxy(url: URL, origin: string) {
+  async handleProxyRequest(
+    url: URL,
+    origin: string
+  ): Promise<{
+    type: 'playlist' | 'stream'
+    content?: string
+    stream?: ReadableStream<Uint8Array>
+    contentType: string
+    cacheControl: string
+    expires?: string
+  }> {
     const { resourceUrl } = this.validateParams(url)
-    return await VideoProxyService.fetchResource(resourceUrl, origin)
+    const result = await VideoProxyService.fetchResource(resourceUrl, origin)
+
+    if (result.type === 'playlist') {
+      return {
+        type: 'playlist',
+        content: result.content,
+        contentType: result.contentType,
+        cacheControl: 'public, max-age=86400, s-maxage=86400',
+        expires: new Date(Date.now() + 86400 * 1000).toUTCString(),
+      }
+    }
+
+    // Create stream for video
+    const stream = new ReadableStream({
+      start(controller) {
+        const reader = result.stream.getReader()
+
+        function push() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              controller.close()
+              return
+            }
+            controller.enqueue(value)
+            push()
+          })
+        }
+
+        push()
+      },
+    })
+
+    return {
+      type: 'stream',
+      stream,
+      contentType: result.contentType,
+      cacheControl: 'public, max-age=86400',
+    }
   },
 }
