@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 export const ModalContainer = () => {
   const { isOpen, Component, componentProps, closeModal, clearModal } =
     useGlobalModal()
-  const modalRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDialogElement>(null)
   const [show, setShow] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null)
@@ -60,15 +60,30 @@ export const ModalContainer = () => {
   if (!show || !Component || !modalRoot) return null
 
   return (
-    <div
+    <dialog
       ref={modalRef}
       className={`fixed top-0 left-0 z-[100] flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-black/50 p-4 backdrop-blur-sm ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
-      role="dialog"
       aria-modal="true"
     >
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Close modal"
         className={`${isClosing ? 'animate-modal-scale-out' : 'animate-modal-scale'} flex h-full w-full flex-col items-center justify-center`}
         onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            closeModal()
+          }
+        }}
+        onKeyDown={(e) => {
+          // support Enter and Space keys to activate the same behavior as click
+          if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && e.currentTarget === e.target) {
+            // prevent scrolling on Space
+            e.preventDefault()
+            closeModal()
+          }
+        }}
+        onTouchStart={(e) => {
           if (e.target === e.currentTarget) {
             closeModal()
           }
@@ -76,6 +91,6 @@ export const ModalContainer = () => {
       >
         <Component {...componentProps} />
       </div>
-    </div>
+    </dialog>
   )
 }
