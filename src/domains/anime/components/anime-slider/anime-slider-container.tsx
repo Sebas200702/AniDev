@@ -23,13 +23,14 @@ export const AnimeSliderContainer = ({ url, title, context }: Props) => {
     })
 
   const fullUrl = url + `&parental_control=${parentalControl}`
-  
-  const { data, loading, error, refetch, retryCount, maxRetries } = useFetchWithCache<AnimeCardInfo[]>({
-    url: fullUrl,
-    skip: parentalControl == null,
-    sectionId: context || 'slider-default',
-    limit: 24,
-  })
+
+  const { data, loading, error, refetch, retryCount, maxRetries } =
+    useFetchWithCache<AnimeCardInfo[]>({
+      url: fullUrl,
+      skip: parentalControl == null,
+      sectionId: context || 'slider-default',
+      limit: 24,
+    })
 
   const groups = createGroups(data, windowWidth, context)
 
