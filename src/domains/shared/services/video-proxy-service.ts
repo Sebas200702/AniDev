@@ -1,12 +1,23 @@
 export const VideoProxyService = {
   /**
-   * Fetch and process video resource
+   * Fetch and process video resource with Range support
    */
-  async fetchResource(resourceUrl: string, origin: string) {
+  async fetchResource(
+    resourceUrl: string,
+    origin: string,
+    rangeHeader?: string | null
+  ) {
     try {
-      const response = await fetch(resourceUrl)
+      const headers: HeadersInit = {}
 
-      if (!response.ok) {
+      // Forward Range header for seeking support
+      if (rangeHeader) {
+        headers.Range = rangeHeader
+      }
+
+      const response = await fetch(resourceUrl, { headers })
+
+      if (!response.ok && response.status !== 206) {
         throw new Error(`Failed to fetch resource: ${response.status}`)
       }
 
@@ -19,6 +30,10 @@ export const VideoProxyService = {
           type: 'playlist' as const,
           content: modifiedText,
           contentType: 'application/vnd.apple.mpegurl',
+          status: 200,
+          headers: {
+            'Content-Length': response.headers.get('Content-Length'),
+          },
         }
       }
 
@@ -35,6 +50,12 @@ export const VideoProxyService = {
         type: 'stream' as const,
         stream,
         contentType,
+        status: response.status,
+        headers: {
+          'Content-Length': response.headers.get('Content-Length'),
+          'Content-Range': response.headers.get('Content-Range'),
+          'Accept-Ranges': response.headers.get('Accept-Ranges') ?? 'bytes',
+        },
       }
     } catch (error) {
       console.error('[VideoProxyService.fetchResource] Error:', error)
