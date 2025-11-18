@@ -3,10 +3,9 @@ import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 
 const getCorsHeaders = (): Record<string, string> => ({
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
-  'Access-Control-Allow-Headers': '*',
-  'Access-Control-Allow-Credentials': 'true',
-  'Access-Control-Expose-Headers': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Expose-Headers': 'Content-Type, Content-Disposition, Content-Length',
   'Access-Control-Max-Age': '86400',
 })
 
@@ -17,7 +16,7 @@ export const DownloadController = {
   validateParams(url: URL): {
     fileUrl: string
     customFilename?: string
-    forceDownload: boolean
+    forceDownload?: boolean
   } {
     const fileUrl = url.searchParams.get('url')
 
@@ -26,7 +25,16 @@ export const DownloadController = {
     }
 
     const customFilename = url.searchParams.get('filename') || undefined
-    const forceDownload = url.searchParams.get('download') === 'true'
+    const downloadParam = url.searchParams.get('download')
+    
+    let forceDownload: boolean | undefined
+    if (downloadParam === 'true') {
+      forceDownload = true
+    } else if (downloadParam === 'false') {
+      forceDownload = false
+    } else {
+      forceDownload = undefined
+    }
 
     return { fileUrl, customFilename, forceDownload }
   },
@@ -39,13 +47,10 @@ export const DownloadController = {
   /**
    * Handle complete download request with caching
    */
-  async handleDownloadRequest(url: URL): Promise<{
-    buffer: Buffer
-    contentType: string
-    filename: string
-    forceDownload: boolean
-    corsHeaders: Record<string, string>
-  }> {
+  async handleDownloadRequest(url: URL): Promise<
+    | { type: 'data'; buffer: Buffer; contentType: string; filename: string; forceDownload: boolean; corsHeaders: Record<string, string> }
+    | { type: 'stream'; requiresStreaming: true }
+  > {
     const { fileUrl, customFilename, forceDownload } = this.validateParams(url)
     const cacheKey = CacheUtils.generateKey('download', fileUrl)
 
@@ -59,10 +64,11 @@ export const DownloadController = {
 
     if (cachedData) {
       return {
+        type: 'data',
         buffer: Buffer.from(cachedData.data, 'base64'),
         contentType: cachedData.contentType,
         filename: customFilename || cachedData.filename,
-        forceDownload: forceDownload || cachedData.forceDownload,
+        forceDownload: forceDownload ?? cachedData.forceDownload,
         corsHeaders: getCorsHeaders(),
       }
     }
@@ -70,9 +76,9 @@ export const DownloadController = {
     // Download file
     const result = await DownloadService.downloadFile(fileUrl)
 
-    // Handle large files without caching
+    // Handle large files without caching - signal streaming required
     if (result.isLarge) {
-      throw new Error('LARGE_FILE') // Signal to use streaming
+      return { type: 'stream', requiresStreaming: true }
     }
 
     // Cache small files
@@ -87,10 +93,11 @@ export const DownloadController = {
     await CacheUtils.set(cacheKey, cacheData, { ttl: CacheTTL.ONE_WEEK })
 
     return {
+      type: 'data',
       buffer,
       contentType: result.contentType,
       filename: customFilename || result.filename,
-      forceDownload,
+      forceDownload: forceDownload ?? false,
       corsHeaders: getCorsHeaders(),
     }
   },
@@ -114,7 +121,7 @@ export const DownloadController = {
       contentType: result.contentType,
       filename: customFilename || result.filename,
       contentLength: result.contentLength,
-      forceDownload,
+      forceDownload: forceDownload ?? false,
       corsHeaders: getCorsHeaders(),
     }
   },
