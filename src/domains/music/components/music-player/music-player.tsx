@@ -135,7 +135,7 @@ export const MusicPlayer = () => {
 
         <MediaPlayer
           ref={player}
-          src={src || undefined}
+          src={src ? `/api/videoProxy?url=${encodeURIComponent(src)}` : undefined}
           aspectRatio={isMinimized ? 'auto' : 'video'}
           viewType="video"
           streamType="on-demand"
