@@ -1,65 +1,32 @@
-import { safeRedisOperation } from '@libs/redis'
+import { CharacterController } from '@character/controlers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
-import { getAnimeCharacters } from '@utils/get-anime-characters'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-      const animeId = url.searchParams.get('animeId')
-      const language = url.searchParams.get('language')
-      if (!animeId || !language) {
-        return new Response(
-          JSON.stringify({ error: 'Anime ID and language are required' }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
-      }
-      const cacheKey = `anime-characters-${animeId}-${language}`
-      const cachedCharacters = await safeRedisOperation((client) =>
-        client.get(cacheKey)
+      const { animeId, language } =
+        CharacterController.validateAnimeCharactersParams(url)
+      const cacheKey = CacheUtils.generateKey(
+        'anime-characters',
+        `${animeId}-${language}`
       )
 
-      if (cachedCharacters) {
-        return new Response(
-          JSON.stringify({ data: JSON.parse(cachedCharacters) }),
-          {
-            status: 200,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-      }
-
-      const characters = await getAnimeCharacters(animeId, language)
-
-      if (!characters) {
-        return new Response(JSON.stringify({ error: 'No characters found' }), {
-          status: 404,
-          headers: { 'Content-Type': 'application/json' },
-        })
-      }
-
-      await safeRedisOperation((client) =>
-        client.set(cacheKey, JSON.stringify(characters), { EX: 60 * 60 * 24 })
+      const data = await CacheUtils.withCache(
+        cacheKey,
+        () => CharacterController.handleGetAnimeCharacters(url),
+        { ttl: CacheTTL.ONE_DAY }
       )
 
-      return new Response(JSON.stringify({ data: characters }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      return ResponseBuilder.success({ data })
     } catch (error) {
-      console.error('Error fetching anime characters:', error)
-      return new Response(JSON.stringify({ error: 'Internal server error' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return ResponseBuilder.fromError(
+        error,
+        'GET /api/characters/getAnimeCharacters'
+      )
     }
   })
 )
