@@ -19,11 +19,15 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       { ttl: CacheTTL.ONE_DAY }
     )
 
+    if (!result?.buffer) {
+      throw new Error('Invalid proxy result')
+    }
+
     return new Response(new Uint8Array(result.buffer), {
       status: 200,
       headers: {
         'Content-Type': result.mimeType,
-        'Content-Length': result.buffer.length.toString(),
+        'Content-Length': result.buffer?.length?.toString(),
         'Cache-Control': 'public, max-age=31536000, immutable',
       },
     })
