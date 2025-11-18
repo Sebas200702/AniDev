@@ -31,7 +31,7 @@ export const AnimeCollection = ({ animes, title, id }: Props) => {
         </h4>
 
         <ul className="mx-auto -mt-4 flex h-full w-full flex-row justify-center">
-          {animes.map((anime, i) => (
+          {animes.slice(0, 3).map((anime, i) => (
             <Picture
               key={anime.mal_id}
               image={anime.image_webp || ''}
