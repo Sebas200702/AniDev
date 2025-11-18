@@ -4,16 +4,22 @@ import { BannerLoader } from '@anime/components/anime-banner/anime-banner-loader
 import type { AnimeBannerInfo } from '@anime/types'
 import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { useFetch } from '@shared/hooks/useFetch'
+import { useFetchWithCache } from '@shared/hooks/useFetchWithCache'
 import { useMemo } from 'react'
 
-export const AnimeBanner = ({ id }: { id: number }) => {
+export const AnimeBanner = ({
+  id,
+  url: customUrl,
+}: { id: number; url?: string }) => {
   const animationNumber = id % 2 === 0 ? 1 : 2
-  const { url } = useMemo(() => createDynamicUrl(1), [])
+  const { url: fallbackUrl } = useMemo(() => createDynamicUrl(1), [])
 
-  const { data, loading, error } = useFetch<AnimeBannerInfo[]>({
-    url: `${url}&banners_filter=true&format=anime-banner`,
-  })
+  const { data, loading, error, retryCount, maxRetries, refetch } =
+    useFetchWithCache<AnimeBannerInfo[]>({
+      url: `${customUrl || fallbackUrl}&banners_filter=true&format=anime-banner`,
+      sectionId: `banner-${id}`,
+      limit: 1,
+    })
 
   return (
     <DataWrapper
@@ -22,6 +28,8 @@ export const AnimeBanner = ({ id }: { id: number }) => {
       error={error}
       loadingFallback={<BannerLoader animationNumber={animationNumber} />}
       noDataFallback={<BannerLoader animationNumber={animationNumber} />}
+      onRetry={refetch}
+      retryCount={maxRetries - retryCount}
     >
       {(data) => (
         <BannerInfo banner={data![0]} animationNumber={animationNumber} />
