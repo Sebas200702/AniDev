@@ -22,10 +22,10 @@ export const AnimeColectionList = ({ id, url, urls }: Props) => {
         // Usar URL específica del array si existe, sino usar url genérica
         const collectionUrl = urls?.[index] || url
         return (
-          <AnimeCollectionContainer 
-            key={`collection-${id}-${index}`} 
-            id={id + index} 
-            url={collectionUrl} 
+          <AnimeCollectionContainer
+            key={`collection-${id}-${index}`}
+            id={id + index}
+            url={collectionUrl}
           />
         )
       })}
