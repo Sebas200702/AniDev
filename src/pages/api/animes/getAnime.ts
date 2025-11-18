@@ -1,4 +1,4 @@
-import { AnimeService } from '@anime/services'
+import { AnimeController } from '@anime/controlers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ResponseBuilder } from '@utils/response-builder'
@@ -31,46 +31,32 @@ import type { APIRoute } from 'astro'
  * @returns {Promise<Response>} A Response object containing the anime data or error message
  */
 
-const validateId = (id: string | null): number => {
-  if (!id) {
-    throw new Error('ID is required')
-  }
-
-  const idResult = Number.parseInt(id)
-
-  if (Number.isNaN(idResult) || idResult <= 0) {
-    throw new Error('Invalid anime ID')
-  }
-
-  return idResult
-}
-
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
     const id = url.searchParams.get('id')
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam !== 'false'
+    const animeId = AnimeController.validateNumericId(id)
 
-    const animeId = validateId(id)
     const cacheKey = `anime_${animeId}${parentalControl ? '_pc' : ''}`
 
     const result = await CacheUtils.withCache(
       cacheKey,
-      () => AnimeService.getById(animeId, parentalControl),
+      () => AnimeController.handleGetAnimeById(url),
       { ttl: CacheTTL.ONE_HOUR }
     )
 
     // Anime bloqueado por control parental
-    if (result.blocked) {
+    if ('blocked' in result && result.blocked) {
       return ResponseBuilder.forbidden(result.message)
     }
 
     // Anime no encontrado
-    if (!result.anime) {
+    if ('notFound' in result && result.notFound) {
       return ResponseBuilder.notFound('Anime not found')
     }
 
-    return ResponseBuilder.success({ data: result.anime })
+    return ResponseBuilder.success(result)
   } catch (error: any) {
     return ResponseBuilder.fromError(error, 'GET /api/animes/getAnime')
   }
