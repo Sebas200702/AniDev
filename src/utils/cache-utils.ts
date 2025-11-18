@@ -41,17 +41,23 @@ export const CacheUtils = {
 
       // Defensive type checking
       if (!parsed || typeof parsed !== 'object') {
-        console.error('[CacheUtils.getBuffer] Invalid cached data: not an object')
+        console.error(
+          '[CacheUtils.getBuffer] Invalid cached data: not an object'
+        )
         return null
       }
 
       if (typeof parsed.buffer !== 'string') {
-        console.error('[CacheUtils.getBuffer] Invalid cached data: buffer is not a string')
+        console.error(
+          '[CacheUtils.getBuffer] Invalid cached data: buffer is not a string'
+        )
         return null
       }
 
       if (typeof parsed.mimeType !== 'string') {
-        console.error('[CacheUtils.getBuffer] Invalid cached data: mimeType is not a string')
+        console.error(
+          '[CacheUtils.getBuffer] Invalid cached data: mimeType is not a string'
+        )
         return null
       }
 
