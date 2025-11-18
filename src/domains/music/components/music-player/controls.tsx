@@ -1,10 +1,10 @@
 import { navigate } from 'astro:transitions/client'
 import { NextPrevButton } from '@music/components/music-player/button/next-prev-button'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { ExpandIcon } from '@shared/components/icons/common/expand-icon'
 import { MuteIcon } from '@shared/components/icons/watch/muted-icon'
-
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
+import { PipIcon } from '@shared/components/icons/watch/pip-icon'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { VolumeHighIcon } from '@shared/components/icons/watch/volumen-high-icon'
 import { VolumeLowIcon } from '@shared/components/icons/watch/volumen-low-icon'
@@ -21,10 +21,19 @@ import {
 interface Props {
   muted: boolean
   volume: number
+  onPiPToggle?: () => void
+  isPiPSupported?: boolean
+  isPiPActive?: boolean
 }
 
-export const CustomControls = ({ muted, volume }: Props) => {
-  const { isPlaying, currentSong } = useMusicPlayerStore()
+export const CustomControls = ({
+  muted,
+  volume,
+  onPiPToggle,
+  isPiPSupported,
+  isPiPActive,
+}: Props) => {
+  const { isPlaying, currentSong, type } = useMusicPlayerStore()
 
   if (!currentSong) return null
 
@@ -76,16 +85,31 @@ export const CustomControls = ({ muted, volume }: Props) => {
             <VolumeSlider.Thumb className="absolute top-1/2 left-[var(--slider-fill)] z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-[active]:opacity-100 group-data-[dragging]:ring-4" />
           </VolumeSlider.Root>
         </div>
-        <button
-          onClick={() =>
-            navigate(
-              `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
-            )
-          }
-          className="cursor-pointer p-2"
-        >
-          <ExpandIcon className="h-5 w-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          {type === 'video' && isPiPSupported && onPiPToggle && (
+            <button
+              onClick={onPiPToggle}
+              className={`cursor-pointer p-2 transition-colors ${isPiPActive ? 'text-enfasisColor' : ''}`}
+              title={
+                isPiPActive
+                  ? 'Exit Picture-in-Picture'
+                  : 'Enter Picture-in-Picture'
+              }
+            >
+              <PipIcon className="h-5 w-5" />
+            </button>
+          )}
+          <button
+            onClick={() =>
+              navigate(
+                `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
+              )
+            }
+            className="cursor-pointer p-2"
+          >
+            <ExpandIcon className="h-5 w-5" />
+          </button>
+        </div>
       </Controls.Group>
     </Controls.Root>
   )

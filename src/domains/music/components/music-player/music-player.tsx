@@ -1,4 +1,5 @@
 import { useMusicPlayerSync } from '@music/hooks/useMusicPlayerSync'
+import { usePictureInPicture } from '@music/hooks/usePictureInPicture'
 import { usePlayerBehavior } from '@music/hooks/usePlayerBehavior'
 import { usePlayerDragging } from '@music/hooks/usePlayerDragging'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
@@ -37,6 +38,8 @@ export const MusicPlayer = () => {
   const playerContainerRef = useRef<HTMLDivElement>(null)
   const { currentTime, playing, muted, volume, duration, canPlay } =
     useMediaStore(player)
+
+  const { isPiPActive, isPiPSupported, togglePiP } = usePictureInPicture(player)
 
   useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
   usePlayerDragging(playerContainerRef)
@@ -178,9 +181,18 @@ export const MusicPlayer = () => {
           </MediaProvider>
 
           {isMinimized ? (
-            <CustomControls volume={volume} muted={muted} />
+            <CustomControls
+              volume={volume}
+              muted={muted}
+              onPiPToggle={togglePiP}
+              isPiPSupported={isPiPSupported}
+              isPiPActive={isPiPActive}
+            />
           ) : (
-            <CustomLayout />
+            <CustomLayout
+              onPiPToggle={togglePiP}
+              isPiPSupported={isPiPSupported}
+            />
           )}
         </MediaPlayer>
       </motion.article>
