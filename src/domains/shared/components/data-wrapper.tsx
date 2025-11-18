@@ -13,6 +13,7 @@ interface DataWrapperProps<T> {
   loadingFallback?: ReactNode
   noDataFallback?: ReactNode
   children: (data: T) => ReactNode
+  retryCount?: number
 }
 
 export function DataWrapper<T>({
@@ -23,11 +24,12 @@ export function DataWrapper<T>({
   loadingFallback,
   noDataFallback,
   children,
+  retryCount = 0,
 }: Readonly<DataWrapperProps<T>>) {
   const lastErrorRef = useRef<string | null>(null)
 
   useEffect(() => {
-    if (error && error.message !== lastErrorRef.current) {
+    if (error && error.message !== lastErrorRef.current && retryCount === 0) {
       lastErrorRef.current = error.message
 
       toast[ToastType.Error]({
@@ -40,9 +42,9 @@ export function DataWrapper<T>({
           : undefined,
       })
     }
-  }, [error, onRetry])
+  }, [error, onRetry, retryCount])
 
-  if (loading) {
+  if (loading && !data) {
     return (
       <>
         {loadingFallback || (
