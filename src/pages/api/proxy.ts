@@ -13,11 +13,21 @@ export const GET: APIRoute = redisConnection(async ({ url }) => {
       `${imageUrl}:${width}:${quality}:${format}`
     )
 
-    const result = await CacheUtils.withCache(
+    // Add timeout wrapper
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Proxy timeout')), 25000)
+    ) // 25s max (Vercel limit is 30s)
+
+    const resultPromise = CacheUtils.withCache(
       cacheKey,
       () => ProxyController.handleProxy(url),
       { ttl: CacheTTL.ONE_DAY }
     )
+
+    const result = (await Promise.race([
+      resultPromise,
+      timeoutPromise,
+    ])) as Awaited<typeof resultPromise>
 
     if (!result?.buffer) {
       throw new Error('Invalid proxy result')

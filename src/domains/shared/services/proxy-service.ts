@@ -12,14 +12,26 @@ export const ProxyService = {
     format: 'webp' | 'avif' = 'webp'
   ): Promise<{ buffer: Buffer; mimeType: string }> {
     try {
-      let sharpInstance = sharp(buffer)
+      // Limit buffer size to prevent memory issues (10MB max)
+      const MAX_SIZE = 10 * 1024 * 1024
+      if (buffer.length > MAX_SIZE) {
+        throw new Error('Image too large')
+      }
+
+      let sharpInstance = sharp(buffer, {
+        limitInputPixels: 268402689, // ~16k x 16k max
+        sequentialRead: true,
+      })
 
       if (width && width > 0) {
-        sharpInstance = sharpInstance.resize({ width })
+        sharpInstance = sharpInstance.resize({
+          width,
+          withoutEnlargement: true,
+        })
       }
 
       const optimizedBuffer = await sharpInstance
-        .toFormat(format, { quality })
+        .toFormat(format, { quality, effort: 3 })
         .toBuffer()
 
       const mimeType = format === 'avif' ? 'image/avif' : 'image/webp'
@@ -52,17 +64,45 @@ export const ProxyService = {
         return this.optimizeImage(placeholderBuffer, width, quality, format)
       }
 
-      // Fetch image
-      const response = await fetch(imageUrl)
-      if (!response.ok) {
-        throw new Error(`Failed to fetch image: ${response.status}`)
+      // Fetch image with timeout
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10s timeout
+
+      try {
+        const response = await fetch(imageUrl, {
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; AniDevBot/1.0)',
+          },
+        })
+
+        clearTimeout(timeoutId)
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch image: ${response.status}`)
+        }
+
+        // Check content length before downloading
+        const contentLength = response.headers.get('content-length')
+        if (
+          contentLength &&
+          Number.parseInt(contentLength) > 10 * 1024 * 1024
+        ) {
+          throw new Error('Image too large')
+        }
+
+        const arrayBuffer = await response.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+
+        // Optimize
+        return this.optimizeImage(buffer, width, quality, format)
+      } catch (fetchError: any) {
+        clearTimeout(timeoutId)
+        if (fetchError.name === 'AbortError') {
+          throw new Error('Image fetch timeout')
+        }
+        throw fetchError
       }
-
-      const arrayBuffer = await response.arrayBuffer()
-      const buffer = Buffer.from(arrayBuffer)
-
-      // Optimize
-      return this.optimizeImage(buffer, width, quality, format)
     } catch (error) {
       console.error('[ProxyService.fetchAndOptimize] Error:', error)
       throw error
