@@ -1,6 +1,6 @@
-import { DownloadRepository } from '../repositories'
+import { DownloadRepository } from '@download/repositories'
 
-const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+const MAX_FILE_SIZE = 300 * 1024 * 1024 // 300MB
 const LARGE_FILE_THRESHOLD = 10 * 1024 * 1024 // 10MB
 
 export const DownloadService = {
