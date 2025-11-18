@@ -1,46 +1,51 @@
-import { getRedisPoolStats, logRedisPoolDiagnostics } from '@libs/redis'
+import { getRedisClient } from '@libs/redis'
 import type { APIRoute } from 'astro'
 
 /**
- * Endpoint rápido para verificar configuración del pool
+ * Endpoint para verificar estado de Redis
  * GET /api/redis/config
  */
 export const GET: APIRoute = async () => {
   try {
-    logRedisPoolDiagnostics()
-
-    const stats = getRedisPoolStats()
+    const client = await getRedisClient()
+    const isConnected = client.isReady
+    const pingResult = isConnected ? await client.ping() : null
 
     const config = {
       timestamp: new Date().toISOString(),
-      poolConfiguration: {
-        maxConnections: stats.maxConnections,
-        currentTotal: stats.total,
-        available: stats.available,
-        busy: stats.busy,
-      },
       status:
-        stats.available > 0
-          ? 'healthy'
-          : stats.busy >= stats.maxConnections
-            ? 'saturated'
-            : 'warning',
-      message:
-        stats.maxConnections === 10
-          ? '✅ Pool correctly configured with maxConnections: 10'
-          : `⚠️  Pool misconfigured! Expected 10, got ${stats.maxConnections}`,
+        isConnected && pingResult === 'PONG' ? 'connected' : 'disconnected',
+      connection: {
+        isReady: client.isReady,
+        isOpen: client.isOpen,
+        pingResponse: pingResult,
+      },
+      message: isConnected
+        ? '✅ Redis connection is healthy'
+        : '❌ Redis connection is not available',
     }
 
     return new Response(JSON.stringify(config, null, 2), {
-      status: 200,
+      status: isConnected ? 200 : 503,
       headers: {
         'Content-Type': 'application/json',
       },
     })
   } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return new Response(
+      JSON.stringify(
+        {
+          error: error.message,
+          timestamp: new Date().toISOString(),
+          status: 'error',
+        },
+        null,
+        2
+      ),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
   }
 }
