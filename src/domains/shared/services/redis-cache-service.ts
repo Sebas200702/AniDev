@@ -130,7 +130,7 @@ export const RedisCacheService = {
       const client = await getRedisClient()
       const values = await client.mGet(keys)
 
-      return values.map(value => {
+      return values.map((value) => {
         if (!value) return null
         try {
           return JSON.parse(value) as T
