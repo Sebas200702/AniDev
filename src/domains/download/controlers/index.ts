@@ -1,5 +1,5 @@
-import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { DownloadService } from '@download/services'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 
 const getCorsHeaders = (): Record<string, string> => ({
   'Access-Control-Allow-Origin': '*',
@@ -98,9 +98,7 @@ export const DownloadController = {
   /**
    * Handle streaming download for large files
    */
-  async handleStreamDownload(
-    url: URL
-  ): Promise<{
+  async handleStreamDownload(url: URL): Promise<{
     body: ReadableStream<Uint8Array> | null
     contentType: string
     filename: string
