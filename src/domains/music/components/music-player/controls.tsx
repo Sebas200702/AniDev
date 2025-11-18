@@ -33,7 +33,7 @@ export const CustomControls = ({
   isPiPSupported,
   isPiPActive,
 }: Props) => {
-  const { isPlaying, currentSong } = useMusicPlayerStore()
+  const { isPlaying, currentSong, type } = useMusicPlayerStore()
 
   if (!currentSong) return null
 
@@ -43,10 +43,10 @@ export const CustomControls = ({
         <NextPrevButton direction="Prev" />
 
         <PlayButton className="bg-enfasisColor cursor-pointer rounded-full p-3">
-          {!isPlaying ? (
-            <PlayIcon className="h-5 w-5" />
-          ) : (
+          {isPlaying ? (
             <PauseIcon className="h-5 w-5" />
+          ) : (
+            <PlayIcon className="h-5 w-5" />
           )}
         </PlayButton>
         <NextPrevButton direction="Next" />
@@ -86,7 +86,7 @@ export const CustomControls = ({
           </VolumeSlider.Root>
         </div>
         <div className="flex items-center gap-2">
-          {isPiPSupported && onPiPToggle && (
+          {type === 'video' && isPiPSupported && onPiPToggle && (
             <button
               onClick={onPiPToggle}
               className={`cursor-pointer p-2 transition-colors ${isPiPActive ? 'text-enfasisColor' : ''}`}
