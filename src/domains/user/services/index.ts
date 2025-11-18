@@ -67,7 +67,10 @@ export const UserService = {
   async getSearchHistory(userId: string) {
     try {
       return await UserRepository.getSearchHistory(userId)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message === 'No search history found') {
+        return []
+      }
       console.error('[UserService.getSearchHistory] Error:', error)
       throw error
     }
