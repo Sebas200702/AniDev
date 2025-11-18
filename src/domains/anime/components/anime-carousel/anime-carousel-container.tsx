@@ -52,7 +52,7 @@ export const AnimeCarouselContainer = () => {
   }, [resetInterval])
 
   useEffect(() => {
-    if (!banners || banners.length === 0) return
+
     globalThis.addEventListener('keydown', handleKeyDown)
     return () => {
       clearInterval(intervalRef.current!)
@@ -64,7 +64,7 @@ export const AnimeCarouselContainer = () => {
     <DataWrapper
       loading={loading}
       error={error}
-      data={banners}
+      data={banners && banners.length > 0 ? banners : null}
       loadingFallback={<LoadingCarousel />}
       noDataFallback={<LoadingCarousel />}
       onRetry={refetch}
@@ -72,7 +72,7 @@ export const AnimeCarouselContainer = () => {
     >
       {() => (
         <AnimeCarousel
-          banners={banners}
+          banners={banners!}
           currentIndex={currentIndex}
           bannerContainerRef={bannerContainerRef}
           handleTouchStart={handleTouchStart}
