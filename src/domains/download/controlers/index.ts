@@ -5,7 +5,8 @@ const getCorsHeaders = (): Record<string, string> => ({
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Expose-Headers': 'Content-Type, Content-Disposition, Content-Length',
+  'Access-Control-Expose-Headers':
+    'Content-Type, Content-Disposition, Content-Length',
   'Access-Control-Max-Age': '86400',
 })
 
@@ -26,7 +27,7 @@ export const DownloadController = {
 
     const customFilename = url.searchParams.get('filename') || undefined
     const downloadParam = url.searchParams.get('download')
-    
+
     let forceDownload: boolean | undefined
     if (downloadParam === 'true') {
       forceDownload = true
@@ -47,8 +48,17 @@ export const DownloadController = {
   /**
    * Handle complete download request with caching
    */
-  async handleDownloadRequest(url: URL): Promise<
-    | { type: 'data'; buffer: Buffer; contentType: string; filename: string; forceDownload: boolean; corsHeaders: Record<string, string> }
+  async handleDownloadRequest(
+    url: URL
+  ): Promise<
+    | {
+        type: 'data'
+        buffer: Buffer
+        contentType: string
+        filename: string
+        forceDownload: boolean
+        corsHeaders: Record<string, string>
+      }
     | { type: 'stream'; requiresStreaming: true }
   > {
     const { fileUrl, customFilename, forceDownload } = this.validateParams(url)
