@@ -1,5 +1,5 @@
-import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ProxyService } from '@shared/services/proxy-service'
+import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 
 /**
  * Proxy Controller
