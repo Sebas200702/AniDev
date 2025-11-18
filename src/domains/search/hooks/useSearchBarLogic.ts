@@ -23,7 +23,6 @@ export const useSearchBarLogic = () => {
     addSearchHistory,
     setSearchHistoryIsOpen,
     setCurrentType,
-    searchHistory,
     currentType,
     clearSearchHistory,
     setSearchHistory,
@@ -34,7 +33,7 @@ export const useSearchBarLogic = () => {
     useGlobalUserPreferences()
   const { closeModal, openModal, isOpen: isModalOpen } = useModal()
 
-  const pathName = window.location.pathname
+  const pathName = globalThis.location.pathname
   const isSearchPage = pathName === '/search'
   const debouncedQuery = useDebounce(query, 500)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -69,8 +68,8 @@ export const useSearchBarLogic = () => {
     closeModal
   )
 
-  // Resultados de búsqueda
-  const { data, loading, error } = useSearchResults(
+  // Search results
+  const { data, loading, error } = useSearchResults({
     url,
     debouncedQuery,
     filtersToApply,
@@ -81,18 +80,15 @@ export const useSearchBarLogic = () => {
     setResults,
     setTotalResults,
     setLoading,
-    addSearchHistory
-  )
+    addSearchHistory,
+  })
 
-  // Historial de búsqueda
-  useSearchHistory(
-    searchHistory,
+  // Search history
+  useSearchHistory({
     trackSearchHistory,
-    query,
-    appliedFilters,
     userInfo,
-    setSearchHistory
-  )
+    setSearchHistory,
+  })
 
   // Filtros
   useSearchFilters(currentType, setAppliedFilters)

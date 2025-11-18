@@ -8,7 +8,7 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
     await UserController.handleSaveSearchHistory(request, cookies)
     return ResponseBuilder.success({ message: 'Search history saved' })
   } catch (error) {
-    return ResponseBuilder.fromError(error, 'POST /api/searchHistory')
+    return ResponseBuilder.fromError(error, 'POST /api/user/searchHistory')
   }
 })
 
@@ -17,7 +17,7 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
     const data = await UserController.handleGetSearchHistory(request, cookies)
     return ResponseBuilder.success(data)
   } catch (error) {
-    return ResponseBuilder.fromError(error, 'GET /api/searchHistory')
+    return ResponseBuilder.fromError(error, 'GET /api/user/searchHistory')
   }
 })
 

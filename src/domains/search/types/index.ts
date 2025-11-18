@@ -26,6 +26,12 @@ export type SearchQueryOptions = {
   type?: SearchType
 }
 
+export type SearchResultData =
+  | import('@anime/types').AnimeDetail[]
+  | import('@music/types').AnimeSongWithImage[]
+  | import('@character/types').Character[]
+  | null
+
 export interface SearchFilters {
   search_query?: string
   genre_filter?: string[]

@@ -3,25 +3,42 @@ import type { Character } from '@character/types'
 import type { AnimeSongWithImage } from '@music/types'
 import { toast } from '@pheralb/toast'
 import type { AppliedFilters, SearchHistory, SearchType } from '@search/types'
-import { shouldSkipFetch } from '@search/utils/search-bar'
+import { SearchQueryService } from '@search/services/search-query-service'
 import { useFetch } from '@shared/hooks/useFetch'
 import { ToastType } from '@shared/types'
 import { useEffect } from 'react'
 
-export const useSearchResults = (
-  url: string,
-  debouncedQuery: string,
-  filtersToApply: string | null,
-  query: string,
-  appliedFilters: AppliedFilters,
-  currentType: SearchType,
-  setUrl: (url: string) => void,
-  setResults: (data: any, loading: boolean, error: any) => void,
-  setTotalResults: (total: number) => void,
-  setLoading: (loading: boolean) => void,
+interface UseSearchResultsParams {
+  url: string
+  debouncedQuery: string
+  filtersToApply: string | null
+  query: string
+  appliedFilters: AppliedFilters
+  currentType: SearchType
+  setUrl: (url: string) => void
+  setResults: (data: any, loading: boolean, error: any) => void
+  setTotalResults: (total: number) => void
+  setLoading: (loading: boolean) => void
   addSearchHistory: (entry: SearchHistory) => void
-) => {
-  const skipFetch = shouldSkipFetch(debouncedQuery, filtersToApply)
+}
+
+export const useSearchResults = ({
+  url,
+  debouncedQuery,
+  filtersToApply,
+  query,
+  appliedFilters,
+  currentType,
+  setUrl,
+  setResults,
+  setTotalResults,
+  setLoading,
+  addSearchHistory,
+}: UseSearchResultsParams) => {
+  const skipFetch = SearchQueryService.shouldSkipSearch(
+    debouncedQuery,
+    filtersToApply
+  )
 
   const { data, loading, total, error } = useFetch<
     AnimeDetail[] | AnimeSongWithImage[] | Character[]

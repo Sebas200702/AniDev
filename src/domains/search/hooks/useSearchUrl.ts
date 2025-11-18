@@ -1,5 +1,5 @@
 import type { AppliedFilters, SearchType } from '@search/types'
-import { buildSearchUrl } from '@search/utils/search-bar'
+import { SearchUrlService } from '@search/services/search-url-service'
 import { createFiltersToApply } from '@utils/filters-to-apply'
 import { useMemo } from 'react'
 
@@ -16,12 +16,12 @@ export const useSearchUrl = (
 
   const url = useMemo(
     () =>
-      buildSearchUrl(
-        currentType,
-        debouncedQuery,
-        filtersToApply,
-        parentalControl
-      ),
+      SearchUrlService.buildUrl({
+        type: currentType,
+        query: debouncedQuery,
+        filters: filtersToApply,
+        parentalControl,
+      }),
     [currentType, debouncedQuery, filtersToApply, parentalControl]
   )
 

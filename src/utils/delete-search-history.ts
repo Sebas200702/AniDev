@@ -1,30 +1,12 @@
-import { api } from '@libs/api'
-import { toast } from '@pheralb/toast'
-import { ToastType } from '@shared/types'
 import type { UserInfo } from '@user/types'
+import { SearchHistoryService } from '@search/services/search-history-service'
 
-export const deleteSearchHistory = async (userInfo: UserInfo | null) => {
-  try {
-    if (!userInfo) {
-      localStorage.removeItem('searchHistory')
-      return
-    }
-
-    const response = await api.delete('/searchHistory', {
-      credentials: 'include',
-    })
-
-    if (response.error) {
-      throw new Error(response.error.message || 'Error deleting search history')
-    }
-
-    return toast[ToastType.Success]({
-      text: 'Search history delete successfully',
-    })
-  } catch (error) {
-    console.error('Failed to delete search history', error)
-    return toast[ToastType.Error]({
-      text: 'Failed to delete search history',
-    })
-  }
+/**
+ * Delete all search history for the current user
+ * @deprecated Use SearchHistoryService.delete() directly instead
+ */
+export const deleteSearchHistory = async (
+  userInfo: UserInfo | null
+): Promise<boolean> => {
+  return SearchHistoryService.delete(userInfo)
 }

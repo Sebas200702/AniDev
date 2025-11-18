@@ -151,16 +151,17 @@ export const useSearchStoreResults = create<SearchStoreResults>()(
       },
       addSearchHistory: (searchHistory) => {
         set((state) => {
+          // Filter out duplicates
           const filteredHistory = state.searchHistory.filter(
             (item) =>
-              !(
-                item.query === searchHistory.query &&
+              !(item.query === searchHistory.query &&
+                item.type === searchHistory.type &&
                 JSON.stringify(item.appliedFilters) ===
-                  JSON.stringify(searchHistory.appliedFilters)
-              )
+                  JSON.stringify(searchHistory.appliedFilters))
           )
 
-          const newHistory = [searchHistory, ...filteredHistory]
+          // Add new entry at the beginning and limit to 50 items
+          const newHistory = [searchHistory, ...filteredHistory].slice(0, 50)
 
           return {
             ...state,

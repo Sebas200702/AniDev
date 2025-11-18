@@ -1,51 +1,51 @@
 import type { AnimeDetail } from '@anime/types'
-import type { Character } from '@character/types'
+import type { SearchType, SearchResultData } from '@search/types'
+import { SearchUrlService } from '@search/services/search-url-service'
+import { SearchQueryService } from '@search/services/search-query-service'
 import type { AnimeSongWithImage } from '@music/types'
-import { SearchType } from '@search/types'
+import type { Character } from '@character/types'
 
+/**
+ * Get default filters based on search type
+ * @deprecated Use SearchUrlService.getDefaultFilters() instead
+ */
 export const getDefaultFilters = (
   type: SearchType,
   parentalControl: boolean | null
 ) => {
-  const pathName = window.location.pathname
-  const isSearchPage = pathName.includes('/search')
-  const defaultFiltersAnimes = isSearchPage
-    ? `limit_count=30&banners_filter=false&format=search&parental_control=${parentalControl}`
-    : `limit_count=30&banners_filter=false&format=anime-detail&parental_control=${parentalControl}`
-  const defaultFiltersMusic = 'limit_count=30'
-  const defaultFiltersCharacters = 'limit_count=30&language_filter=japanese'
-
-  if (type === SearchType.ANIMES) return defaultFiltersAnimes
-  if (type === SearchType.MUSIC) return defaultFiltersMusic
-  return defaultFiltersCharacters
+  return SearchUrlService.getDefaultFilters(type, parentalControl)
 }
 
+/**
+ * Build search URL with all parameters
+ * @deprecated Use SearchUrlService.buildUrl() instead
+ */
 export const buildSearchUrl = (
   type: SearchType,
   debouncedQuery: string,
   filtersToApply: string | null,
   parentalControl: boolean | null
 ) => {
-  const defaultFilters = getDefaultFilters(type, parentalControl)
-  const baseQuery = `/${type}?${defaultFilters}`
-  const searchQuery = debouncedQuery
-    ? `&search_query=${encodeURIComponent(debouncedQuery)}`
-    : ''
-  const filterQuery = filtersToApply ? `&${filtersToApply}` : ''
-  return `${baseQuery}${searchQuery}${filterQuery}`
+  return SearchUrlService.buildUrl({
+    type,
+    query: debouncedQuery,
+    filters: filtersToApply,
+    parentalControl,
+  })
 }
 
+/**
+ * Check if search should be skipped
+ * @deprecated Use SearchQueryService.shouldSkipSearch() instead
+ */
 export const shouldSkipFetch = (
   debouncedQuery: string,
   filtersToApply: string | null
 ) => {
-  // Skip when there's nothing to search or filter
-  return !(Boolean(debouncedQuery) || Boolean(filtersToApply))
+  return SearchQueryService.shouldSkipSearch(debouncedQuery, filtersToApply)
 }
 
-export const isAnimeData = (
-  data: AnimeDetail[] | AnimeSongWithImage[] | Character[] | null
-): data is AnimeDetail[] => {
+export const isAnimeData = (data: SearchResultData): data is AnimeDetail[] => {
   return (
     Array.isArray(data) &&
     data.length > 0 &&
