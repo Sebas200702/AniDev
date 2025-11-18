@@ -42,7 +42,7 @@ export const CharacterInfo = ({ slug }: Props) => {
     fetchFormatAbout()
   }, [character])
 
-  if (!character || !about) {
+  if (!character ) {
     return <CharacterLoader />
   }
 
