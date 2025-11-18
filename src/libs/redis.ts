@@ -9,7 +9,7 @@ import { createClient } from 'redis'
  */
 
 // Define the actual client type that includes all modules
-type ExtendedRedisClient = ReturnType<typeof createClient>
+export type ExtendedRedisClient = ReturnType<typeof createClient>
 
 interface RedisPoolConfig {
   maxConnections: number
@@ -21,9 +21,9 @@ interface RedisPoolConfig {
 class RedisConnectionPool {
   private pool: ExtendedRedisClient[] = []
   private availableConnections: ExtendedRedisClient[] = []
-  private busyConnections: Set<ExtendedRedisClient> = new Set()
-  private connectionLastUsed: Map<ExtendedRedisClient, number> = new Map()
-  private config: RedisPoolConfig
+  private readonly busyConnections: Set<ExtendedRedisClient> = new Set()
+  private readonly connectionLastUsed: Map<ExtendedRedisClient, number> = new Map()
+  private readonly config: RedisPoolConfig
   private isShuttingDown = false
   private idleCleanupInterval: NodeJS.Timeout | null = null
 
@@ -51,7 +51,7 @@ class RedisConnectionPool {
           return Math.min(retries * 1000, 3000)
         },
         connectTimeout: 5000, // Reducido timeout
-        keepAlive: 5000,
+        keepAlive: true,
       },
       pingInterval: 60000, // Ping cada minuto para mantener viva la conexión
     })
@@ -77,11 +77,9 @@ class RedisConnectionPool {
     this.busyConnections.delete(client)
     this.connectionLastUsed.delete(client)
 
-    try {
-      if (client.isOpen) {
-        client.quit().catch(() => {})
-      }
-    } catch (_error) {}
+    if (client.isOpen) {
+      client.quit().catch(() => {})
+    }
   }
 
   private startIdleConnectionCleaner(): void {
@@ -111,9 +109,9 @@ class RedisConnectionPool {
       )
       const toRemove = connectionsToRemove.slice(0, canRemove)
 
-      toRemove.forEach((client) => {
+      for (const client of toRemove) {
         this.removeClientFromPool(client)
-      })
+      }
     }
   }
 
@@ -162,7 +160,8 @@ class RedisConnectionPool {
       if (!client.isReady) {
         try {
           if (!client.isOpen) await client.connect()
-        } catch (_error) {
+        } catch (error) {
+          console.error('Error reconnecting Redis client:', error)
           this.removeClientFromPool(client)
           return this.acquireConnection()
         }
@@ -272,11 +271,13 @@ class RedisConnectionPool {
   }
 }
 declare global {
-  var __redisPool: RedisConnectionPool | undefined
+  interface GlobalThis {
+    __redisPool?: RedisConnectionPool
+  }
 }
 
 const redisPool =
-  global.__redisPool ??
+  (globalThis as any).__redisPool ??
   new RedisConnectionPool({
     maxConnections: 3, // Reducido significativamente
     minConnections: 0, // Sin mínimo
@@ -284,19 +285,23 @@ const redisPool =
     idleTimeout: 30000, // Cerrar conexiones idle después de 30s
   })
 
-if (!global.__redisPool) {
-  global.__redisPool = redisPool
+if (!(globalThis as any).__redisPool) {
+  (globalThis as any).__redisPool = redisPool
 
-  redisPool.initialize().catch(console.error)
-
-  const gracefulShutdown = async () => {
-    await redisPool.shutdown()
+  try {
+    await redisPool.initialize()
+  } catch (err) {
+    console.error(err)
   }
-
-  process.on('SIGINT', gracefulShutdown)
-  process.on('SIGTERM', gracefulShutdown)
-  process.on('beforeExit', gracefulShutdown)
 }
+
+const gracefulShutdown = async () => {
+  await redisPool.shutdown()
+}
+
+process.on('SIGINT', gracefulShutdown)
+process.on('SIGTERM', gracefulShutdown)
+process.on('beforeExit', gracefulShutdown)
 
 /**
  * Executes a Redis operation using connection pooling.
@@ -311,7 +316,9 @@ export async function executeRedisOperation<T>(
 
   try {
     client = await redisPool.acquireConnection()
-    return await operation(client)
+    // client may have a type that doesn't line up exactly with the operation's expected type;
+    // cast to any to satisfy the TypeScript checker while preserving runtime behavior.
+    return await operation(client as any)
   } catch (error: any) {
     console.error('Redis operation failed:', error.message)
 
@@ -386,5 +393,3 @@ export function getRedisPoolStats() {
 }
 
 export { redisPool }
-
-export type RedisClientType = ExtendedRedisClient
