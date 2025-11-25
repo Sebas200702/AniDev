@@ -2,8 +2,8 @@ import { AnimeCollectionLoader } from '@anime/components/anime-collection/anime-
 import { AnimeCollection } from '@anime/components/anime-collection/anime-collection'
 import type { AnimeCollectionInfo } from '@anime/types'
 import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
+import { useFetchWithCache } from '@cache/hooks/useFetchWithCache'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { useFetchWithCache } from '@shared/hooks/useFetchWithCache'
 import { useMemo } from 'react'
 
 interface Props {
