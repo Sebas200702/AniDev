@@ -3,8 +3,8 @@ import { BannerInfo } from '@anime/components/anime-banner/anime-banner-info'
 import { BannerLoader } from '@anime/components/anime-banner/anime-banner-loader'
 import type { AnimeBannerInfo } from '@anime/types'
 import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
+import { useFetchWithCache } from '@cache/hooks/useFetchWithCache'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { useFetchWithCache } from '@shared/hooks/useFetchWithCache'
 import { useMemo } from 'react'
 
 export const AnimeBanner = ({
