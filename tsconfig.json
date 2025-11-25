@@ -31,7 +31,8 @@
       "@store/*": ["store/*"],
       "@recomendations/*": ["domains/recomendations/*"],
       "@ai/*": ["domains/ai/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@cache/*": ["domains/cache/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
