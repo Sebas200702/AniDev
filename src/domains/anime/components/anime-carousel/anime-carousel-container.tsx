@@ -6,8 +6,8 @@ import { useCarouselScroll } from '@anime/hooks/useCarouselScroll'
 import { useCarouselStore } from '@anime/stores/carousel-store'
 import type { AnimeBannerInfo } from '@anime/types'
 import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
+import { useFetchWithCache } from '@cache/hooks/useFetchWithCache'
 import { DataWrapper } from '@shared/components/data-wrapper'
-import { useFetchWithCache } from '@shared/hooks/useFetchWithCache'
 
 export const AnimeCarouselContainer = () => {
   const { banners, setBanners, currentIndex, setCurrentIndex } =
