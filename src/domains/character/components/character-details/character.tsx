@@ -3,45 +3,19 @@ import { CharacterLoader } from '@character/components/character-details/charact
 import { SeiyuuList } from '@character/components/character-details/seiyuu-list'
 import type { CharacterDetails } from '@character/types'
 import { DinamicBanner } from '@shared/components/ui/dinamic-banner'
+
+import { Aside } from '@shared/components/layout/base/Aside'
+import { Header } from '@shared/components/layout/base/Header'
+import { InfoPageLayout } from '@shared/components/layout/base/InfoPageLayout'
+
 import type { PersonAbout } from '@user/types'
-import { getCharacterData } from '@utils/get-character-data'
-import { Aside } from 'domains/shared/components/layout/base/Aside'
-import { Header } from 'domains/shared/components/layout/base/Header'
-import { InfoPageLayout } from 'domains/shared/components/layout/base/InfoPageLayout'
-import { useEffect, useState } from 'react'
 
 interface Props {
-  slug: string
+  character: CharacterDetails | null
+  about: PersonAbout | null
 }
 
-export const CharacterInfo = ({ slug }: Props) => {
-  const [character, setCharacter] = useState<CharacterDetails>()
-  const [about, setAbout] = useState<PersonAbout | null>(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getCharacterData(slug)
-
-      if (data) {
-        setCharacter(data)
-      }
-    }
-    fetchData()
-  }, [slug])
-
-  useEffect(() => {
-    if (!character) return
-
-    const fetchFormatAbout = async () => {
-      const about = await fetch(
-        `/about?about=${encodeURIComponent(character.character_about ?? '')}`
-      ).then((data) => data.json())
-
-      setAbout(about)
-    }
-    fetchFormatAbout()
-  }, [character])
-
+export const CharacterInfo = ({ character, about }: Props) => {
   if (!character) {
     return <CharacterLoader />
   }
