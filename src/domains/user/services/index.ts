@@ -5,11 +5,7 @@ import {
   getSearchHistory,
   saveSearchHistory,
 } from './search-history'
-import {
-  addToWatchList,
-  getWatchList,
-  removeFromWatchList,
-} from './watch-list'
+import { addToWatchList, getWatchList, removeFromWatchList } from './watch-list'
 
 /**
  * User Service
