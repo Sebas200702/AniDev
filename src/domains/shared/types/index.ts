@@ -15,6 +15,11 @@ export enum ToastType {
   Info = 'info',
   Loading = 'loading',
 }
+export interface MetadataResult {
+  title: string
+  description: string
+  image: string
+}
 
 export enum Filters {
   limit_count = 'limit_count',
