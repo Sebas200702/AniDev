@@ -1,5 +1,10 @@
 import { type BuildResponseOptions } from '@ai/types'
-import { RedisCacheService } from '@shared/services/redis-cache-service'
+import { CacheService } from '@cache/services'
+import { TtlValues } from '@cache/types'
+import { createContextLogger } from '@libs/pino'
+import { getHttpStatus, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('ResponseBuilder')
 
 export const buildResponse = ({
   data,
@@ -34,7 +39,7 @@ export const buildResponse = ({
 }
 
 export async function cacheAndRespond(key: string, payload: any, headers = {}) {
-  await RedisCacheService.set(key, payload, { ttl: 21600 })
+  await CacheService.set(key, payload, TtlValues.HOUR)
   return new Response(JSON.stringify(payload), {
     status: 200,
     headers: { 'Content-Type': 'application/json', ...headers },
@@ -115,26 +120,50 @@ export const ResponseBuilder = {
   },
 
   /**
-   * Build response based on error type
+   * Build response based on AppError type
    */
-  fromError(error: any, context: string): Response {
-    console.error(`[${context}] Error:`, error)
+  fromError(error: unknown, context: string): Response {
+    // Handle AppError
+    if (isAppError(error)) {
+      const status = getHttpStatus(error)
 
-    const message = error?.message || 'Internal server error'
+      // Log based on severity
+      if (status >= 500) {
+        logger.error(`[${context}] Server error`, {
+          type: error.type,
+          message: error.message,
+          context: error.context,
+        })
+      } else {
+        logger.warn(`[${context}] Client error`, {
+          type: error.type,
+          message: error.message,
+        })
+      }
 
-    // Check for specific error types
-    if (message === 'Unauthorized') {
-      return this.unauthorized()
+      return new Response(
+        JSON.stringify({
+          error: error.message,
+          type: error.type,
+          ...(process.env.NODE_ENV === 'development' && error.context
+            ? { context: error.context }
+            : {}),
+        }),
+        {
+          status,
+          headers: DEFAULT_HEADERS,
+        }
+      )
     }
 
-    if (message.includes('Missing required')) {
-      return this.validationError(message)
-    }
+    // Unknown errors
+    const message =
+      error instanceof Error ? error.message : 'Internal server error'
+    logger.error(`[${context}] Unexpected error`, { error, message })
 
-    if (message.includes('not found') || message.includes('Not found')) {
-      return this.notFound(message)
-    }
-
-    return this.serverError(message)
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: DEFAULT_HEADERS,
+    })
   },
 }
