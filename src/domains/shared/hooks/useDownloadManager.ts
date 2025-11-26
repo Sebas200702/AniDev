@@ -1,9 +1,11 @@
+import { clientLogger } from '@libs/logger'
 import { toast } from '@pheralb/toast'
 import { ToastType } from '@shared/types'
 import { generateFilename, performDownload } from '@shared/utils/download'
-// hooks/useDownloadManager.ts
+
 import { useState } from 'react'
 
+const logger = clientLogger.create('useDownloadManager')
 export const useDownloadManager = () => {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -35,11 +37,11 @@ export const useDownloadManager = () => {
         try {
           onSuccess()
         } catch (callbackError) {
-          console.error('onSuccess callback error:', callbackError)
+          logger.error('onSuccess callback error:', callbackError)
         }
       }
     } catch (error) {
-      console.error('Download error:', error)
+      logger.error('Download error:', error)
       // Error toast already handled by the promise option above
     } finally {
       setIsLoading(false)
