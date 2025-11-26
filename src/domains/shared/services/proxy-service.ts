@@ -1,5 +1,9 @@
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
 import { ImageRepository } from '@shared/repositories/image-repository'
 import sharp from 'sharp'
+
+const logger = createContextLogger('ProxyService')
 
 export const ProxyService = {
   /**
@@ -15,7 +19,7 @@ export const ProxyService = {
       // Limit buffer size to prevent memory issues (10MB max)
       const MAX_SIZE = 10 * 1024 * 1024
       if (buffer.length > MAX_SIZE) {
-        throw new Error('Image too large')
+        throw AppError.tooLarge('Image too large', { maxBytes: MAX_SIZE })
       }
 
       let sharpInstance = sharp(buffer, {
@@ -41,8 +45,14 @@ export const ProxyService = {
         mimeType,
       }
     } catch (error) {
-      console.error('[ProxyService.optimizeImage] Error:', error)
-      throw error
+      logger.error('[ProxyService.optimizeImage] Error:', error)
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.externalApi('Failed to optimize image', {
+        originalError: error,
+      })
     }
   },
 
@@ -70,7 +80,7 @@ export const ProxyService = {
 
       // Validate URL
       if (!imageUrl || typeof imageUrl !== 'string') {
-        throw new Error('Invalid image URL')
+        throw AppError.validation('Invalid image URL')
       }
 
       // Fetch image with proper headers to avoid blocks
@@ -89,7 +99,7 @@ export const ProxyService = {
 
       // Handle errors with fallback to placeholder
       if (!response.ok) {
-        console.error(
+        logger.error(
           `[ProxyService] Fetch failed: ${response.status} for ${imageUrl}`
         )
 
@@ -99,25 +109,33 @@ export const ProxyService = {
           return this.optimizeImage(placeholderBuffer, width, quality, format)
         }
 
-        throw new Error(`HTTP ${response.status}`)
+        throw AppError.externalApi('Failed to fetch image', {
+          imageUrl,
+          status: response.status,
+        })
       }
 
       // Validate content type
       const contentType = response.headers.get('content-type')
       if (contentType && !contentType.startsWith('image/')) {
-        throw new Error(`Invalid content type: ${contentType}`)
+        throw AppError.externalApi('Invalid content type for image', {
+          imageUrl,
+          contentType,
+        })
       }
 
       // Check size before downloading
       const contentLength = response.headers.get('content-length')
       if (contentLength && Number.parseInt(contentLength) > 10 * 1024 * 1024) {
-        throw new Error('Image too large')
+        throw AppError.tooLarge('Image too large', {
+          maxBytes: 10 * 1024 * 1024,
+        })
       }
 
       const arrayBuffer = await response.arrayBuffer()
 
       if (arrayBuffer.byteLength === 0) {
-        throw new Error('Empty response')
+        throw AppError.externalApi('Empty image response', { imageUrl })
       }
 
       const buffer = Buffer.from(arrayBuffer)
@@ -128,11 +146,18 @@ export const ProxyService = {
       clearTimeout(timeoutId)
 
       if (fetchError.name === 'AbortError') {
-        throw new Error('Image fetch timeout')
+        throw AppError.timeout('Image fetch timeout', { imageUrl })
       }
 
-      console.error('[ProxyService.fetchAndOptimize] Error:', fetchError)
-      throw fetchError
+      logger.error('[ProxyService.fetchAndOptimize] Error:', fetchError)
+      if (isAppError(fetchError)) {
+        throw fetchError
+      }
+
+      throw AppError.externalApi('Failed to fetch and optimize image', {
+        imageUrl,
+        originalError: fetchError,
+      })
     }
   },
 }
