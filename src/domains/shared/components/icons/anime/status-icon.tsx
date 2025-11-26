@@ -2,7 +2,7 @@ import type { IconProps } from '@shared/types'
 import { statusColors } from '@utils/status-colors'
 
 interface StatusIconProps extends IconProps {
-  status: string
+  status: string | null | undefined
 }
 /**
  * StatusIcon component displays an SVG icon representing the airing status of an anime.
@@ -27,7 +27,7 @@ interface StatusIconProps extends IconProps {
  * <StatusIcon status="Currently Airing" className="icon-md" />
  */
 export const StatusIcon = ({ className, status }: StatusIconProps) => {
-  const color = statusColors(status).replaceAll('bg', 'text')
+  const color = statusColors(status ?? 'unknown').replaceAll('bg', 'text')
   if (status === 'Currently Airing') {
     return (
       <svg
