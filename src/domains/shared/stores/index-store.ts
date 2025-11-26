@@ -1,5 +1,8 @@
+import { clientLogger } from '@libs/logger'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+
+const logger = clientLogger.create('IndexStore')
 
 export interface IndexSection {
   id: number
@@ -25,7 +28,10 @@ export const useHomeStore = create<IndexStore>()(
           const data = await res.json()
           set({ sections: data })
         } catch (err) {
-          console.error('Error fetching sections', err)
+          logger.error(
+            '[IndexStore.fetchSections] Error fetching sections',
+            err
+          )
         }
       },
     }),
