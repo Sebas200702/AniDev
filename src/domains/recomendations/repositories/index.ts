@@ -1,4 +1,7 @@
 import { supabase } from '@libs/supabase'
+import { createContextLogger } from '@libs/pino'
+
+const logger = createContextLogger('RecommendationsRepository')
 
 export const SELECT_FIELDS = `
   mal_id,
@@ -31,7 +34,7 @@ export const recommendationsRepository = {
       ids
     )
     if (error) {
-      console.error('[RecommendationsRepository.findByIds]', error)
+      logger.error('[RecommendationsRepository.findByIds]', error)
       return []
     }
     return data || []
@@ -52,7 +55,7 @@ export const recommendationsRepository = {
 
     const { data, error } = await strategy(base)
     if (error) {
-      console.error('[RecommendationsRepository.findByStrategy]', error)
+      logger.error('[RecommendationsRepository.findByStrategy]', error)
       return []
     }
 
