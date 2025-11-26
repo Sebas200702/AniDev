@@ -1,7 +1,8 @@
+import { createLogger } from '@libs/logger'
 import { supabase } from '@libs/supabase'
 import type { UserProfileToRecommendations } from '@recommendations/types'
 
-
+const logger = createLogger('GetUserDataToRecommendations')
 
 const userPlaceholder: UserProfileToRecommendations = {
   name: 'Usuario',
@@ -48,16 +49,20 @@ export const getUserDataToRecommendations = async (
   const { data: userProfile, error: userProfileError } = await supabase
     .from('user_profiles')
     .select(
-      'search_history, favorite_animes, favorite_genres, favorite_studios, frequency_of_watch, fanatic_level, gender, last_name, name, preferred_format, birthday, watched_animes'
+      'search_history(search_history), favorite_animes, favorite_genres, favorite_studios, frequency_of_watch, fanatic_level, gender, last_name, name, preferred_format, birthday, watched_animes'
     )
     .eq('id', userId)
     .single()
 
   if (userProfileError) {
+    logger.warn(
+      `Error fetching user profile for ${userId}, using placeholder:`,
+      userProfileError
+    )
     return {
-      userProfile: null,
-      calculatedAge: null,
-      error: userProfileError.message,
+      userProfile: userPlaceholder,
+      calculatedAge: 25,
+      error: null,
     }
   }
 
@@ -65,8 +70,13 @@ export const getUserDataToRecommendations = async (
     new Date().getFullYear() - new Date(userProfile.birthday).getFullYear()
 
   return {
-    userProfile,
-    calculatedAge,
+    userProfile: {
+      ...userProfile,
+      search_history: Array.isArray(userProfile.search_history)
+        ? userProfile.search_history.map((sh: any) => sh.search_history)
+        : [],
+    },
+    calculatedAge: calculatedAge || 18,
     error: null,
   }
 }
