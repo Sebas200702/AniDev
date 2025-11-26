@@ -1,7 +1,13 @@
+import { CacheService } from '@cache/services'
+import { getCachedOrFetch } from '@cache/utils'
 import { CharacterService } from '@character/services'
-import { CharacterFilters } from '@character/types'
+import { type CharacterDetails, CharacterFilters } from '@character/types'
+import { createContextLogger } from '@libs/pino'
 import { AppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { getFilters } from '@utils/get-filters-of-search-params'
+
+const logger = createContextLogger('CharacterController')
 
 export const CharacterController = {
   parseSearchParams(url: URL) {
@@ -19,7 +25,7 @@ export const CharacterController = {
     return { filters, countFilters, page, limit }
   },
 
-  async handleSearch(url: URL) {
+  async handleSearch(url: URL): Promise<ApiResponse<any[]>> {
     const { filters, countFilters, page, limit } = this.parseSearchParams(url)
 
     return await CharacterService.searchCharacters({
@@ -43,18 +49,22 @@ export const CharacterController = {
     return { animeId, limitCount }
   },
 
-  async handleGetCharacterImages(url: URL) {
+  async handleGetCharacterImages(url: URL): Promise<ApiResponse<any[]>> {
     const { animeId, limitCount } = this.validateImageParams(url)
     return await CharacterService.getCharacterImages(animeId, limitCount)
   },
 
   validateSlug(slug: string | null): number {
     if (!slug) {
+      logger.error('[CharacterController.validateSlug] Slug is required')
       throw AppError.validation('Slug is required')
     }
 
     const lastUnderscoreIndex = slug.lastIndexOf('_')
     if (lastUnderscoreIndex === -1) {
+      logger.error('[CharacterController.validateSlug] Invalid slug format', {
+        slug,
+      })
       throw AppError.validation('Invalid slug format', { slug })
     }
 
@@ -68,10 +78,14 @@ export const CharacterController = {
     return id
   },
 
-  async handleGetCharacter(url: URL) {
+  async handleGetCharacter(url: URL): Promise<ApiResponse<CharacterDetails>> {
     const slug = url.searchParams.get('slug')
     const id = this.validateSlug(slug)
-    return await CharacterService.getCharacterDetails(id)
+    const cacheKey = CacheService.generateKey('character-detail', id.toString())
+
+    return await getCachedOrFetch(cacheKey, () =>
+      CharacterService.getCharacterById(id)
+    )
   },
 
   validateAnimeCharactersParams(url: URL): {
@@ -88,7 +102,7 @@ export const CharacterController = {
     return { animeId, language }
   },
 
-  async handleGetAnimeCharacters(url: URL) {
+  async handleGetAnimeCharacters(url: URL): Promise<ApiResponse<any[]>> {
     const { animeId, language } = this.validateAnimeCharactersParams(url)
     return await CharacterService.getAnimeCharacters(animeId, language)
   },
