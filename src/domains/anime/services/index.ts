@@ -1,12 +1,13 @@
 import { AnimeRepository } from '@anime/repositories'
-import type { Anime, Formats } from '@anime/types'
+import type { Anime, Formats, RandomAnime } from '@anime/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 
 const logger = createContextLogger('AnimeService')
 
 export interface AnimeResult {
-  anime?: Anime
+  data?: Anime
   blocked?: boolean
   message?: string
 }
@@ -15,15 +16,15 @@ export const AnimeService = {
   async getRandomAnime(
     parentalControl: boolean | null,
     userId?: string | null
-  ) {
+  ): Promise<ApiResponse<RandomAnime | null>> {
     try {
       const result = await AnimeRepository.getRandom(parentalControl, userId)
 
       if (!result) {
-        return null
+        return { data: null }
       }
 
-      return result
+      return { data: result }
     } catch (error) {
       logger.error('[AnimeService.getRandomAnime] Error:', { error })
       // Re-throw AppError as-is, wrap unknown errors
@@ -40,10 +41,14 @@ export const AnimeService = {
     format,
     filters,
     countFilters,
+    page = 1,
+    limit = 10,
   }: {
     format: Formats
     filters: Record<string, any>
     countFilters: Record<string, any>
+    page?: number
+    limit?: number
   }) {
     try {
       const result = await AnimeRepository.searchAnime({
@@ -55,11 +60,22 @@ export const AnimeService = {
       if (!result.data || result.data.length === 0) {
         return {
           data: [],
-          total: 0,
+          meta: {
+            total_items: 0,
+            current_page: page,
+            last_page: 0,
+          },
         }
       }
 
-      return result
+      return {
+        data: result.data,
+        meta: {
+          total_items: result.total,
+          current_page: page,
+          last_page: Math.ceil(result.total / limit),
+        },
+      }
     } catch (error) {
       logger.error('[AnimeService.searchAnime] Error:', { error, format })
       if (isAppError(error)) {
@@ -78,17 +94,18 @@ export const AnimeService = {
     try {
       const result = await AnimeRepository.getById(animeId, parentalControl)
       return {
-        anime: result,
+        data: result,
+        blocked: false,
+        message: undefined,
       }
     } catch (error: unknown) {
-
       if (isAppError(error) && error.type === 'permission') {
         logger.info('Anime blocked by parental control', {
           animeId,
           error: error.message,
         })
         return {
-          anime: undefined,
+          data: undefined,
           blocked: true,
           message: error.message,
         }
@@ -105,9 +122,10 @@ export const AnimeService = {
   /**
    * Get unique anime studios
    */
-  async getStudios() {
+  async getStudios(): Promise<ApiResponse<string[]>> {
     try {
-      return await AnimeRepository.getUniqueStudios()
+      const data = await AnimeRepository.getUniqueStudios()
+      return { data }
     } catch (error: unknown) {
       logger.error('[AnimeService.getStudios] Error:', { error })
       if (isAppError(error)) {
@@ -122,10 +140,14 @@ export const AnimeService = {
   /**
    * Get anime banner images
    */
-  async getAnimeBanner(animeId: number, limitCount: number = 8) {
+  async getAnimeBanner(
+    animeId: number,
+    limitCount: number = 8
+  ): Promise<ApiResponse<any[]>> {
     try {
-      return await AnimeRepository.getAnimeBanner(animeId, limitCount)
-    } catch (error : unknown) {
+      const data = await AnimeRepository.getAnimeBanner(animeId, limitCount)
+      return { data }
+    } catch (error: unknown) {
       logger.error('[AnimeService.getAnimeBanner] Error:', { error, animeId })
       if (isAppError(error)) {
         throw error
@@ -143,10 +165,14 @@ export const AnimeService = {
    * @param limit - Number of items to fetch (default 5000)
    * @returns List of animes with slug, updated_at, and score
    */
-  async getAnimesForSitemap(offset: number, limit: number = 5000) {
+  async getAnimesForSitemap(
+    offset: number,
+    limit: number = 5000
+  ): Promise<ApiResponse<any[]>> {
     try {
-      return await AnimeRepository.getAnimesForSitemap(offset, limit)
-    } catch (error : unknown) {
+      const data = await AnimeRepository.getAnimesForSitemap(offset, limit)
+      return { data }
+    } catch (error: unknown) {
       logger.error('[AnimeService.getAnimesForSitemap] Error:', {
         error,
         offset,
@@ -167,9 +193,10 @@ export const AnimeService = {
    * @param animeId - The anime MAL ID
    * @returns List of related animes
    */
-  async getAnimeRelations(animeId: string) {
+  async getAnimeRelations(animeId: string): Promise<ApiResponse<any[]>> {
     try {
-      return await AnimeRepository.getAnimeRelations(animeId)
+      const data = await AnimeRepository.getAnimeRelations(animeId)
+      return { data }
     } catch (error) {
       logger.error('[AnimeService.getAnimeRelations] Error:', {
         error,
@@ -190,9 +217,12 @@ export const AnimeService = {
    * @param filters - Search filters to apply
    * @returns Full anime data
    */
-  async getAnimesFull(filters: Record<string, any>) {
+  async getAnimesFull(
+    filters: Record<string, any>
+  ): Promise<ApiResponse<any[]>> {
     try {
-      return await AnimeRepository.getAnimesFull(filters)
+      const data = await AnimeRepository.getAnimesFull(filters)
+      return { data }
     } catch (error) {
       logger.error('[AnimeService.getAnimesFull] Error:', { error, filters })
       if (isAppError(error)) {
