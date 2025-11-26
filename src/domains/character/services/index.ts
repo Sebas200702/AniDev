@@ -1,4 +1,8 @@
 import { CharacterRepository } from '@character/repositories'
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('CharacterService')
 
 interface SearchCharactersParams {
   filters: Record<string, any>
@@ -14,22 +18,7 @@ interface SearchCharactersResult {
   last_page: number
 }
 
-/**
- * Character Service
- *
- * @description
- * Service layer for character-related operations. Handles business logic
- * for character search, filtering, and pagination.
- *
- * @features
- * - Character list search with filters
- * - Pagination support
- * - Error handling and logging
- */
 export const CharacterService = {
-  /**
-   * Search characters with filters and pagination
-   */
   async searchCharacters({
     filters,
     countFilters,
@@ -49,8 +38,11 @@ export const CharacterService = {
         last_page: Math.ceil(totalCount / limit),
       }
     } catch (error) {
-      console.error('[CharacterService.searchCharacters] Error:', error)
-      throw error
+      logger.error('[CharacterService.searchCharacters] Error:', { error })
+      if (isAppError(error)) throw error
+      throw AppError.database('Failed to search characters', {
+        originalError: error,
+      })
     }
   },
 
@@ -61,62 +53,76 @@ export const CharacterService = {
     try {
       return await CharacterRepository.getCharacterDetails(characterId)
     } catch (error) {
-      console.error('[CharacterService.getCharacterById] Error:', error)
-      throw error
+      logger.error('[CharacterService.getCharacterById] Error:', { error })
+      if (isAppError(error)) throw error
+      throw AppError.database('Failed to get character by id', {
+        characterId,
+        originalError: error,
+      })
     }
   },
 
-  /**
-   * Get character images for an anime
-   */
   async getCharacterImages(animeId: number, limitCount: number = 10) {
     try {
       return await CharacterRepository.getCharacterImages(animeId, limitCount)
     } catch (error) {
-      console.error('[CharacterService.getCharacterImages] Error:', error)
-      throw error
+      logger.error('[CharacterService.getCharacterImages] Error:', { error })
+      if (isAppError(error)) throw error
+      throw AppError.database('Failed to get character images', {
+        animeId,
+        limitCount,
+        originalError: error,
+      })
     }
   },
 
-  /**
-   * Get top characters for sitemap generation
-   */
   async getCharactersForSitemap(limit: number = 1000) {
     try {
       return await CharacterRepository.getCharactersForSitemap(limit)
     } catch (error) {
-      console.error('[CharacterService.getCharactersForSitemap] Error:', error)
-      throw error
+      logger.error('[CharacterService.getCharactersForSitemap] Error:', {
+        error,
+      })
+      if (isAppError(error)) throw error
+      throw AppError.database('Failed to get characters for sitemap', {
+        limit,
+        originalError: error,
+      })
     }
   },
 
-  /**
-   * Get character details with animes by ID
-   */
   async getCharacterDetails(id: number) {
     try {
       const character = await CharacterRepository.getCharacterDetails(id)
 
       if (!character) {
-        throw new Error('Data not found')
+        throw AppError.notFound('Character data not found', { id })
       }
 
       return character
     } catch (error) {
-      console.error('[CharacterService.getCharacterDetails] Error:', error)
-      throw error
+      logger.error('[CharacterService.getCharacterDetails] Error:', {
+        error,
+      })
+      if (isAppError(error)) throw error
+      throw AppError.database('Failed to get character details', {
+        id,
+        originalError: error,
+      })
     }
   },
 
-  /**
-   * Get anime characters by anime ID and language
-   */
   async getAnimeCharacters(animeId: string, language: string) {
     try {
       return await CharacterRepository.getAnimeCharacters(animeId, language)
     } catch (error) {
-      console.error('[CharacterService.getAnimeCharacters] Error:', error)
-      throw error
+      logger.error('[CharacterService.getAnimeCharacters] Error:', { error })
+      if (isAppError(error)) throw error
+      throw AppError.database('Failed to get anime characters', {
+        animeId,
+        language,
+        originalError: error,
+      })
     }
   },
 }
