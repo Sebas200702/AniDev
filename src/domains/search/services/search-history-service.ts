@@ -1,8 +1,12 @@
 import { api } from '@libs/api'
+import { clientLogger } from '@libs/logger'
 import { toast } from '@pheralb/toast'
 import type { SearchHistory } from '@search/types'
+import { AppError, isAppError } from '@shared/errors'
 import { ToastType } from '@shared/types'
 import type { UserInfo } from '@user/types'
+
+const logger = clientLogger.create('SearchHistoryService')
 
 const STORAGE_KEY = 'searchHistory'
 const MAX_HISTORY_ITEMS = 50
@@ -15,7 +19,7 @@ const loadFromLocalStorage = (): SearchHistory[] => {
     const stored = localStorage.getItem(STORAGE_KEY)
     return stored ? JSON.parse(stored) : []
   } catch (error) {
-    console.error('[SearchHistoryService.loadFromLocalStorage] Error:', error)
+    logger.error('[SearchHistoryService.loadFromLocalStorage] Error:', error)
     localStorage.removeItem(STORAGE_KEY)
     return []
   }
@@ -28,7 +32,7 @@ const saveToLocalStorage = (history: SearchHistory[]): void => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(history))
   } catch (error) {
-    console.error('[SearchHistoryService.saveToLocalStorage] Error:', error)
+    logger.error('[SearchHistoryService.saveToLocalStorage] Error:', error)
   }
 }
 
@@ -42,30 +46,18 @@ const loadFromAPI = async (): Promise<SearchHistory[]> => {
   )
 
   if (response.error) {
-    throw new Error(response.error.message || 'Error loading search history')
+    throw AppError.externalApi(
+      response.error.message || 'Error loading search history',
+      {
+        originalError: response.error,
+      }
+    )
   }
 
   return response.data?.data || []
 }
 
-/**
- * Search History Service
- *
- * @description
- * Service layer for search history operations. Handles business logic
- * for loading, saving, and deleting search history with support for both
- * local storage and API.
- *
- * @features
- * - Load history (from API if logged in, otherwise from local storage)
- * - Save history entries
- * - Delete all history
- * - Automatic deduplication and limiting
- */
 export const SearchHistoryService = {
-  /**
-   * Load search history (from API if logged in, otherwise from local storage)
-   */
   async load(userInfo: UserInfo | null): Promise<SearchHistory[]> {
     try {
       if (!userInfo) {
@@ -76,7 +68,7 @@ export const SearchHistoryService = {
 
       return history
     } catch (error) {
-      console.error('[SearchHistoryService.load] Error:', error)
+      logger.error('[SearchHistoryService.load] Error:', error)
       toast[ToastType.Error]({
         text: 'Failed to load search history',
         action: {
@@ -86,6 +78,12 @@ export const SearchHistoryService = {
           },
         },
       })
+      if (!isAppError(error)) {
+        // Mantener el comportamiento de usuario (toast + fallback) pero
+        // envolver errores desconocidos para el lado servidor si se propagan
+        return []
+      }
+
       return []
     }
   },
@@ -108,8 +106,11 @@ export const SearchHistoryService = {
       })
 
       if (response.error) {
-        throw new Error(
-          response.error.message || 'Error deleting search history'
+        throw AppError.externalApi(
+          response.error.message || 'Error deleting search history',
+          {
+            originalError: response.error,
+          }
         )
       }
 
@@ -118,7 +119,7 @@ export const SearchHistoryService = {
       })
       return true
     } catch (error) {
-      console.error('[SearchHistoryService.delete] Error:', error)
+      logger.error('[SearchHistoryService.delete] Error:', error)
       toast[ToastType.Error]({
         text: 'Failed to delete search history',
       })
