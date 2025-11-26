@@ -3,6 +3,7 @@ import {
   type GenerateRecommendationsProps,
   functionTool,
 } from '@recomendations/types'
+import { AppError } from '@shared/errors'
 import { fetchRecomendations } from './fetch-recomendations'
 
 export const generateUserRecomendations = async ({
@@ -22,21 +23,24 @@ export const generateUserRecomendations = async ({
   )?.functionCall
 
   if (!functionCall) {
-    throw new Error(
-      'El modelo no devolvió una llamada a fetch_recommendations.'
+    throw AppError.externalApi(
+      'Model did not return a fetch_recommendations function call',
+      { context }
     )
   }
 
   if (functionCall.name !== 'fetch_recommendations') {
-    throw new Error(
-      `El modelo intentó llamar a una función no soportada: ${functionCall.name}`
-    )
+    throw AppError.externalApi('Model tried to call unsupported function', {
+      functionName: functionCall.name,
+    })
   }
 
   const args = functionCall.args as { mal_ids?: string[] }
 
   if (!args?.mal_ids?.length) {
-    throw new Error('No se generaron mal_ids en la respuesta del modelo.')
+    throw AppError.externalApi('Model did not return any mal_ids', {
+      context,
+    })
   }
 
   const result = await fetchRecomendations({
