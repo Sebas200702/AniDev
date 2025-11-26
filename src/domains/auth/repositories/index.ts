@@ -1,4 +1,5 @@
 import { supabase, supabaseAdmin } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 
 export const AuthRepository = {
   /**
@@ -11,11 +12,11 @@ export const AuthRepository = {
     })
 
     if (error) {
-      throw new Error(`Authentication failed: ${error.message}`)
+      throw AppError.unauthorized('Authentication failed', { ...error })
     }
 
     if (!data.session) {
-      throw new Error('No session returned from authentication')
+      throw AppError.unauthorized('No session returned from authentication')
     }
 
     return {
@@ -36,7 +37,7 @@ export const AuthRepository = {
     })
 
     if (verifyError) {
-      throw new Error(`Verification failed: ${verifyError.message}`)
+      throw AppError.externalApi('Verification failed', { ...verifyError })
     }
 
     // Create user
@@ -52,7 +53,7 @@ export const AuthRepository = {
     })
 
     if (signUpError) {
-      throw new Error(`Registration failed: ${signUpError.message}`)
+      throw AppError.database('Registration failed', { ...signUpError })
     }
 
     // Auto sign in
@@ -64,11 +65,11 @@ export const AuthRepository = {
     )
 
     if (signInError) {
-      throw new Error(`Auto sign-in failed: ${signInError.message}`)
+      throw AppError.unauthorized('Auto sign-in failed', { ...signInError })
     }
 
     if (!data.session) {
-      throw new Error('No session returned after registration')
+      throw AppError.unauthorized('No session returned after registration')
     }
 
     return {
