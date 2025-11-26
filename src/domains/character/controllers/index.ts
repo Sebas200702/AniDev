@@ -1,7 +1,11 @@
 import { CacheService } from '@cache/services'
 import { getCachedOrFetch } from '@cache/utils'
 import { CharacterService } from '@character/services'
-import { type CharacterDetails, CharacterFilters } from '@character/types'
+import {
+  type Character,
+  type CharacterDetails,
+  CharacterFilters,
+} from '@character/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
@@ -102,8 +106,15 @@ export const CharacterController = {
     return { animeId, language }
   },
 
-  async handleGetAnimeCharacters(url: URL): Promise<ApiResponse<any[]>> {
+  async handleGetAnimeCharacters(url: URL): Promise<ApiResponse<Character[]>> {
     const { animeId, language } = this.validateAnimeCharactersParams(url)
-    return await CharacterService.getAnimeCharacters(animeId, language)
+    const cacheKey = CacheService.generateKey(
+      'anime-characters',
+      `${animeId}-${language}`
+    )
+
+    return await getCachedOrFetch(cacheKey, () =>
+      CharacterService.getAnimeCharacters(animeId, language)
+    )
   },
 }
