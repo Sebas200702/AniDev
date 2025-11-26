@@ -28,8 +28,6 @@ export const useFetchWithCache = <T>({
 
   const { getCachedResponse, setCachedResponse, markAsError, shouldRetry } =
     useHomeCacheStore()
-
-  // Intentar cargar desde caché primero
   const cached = getCachedResponse(sectionId, currentUrl)
   const shouldSkip =
     skip || (cached?.status === 'success' && cached.data.length > 0)
@@ -40,7 +38,6 @@ export const useFetchWithCache = <T>({
     skip: shouldSkip,
   })
 
-  // Sincronizar con Redis en background
   const syncToRedis = useCallback(
     async (secUrl: string, secData: unknown) => {
       try {
@@ -50,20 +47,17 @@ export const useFetchWithCache = <T>({
           data: secData,
         })
       } catch {
-        // Silencioso
       }
     },
     [sectionId]
   )
 
-  // Si hay caché válido, usarlo
   useEffect(() => {
     if (cached?.status === 'success' && cached.data.length > 0) {
       setIsCached(true)
     }
   }, [cached])
 
-  // Guardar en caché cuando se obtienen datos
   useEffect(() => {
     if (data && !error) {
       const cachedResponse: CachedAnimeResponse = {
@@ -79,7 +73,7 @@ export const useFetchWithCache = <T>({
     }
   }, [data, error, currentUrl, sectionId, setCachedResponse, syncToRedis])
 
-  // Retry automático con createDynamicUrl
+
   useEffect(() => {
     if (error && !skip) {
       markAsError(sectionId, currentUrl, error.message)
