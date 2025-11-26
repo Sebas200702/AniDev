@@ -97,67 +97,44 @@ export const ProxyService = {
 
       clearTimeout(timeoutId)
 
-      // Handle errors with fallback to placeholder
       if (!response.ok) {
-        logger.error(
-          `[ProxyService] Fetch failed: ${response.status} for ${imageUrl}`
-        )
-
-        // Use placeholder for errors
-        if (response.status >= 400) {
+        // If 404 or 403, return placeholder instead of throwing
+        if (response.status === 404 || response.status === 403) {
+          logger.warn(
+            `[ProxyService] Image not found or forbidden: ${imageUrl} (${response.status})`
+          )
           const placeholderBuffer = await ImageRepository.getPlaceholder()
           return this.optimizeImage(placeholderBuffer, width, quality, format)
         }
-
-        throw AppError.externalApi('Failed to fetch image', {
-          imageUrl,
-          status: response.status,
-        })
-      }
-
-      // Validate content type
-      const contentType = response.headers.get('content-type')
-      if (contentType && !contentType.startsWith('image/')) {
-        throw AppError.externalApi('Invalid content type for image', {
-          imageUrl,
-          contentType,
-        })
-      }
-
-      // Check size before downloading
-      const contentLength = response.headers.get('content-length')
-      if (contentLength && Number.parseInt(contentLength) > 10 * 1024 * 1024) {
-        throw AppError.tooLarge('Image too large', {
-          maxBytes: 10 * 1024 * 1024,
-        })
+        throw AppError.externalApi(
+          `Failed to fetch image: ${response.statusText}`,
+          { status: response.status, url: imageUrl }
+        )
       }
 
       const arrayBuffer = await response.arrayBuffer()
-
-      if (arrayBuffer.byteLength === 0) {
-        throw AppError.externalApi('Empty image response', { imageUrl })
-      }
-
       const buffer = Buffer.from(arrayBuffer)
 
-      // Optimize
       return this.optimizeImage(buffer, width, quality, format)
-    } catch (fetchError: any) {
+    } catch (error) {
       clearTimeout(timeoutId)
+      logger.error('[ProxyService.fetchAndOptimize] Error:', error)
 
-      if (fetchError.name === 'AbortError') {
-        throw AppError.timeout('Image fetch timeout', { imageUrl })
+      // Fallback to placeholder on error
+      try {
+        const placeholderBuffer = await ImageRepository.getPlaceholder()
+        return this.optimizeImage(placeholderBuffer, width, quality, format)
+      } catch (fallbackError) {
+        logger.error(
+          '[ProxyService.fetchAndOptimize] Fallback failed:',
+          fallbackError
+        )
+        // If even placeholder fails, rethrow original error
+        if (isAppError(error)) throw error
+        throw AppError.externalApi('Failed to fetch image', {
+          originalError: error,
+        })
       }
-
-      logger.error('[ProxyService.fetchAndOptimize] Error:', fetchError)
-      if (isAppError(fetchError)) {
-        throw fetchError
-      }
-
-      throw AppError.externalApi('Failed to fetch and optimize image', {
-        imageUrl,
-        originalError: fetchError,
-      })
     }
   },
 }
