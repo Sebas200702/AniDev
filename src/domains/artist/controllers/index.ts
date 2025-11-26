@@ -1,5 +1,6 @@
 import { ArtistService } from '@artist/services'
 import { AppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { normalizeString } from '@utils/normalize-string'
 
 /**
@@ -26,7 +27,7 @@ export const ArtistController = {
   /**
    * Handle get artist info request
    */
-  async handleGetArtistInfo(url: URL) {
+  async handleGetArtistInfo(url: URL): Promise<ApiResponse<any>> {
     const artistName = this.validateArtistName(url)
     return await ArtistService.getArtistByName(artistName)
   },
