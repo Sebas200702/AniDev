@@ -1,6 +1,10 @@
 import { AuthRepository } from '@auth/repositories'
 import { signInSchema } from '@auth/schemas/sigin'
 import { signUpSchema } from '@auth/schemas/signup'
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('AuthService')
 
 /**
  * Auth Service
@@ -25,8 +29,16 @@ export const AuthService = {
 
       return await AuthRepository.signIn(validated.email, validated.password)
     } catch (error) {
-      console.error('[AuthService.signIn] Error:', error)
-      throw error
+      logger.error('[AuthService.signIn] Error:', { error })
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      // Zod validation errors or unexpected
+      throw AppError.validation('Invalid sign-in data', {
+        originalError: error,
+      })
     }
   },
 
@@ -48,8 +60,15 @@ export const AuthService = {
         validated.user_name
       )
     } catch (error) {
-      console.error('[AuthService.signUp] Error:', error)
-      throw error
+      logger.error('[AuthService.signUp] Error:', { error })
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.validation('Invalid sign-up data', {
+        originalError: error,
+      })
     }
   },
 }
