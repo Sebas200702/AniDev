@@ -93,6 +93,7 @@ export const AnimeService = {
   ): Promise<AnimeResult> {
     try {
       const result = await AnimeRepository.getById(animeId, parentalControl)
+
       return {
         data: result,
         blocked: false,
@@ -104,11 +105,9 @@ export const AnimeService = {
           animeId,
           error: error.message,
         })
-        return {
-          data: undefined,
-          blocked: true,
-          message: error.message,
-        }
+        throw AppError.permission('Anime is restricted due to parental control settings')
+
+
       }
 
       logger.error('[AnimeService.getById] Unexpected error:', {
