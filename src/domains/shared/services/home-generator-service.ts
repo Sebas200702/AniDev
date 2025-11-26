@@ -1,10 +1,11 @@
 import { aiService } from '@ai/services'
+import { CacheService } from '@cache/services'
+import { TtlValues } from '@cache/types'
 import { recommendationsService } from '@recomendations/services'
 import {
   HOME_CACHE_CONFIG,
   STATIC_SECTIONS,
 } from '@shared/constants/home-constants'
-import { RedisCacheService } from '@shared/services/redis-cache-service'
 import type {
   AIResponse,
   AISuggestion,
@@ -13,7 +14,6 @@ import type {
 } from '@shared/types/home-types'
 import { HomeUrlBuilder } from './home-url-builder'
 
-// Mapeo directo de IDs estáticos a índices de IA
 const SECTION_MAPPING = {
   'collection-1': 0,
   'banner-1': 1,
@@ -27,12 +27,10 @@ const SECTION_MAPPING = {
 } as const
 
 export const HomeGeneratorService = {
-  /**
-   * Genera y cachea todas las secciones del home con URLs personalizadas
-   */
+
   buildHomeSections: async (userId: string | null): Promise<HomeSection[]> => {
     const cacheKey = `${HOME_CACHE_CONFIG.REDIS_KEY_PREFIX}${userId ?? 'guest'}`
-    const cached = await RedisCacheService.get<HomeSection[]>(cacheKey)
+    const cached = await CacheService.get<HomeSection[]>(cacheKey)
 
     if (cached) return cached
 
@@ -49,15 +47,10 @@ export const HomeGeneratorService = {
         : section
     })
 
-    await RedisCacheService.set(cacheKey, sections, {
-      ttl: HOME_CACHE_CONFIG.TTL_SECONDS,
-    })
+    await CacheService.set(cacheKey, sections, TtlValues.DAY)
     return sections
   },
 
-  /**
-   * Obtiene sugerencias de IA y las convierte a URLs
-   */
   getAISuggestions: async (userId: string): Promise<ProcessedSuggestion[]> => {
     try {
       const { userProfile, calculatedAge } =
@@ -66,7 +59,7 @@ export const HomeGeneratorService = {
 
       const prompt = HomeGeneratorService.buildPrompt(
         userProfile,
-        calculatedAge
+        calculatedAge ?? 18
       )
       const response = await aiService.generateJSON<AIResponse>(prompt)
 
@@ -80,18 +73,14 @@ export const HomeGeneratorService = {
     }
   },
 
-  /**
-   * Construye URL desde sugerencia de IA
-   */
+
   buildUrl: (s: AISuggestion): string => {
     if (s.value === 'Movie') return HomeUrlBuilder.buildTypeUrl('Movie')
     if (s.type === 'banner') return HomeUrlBuilder.buildGenreUrl(s.value, 1)
     return HomeUrlBuilder.buildGenreUrl(s.value, 24)
   },
 
-  /**
-   * Genera prompt para IA
-   */
+
   buildPrompt: (profile: { favorite_genres?: string[] }, age: number) => `
 Analyze this anime fan profile and generate 9 personalized sections in EXACT order:
 1. collection (4 genres), 2. banner (1 genre), 3. slider (action-like genre), 4. slider ("Movie"),
@@ -115,7 +104,7 @@ Response JSON:
 }`,
 
   invalidateCache: async (userId: string | null) => {
-    await RedisCacheService.delete(
+    await CacheService.delete(
       `${HOME_CACHE_CONFIG.REDIS_KEY_PREFIX}${userId ?? 'guest'}`
     )
   },
