@@ -24,7 +24,7 @@ import { getSession } from 'auth-astro/server'
  * @example
  * const userInfo = await getSessionUserInfo({ request, accessToken, refreshToken });
  * if (userInfo) {
- *   console.log(`User: ${userInfo.name}, Email: ${userInfo.email}, Avatar: ${userInfo.avatar}`);
+ *   logger.info(`User: ${userInfo.name}, Email: ${userInfo.email}, Avatar: ${userInfo.avatar}`);
  * }
  */
 
