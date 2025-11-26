@@ -26,8 +26,9 @@ export const CharacterContainer = ({ slug }: { slug: string }) => {
           },
           body: JSON.stringify({ about: character.character_about ?? '' }),
         })
-        const data = await response.json()
-        setAbout(data.about)
+        const {data} = await response.json()
+
+        setAbout(data)
       } catch (error) {
         console.error('Failed to fetch about:', error)
       } finally {
