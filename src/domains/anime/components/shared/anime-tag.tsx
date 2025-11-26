@@ -1,5 +1,5 @@
+import { ColorService } from '@shared/services/color-service'
 import { getFilterOfTag } from '@utils/get-filter-of-tag'
-import { getTagColor } from '@utils/get-tag-color'
 
 /**
  * Props for the AnimeTag component.
@@ -45,7 +45,7 @@ interface Props {
  * <AnimeTag tag="Action" type="genre" />
  */
 export const AnimeTag = ({ tag, type, style }: Props) => {
-  const tagColor = getTagColor(tag ?? '')
+  const tagColor = ColorService.getTagColor(tag ?? '')
   const filter = getFilterOfTag(tag)
 
   return (

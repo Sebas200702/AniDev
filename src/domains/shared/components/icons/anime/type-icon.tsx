@@ -1,5 +1,5 @@
+import { ColorService } from '@shared/services/color-service'
 import type { IconProps } from '@shared/types'
-import { typeColors } from '@utils/type-colors'
 
 interface TypeIconProps extends IconProps {
   type: string
@@ -29,7 +29,7 @@ interface TypeIconProps extends IconProps {
  * <TypeIcon type="TV" className="w-6 h-6" />
  */
 export const TypeIcon = ({ className, type }: TypeIconProps) => {
-  const color = typeColors(type)
+  const color = ColorService.getTypeColor(type)
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
