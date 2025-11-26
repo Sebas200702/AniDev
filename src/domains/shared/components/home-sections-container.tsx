@@ -1,7 +1,10 @@
+import { clientLogger } from '@libs/logger'
 import { DynamicHomeSection } from '@shared/components/dynamic-home-section'
 import { useHomeCacheStore } from '@shared/stores/home-cache-store'
 import type { HomeSection } from '@shared/types/home-types'
 import { useEffect, useState } from 'react'
+
+const logger = clientLogger.create('HomeSectionsContainer')
 
 interface Props {
   initialSections: HomeSection[]
@@ -25,7 +28,7 @@ export const HomeSectionsContainer = ({
   useEffect(() => {
     if (!cached) {
       setHomeSections(initialSections, userId)
-      console.log('💾 Saved SSR sections to sessionStorage cache')
+      logger.info('💾 Saved SSR sections to sessionStorage cache')
     }
   }, [cached, initialSections, userId, setHomeSections])
 
