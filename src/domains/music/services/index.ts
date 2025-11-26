@@ -1,4 +1,8 @@
+import { createContextLogger } from '@libs/pino'
 import { MusicRepository } from '@music/repositories'
+import { AppError, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('MusicService')
 
 interface SearchMusicParams {
   filters: Record<string, any>
@@ -49,8 +53,18 @@ export const MusicService = {
         last_page: Math.ceil(totalCount / limit),
       }
     } catch (error) {
-      console.error('[MusicService.searchMusic] Error:', error)
-      throw error
+      logger.error('[MusicService.searchMusic] Error:', error)
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to search music', {
+        filters,
+        countFilters,
+        page,
+        limit,
+        originalError: error,
+      })
     }
   },
 
@@ -61,8 +75,15 @@ export const MusicService = {
     try {
       return await MusicRepository.getMusicInfo(themeId)
     } catch (error) {
-      console.error('[MusicService.getMusicById] Error:', error)
-      throw error
+      logger.error('[MusicService.getMusicById] Error:', error)
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to get music by id', {
+        themeId,
+        originalError: error,
+      })
     }
   },
 
@@ -73,8 +94,15 @@ export const MusicService = {
     try {
       return await MusicRepository.getMusicByAnimeId(animeId)
     } catch (error) {
-      console.error('[MusicService.getMusicByAnimeId] Error:', error)
-      throw error
+      logger.error('[MusicService.getMusicByAnimeId] Error:', error)
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to get music by anime id', {
+        animeId,
+        originalError: error,
+      })
     }
   },
 
@@ -85,8 +113,16 @@ export const MusicService = {
     try {
       return await MusicRepository.getMusicForSitemap(offset, limit)
     } catch (error) {
-      console.error('[MusicService.getMusicForSitemap] Error:', error)
-      throw error
+      logger.error('[MusicService.getMusicForSitemap] Error:', error)
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to get music for sitemap', {
+        offset,
+        limit,
+        originalError: error,
+      })
     }
   },
 }
