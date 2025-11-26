@@ -219,3 +219,13 @@ export interface AnimeSummary extends AnimeCardInfo {
   banner_image: string | null
   role: string
 }
+
+export enum Formats {
+  AnimeCard = 'anime-card',
+  AnimeBanner = 'anime-banner',
+  TopAnime = 'top-anime',
+  AnimeCollection = 'anime-collection',
+  AnimeDetail = 'anime-detail',
+  Search = 'search',
+  Schedule = 'schedule',
+}
