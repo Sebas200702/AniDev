@@ -13,8 +13,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const userInfo = await getSessionUserInfo({
       request,
-      accessToken: cookies.get('sb-access-token')?.value,
-      refreshToken: cookies.get('sb-refresh-token')?.value,
+      cookies,
     })
 
     const userId = userInfo?.id ?? null

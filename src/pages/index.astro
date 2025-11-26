@@ -7,8 +7,7 @@ import { getSessionUserInfo } from '@utils/get_session_user_info'
 // Obtener información del usuario desde cookies
 const userInfo = await getSessionUserInfo({
   request: Astro.request,
-  accessToken: Astro.cookies.get('sb-access-token')?.value,
-  refreshToken: Astro.cookies.get('sb-refresh-token')?.value,
+  cookies: Astro.cookies,
 })
 
 // Generar secciones del home (con cache Redis de 1 hora)
