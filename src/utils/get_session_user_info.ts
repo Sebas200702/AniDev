@@ -1,53 +1,23 @@
-import { supabase } from '@libs/supabase'
+import { createSupabaseServerClient } from '@libs/supabase-server'
 import type { UserInfo } from '@user/types'
+import type { AstroCookies } from 'astro'
 import { getSession } from 'auth-astro/server'
-
-/**
- * getSessionUserInfo retrieves user information from the current session.
- *
- * @description This function extracts user data from the authentication session.
- * It securely accesses the session associated with the provided request and
- * retrieves the user's name, email and avatar information. If no request is provided
- * or the session doesn't contain user data, appropriate null values are returned.
- *
- * The function handles missing data gracefully by using nullish coalescing to
- * provide fallback values when session properties are undefined. This ensures
- * that the returned object always has a consistent structure even when data
- * is incomplete or missing.
- *
- * @param {Object} params - The parameters for the function
- * @param {Request | undefined} params.request - The request object containing session information
- * @param {string | undefined} params.accessToken - The access token from cookies
- * @param {string | undefined} params.refreshToken - The refresh token from cookies
- * @returns {Promise<Object | null>} An object containing user name, email and avatar, or null if no request
- *
- * @example
- * const userInfo = await getSessionUserInfo({ request, accessToken, refreshToken });
- * if (userInfo) {
- *   logger.info(`User: ${userInfo.name}, Email: ${userInfo.email}, Avatar: ${userInfo.avatar}`);
- * }
- */
 
 export const getSessionUserInfo = async ({
   request,
-  accessToken,
-  refreshToken,
+  cookies,
 }: {
-  request: Request | undefined
-  accessToken: string | undefined
-  refreshToken: string | undefined
+  request: Request
+  cookies: AstroCookies
 }): Promise<UserInfo | null> => {
-  if (!request) return null
-
   const session = await getSession(request)
 
   if (!session?.user) return null
 
-  const { data: metadata } = await supabase
-    .from('public_users')
-    .select('avatar_url , banner_image , name')
-    .eq('id', session.user.id)
-    .single()
+  const supabase = createSupabaseServerClient({ request, cookies })
+
+  const accessToken = cookies.get('sb-access-token')?.value
+  const refreshToken = cookies.get('sb-refresh-token')?.value
 
   if (accessToken && refreshToken) {
     const { data, error } = await supabase.auth.setSession({
@@ -56,14 +26,26 @@ export const getSessionUserInfo = async ({
     })
 
     if (!data?.user || error) return null
+
+    const { data: metadata } = await supabase
+      .from('public_users')
+      .select('avatar_url , banner_image , name')
+      .eq('id', data.user.id)
+      .single()
+
     return {
       id: data.user.id,
-
       name: data.user.user_metadata?.user_name,
       avatar: data.user.user_metadata?.avatar_url,
       banner_image: metadata?.banner_image,
     }
   }
+
+  const { data: metadata } = await supabase
+    .from('public_users')
+    .select('avatar_url , banner_image , name')
+    .eq('id', session.user.id)
+    .single()
 
   const userInfo: UserInfo = {
     id: session.user.id ?? null,

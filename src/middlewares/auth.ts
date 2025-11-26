@@ -34,8 +34,7 @@ export const checkSession = (
     try {
       const userInfo = await getSessionUserInfo({
         request: context.request,
-        accessToken: context.cookies.get('sb-access-token')?.value,
-        refreshToken: context.cookies.get('sb-refresh-token')?.value,
+        cookies: context.cookies,
       })
       if (!userInfo) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {

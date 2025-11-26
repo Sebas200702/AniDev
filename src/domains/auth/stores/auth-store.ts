@@ -1,6 +1,6 @@
 import { stepsSignIn, stepsSignUp } from '@auth/utils/steps'
 
-import { authApiClient } from '@auth/helpers/api-client'
+import { authApiClient } from '@auth/client/auth-client'
 import type { AuthStep } from '@auth/types'
 import { userApiClient } from '@user/helpers/api-client'
 import { z } from 'zod'
