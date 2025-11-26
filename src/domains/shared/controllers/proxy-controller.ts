@@ -1,8 +1,11 @@
 import { CacheService } from '@cache/services'
 import { TtlValues } from '@cache/types'
+import { createContextLogger } from '@libs/pino'
 import { AppError } from '@shared/errors'
 import { ProxyService } from '@shared/services/proxy-service'
 import { imageProxyDeduplicator } from '@utils/request-deduplicator'
+
+const logger = createContextLogger('ProxyController')
 
 /**
  * Proxy Controller
@@ -71,10 +74,27 @@ export const ProxyController = {
           mimeType: string
         }>(cacheKey)
         if (cached) {
-          return {
-            buffer: Buffer.from(cached.buffer.data),
-            mimeType: cached.mimeType,
+          // Handle different buffer serialization formats
+          let bufferData: any = cached.buffer
+          if (
+            bufferData &&
+            typeof bufferData === 'object' &&
+            bufferData.type === 'Buffer' &&
+            Array.isArray(bufferData.data)
+          ) {
+            bufferData = bufferData.data
           }
+
+          if (bufferData) {
+            return {
+              buffer: Buffer.from(bufferData),
+              mimeType: cached.mimeType,
+            }
+          }
+          // If buffer data is missing/invalid, treat as cache miss
+          logger.warn(
+            `[ProxyController] Invalid cached buffer for key: ${cacheKey}`
+          )
         }
 
         const result = await ProxyService.fetchAndOptimize(
@@ -83,8 +103,11 @@ export const ProxyController = {
           quality,
           format
         )
+
+        // Cache the result
+        // Note: Redis client handles Buffer serialization automatically
         CacheService.set(cacheKey, result, TtlValues.DAY).catch((error) =>
-          console.error(
+          logger.error(
             `[ProxyController] Error caching key "${cacheKey}":`,
             error
           )
