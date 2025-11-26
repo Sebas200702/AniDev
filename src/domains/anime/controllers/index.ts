@@ -1,4 +1,4 @@
-import { type AnimeResult, AnimeService } from '@anime/services'
+import { AnimeService } from '@anime/services'
 import type { Anime, AnimeDetail, Formats, RandomAnime } from '@anime/types'
 import { CacheService } from '@cache/services'
 import { getCachedOrFetch } from '@cache/utils'
@@ -88,7 +88,7 @@ export const AnimeController = {
     return { data: result }
   },
 
-  async handleGetAnimeById(url: URL): Promise<ApiResponse<AnimeResult>> {
+  async handleGetAnimeById(url: URL): Promise<ApiResponse<Anime| null>> {
     const id = url.searchParams.get('id')
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam !== 'false'
