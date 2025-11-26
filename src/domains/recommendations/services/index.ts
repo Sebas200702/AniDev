@@ -7,11 +7,15 @@ import { generateUserRecommendations } from '@recommendations/utils/generate-rec
 import { fetchJikanRecommendations } from '@recommendations/utils/get-jikan-recommendations'
 import { generateContextualPrompt } from '@recommendations/utils/get-recomendation-context'
 import { getUserDataToRecommendations } from '@recommendations/utils/get-user-data-to-recommendations'
+import type { ApiResponse } from '@shared/types/api-response'
 import type { GeneratePromptProps } from 'domains/ai/types'
 
 export const recommendationsService = {
-  async getRecommendations(props: FetchRecommendationProps) {
-    return fetchRecommendations(props)
+  async getRecommendations(
+    props: FetchRecommendationProps
+  ): Promise<ApiResponse<any[]>> {
+    const data = await fetchRecommendations(props)
+    return { data }
   },
 
   async getUserPreferences(userId: string | null) {
@@ -21,8 +25,11 @@ export const recommendationsService = {
   async generatePrompt(props: GeneratePromptProps) {
     return generateContextualPrompt(props)
   },
-  async generateRecommendations(props: GenerateRecommendationsProps) {
-    return await generateUserRecommendations(props)
+  async generateRecommendations(
+    props: GenerateRecommendationsProps
+  ): Promise<ApiResponse<any[]>> {
+    const data = await generateUserRecommendations(props)
+    return { data }
   },
   async getJikanRecommendations(mal_id: string) {
     return await fetchJikanRecommendations(mal_id)
