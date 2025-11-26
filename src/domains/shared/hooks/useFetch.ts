@@ -1,6 +1,6 @@
+import { navigate } from 'astro:transitions/client'
 import { type ApiResponse, api } from '@libs/api'
 import { AppError } from '@shared/errors'
-import { navigate } from 'astro:transitions/client'
 import { useCallback, useEffect, useState } from 'react'
 
 interface UseFetchOptions<T> {
