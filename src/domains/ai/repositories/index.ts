@@ -1,15 +1,17 @@
 import { type Tool } from '@google/generative-ai'
 import { model } from '@libs/gemini'
+import { AppError } from '@shared/errors'
 
 export const aiRepository = {
   async generateText(prompt: string): Promise<string> {
-    try {
-      const response = await model.generateContent(prompt)
-      return response.response.text().trim()
-    } catch (error) {
-      console.error('[AIRepository.generateText] Error:', error)
-      return ''
+    const response = await model.generateContent(prompt)
+    const text = response.response.text().trim()
+
+    if (!text) {
+      throw AppError.externalApi('Empty response from AI model', { prompt })
     }
+
+    return text
   },
 
   async generateJSON<T>(prompt: string): Promise<T | null> {
@@ -20,10 +22,38 @@ export const aiRepository = {
       })
 
       const text = response.response.text()
-      return JSON.parse(text) as T
+
+      if (!text) {
+        throw AppError.externalApi('Empty JSON response from AI model', {
+          prompt,
+        })
+      }
+
+      try {
+        return JSON.parse(text) as T
+      } catch {
+        throw AppError.externalApi('Failed to parse AI JSON response', {
+          prompt,
+          raw: text,
+        })
+      }
     } catch (error) {
-      console.error('[AIRepository.generateJSON] Error:', error)
-      return null
+      if (AppError && typeof AppError.externalApi === 'function') {
+        if (error instanceof Error && error.name === 'ExternalApiError') {
+          throw error
+        }
+        throw AppError.externalApi('AI JSON generation failed', {
+          prompt,
+          originalError: error,
+        })
+      }
+
+      // Fallback if AppError is not available for some reason
+      if (error instanceof Error) {
+        throw error
+      }
+
+      throw new Error('AI JSON generation failed')
     }
   },
 
