@@ -15,6 +15,7 @@ export const AnimeInfoContainer = ({ id }: Props) => {
     error,
   } = useFetch<Anime>({
     url: `/animes/getAnime?id=${id}`,
+    navigate404: true,
   })
 
   return (
@@ -24,9 +25,7 @@ export const AnimeInfoContainer = ({ id }: Props) => {
       error={error}
       loadingFallback={<AnimeLoader />}
       noDataFallback={
-        <div className="flex h-40 items-center justify-center text-gray-300">
-          No anime data available.
-        </div>
+       <AnimeLoader />
       }
     >
       {(data) => <AnimeInfo animeData={data!} />}
