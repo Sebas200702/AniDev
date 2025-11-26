@@ -1,5 +1,9 @@
 import { AnimeRepository } from '@anime/repositories'
-import type { Anime } from '@anime/types'
+import type { Anime, Formats } from '@anime/types'
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('AnimeService')
 
 export interface AnimeResult {
   anime?: Anime
@@ -7,30 +11,7 @@ export interface AnimeResult {
   message?: string
 }
 
-/**
- * Anime Service
- *
- * @description
- * Service layer for anime-related business logic. This service provides
- * methods for fetching anime data and performing anime-related operations.
- * It uses the AnimeRepository for data access and adds additional business
- * logic, error handling, and data validation.
- *
- * @features
- * - Random anime selection with parental control
- * - Anime search with filters and pagination
- * - Get anime by ID with parental control and blocked content handling
- * - Centralized error handling
- * - Business logic layer between controllers and repositories
- */
 export const AnimeService = {
-  /**
-   * Gets a random anime for the user
-   *
-   * @param userId - The user ID (can be null for guests)
-   * @param parentalControl - Whether parental control is enabled
-   * @returns Random anime data or null if not found
-   */
   async getRandomAnime(
     parentalControl: boolean | null,
     userId?: string | null
@@ -44,25 +25,23 @@ export const AnimeService = {
 
       return result
     } catch (error) {
-      console.error('[AnimeService.getRandomAnime] Error:', error)
-      throw new Error('Failed to fetch random anime')
+      logger.error('[AnimeService.getRandomAnime] Error:', { error })
+      // Re-throw AppError as-is, wrap unknown errors
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to fetch random anime', {
+        originalError: error,
+      })
     }
   },
 
-  /**
-   * Searches for anime with filters and pagination
-   *
-   * @param format - The search format (e.g., 'anime-card', 'anime-list')
-   * @param filters - Search filters to apply (includes pagination, sorting, etc.)
-   * @param countFilters - Filters for counting total results
-   * @returns Anime search results with total count
-   */
   async searchAnime({
     format,
     filters,
     countFilters,
   }: {
-    format: string
+    format: Formats
     filters: Record<string, any>
     countFilters: Record<string, any>
   }) {
@@ -73,7 +52,6 @@ export const AnimeService = {
         countFilters,
       })
 
-      // Validar que haya resultados
       if (!result.data || result.data.length === 0) {
         return {
           data: [],
@@ -83,45 +61,44 @@ export const AnimeService = {
 
       return result
     } catch (error) {
-      console.error('[AnimeService.searchAnime] Error:', error)
-      throw new Error('Failed to search anime')
+      logger.error('[AnimeService.searchAnime] Error:', { error, format })
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to search anime', {
+        originalError: error,
+      })
     }
   },
 
-  /**
-   * Gets an anime by ID with parental control handling
-   *
-   * @param animeId - The anime MAL ID
-   * @param parentalControl - Whether parental control is enabled
-   * @returns AnimeResult object containing anime data, or blocked/not found status
-   */
   async getById(
     animeId: number,
     parentalControl: boolean = true
   ): Promise<AnimeResult> {
     try {
       const result = await AnimeRepository.getById(animeId, parentalControl)
-
-      // Anime no encontrado
-      if (result === null) {
-        return {}
+      return {
+        anime: result,
       }
+    } catch (error: unknown) {
 
-      // Anime bloqueado por control parental
-      if ('blocked' in result && result.blocked) {
+      if (isAppError(error) && error.type === 'permission') {
+        logger.info('Anime blocked by parental control', {
+          animeId,
+          error: error.message,
+        })
         return {
+          anime: undefined,
           blocked: true,
-          message: result.message,
+          message: error.message,
         }
       }
 
-      // Anime encontrado
-      return {
-        anime: result as Anime,
-      }
-    } catch (error) {
-      console.error('[AnimeService.getById] Error:', error)
-      throw new Error('Failed to fetch anime by ID')
+      logger.error('[AnimeService.getById] Unexpected error:', {
+        animeId,
+        error,
+      })
+      throw error
     }
   },
 
@@ -131,9 +108,14 @@ export const AnimeService = {
   async getStudios() {
     try {
       return await AnimeRepository.getUniqueStudios()
-    } catch (error) {
-      console.error('[AnimeService.getStudios] Error:', error)
-      throw error
+    } catch (error: unknown) {
+      logger.error('[AnimeService.getStudios] Error:', { error })
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to fetch studios', {
+        originalError: error,
+      })
     }
   },
 
@@ -143,9 +125,14 @@ export const AnimeService = {
   async getAnimeBanner(animeId: number, limitCount: number = 8) {
     try {
       return await AnimeRepository.getAnimeBanner(animeId, limitCount)
-    } catch (error) {
-      console.error('[AnimeService.getById] Error:', error)
-      throw error
+    } catch (error : unknown) {
+      logger.error('[AnimeService.getAnimeBanner] Error:', { error, animeId })
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to fetch anime banner', {
+        originalError: error,
+      })
     }
   },
 
@@ -159,9 +146,18 @@ export const AnimeService = {
   async getAnimesForSitemap(offset: number, limit: number = 5000) {
     try {
       return await AnimeRepository.getAnimesForSitemap(offset, limit)
-    } catch (error) {
-      console.error('[AnimeService.getAnimesForSitemap] Error:', error)
-      throw error
+    } catch (error : unknown) {
+      logger.error('[AnimeService.getAnimesForSitemap] Error:', {
+        error,
+        offset,
+        limit,
+      })
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to fetch animes for sitemap', {
+        originalError: error,
+      })
     }
   },
 
@@ -175,8 +171,16 @@ export const AnimeService = {
     try {
       return await AnimeRepository.getAnimeRelations(animeId)
     } catch (error) {
-      console.error('[AnimeService.getAnimeRelations] Error:', error)
-      throw error
+      logger.error('[AnimeService.getAnimeRelations] Error:', {
+        error,
+        animeId,
+      })
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to fetch anime relations', {
+        originalError: error,
+      })
     }
   },
 
@@ -190,8 +194,13 @@ export const AnimeService = {
     try {
       return await AnimeRepository.getAnimesFull(filters)
     } catch (error) {
-      console.error('[AnimeService.getAnimesFull] Error:', error)
-      throw error
+      logger.error('[AnimeService.getAnimesFull] Error:', { error, filters })
+      if (isAppError(error)) {
+        throw error
+      }
+      throw AppError.database('Failed to fetch animes', {
+        originalError: error,
+      })
     }
   },
 }
