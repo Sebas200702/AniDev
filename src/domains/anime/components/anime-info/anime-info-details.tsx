@@ -92,7 +92,7 @@ export const AnimeDetails = ({ animeData }: Props) => {
             />
           )}
           <span className="text-s text-pretty capitalize">
-            {!detail.value ? 'Unknown' : detail.value.toString()}
+            {detail.value ? detail.value.toString() : 'Unknown'}
           </span>
         </li>
       ))}
