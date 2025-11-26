@@ -18,7 +18,7 @@ import type { CharacterDetails } from '@character/types'
  *
  * @example
  * getCharacterData('momo-ayase_123456')
- *   .then((character) => console.log(character))
+ *   .then((character) => logger.info(character))
  *   .catch((error) => console.error(error))
  */
 export const getCharacterData = async (
