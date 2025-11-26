@@ -1,7 +1,16 @@
+import {
+  type Anime,
+  type AnimeBannerInfo,
+  type AnimeDetail,
+  Formats,
+} from '@anime/types'
 import { fetchAnimeCount, fetchByFormat } from '@anime/utils/fetch-by-format'
-
 import { getRandomAnime } from '@anime/utils/get-random-anime'
+import { createContextLogger } from '@libs/pino'
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
+
+const logger = createContextLogger('AnimeRepository')
 
 export const AnimeRepository = {
   async getRandom(parentalControl: boolean | null, userId?: string | null) {
@@ -13,7 +22,7 @@ export const AnimeRepository = {
     filters,
     countFilters,
   }: {
-    format: string
+    format: Formats
     filters: Record<string, any>
     countFilters: Record<string, any>
   }) {
@@ -23,49 +32,48 @@ export const AnimeRepository = {
     return { data, total }
   },
 
-  async getById(animeId: number, parentalControl: boolean = true) {
-    const { data, error } = await supabase.rpc('get_anime_by_id', {
-      p_mal_id: animeId,
-      p_parental_control: parentalControl,
-    })
+  async getById(animeId: number , parentalControl: boolean = false) {
+    const { data, error } = await supabase
+      .rpc('get_anime_by_id', {
+        p_mal_id: animeId,
+        p_parental_control: parentalControl,
+      })
+      .single()
 
     if (error) {
-      throw new Error(`Failed to fetch anime: ${error.message}`)
+      logger.error(`[AnimeRepository.getById] Failed to fetch anime ${animeId}: ${error.message}`)
+      throw AppError.database(`Failed to fetch anime ${animeId}`, { ...error })
     }
-
-    // Si no hay datos con control parental, verificar si existe sin control
-    if (!data?.[0] && parentalControl) {
+    if (!data && parentalControl) {
       const { data: unrestricted } = await supabase.rpc('get_anime_by_id', {
         p_mal_id: animeId,
         p_parental_control: false,
-      })
+      }).single()
 
-      if (unrestricted?.[0]) {
-        return {
-          blocked: true,
-          message: 'This content is blocked by parental controls',
-        }
+      if (unrestricted) {
+        throw AppError.permission('Anime is restricted due to parental control settings')
       }
     }
 
-    if (!data?.[0]) {
-      return null
+    if (!data) {
+      logger.error(`[AnimeRepository.getById] Anime not found: ${animeId}`)
+      throw AppError.notFound(`Anime with ID ${animeId} not found`)
     }
 
-    return data[0]
+    return data as Anime
   },
 
   async getMetadata(animeId: number) {
-    const anime = await this.getById(animeId, false)
+    const anime = await this.getById(animeId)
 
     if (!anime || 'blocked' in anime) {
-      throw new Error('Anime not found')
+      throw AppError.notFound(`Anime metadata with ID ${animeId} not found`)
     }
 
     return {
       title: anime.title,
       description: anime.synopsis || anime.background,
-      image: anime.main_picture,
+      image: anime.image_large_webp || anime.image_url,
     }
   },
 
@@ -73,14 +81,16 @@ export const AnimeRepository = {
     const { data, error } = await supabase.rpc('get_unique_studios')
 
     if (error) {
-      throw new Error(`Failed to fetch studios: ${error.message}`)
+      throw AppError.database(`Failed to fetch studios: ${error.message}`, {
+        ...error,
+      })
     }
 
     if (!data || data.length === 0) {
-      throw new Error('No studios found')
+      throw AppError.notFound('No studios found')
     }
 
-    return data
+    return data as string[]
   },
 
   async getAnimeBanner(animeId: number, limitCount: number = 8) {
@@ -90,18 +100,20 @@ export const AnimeRepository = {
     })
 
     if (error) {
-      throw new Error(`Failed to fetch anime banner: ${error.message}`)
+      throw AppError.database(
+        `Failed to fetch anime banner: ${error.message}`,
+        { ...error }
+      )
     }
 
     if (!data || data.length === 0) {
-      throw new Error('Data not found')
+      throw AppError.notFound(`Anime banner data with ID ${animeId} not found`)
     }
 
-    return data
+    return data as AnimeBannerInfo[]
   },
 
   async getAnimesForSitemap(offset: number, limit: number = 5000) {
-    // Supabase has a max limit per request, so we need to batch
     const BATCH_SIZE = 1000
     const batches = Math.ceil(limit / BATCH_SIZE)
     const allData: { mal_id: number; title: string; score: number }[] = []
@@ -117,14 +129,16 @@ export const AnimeRepository = {
         .range(batchOffset, batchOffset + batchLimit - 1)
 
       if (error) {
-        throw new Error(`Failed to fetch animes for sitemap: ${error.message}`)
+        throw AppError.database(
+          `Failed to fetch animes for sitemap: ${error.message}`,
+          { ...error }
+        )
       }
 
       if (data) {
         allData.push(...data)
       }
 
-      // Stop if we got less than expected (no more data)
       if (!data || data.length < batchLimit) {
         break
       }
@@ -139,20 +153,28 @@ export const AnimeRepository = {
     })
 
     if (error) {
-      console.error(error)
-      return []
+      logger.error(
+        '[AnimeRepository.getAnimeRelations] Error fetching related anime',
+        error
+      )
+      throw AppError.database(
+        `Failed to fetch anime relations: ${error.message}`,
+        { ...error }
+      )
     }
 
-    return data ?? []
+    return (data ?? []) as AnimeDetail[]
   },
 
   async getAnimesFull(filters: Record<string, any>) {
     const { data, error } = await supabase.rpc('get_animes_full', filters)
 
     if (error) {
-      throw new Error(`Failed to fetch animes full: ${error.message}`)
+      throw AppError.database(`Failed to fetch animes: ${error.message}`, {
+        ...error,
+      })
     }
 
-    return data ?? []
+    return (data ?? []) as Anime[]
   },
 }
