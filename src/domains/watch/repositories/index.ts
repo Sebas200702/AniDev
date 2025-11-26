@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 
 export const EpisodeRepository = {
   /**
@@ -17,7 +18,11 @@ export const EpisodeRepository = {
       .range(start, end)
 
     if (error) {
-      throw new Error(`Failed to fetch episodes: ${error.message}`)
+      throw AppError.database('Failed to fetch episodes', {
+        animeId,
+        page,
+        ...error,
+      })
     }
 
     return data ?? []
@@ -33,7 +38,10 @@ export const EpisodeRepository = {
       .eq('anime_mal_id', animeId)
 
     if (error) {
-      throw new Error(`Failed to fetch episodes count: ${error.message}`)
+      throw AppError.database('Failed to fetch episodes count', {
+        animeId,
+        ...error,
+      })
     }
 
     return count ?? 0
@@ -51,7 +59,11 @@ export const EpisodeRepository = {
       .single()
 
     if (error) {
-      throw new Error(`Failed to fetch episode: ${error.message}`)
+      throw AppError.database('Failed to fetch episode', {
+        animeId,
+        episodeId,
+        ...error,
+      })
     }
 
     return data
