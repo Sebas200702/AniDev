@@ -1,4 +1,7 @@
+import { clientLogger } from '@libs/logger'
 import type { SearchType } from '@search/types'
+
+const logger = clientLogger.create('SearchUrlService')
 
 interface BuildUrlParams {
   type: SearchType
@@ -84,7 +87,7 @@ export const SearchUrlService = {
 
       return { type, query, filters }
     } catch (error) {
-      console.error('[SearchUrlService.parseUrl] Error:', error)
+      logger.error('[SearchUrlService.parseUrl] Error:', error)
       return { type: null, query: null, filters: {} }
     }
   },
@@ -101,7 +104,7 @@ export const SearchUrlService = {
       urlObj.searchParams.set(key, value)
       return urlObj.pathname + urlObj.search
     } catch (error) {
-      console.error('[SearchUrlService.updateUrlParam] Error:', error)
+      logger.error('[SearchUrlService.updateUrlParam] Error:', error)
       return url
     }
   },
@@ -118,7 +121,7 @@ export const SearchUrlService = {
       urlObj.searchParams.delete(key)
       return urlObj.pathname + urlObj.search
     } catch (error) {
-      console.error('[SearchUrlService.removeUrlParam] Error:', error)
+      logger.error('[SearchUrlService.removeUrlParam] Error:', error)
       return url
     }
   },
