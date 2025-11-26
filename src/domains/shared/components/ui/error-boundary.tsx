@@ -69,7 +69,7 @@ export class SearchResultsErrorBoundary extends Component<
    * @param {ErrorInfo} errorInfo - Additional information about the error
    */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo)
+    logger.error('Uncaught error:', error, errorInfo)
 
     toast[ToastType.Error]({
       text: 'An error occurred while loading search results',
