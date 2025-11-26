@@ -1,4 +1,5 @@
 import { ArtistService } from '@artist/services'
+import { AppError } from '@shared/errors'
 import { normalizeString } from '@utils/normalize-string'
 
 /**
@@ -16,7 +17,7 @@ export const ArtistController = {
     const artistName = url.searchParams.get('artistName')
 
     if (!artistName) {
-      throw new Error('Artist name is required')
+      throw AppError.validation('Artist name is required')
     }
 
     return normalizeString(artistName, false, true, true)
