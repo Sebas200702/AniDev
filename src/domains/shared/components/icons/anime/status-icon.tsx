@@ -1,5 +1,5 @@
 import type { IconProps } from '@shared/types'
-import { statusColors } from '@utils/status-colors'
+import { ColorService } from '@shared/services/color-service'
 
 interface StatusIconProps extends IconProps {
   status: string | null | undefined
@@ -27,7 +27,7 @@ interface StatusIconProps extends IconProps {
  * <StatusIcon status="Currently Airing" className="icon-md" />
  */
 export const StatusIcon = ({ className, status }: StatusIconProps) => {
-  const color = statusColors(status ?? 'unknown').replaceAll('bg', 'text')
+  const color = ColorService.getStatusColor(status ?? 'unknown').replaceAll('bg', 'text')
   if (status === 'Currently Airing') {
     return (
       <svg
