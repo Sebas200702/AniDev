@@ -12,6 +12,7 @@ export const CharacterContainer = ({ slug }: { slug: string }) => {
     error,
   } = useFetch<CharacterDetails>({
     url: `/characters/getCharacter?slug=${slug}`,
+    navigate404: true,
   })
   const [about, setAbout] = useState<PersonAbout | null>(null)
   const [isLoading, setIsLoading] = useState(true)
