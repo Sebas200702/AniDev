@@ -1,7 +1,10 @@
+import { clientLogger } from '@libs/logger'
 import { SearchHistoryService } from '@search/services/search-history-service'
 import type { SearchHistory } from '@search/types'
 import type { UserInfo } from '@user/types'
 import { useCallback, useEffect, useState } from 'react'
+
+const logger = clientLogger.create('useSearchHistory')
 
 interface UseSearchHistoryParams {
   trackSearchHistory: boolean
@@ -37,7 +40,7 @@ export const useSearchHistory = ({
       const history = await SearchHistoryService.load(userInfo)
       setSearchHistory(history)
     } catch (error) {
-      console.error('Failed to load search history in hook:', error)
+      logger.error('Failed to load search history in hook:', error)
       setSearchHistory([])
     } finally {
       setIsLoading(false)
@@ -53,7 +56,7 @@ export const useSearchHistory = ({
       }
       return success
     } catch (error) {
-      console.error('Failed to delete search history in hook:', error)
+      logger.error('Failed to delete search history in hook:', error)
       return false
     } finally {
       setIsLoading(false)
