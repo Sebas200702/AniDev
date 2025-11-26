@@ -1,5 +1,6 @@
 import type { RecommendationContext } from '@ai/types'
 import { SchemaType, type Tool } from '@google/generative-ai'
+import type {SearchHistory} from "@search/types"
 
 export const functionTool: Tool = {
   functionDeclarations: [
@@ -43,4 +44,19 @@ export interface GenerateRecommendationsProps {
   context: RecommendationContext
   prompt: string
   jikanRecommendations: JikanRecommendations
+}
+
+export interface UserProfileToRecomendations {
+    name: string
+    last_name: string
+    gender: string
+    birthday: string
+    favorite_animes: string[]
+    favorite_genres: string[]
+    favorite_studios: string[]
+    preferred_format: string
+    frequency_of_watch: string
+    fanatic_level: string
+    search_history: SearchHistory[]
+    watched_animes: string[]
 }
