@@ -1,5 +1,5 @@
 import { CharacterRepository } from '@character/repositories'
-import type { CharacterDetails } from '@character/types'
+import type { Character, CharacterDetails } from '@character/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
@@ -127,13 +127,14 @@ export const CharacterService = {
   async getAnimeCharacters(
     animeId: string,
     language: string
-  ): Promise<ApiResponse<any[]>> {
+  ): Promise<ApiResponse<Character[]>> {
     try {
-      const data = await CharacterRepository.getAnimeCharacters(
+      const result = await CharacterRepository.getAnimeCharacters(
         animeId,
         language
       )
-      return { data }
+      console.log('Fetched anime characters:', result)
+      return { data : result }
     } catch (error) {
       logger.error('[CharacterService.getAnimeCharacters] Error:', { error })
       if (isAppError(error)) throw error
