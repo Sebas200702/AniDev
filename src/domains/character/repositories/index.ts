@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 
 export const CharacterRepository = {
   async getCharacterDetails(characterId: number) {
@@ -10,11 +11,14 @@ export const CharacterRepository = {
     )
 
     if (error) {
-      throw new Error(`Failed to fetch character details: ${error.message}`)
+      throw AppError.database('Failed to fetch character details', {
+        characterId,
+        ...error,
+      })
     }
 
     if (!data || data.length === 0) {
-      throw new Error('Character not found')
+      throw AppError.notFound('Character not found', { characterId })
     }
 
     return data[0]
@@ -24,7 +28,10 @@ export const CharacterRepository = {
     const { data, error } = await supabase.rpc('get_characters_list', filters)
 
     if (error) {
-      throw new Error(`Failed to fetch characters list: ${error.message}`)
+      throw AppError.database('Failed to fetch characters list', {
+        filters,
+        ...error,
+      })
     }
 
     return data ?? []
@@ -34,7 +41,10 @@ export const CharacterRepository = {
     const { data, error } = await supabase.rpc('get_characters_count', filters)
 
     if (error) {
-      throw new Error(`Failed to fetch characters count: ${error.message}`)
+      throw AppError.database('Failed to fetch characters count', {
+        filters,
+        ...error,
+      })
     }
 
     return data ?? 0
@@ -44,7 +54,7 @@ export const CharacterRepository = {
     const character = await this.getCharacterDetails(characterId)
 
     if (!character?.character) {
-      throw new Error('Character data not found')
+      throw AppError.notFound('Character data not found', { characterId })
     }
 
     const char = character.character
@@ -72,11 +82,17 @@ export const CharacterRepository = {
     })
 
     if (error) {
-      throw new Error(`Failed to fetch character images: ${error.message}`)
+      throw AppError.database('Failed to fetch character images', {
+        animeId,
+        limitCount,
+        ...error,
+      })
     }
 
     if (!data || data.length === 0) {
-      throw new Error('Data not found')
+      throw AppError.notFound('Character images not found', {
+        animeId,
+      })
     }
 
     return data
@@ -90,9 +106,9 @@ export const CharacterRepository = {
       .limit(limit)
 
     if (error) {
-      throw new Error(
-        `Failed to fetch characters for sitemap: ${error.message}`
-      )
+      throw AppError.database('Failed to fetch characters for sitemap', {
+        ...error,
+      })
     }
 
     return data ?? []
@@ -105,7 +121,18 @@ export const CharacterRepository = {
     })
 
     if (error || !data) {
-      throw new Error(error?.message || 'Error fetching anime characters')
+      if (error) {
+        throw AppError.database('Error fetching anime characters', {
+          animeId,
+          language,
+          ...error,
+        })
+      }
+
+      throw AppError.notFound('Anime characters not found', {
+        animeId,
+        language,
+      })
     }
 
     return data
