@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 
 export const MusicRepository = {
   async getMusicInfo(themeId: number) {
@@ -7,11 +8,14 @@ export const MusicRepository = {
     })
 
     if (error) {
-      throw new Error(`Failed to fetch music info: ${error.message}`)
+      throw AppError.database('Failed to fetch music info', {
+        themeId,
+        ...error,
+      })
     }
 
     if (!data || data.length === 0) {
-      throw new Error('Music theme not found')
+      throw AppError.notFound('Music theme not found', { themeId })
     }
 
     return data
@@ -21,7 +25,10 @@ export const MusicRepository = {
     const { data, error } = await supabase.rpc('get_music', filters)
 
     if (error) {
-      throw new Error(`Failed to fetch music list: ${error.message}`)
+      throw AppError.database('Failed to fetch music list', {
+        filters,
+        ...error,
+      })
     }
 
     return data ?? []
@@ -31,7 +38,10 @@ export const MusicRepository = {
     const { data, error } = await supabase.rpc('get_music_count', filters)
 
     if (error) {
-      throw new Error(`Failed to fetch music count: ${error.message}`)
+      throw AppError.database('Failed to fetch music count', {
+        filters,
+        ...error,
+      })
     }
 
     return data ?? 0
@@ -42,7 +52,7 @@ export const MusicRepository = {
     const track = musicData[0]
 
     if (!track) {
-      throw new Error('Music track not found')
+      throw AppError.notFound('Music track not found', { themeId })
     }
 
     return {
@@ -63,7 +73,10 @@ export const MusicRepository = {
       .eq('anime_id', animeId)
 
     if (error) {
-      throw new Error(`Failed to fetch anime music: ${error.message}`)
+      throw AppError.database('Failed to fetch anime music', {
+        animeId,
+        ...error,
+      })
     }
 
     return data ?? []
@@ -86,7 +99,11 @@ export const MusicRepository = {
         .range(batchOffset, batchOffset + batchLimit - 1)
 
       if (error) {
-        throw new Error(`Failed to fetch music for sitemap: ${error.message}`)
+        throw AppError.database('Failed to fetch music for sitemap', {
+          offset: batchOffset,
+          limit: batchLimit,
+          ...error,
+        })
       }
 
       if (data) {
