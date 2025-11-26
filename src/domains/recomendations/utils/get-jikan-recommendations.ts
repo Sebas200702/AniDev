@@ -1,3 +1,6 @@
+import { createContextLogger } from '@libs/pino'
+
+const logger = createContextLogger('JikanRecommendations')
 interface JikanRecommendation {
   entry: {
     mal_id: number
@@ -36,9 +39,7 @@ export const fetchJikanRecommendations = async (
     )
 
     if (!response.ok) {
-      console.error(
-        `Jikan API error: ${response.status} ${response.statusText}`
-      )
+      logger.error(`Jikan API error: ${response.status} ${response.statusText}`)
       return {
         mal_ids: [],
         titles: [],
@@ -70,7 +71,7 @@ export const fetchJikanRecommendations = async (
       error: undefined,
     }
   } catch (error) {
-    console.error('Error fetching Jikan recommendations:', error)
+    logger.error('Error fetching Jikan recommendations:', error)
     return {
       mal_ids: [],
       titles: [],
