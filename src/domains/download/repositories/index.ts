@@ -1,3 +1,5 @@
+import { AppError } from '@shared/errors'
+
 const BLOCKED_PATTERNS = [
   /^localhost$/i,
   /^127\.0\.0\.1$/,
@@ -39,25 +41,25 @@ export const DownloadRepository = {
    */
   validateUrl(urlString: string): void {
     if (!urlString) {
-      throw new Error('Missing "url" parameter')
+      throw AppError.validation('Missing "url" parameter')
     }
 
     try {
       const url = new URL(urlString)
 
       if (!['http:', 'https:'].includes(url.protocol)) {
-        throw new Error('Invalid URL protocol')
+        throw AppError.validation('Invalid URL protocol')
       }
 
       const hostname = url.hostname.toLowerCase()
       if (BLOCKED_PATTERNS.some((pattern) => pattern.test(hostname))) {
-        throw new Error('Invalid URL')
+        throw AppError.validation('Invalid URL')
       }
     } catch (error) {
       if (error instanceof Error && error.message.startsWith('Invalid URL')) {
         throw error
       }
-      throw new Error('Invalid URL')
+      throw AppError.validation('Invalid URL', { originalError: error })
     }
   },
 
@@ -92,21 +94,33 @@ export const DownloadRepository = {
     filename: string
     contentLength?: string
   }> {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        Accept: '*/*',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-      },
-      redirect: 'follow',
-    })
+    let response: Response
+    try {
+      response = await fetch(url, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          Accept: '*/*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+        },
+        redirect: 'follow',
+      })
+    } catch (error) {
+      throw AppError.externalApi('Failed to fetch file', {
+        url,
+        originalError: error,
+      })
+    }
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch file: ${response.status}`)
+      throw AppError.externalApi('Failed to fetch file', {
+        url,
+        status: response.status,
+        statusText: response.statusText,
+      })
     }
 
     const contentType =
@@ -134,21 +148,33 @@ export const DownloadRepository = {
     filename: string
     contentLength?: string
   }> {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        Accept: '*/*',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-      },
-      redirect: 'follow',
-    })
+    let response: Response
+    try {
+      response = await fetch(url, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          Accept: '*/*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+        },
+        redirect: 'follow',
+      })
+    } catch (error) {
+      throw AppError.externalApi('Failed to fetch file stream', {
+        url,
+        originalError: error,
+      })
+    }
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch file: ${response.status}`)
+      throw AppError.externalApi('Failed to fetch file stream', {
+        url,
+        status: response.status,
+        statusText: response.statusText,
+      })
     }
 
     const contentType =
