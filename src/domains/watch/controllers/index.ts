@@ -1,4 +1,5 @@
 import { AppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { EpisodeService } from '@watch/services'
 
 export const EpisodeController = {
@@ -18,7 +19,7 @@ export const EpisodeController = {
     return { id, page }
   },
 
-  async handleGetEpisodes(url: URL) {
+  async handleGetEpisodes(url: URL): Promise<ApiResponse<any[]>> {
     const { id, page } = this.validateRequest(url)
 
     return await EpisodeService.getEpisodes({
@@ -46,7 +47,7 @@ export const EpisodeController = {
     return { slug, episodeNumber: ep }
   },
 
-  async handleGetEpisode(url: URL) {
+  async handleGetEpisode(url: URL): Promise<ApiResponse<any>> {
     const { slug, episodeNumber } = this.validateEpisodeRequest(url)
     return await EpisodeService.getEpisodeById(slug, episodeNumber)
   },
