@@ -1,5 +1,7 @@
+import { CacheService } from '@cache/services'
+import { TtlValues } from '@cache/types'
 import { DownloadService } from '@download/services'
-import { CacheTTL, CacheUtils } from '@utils/cache-utils'
+import { AppError } from '@shared/errors'
 
 const getCorsHeaders = (): Record<string, string> => ({
   'Access-Control-Allow-Origin': '*',
@@ -11,9 +13,6 @@ const getCorsHeaders = (): Record<string, string> => ({
 })
 
 export const DownloadController = {
-  /**
-   * Validate and parse download parameters
-   */
   validateParams(url: URL): {
     fileUrl: string
     customFilename?: string
@@ -22,7 +21,7 @@ export const DownloadController = {
     const fileUrl = url.searchParams.get('url')
 
     if (!fileUrl) {
-      throw new Error('Missing "url" parameter')
+      throw AppError.validation('Missing "url" parameter')
     }
 
     const customFilename = url.searchParams.get('filename') || undefined
@@ -40,14 +39,8 @@ export const DownloadController = {
     return { fileUrl, customFilename, forceDownload }
   },
 
-  /**
-   * Get CORS headers
-   */
   getCorsHeaders,
 
-  /**
-   * Handle complete download request with caching
-   */
   async handleDownloadRequest(url: URL): Promise<
     | {
         type: 'data'
@@ -60,10 +53,9 @@ export const DownloadController = {
     | { type: 'stream'; requiresStreaming: true }
   > {
     const { fileUrl, customFilename, forceDownload } = this.validateParams(url)
-    const cacheKey = CacheUtils.generateKey('download', fileUrl)
+    const cacheKey = CacheService.generateKey('download', fileUrl)
 
-    // Try to get from cache
-    const cachedData = await CacheUtils.get<{
+    const cachedData = await CacheService.get<{
       data: string
       contentType: string
       filename: string
@@ -81,15 +73,12 @@ export const DownloadController = {
       }
     }
 
-    // Download file
     const result = await DownloadService.downloadFile(fileUrl)
 
-    // Handle large files without caching - signal streaming required
     if (result.isLarge) {
       return { type: 'stream', requiresStreaming: true }
     }
 
-    // Cache small files
     const buffer = Buffer.from(result.buffer)
     const cacheData = {
       data: buffer.toString('base64'),
@@ -98,7 +87,11 @@ export const DownloadController = {
       forceDownload,
     }
 
-    await CacheUtils.set(cacheKey, cacheData, { ttl: CacheTTL.ONE_WEEK })
+    await CacheService.set<typeof cacheData>(
+      cacheKey,
+      cacheData,
+      TtlValues.HOUR
+    )
 
     return {
       type: 'data',
@@ -110,9 +103,6 @@ export const DownloadController = {
     }
   },
 
-  /**
-   * Handle streaming download for large files
-   */
   async handleStreamDownload(url: URL): Promise<{
     body: ReadableStream<Uint8Array> | null
     contentType: string
