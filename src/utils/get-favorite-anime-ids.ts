@@ -1,4 +1,7 @@
+import { createContextLogger } from '@libs/pino'
 import { supabase } from '@libs/supabase'
+
+const logger = createContextLogger('getFavoriteAnimeIds')
 
 /**
  * Gets MAL IDs for favorite anime titles by querying the database.
@@ -86,7 +89,10 @@ export const getFavoriteAnimeIds = async (
       error: undefined,
     }
   } catch (error) {
-    console.error('Error fetching favorite anime IDs:', error)
+    logger.error(
+      '[getFavoriteAnimeIds] Error fetching favorite anime IDs',
+      error
+    )
     return {
       mal_ids: [],
       matchedTitles: [],
