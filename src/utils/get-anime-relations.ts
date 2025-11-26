@@ -1,4 +1,7 @@
+import { createContextLogger } from '@libs/pino'
 import { supabase } from '@libs/supabase'
+
+const logger = createContextLogger('getAnimeRelations')
 
 export const getAnimeRelations = async (animeId: string) => {
   const { data, error } = await supabase.rpc('get_related_anime', {
@@ -6,7 +9,7 @@ export const getAnimeRelations = async (animeId: string) => {
   })
 
   if (error) {
-    console.error(error)
+    logger.error('[getAnimeRelations] Error fetching related anime', error)
     return []
   }
 
