@@ -24,9 +24,7 @@ export const AnimeInfoContainer = ({ id }: Props) => {
       loading={loading}
       error={error}
       loadingFallback={<AnimeLoader />}
-      noDataFallback={
-       <AnimeLoader />
-      }
+      noDataFallback={<AnimeLoader />}
     >
       {(data) => <AnimeInfo animeData={data!} />}
     </DataWrapper>
