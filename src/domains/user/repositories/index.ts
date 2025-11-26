@@ -107,7 +107,7 @@ export const UserRepository = {
     }
 
     if (!data || data.length === 0) {
-      throw AppError.notFound('No search history found', { userId })
+      return []
     }
 
     return JSON.parse(data[0].search_history)
