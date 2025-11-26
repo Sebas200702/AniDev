@@ -1,10 +1,13 @@
 import { aiService } from '@ai/services'
+import { CacheService } from '@cache/services'
+import { getCachedOrFetch } from '@cache/utils'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
 
 const logger = createContextLogger('formatAbout')
 
 export const formatAbout = async (about: string) => {
+  const cacheKey = CacheService.generateKey('formatted-about', about)
   const prompt = `Eres un formateador de datos.
     Toma el siguiente texto (campo "about" de un personaje de anime/manga o de una persona relacionada con la industria del anime: actor de voz, cantante, staff, director, etc.)
     y devuelve SOLO un objeto JSON válido, sin ningún marcador Markdown ni comentarios, exactamente así:
@@ -50,7 +53,9 @@ export const formatAbout = async (about: string) => {
     `
 
   try {
-    const result = await aiService.generateJSON<Record<string, any>>(prompt)
+    const result = await getCachedOrFetch(cacheKey, () =>
+      aiService.generateJSON<Record<string, any>>(prompt)
+    )
     if (!result) {
       return {
         description: '',
