@@ -1,17 +1,11 @@
+import { clientLogger } from '@libs/logger'
 import { HomeGeneratorService } from '@shared/services/home-generator-service'
 import type { HomeSection } from '@shared/types/home-types'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useEffect, useState } from 'react'
 
-/**
- * useHomeSections Hook
- *
- * @description
- * Hook para cargar y gestionar las secciones del home.
- * Integra con el store global de usuario y maneja el cache.
- *
- * @returns {Object} Estado de las secciones y funciones de control
- */
+const logger = clientLogger.create('useHomeSections')
+
 export const useHomeSections = () => {
   const { userInfo } = useGlobalUserPreferences()
   const [sections, setSections] = useState<HomeSection[]>([])
@@ -35,7 +29,7 @@ export const useHomeSections = () => {
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : 'Unknown error loading sections'
-      console.error('Failed to load home sections:', err)
+      logger.error('Failed to load home sections:', err)
       setError(errorMessage)
     } finally {
       setIsLoading(false)
