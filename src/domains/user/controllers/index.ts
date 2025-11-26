@@ -1,4 +1,5 @@
 import { AppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { UserService } from '@user/services'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { AstroCookies } from 'astro'
@@ -31,7 +32,10 @@ export const UserController = {
   /**
    * Handle add to watch list request
    */
-  async handleAddToWatchList(request: Request, cookies: AstroCookies) {
+  async handleAddToWatchList(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id
     const body = await request.json()
@@ -47,7 +51,10 @@ export const UserController = {
   /**
    * Handle remove from watch list request
    */
-  async handleRemoveFromWatchList(request: Request, cookies: AstroCookies) {
+  async handleRemoveFromWatchList(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id
     const body = await request.json()
@@ -63,16 +70,23 @@ export const UserController = {
   /**
    * Handle get watch list request
    */
-  async handleGetWatchList(request: Request, cookies: AstroCookies) {
+  async handleGetWatchList(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any[]>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
+
     return await UserService.getWatchList(userId)
   },
 
   /**
    * Handle save search history request
    */
-  async handleSaveSearchHistory(request: Request, cookies: AstroCookies) {
+  async handleSaveSearchHistory(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
     const searchHistory = await request.json()
@@ -82,7 +96,10 @@ export const UserController = {
   /**
    * Handle get search history request
    */
-  async handleGetSearchHistory(request: Request, cookies: AstroCookies) {
+  async handleGetSearchHistory(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any[]>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
     return await UserService.getSearchHistory(userId)
@@ -91,7 +108,10 @@ export const UserController = {
   /**
    * Handle delete search history request
    */
-  async handleDeleteSearchHistory(request: Request, cookies: AstroCookies) {
+  async handleDeleteSearchHistory(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
     return await UserService.deleteSearchHistory(userId)
@@ -100,7 +120,10 @@ export const UserController = {
   /**
    * Handle update preferences request
    */
-  async handleUpdatePreferences(request: Request, cookies: AstroCookies) {
+  async handleUpdatePreferences(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
     const body = await request.json()
@@ -116,7 +139,10 @@ export const UserController = {
   /**
    * Handle save profile request
    */
-  async handleSaveProfile(request: Request, cookies: AstroCookies) {
+  async handleSaveProfile(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
     const body = await request.json()
@@ -127,7 +153,10 @@ export const UserController = {
   /**
    * Handle update user images request
    */
-  async handleUpdateUserImages(request: Request, cookies: AstroCookies) {
+  async handleUpdateUserImages(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const userInfo = await this.getUserFromSession(request, cookies)
     const userId = userInfo.id as string
     const body = await request.json()
