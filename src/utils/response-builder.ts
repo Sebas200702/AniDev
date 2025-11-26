@@ -1,8 +1,9 @@
-import { type BuildResponseOptions } from '@ai/types'
+import type { BuildResponseOptions } from '@ai/types'
 import { CacheService } from '@cache/services'
 import { TtlValues } from '@cache/types'
 import { createContextLogger } from '@libs/pino'
 import { getHttpStatus, isAppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 
 const logger = createContextLogger('ResponseBuilder')
 
@@ -63,7 +64,7 @@ export const ResponseBuilder = {
   /**
    * Build success response
    */
-  success<T>(data: T, options: ResponseOptions = {}): Response {
+  success<T>(data: ApiResponse<T>, options: ResponseOptions = {}): Response {
     const { status = 200, headers = {} } = options
 
     return new Response(JSON.stringify(data), {
@@ -127,7 +128,7 @@ export const ResponseBuilder = {
     if (isAppError(error)) {
       const status = getHttpStatus(error)
 
-      // Log based on severity
+
       if (status >= 500) {
         logger.error(`[${context}] Server error`, {
           type: error.type,
