@@ -47,7 +47,7 @@ const loadFromAPI = async (): Promise<SearchHistory[]> => {
 
   if (response.error) {
     throw AppError.externalApi(
-      response.error.message || 'Error loading search history',
+      response.error || 'Error loading search history',
       {
         originalError: response.error,
       }
@@ -107,7 +107,7 @@ export const SearchHistoryService = {
 
       if (response.error) {
         throw AppError.externalApi(
-          response.error.message || 'Error deleting search history',
+          response.error || 'Error deleting search history',
           {
             originalError: response.error,
           }
