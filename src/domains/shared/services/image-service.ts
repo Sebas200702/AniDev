@@ -1,6 +1,8 @@
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
 import { ImageRepository } from '@shared/repositories/image-repository'
 import sharp from 'sharp'
-
+const logger = createContextLogger('ImageService')
 export const ImageService = {
   /**
    * Process and optimize image
@@ -59,7 +61,9 @@ export const ImageService = {
       // Determine if it's a URL or base64
       if (imageData.startsWith('http://') || imageData.startsWith('https://')) {
         if (!requestUrl) {
-          throw new Error('Request URL required for URL-based uploads')
+          throw AppError.validation(
+            'Request URL required for URL-based uploads'
+          )
         }
         const result = await ImageRepository.fetchImage(imageData, requestUrl)
         buffer = result.buffer
@@ -72,7 +76,7 @@ export const ImageService = {
 
       // Validate format
       if (!ImageRepository.isValidFormat(mimeType)) {
-        throw new Error(`Unsupported image format: ${mimeType}`)
+        throw AppError.validation('Unsupported image format', { mimeType })
       }
 
       // Process image
@@ -88,8 +92,17 @@ export const ImageService = {
         processed.mimeType
       )
     } catch (error) {
-      console.error('[ImageService.uploadImage] Error:', error)
-      throw error
+      logger.error('[ImageService.uploadImage] Error:', error)
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.externalApi('Failed to upload image', {
+        filename,
+        isBanner,
+        originalError: error,
+      })
     }
   },
 }
