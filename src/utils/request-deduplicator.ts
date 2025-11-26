@@ -1,12 +1,6 @@
-/**
- * Request Deduplication for Image Proxy
- *
- * @description
- * When multiple requests for the same image arrive simultaneously,
- * only one fetch operation is executed and all requests wait for the same result.
- * This prevents Redis connection exhaustion and redundant image processing.
- */
+import { createContextLogger } from '@libs/pino'
 
+const logger = createContextLogger('RequestDeduplicator')
 interface PendingRequest<T> {
   promise: Promise<T>
   timestamp: number
@@ -44,7 +38,7 @@ class RequestDeduplicator<T> {
     // Check if there's already a pending request for this key
     const existing = this.pending.get(key)
     if (existing) {
-      console.log(`♻️  Deduplicating request for: ${key.substring(0, 50)}...`)
+      logger.info(`♻️  Deduplicating request for: ${key.substring(0, 50)}...`)
       return existing.promise
     }
 
