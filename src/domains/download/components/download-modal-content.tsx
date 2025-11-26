@@ -1,3 +1,4 @@
+import { clientLogger } from '@libs/logger'
 import { toast } from '@pheralb/toast'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { MusicIcon } from '@shared/components/icons/music/music-icon'
@@ -34,9 +35,8 @@ export interface DownloadModalContentProps {
   onClose: () => void
 }
 
-/**
- * Dynamic component for the download modal content
- */
+const logger = clientLogger.create('DownloadModalContent')
+
 export const DownloadModalContent = ({
   title,
   themeId,
@@ -133,7 +133,7 @@ export const DownloadModalContent = ({
         setMusicData(data)
       }
     } catch (error) {
-      console.error('Error fetching music data:', error)
+      logger.error('Error fetching music data:', error)
       toast[ToastType.Error]({
         text: 'Failed to load download options',
       })
@@ -242,7 +242,7 @@ export const DownloadModalContent = ({
       })
       onClose()
     } catch (error) {
-      console.error('Error downloading file:', error)
+      logger.error('Error downloading file:', error)
       toast[ToastType.Error]({
         text: `Download error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       })
