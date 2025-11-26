@@ -6,12 +6,6 @@ import type { ApiResponse } from '@shared/types/api-response'
 
 const logger = createContextLogger('AnimeService')
 
-export interface AnimeResult {
-  data?: Anime
-  blocked?: boolean
-  message?: string
-}
-
 export const AnimeService = {
   async getRandomAnime(
     parentalControl: boolean | null,
@@ -90,24 +84,20 @@ export const AnimeService = {
   async getById(
     animeId: number,
     parentalControl: boolean = true
-  ): Promise<AnimeResult> {
+  ): Promise<Anime | null> {
     try {
       const result = await AnimeRepository.getById(animeId, parentalControl)
 
-      return {
-        data: result,
-        blocked: false,
-        message: undefined,
-      }
+      return result
     } catch (error: unknown) {
       if (isAppError(error) && error.type === 'permission') {
         logger.info('Anime blocked by parental control', {
           animeId,
           error: error.message,
         })
-        throw AppError.permission('Anime is restricted due to parental control settings')
-
-
+        throw AppError.permission(
+          'Anime is restricted due to parental control settings'
+        )
       }
 
       logger.error('[AnimeService.getById] Unexpected error:', {
