@@ -1,102 +1,38 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { navigate } from 'astro:transitions/client'
-import type { Anime } from '@anime/types'
 import { toast } from '@pheralb/toast'
 import { BlockedContent } from '@shared/components/ui/blocked-content'
 import { useModal } from '@shared/hooks/useModal'
 import { ToastType } from '@shared/types'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
-/**
- * Custom hook para manejar la lógica de contenido bloqueado por control parental
- *
- * @description Este hook maneja:
- * - La carga de datos del anime
- * - La verificación de bloqueo por control parental
- * - La apertura del modal de contenido bloqueado
- * - La navegación cuando se cierra el modal
- * - La desactivación del control parental
- *
- * @param slug - El slug del anime
- * @param getAnimeData - Función para obtener los datos del anime
- * @returns Objeto con el estado y funciones relacionadas con el bloqueo
- */
-
 interface UseBlockedContentProps {
-  id: number
-  getAnimeData: (id: number, parentalControl: boolean | null) => Promise<any>
-}
-
-interface UseBlockedContentReturn {
-  animeData: Anime | null
-  isBlocked: boolean
-  blockedMessage: string | undefined
-  isLoading: boolean
-  isMounted: boolean
   error: Error | null
 }
 
 /**
- * Custom hook para manejar la lógica de contenido bloqueado por control parental
+ * Custom hook to handle blocked content logic via Parental Control
+ *
+ * @description This hook listens for permission errors (typically 403) returned by useFetch
+ * and triggers the BlockedContent modal. It handles:
+ * - Detecting 'permission' type errors
+ * - Opening the modal
+ * - Navigation on close/back
+ * - Disabling parental controls
+ *
+ * @param error - The error object returned from useFetch
  */
-export const useBlockedContent = ({
-  id,
-  getAnimeData,
-}: UseBlockedContentProps): UseBlockedContentReturn => {
-  const [animeData, setAnimeData] = useState<Anime | null>(null)
-  const [isBlocked, setIsBlocked] = useState(false)
-  const [blockedMessage, setBlockedMessage] = useState<string | undefined>()
-  const [isLoading, setIsLoading] = useState(true)
-  const [isMounted, setIsMounted] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-
-  const { parentalControl, setParentalControl } = useGlobalUserPreferences()
+export const useBlockedContent = ({ error }: UseBlockedContentProps) => {
+  const { setParentalControl } = useGlobalUserPreferences()
   const { openModal, closeModal, onClose } = useModal()
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!isMounted) return
-
-    const fetchData = async () => {
-      setIsLoading(true)
-      setError(null) // Limpia errores previos antes de cada fetch
-
-      try {
-        const response = await getAnimeData(id, parentalControl)
-
-        if (!response) {
-          throw new Error('No se obtuvo respuesta del servidor.')
-        }
-
-        const { anime, blocked, message } = response
-
-        if (blocked) {
-          setIsBlocked(true)
-          setBlockedMessage(message)
-        } else if (anime) {
-          setAnimeData(anime)
-        } else {
-          throw new Error('Datos del anime no encontrados.')
-        }
-      } catch (err) {
-        logger.error('Error al obtener datos del anime:', err)
-        setError(err instanceof Error ? err : new Error('Error desconocido'))
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [id, parentalControl, isMounted, getAnimeData])
-
-  useEffect(() => {
-    if (isBlocked && blockedMessage) {
+    // Check if the error is a permission error (blocked content)
+    // We access 'type' which is added by AppError factory
+    if (error && (error as any).type === 'permission') {
       openModal(BlockedContent, {
-        message: blockedMessage,
+        message: error.message,
         onGoBack: handleGoBack,
         onDisableParentalControl: handleDisableParentalControl,
         showSettings: true,
@@ -106,7 +42,7 @@ export const useBlockedContent = ({
         navigate('/')
       })
     }
-  }, [isBlocked, blockedMessage])
+  }, [error])
 
   const handleGoBack = () => {
     navigate('/')
@@ -116,23 +52,11 @@ export const useBlockedContent = ({
   const handleDisableParentalControl = () => {
     setParentalControl(false)
     localStorage.setItem('parental_control', JSON.stringify(false))
-    setIsBlocked(false)
-    setBlockedMessage(undefined)
-    onClose(null)
 
     toast[ToastType.Success]({
       text: 'Parental controls have been disabled',
       delayDuration: 3000,
     })
     closeModal()
-  }
-
-  return {
-    animeData,
-    isBlocked,
-    blockedMessage,
-    isLoading,
-    isMounted,
-    error,
   }
 }
