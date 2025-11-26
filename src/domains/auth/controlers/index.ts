@@ -1,4 +1,5 @@
 import { AuthService } from '@auth/services'
+import { AppError } from '@shared/errors'
 import type { AstroCookies } from 'astro'
 
 /**
@@ -38,7 +39,7 @@ export const AuthController = {
     const password = formData.get('password') as string
 
     if (!email || !password) {
-      throw new Error('Email and password are required')
+      throw AppError.validation('Email and password are required')
     }
 
     const result = await AuthService.signIn(email, password)
@@ -60,7 +61,7 @@ export const AuthController = {
     const { email, password, user_name } = body
 
     if (!email || !password || !user_name) {
-      throw new Error('Email, password and username are required')
+      throw AppError.validation('Email, password and username are required')
     }
 
     const result = await AuthService.signUp(email, password, user_name)
