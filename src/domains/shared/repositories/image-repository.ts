@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { pinata } from '@libs/pinata'
+import { AppError } from '@shared/errors'
 
 export const SUPPORTED_FORMATS: ReadonlySet<string> = new Set([
   'image/jpeg',
@@ -39,9 +40,11 @@ export const ImageRepository = {
       const url = await pinata.gateways.public.convert(cid)
       return url
     } catch (error) {
-      throw new Error(
-        `Failed to upload to IPFS: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
+      throw AppError.externalApi('Failed to upload to IPFS', {
+        filename,
+        mimeType,
+        originalError: error,
+      })
     }
   },
 
@@ -92,9 +95,11 @@ export const ImageRepository = {
     })
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to fetch image: ${response.status} ${response.statusText}`
-      )
+      throw AppError.externalApi('Failed to fetch image', {
+        imageUrl: absoluteUrl,
+        status: response.status,
+        statusText: response.statusText,
+      })
     }
 
     const arrayBuffer = await response.arrayBuffer()
