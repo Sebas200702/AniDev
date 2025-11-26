@@ -36,6 +36,8 @@
     "media-icons": "^1.1.5",
     "next-auth": "^4.24.11",
     "pinata": "^2.4.8",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2",
     "rate-limiter-flexible": "^7.1.1",
     "react": "^19.1.0",
     "react-cropper": "^2.3.3",
