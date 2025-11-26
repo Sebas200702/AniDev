@@ -1,9 +1,8 @@
-// src/domains/recommendations/controllers/recommendations.controller.ts
-
 import { recommendationsService } from '@recomendations/services'
 import { buildContextFromUrl } from '@recomendations/utils/build-context'
 import { getJikanBase } from '@recomendations/utils/get-jikan-base'
 import { parseCookies } from '@recomendations/utils/parse-cookies'
+import { AppError } from '@shared/errors'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { RecommendationContext } from 'domains/ai/types'
 
@@ -22,7 +21,7 @@ export const recommendationsController = {
       await recommendationsService.getUserPreferences(userInfo?.id ?? '')
 
     if (error || !userProfile || !calculatedAge) {
-      throw new Error('User not found or invalid profile')
+      throw AppError.validation('User not found or invalid profile')
     }
 
     const context: RecommendationContext = buildContextFromUrl(url)
