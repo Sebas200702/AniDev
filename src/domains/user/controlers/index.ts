@@ -1,3 +1,4 @@
+import { AppError } from '@shared/errors'
 import { UserService } from '@user/services'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { AstroCookies } from 'astro'
@@ -21,7 +22,7 @@ export const UserController = {
     })
 
     if (!userInfo?.id) {
-      throw new Error('Unauthorized')
+      throw AppError.unauthorized('Unauthorized')
     }
 
     return userInfo
@@ -37,7 +38,7 @@ export const UserController = {
     const { animeId, type } = body
 
     if (!animeId || !type || !userId) {
-      throw new Error('Missing required fields: animeId and type')
+      throw AppError.validation('Missing required fields: animeId and type')
     }
 
     return await UserService.addToWatchList(userId, animeId, type)
@@ -53,7 +54,7 @@ export const UserController = {
     const { animeId } = body
 
     if (!animeId || !userId) {
-      throw new Error('Missing required field: animeId')
+      throw AppError.validation('Missing required field: animeId')
     }
 
     return await UserService.removeFromWatchList(userId, animeId)
@@ -133,7 +134,7 @@ export const UserController = {
     const { avatar, banner_image, name } = body
 
     if (!avatar && !banner_image && !name) {
-      throw new Error(
+      throw AppError.validation(
         'At least one field is required: avatar, banner_image, or name'
       )
     }
