@@ -1,4 +1,5 @@
 import { AppError, isAppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { EpisodeRepository } from '@watch/repositories'
 
 interface GetEpisodesParams {
@@ -22,7 +23,10 @@ export const EpisodeService = {
   /**
    * Get episodes for an anime with pagination
    */
-  async getEpisodes({ animeId, page }: GetEpisodesParams) {
+  async getEpisodes({
+    animeId,
+    page,
+  }: GetEpisodesParams): Promise<ApiResponse<any[]>> {
     try {
       const data = await EpisodeRepository.getEpisodesByAnimeId(animeId, page)
 
@@ -30,7 +34,7 @@ export const EpisodeService = {
         throw AppError.notFound('No episodes found', { animeId, page })
       }
 
-      return data
+      return { data }
     } catch (error) {
       console.error('[EpisodeService.getEpisodes] Error:', error)
 
@@ -49,7 +53,10 @@ export const EpisodeService = {
   /**
    * Get episode by anime_id and episode_id
    */
-  async getEpisodeById(slugOrAnimeId: string, episodeId?: string) {
+  async getEpisodeById(
+    slugOrAnimeId: string,
+    episodeId?: string
+  ): Promise<ApiResponse<any>> {
     try {
       let animeId: string
       let epId: string
@@ -78,7 +85,8 @@ export const EpisodeService = {
         epId = slugOrAnimeId // This shouldn't happen, but keep for compatibility
       }
 
-      return await EpisodeRepository.getEpisodeById(animeId, epId)
+      const data = await EpisodeRepository.getEpisodeById(animeId, epId)
+      return { data }
     } catch (error) {
       console.error('[EpisodeService.getEpisodeById] Error:', error)
       if (isAppError(error)) {
