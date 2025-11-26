@@ -1,5 +1,6 @@
 import { supabase } from '@libs/supabase'
 import { AppError } from '@shared/errors'
+import type { CharacterDetails } from '@character/types'
 
 export const CharacterRepository = {
   async getCharacterDetails(characterId: number) {
@@ -8,7 +9,7 @@ export const CharacterRepository = {
       {
         input_character_id: characterId,
       }
-    )
+    ).single()
 
     if (error) {
       throw AppError.database('Failed to fetch character details', {
@@ -17,11 +18,11 @@ export const CharacterRepository = {
       })
     }
 
-    if (!data || data.length === 0) {
+    if (!data) {
       throw AppError.notFound('Character not found', { characterId })
     }
 
-    return data[0]
+    return data as CharacterDetails
   },
 
   async getCharactersList(filters: Record<string, any>) {
@@ -53,25 +54,25 @@ export const CharacterRepository = {
   async getMetadata(characterId: number) {
     const character = await this.getCharacterDetails(characterId)
 
-    if (!character?.character) {
+    if (!character) {
       throw AppError.notFound('Character data not found', { characterId })
     }
 
-    const char = character.character
-    const about = char.character_about
-      ? ` ${char.character_about.slice(0, 150)}...`
+
+    const about = character.character_about
+      ? ` ${character.character_about.slice(0, 150)}...`
       : ''
 
-    const kanjiPart = char.character_name_kanji
-      ? ` (${char.character_name_kanji})`
+    const kanjiPart = character.character_name_kanji
+      ? ` (${character.character_name_kanji})`
       : ''
 
     return {
-      name: char.character_name,
-      nameKanji: char.character_name_kanji,
-      description: `Learn about ${char.character_name}${kanjiPart}.${about}`,
-      image: char.character_image_url,
-      about: char.character_about,
+      name: character.character_name,
+      nameKanji: character.character_name_kanji,
+      description: `Learn about ${character.character_name}${kanjiPart}.${about}`,
+      image: character.character_image_url,
+      about: character.character_about,
     }
   },
 
