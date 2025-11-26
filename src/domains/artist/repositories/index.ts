@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 import { normalizeString } from '@utils/normalize-string'
 
 export const ArtistRepository = {
@@ -10,11 +11,16 @@ export const ArtistRepository = {
     })
 
     if (error) {
-      throw new Error(`Failed to fetch artist info: ${error.message}`)
+      throw AppError.database('Failed to fetch artist info', {
+        artistName: normalizedName,
+        ...error,
+      })
     }
 
     if (!data || data.length === 0) {
-      throw new Error('Artist not found')
+      throw AppError.notFound('Artist not found', {
+        artistName: normalizedName,
+      })
     }
 
     return data[0]
@@ -24,7 +30,7 @@ export const ArtistRepository = {
     const artistData = await this.getArtistInfo(artistName)
 
     if (!artistData) {
-      throw new Error('Artist data not found')
+      throw AppError.notFound('Artist data not found', { artistName })
     }
 
     const about: string | undefined = artistData.about
