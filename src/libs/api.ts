@@ -3,7 +3,7 @@ import { baseUrl } from '@shared/utils/base-url'
 export interface ApiResponse<T> {
   data: T | null
   status: number
-  error?: Error
+  error?: string
   meta?: Record<string, any>
 }
 
@@ -37,7 +37,11 @@ class Api {
       const json = await res.json().catch(() => ({}))
 
       if (!res.ok) {
-        return { data: null, status, error: json.message || res.statusText }
+        return {
+          data: null,
+          status,
+          error: json.error || json.message || res.statusText,
+        }
       }
 
       if (
