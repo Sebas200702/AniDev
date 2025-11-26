@@ -1,5 +1,8 @@
+import { clientLogger } from '@libs/logger'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import type { AnimeSongWithImage } from '@music/types'
+
+const logger = clientLogger.create('useMusicFetch')
 
 export const useMusicFetch = () => {
   const {
@@ -72,7 +75,7 @@ export const useMusicFetch = () => {
         setCurrentSongIndex(currentSongIndex + 1)
       }
     } catch (err) {
-      console.error(err)
+      logger.error(err)
       setError('Error al cargar la música')
     }
   }
