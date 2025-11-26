@@ -12,7 +12,7 @@ import { Overlay } from '@shared/components/layout/overlay'
 import { Picture } from '@shared/components/media/picture'
 import { MoreOptions } from '@shared/components/ui/more-options'
 import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
-import { getTypeMusicColor } from '@utils/get-type-music-color'
+import { ColorService } from '@shared/services/color-service'
 import { normalizeString } from '@utils/normalize-string'
 import { useEffect, useState } from 'react'
 
@@ -162,7 +162,7 @@ export const AnimeMusicItem = ({
 
         {song.type && (
           <span
-            className={`absolute top-2 flex-shrink-0 rounded-full border p-1 text-xs font-medium md:px-2 md:py-1 ${getTypeMusicColor(song.type)} ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} pointer-events-none`}
+            className={`absolute top-2 flex-shrink-0 rounded-full border p-1 text-xs font-medium md:px-2 md:py-1 ${ColorService.getMusicTypeColor(song.type)} ${isInMusicPlayer ? 'right-8 md:right-10' : 'right-2 md:right-3'} pointer-events-none`}
           >
             {song.type.toUpperCase()}
           </span>

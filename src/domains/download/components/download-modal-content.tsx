@@ -5,7 +5,7 @@ import { MusicIcon } from '@shared/components/icons/music/music-icon'
 import { VideoIcon } from '@shared/components/icons/watch/video-icon'
 import { Picture } from '@shared/components/media/picture'
 import { ToastType } from '@shared/types'
-import { getTypeMusicColor } from '@utils/get-type-music-color'
+import { ColorService } from '@shared/services/color-service'
 import { DownloadModalSkeleton } from 'domains/download/components/download-modal-skeleton'
 import { ModalDefaultContainer } from 'domains/shared/components/modal/modal-default-container'
 import { useEffect, useState } from 'react'
@@ -288,7 +288,7 @@ export const DownloadModalContent = ({
             </div>
             {dataForVersion[0].type && (
               <span
-                className={`absolute top-2 right-2 flex-shrink-0 rounded-full border p-1 text-xs font-medium md:px-2 md:py-1 ${getTypeMusicColor(dataForVersion[0].type)}`}
+                className={`absolute top-2 right-2 flex-shrink-0 rounded-full border p-1 text-xs font-medium md:px-2 md:py-1 ${ColorService.getMusicTypeColor(dataForVersion[0].type)}`}
               >
                 {dataForVersion[0].type.toUpperCase()}
               </span>
