@@ -1,7 +1,10 @@
 import { navigate } from 'astro:transitions/client'
+import { clientLogger } from '@libs/logger'
 import { RandomIcon } from '@shared/components/icons/anime/random-icon'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { normalizeString } from '@utils/normalize-string'
+
+const logger = clientLogger.create('RandomAnimeButton')
 
 /**
  * RandomAnimeButton component provides a button to navigate to a random anime.
@@ -36,7 +39,7 @@ export const RandomAnimeButton = () => {
       const result = await response.json()
       navigate(`/anime/${normalizeString(result.title)}_${result.mal_id}`)
     } catch (error) {
-      console.error('Error fetching random anime:', error)
+      logger.error('[RandomAnimeButton] Error fetching random anime', error)
     }
   }
   return (
