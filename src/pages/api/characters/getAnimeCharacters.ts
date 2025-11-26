@@ -8,7 +8,7 @@ export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
       const data = await CharacterController.handleGetAnimeCharacters(url)
-      return ResponseBuilder.success({ data })
+      return ResponseBuilder.success(data)
     } catch (error) {
       return ResponseBuilder.fromError(
         error,
