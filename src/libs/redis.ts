@@ -1,9 +1,8 @@
 import { createClient } from 'redis'
 
-/**
- * Singleton Redis client instance
- * Simple approach: one shared connection across the app
- */
+import { createContextLogger } from '@libs/pino'
+const logger = createContextLogger('RedisClient')
+
 export type RedisClient = ReturnType<typeof createClient>
 
 let redisClient: RedisClient | null = null
@@ -18,7 +17,6 @@ export async function getRedisClient(): Promise<RedisClient> {
   }
 
   if (isConnecting) {
-    // Wait for existing connection attempt
     await new Promise((resolve) => setTimeout(resolve, 100))
     return getRedisClient()
   }
@@ -44,7 +42,7 @@ export async function getRedisClient(): Promise<RedisClient> {
 
     if (!redisClient.isOpen) {
       await redisClient.connect()
-      console.log('✅ Redis connected')
+      logger.info('✅ Redis connected')
     }
 
     return redisClient
@@ -60,7 +58,7 @@ export async function disconnectRedis(): Promise<void> {
   if (redisClient?.isOpen) {
     await redisClient.quit()
     redisClient = null
-    console.log('🛑 Redis disconnected')
+    logger.info('🛑 Redis disconnected')
   }
 }
 
