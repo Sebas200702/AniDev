@@ -83,7 +83,7 @@ export const useBlockedContent = ({
           throw new Error('Datos del anime no encontrados.')
         }
       } catch (err) {
-        console.error('Error al obtener datos del anime:', err)
+        logger.error('Error al obtener datos del anime:', err)
         setError(err instanceof Error ? err : new Error('Error desconocido'))
       } finally {
         setIsLoading(false)
