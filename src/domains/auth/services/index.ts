@@ -3,6 +3,7 @@ import { signInSchema } from '@auth/schemas/sigin'
 import { signUpSchema } from '@auth/schemas/signup'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 
 const logger = createContextLogger('AuthService')
 
@@ -22,12 +23,16 @@ export const AuthService = {
   /**
    * Authenticate user with email and password
    */
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string): Promise<ApiResponse<any>> {
     try {
       // Validate input
       const validated = signInSchema.parse({ email, password })
 
-      return await AuthRepository.signIn(validated.email, validated.password)
+      const data = await AuthRepository.signIn(
+        validated.email,
+        validated.password
+      )
+      return { data }
     } catch (error) {
       logger.error('[AuthService.signIn] Error:', { error })
 
@@ -45,7 +50,11 @@ export const AuthService = {
   /**
    * Register new user
    */
-  async signUp(email: string, password: string, userName: string) {
+  async signUp(
+    email: string,
+    password: string,
+    userName: string
+  ): Promise<ApiResponse<any>> {
     try {
       // Validate input
       const validated = signUpSchema.parse({
@@ -54,11 +63,12 @@ export const AuthService = {
         user_name: userName,
       })
 
-      return await AuthRepository.signUp(
+      const data = await AuthRepository.signUp(
         validated.email,
         validated.password,
         validated.user_name
       )
+      return { data }
     } catch (error) {
       logger.error('[AuthService.signUp] Error:', { error })
 
