@@ -1,5 +1,8 @@
+import { clientLogger } from '@libs/logger'
 import type { MediaPlayerInstance } from '@vidstack/react'
 import { useEffect, useState } from 'react'
+
+const logger = clientLogger.create('usePictureInPicture')
 
 export const usePictureInPicture = (
   playerRef: React.RefObject<MediaPlayerInstance | null>
@@ -46,7 +49,7 @@ export const usePictureInPicture = (
         await videoElement.requestPictureInPicture()
       }
     } catch (error) {
-      console.error('Error toggling Picture-in-Picture:', error)
+      logger.error('Error toggling Picture-in-Picture:', error)
     }
   }
 
