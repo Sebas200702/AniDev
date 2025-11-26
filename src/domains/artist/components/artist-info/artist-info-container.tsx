@@ -26,6 +26,7 @@ export const ArtistInfoContainer = ({ name }: Props) => {
     error: infoError,
   } = useFetch<ArtistInfoType>({
     url: `/artist/getArtistInfo?artistName=${name}`,
+    navigate404: true,
   })
 
   const {
