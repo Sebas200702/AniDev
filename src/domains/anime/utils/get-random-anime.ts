@@ -1,5 +1,8 @@
 import type { RandomAnime } from '@anime/types'
 import { supabase } from '@libs/supabase'
+import {createContextLogger} from '@libs/pino'
+
+const logger = createContextLogger('getRandomAnime')
 
 export const getRandomAnime = async (
   parentalControl: boolean | null,
@@ -18,7 +21,7 @@ export const getRandomAnime = async (
 
   if (error || !data) {
     if (retryCount >= MAX_RETRIES) {
-      console.error('Failed to fetch random anime after retries:', error)
+      logger.error('Failed to fetch random anime after retries:', error)
       throw new Error('Unable to fetch random anime recommendation')
     }
     return await getRandomAnime(parentalControl, retryCount + 1, userId)
