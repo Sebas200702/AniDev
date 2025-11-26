@@ -1,4 +1,5 @@
 import { AppError, isAppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { UserRepository } from '@user/repositories'
 
 /**
@@ -16,9 +17,18 @@ export const UserService = {
   /**
    * Add or update anime in watch list
    */
-  async addToWatchList(userId: string, animeId: number, type: string) {
+  async addToWatchList(
+    userId: string,
+    animeId: number,
+    type: string
+  ): Promise<ApiResponse<any>> {
     try {
-      return await UserRepository.upsertWatchListItem(userId, animeId, type)
+      const data = await UserRepository.upsertWatchListItem(
+        userId,
+        animeId,
+        type
+      )
+      return { data }
     } catch (error) {
       console.error('[UserService.addToWatchList] Error:', error)
       if (isAppError(error)) {
@@ -37,9 +47,13 @@ export const UserService = {
   /**
    * Remove anime from watch list
    */
-  async removeFromWatchList(userId: string, animeId: number) {
+  async removeFromWatchList(
+    userId: string,
+    animeId: number
+  ): Promise<ApiResponse<any>> {
     try {
-      return await UserRepository.removeFromWatchList(userId, animeId)
+      const data = await UserRepository.removeFromWatchList(userId, animeId)
+      return { data }
     } catch (error) {
       console.error('[UserService.removeFromWatchList] Error:', error)
       if (isAppError(error)) {
@@ -57,9 +71,10 @@ export const UserService = {
   /**
    * Get user's watch list
    */
-  async getWatchList(userId: string) {
+  async getWatchList(userId: string): Promise<ApiResponse<any[]>> {
     try {
-      return await UserRepository.getWatchList(userId)
+      const data = await UserRepository.getWatchList(userId)
+      return { data }
     } catch (error) {
       console.error('[UserService.getWatchList] Error:', error)
       if (isAppError(error)) {
@@ -76,10 +91,14 @@ export const UserService = {
   /**
    * Save search history
    */
-  async saveSearchHistory(userId: string, searchHistory: any[]) {
+  async saveSearchHistory(
+    userId: string,
+    searchHistory: any[]
+  ): Promise<ApiResponse<any>> {
     try {
       const formatted = Array.isArray(searchHistory) ? searchHistory : []
-      return await UserRepository.saveSearchHistory(userId, formatted)
+      const data = await UserRepository.saveSearchHistory(userId, formatted)
+      return { data }
     } catch (error) {
       console.error('[UserService.saveSearchHistory] Error:', error)
       if (isAppError(error)) {
@@ -96,15 +115,16 @@ export const UserService = {
   /**
    * Get search history
    */
-  async getSearchHistory(userId: string) {
+  async getSearchHistory(userId: string): Promise<ApiResponse<any[]>> {
     try {
-      return await UserRepository.getSearchHistory(userId)
+      const data = await UserRepository.getSearchHistory(userId)
+      return { data }
     } catch (error) {
       console.error('[UserService.getSearchHistory] Error:', error)
 
       if (isAppError(error)) {
         if (error.type === 'notFound') {
-          return []
+          return { data: [] }
         }
 
         throw error
@@ -120,9 +140,10 @@ export const UserService = {
   /**
    * Delete search history
    */
-  async deleteSearchHistory(userId: string) {
+  async deleteSearchHistory(userId: string): Promise<ApiResponse<any>> {
     try {
-      return await UserRepository.deleteSearchHistory(userId)
+      const data = await UserRepository.deleteSearchHistory(userId)
+      return { data }
     } catch (error) {
       console.error('[UserService.deleteSearchHistory] Error:', error)
       if (isAppError(error)) {
@@ -143,17 +164,18 @@ export const UserService = {
     userId: string,
     enfasisColor?: string,
     parentalControl?: boolean
-  ) {
+  ): Promise<ApiResponse<any>> {
     try {
       if (!enfasisColor && parentalControl === undefined) {
         throw AppError.validation('User preferences is required')
       }
 
-      return await UserRepository.updatePreferences(
+      const data = await UserRepository.updatePreferences(
         userId,
         enfasisColor,
         parentalControl
       )
+      return { data }
     } catch (error) {
       console.error('[UserService.updatePreferences] Error:', error)
 
@@ -173,7 +195,10 @@ export const UserService = {
   /**
    * Save or update user profile
    */
-  async saveProfile(userId: string, profileData: any) {
+  async saveProfile(
+    userId: string,
+    profileData: any
+  ): Promise<ApiResponse<any>> {
     try {
       // Map request fields to database fields
       const mappedData: any = {}
@@ -197,7 +222,8 @@ export const UserService = {
       if (profileData.favorite_genres)
         mappedData.favorite_genres = profileData.favorite_genres
 
-      return await UserRepository.upsertProfile(userId, mappedData)
+      const data = await UserRepository.upsertProfile(userId, mappedData)
+      return { data }
     } catch (error) {
       console.error('[UserService.saveProfile] Error:', error)
 
@@ -220,7 +246,7 @@ export const UserService = {
     avatar?: string,
     bannerImage?: string,
     name?: string
-  ) {
+  ): Promise<ApiResponse<any>> {
     try {
       if (!avatar && !bannerImage && !name) {
         throw AppError.validation(
@@ -228,12 +254,13 @@ export const UserService = {
         )
       }
 
-      return await UserRepository.updateUserImages(
+      const data = await UserRepository.updateUserImages(
         userId,
         avatar,
         bannerImage,
         name
       )
+      return { data }
     } catch (error) {
       console.error('[UserService.updateUserImages] Error:', error)
 
