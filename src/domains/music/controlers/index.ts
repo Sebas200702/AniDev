@@ -1,5 +1,6 @@
 import { MusicService } from '@music/services'
 import { MusicFilters } from '@music/types'
+import { AppError } from '@shared/errors'
 import { getFilters } from '@utils/get-filters-of-search-params'
 
 /**
@@ -49,7 +50,7 @@ export const MusicController = {
     const themeId = Number.parseInt(url.searchParams.get('themeId') ?? '')
 
     if (!themeId || Number.isNaN(themeId)) {
-      throw new Error('Theme ID is required')
+      throw AppError.validation('Theme ID is required')
     }
 
     return themeId
@@ -70,7 +71,7 @@ export const MusicController = {
     const animeId = Number.parseInt(url.searchParams.get('animeId') ?? '')
 
     if (!animeId || Number.isNaN(animeId)) {
-      throw new Error('Anime ID is required')
+      throw AppError.validation('Anime ID is required')
     }
 
     return animeId
