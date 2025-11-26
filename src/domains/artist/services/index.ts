@@ -1,4 +1,8 @@
 import { ArtistRepository } from '@artist/repositories'
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('ArtistService')
 
 /**
  * Artist Service
@@ -18,13 +22,20 @@ export const ArtistService = {
   async getArtistByName(artistName: string) {
     try {
       if (!artistName || artistName.trim() === '') {
-        throw new Error('Artist name is required')
+        throw AppError.validation('Artist name is required')
       }
 
       return await ArtistRepository.getArtistInfo(artistName)
     } catch (error) {
-      console.error('[ArtistService.getArtistByName] Error:', error)
-      throw error
+      logger.error('[ArtistService.getArtistByName] Error:', { error })
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Unexpected error fetching artist', {
+        originalError: error,
+      })
     }
   },
 }
