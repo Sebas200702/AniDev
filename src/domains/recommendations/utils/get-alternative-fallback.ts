@@ -1,5 +1,5 @@
-import { recommendationsRepository } from '@recomendations/repositories'
-import { buildStrategies } from '@recomendations/utils/build-strategies'
+import { recommendationsRepository } from '@recommendations/repositories'
+import { buildStrategies } from '@recommendations/utils/build-strategies'
 import { shuffleArray } from '@utils/shuffle-array'
 
 export async function getAlternativeFallback(

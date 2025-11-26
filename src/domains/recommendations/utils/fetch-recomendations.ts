@@ -1,12 +1,12 @@
-import { excludeCurrent, sanitizeIds } from '@recomendations/utils/filter-utils'
+import { excludeCurrent, sanitizeIds } from '@recommendations/utils/filter-utils'
 
-import { recommendationsRepository } from '@recomendations/repositories'
-import type { FetchRecommendationProps } from '@recomendations/types'
-import { getAlternativeFallback } from '@recomendations/utils/get-alternative-fallback'
-import { getJikanFallback } from '@recomendations/utils/get-jikan-fallback'
+import { recommendationsRepository } from '@recommendations/repositories'
+import type { FetchRecommendationProps } from '@recommendations/types'
+import { getAlternativeFallback } from '@recommendations/utils/get-alternative-fallback'
+import { getJikanFallback } from '@recommendations/utils/get-jikan-fallback'
 import { shuffleArray } from '@utils/shuffle-array'
 
-export const fetchRecomendations = async ({
+export const fetchRecommendations = async ({
   mal_ids,
   parentalControl,
   jikanRecommendations,

@@ -2,7 +2,7 @@ import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ResponseBuilder } from '@utils/response-builder'
-import { EpisodeController } from '@watch/controlers'
+import { EpisodeController } from '@watch/controllers'
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(

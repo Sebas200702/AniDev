@@ -46,7 +46,7 @@ export interface GenerateRecommendationsProps {
   jikanRecommendations: JikanRecommendations
 }
 
-export interface UserProfileToRecomendations {
+export interface UserProfileToRecommendations {
     name: string
     last_name: string
     gender: string

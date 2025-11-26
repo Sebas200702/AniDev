@@ -16,7 +16,7 @@ export const STATIC_SECTIONS: HomeSection[] = [
     id: 'special-for-you',
     type: 'slider',
     title: 'Special For You',
-    url: '/recomendations?count=24',
+    url: '/recommendations?count=24',
     order: 2,
     isStatic: true,
     clientDirective: 'load',

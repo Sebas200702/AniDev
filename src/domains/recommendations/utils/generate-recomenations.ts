@@ -2,11 +2,11 @@ import { aiService } from '@ai/services'
 import {
   type GenerateRecommendationsProps,
   functionTool,
-} from '@recomendations/types'
+} from '@recommendations/types'
 import { AppError } from '@shared/errors'
-import { fetchRecomendations } from './fetch-recomendations'
+import { fetchRecommendations } from './fetch-recommendations'
 
-export const generateUserRecomendations = async ({
+export const generateUserRecommendations = async ({
   context,
   prompt,
   jikanRecommendations,
@@ -43,7 +43,7 @@ export const generateUserRecomendations = async ({
     })
   }
 
-  const result = await fetchRecomendations({
+  const result = await fetchRecommendations({
     mal_ids: args.mal_ids,
     minResults: context.count ?? 24,
     currentAnimeId: context.data.currentAnime

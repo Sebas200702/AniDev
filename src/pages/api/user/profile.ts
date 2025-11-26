@@ -1,5 +1,5 @@
 import { checkSession } from '@middlewares/auth'
-import { UserController } from '@user/controlers'
+import { UserController } from '@user/controllers'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 

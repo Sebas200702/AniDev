@@ -1,9 +1,9 @@
 import { supabase } from '@libs/supabase'
-import type { UserProfileToRecomendations } from '@recomendations/types'
+import type { UserProfileToRecommendations } from '@recommendations/types'
 
 
 
-const userPlaceholder: UserProfileToRecomendations = {
+const userPlaceholder: UserProfileToRecommendations = {
   name: 'Usuario',
   last_name: 'Anónimo',
   gender: 'No especificado',
@@ -30,10 +30,10 @@ const userPlaceholder: UserProfileToRecomendations = {
   watched_animes: [],
 }
 
-export const getUserDataToRecomendations = async (
+export const getUserDataToRecommendations = async (
   userId: string | null | undefined
 ): Promise<{
-  userProfile: UserProfileToRecomendations | null
+  userProfile: UserProfileToRecommendations | null
   calculatedAge: number | null
   error: string | null
 }> => {

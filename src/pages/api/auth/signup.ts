@@ -1,4 +1,4 @@
-import { AuthController } from '@auth/controlers'
+import { AuthController } from '@auth/controllers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'

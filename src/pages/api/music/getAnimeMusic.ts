@@ -1,5 +1,5 @@
 import { redisConnection } from '@middlewares/redis-connection'
-import { MusicController } from '@music/controlers'
+import { MusicController } from '@music/controllers'
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'

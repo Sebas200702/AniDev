@@ -1,4 +1,4 @@
-import { CharacterController } from '@character/controlers'
+import { CharacterController } from '@character/controllers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'

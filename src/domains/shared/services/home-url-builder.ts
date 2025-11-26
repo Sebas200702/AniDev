@@ -24,6 +24,6 @@ export const HomeUrlBuilder = {
   },
 
   buildRecommendationsUrl: (count = 24): string => {
-    return `/recomendations?count=${count}`
+    return `/recommendations?count=${count}`
   },
 }

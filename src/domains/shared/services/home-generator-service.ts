@@ -1,7 +1,7 @@
 import { aiService } from '@ai/services'
 import { CacheService } from '@cache/services'
 import { TtlValues } from '@cache/types'
-import { recommendationsService } from '@recomendations/services'
+import { recommendationsService } from '@recommendations/services'
 import {
   HOME_CACHE_CONFIG,
   STATIC_SECTIONS,

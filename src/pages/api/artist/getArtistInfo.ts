@@ -1,6 +1,6 @@
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 
-import { ArtistController } from '@artist/controlers'
+import { ArtistController } from '@artist/controllers'
 import { redisConnection } from '@middlewares/redis-connection'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'

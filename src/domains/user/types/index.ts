@@ -51,7 +51,7 @@ export interface UserProfile {
   [key: string]: unknown
 }
 
-export interface GetUserDataToRecomendationsResult {
+export interface GetUserDataToRecommendationsResult {
   userProfile?: UserProfile | null
   calculatedAge?: number | null
   error?: string | null

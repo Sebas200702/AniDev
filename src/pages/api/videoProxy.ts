@@ -1,5 +1,5 @@
 import { rateLimit } from '@middlewares/rate-limit'
-import { VideoProxyController } from '@shared/controlers/video-proxy-controller'
+import { VideoProxyController } from '@shared/controllers/video-proxy-controller'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 

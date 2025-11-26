@@ -1,7 +1,7 @@
 import { AnimeGenres, AnimeRating } from '@anime/types'
 
 import type { FilterOption } from '@search/types'
-import { studios } from 'constanst'
+import { studios } from '@constants'
 
 export const genreOptions: FilterOption[] = Object.values(AnimeGenres).map(
   (genre) => ({ value: genre.toLowerCase(), label: genre })

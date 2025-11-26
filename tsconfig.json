@@ -10,7 +10,7 @@
       "@character/*": ["domains/character/*"],
       "@collection/*": ["domains/collection/*"],
       "@community/*": ["domains/community/*"],
-      "@comunity/*": ["domains/comunity/*"],
+      "@constants": ["constants.ts"],
       "@download/*": ["domains/download/*"],
       "@favorites/*": ["domains/favorites/*"],
       "@music/*": ["domains/music/*"],
@@ -29,7 +29,7 @@
       "types": ["types.d.ts"],
       "@middlewares/*": ["middlewares/*"],
       "@store/*": ["store/*"],
-      "@recomendations/*": ["domains/recomendations/*"],
+      "@recommendations/*": ["domains/recommendations/*"],
       "@ai/*": ["domains/ai/*"],
       "@hooks/*": ["hooks/*"],
       "@cache/*": ["domains/cache/*"]

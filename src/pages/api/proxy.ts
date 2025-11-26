@@ -1,4 +1,4 @@
-import { ProxyController } from '@shared/controlers/proxy-controller'
+import { ProxyController } from '@shared/controllers/proxy-controller'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 

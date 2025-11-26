@@ -1,4 +1,4 @@
-import { DownloadController } from '@download/controlers'
+import { DownloadController } from '@download/controllers'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
@@ -52,7 +52,7 @@ export const GET: APIRoute = async ({ url, request }) => {
       status: 200,
       headers,
     })
-  } catch (error: any) {
+  } catch (error) {
     return ResponseBuilder.fromError(error, 'GET /api/download')
   }
 }

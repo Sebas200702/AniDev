@@ -1,5 +1,5 @@
 import type { FilterOption } from '@search/types'
-import { studios } from 'constanst'
+import { studios } from '@constants'
 
 /**
  * createStudioOptions function generates filter options for anime studios.

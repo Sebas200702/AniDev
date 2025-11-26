@@ -1,4 +1,4 @@
-import { CharacterController } from '@character/controlers'
+import { CharacterController } from '@character/controllers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ResponseBuilder } from '@utils/response-builder'

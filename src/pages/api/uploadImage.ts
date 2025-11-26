@@ -1,5 +1,5 @@
 import { checkSession } from '@middlewares/auth'
-import { UploadController } from '@shared/controlers/upload-controller'
+import { UploadController } from '@shared/controllers/upload-controller'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 

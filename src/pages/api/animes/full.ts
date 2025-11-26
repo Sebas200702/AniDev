@@ -1,4 +1,4 @@
-import { AnimeController } from '@anime/controlers'
+import { AnimeController } from '@anime/controllers'
 import { rateLimit } from '@middlewares/rate-limit'
 import { redisConnection } from '@middlewares/redis-connection'
 import { ResponseBuilder } from '@utils/response-builder'
