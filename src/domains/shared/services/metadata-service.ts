@@ -4,6 +4,9 @@ import { AnimeRepository } from '@anime/repositories'
 import { ArtistRepository } from '@artist/repositories'
 import { CharacterRepository } from '@character/repositories'
 import { MusicRepository } from '@music/repositories'
+import { createContextLogger } from '@libs/pino'
+
+const logger = createContextLogger('MetadataService')
 
 interface MetadataResult {
   title: string
@@ -50,7 +53,7 @@ export const MetadataService = {
         image: data.image || this.getDefaultImage(),
       }
     } catch (error) {
-      console.error('[MetadataService.getAnimeMetadata] Error:', error)
+      logger.error('[MetadataService.getAnimeMetadata] Error:', error)
       return this.getDefaultMetadata()
     }
   },
@@ -68,7 +71,7 @@ export const MetadataService = {
         image: musicData.image || this.getDefaultImage(),
       }
     } catch (error) {
-      console.error('[MetadataService.getMusicMetadata] Error:', error)
+      logger.error('[MetadataService.getMusicMetadata] Error:', error)
       return this.getDefaultMetadata()
     }
   },
@@ -86,7 +89,7 @@ export const MetadataService = {
         image: data.image || this.getDefaultImage(),
       }
     } catch (error) {
-      console.error('[MetadataService.getCharacterMetadata] Error:', error)
+      logger.error('[MetadataService.getCharacterMetadata] Error:', error)
       return this.getDefaultMetadata()
     }
   },
@@ -104,7 +107,7 @@ export const MetadataService = {
         image: data.image || this.getDefaultImage(),
       }
     } catch (error) {
-      console.error('[MetadataService.getArtistMetadata] Error:', error)
+      logger.error('[MetadataService.getArtistMetadata] Error:', error)
       return this.getDefaultMetadata()
     }
   },
