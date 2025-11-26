@@ -26,6 +26,7 @@
     "@justinribeiro/lite-youtube": "^1.8.2",
     "@pheralb/toast": "^1.0.0",
     "@sentry/astro": "^10.27.0",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.50.0",
     "@tailwindcss/vite": "^4.1.10",
     "@vidstack/react": "^1.12.13",
