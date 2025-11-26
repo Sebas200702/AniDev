@@ -1,12 +1,15 @@
 import { aiRepository } from '@ai/repositories'
 import type { Tool } from '@google/generative-ai'
+import { AppError, isAppError } from '@shared/errors'
 
 export const aiService = {
   /**
    * Genera un resumen corto del texto dado.
    */
   async summarize(content: string) {
-    if (!content.trim()) throw new Error('El contenido no puede estar vacío')
+    if (!content.trim()) {
+      throw AppError.validation('Content cannot be empty')
+    }
 
     const summaryPrompt = `
       Eres un asistente experto en redacción.
@@ -14,7 +17,14 @@ export const aiService = {
       \n\n${content}
     `
 
-    return await aiRepository.generateText(summaryPrompt)
+    try {
+      return await aiRepository.generateText(summaryPrompt)
+    } catch (error) {
+      if (isAppError(error)) throw error
+      throw AppError.externalApi('Failed to summarize content', {
+        originalError: error,
+      })
+    }
   },
 
   /**
@@ -26,11 +36,18 @@ export const aiService = {
       \n\n${content}
     `
 
-    const result = await aiRepository.generateText(keywordPrompt)
-    return result
-      .split(',')
-      .map((k) => k.trim())
-      .filter(Boolean)
+    try {
+      const result = await aiRepository.generateText(keywordPrompt)
+      return result
+        .split(',')
+        .map((k) => k.trim())
+        .filter(Boolean)
+    } catch (error) {
+      if (isAppError(error)) throw error
+      throw AppError.externalApi('Failed to extract keywords', {
+        originalError: error,
+      })
+    }
   },
 
   /**
@@ -44,7 +61,14 @@ export const aiService = {
       \n\nContexto:\n${prompt}
     `
 
-    return await aiRepository.generateJSON(schemaPrompt)
+    try {
+      return await aiRepository.generateJSON(schemaPrompt)
+    } catch (error) {
+      if (isAppError(error)) throw error
+      throw AppError.externalApi('Failed to generate recommendations', {
+        originalError: error,
+      })
+    }
   },
 
   /**
@@ -52,7 +76,14 @@ export const aiService = {
    * Retorna null si falla el parseo o la llamada.
    */
   async generateJSON<T = any>(prompt: string): Promise<T | null> {
-    return await aiRepository.generateJSON<T>(prompt)
+    try {
+      return await aiRepository.generateJSON<T>(prompt)
+    } catch (error) {
+      if (isAppError(error)) throw error
+      throw AppError.externalApi('Failed to generate JSON from AI', {
+        originalError: error,
+      })
+    }
   },
 
   /**
@@ -60,10 +91,22 @@ export const aiService = {
    */
   async callFunction(prompt: string, tool: Tool, functionName: string) {
     if (!tool || !functionName) {
-      throw new Error('Tool y functionName son requeridos')
+      throw AppError.validation('Tool and functionName are required')
     }
 
-    const response = await aiRepository.functionCall(prompt, tool, functionName)
-    return response
+    try {
+      const response = await aiRepository.functionCall(
+        prompt,
+        tool,
+        functionName
+      )
+      return response
+    } catch (error) {
+      if (isAppError(error)) throw error
+      throw AppError.externalApi('AI function call failed', {
+        functionName,
+        originalError: error,
+      })
+    }
   },
 }
