@@ -1,13 +1,17 @@
+import { createLogger } from '@libs/logger'
 import { recommendationsService } from '@recommendations/services'
 import { buildContextFromUrl } from '@recommendations/utils/build-context'
 import { getJikanBase } from '@recommendations/utils/get-jikan-base'
 import { parseCookies } from '@recommendations/utils/parse-cookies'
 import { AppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { RecommendationContext } from 'domains/ai/types'
 
+const logger = createLogger('RecommendationsController')
+
 export const recommendationsController = {
-  async getRecommendations(req: Request) {
+  async getRecommendations(req: Request): Promise<ApiResponse<any[]>> {
     const url = new URL(req.url)
     const cookies = parseCookies(req)
 
@@ -50,8 +54,8 @@ export const recommendationsController = {
         context,
       })
 
-    if (!recommendations?.length) {
-      console.warn(
+    if (!recommendations.data?.length) {
+      logger.warn(
         '[RecommendationsController] Gemini vacío, usando fallback Jikan'
       )
       return await recommendationsService.getRecommendations({
