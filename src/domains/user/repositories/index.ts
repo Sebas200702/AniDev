@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 
 export const UserRepository = {
   /**
@@ -12,7 +13,12 @@ export const UserRepository = {
     })
 
     if (error) {
-      throw new Error(`Failed to add anime to watch list: ${error.message}`)
+      throw AppError.database('Failed to add anime to watch list', {
+        userId,
+        animeId,
+        type,
+        ...error,
+      })
     }
 
     return { success: true }
@@ -29,9 +35,11 @@ export const UserRepository = {
       .eq('user_id', userId)
 
     if (error) {
-      throw new Error(
-        `Failed to remove anime from watch list: ${error.message}`
-      )
+      throw AppError.database('Failed to remove anime from watch list', {
+        userId,
+        animeId,
+        ...error,
+      })
     }
 
     return { success: true }
@@ -46,10 +54,16 @@ export const UserRepository = {
     })
 
     if (error) {
-      throw new Error(`Failed to fetch watch list: ${error.message}`)
+      throw AppError.database('Failed to fetch watch list', {
+        userId,
+        ...error,
+      })
+    }
+    if (!data) {
+      throw AppError.notFound('Watch list not found', { userId })
     }
 
-    return data ?? []
+    return data
   },
 
   /**
@@ -67,7 +81,10 @@ export const UserRepository = {
     )
 
     if (error) {
-      throw new Error(`Failed to save search history: ${error.message}`)
+      throw AppError.database('Failed to save search history', {
+        userId,
+        ...error,
+      })
     }
 
     return { success: true }
@@ -83,11 +100,14 @@ export const UserRepository = {
       .eq('id', userId)
 
     if (error) {
-      throw new Error(`Failed to fetch search history: ${error.message}`)
+      throw AppError.database('Failed to fetch search history', {
+        userId,
+        ...error,
+      })
     }
 
     if (!data || data.length === 0) {
-      throw new Error('No search history found')
+      throw AppError.notFound('No search history found', { userId })
     }
 
     return JSON.parse(data[0].search_history)
@@ -103,7 +123,10 @@ export const UserRepository = {
       .eq('id', userId)
 
     if (error) {
-      throw new Error(`Failed to delete search history: ${error.message}`)
+      throw AppError.database('Failed to delete search history', {
+        userId,
+        ...error,
+      })
     }
 
     return { success: true }
@@ -128,7 +151,14 @@ export const UserRepository = {
       .eq('id', userId)
 
     if (error) {
-      throw new Error(`Failed to update preferences: ${error.message}`)
+      throw AppError.database('Failed to update preferences', {
+        userId,
+        updates,
+        ...error,
+      })
+    }
+    if (!data) {
+      throw AppError.notFound('Preferences not found', { userId })
     }
 
     return data
@@ -149,7 +179,10 @@ export const UserRepository = {
       .select()
 
     if (error) {
-      throw new Error(`Failed to save profile: ${error.message}`)
+      throw AppError.database('Failed to save profile', {
+        userId,
+        ...error,
+      })
     }
 
     return data
@@ -175,7 +208,11 @@ export const UserRepository = {
       .eq('id', userId)
 
     if (error) {
-      throw new Error(`Failed to update profile images: ${error.message}`)
+      throw AppError.database('Failed to update profile images', {
+        userId,
+        updates,
+        ...error,
+      })
     }
 
     return data
