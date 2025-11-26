@@ -38,29 +38,29 @@ export const AnimeRepository = {
         p_mal_id: animeId,
         p_parental_control: parentalControl,
       })
-      .single()
+
 
     if (error) {
       logger.error(`[AnimeRepository.getById] Failed to fetch anime ${animeId}: ${error.message}`)
       throw AppError.database(`Failed to fetch anime ${animeId}`, { ...error })
     }
-    if (!data && parentalControl) {
+    if ((!data || data.length === 0) && parentalControl) {
       const { data: unrestricted } = await supabase.rpc('get_anime_by_id', {
         p_mal_id: animeId,
         p_parental_control: false,
-      }).single()
+      })
 
       if (unrestricted) {
         throw AppError.permission('Anime is restricted due to parental control settings')
       }
     }
 
-    if (!data) {
+    if (!data || data.length === 0) {
       logger.error(`[AnimeRepository.getById] Anime not found: ${animeId}`)
       throw AppError.notFound(`Anime with ID ${animeId} not found`)
     }
 
-    return data as Anime
+    return data[0] as Anime
   },
 
   async getMetadata(animeId: number) {
