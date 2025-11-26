@@ -1,6 +1,7 @@
 import { createContextLogger } from '@libs/pino'
 import { MusicRepository } from '@music/repositories'
 import { AppError, isAppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 
 const logger = createContextLogger('MusicService')
 
@@ -9,13 +10,6 @@ interface SearchMusicParams {
   countFilters: Record<string, any>
   page: number
   limit: number
-}
-
-interface SearchMusicResult {
-  data: any[]
-  total_items: number
-  current_page: number
-  last_page: number
 }
 
 /**
@@ -39,7 +33,7 @@ export const MusicService = {
     countFilters,
     page,
     limit,
-  }: SearchMusicParams): Promise<SearchMusicResult> {
+  }: SearchMusicParams): Promise<ApiResponse<any[]>> {
     try {
       const [data, totalCount] = await Promise.all([
         MusicRepository.getMusicList(filters),
@@ -48,9 +42,11 @@ export const MusicService = {
 
       return {
         data,
-        total_items: totalCount,
-        current_page: page,
-        last_page: Math.ceil(totalCount / limit),
+        meta: {
+          total_items: totalCount,
+          current_page: page,
+          last_page: Math.ceil(totalCount / limit),
+        },
       }
     } catch (error) {
       logger.error('[MusicService.searchMusic] Error:', error)
@@ -71,9 +67,10 @@ export const MusicService = {
   /**
    * Get music info by theme ID
    */
-  async getMusicById(themeId: number) {
+  async getMusicById(themeId: number): Promise<ApiResponse<any>> {
     try {
-      return await MusicRepository.getMusicInfo(themeId)
+      const data = await MusicRepository.getMusicInfo(themeId)
+      return { data }
     } catch (error) {
       logger.error('[MusicService.getMusicById] Error:', error)
       if (isAppError(error)) {
@@ -90,9 +87,10 @@ export const MusicService = {
   /**
    * Get all music for a specific anime
    */
-  async getMusicByAnimeId(animeId: number) {
+  async getMusicByAnimeId(animeId: number): Promise<ApiResponse<any>> {
     try {
-      return await MusicRepository.getMusicByAnimeId(animeId)
+      const data = await MusicRepository.getMusicByAnimeId(animeId)
+      return { data }
     } catch (error) {
       logger.error('[MusicService.getMusicByAnimeId] Error:', error)
       if (isAppError(error)) {
