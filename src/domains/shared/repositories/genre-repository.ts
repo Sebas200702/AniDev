@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import { AppError } from '@shared/errors'
 
 export const GenreRepository = {
   async getAllGenres() {
@@ -8,7 +9,9 @@ export const GenreRepository = {
       .order('name', { ascending: true })
 
     if (error) {
-      throw new Error(`Failed to fetch genres: ${error.message}`)
+      throw AppError.database('Failed to fetch genres', {
+        ...error,
+      })
     }
 
     return data ?? []
