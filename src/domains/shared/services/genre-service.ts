@@ -1,4 +1,7 @@
+import { createContextLogger } from '@libs/pino'
 import { GenreRepository } from '@shared/repositories/genre-repository'
+
+const logger = createContextLogger('GenreService')
 
 /**
  * Genre Service
@@ -19,7 +22,7 @@ export const GenreService = {
     try {
       return await GenreRepository.getAllGenres()
     } catch (error) {
-      console.error('[GenreService.getAllGenresForSitemap] Error:', error)
+      logger.error('[GenreService.getAllGenresForSitemap] Error:', error)
       throw error
     }
   },
