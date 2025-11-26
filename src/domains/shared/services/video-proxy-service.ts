@@ -1,3 +1,5 @@
+import { AppError, isAppError } from '@shared/errors'
+
 export const VideoProxyService = {
   /**
    * Fetch and process video resource with Range support
@@ -18,7 +20,10 @@ export const VideoProxyService = {
       const response = await fetch(resourceUrl, { headers })
 
       if (!response.ok && response.status !== 206) {
-        throw new Error(`Failed to fetch resource: ${response.status}`)
+        throw AppError.externalApi('Failed to fetch video resource', {
+          resourceUrl,
+          status: response.status,
+        })
       }
 
       // Handle HLS playlist
@@ -43,7 +48,7 @@ export const VideoProxyService = {
       const stream = response.body
 
       if (!stream) {
-        throw new Error('No stream available')
+        throw AppError.externalApi('No stream available', { resourceUrl })
       }
 
       return {
@@ -59,7 +64,15 @@ export const VideoProxyService = {
       }
     } catch (error) {
       console.error('[VideoProxyService.fetchResource] Error:', error)
-      throw error
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.externalApi('Failed to fetch video resource', {
+        resourceUrl,
+        originalError: error,
+      })
     }
   },
 
