@@ -7,10 +7,7 @@ import type { PersonAbout } from '@user/types'
 import { useEffect, useState } from 'react'
 
 export const CharacterContainer = ({ slug }: { slug: string }) => {
-  const {
-    data: character,
-    error,
-  } = useFetch<CharacterDetails>({
+  const { data: character, error } = useFetch<CharacterDetails>({
     url: `/characters/getCharacter?slug=${slug}`,
     navigate404: true,
   })
