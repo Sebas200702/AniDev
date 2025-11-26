@@ -2,23 +2,24 @@ import { createLogger } from '@libs/logger'
 import { recommendationsService } from '@recommendations/services'
 import { buildContextFromUrl } from '@recommendations/utils/build-context'
 import { getJikanBase } from '@recommendations/utils/get-jikan-base'
-import { parseCookies } from '@recommendations/utils/parse-cookies'
 import { AppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
+import type { AstroCookies } from 'astro'
 import type { RecommendationContext } from 'domains/ai/types'
 
 const logger = createLogger('RecommendationsController')
 
 export const recommendationsController = {
-  async getRecommendations(req: Request): Promise<ApiResponse<any[]>> {
+  async getRecommendations(
+    req: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any[]>> {
     const url = new URL(req.url)
-    const cookies = parseCookies(req)
 
     const userInfo = await getSessionUserInfo({
       request: req,
-      accessToken: cookies['sb-access-token'],
-      refreshToken: cookies['sb-refresh-token'],
+      cookies,
     })
 
     const { userProfile, calculatedAge, error } =
