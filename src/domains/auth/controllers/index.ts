@@ -1,5 +1,6 @@
 import { AuthService } from '@auth/services'
 import { AppError } from '@shared/errors'
+import type { ApiResponse } from '@shared/types/api-response'
 import type { AstroCookies } from 'astro'
 
 /**
@@ -33,7 +34,10 @@ export const AuthController = {
   /**
    * Handle sign in request
    */
-  async handleSignIn(request: Request, cookies: AstroCookies) {
+  async handleSignIn(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const formData = await request.formData()
     const email = formData.get('email') as string
     const password = formData.get('password') as string
@@ -46,8 +50,8 @@ export const AuthController = {
 
     this.setSessionCookies(
       cookies,
-      result.session.access_token,
-      result.session.refresh_token
+      result.data.session.access_token,
+      result.data.session.refresh_token
     )
 
     return result
@@ -56,7 +60,10 @@ export const AuthController = {
   /**
    * Handle sign up request
    */
-  async handleSignUp(request: Request, cookies: AstroCookies) {
+  async handleSignUp(
+    request: Request,
+    cookies: AstroCookies
+  ): Promise<ApiResponse<any>> {
     const body = await request.json()
     const { email, password, user_name } = body
 
@@ -68,8 +75,8 @@ export const AuthController = {
 
     this.setSessionCookies(
       cookies,
-      result.session.access_token,
-      result.session.refresh_token
+      result.data.session.access_token,
+      result.data.session.refresh_token
     )
 
     return result
