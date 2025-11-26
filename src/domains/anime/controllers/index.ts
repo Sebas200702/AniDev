@@ -1,10 +1,11 @@
-import { AnimeService } from '@anime/services'
-import type { Formats } from '@anime/types'
+import { type AnimeResult, AnimeService } from '@anime/services'
+import type { Anime, AnimeDetail, Formats, RandomAnime } from '@anime/types'
 import { CacheService } from '@cache/services'
 import { getCachedOrFetch } from '@cache/utils'
 import { AppError } from '@shared/errors'
 import { MetadataService } from '@shared/services/metadata-service'
-import { Filters } from '@shared/types'
+import { Filters, type MetadataResult } from '@shared/types'
+import type { ApiResponse } from '@shared/types/api-response'
 import { getFilters } from '@utils/get-filters-of-search-params'
 
 export const AnimeController = {
@@ -32,14 +33,16 @@ export const AnimeController = {
     return idResult
   },
 
-  async handleGetRandomAnime(url: URL) {
+  async handleGetRandomAnime(
+    url: URL
+  ): Promise<ApiResponse<RandomAnime | null>> {
     const parentalControl = url.searchParams.get('parental_control') !== 'false'
     const userId = url.searchParams.get('user_id')
 
     return await AnimeService.getRandomAnime(parentalControl, userId)
   },
 
-  async handleSearchAnime(url: URL) {
+  async handleSearchAnime(url: URL): Promise<ApiResponse<any[]>> {
     const format = (url.searchParams.get('format') ?? 'anime-card') as Formats
     const limit = Number.parseInt(url.searchParams.get('limit_count') ?? '10')
     const page = Number.parseInt(url.searchParams.get('page_number') ?? '1')
@@ -57,23 +60,18 @@ export const AnimeController = {
     const filters = getFilters(Object.values(Filters), url, true)
     const countFilters = getFilters(CountFilters, url, false)
 
-    const { data, total } = await getCachedOrFetch(cacheKey, () =>
+    return await getCachedOrFetch(cacheKey, () =>
       AnimeService.searchAnime({
         format,
         filters,
         countFilters,
+        page,
+        limit,
       })
     )
-
-    return {
-      total_items: total,
-      data,
-      current_page: page,
-      last_page: Math.ceil(total / limit),
-    }
   },
 
-  async handleGetAnimeBanner(url: URL) {
+  async handleGetAnimeBanner(url: URL): Promise<ApiResponse<any>> {
     const animeId = Number.parseInt(url.searchParams.get('anime_id') ?? '')
     const limitCount = Number.parseInt(
       url.searchParams.get('limit_count') ?? '8'
@@ -83,12 +81,14 @@ export const AnimeController = {
       url.searchParams.toString()
     )
 
-    return await getCachedOrFetch(cacheKey, () =>
+    const result = await getCachedOrFetch(cacheKey, () =>
       AnimeService.getAnimeBanner(animeId, limitCount)
     )
+
+    return { data: result }
   },
 
-  async handleGetAnimeById(url: URL) {
+  async handleGetAnimeById(url: URL): Promise<ApiResponse<AnimeResult>> {
     const id = url.searchParams.get('id')
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam !== 'false'
@@ -99,12 +99,14 @@ export const AnimeController = {
       url.searchParams.toString()
     )
 
-    return await getCachedOrFetch(cacheKey, () =>
+    const result = await getCachedOrFetch(cacheKey, () =>
       AnimeService.getById(animeId, parentalControl)
     )
+
+    return { data: result }
   },
 
-  async handleGetAnimeRelations(url: URL) {
+  async handleGetAnimeRelations(url: URL): Promise<ApiResponse<AnimeDetail[]>> {
     const cacheKey = CacheService.generateKey(
       'anime-relations',
       url.searchParams.toString()
@@ -115,7 +117,7 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimesFull(url: URL) {
+  async handleGetAnimesFull(url: URL): Promise<ApiResponse<Anime[]>> {
     const filters = getFilters(Object.values(Filters), url)
     const cacheKey = CacheService.generateKey(
       'animes-full',
@@ -127,7 +129,7 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimeMetadata(url: URL) {
+  async handleGetAnimeMetadata(url: URL): Promise<ApiResponse<MetadataResult>> {
     const id = url.searchParams.get('id')
 
     if (!id) {
@@ -144,8 +146,10 @@ export const AnimeController = {
       url.searchParams.toString()
     )
 
-    return await getCachedOrFetch(cacheKey, () =>
+    const result = await getCachedOrFetch(cacheKey, () =>
       MetadataService.getAnimeMetadata(animeId)
     )
+
+    return { data: result }
   },
 }
