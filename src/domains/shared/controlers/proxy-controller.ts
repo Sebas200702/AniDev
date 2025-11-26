@@ -1,5 +1,7 @@
+import { CacheService } from '@cache/services'
+import { TtlValues } from '@cache/types'
+import { AppError } from '@shared/errors'
 import { ProxyService } from '@shared/services/proxy-service'
-import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { imageProxyDeduplicator } from '@utils/request-deduplicator'
 
 /**
@@ -21,12 +23,13 @@ export const ProxyController = {
     const imageUrl = url.searchParams.get('url')
 
     if (!imageUrl) {
-      throw new Error('Missing image URL')
+      throw AppError.validation('Missing image URL', { url: url.toString() })
     }
 
     if (imageUrl.startsWith('blob:')) {
-      throw new Error(
-        'blob: URLs are not fetchable on the server. Use POST /api/proxy with the Blob as the request body.'
+      throw AppError.validation(
+        'blob: URLs are not fetchable on the server. Use POST /api/proxy with the Blob as the request body.',
+        { imageUrl }
       )
     }
 
@@ -51,55 +54,69 @@ export const ProxyController = {
   ): Promise<{ buffer: Buffer; mimeType: string }> {
     const { imageUrl, width, quality, format } = this.validateParams(url)
 
-    // Generate cache key
-    const cacheKey = CacheUtils.generateKey(
+    const cacheKey = CacheService.generateKey(
       'img-proxy',
       `${imageUrl}:${width}:${quality}:${format}`
     )
 
-    // Add timeout wrapper (20s to give margin before Vercel timeout)
     const timeoutPromise = new Promise<never>((_, reject) =>
       setTimeout(() => reject(new Error('Proxy timeout')), 20000)
     )
 
-    // Deduplicate concurrent requests for the same image
-    // This prevents multiple Redis operations for identical images
     const resultPromise = imageProxyDeduplicator.deduplicate(
       cacheKey,
       async () => {
-        // Try to get from cache or fetch with timeout
-        return await CacheUtils.withBufferCache(
-          cacheKey,
-          async () => {
-            return await ProxyService.fetchAndOptimize(
-              imageUrl,
-              width > 0 ? width : undefined,
-              quality,
-              format
-            )
-          },
-          { ttl: CacheTTL.SIX_HOURS } // Reducido de 1 día a 6 horas para operaciones más rápidas
+        const cached = await CacheService.get<{
+          buffer: { type: 'Buffer'; data: number[] }
+          mimeType: string
+        }>(cacheKey)
+        if (cached) {
+          return {
+            buffer: Buffer.from(cached.buffer.data),
+            mimeType: cached.mimeType,
+          }
+        }
+
+        const result = await ProxyService.fetchAndOptimize(
+          imageUrl,
+          width > 0 ? width : undefined,
+          quality,
+          format
         )
+        CacheService.set(cacheKey, result, TtlValues.DAY).catch((error) =>
+          console.error(
+            `[ProxyController] Error caching key "${cacheKey}":`,
+            error
+          )
+        )
+
+        return result
       }
     )
 
     const result = await Promise.race([resultPromise, timeoutPromise])
 
-    // Validate result
     if (!result) {
-      throw new Error('No result from proxy operation')
+      throw AppError.invalidState('No result from proxy operation', {
+        cacheKey,
+      })
     }
 
     if (!result.buffer || !Buffer.isBuffer(result.buffer)) {
-      throw new Error('Invalid buffer in proxy result')
+      throw AppError.invalidState('Invalid buffer in proxy result', {
+        hasBuffer: !!result.buffer,
+        isBuffer: result.buffer ? Buffer.isBuffer(result.buffer) : false,
+      })
     }
 
     if (result.buffer.length === 0) {
-      throw new Error('Empty buffer in proxy result')
+      throw AppError.invalidState('Empty buffer in proxy result', { cacheKey })
     }
 
     if (!result.mimeType) {
-      throw new Error('Missing mimeType in proxy result')
+      throw AppError.invalidState('Missing mimeType in proxy result', {
+        cacheKey,
+      })
     }
 
     return result
