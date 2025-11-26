@@ -1,6 +1,5 @@
 import { AnimeController } from '@anime/controllers'
 import { rateLimit } from '@middlewares/rate-limit'
-import { CacheTTL, CacheUtils } from '@utils/cache-utils'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
@@ -33,28 +32,9 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-    const id = url.searchParams.get('id')
-    const parentalControlParam = url.searchParams.get('parentalControl')
-    const parentalControl = parentalControlParam !== 'false'
-    const animeId = AnimeController.validateNumericId(id)
 
-    const cacheKey = `anime_${animeId}${parentalControl ? '_pc' : ''}`
 
-    const result = await CacheUtils.withCache(
-      cacheKey,
-      () => AnimeController.handleGetAnimeById(url),
-      { ttl: CacheTTL.ONE_HOUR }
-    )
-
-    // Anime bloqueado por control parental
-    if ('blocked' in result && result.blocked) {
-      return ResponseBuilder.forbidden(result.message)
-    }
-
-    // Anime no encontrado
-    if ('notFound' in result && result.notFound) {
-      return ResponseBuilder.notFound('Anime not found')
-    }
+     const result = await AnimeController.handleGetAnimeById(url)
 
     return ResponseBuilder.success(result)
   } catch (error: any) {
