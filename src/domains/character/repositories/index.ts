@@ -1,6 +1,6 @@
 import { supabase } from '@libs/supabase'
 import { AppError } from '@shared/errors'
-import type { CharacterDetails } from '@character/types'
+import type { CharacterDetails, Character } from '@character/types'
 
 export const CharacterRepository = {
   async getCharacterDetails(characterId: number) {
@@ -136,6 +136,6 @@ export const CharacterRepository = {
       })
     }
 
-    return data
+    return data as Character[]
   },
 }
