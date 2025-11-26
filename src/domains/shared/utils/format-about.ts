@@ -1,4 +1,8 @@
 import { aiService } from '@ai/services'
+import { createContextLogger } from '@libs/pino'
+import { AppError, isAppError } from '@shared/errors'
+
+const logger = createContextLogger('formatAbout')
 
 export const formatAbout = async (about: string) => {
   const prompt = `Eres un formateador de datos.
@@ -48,7 +52,6 @@ export const formatAbout = async (about: string) => {
   try {
     const result = await aiService.generateJSON<Record<string, any>>(prompt)
     if (!result) {
-      // Si la IA no devolvió JSON parseable, devolvemos la estructura vacía por seguridad
       return {
         description: '',
         members: [],
@@ -61,7 +64,14 @@ export const formatAbout = async (about: string) => {
 
     return result
   } catch (error) {
-    console.error('[formatAbout] Error:', error)
-    throw new Error('Error formatting about text')
+    logger.error('[formatAbout] Error:', { error })
+
+    if (isAppError(error)) {
+      throw error
+    }
+
+    throw AppError.externalApi('Error formatting about text', {
+      originalError: error,
+    })
   }
 }
