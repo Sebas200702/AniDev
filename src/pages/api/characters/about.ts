@@ -9,8 +9,6 @@ export const POST: APIRoute = redisConnection(async ({ request }) => {
     const body = await request.json()
     const { about } = body
 
-    console.log(about)
-
     if (!about) {
       return ResponseBuilder.validationError('Missing about parameter')
     }
