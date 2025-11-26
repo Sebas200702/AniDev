@@ -33,7 +33,7 @@ export interface AnimeResult {
  * getAnimeData(21, false)
  *   .then((result) => {
  *     if (result?.anime) {
- *       console.log('Anime data:', result.anime)
+ *       logger.info('Anime data:', result.anime)
  *     }
  *   })
  *
@@ -42,7 +42,7 @@ export interface AnimeResult {
  * getAnimeData(12345, true)
  *   .then((result) => {
  *     if (result?.blocked) {
- *       console.log('Blocked:', result.message)
+ *       logger.info('Blocked:', result.message)
  *     }
  *   })
  */
