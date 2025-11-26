@@ -1,3 +1,4 @@
+import { AppError, isAppError } from '@shared/errors'
 import { UserRepository } from '@user/repositories'
 
 /**
@@ -20,7 +21,16 @@ export const UserService = {
       return await UserRepository.upsertWatchListItem(userId, animeId, type)
     } catch (error) {
       console.error('[UserService.addToWatchList] Error:', error)
-      throw error
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to add to watch list', {
+        userId,
+        animeId,
+        type,
+        originalError: error,
+      })
     }
   },
 
@@ -32,7 +42,15 @@ export const UserService = {
       return await UserRepository.removeFromWatchList(userId, animeId)
     } catch (error) {
       console.error('[UserService.removeFromWatchList] Error:', error)
-      throw error
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to remove from watch list', {
+        userId,
+        animeId,
+        originalError: error,
+      })
     }
   },
 
@@ -44,7 +62,14 @@ export const UserService = {
       return await UserRepository.getWatchList(userId)
     } catch (error) {
       console.error('[UserService.getWatchList] Error:', error)
-      throw error
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to get watch list', {
+        userId,
+        originalError: error,
+      })
     }
   },
 
@@ -57,7 +82,14 @@ export const UserService = {
       return await UserRepository.saveSearchHistory(userId, formatted)
     } catch (error) {
       console.error('[UserService.saveSearchHistory] Error:', error)
-      throw error
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to save search history', {
+        userId,
+        originalError: error,
+      })
     }
   },
 
@@ -67,12 +99,21 @@ export const UserService = {
   async getSearchHistory(userId: string) {
     try {
       return await UserRepository.getSearchHistory(userId)
-    } catch (error: any) {
-      if (error.message === 'No search history found') {
-        return []
-      }
+    } catch (error) {
       console.error('[UserService.getSearchHistory] Error:', error)
-      throw error
+
+      if (isAppError(error)) {
+        if (error.type === 'notFound') {
+          return []
+        }
+
+        throw error
+      }
+
+      throw AppError.database('Failed to get search history', {
+        userId,
+        originalError: error,
+      })
     }
   },
 
@@ -84,7 +125,14 @@ export const UserService = {
       return await UserRepository.deleteSearchHistory(userId)
     } catch (error) {
       console.error('[UserService.deleteSearchHistory] Error:', error)
-      throw error
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to delete search history', {
+        userId,
+        originalError: error,
+      })
     }
   },
 
@@ -98,7 +146,7 @@ export const UserService = {
   ) {
     try {
       if (!enfasisColor && parentalControl === undefined) {
-        throw new Error('User preferences is required')
+        throw AppError.validation('User preferences is required')
       }
 
       return await UserRepository.updatePreferences(
@@ -108,7 +156,17 @@ export const UserService = {
       )
     } catch (error) {
       console.error('[UserService.updatePreferences] Error:', error)
-      throw error
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to update preferences', {
+        userId,
+        enfasisColor,
+        parentalControl,
+        originalError: error,
+      })
     }
   },
 
@@ -142,7 +200,15 @@ export const UserService = {
       return await UserRepository.upsertProfile(userId, mappedData)
     } catch (error) {
       console.error('[UserService.saveProfile] Error:', error)
-      throw error
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to save profile', {
+        userId,
+        originalError: error,
+      })
     }
   },
 
@@ -157,7 +223,7 @@ export const UserService = {
   ) {
     try {
       if (!avatar && !bannerImage && !name) {
-        throw new Error(
+        throw AppError.validation(
           'At least one field (avatar, banner, or name) is required'
         )
       }
@@ -170,7 +236,18 @@ export const UserService = {
       )
     } catch (error) {
       console.error('[UserService.updateUserImages] Error:', error)
-      throw error
+
+      if (isAppError(error)) {
+        throw error
+      }
+
+      throw AppError.database('Failed to update user images', {
+        userId,
+        avatar,
+        bannerImage,
+        name,
+        originalError: error,
+      })
     }
   },
 }
