@@ -1,5 +1,8 @@
+import { createContextLogger } from '@libs/pino'
 import type { APIContext } from 'astro'
 import { RateLimiterMemory } from 'rate-limiter-flexible'
+
+const logger = createContextLogger('RateLimitMiddleware')
 
 /**
  * Enhanced rate limiter middleware for API endpoints to prevent abuse.
@@ -82,7 +85,7 @@ export const rateLimit = (
         )
       }
 
-      console.error('Rate limit error:', error)
+      logger.error('[RateLimitMiddleware] Rate limit error', error)
       return new Response(JSON.stringify({ error: 'Internal server error' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
