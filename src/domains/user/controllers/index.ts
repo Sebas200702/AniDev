@@ -18,8 +18,7 @@ export const UserController = {
   async getUserFromSession(request: Request, cookies: AstroCookies) {
     const userInfo = await getSessionUserInfo({
       request,
-      accessToken: cookies.get('sb-access-token')?.value,
-      refreshToken: cookies.get('sb-refresh-token')?.value,
+      cookies,
     })
 
     if (!userInfo?.id) {
