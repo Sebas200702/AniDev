@@ -5,14 +5,11 @@ import { ArtistRepository } from '@artist/repositories'
 import { CharacterRepository } from '@character/repositories'
 import { MusicRepository } from '@music/repositories'
 import { createContextLogger } from '@libs/pino'
+import type { MetadataResult } from '@shared/types'
 
 const logger = createContextLogger('MetadataService')
 
-interface MetadataResult {
-  title: string
-  description: string
-  image: string
-}
+
 
 type MetadataType = 'anime' | 'music' | 'character' | 'artist'
 
