@@ -1,5 +1,8 @@
+import { createContextLogger } from '@libs/pino'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { APIContext } from 'astro'
+
+const logger = createContextLogger('AuthMiddleware')
 
 /**
  * Authentication middleware for API endpoints to ensure user session validity.
@@ -43,7 +46,7 @@ export const checkSession = (
       ;(context as any).locals.userInfo = userInfo
       return handler(context)
     } catch (error) {
-      console.error('Error verifying session:', error)
+      logger.error('[AuthMiddleware] Error verifying session', error)
       return new Response(
         JSON.stringify({
           error: 'An internal server error occurred',
