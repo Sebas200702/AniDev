@@ -7,9 +7,8 @@ import { Picture } from '@shared/components/media/picture'
 import { MoreOptions } from '@shared/components/ui/more-options'
 import { StatusPoint } from '@shared/components/ui/status-point'
 import { useWindowWidth } from '@shared/hooks/window-width'
-import { genreToColor } from '@utils/genre-to-color'
+import { ColorService } from '@shared/services/color-service'
 import { normalizeString } from '@utils/normalize-string'
-import { statusColors } from '@utils/status-colors'
 import { Overlay } from 'domains/shared/components/layout/overlay'
 
 /**
@@ -99,11 +98,11 @@ export const AnimeCard = ({ anime }: Props) => {
 
         <footer className="absolute bottom-0 left-0 z-10 flex w-full flex-row items-center gap-4 px-2 py-1 md:px-4 md:py-2">
           <StatusPoint
-            class={`h-3 w-full max-w-3 rounded-full ${statusColors(status)} relative`}
+            class={`h-3 w-full max-w-3 rounded-full ${ColorService.getStatusColor(status)} relative`}
             status={status}
           />
           <h3
-            className={`${genreToColor(genres?.[0] ?? '')} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
+            className={`${ColorService.getGenreColor(genres?.[0] ?? '')} text-s truncate font-semibold text-white transition-opacity duration-200 ease-in-out md:text-sm`}
           >
             {title}
           </h3>
