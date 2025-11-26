@@ -1,3 +1,4 @@
+import { clientLogger } from '@libs/logger'
 import { toast } from '@pheralb/toast'
 import { AddToListIcon } from '@shared/components/icons/anime/add-to-list-icon'
 import { DeleteIcon } from '@shared/components/icons/common/delete-icon'
@@ -5,6 +6,8 @@ import { ToastType } from '@shared/types'
 import { useUserListsStore } from '@user/stores/user-list-store'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 import { useMemo } from 'react'
+
+const logger = clientLogger.create('AddToListButton')
 
 export const AddToListButton = ({
   animeId,
@@ -67,7 +70,7 @@ export const AddToListButton = ({
         }
       }
     } catch (error) {
-      console.error(error)
+      logger.error('Error executing action:', error)
       throw error
     } finally {
       setIsLoading(false)
