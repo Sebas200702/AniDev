@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import { toast } from '@pheralb/toast'
 import { ErrorBoundary } from '@shared/components/error-boundary'
+import { useBlockedContent } from '@shared/hooks/useBlockedContent'
 import { ToastType } from '@shared/types'
 import type { ReactNode } from 'react'
 
@@ -28,7 +29,12 @@ export function DataWrapper<T>({
 }: Readonly<DataWrapperProps<T>>) {
   const lastErrorRef = useRef<string | null>(null)
 
+  useBlockedContent({ error: error || null })
+
   useEffect(() => {
+    // Skip toast for permission errors as they are handled by useBlockedContent modal
+    if (error && (error as any).type === 'permission') return
+
     if (error && error.message !== lastErrorRef.current && retryCount === 0) {
       lastErrorRef.current = error.message
 
