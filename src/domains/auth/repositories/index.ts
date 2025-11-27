@@ -1,3 +1,4 @@
+import type { AuthResult } from '@auth/types'
 import { supabase, supabaseAdmin } from '@libs/supabase'
 import { AppError } from '@shared/errors'
 
@@ -5,7 +6,7 @@ export const AuthRepository = {
   /**
    * Sign in user with email and password
    */
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string): Promise<AuthResult> {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -28,8 +29,12 @@ export const AuthRepository = {
   /**
    * Create new user account
    */
-  async signUp(email: string, password: string, userName: string) {
-    // First verify with admin
+  async signUp(
+    email: string,
+    password: string,
+    userName: string
+  ): Promise<AuthResult> {
+
     const { error: verifyError } = await supabaseAdmin.auth.admin.generateLink({
       email,
       type: 'signup',
