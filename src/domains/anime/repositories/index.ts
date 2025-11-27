@@ -9,6 +9,7 @@ import { getRandomAnime } from '@anime/utils/get-random-anime'
 import { createContextLogger } from '@libs/pino'
 import { supabase } from '@libs/supabase'
 import { AppError } from '@shared/errors'
+import type { MetadataResult } from '@shared/types'
 
 const logger = createContextLogger('AnimeRepository')
 
@@ -32,16 +33,16 @@ export const AnimeRepository = {
     return { data, total }
   },
 
-  async getById(animeId: number , parentalControl: boolean = false) {
-    const { data, error } = await supabase
-      .rpc('get_anime_by_id', {
-        p_mal_id: animeId,
-        p_parental_control: parentalControl,
-      })
-
+  async getById(animeId: number, parentalControl: boolean = false) {
+    const { data, error } = await supabase.rpc('get_anime_by_id', {
+      p_mal_id: animeId,
+      p_parental_control: parentalControl,
+    })
 
     if (error) {
-      logger.error(`[AnimeRepository.getById] Failed to fetch anime ${animeId}: ${error.message}`)
+      logger.error(
+        `[AnimeRepository.getById] Failed to fetch anime ${animeId}: ${error.message}`
+      )
       throw AppError.database(`Failed to fetch anime ${animeId}`, { ...error })
     }
     if ((!data || data.length === 0) && parentalControl) {
@@ -51,7 +52,9 @@ export const AnimeRepository = {
       })
 
       if (unrestricted) {
-        throw AppError.permission('Anime is restricted due to parental control settings')
+        throw AppError.permission(
+          'Anime is restricted due to parental control settings'
+        )
       }
     }
 
@@ -63,7 +66,7 @@ export const AnimeRepository = {
     return data[0] as Anime
   },
 
-  async getMetadata(animeId: number) {
+  async getMetadata(animeId: number): Promise<MetadataResult> {
     const anime = await this.getById(animeId)
 
     if (!anime || 'blocked' in anime) {
@@ -72,8 +75,9 @@ export const AnimeRepository = {
 
     return {
       title: anime.title,
-      description: anime.synopsis || anime.background,
-      image: anime.image_large_webp || anime.image_url,
+      description:
+        anime.synopsis || anime.background || 'No description available.',
+      image: anime.image_large_webp || anime.image_url || '',
     }
   },
 
@@ -144,7 +148,7 @@ export const AnimeRepository = {
       }
     }
 
-    return allData
+    return allData as { mal_id: number; title: string; score: number }[]
   },
 
   async getAnimeRelations(animeId: string) {
