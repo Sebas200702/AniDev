@@ -1,5 +1,5 @@
 import { AnimeService } from '@anime/services'
-import type { Anime, AnimeDetail, Formats, RandomAnime } from '@anime/types'
+import type { Anime, AnimeBannerInfo, AnimeDetail, Formats, RandomAnime } from '@anime/types'
 import { CacheService } from '@cache/services'
 import { getCachedOrFetch } from '@cache/utils'
 import { AppError } from '@shared/errors'
@@ -39,7 +39,8 @@ export const AnimeController = {
     const parentalControl = url.searchParams.get('parental_control') !== 'false'
     const userId = url.searchParams.get('user_id')
 
-    return await AnimeService.getRandomAnime(parentalControl, userId)
+    const result = await AnimeService.getRandomAnime(parentalControl, userId)
+    return { data: result }
   },
 
   async handleSearchAnime(url: URL): Promise<ApiResponse<any[]>> {
@@ -71,7 +72,7 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimeBanner(url: URL): Promise<ApiResponse<any>> {
+  async handleGetAnimeBanner(url: URL): Promise<ApiResponse<AnimeBannerInfo[] | null>> {
     const animeId = Number.parseInt(url.searchParams.get('anime_id') ?? '')
     const limitCount = Number.parseInt(
       url.searchParams.get('limit_count') ?? '8'
@@ -106,7 +107,7 @@ export const AnimeController = {
     return { data: result }
   },
 
-  async handleGetAnimeRelations(url: URL): Promise<ApiResponse<AnimeDetail[]>> {
+  async handleGetAnimeRelations(url: URL): Promise<ApiResponse<AnimeDetail[] | null>> {
     const cacheKey = CacheService.generateKey(
       'anime-relations',
       url.searchParams.toString()
@@ -117,7 +118,7 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimesFull(url: URL): Promise<ApiResponse<Anime[]>> {
+  async handleGetAnimesFull(url: URL): Promise<ApiResponse<Anime[] | null>> {
     const filters = getFilters(Object.values(Filters), url)
     const cacheKey = CacheService.generateKey(
       'animes-full',
@@ -129,7 +130,7 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimeMetadata(url: URL): Promise<ApiResponse<MetadataResult>> {
+  async handleGetAnimeMetadata(url: URL): Promise<ApiResponse<MetadataResult | null>> {
     const id = url.searchParams.get('id')
 
     if (!id) {
