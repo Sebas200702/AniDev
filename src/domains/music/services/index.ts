@@ -1,5 +1,6 @@
 import { createContextLogger } from '@libs/pino'
 import { MusicRepository } from '@music/repositories'
+import type { AnimeSong, AnimeSongWithImage } from '@music/types'
 import { AppError, isAppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
 
@@ -33,7 +34,7 @@ export const MusicService = {
     countFilters,
     page,
     limit,
-  }: SearchMusicParams): Promise<ApiResponse<any[]>> {
+  }: SearchMusicParams): Promise<ApiResponse<AnimeSongWithImage[]>> {
     try {
       const [data, totalCount] = await Promise.all([
         MusicRepository.getMusicList(filters),
@@ -67,7 +68,7 @@ export const MusicService = {
   /**
    * Get music info by theme ID
    */
-  async getMusicById(themeId: number): Promise<ApiResponse<any>> {
+  async getMusicById(themeId: number): Promise<ApiResponse<AnimeSongWithImage>> {
     try {
       const data = await MusicRepository.getMusicInfo(themeId)
       return { data }
@@ -87,10 +88,10 @@ export const MusicService = {
   /**
    * Get all music for a specific anime
    */
-  async getMusicByAnimeId(animeId: number): Promise<ApiResponse<any>> {
+  async getMusicByAnimeId(animeId: number): Promise<AnimeSong[]> {
     try {
       const data = await MusicRepository.getMusicByAnimeId(animeId)
-      return { data }
+      return data
     } catch (error) {
       logger.error('[MusicService.getMusicByAnimeId] Error:', error)
       if (isAppError(error)) {

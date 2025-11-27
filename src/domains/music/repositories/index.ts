@@ -22,7 +22,7 @@ export const MusicRepository = {
     return data
   },
 
-  async getMusicList(filters: Record<string, any>): Promise<AnimeSong[]> {
+  async getMusicList(filters: Record<string, any>): Promise<AnimeSongWithImage[]> {
     const { data, error } = await supabase.rpc('get_music', filters)
 
     if (error) {
