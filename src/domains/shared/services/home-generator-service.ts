@@ -1,7 +1,7 @@
 import { aiService } from '@ai/services'
 import { CacheService } from '@cache/services'
 import { TtlValues } from '@cache/types'
-import { RecommendationsService } from '@recommendations/services'
+import { recommendationsService } from '@recommendations/services'
 import {
   HOME_CACHE_CONFIG,
   STATIC_SECTIONS,
@@ -54,7 +54,7 @@ export const HomeGeneratorService = {
   getAISuggestions: async (userId: string): Promise<ProcessedSuggestion[]> => {
     try {
       const { userProfile, calculatedAge } =
-        await RecommendationsService.getUserPreferences(userId)
+        await recommendationsService.getUserPreferences(userId)
       if (!userProfile) return []
 
       const prompt = HomeGeneratorService.buildPrompt(
