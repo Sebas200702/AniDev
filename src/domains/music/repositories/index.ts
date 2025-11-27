@@ -1,4 +1,5 @@
 import { supabase } from '@libs/supabase'
+import type { AnimeSong } from '@music/types'
 import { AppError } from '@shared/errors'
 
 export const MusicRepository = {
@@ -66,7 +67,7 @@ export const MusicRepository = {
     }
   },
 
-  async getMusicByAnimeId(animeId: number) {
+  async getMusicByAnimeId(animeId: number): Promise<AnimeSong[]> {
     const { data, error } = await supabase
       .from('music')
       .select('*')
