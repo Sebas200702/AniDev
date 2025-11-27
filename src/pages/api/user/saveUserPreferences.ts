@@ -7,7 +7,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   try {
     const data = await UserController.handleUpdatePreferences(request, cookies)
     return ResponseBuilder.success({
-      message: 'Preferences updated successfully',
       data,
     })
   } catch (error) {
