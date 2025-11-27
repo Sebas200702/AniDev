@@ -1,6 +1,6 @@
 import { supabase } from '@libs/supabase'
 import { AppError } from '@shared/errors'
-import type { CharacterDetails, Character } from '@character/types'
+import type { CharacterDetails, Character, CharacterImages } from '@character/types'
 
 export const CharacterRepository = {
   async getCharacterDetails(characterId: number) {
@@ -80,7 +80,7 @@ export const CharacterRepository = {
     }
   },
 
-  async getCharacterImages(animeId: number, limitCount: number = 10) {
+  async getCharacterImages(animeId: number, limitCount: number = 10) : Promise<CharacterImages[]> {
     const { data, error } = await supabase.rpc('get_character_images', {
       p_anime_id: animeId,
       p_limit_count: limitCount,
