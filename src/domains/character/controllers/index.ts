@@ -5,6 +5,7 @@ import {
   type Character,
   type CharacterDetails,
   CharacterFilters,
+  type CharacterImages,
 } from '@character/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError } from '@shared/errors'
@@ -53,9 +54,12 @@ export const CharacterController = {
     return { animeId, limitCount }
   },
 
-  async handleGetCharacterImages(url: URL): Promise<ApiResponse<any[]>> {
+  async handleGetCharacterImages(
+    url: URL
+  ): Promise<ApiResponse<CharacterImages[]>> {
     const { animeId, limitCount } = this.validateImageParams(url)
-    return await CharacterService.getCharacterImages(animeId, limitCount)
+    const data = await CharacterService.getCharacterImages(animeId, limitCount)
+    return { data }
   },
 
   validateSlug(slug: string | null): number {
@@ -87,9 +91,10 @@ export const CharacterController = {
     const id = this.validateSlug(slug)
     const cacheKey = CacheService.generateKey('character-detail', id.toString())
 
-    return await getCachedOrFetch(cacheKey, () =>
+    const data = await getCachedOrFetch(cacheKey, () =>
       CharacterService.getCharacterById(id)
     )
+    return { data }
   },
 
   validateAnimeCharactersParams(url: URL): {
