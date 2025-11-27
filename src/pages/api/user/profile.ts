@@ -7,7 +7,6 @@ export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   try {
     const data = await UserController.handleSaveProfile(request, cookies)
     return ResponseBuilder.success({
-      message: 'Profile saved successfully',
       data,
     })
   } catch (error) {
