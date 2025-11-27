@@ -1,4 +1,5 @@
 import { AuthService } from '@auth/services'
+import type { AuthResult } from '@auth/types'
 import { AppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
 import type { AstroCookies } from 'astro'
@@ -37,7 +38,7 @@ export const AuthController = {
   async handleSignIn(
     request: Request,
     cookies: AstroCookies
-  ): Promise<ApiResponse<any>> {
+  ): Promise<ApiResponse<AuthResult>> {
     const formData = await request.formData()
     const email = formData.get('email') as string
     const password = formData.get('password') as string
@@ -63,7 +64,7 @@ export const AuthController = {
   async handleSignUp(
     request: Request,
     cookies: AstroCookies
-  ): Promise<ApiResponse<any>> {
+  ): Promise<ApiResponse<AuthResult>> {
     const body = await request.json()
     const { email, password, user_name } = body
 
