@@ -1,6 +1,7 @@
 import { AppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
 import { EpisodeService } from '@watch/services'
+import type { AnimeEpisode } from '@watch/types'
 
 export const EpisodeController = {
   validateRequest(url: URL) {
@@ -19,13 +20,16 @@ export const EpisodeController = {
     return { id, page }
   },
 
-  async handleGetEpisodes(url: URL): Promise<ApiResponse<any[]>> {
+  async handleGetEpisodes(url: URL): Promise<ApiResponse<AnimeEpisode[]>> {
     const { id, page } = this.validateRequest(url)
 
-    return await EpisodeService.getEpisodes({
+    const data = await EpisodeService.getEpisodes({
       animeId: id,
       page,
     })
+    return {
+      data,
+    }
   },
 
   validateEpisodeRequest(url: URL): { slug: string; episodeNumber: string } {
@@ -47,8 +51,11 @@ export const EpisodeController = {
     return { slug, episodeNumber: ep }
   },
 
-  async handleGetEpisode(url: URL): Promise<ApiResponse<any>> {
+  async handleGetEpisode(url: URL): Promise<ApiResponse<AnimeEpisode>> {
     const { slug, episodeNumber } = this.validateEpisodeRequest(url)
-    return await EpisodeService.getEpisodeById(slug, episodeNumber)
+    const episode = await EpisodeService.getEpisodeById(slug, episodeNumber)
+    return {
+      data: episode,
+    }
   },
 }
