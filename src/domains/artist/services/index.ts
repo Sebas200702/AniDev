@@ -1,7 +1,7 @@
 import { ArtistRepository } from '@artist/repositories'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
-import type { ApiResponse } from '@shared/types/api-response'
+import type { ArtistInfo } from '@artist/types'
 
 const logger = createContextLogger('ArtistService')
 
@@ -20,14 +20,14 @@ export const ArtistService = {
   /**
    * Get artist information by name
    */
-  async getArtistByName(artistName: string): Promise<ApiResponse<any>> {
+  async getArtistByName(artistName: string): Promise<ArtistInfo> {
     try {
       if (!artistName || artistName.trim() === '') {
         throw AppError.validation('Artist name is required')
       }
 
       const data = await ArtistRepository.getArtistInfo(artistName)
-      return { data }
+      return  data
     } catch (error) {
       logger.error('[ArtistService.getArtistByName] Error:', { error })
 
