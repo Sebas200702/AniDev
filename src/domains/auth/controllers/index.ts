@@ -50,11 +50,11 @@ export const AuthController = {
 
     this.setSessionCookies(
       cookies,
-      result.data.session.access_token,
-      result.data.session.refresh_token
+      result.session.access_token,
+      result.session.refresh_token
     )
 
-    return result
+    return { data: result }
   },
 
   /**
@@ -75,10 +75,10 @@ export const AuthController = {
 
     this.setSessionCookies(
       cookies,
-      result.data.session.access_token,
-      result.data.session.refresh_token
+      result.session.access_token,
+      result.session.refresh_token
     )
 
-    return result
+    return { data: result }
   },
 }
