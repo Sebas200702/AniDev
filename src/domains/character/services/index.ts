@@ -65,7 +65,7 @@ export const CharacterService = {
   async getCharacterImages(
     animeId: number,
     limitCount: number = 10
-  ): Promise<any[]> {
+  ) {
     try {
       const data = await CharacterRepository.getCharacterImages(
         animeId,
