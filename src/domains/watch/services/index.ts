@@ -1,24 +1,13 @@
 import { AppError, isAppError } from '@shared/errors'
-import type { ApiResponse } from '@shared/types/api-response'
 import { EpisodeRepository } from '@watch/repositories'
+import type { AnimeEpisode } from '@watch/types'
 
 interface GetEpisodesParams {
   animeId: string
   page: number
 }
 
-/**
- * Episode Service
- *
- * @description
- * Service layer for episode-related operations. Handles business logic
- * for episode retrieval and pagination.
- *
- * @features
- * - Episode list retrieval with pagination
- * - Episode count tracking
- * - Error handling and logging
- */
+
 export const EpisodeService = {
   /**
    * Get episodes for an anime with pagination
@@ -26,7 +15,7 @@ export const EpisodeService = {
   async getEpisodes({
     animeId,
     page,
-  }: GetEpisodesParams): Promise<ApiResponse<any[]>> {
+  }: GetEpisodesParams): Promise<AnimeEpisode[]> {
     try {
       const data = await EpisodeRepository.getEpisodesByAnimeId(animeId, page)
 
@@ -34,7 +23,7 @@ export const EpisodeService = {
         throw AppError.notFound('No episodes found', { animeId, page })
       }
 
-      return { data }
+      return data
     } catch (error) {
       console.error('[EpisodeService.getEpisodes] Error:', error)
 
@@ -56,7 +45,7 @@ export const EpisodeService = {
   async getEpisodeById(
     slugOrAnimeId: string,
     episodeId?: string
-  ): Promise<ApiResponse<any>> {
+  ): Promise<AnimeEpisode> {
     try {
       let animeId: string
       let epId: string
@@ -86,7 +75,7 @@ export const EpisodeService = {
       }
 
       const data = await EpisodeRepository.getEpisodeById(animeId, epId)
-      return { data }
+      return data
     } catch (error) {
       console.error('[EpisodeService.getEpisodeById] Error:', error)
       if (isAppError(error)) {
