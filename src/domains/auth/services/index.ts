@@ -1,9 +1,10 @@
 import { AuthRepository } from '@auth/repositories'
 import { signInSchema } from '@auth/schemas/sigin'
 import { signUpSchema } from '@auth/schemas/signup'
+import type { AuthResult } from '@auth/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
-import type { ApiResponse } from '@shared/types/api-response'
+
 
 const logger = createContextLogger('AuthService')
 
@@ -23,7 +24,7 @@ export const AuthService = {
   /**
    * Authenticate user with email and password
    */
-  async signIn(email: string, password: string): Promise<ApiResponse<any>> {
+  async signIn(email: string, password: string): Promise<AuthResult> {
     try {
       // Validate input
       const validated = signInSchema.parse({ email, password })
@@ -32,7 +33,7 @@ export const AuthService = {
         validated.email,
         validated.password
       )
-      return { data }
+      return  data
     } catch (error) {
       logger.error('[AuthService.signIn] Error:', { error })
 
@@ -54,7 +55,7 @@ export const AuthService = {
     email: string,
     password: string,
     userName: string
-  ): Promise<ApiResponse<any>> {
+  ): Promise<AuthResult> {
     try {
       // Validate input
       const validated = signUpSchema.parse({
@@ -68,7 +69,7 @@ export const AuthService = {
         validated.password,
         validated.user_name
       )
-      return { data }
+      return  data
     } catch (error) {
       logger.error('[AuthService.signUp] Error:', { error })
 
