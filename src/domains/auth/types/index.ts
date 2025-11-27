@@ -1,4 +1,5 @@
 import type { FilterOption } from '@search/types'
+import type { Session, User } from '@supabase/supabase-js'
 
 export interface AuthStep {
   id: number
@@ -22,4 +23,9 @@ export interface Field {
   type: FieldType
   placeholder: string
   options?: FilterOption[]
+}
+
+export interface AuthResult {
+    user: User
+    session: Session
 }
