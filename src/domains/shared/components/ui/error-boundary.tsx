@@ -1,8 +1,9 @@
-import type { ErrorInfo, ReactNode } from 'react'
-
+import { clientLogger } from '@libs/logger'
 import { toast } from '@pheralb/toast'
 import { ToastType } from '@shared/types'
+import type { ErrorInfo, ReactNode } from 'react'
 import { Component } from 'react'
+const logger = clientLogger.create('SearchResultsErrorBoundary')
 
 /**
  * Props for the ErrorBoundary component.
