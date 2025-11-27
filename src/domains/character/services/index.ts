@@ -19,7 +19,7 @@ export const CharacterService = {
     countFilters,
     page,
     limit,
-  }: SearchCharactersParams): Promise<ApiResponse<any[]>> {
+  }: SearchCharactersParams): Promise<ApiResponse<Character[]>> {
     try {
       const [data, totalCount] = await Promise.all([
         CharacterRepository.getCharactersList(filters),
@@ -48,10 +48,10 @@ export const CharacterService = {
    */
   async getCharacterById(
     characterId: number
-  ): Promise<ApiResponse<CharacterDetails>> {
+  ): Promise<CharacterDetails> {
     try {
       const data = await CharacterRepository.getCharacterDetails(characterId)
-      return { data }
+      return  data
     } catch (error) {
       logger.error('[CharacterService.getCharacterById] Error:', { error })
       if (isAppError(error)) throw error
@@ -65,13 +65,13 @@ export const CharacterService = {
   async getCharacterImages(
     animeId: number,
     limitCount: number = 10
-  ): Promise<ApiResponse<any[]>> {
+  ): Promise<any[]> {
     try {
       const data = await CharacterRepository.getCharacterImages(
         animeId,
         limitCount
       )
-      return { data }
+      return  data
     } catch (error) {
       logger.error('[CharacterService.getCharacterImages] Error:', { error })
       if (isAppError(error)) throw error
