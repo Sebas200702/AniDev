@@ -5,7 +5,7 @@ export const userApiClient = {
     const res = await api.post('/user/profile', profileData)
 
     if (res.status !== 200) {
-      throw new Error(res.error?.message || 'Error al crear el perfil')
+      throw new Error(res.error || 'Error al crear el perfil')
     }
 
     return res.data
@@ -15,7 +15,7 @@ export const userApiClient = {
     const res = await api.post('/user/updateProfile', profileData)
 
     if (res.status !== 200) {
-      throw new Error(res.error?.message || 'Error al actualizar el perfil')
+      throw new Error(res.error || 'Error al actualizar el perfil')
     }
 
     return res.data
