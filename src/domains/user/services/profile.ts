@@ -1,13 +1,12 @@
 import { AppError, isAppError } from '@shared/errors'
-import type { ApiResponse } from '@shared/types/api-response'
 import { UserRepository } from '@user/repositories'
 
 export const saveProfile = async (
   userId: string,
   profileData: any
-): Promise<ApiResponse<any>> => {
+): Promise<any> => {
   try {
-    // Map request fields to database fields
+
     const mappedData: any = {}
 
     if (profileData.name) mappedData.name = profileData.name
@@ -30,7 +29,7 @@ export const saveProfile = async (
       mappedData.favorite_genres = profileData.favorite_genres
 
     const data = await UserRepository.upsertProfile(userId, mappedData)
-    return { data }
+    return  data
   } catch (error) {
     console.error('[UserService.saveProfile] Error:', error)
 
@@ -50,7 +49,7 @@ export const updateUserImages = async (
   avatar?: string,
   bannerImage?: string,
   name?: string
-): Promise<ApiResponse<any>> => {
+): Promise<any> => {
   try {
     if (!avatar && !bannerImage && !name) {
       throw AppError.validation(
@@ -64,7 +63,7 @@ export const updateUserImages = async (
       bannerImage,
       name
     )
-    return { data }
+    return  data
   } catch (error) {
     console.error('[UserService.updateUserImages] Error:', error)
 
