@@ -146,7 +146,8 @@ export const UserController = {
     const userId = userInfo.id as string
     const body = await request.json()
 
-    return await UserService.saveProfile(userId, body)
+    const data = await UserService.saveProfile(userId, body)
+    return { data }
   },
 
   /**
@@ -167,11 +168,12 @@ export const UserController = {
       )
     }
 
-    return await UserService.updateUserImages(
+    const data = await UserService.updateUserImages(
       userId,
       avatar,
       banner_image,
       name
     )
+    return { data }
   },
 }
