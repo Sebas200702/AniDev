@@ -25,7 +25,7 @@ export const CharacterRepository = {
     return data as CharacterDetails
   },
 
-  async getCharactersList(filters: Record<string, any>) {
+  async getCharactersList(filters: Record<string, any>): Promise<Character[]> {
     const { data, error } = await supabase.rpc('get_characters_list', filters)
 
     if (error) {
@@ -34,11 +34,14 @@ export const CharacterRepository = {
         ...error,
       })
     }
+    if (!data || data.length === 0) {
+      throw AppError.notFound('Characters not found', { filters })
+    }
 
-    return data ?? []
+    return data
   },
 
-  async getCharactersCount(filters: Record<string, any>) {
+  async getCharactersCount(filters: Record<string, any>) : Promise<number> {
     const { data, error } = await supabase.rpc('get_characters_count', filters)
 
     if (error) {
@@ -47,6 +50,7 @@ export const CharacterRepository = {
         ...error,
       })
     }
+
 
     return data ?? 0
   },
