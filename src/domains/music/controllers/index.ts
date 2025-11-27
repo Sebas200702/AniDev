@@ -1,5 +1,5 @@
 import { MusicService } from '@music/services'
-import { MusicFilters } from '@music/types'
+import { MusicFilters, type AnimeSong, type AnimeSongWithImage } from '@music/types'
 import { AppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
 import { getFilters } from '@utils/get-filters-of-search-params'
@@ -33,7 +33,7 @@ export const MusicController = {
   /**
    * Handle music search request
    */
-  async handleSearch(url: URL): Promise<ApiResponse<any[]>> {
+  async handleSearch(url: URL): Promise<ApiResponse<AnimeSongWithImage[]>> {
     const { filters, countFilters, page, limit } = this.parseSearchParams(url)
 
     return await MusicService.searchMusic({
@@ -60,7 +60,7 @@ export const MusicController = {
   /**
    * Handle get music info request
    */
-  async handleGetMusicInfo(url: URL): Promise<ApiResponse<any>> {
+  async handleGetMusicInfo(url: URL): Promise<ApiResponse<AnimeSongWithImage>> {
     const themeId = this.validateThemeId(url)
     return await MusicService.getMusicById(themeId)
   },
@@ -81,8 +81,11 @@ export const MusicController = {
   /**
    * Handle get anime music request
    */
-  async handleGetAnimeMusic(url: URL): Promise<ApiResponse<any>> {
+  async handleGetAnimeMusic(url: URL): Promise<ApiResponse<AnimeSong[]>> {
     const animeId = this.validateAnimeId(url)
-    return await MusicService.getMusicByAnimeId(animeId)
+    const data = await MusicService.getMusicByAnimeId(animeId)
+    return {
+      data,
+    }
   },
 }
