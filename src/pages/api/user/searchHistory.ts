@@ -6,7 +6,7 @@ import type { APIRoute } from 'astro'
 export const POST: APIRoute = checkSession(async ({ request, cookies }) => {
   try {
     await UserController.handleSaveSearchHistory(request, cookies)
-    return ResponseBuilder.success({ message: 'Search history saved' })
+    return ResponseBuilder.success({ data: { message: 'Search history saved' } })
   } catch (error) {
     return ResponseBuilder.fromError(error, 'POST /api/user/searchHistory')
   }
@@ -24,7 +24,7 @@ export const GET: APIRoute = checkSession(async ({ request, cookies }) => {
 export const DELETE: APIRoute = checkSession(async ({ request, cookies }) => {
   try {
     await UserController.handleDeleteSearchHistory(request, cookies)
-    return ResponseBuilder.success({ message: 'Search history deleted' })
+    return ResponseBuilder.success({ data: { message: 'Search history deleted' } })
   } catch (error) {
     return ResponseBuilder.fromError(error, 'DELETE /api/searchHistory')
   }
