@@ -7,7 +7,7 @@ export const authApiClient = {
     const res = await api.post('/auth/signup', values)
 
     if (res.status !== 200) {
-      throw new Error(res.error?.message || 'Error en el registro')
+      throw new Error(res.error || 'Error en el registro')
     }
 
     return res.data
@@ -17,7 +17,7 @@ export const authApiClient = {
     const res = await api.post('/auth/signin', values)
 
     if (res.status !== 200) {
-      throw new Error(res.error?.message || 'Error al iniciar sesión')
+      throw new Error(res.error || 'Error al iniciar sesión')
     }
 
     return res.data
