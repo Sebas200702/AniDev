@@ -11,6 +11,7 @@ export interface HomeSection {
   title?: string
   url?: string
   urls?: string[] // Para collections que necesitan múltiples URLs (hasta 4)
+  titles?: string[] // Para collections que necesitan múltiples títulos
   order: number
   isStatic: boolean
   aiGenerated?: boolean
@@ -30,21 +31,4 @@ export interface HomeSectionsCache {
   userId: string | null
   generatedAt: string
   expiresAt: string
-}
-
-export interface AISuggestion {
-  type: 'collection' | 'banner' | 'slider'
-  value: string
-  values?: string[]
-  title: string
-}
-
-export interface AIResponse {
-  sections: AISuggestion[]
-}
-
-export interface ProcessedSuggestion {
-  url: string
-  urls?: string[]
-  title: string
 }
