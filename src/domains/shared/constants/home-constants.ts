@@ -1,3 +1,4 @@
+import { AnimeGenres, AnimeTypes } from '@anime/types'
 import type { HomeSection } from '@shared/types/home-types'
 
 /**
@@ -108,12 +109,6 @@ export const STATIC_SECTIONS: HomeSection[] = [
 ]
 
 /**
- * Géneros que NO se deben sugerir porque ya están hardcodeados en secciones estáticas
- * (Ahora vacío porque la IA generará las URLs para Action, Comedy, Drama)
- */
-export const EXCLUDED_GENRES: string[] = []
-
-/**
  * Configuración de cache para secciones del home
  */
 export const HOME_CACHE_CONFIG = {
@@ -121,3 +116,12 @@ export const HOME_CACHE_CONFIG = {
   REDIS_KEY_PREFIX: 'home:sections:',
   MAX_DYNAMIC_SECTIONS: 8, // 3 banners + 2 collections + 3 sliders (Action, Comedy, Drama)
 }
+
+export const GENRE_BANK = Object.values(AnimeGenres)
+
+export const TYPE_BANK = [
+  AnimeTypes.MOVIE,
+  AnimeTypes.TV,
+  AnimeTypes.OVA,
+  AnimeTypes.ONA,
+]
