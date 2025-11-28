@@ -1,7 +1,8 @@
 ---
 import Layout from '@layouts/base.astro'
+
 import { HomeSectionsContainer } from '@shared/components/home-sections-container'
-import { HomeGeneratorService } from '@shared/services/home-generator-service'
+import { HomeController } from '@shared/controllers/home-controller'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 
 // Obtener información del usuario desde cookies
@@ -10,16 +11,13 @@ const userInfo = await getSessionUserInfo({
   cookies: Astro.cookies,
 })
 
-// Generar secciones del home (con cache Redis de 1 hora)
-const sections = await HomeGeneratorService.buildHomeSections(
-  userInfo?.id ?? null
-)
+const { data } = await HomeController.getHomeFeed(userInfo?.id || null)
 ---
 
 <Layout>
   <HomeSectionsContainer
-    initialSections={sections}
-    userId={userInfo?.id ?? null}
+    initialSections={data}
+
     cacheMaxAgeHours={1}
     client:load
   />
