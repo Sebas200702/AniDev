@@ -1,7 +1,7 @@
 import { ProfileLoader } from '@shared/components/layout/nav-bar/profil-loader'
 import { Picture } from '@shared/components/media/picture'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { useEffect, useState, type RefObject } from 'react'
+import { type RefObject, useEffect, useState } from 'react'
 
 interface Props {
   toggleOptions: () => void
