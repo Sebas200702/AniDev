@@ -9,10 +9,18 @@ import { useMemo } from 'react'
 interface Props {
   id: number
   url?: string
+  title?: string
 }
 
-export const AnimeCollectionContainer = ({ id, url: customUrl }: Props) => {
-  const { url: fallbackUrl, title } = useMemo(() => createDynamicUrl(3), [])
+export const AnimeCollectionContainer = ({
+  id,
+  url: customUrl,
+  title: customTitle,
+}: Props) => {
+  const { url: fallbackUrl, title: fallbackTitle } = useMemo(
+    () => createDynamicUrl(3),
+    []
+  )
 
   const { data, loading, error, retryCount, maxRetries } = useFetchWithCache<
     AnimeCollectionInfo[]
@@ -31,7 +39,13 @@ export const AnimeCollectionContainer = ({ id, url: customUrl }: Props) => {
       loadingFallback={<AnimeCollectionLoader />}
       noDataFallback={<AnimeCollectionLoader />}
     >
-      {(data) => <AnimeCollection animes={data!} title={title} id={id} />}
+      {(data) => (
+        <AnimeCollection
+          animes={data!}
+          title={customTitle || fallbackTitle}
+          id={id}
+        />
+      )}
     </DataWrapper>
   )
 }
