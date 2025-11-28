@@ -3,7 +3,7 @@ import '@shared/styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import { SearchBar } from '@search/components/search-global/search-bar'
 import Footer from '@shared/components/layout/footer.astro'
-import NavBar from '@shared/components/layout/nav-bar/nav-bar.astro'
+import { NavBar } from '@shared/components/layout/nav-bar/nav-bar'
 import { LoadWindowWidth } from '@shared/components/ui/load-window-width'
 import { ProgressBar } from '@shared/components/ui/progres-bar'
 import { MetadataService } from '@shared/services/metadata-service'
@@ -35,7 +35,6 @@ let metaDesc =
   'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
 let metaImage = image || `${baseUrl}/og-image.png`
 
-// Fetch metadata using the new MetadataService
 if (animeId) {
   const metadata = await MetadataService.getAnimeMetadata(animeId)
   metaTitle = metadata.title
@@ -51,7 +50,6 @@ if (themeId) {
 }
 
 if (characterId) {
-  // Extract character ID from slug (format: name_id)
   const fullSlug = Astro.url.pathname.split('/').pop() || ''
   const lastUnderscoreIndex = fullSlug.lastIndexOf('_')
   const charId =
@@ -154,8 +152,8 @@ if (artistName) {
       <aside class="h-16 [grid-area:aside] md:h-full">
         <AsideNav client:load />
       </aside>
-      <header class="h-full [grid-area:header]">
-        <NavBar />
+      <header class="h-full max-w-[100dvw] [grid-area:header]">
+        <NavBar client:load />
         <ProgressBar client:load />
       </header>
 
