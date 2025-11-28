@@ -2,33 +2,34 @@ import { clientLogger } from '@libs/logger'
 import { DynamicHomeSection } from '@shared/components/dynamic-home-section'
 import { useHomeCacheStore } from '@shared/stores/home-cache-store'
 import type { HomeSection } from '@shared/types/home-types'
-import { useEffect, useState } from 'react'
+import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { useEffect } from 'react'
 
 const logger = clientLogger.create('HomeSectionsContainer')
 
 interface Props {
   initialSections: HomeSection[]
-  userId: string | null
   cacheMaxAgeHours?: number
 }
 
 export const HomeSectionsContainer = ({
   initialSections,
-  userId,
   cacheMaxAgeHours = 1,
 }: Props) => {
   const { getHomeSections, setHomeSections } = useHomeCacheStore()
+  const { userInfo } = useGlobalUserPreferences()
+  const userId = userInfo?.id ?? null
 
-  // Inicializar desde cache o usar SSR initial sections
   const maxAge = cacheMaxAgeHours * 60 * 60 * 1000
   const cached = getHomeSections(userId, maxAge)
-  const [sections] = useState<HomeSection[]>(cached || initialSections)
 
-  // Guardar initial sections en cache si no hay cache o expiró
+
+  const sections = cached || initialSections
+
   useEffect(() => {
-    if (!cached) {
+    if (!cached && initialSections.length > 0) {
       setHomeSections(initialSections, userId)
-      logger.info('💾 Saved SSR sections to sessionStorage cache')
+      logger.info('💾 Saved SSR sections to sessionStorage cache', { userId })
     }
   }, [cached, initialSections, userId, setHomeSections])
 
