@@ -22,12 +22,12 @@ export const recommendationsController = {
       cookies,
     })
 
-    const { userProfile, calculatedAge, error } =
-      await recommendationsService.getUserPreferences(userInfo?.id ?? '')
+    const { userProfile, calculatedAge, error } =  await recommendationsService.getUserPreferences(userInfo?.id ?? '')
 
     if (error || !userProfile || !calculatedAge) {
       throw AppError.validation('User not found or invalid profile')
     }
+
 
     const context: RecommendationContext = buildContextFromUrl(url)
 
@@ -35,6 +35,7 @@ export const recommendationsController = {
       userProfile,
       context
     )
+  
     const jikanRecommendations =
       await recommendationsService.getJikanRecommendations(
         selectedFavoriteId?.toString() ?? ''
