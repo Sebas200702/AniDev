@@ -5,7 +5,11 @@ export async function getJikanBase(
   userProfile: any,
   context: RecommendationContext
 ) {
-  if (!context.data.currentAnime) {
+
+  if (
+    !context.data.currentAnime?.mal_id  ||
+    !context.data.currentAnime?.title
+  ) {
     return await pickAnimeForJikan(userProfile)
   }
   return {
