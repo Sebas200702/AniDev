@@ -1,5 +1,4 @@
 import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
-import { api } from '@libs/api'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useHomeCacheStore } from '@shared/stores/home-cache-store'
 import type { CachedAnimeResponse } from '@shared/types/cache-types'
@@ -38,20 +37,6 @@ export const useFetchWithCache = <T>({
     skip: shouldSkip,
   })
 
-  const syncToRedis = useCallback(
-    async (secUrl: string, secData: unknown) => {
-      try {
-        await api.post('/home/sync-cache', {
-          sectionId,
-          url: secUrl,
-          data: secData,
-        })
-      } catch {
-      }
-    },
-    [sectionId]
-  )
-
   useEffect(() => {
     if (cached?.status === 'success' && cached.data.length > 0) {
       setIsCached(true)
@@ -68,11 +53,10 @@ export const useFetchWithCache = <T>({
       }
 
       setCachedResponse(sectionId, cachedResponse)
-      syncToRedis(currentUrl, data)
+
       setIsCached(false)
     }
-  }, [data, error, currentUrl, sectionId, setCachedResponse, syncToRedis])
-
+  }, [data, error, currentUrl, sectionId, setCachedResponse])
 
   useEffect(() => {
     if (error && !skip) {
