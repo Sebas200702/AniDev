@@ -1,5 +1,7 @@
 import { createContextLogger } from '@libs/pino'
 import { supabase } from '@libs/supabase'
+import { normalizeString } from './normalize-string';
+
 
 const logger = createContextLogger('getFavoriteAnimeIds')
 
@@ -34,10 +36,11 @@ export const getFavoriteAnimeIds = async (
       }
     }
 
+
     const { data: exactMatches, error: exactError } = await supabase
       .from('anime')
       .select('mal_id, title')
-      .in('title', favoriteAnimeTitles)
+      .in('title', favoriteAnimeTitles.map((title) => normalizeString(title, false, false,true)))
 
     if (exactError) {
       console.error('Error in exact title search:', exactError)
@@ -83,11 +86,16 @@ export const getFavoriteAnimeIds = async (
     const mal_ids = allMatches.map((anime) => anime.mal_id)
     const matchedTitles = allMatches.map((anime) => anime.title)
 
+    logger.info(
+      `matchedTitles: ${matchedTitles}, mal_ids: ${mal_ids}`
+    )
+
     return {
       mal_ids,
       matchedTitles,
       error: undefined,
     }
+
   } catch (error) {
     logger.error(
       '[getFavoriteAnimeIds] Error fetching favorite anime IDs',
