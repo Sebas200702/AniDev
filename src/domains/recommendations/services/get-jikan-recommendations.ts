@@ -10,14 +10,21 @@ export const getJikanRecommendations = async (
   error?: string
 }> => {
   try {
+
+    if (!mal_id) {
+      return {
+        mal_ids: [],
+        titles: [],
+        error: 'No MAL ID provided',
+      }
+    }
+
     const response = await fetch(
       `https://api.jikan.moe/v4/anime/${mal_id}/recommendations`
     )
 
     if (!response.ok) {
-      logger.error(
-        `Jikan API error: ${response.status} ${response.statusText}`
-      )
+      logger.error(`Jikan API error: ${response.status} ${response.statusText}`)
       return {
         mal_ids: [],
         titles: [],
