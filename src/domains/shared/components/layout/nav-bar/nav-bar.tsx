@@ -1,10 +1,10 @@
 import { ProfileOptions } from '@shared/components/layout/nav-bar/options'
 import { Profile } from '@shared/components/layout/nav-bar/profile'
-import { useProfileOptions } from '@shared/hooks/useProfileOptions'
 import { RandomAnimeButton } from '@shared/components/layout/nav-bar/random-anime'
 import { RestorePlayerButton } from '@shared/components/layout/nav-bar/retore-player-button'
 import { SearchButton } from '@shared/components/layout/nav-bar/search-button'
 import { Logo } from '@shared/components/ui/logo'
+import { useProfileOptions } from '@shared/hooks/useProfileOptions'
 
 export const NavBar = () => {
   const { isOpen, toggleOptions, optionRef, buttonRef } = useProfileOptions()
