@@ -12,7 +12,7 @@ export interface RecommendationContext {
     | 'quick_watch'
   data: {
     searchQuery?: string
-    currentAnime?: { title: string; mal_id: number }
+    currentAnime?: { title: string; mal_id: number | null }
     mood?: string
     referenceAnime?: string
     season?: string
