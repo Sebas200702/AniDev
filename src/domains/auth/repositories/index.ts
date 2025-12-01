@@ -34,7 +34,6 @@ export const AuthRepository = {
     password: string,
     userName: string
   ): Promise<AuthResult> {
-
     const { error: verifyError } = await supabaseAdmin.auth.admin.generateLink({
       email,
       type: 'signup',
