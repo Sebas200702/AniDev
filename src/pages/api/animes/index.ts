@@ -8,8 +8,7 @@ import type { APIRoute } from 'astro'
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-
-     const result  = await AnimeController.handleSearchAnime(url)
+      const result = await AnimeController.handleSearchAnime(url)
       return ResponseBuilder.success(result)
     } catch (error) {
       return ResponseBuilder.fromError(error, 'GET /api/animes')
