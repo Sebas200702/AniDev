@@ -1,103 +1,41 @@
 {
-    "extends": "astro/tsconfigs/strict",
-    "compilerOptions": {
-        "types": [
-            "./src/types.d.ts"
-        ],
-        "baseUrl": "src",
-        "paths": {
-            "@anime/*": [
-                "domains/anime/*"
-            ],
-            "@artist/*": [
-                "domains/artist/*"
-            ],
-            "@auth/*": [
-                "domains/auth/*"
-            ],
-            "@character/*": [
-                "domains/character/*"
-            ],
-            "@collection/*": [
-                "domains/collection/*"
-            ],
-            "@community/*": [
-                "domains/community/*"
-            ],
-            "@constants": [
-                "constants.ts"
-            ],
-            "@download/*": [
-                "domains/download/*"
-            ],
-            "@favorites/*": [
-                "domains/favorites/*"
-            ],
-            "@music/*": [
-                "domains/music/*"
-            ],
-            "@schedule/*": [
-                "domains/schedule/*"
-            ],
-            "@search/*": [
-                "domains/search/*"
-            ],
-            "@seiyuu/*": [
-                "domains/seiyuu/*"
-            ],
-            "@shared/*": [
-                "domains/shared/*"
-            ],
-            "@user/*": [
-                "domains/user/*"
-            ],
-            "@watch/*": [
-                "domains/watch/*"
-            ],
-            "@layouts/*": [
-                "layouts/*"
-            ],
-            "@pages/*": [
-                "pages/*"
-            ],
-            "@styles/*": [
-                "styles/*"
-            ],
-            "@scripts/*": [
-                "scripts/*"
-            ],
-            "@libs/*": [
-                "libs/*"
-            ],
-            "@utils/*": [
-                "utils/*"
-            ],
-            "types": [
-                "types.d.ts"
-            ],
-            "@middlewares/*": [
-                "middlewares/*"
-            ],
-            "@store/*": [
-                "store/*"
-            ],
-            "@recommendations/*": [
-                "domains/recommendations/*"
-            ],
-            "@ai/*": [
-                "domains/ai/*"
-            ],
-            "@hooks/*": [
-                "hooks/*"
-            ],
-            "@cache/*": [
-                "domains/cache/*"
-            ]
-        },
-        "jsx": "react-jsx",
-        "jsxImportSource": "react"
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "types": ["./src/types.d.ts"],
+    "baseUrl": "src",
+    "paths": {
+      "@anime/*": ["domains/anime/*"],
+      "@artist/*": ["domains/artist/*"],
+      "@auth/*": ["domains/auth/*"],
+      "@character/*": ["domains/character/*"],
+      "@collection/*": ["domains/collection/*"],
+      "@community/*": ["domains/community/*"],
+      "@constants": ["constants.ts"],
+      "@download/*": ["domains/download/*"],
+      "@favorites/*": ["domains/favorites/*"],
+      "@music/*": ["domains/music/*"],
+      "@schedule/*": ["domains/schedule/*"],
+      "@search/*": ["domains/search/*"],
+      "@seiyuu/*": ["domains/seiyuu/*"],
+      "@shared/*": ["domains/shared/*"],
+      "@user/*": ["domains/user/*"],
+      "@watch/*": ["domains/watch/*"],
+      "@layouts/*": ["layouts/*"],
+      "@pages/*": ["pages/*"],
+      "@styles/*": ["styles/*"],
+      "@scripts/*": ["scripts/*"],
+      "@libs/*": ["libs/*"],
+      "@utils/*": ["utils/*"],
+      "types": ["types.d.ts"],
+      "@middlewares/*": ["middlewares/*"],
+      "@store/*": ["store/*"],
+      "@recommendations/*": ["domains/recommendations/*"],
+      "@ai/*": ["domains/ai/*"],
+      "@hooks/*": ["hooks/*"],
+      "@cache/*": ["domains/cache/*"]
     },
-    "include": [
-        "src"
-    ]
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "include": ["src"]
 }
