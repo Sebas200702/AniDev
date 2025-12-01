@@ -28,7 +28,6 @@ export const ColorService = {
   },
 
   getStatusColor(status: string): string {
-
     return STATUS_COLORS[status] || STATUS_COLORS['unknown']
   },
 
