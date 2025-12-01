@@ -26,7 +26,7 @@ export const CharacterContainer = ({ slug }: { slug: string }) => {
           },
           body: JSON.stringify({ about: character.character_about ?? '' }),
         })
-        const {data} = await response.json()
+        const { data } = await response.json()
 
         setAbout(data)
       } catch (error) {
