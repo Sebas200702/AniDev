@@ -7,7 +7,6 @@ interface GetEpisodesParams {
   page: number
 }
 
-
 export const EpisodeService = {
   /**
    * Get episodes for an anime with pagination
