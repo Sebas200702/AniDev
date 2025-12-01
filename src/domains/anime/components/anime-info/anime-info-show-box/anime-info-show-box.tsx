@@ -49,15 +49,7 @@ export const AnimeShowBox = ({
       case 'Characters':
         return <CharacterSection animeId={animeId} />
       case 'Music':
-        return (
-          <AnimeMusicContainer
-            animeId={animeId}
-            image={image}
-            placeholder={image_small_webp}
-            banner_image={banner_image}
-            anime_title={title}
-          />
-        )
+        return <AnimeMusicContainer animeId={animeId} />
       case 'Synopsis':
         return <AnimeDescription synopsis={synopsis} />
       case 'Related':
