@@ -1,7 +1,7 @@
 import { ArtistAbout } from '@artist/components/artist-info/artist-info-about'
 import { ArtistSongList } from '@artist/components/artist-info/artist-info-song-list'
 import type { ArtistInfo as ArtistInfoType } from '@artist/types'
-import type { AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { Aside } from '@shared/components/layout/base/Aside'
 import { Header } from '@shared/components/layout/base/Header'
 import { InfoPageLayout } from '@shared/components/layout/base/InfoPageLayout'
@@ -12,7 +12,7 @@ interface Props {
   artistInfo: ArtistInfoType
   banners: string[]
   about: PersonAbout
-  songs: AnimeSongWithImage[]
+  songs: AnimeSong[]
 }
 
 export const ArtistInfo = ({ artistInfo, banners, about, songs }: Props) => {
