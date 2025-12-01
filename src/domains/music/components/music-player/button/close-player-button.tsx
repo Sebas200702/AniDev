@@ -17,8 +17,8 @@ const ClosePlayerModal = ({ onClose }: ClosePlayerModalProps) => {
     setCurrentSong,
     setList,
     setIsPlaying,
-    setSavedTime,
-    setVariants,
+    setCurrentTime,
+    setResolutions,
     setIsHidden,
   } = useMusicPlayerStore()
 
@@ -27,8 +27,8 @@ const ClosePlayerModal = ({ onClose }: ClosePlayerModalProps) => {
     setCurrentSong(null)
     setList([])
     setIsPlaying(false)
-    setSavedTime(0)
-    setVariants([])
+    setCurrentTime(0)
+    setResolutions([])
     onClose()
   }
 
