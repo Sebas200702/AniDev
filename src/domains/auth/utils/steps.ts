@@ -270,10 +270,21 @@ export const stepsSignIn: AuthStep[] = [
         type: 'email',
         placeholder: 'Email',
       },
+
       {
         name: 'password',
         type: 'password',
         placeholder: 'Password',
+      },
+      {
+        name: 'signin',
+        type: 'button',
+        placeholder: 'Sign In',
+      },
+      {
+        name: 'google',
+        type: 'google',
+        placeholder: 'google',
       },
     ],
   },
