@@ -1,7 +1,9 @@
 import { supabase } from '@libs/supabase'
 import { AppError } from '@shared/errors'
 
-const cleanProfileData = <T extends Record<string, any>>(obj: T): Partial<T> => {
+const cleanProfileData = <T extends Record<string, any>>(
+  obj: T
+): Partial<T> => {
   return Object.fromEntries(
     Object.entries(obj).filter(([_, value]) => {
       if (value == null) return false
