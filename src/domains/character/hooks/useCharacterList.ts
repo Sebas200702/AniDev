@@ -8,7 +8,6 @@ export const useCharacterList = ({ animeId }: { animeId: number }) => {
     url: `/characters/getAnimeCharacters?animeId=${animeId}&language=${language}`,
   })
 
-
   return {
     language,
     setLanguage,
