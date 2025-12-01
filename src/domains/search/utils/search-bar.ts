@@ -1,6 +1,6 @@
 import type { AnimeDetail } from '@anime/types'
 import type { Character } from '@character/types'
-import type { AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { SearchQueryService } from '@search/services/search-query-service'
 import { SearchUrlService } from '@search/services/search-url-service'
 import type { SearchResultData, SearchType } from '@search/types'
@@ -54,7 +54,7 @@ export const isAnimeData = (data: SearchResultData): data is AnimeDetail[] => {
   )
 }
 export const isCharacterData = (
-  data: AnimeDetail[] | AnimeSongWithImage[] | Character[] | null
+  data: AnimeDetail[] | AnimeSong[] | Character[] | null
 ): data is Character[] => {
   return (
     Array.isArray(data) &&
@@ -64,7 +64,7 @@ export const isCharacterData = (
   )
 }
 export const isMusicData = (
-  data: AnimeDetail[] | AnimeSongWithImage[] | Character[] | null
-): data is AnimeSongWithImage[] => {
+  data: AnimeDetail[] | AnimeSong[] | Character[] | null
+): data is AnimeSong[] => {
   return Array.isArray(data) && data.length > 0 && 'song_id' in data[0]
 }
