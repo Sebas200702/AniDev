@@ -46,12 +46,10 @@ export const CharacterService = {
   /**
    * Get character details by ID
    */
-  async getCharacterById(
-    characterId: number
-  ): Promise<CharacterDetails> {
+  async getCharacterById(characterId: number): Promise<CharacterDetails> {
     try {
       const data = await CharacterRepository.getCharacterDetails(characterId)
-      return  data
+      return data
     } catch (error) {
       logger.error('[CharacterService.getCharacterById] Error:', { error })
       if (isAppError(error)) throw error
@@ -62,16 +60,13 @@ export const CharacterService = {
     }
   },
 
-  async getCharacterImages(
-    animeId: number,
-    limitCount: number = 10
-  ) {
+  async getCharacterImages(animeId: number, limitCount: number = 10) {
     try {
       const data = await CharacterRepository.getCharacterImages(
         animeId,
         limitCount
       )
-      return  data
+      return data
     } catch (error) {
       logger.error('[CharacterService.getCharacterImages] Error:', { error })
       if (isAppError(error)) throw error
@@ -134,7 +129,7 @@ export const CharacterService = {
         language
       )
       console.log('Fetched anime characters:', result)
-      return { data : result }
+      return { data: result }
     } catch (error) {
       logger.error('[CharacterService.getAnimeCharacters] Error:', { error })
       if (isAppError(error)) throw error
