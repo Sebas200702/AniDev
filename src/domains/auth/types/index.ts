@@ -26,6 +26,8 @@ export interface Field {
 }
 
 export interface AuthResult {
-    user: User
-    session: Session
+  user: User
+  session: Session
 }
+
+export type AuthMode = 'signIn' | 'signUp'
