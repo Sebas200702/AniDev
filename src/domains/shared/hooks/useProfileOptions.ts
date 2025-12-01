@@ -30,5 +30,5 @@ export const useProfileOptions = () => {
     setIsOpen(open)
   }
 
-  return { isOpen, toggleOptions, setOpen, optionRef  , buttonRef }
+  return { isOpen, toggleOptions, setOpen, optionRef, buttonRef }
 }
