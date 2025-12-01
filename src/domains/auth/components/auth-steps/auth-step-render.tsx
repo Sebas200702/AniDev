@@ -119,6 +119,5 @@ export const RenderField = ({ field }: RenderFieldParams) => {
     )
   }
 
-  // 🔹 Default (tipo no reconocido)
   return null
 }
