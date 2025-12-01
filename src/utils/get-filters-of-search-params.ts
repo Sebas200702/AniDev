@@ -2,95 +2,92 @@ import { MusicFilters } from '@music/types'
 import { Filters } from '@shared/types'
 import { normalizeString } from '@utils/normalize-string'
 
-/**
- * Processes URL search parameters to extract and format filter values.
- *
- * @description This utility function processes URL search parameters to create a structured
- * filter object for database queries. It handles different types of filters including:
- * - Boolean filters (parental control, banners)
- * - Numeric filters (page number, limit count)
- * - Text filters (search query)
- * - Array filters (other filter types)
- *
- * The function normalizes filter values to their appropriate types and provides
- * null values for missing parameters. This ensures consistent data types for
- * database queries and API responses.
- *
- * @param {typeof Filters} filtersEnum - The Filters enum containing all possible filter keys
- * @param {URL} url - The URL object containing search parameters
- * @returns {Record<string, string | number | boolean | string[] | null>} An object containing processed filter values
- *
- * @example
- * const url = new URL('https://example.com?parental_control=true&page_number=1&genre_filter=action_romance');
- * const filters = getFilters(Filters, url);
- * // Returns: {
- * //   parental_control: true,
- * //   page_number: "1",
- * //   genre_filter: ["action", "romance"],
- * //   // ... other filters
- * // }
- */
+export type FiltersResult = {
+  sort_column?: string
+  sort_direction?: string
+  [key: string]: unknown
+}
+
+const parseBoolean = (_filter: string, raw: string | null): boolean =>
+  raw === 'true'
+const parseNumber = (raw: string | null): number | null =>
+  raw ? Number(raw) : null
+const parseText = (raw: string | null): string | null => raw ?? null
+const parseArray = (raw: string | null): string[] | null =>
+  raw ? raw.split('_').map((v) => normalizeString(v, false, false, true)) : null
+
+function parseOrderBy(
+  filter: string,
+  raw: string | null,
+  includeSortParams: boolean,
+  out: FiltersResult
+): void {
+  if (!includeSortParams || !raw) return
+  const [column = '', direction = ''] = raw.split(' ')
+  out.sort_column =
+    column || (filter === MusicFilters.order_by ? 'theme_id' : 'score')
+  out.sort_direction = (direction || 'desc') as FiltersResult['sort_direction']
+}
+
+function processFilter(
+  filter: string,
+  raw: string | null,
+  includeSortParams: boolean,
+  out: FiltersResult
+): void {
+  if (
+    filter === Filters.parental_control ||
+    filter === Filters.banners_filter
+  ) {
+    out[filter] = parseBoolean(filter, raw)
+    return
+  }
+
+  if (filter === Filters.page_number || filter === Filters.limit_count) {
+    out[filter] = parseNumber(raw)
+    return
+  }
+
+  if (filter === MusicFilters.anime_id) {
+    out[filter] = parseNumber(raw)
+    return
+  }
+
+  if (filter === Filters.search_query) {
+    out[filter] = parseText(raw)
+    return
+  }
+
+  if (filter === Filters.order_by || filter === MusicFilters.order_by) {
+    parseOrderBy(filter, raw, includeSortParams, out)
+    return
+  }
+
+  // default: treat as array-like filter (underscore-separated)
+  out[filter] = parseArray(raw)
+}
+
 export const getFilters = (
   filters: string[],
   url: URL,
   includeSortParams: boolean = true
-) => {
-  const result = filters.reduce(
-    (filters, filter) => {
-      const value = url.searchParams.get(filter)
-      if (
-        filter === Filters.parental_control ||
-        filter === Filters.banners_filter ||
-        filter === MusicFilters.unique_per_anime
-      ) {
-        filters[filter] = value === 'true' ? true : false
-      } else if (
-        filter === Filters.page_number ||
-        filter === Filters.limit_count ||
-        filter === Filters.search_query
-      ) {
-        filters[filter] = value ?? null
-      } else if (
-        filter === Filters.order_by ||
-        filter === MusicFilters.order_by
-      ) {
-        if (includeSortParams && value) {
-          const [column, direction] = value.split(' ')
-          filters['sort_column'] =
-            column || (filter === MusicFilters.order_by ? 'song_id' : 'score')
-          filters['sort_direction'] = direction || 'desc'
-        }
-      } else {
-        filters[filter] = value
-          ? value
-              .split('_')
-              .map((item) => normalizeString(item, false, false, true))
-          : null
-      }
+): FiltersResult => {
+  const result: FiltersResult = {}
 
-      return filters
-    },
-    {} as Record<string, string | number | boolean | string[] | null>
-  )
+  for (const filter of filters) {
+    const raw = url.searchParams.get(filter)
+    processFilter(filter, raw, includeSortParams, result)
+  }
 
   if (includeSortParams) {
     if (!result.sort_column) {
-      const hasMusicFilters = filters.some(
-        (f) =>
-          f === MusicFilters.type_music ||
-          f === MusicFilters.artist_filter ||
-          f === MusicFilters.unique_per_anime
+      const isMusic = filters.some(
+        (f) => f === MusicFilters.type_music || f === MusicFilters.artist_filter
       )
+      result.sort_column = isMusic ? 'theme_id' : 'score'
+    }
 
-      if (hasMusicFilters) {
-        result.sort_column = 'song_id'
-      } else {
-        result.sort_column = 'score'
-      }
-    }
-    if (!result.sort_direction) {
-      result.sort_direction = 'desc'
-    }
+    if (!result.sort_direction) result.sort_direction = 'desc'
   }
 
   return result
