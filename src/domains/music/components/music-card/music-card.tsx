@@ -1,6 +1,6 @@
 import { navigate } from 'astro:transitions/client'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import type { AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { AddToPlayListButton } from '@shared/components/buttons/add-to-playlist-button'
 import { DownloadButton } from '@shared/components/buttons/download-button'
 import { ShareButton } from '@shared/components/buttons/share-button'
@@ -14,19 +14,19 @@ export const MusicCard = ({
   song,
   isMini = false,
 }: {
-  song: AnimeSongWithImage
+  song: AnimeSong
   isMini?: boolean
 }) => {
   const { currentSong, setCurrentSong, playerRef, isPlaying, list } =
     useMusicPlayerStore()
 
   const isInPlaylist = list.some(
-    (songList) => songList.song_id === song.song_id
+    (songList) => songList.theme_id === song.theme_id
   )
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (currentSong?.song_id !== song.song_id) {
+    if (currentSong?.theme_id !== song.theme_id) {
       setCurrentSong(song)
     }
 
@@ -45,10 +45,10 @@ export const MusicCard = ({
       >
         <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md shadow-md md:h-16 md:w-16">
           <Picture
-            placeholder={song.placeholder}
-            image={song.image}
+            placeholder={song.anime?.image ?? ''}
+            image={song.anime?.image ?? ''}
             styles="h-full w-full rounded-md object-cover relative transition-transform duration-300 group-hover:scale-[1.01]"
-            alt={song.song_title}
+            alt={song.song_title ?? 'Unknown Song'}
           />
 
           <div className="absolute right-1 bottom-1 z-20 translate-y-1 transform opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
@@ -56,7 +56,7 @@ export const MusicCard = ({
               className="bg-enfasisColor text-Primary-50 cursor-pointer rounded-full p-1.5 shadow-2xl transition-all duration-200 hover:scale-105"
               onClick={(e) => handleClick(e)}
             >
-              {isPlaying && currentSong?.song_id === song.song_id ? (
+              {isPlaying && currentSong?.theme_id === song.theme_id ? (
                 <PauseIcon className="h-4 w-4" />
               ) : (
                 <PlayIcon className="h-4 w-4" />
@@ -83,16 +83,16 @@ export const MusicCard = ({
             />
             <DownloadButton
               styles="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-[10px] transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-              url={song.audio_url}
-              title={song.song_title}
+              url={song.versions[0]?.resolutions[0]?.audio_url ?? ''}
+              title={song.song_title ?? 'Unknown Song'}
               themeId={song.theme_id ?? 0}
               showLabel={false}
             />
             <ShareButton
               className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-[10px] transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-              url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
-              title={song.song_title}
-              text={`Listen to ${song.song_title} by ${song.artist_name}`}
+              url={`/music/${normalizeString(song.song_title ?? 'Unknown Song')}_${song.theme_id}`}
+              title={song.song_title ?? 'Unknown Song'}
+              text={`Listen to ${song.song_title ?? 'Unknown Song'} by ${song.artist_name ?? 'Unknown Artist'}`}
             />
           </MoreOptions>
         </div>
@@ -104,15 +104,17 @@ export const MusicCard = ({
     <article
       className={`group bg-Complementary hover:border-enfasisColor/40 border-enfasisColor/5 relative aspect-[225/330] rounded-lg border-1 p-3 transition-all duration-300 hover:cursor-pointer hover:bg-zinc-800 hover:shadow-xl md:p-4`}
       onClick={() =>
-        navigate(`/music/${normalizeString(song.song_title)}_${song.theme_id}`)
+        navigate(
+          `/music/${normalizeString(song.song_title ?? 'Unknown Song')}_${song.theme_id}`
+        )
       }
     >
       <div className={`relative mb-4 overflow-hidden`}>
         <Picture
-          placeholder={song.placeholder}
-          image={song.image}
+          placeholder={song.anime?.image || ''}
+          image={song.anime?.image || ''}
           styles="relative aspect-square h-full w-full rounded-md object-cover transition-transform duration-300 group-hover:scale-102"
-          alt={song.song_title}
+          alt={song.song_title ?? 'Unknown Song'}
         />
 
         <div
@@ -122,7 +124,7 @@ export const MusicCard = ({
             className={`bg-enfasisColor text-Primary-50 cursor-pointer rounded-full p-3 shadow-2xl transition-all duration-200 hover:scale-105`}
             onClick={(e) => handleClick(e)}
           >
-            {isPlaying && currentSong?.song_id === song.song_id ? (
+            {isPlaying && currentSong?.theme_id === song.theme_id ? (
               <PauseIcon className={`h-5 w-5`} />
             ) : (
               <PlayIcon className={`h-5 w-5`} />
@@ -149,16 +151,16 @@ export const MusicCard = ({
 
           <DownloadButton
             styles={`hover:text-enfasisColor group cursor-pointer rounded-md transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 p-1 text-sm`}
-            url={song.audio_url}
-            title={song.song_title}
+            url={song.versions[0]?.resolutions[0]?.audio_url ?? ''}
+            title={song.song_title ?? 'Unknown Song'}
             themeId={song.theme_id ?? 0}
             showLabel={false}
           />
           <ShareButton
             className={`hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50`}
-            url={`/music/${normalizeString(song.song_title)}_${song.theme_id}`}
-            title={song.song_title}
-            text={`Listen to ${song.song_title} by ${song.artist_name}`}
+            url={`/music/${normalizeString(song.song_title ?? 'Unknown Song')}_${song.theme_id}`}
+            title={song.song_title ?? 'Unknown Song'}
+            text={`Listen to ${song.song_title ?? 'Unknown Song'} by ${song.artist_name ?? 'Unknown Artist'}`}
           />
         </MoreOptions>
       </footer>
