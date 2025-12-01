@@ -3,7 +3,7 @@ import type { AnimeCardInfo } from '@anime/types'
 import { CharacterCard } from '@character/components/character-card/character-card'
 import type { Character } from '@character/types'
 import { MusicCard } from '@music/components/music-card/music-card'
-import type { AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { toast } from '@pheralb/toast'
 import { LoadingCard } from '@search/components/search-results/loading-card'
 import { NotResultsFound } from '@search/components/search-results/not-results-found'
@@ -99,8 +99,8 @@ export const SearchResults = () => {
     return data.length > 0 && 'mal_id' in data[0] && 'title' in data[0]
   }
 
-  const isMusicData = (data: any[]): data is AnimeSongWithImage[] => {
-    return data.length > 0 && 'song_id' in data[0]
+  const isMusicData = (data: any[]): data is AnimeSong[] => {
+    return data.length > 0 && 'theme_id' in data[0]
   }
 
   const isCharacterData = (data: any[]): data is Character[] => {
@@ -115,7 +115,7 @@ export const SearchResults = () => {
     if (!results) return null
 
     if (currentType === SearchType.MUSIC && isMusicData(results)) {
-      return results.map((song) => <MusicCard key={song.song_id} song={song} />)
+      return results.map((song) => <MusicCard key={song.theme_id} song={song} />)
     }
 
     if (currentType === SearchType.CHARACTERS && isCharacterData(results)) {
