@@ -7,32 +7,38 @@ export enum MusicFilters {
   anime_season = 'anime_season',
   anime_year = 'anime_year',
   anime_status = 'anime_status',
+  anime_id = 'anime_id',
   artist_filter = 'artist_filter',
-  unique_per_anime = 'unique_per_anime',
 }
 
-export type TypeMusic = 'opening' | 'ending'
+export type TypeMusic = 'OP' | 'ED'
 
-export interface AnimeSongWithImage extends AnimeSong {
-  image: string
-  placeholder: string
-  banner_image: string
-  anime_title: string
+export interface AnimeSongResolution {
+  song_id: number | null
+  resolution: string
+  audio_url: string | null
+  video_url: string | null
+}
+
+export interface AnimeSongVersion {
+  version: number
+  version_id: number
+  resolutions: AnimeSongResolution[]
 }
 
 export interface AnimeSong {
-  anime_id: number
-  anime_score: number
-  song_title: string
-  type: string
-  video_url: string
-  audio_url: string
-  version: number
-  resolution: string
-  song_id: number
+  theme_id: number
+  song_title: string | null
   artist_name: string | null
-  episodes: string | null
-  sequence: number | null
-  theme_id: number | null
-  version_id: number | null
+  type: TypeMusic | null
+
+  anime: {
+    id: number | null
+    title: string | null
+    image: string | null
+    score: number | null
+    banner_image: string | null
+  } | null
+
+  versions: AnimeSongVersion[]
 }
