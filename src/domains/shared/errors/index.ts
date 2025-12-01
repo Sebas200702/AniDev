@@ -114,5 +114,4 @@ export function formatError(error: unknown) {
   return { message: getErrorMessage(error) }
 }
 
-
 export type { ErrorType, ErrorMetadata }
