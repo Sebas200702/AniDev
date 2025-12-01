@@ -1,6 +1,6 @@
 import type { RandomAnime } from '@anime/types'
+import { createContextLogger } from '@libs/pino'
 import { supabase } from '@libs/supabase'
-import {createContextLogger} from '@libs/pino'
 
 const logger = createContextLogger('getRandomAnime')
 
