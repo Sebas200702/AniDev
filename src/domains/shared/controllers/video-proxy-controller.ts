@@ -1,11 +1,8 @@
+import { createContextLogger } from '@libs/pino'
 import { VideoProxyService } from '@shared/services/video-proxy-service'
 
-/**
- * Video Proxy Controller
- *
- * @description
- * Controller layer for video proxy endpoints.
- */
+const logger = createContextLogger('VideoProxyController')
+
 export const VideoProxyController = {
   /**
    * Validate video proxy parameters
@@ -92,8 +89,7 @@ export const VideoProxyController = {
             reader = null
           }
         } catch (error) {
-          // Ignore errors during cancellation
-          console.warn('[VideoProxyController] Cancel error:', error)
+          logger.warn('[VideoProxyController] Cancel error:', error)
         }
       },
     })
