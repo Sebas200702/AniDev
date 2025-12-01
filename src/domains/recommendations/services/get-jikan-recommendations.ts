@@ -10,7 +10,6 @@ export const getJikanRecommendations = async (
   error?: string
 }> => {
   try {
-
     if (!mal_id) {
       return {
         mal_ids: [],
