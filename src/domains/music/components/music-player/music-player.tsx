@@ -1,51 +1,45 @@
-import { useMusicPlayerSync } from '@music/hooks/useMusicPlayerSync'
-import { usePictureInPicture } from '@music/hooks/usePictureInPicture'
+import { Cover } from '@music/components/music-player/music-info/cover'
+import { Header } from '@music/components/music-player/music-info/header'
+import { useFetchMusic } from '@music/hooks/useFetchMusic'
 import { usePlayerBehavior } from '@music/hooks/usePlayerBehavior'
-import { usePlayerDragging } from '@music/hooks/usePlayerDragging'
+import { usePlayerSync } from '@music/hooks/usePlayerSync'
+import { useThemeId } from '@music/hooks/useThemeId'
+import { useUrlSync } from '@music/hooks/useUrlSync'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import { ToastType } from '@shared/types'
 import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
 import {
   type MediaPlayerInstance,
   Spinner,
   useMediaStore,
 } from '@vidstack/react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-
-import { Cover } from '@music/components/music-player/music-info/cover'
-import { Header } from '@music/components/music-player/music-info/header'
 import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 import { CustomControls } from 'domains/music/components/music-player/controls'
 import { CustomLayout } from 'domains/music/components/music-player/custom-layout'
-
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 export const MusicPlayer = () => {
   const {
     currentSong,
-    savedTime,
     isHidden,
     isMinimized,
-    isDraggingPlayer,
+    isDragging,
     position,
     type,
-    list,
-    currentSongIndex,
     src,
-    isPlaying,
   } = useMusicPlayerStore()
+  const themeId = useThemeId()
+
+  useFetchMusic({ theme_id: themeId })
 
   const player = useRef<MediaPlayerInstance>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
   const { currentTime, playing, muted, volume, duration, canPlay } =
     useMediaStore(player)
 
-  const { isPiPActive, isPiPSupported, togglePiP } = usePictureInPicture(player)
+  usePlayerSync({ playing, time: currentTime, duration, canPlay, player })
+  useUrlSync()
 
-  useMusicPlayerSync(currentTime, playing, player, canPlay, duration)
-  usePlayerDragging(playerContainerRef)
   usePlayerBehavior(playerContainerRef)
-
-  const [toastShown, setToastShown] = useState(false)
 
   useEffect(() => {
     const loadCSS = async () => {
@@ -58,56 +52,6 @@ export const MusicPlayer = () => {
     }
     loadCSS()
   }, [])
-
-  useEffect(() => {
-    const nextSong = list[currentSongIndex + 1]
-    const timeRemaining = duration - currentTime
-
-    if (
-      timeRemaining <= 8 &&
-      timeRemaining > 0 &&
-      nextSong &&
-      !toastShown &&
-      isPlaying
-    ) {
-      const text = () => {
-        if (nextSong.artist_name) {
-          return `${nextSong.song_title} By ${nextSong.artist_name}`
-        }
-        return nextSong.song_title
-      }
-      import('@pheralb/toast').then((module) => {
-        module.toast[ToastType.Info]({
-          text: `${text()}`,
-          description: 'Up Next',
-          delayDuration: 7000,
-          icon: (
-            <img
-              src={createImageUrlProxy(nextSong.image, '0', '70', 'webp')}
-              alt={nextSong.song_title}
-              className="relative mr-2 aspect-[225/330] w-10 rounded-sm md:w-12"
-            />
-          ),
-        })
-      })
-      setToastShown(true)
-    }
-  }, [
-    currentTime,
-    duration,
-    currentSong,
-    list,
-    currentSongIndex,
-    toastShown,
-    isPlaying,
-  ])
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setToastShown(false)
-    }, 8000)
-    return () => clearTimeout(timeout)
-  }, [currentSong?.song_id])
 
   if (!currentSong) return null
 
@@ -124,7 +68,7 @@ export const MusicPlayer = () => {
           isMinimized
             ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
             : 'bg-Complementary/50 w-full flex-col-reverse'
-        } ${isDraggingPlayer && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
+        } ${isDragging && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
         style={
           isMinimized
             ? { bottom: `${position.y}px`, right: `${position.x}px` }
@@ -135,21 +79,15 @@ export const MusicPlayer = () => {
 
         <MediaPlayer
           ref={player}
-          src={src ? `/api/videoProxy?url=${encodeURIComponent(src)}` : undefined}
+          src={src ?? undefined}
           aspectRatio={isMinimized ? 'auto' : 'video'}
+          autoPlay
           viewType="video"
           streamType="on-demand"
-          logLevel="silent"
-          playsInline
-          autoPlay
-          title={currentSong.song_title}
-          onCanPlay={() => {
-            if (player.current && savedTime > 0) {
-              player.current.currentTime = savedTime
-            }
-          }}
+          logLevel="error"
+          title={currentSong.song_title ?? 'Unknown Song'}
           poster={createImageUrlProxy(
-            currentSong.banner_image ?? currentSong.image,
+            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? '',
             isMinimized ? '300' : '1980',
             '75',
             'webp'
@@ -181,19 +119,9 @@ export const MusicPlayer = () => {
           </MediaProvider>
 
           {isMinimized ? (
-            <CustomControls
-              volume={volume}
-              muted={muted}
-              onPiPToggle={togglePiP}
-              isPiPSupported={isPiPSupported}
-              isPiPActive={isPiPActive}
-            />
+            <CustomControls volume={volume} muted={muted} />
           ) : (
-            <CustomLayout
-              onPiPToggle={togglePiP}
-              isPiPSupported={isPiPSupported}
-              isPiPActive={isPiPActive}
-            />
+            <CustomLayout />
           )}
         </MediaPlayer>
       </motion.article>
