@@ -6,10 +6,10 @@ export const usePlayerBehavior = (
 ) => {
   const { setIsMinimized, isMinimized, setIsHidden } = useMusicPlayerStore()
   const isTransitioningRef = useRef(false)
-  const currentPathRef = useRef(window.location.pathname)
+  const currentPathRef = useRef(globalThis.location.pathname)
 
   const updateMinimizedState = useCallback(() => {
-    const currentPath = window.location.pathname
+    const currentPath = globalThis.location.pathname
     const shouldMinimize = !currentPath.includes('/music/')
 
     if (
