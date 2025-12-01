@@ -5,8 +5,6 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ url }) => {
   try {
-
-
     const data = await MusicController.handleGetAnimeMusic(url)
 
     return ResponseBuilder.success(data)
