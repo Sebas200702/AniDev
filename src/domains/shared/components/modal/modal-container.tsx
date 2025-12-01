@@ -77,7 +77,10 @@ export const ModalContainer = () => {
         }}
         onKeyDown={(e) => {
           // support Enter and Space keys to activate the same behavior as click
-          if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && e.currentTarget === e.target) {
+          if (
+            (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') &&
+            e.currentTarget === e.target
+          ) {
             // prevent scrolling on Space
             e.preventDefault()
             closeModal()
