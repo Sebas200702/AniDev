@@ -1,7 +1,7 @@
 import { ArtistRepository } from '@artist/repositories'
+import type { ArtistInfo } from '@artist/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
-import type { ArtistInfo } from '@artist/types'
 
 const logger = createContextLogger('ArtistService')
 
@@ -27,7 +27,7 @@ export const ArtistService = {
       }
 
       const data = await ArtistRepository.getArtistInfo(artistName)
-      return  data
+      return data
     } catch (error) {
       logger.error('[ArtistService.getArtistByName] Error:', { error })
 
