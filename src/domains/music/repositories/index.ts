@@ -1,9 +1,9 @@
 import { supabase } from '@libs/supabase'
-import type { AnimeSong, AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { AppError } from '@shared/errors'
 
 export const MusicRepository = {
-  async getMusicInfo(themeId: number): Promise<AnimeSongWithImage> {
+  async getMusicInfo(themeId: number): Promise<AnimeSong> {
     const { data, error } = await supabase.rpc('get_music_info', {
       p_theme_id: themeId,
     })
@@ -22,7 +22,7 @@ export const MusicRepository = {
     return data
   },
 
-  async getMusicList(filters: Record<string, any>): Promise<AnimeSongWithImage[]> {
+  async getMusicList(filters: Record<string, any>): Promise<AnimeSong[]> {
     const { data, error } = await supabase.rpc('get_music', filters)
 
     if (error) {
@@ -59,23 +59,20 @@ export const MusicRepository = {
     return {
       title: track.song_title,
       description: `${track.song_title} performed by ${track.artist_name}${
-        track.anime_title ? ` for the anime ${track.anime_title}` : ''
+        track?.anime?.title ? ` for the anime ${track.anime.title}` : ''
       }. Listen now on AniDev!`,
-      image: track.image,
+      image: track?.anime?.image,
       artistName: track.artist_name,
-      animeTitle: track.anime_title,
+      animeTitle: track?.anime?.title,
     }
   },
 
-  async getMusicByAnimeId(animeId: number): Promise<AnimeSong[]> {
-    const { data, error } = await supabase
-      .from('music')
-      .select('*')
-      .eq('anime_id', animeId)
+  async getMusicByAnimeId(filters: Record<string, any>): Promise<AnimeSong[]> {
+    const { data, error } = await supabase.rpc('get_music', filters)
 
     if (error) {
       throw AppError.database('Failed to fetch anime music', {
-        animeId,
+        filters,
         ...error,
       })
     }
