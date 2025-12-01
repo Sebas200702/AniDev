@@ -1,15 +1,18 @@
+import type {
+  Character,
+  CharacterDetails,
+  CharacterImages,
+} from '@character/types'
 import { supabase } from '@libs/supabase'
 import { AppError } from '@shared/errors'
-import type { CharacterDetails, Character, CharacterImages } from '@character/types'
 
 export const CharacterRepository = {
   async getCharacterDetails(characterId: number) {
-    const { data, error } = await supabase.rpc(
-      'get_character_details_with_animes',
-      {
+    const { data, error } = await supabase
+      .rpc('get_character_details_with_animes', {
         input_character_id: characterId,
-      }
-    ).single()
+      })
+      .single()
 
     if (error) {
       throw AppError.database('Failed to fetch character details', {
@@ -41,7 +44,7 @@ export const CharacterRepository = {
     return data
   },
 
-  async getCharactersCount(filters: Record<string, any>) : Promise<number> {
+  async getCharactersCount(filters: Record<string, any>): Promise<number> {
     const { data, error } = await supabase.rpc('get_characters_count', filters)
 
     if (error) {
@@ -50,7 +53,6 @@ export const CharacterRepository = {
         ...error,
       })
     }
-
 
     return data ?? 0
   },
@@ -61,7 +63,6 @@ export const CharacterRepository = {
     if (!character) {
       throw AppError.notFound('Character data not found', { characterId })
     }
-
 
     const about = character.character_about
       ? ` ${character.character_about.slice(0, 150)}...`
@@ -80,7 +81,10 @@ export const CharacterRepository = {
     }
   },
 
-  async getCharacterImages(animeId: number, limitCount: number = 10) : Promise<CharacterImages[]> {
+  async getCharacterImages(
+    animeId: number,
+    limitCount: number = 10
+  ): Promise<CharacterImages[]> {
     const { data, error } = await supabase.rpc('get_character_images', {
       p_anime_id: animeId,
       p_limit_count: limitCount,
