@@ -1,78 +1,12 @@
-import {
-  DndContext,
-  type DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import { AnimeMusicItem } from '@music/components/music-card/music-detail-card'
+import { MusicDetailCard } from '@music/components/music-card/music-detail-card'
+import { useDragableList } from '@music/hooks/useDragableList'
+import { usePlaylist } from '@music/hooks/usePlaylist'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import { useEffect, useState } from 'react'
 
 export const MusicPlayList = () => {
-  const { list, currentSongIndex, setList, currentSong } = useMusicPlayerStore()
-  const [_, setActiveId] = useState<number | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: isMobile ? 8 : 10,
-        delay: isMobile ? 200 : 100,
-        tolerance: isMobile ? 8 : 5,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
-
-  const upcomingList = list.slice(currentSongIndex + 1)
-
-  const handleDragStart = (event: any) => {
-    setActiveId(event.active.id)
-  }
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-    setActiveId(null)
-
-    if (!over || active.id === over.id) return
-
-    const oldIndex = upcomingList.findIndex(
-      (song) => song.song_id === active.id
-    )
-    const newIndex = upcomingList.findIndex((song) => song.song_id === over.id)
-
-    if (oldIndex === -1 || newIndex === -1) return
-
-    const newUpcomingList = arrayMove(upcomingList, oldIndex, newIndex)
-    const newCompleteList = [
-      ...list.slice(0, currentSongIndex + 1),
-      ...newUpcomingList,
-    ]
-
-    setList(newCompleteList)
-  }
+  const { upComingList } = usePlaylist()
+  const { currentSong } = useMusicPlayerStore()
+  const { DragableList, DragableItem } = useDragableList()
 
   return (
     <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll p-4 md:max-h-[700px] md:rounded-xl md:p-6">
@@ -81,21 +15,14 @@ export const MusicPlayList = () => {
           Currently Playing
         </h2>
       </header>
-
       {currentSong && (
         <div className="mb-8 w-full">
-          <AnimeMusicItem
-            song={currentSong}
-            anime_title={currentSong.anime_title}
-            banner_image={currentSong.banner_image}
-            image={currentSong.image}
-            placeholder={currentSong.placeholder}
-          />
+          <MusicDetailCard song={currentSong} />
         </div>
       )}
 
-      {upcomingList.length > 0 && (
-        <>
+      {upComingList.length > 0 && (
+        <section>
           <header className="mb-6">
             <div className="flex items-center gap-4">
               <div className="flex-1 bg-gray-600/30"></div>
@@ -105,32 +32,16 @@ export const MusicPlayList = () => {
               <div className="flex-1 bg-gray-600/30"></div>
             </div>
           </header>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={upcomingList.map((song) => song.song_id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <ul className="flex w-full flex-col gap-3">
-                {upcomingList.map((song) => (
-                  <AnimeMusicItem
-                    key={song.song_id}
-                    song={song}
-                    image={song.image}
-                    banner_image={song.banner_image}
-                    anime_title={song.anime_title}
-                    isInMusicPlayer={true}
-                  />
-                ))}
-              </ul>
-            </SortableContext>
-          </DndContext>
-        </>
+          <DragableList items={upComingList}>
+            <ul className="flex w-full flex-col gap-3">
+              {upComingList.map((song) => (
+                <DragableItem key={song.theme_id} id={song.theme_id}>
+                  <MusicDetailCard song={song} />
+                </DragableItem>
+              ))}
+            </ul>
+          </DragableList>
+        </section>
       )}
     </section>
   )
