@@ -1,20 +1,25 @@
+import type { AuthStep } from '@auth/types'
+
 interface AuthNavigationProps {
   currentStep: number
   isFirstStep: boolean
   isLastStep: boolean
   isSignUp: boolean
+  steps: AuthStep[]
   loading: boolean
   onPrev: () => void
 }
 
 export const AuthNavigation = ({
   currentStep,
+  steps,
   isFirstStep,
   isLastStep,
   isSignUp,
   loading,
   onPrev,
 }: AuthNavigationProps) => {
+  if (steps.length <= 1) return null
   return (
     <div className="flex items-center justify-between">
       {/* Botón Anterior */}
@@ -44,10 +49,9 @@ export const AuthNavigation = ({
         </button>
       )}
 
-      {/* Indicador de progreso */}
       <div className="flex items-center gap-2">
         <div className="flex gap-1">
-          {Array.from({ length: 3 }, (_, i) => (
+          {Array.from({ length: steps.length }, (_, i) => (
             <div
               key={i}
               className={`h-2 w-2 rounded-full transition-colors duration-300 ${
@@ -57,7 +61,7 @@ export const AuthNavigation = ({
           ))}
         </div>
         <span className="text-Primary-400 text-xs font-medium">
-          {currentStep} of 3
+          {currentStep} of {steps.length}
         </span>
       </div>
 
