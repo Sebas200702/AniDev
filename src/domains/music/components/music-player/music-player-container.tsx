@@ -1,5 +1,4 @@
-import { lazy } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { lazy, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 const MusicPlayer = lazy(() =>
@@ -15,20 +14,20 @@ export const MusicPlayerContainer = ({ className }: { className?: string }) => {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (globalThis.window === undefined) return
 
     if (!portalElementRef.current) {
       portalElementRef.current = document.createElement('div')
       portalElementRef.current.id = 'music-player-portal'
-      if (className !== undefined) {
-        portalElementRef.current.className = className
-      } else {
+      if (className === undefined) {
         portalElementRef.current.removeAttribute('class')
+      } else {
+        portalElementRef.current.className = className
       }
     }
 
     const movePortalContainer = () => {
-      const pathname = window.location.pathname
+      const pathname = globalThis.location.pathname
       const targetId = pathname.startsWith('/music')
         ? 'music-player-container'
         : 'layout-player-container'
