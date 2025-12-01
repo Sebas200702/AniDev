@@ -9,12 +9,12 @@ import { useProfileOptions } from '@shared/hooks/useProfileOptions'
 export const NavBar = () => {
   const { isOpen, toggleOptions, optionRef, buttonRef } = useProfileOptions()
   return (
-    <nav className="bg-Primary-950/80 fixed md:top-3 right-0 z-50 flex w-full md:w-min justify-between  flex-row items-center  gap-2 px-4 py-2 backdrop-blur-sm   md:px-4 md:pr-10 md:rounded-l-2xl">
+    <nav className="bg-Primary-950/80 fixed md:top-4 md:right-4 z-50 flex w-full md:w-min justify-between  flex-row items-center  gap-2 px-2 py-2 backdrop-blur-sm   md:px-4 md:rounded-2xl">
       <div className="md:hidden">
         <Logo />
       </div>
-      <div className="flex-col items-center gap-2">
-        <div className=" flex flex-row items-center gap-4">
+      <div className="">
+        <div className=" flex flex-row w-full gap-2  items-center justify-between">
           <SearchButton />
           <RestorePlayerButton />
           <RandomAnimeButton />
