@@ -10,10 +10,14 @@ export const Cover = () => {
     return (
       <div className="relative aspect-video h-full overflow-hidden">
         <Picture
-          image={currentSong.banner_image || currentSong.image}
+          image={
+            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? ''
+          }
           styles="relative  h-full aspect-video overflow-hidden"
-          alt={currentSong.song_title}
-          placeholder={currentSong.banner_image || currentSong.image}
+          alt={currentSong.song_title ?? 'Unknown Song'}
+          placeholder={
+            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? ''
+          }
         />
       </div>
     )
@@ -28,10 +32,14 @@ export const Cover = () => {
         className={` ${isPlaying ? '' : 'animation-pause'} disk animate-spin-slow flex items-center justify-center rounded-full p-6`}
       >
         <Picture
-          image={currentSong.banner_image || currentSong.image}
+          image={
+            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? ''
+          }
           styles="relative max-h-32 max-w-32 rounded-full object-cover object-center aspect-square"
-          alt={currentSong.song_title}
-          placeholder={currentSong.banner_image || currentSong.image}
+          alt={currentSong.song_title ?? 'Unknown Song'}
+          placeholder={
+            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? ''
+          }
         />
       </div>
     </div>
