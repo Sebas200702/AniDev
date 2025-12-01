@@ -2,6 +2,7 @@ import { SettingsIcon } from '@shared/components/icons/common/settings-icon'
 import { UserIcon } from '@shared/components/icons/user/user-icon'
 import { SignInUp } from '@shared/components/layout/nav-bar/sign-in-up'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
+import { signOut } from 'auth-astro/client'
 import type { RefObject } from 'react'
 
 interface Props {
@@ -14,7 +15,7 @@ export const ProfileOptions = ({ isOpen, optionRef }: Props) => {
   return (
     <ul
       ref={optionRef}
-      className={`space-y-6 z-50 md:static absolute top-16 bg-Primary-950/95 md:bg-transparent  w-48 rounded-b-md  text-base text-white md:right-4 md:rounded-lg ${isOpen ? 'p-4' : ' h-0 opacity-0 pointer-events-none p-0'}`}
+      className={`space-y-6 z-50 md:static absolute top-16 bg-Primary-950/95 md:bg-transparent transition-all duration-300 ease-in-out md:w-40 w-48 rounded-b-md md:p-0 p-4 text-base text-white right-0 md:right-4 md:rounded-lg ${isOpen ? 'pt-2! h-48' : ' h-0 opacity-0 pointer-events-none p-0'}`}
     >
       <li>
         <a
@@ -70,7 +71,12 @@ export const ProfileOptions = ({ isOpen, optionRef }: Props) => {
       <li>
         {!userInfo?.name && <SignInUp />}
         {userInfo?.name && (
-          <button className="text-Primary-50 md:hover:text-enfasisColor flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50">
+          <button
+            className="text-Primary-50 md:hover:text-enfasisColor flex w-full cursor-pointer items-center justify-between gap-3 rounded-md p-3 text-sm transition-all duration-300 hover:bg-zinc-800/50"
+            onClick={() => {
+              signOut()
+            }}
+          >
             <span>Sign out</span>
 
             <svg
