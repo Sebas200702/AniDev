@@ -34,8 +34,6 @@ export const HomeController = {
         data: cached,
       }
 
-
-
     const { userProfile, calculatedAge } =
       await recommendationsService.getUserPreferences(userId)
 
