@@ -1,5 +1,5 @@
-import { supabase } from '@libs/supabase'
 import { createContextLogger } from '@libs/pino'
+import { supabase } from '@libs/supabase'
 
 const logger = createContextLogger('RecommendationsRepository')
 
