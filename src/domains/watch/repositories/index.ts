@@ -6,7 +6,10 @@ export const EpisodeRepository = {
   /**
    * Get episodes for an anime by mal_id with pagination
    */
-  async getEpisodesByAnimeId(animeId: string, page: number = 1): Promise<AnimeEpisode[]> {
+  async getEpisodesByAnimeId(
+    animeId: string,
+    page: number = 1
+  ): Promise<AnimeEpisode[]> {
     const ITEMS_PER_PAGE = 100
     const start = (page - 1) * ITEMS_PER_PAGE
     const end = page * ITEMS_PER_PAGE - 1
@@ -32,7 +35,7 @@ export const EpisodeRepository = {
   /**
    * Get total count of episodes for an anime
    */
-  async getEpisodesCount(animeId: string) : Promise<number> {
+  async getEpisodesCount(animeId: string): Promise<number> {
     const { count, error } = await supabase
       .from('anime_episodes')
       .select('*', { count: 'exact', head: true })
