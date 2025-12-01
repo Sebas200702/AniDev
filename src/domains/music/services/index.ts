@@ -1,8 +1,8 @@
 import { createContextLogger } from '@libs/pino'
 import { MusicRepository } from '@music/repositories'
-import type { AnimeSong, AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { AppError, isAppError } from '@shared/errors'
-import type { ApiResponse } from '@shared/types/api-response'
+
 
 const logger = createContextLogger('MusicService')
 
@@ -34,7 +34,7 @@ export const MusicService = {
     countFilters,
     page,
     limit,
-  }: SearchMusicParams): Promise<ApiResponse<AnimeSongWithImage[]>> {
+  }: SearchMusicParams): Promise<{ data: AnimeSong[]; totalCount: number }> {
     try {
       const [data, totalCount] = await Promise.all([
         MusicRepository.getMusicList(filters),
@@ -43,11 +43,7 @@ export const MusicService = {
 
       return {
         data,
-        meta: {
-          total_items: totalCount,
-          current_page: page,
-          last_page: Math.ceil(totalCount / limit),
-        },
+        totalCount,
       }
     } catch (error) {
       logger.error('[MusicService.searchMusic] Error:', error)
@@ -65,13 +61,10 @@ export const MusicService = {
     }
   },
 
-  /**
-   * Get music info by theme ID
-   */
-  async getMusicById(themeId: number): Promise<ApiResponse<AnimeSongWithImage>> {
+  async getMusicById(themeId: number): Promise<AnimeSong> {
     try {
       const data = await MusicRepository.getMusicInfo(themeId)
-      return { data }
+      return data
     } catch (error) {
       logger.error('[MusicService.getMusicById] Error:', error)
       if (isAppError(error)) {
@@ -85,12 +78,9 @@ export const MusicService = {
     }
   },
 
-  /**
-   * Get all music for a specific anime
-   */
-  async getMusicByAnimeId(animeId: number): Promise<AnimeSong[]> {
+  async getMusicByAnimeId(filters: Record<string, any>): Promise<AnimeSong[]> {
     try {
-      const data = await MusicRepository.getMusicByAnimeId(animeId)
+      const data = await MusicRepository.getMusicByAnimeId(filters)
       return data
     } catch (error) {
       logger.error('[MusicService.getMusicByAnimeId] Error:', error)
@@ -99,15 +89,12 @@ export const MusicService = {
       }
 
       throw AppError.database('Failed to get music by anime id', {
-        animeId,
+        filters,
         originalError: error,
       })
     }
   },
 
-  /**
-   * Get music for sitemap generation with pagination
-   */
   async getMusicForSitemap(offset: number, limit: number = 5000) {
     try {
       return await MusicRepository.getMusicForSitemap(offset, limit)
