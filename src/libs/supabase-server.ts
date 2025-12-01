@@ -11,7 +11,9 @@ export const createSupabaseServerClient = (context: {
     {
       cookies: {
         getAll() {
-          return parseCookieHeader(context.request.headers.get('Cookie') ?? '').map((c) => ({
+          return parseCookieHeader(
+            context.request.headers.get('Cookie') ?? ''
+          ).map((c) => ({
             name: c.name,
             value: c.value ?? '',
           }))
