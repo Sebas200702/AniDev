@@ -128,7 +128,6 @@ export const ResponseBuilder = {
     if (isAppError(error)) {
       const status = getHttpStatus(error)
 
-
       if (status >= 500) {
         logger.error(`[${context}] Server error`, {
           type: error.type,
