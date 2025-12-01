@@ -123,9 +123,10 @@ export const AnimeController = {
       url.searchParams.toString()
     )
     const animeId = this.validateAnimeId(url)
-    return await getCachedOrFetch(cacheKey, () =>
+    const result = await getCachedOrFetch(cacheKey, () =>
       AnimeService.getAnimeRelations(animeId)
     )
+    return { data: result }
   },
 
   async handleGetAnimesFull(url: URL): Promise<ApiResponse<Anime[] | null>> {
