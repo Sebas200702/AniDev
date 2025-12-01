@@ -1,8 +1,8 @@
 import { aiService } from '@ai/services'
 import { createContextLogger } from '@libs/pino'
 import {
-  functionTool,
   type GenerateRecommendationsProps,
+  functionTool,
 } from '@recommendations/types'
 import { AppError, isAppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
