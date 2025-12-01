@@ -44,18 +44,7 @@ class Api {
         }
       }
 
-      if (
-        json &&
-        typeof json === 'object' &&
-        'data' in json &&
-        ('total_items' in json || 'current_page' in json || 'last_page' in json)
-      ) {
-        const { data, ...meta } = json
-        return { data, meta, status }
-      }
-
-      const payload = 'data' in json ? json.data : json
-      return { data: payload, status }
+      return { data: json.data, status, meta: json.meta }
     } catch (err: any) {
       return { data: null, status: 0, error: err || 'Network error' }
     }
