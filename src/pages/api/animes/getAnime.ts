@@ -32,9 +32,7 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = rateLimit(async ({ url }) => {
   try {
-
-
-     const result = await AnimeController.handleGetAnimeById(url)
+    const result = await AnimeController.handleGetAnimeById(url)
 
     return ResponseBuilder.success(result)
   } catch (error: any) {
