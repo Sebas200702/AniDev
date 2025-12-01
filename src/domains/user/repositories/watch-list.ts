@@ -24,10 +24,7 @@ export const upsertWatchListItem = async (
   return { success: true }
 }
 
-export const removeFromWatchList = async (
-  userId: string,
-  animeId: number
-) => {
+export const removeFromWatchList = async (userId: string, animeId: number) => {
   const { error } = await supabase
     .from('watch_list')
     .delete()
