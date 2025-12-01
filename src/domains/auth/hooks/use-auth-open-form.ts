@@ -3,14 +3,20 @@ import { useAuthFormStore } from '@auth/stores/auth-store'
 import { useModal } from '@shared/hooks/useModal'
 export const UseAuthOpenForm = () => {
   const { setMode } = useAuthFormStore()
-  const { openModal } = useModal()
-  const handleSignIn = () => {
-    setMode('signIn')
-    openModal(AuthFormContainer)
+  const { openModal, closeModal } = useModal()
+  const handleSignIn = (delay: number = 0) => {
+    closeModal()
+    setTimeout(() => {
+      setMode('signIn')
+      openModal(AuthFormContainer)
+    }, delay)
   }
-  const handleSignUp = () => {
-    setMode('signUp')
-    openModal(AuthFormContainer)
+  const handleSignUp = (delay: number = 0) => {
+    closeModal()
+    setTimeout(() => {
+      setMode('signUp')
+      openModal(AuthFormContainer)
+    }, delay)
   }
   return { handleSignIn, handleSignUp }
 }
