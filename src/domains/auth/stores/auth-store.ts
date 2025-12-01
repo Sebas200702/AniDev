@@ -1,12 +1,9 @@
-import { stepsSignIn, stepsSignUp } from '@auth/utils/steps'
-
 import { authApiClient } from '@auth/client/auth-client'
-import type { AuthStep } from '@auth/types'
+import type { AuthMode, AuthStep } from '@auth/types'
+import { stepsSignIn, stepsSignUp } from '@auth/utils/steps'
 import { userApiClient } from '@user/helpers/api-client'
 import { z } from 'zod'
 import { create } from 'zustand'
-
-type AuthMode = 'signIn' | 'signUp'
 
 interface AuthFormState {
   mode: AuthMode | null
