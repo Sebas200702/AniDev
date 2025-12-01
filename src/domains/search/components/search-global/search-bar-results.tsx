@@ -1,6 +1,6 @@
 import { AnimeDetailCard } from '@anime/components/anime-card/anime-detail-card'
 import { AnimeCharacterCard } from '@character/components/character-card/detail-character-card'
-import { AnimeMusicItem } from '@music/components/music-card/music-detail-card'
+import { MusicDetailCard } from '@music/components/music-card/music-detail-card'
 import { useSearchStoreResults } from '@search/stores/search-results-store'
 import { SearchType } from '@search/types'
 import {
@@ -33,9 +33,9 @@ const EmptyState = () => (
 )
 
 // Componente para errores
-const ErrorState = ({ error }: { error: string | null }) => (
+const ErrorState = ({ error }: { error: Error| null }) => (
   <p className="text-lg text-red-500">
-    Error fetching data: {error || 'Unknown error'}
+    Error fetching data: {error?.message || 'Unknown error'}
   </p>
 )
 
@@ -60,16 +60,7 @@ const ResultsList = ({ type, data }: { type: SearchType; data: any }) => {
 
   if (type === SearchType.MUSIC && isMusicData(limitedData)) {
     return limitedData.map((result: any) => (
-      <AnimeMusicItem
-        key={result.song_id}
-        song={result}
-        image={result.image}
-        placeholder={result.placeholder}
-        banner_image={
-          result.banner_image ?? result.image ?? `${baseUrl}/placeholder.webp`
-        }
-        anime_title={result.anime_title}
-      />
+      <MusicDetailCard key={result.theme_id} song={result} />
     ))
   }
 
