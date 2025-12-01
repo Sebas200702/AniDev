@@ -1,3 +1,5 @@
+import { Loader } from '@shared/components/loader'
+
 /**
  * LoadingCard component displays a placeholder card while loading anime results.
  *
@@ -5,6 +7,6 @@
  */
 export const LoadingCard = () => {
   return (
-    <div className="flex aspect-[225/330] h-full w-full animate-pulse flex-col rounded-lg bg-zinc-800 p-4 duration-200"></div>
+    <Loader className="flex aspect-[225/330] h-full w-full animate-pulse flex-col rounded-lg bg-zinc-800 p-4 duration-200"></Loader>
   )
 }
