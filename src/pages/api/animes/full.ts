@@ -4,11 +4,10 @@ import { redisConnection } from '@middlewares/redis-connection'
 import { ResponseBuilder } from '@utils/response-builder'
 import type { APIRoute } from 'astro'
 
-
 export const GET: APIRoute = rateLimit(
   redisConnection(async ({ url }) => {
     try {
-         const data = await AnimeController.handleGetAnimesFull(url)
+      const data = await AnimeController.handleGetAnimesFull(url)
       return ResponseBuilder.success(
         { data },
         {
