@@ -1,65 +1,35 @@
 import { NextPrevButton } from '@music/components/music-player/button/next-prev-button'
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import type { AnimeSongWithImage } from '@music/types'
-import { PipIconOff, PipIconOn } from '@shared/components/icons/watch/pip-icon'
-import { Menu, PIPButton, Tooltip } from '@vidstack/react'
+import { useMediaChange } from '@music/hooks/useMediaChange'
+import { QualityIcon } from '@shared/components/icons/music/quality-icon'
+import { Menu } from '@vidstack/react'
 import { DefaultVideoLayout } from '@vidstack/react/player/layouts/default'
+import { useEffect } from 'react'
+import { PIPButtonWrapper } from './button/pip-buton'
+import { RepeatButton } from './button/repeat-button'
+import { ShuffleButton } from './button/shuffle-button'
 import { customIcons } from './custom-icons/custom-icons'
 
-interface Props {
-  onPiPToggle?: () => void
-  isPiPSupported?: boolean
-  isPiPActive?: boolean
-}
+export const CustomLayout = () => {
+  const { type, resolutions, changeMediaResolution, selectedResolutionId } =
+    useMediaChange()
+  useEffect(() => {
+    console.log('Current resolutions:', resolutions)
+  }, [ resolutions])
 
-export const CustomLayout = ({
-  onPiPToggle,
-  isPiPSupported,
-  isPiPActive,
-}: Props) => {
-  const { variants, src, setSrc, type } = useMusicPlayerStore()
-
-  const handleQualityChange = (variant: AnimeSongWithImage) => {
-    if (src === (variant.audio_url || variant.video_url)) return
-    if (type === 'audio') {
-      setSrc(variant.audio_url)
-    }
-    if (type === 'video') {
-      setSrc(variant.video_url)
-    }
-  }
   return (
     <DefaultVideoLayout
       icons={customIcons}
       slots={{
         beforePlayButton: <NextPrevButton direction="Prev" />,
-        afterPlayButton: <NextPrevButton direction="Next" />,
-        pipButton:
-          type === 'video' && isPiPSupported && onPiPToggle ? (
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
-                <PIPButton
-                  className="vds-button"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    onPiPToggle()
-                  }}
-                >
-                  {isPiPActive ? (
-                    <PipIconOff className="vds-icon" />
-                  ) : (
-                    <PipIconOn className="vds-icon" />
-                  )}
-                </PIPButton>
-              </Tooltip.Trigger>
-              <Tooltip.Content className="vds-tooltip-content" placement="top">
-                Picture-in-Picture
-              </Tooltip.Content>
-            </Tooltip.Root>
-          ) : (
-            <></>
-          ),
+        afterPlayButton: (
+          <>
+            <NextPrevButton direction="Next" />
+            <ShuffleButton />
+            <RepeatButton />
+          </>
+        ),
+        pipButton: <PIPButtonWrapper />,
+
         settingsMenuItemsStart: (
           <Menu.Root className="vds-menu relative">
             <Menu.Button
@@ -79,20 +49,8 @@ export const CustomLayout = ({
                   fill="currentColor"
                 ></path>
               </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.75"
-                className="vds-menu-item-icon vds-icon"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <path d="M7 9v2a1 1 0 0 0 1 1h1M10 9v6M14 9v6M17 9l-2 3 2 3M15 12h-1" />
-              </svg>
+              <QualityIcon className="vds-menu-item-icon vds-icon" />
+
               <span>Quality</span>
 
               <svg
@@ -111,28 +69,15 @@ export const CustomLayout = ({
             </Menu.Button>
             <div className="vds-menu-items relative">
               <Menu.Items className="vds-menu-items">
-                {variants.map((variant) => (
+                {resolutions?.map((resolution) => (
                   <button
-                    onClick={() => handleQualityChange(variant)}
-                    key={variant.song_id}
-                    className={`hover:bg-Complementary flex max-h-10 w-full cursor-pointer gap-4 p-2 transition-colors duration-300 ${(variant.video_url || variant.audio_url) === src ? 'text-enfasisColor' : 'text-Primary-50'}`}
+                    className={`vds-menu-item w-full text-left ${resolution.song_id === selectedResolutionId ? 'text-enfasisColor!' : ''}`}
+                    onClick={() => changeMediaResolution(resolution.song_id!)}
+                    disabled={resolution.song_id === selectedResolutionId}
+                    key={resolution.song_id}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.75"
-                      className="h-6 w-6"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" />
-                      <path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                      <path d="M7 9v2a1 1 0 0 0 1 1h1M10 9v6M14 9v6M17 9l-2 3 2 3M15 12h-1" />
-                    </svg>
-
-                    {variant.resolution}
+                    <QualityIcon className="vds-menu-item-icon vds-icon" />
+                    {resolution.resolution}
                   </button>
                 ))}
               </Menu.Items>
