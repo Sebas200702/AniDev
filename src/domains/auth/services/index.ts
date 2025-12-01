@@ -5,7 +5,6 @@ import type { AuthResult } from '@auth/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
 
-
 const logger = createContextLogger('AuthService')
 
 /**
@@ -33,7 +32,7 @@ export const AuthService = {
         validated.email,
         validated.password
       )
-      return  data
+      return data
     } catch (error) {
       logger.error('[AuthService.signIn] Error:', { error })
 
@@ -69,7 +68,7 @@ export const AuthService = {
         validated.password,
         validated.user_name
       )
-      return  data
+      return data
     } catch (error) {
       logger.error('[AuthService.signUp] Error:', { error })
 
