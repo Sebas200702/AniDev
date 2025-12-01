@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { ArtistLoader } from '@artist/components/artist-info/artist-info-loader'
 import type { ArtistInfo as ArtistInfoType } from '@artist/types'
-import type { AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { DataWrapper } from '@shared/components/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
 import type { PersonAbout } from '@user/types'
@@ -15,7 +15,7 @@ interface ArtistCompleteInfo {
   artistInfo: ArtistInfoType
   banners: string[]
   about: PersonAbout
-  songs: AnimeSongWithImage[]
+  songs: AnimeSong[]
 }
 
 export const ArtistInfoContainer = ({ name }: Props) => {
@@ -33,11 +33,11 @@ export const ArtistInfoContainer = ({ name }: Props) => {
     data: songs,
     loading: songsLoading,
     error: songsError,
-  } = useFetch<AnimeSongWithImage[]>({
+  } = useFetch<AnimeSong[]>({
     url: `/music?artist_filter=${name}`,
   })
 
-  const banners = songs?.map((song) => song.banner_image) ?? []
+  const banners = songs?.map((song) => song.anime?.banner_image!) ?? []
 
   useEffect(() => {
     if (infoLoading || !artistInfo?.about) return
