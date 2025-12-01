@@ -1,20 +1,10 @@
 import { MusicService } from '@music/services'
-import { MusicFilters, type AnimeSong, type AnimeSongWithImage } from '@music/types'
+import { type AnimeSong, MusicFilters } from '@music/types'
 import { AppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
 import { getFilters } from '@utils/get-filters-of-search-params'
 
-/**
- * Music Controller
- *
- * @description
- * Controller layer for music endpoints. Handles request parsing,
- * validation, and response formatting.
- */
 export const MusicController = {
-  /**
-   * Parse search parameters for music search
-   */
   parseSearchParams(url: URL) {
     const limit = Number.parseInt(url.searchParams.get('limit_count') ?? '10')
     const page = Number.parseInt(url.searchParams.get('page_number') ?? '1')
@@ -30,25 +20,28 @@ export const MusicController = {
     return { filters, countFilters, page, limit }
   },
 
-  /**
-   * Handle music search request
-   */
-  async handleSearch(url: URL): Promise<ApiResponse<AnimeSongWithImage[]>> {
+  async handleSearch(url: URL): Promise<ApiResponse<AnimeSong[]>> {
     const { filters, countFilters, page, limit } = this.parseSearchParams(url)
 
-    return await MusicService.searchMusic({
+    const { data, totalCount } = await MusicService.searchMusic({
       filters,
       countFilters,
       page,
       limit,
     })
+
+    return {
+      data,
+      meta: {
+        total_items: totalCount,
+        current_page: page,
+        last_page: Math.ceil(totalCount / limit),
+      },
+    }
   },
 
-  /**
-   * Validate and parse theme ID from request
-   */
   validateThemeId(url: URL): number {
-    const themeId = Number.parseInt(url.searchParams.get('themeId') ?? '')
+    const themeId = Number.parseInt(url.searchParams.get('theme_id') ?? '')
 
     if (!themeId || Number.isNaN(themeId)) {
       throw AppError.validation('Theme ID is required')
@@ -57,17 +50,14 @@ export const MusicController = {
     return themeId
   },
 
-  /**
-   * Handle get music info request
-   */
-  async handleGetMusicInfo(url: URL): Promise<ApiResponse<AnimeSongWithImage>> {
+  async handleGetMusicInfo(url: URL): Promise<ApiResponse<AnimeSong>> {
     const themeId = this.validateThemeId(url)
-    return await MusicService.getMusicById(themeId)
+    const data = await MusicService.getMusicById(themeId)
+    return {
+      data,
+    }
   },
 
-  /**
-   * Validate and parse anime ID from request
-   */
   validateAnimeId(url: URL): number {
     const animeId = Number.parseInt(url.searchParams.get('animeId') ?? '')
 
@@ -78,12 +68,11 @@ export const MusicController = {
     return animeId
   },
 
-  /**
-   * Handle get anime music request
-   */
   async handleGetAnimeMusic(url: URL): Promise<ApiResponse<AnimeSong[]>> {
-    const animeId = this.validateAnimeId(url)
-    const data = await MusicService.getMusicByAnimeId(animeId)
+   
+    const { filters } = this.parseSearchParams(url)
+
+    const data = await MusicService.getMusicByAnimeId(filters)
     return {
       data,
     }
