@@ -1,4 +1,7 @@
-import { excludeCurrent, sanitizeIds } from '@recommendations/utils/filter-utils'
+import {
+  excludeCurrent,
+  sanitizeIds,
+} from '@recommendations/utils/filter-utils'
 
 import { recommendationsRepository } from '@recommendations/repositories'
 import type { FetchRecommendationProps } from '@recommendations/types'
