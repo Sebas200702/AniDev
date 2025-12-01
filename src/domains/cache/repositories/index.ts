@@ -1,5 +1,5 @@
 import { TtlValues } from '@cache/types'
-import {  getRedisClient } from '@libs/redis'
+import { getRedisClient } from '@libs/redis'
 
 const client = await getRedisClient()
 
