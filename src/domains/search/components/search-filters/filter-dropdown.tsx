@@ -16,51 +16,6 @@ interface FilterDropdownProps {
   InputText?: boolean
 }
 
-/**
- * FilterDropdown component provides a searchable dropdown filter for selecting multiple options.
- *
- * @description This component creates an accessible dropdown with search functionality for filtering options.
- * It manages the open/closed state of the dropdown, tracks selected values, and provides search filtering.
- * The component handles both single-select (for "Order By") and multi-select behaviors for other filter types.
- *
- * The dropdown includes clear functionality and keyboard navigation support. It's designed to be responsive,
- * automatically closing when clicking outside on mobile devices. The component maintains an internal state
- * for the dropdown visibility, search input, and filtered options based on the search query.
- *
- * The UI displays a label, search input, selected options, and control buttons. The dropdown options
- * are presented as a scrollable list with checkboxes that visually indicate the selected state.
- *
- * State Management:
- * - Tracks dropdown open/closed state
- * - Manages search input value
- * - Filters options based on search query
- * - Handles selected values
- * - Controls mobile responsiveness
- *
- * Event Handling:
- * - Click outside to close
- * - Keyboard navigation
- * - Search input changes
- * - Option selection/deselection
- * - Clear all selections
- *
- * @param {FilterDropdownProps} props - The component props
- * @param {string} props.label - The label text for the dropdown
- * @param {string[]} props.values - Array of currently selected option values
- * @param {function} props.onChange - Callback function when selection changes
- * @param {function} props.onClear - Callback function to clear all selections
- * @param {FilterOption[]} props.options - Available options to display in the dropdown
- * @returns {JSX.Element} The rendered dropdown filter component
- *
- * @example
- * <FilterDropdown
- *   label="Genres"
- *   values={selectedGenres}
- *   onChange={handleGenreChange}
- *   onClear={clearGenres}
- *   options={genreOptions}
- * />
- */
 export const FilterDropdown = ({
   label,
   values,
@@ -90,7 +45,7 @@ export const FilterDropdown = ({
   }, [search, options])
 
   useEffect(() => {
-    window.addEventListener('click', (e) => {
+    globalThis.addEventListener('click', (e) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(e.target as Node)
@@ -122,7 +77,7 @@ export const FilterDropdown = ({
   }
 
   return (
-    <article className={`relative flex flex-col gap-2 ${styles}`}>
+    <article className={`relative flex flex-col gap-2 z-50 ${styles}`}>
       <span className="text-s font-extralight text-white">{label}</span>
       <div
         className={`group hover:border-enfasisColor/50 bg-Complementary relative w-full rounded-lg border border-gray-100/10 text-white transition-all duration-300 ease-in-out`}
@@ -202,7 +157,10 @@ export const FilterDropdown = ({
                 type="button"
                 key={option.value}
                 className={`text-s flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 transition-colors duration-300 ease-in-out md:text-sm ${values.includes(option.value) ? 'bg-enfasisColor/20 hover:bg-enfasisColor/40' : 'hover:bg-Primary-900'}`}
-                onClick={() => toggleOption(option.value)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  toggleOption(option.value)
+                }}
               >
                 <CheckIcon
                   className={`h-4 w-4 transition-opacity ${values.includes(option.value) ? 'opacity-100' : 'opacity-0'}`}
