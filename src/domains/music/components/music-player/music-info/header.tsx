@@ -1,14 +1,14 @@
 import { navigate } from 'astro:transitions/client'
 import { ClosePlayerButton } from '@music/components/music-player/button/close-player-button'
+import { useMediaChange } from '@music/hooks/useMediaChange'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { ExpandIcon } from '@shared/components/icons/common/expand-icon'
 import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
+import { Picture } from '@shared/components/media/picture'
 import { MoreOptions } from '@shared/components/ui/more-options'
-import { createImageUrlProxy } from '@shared/utils/create-image-url-proxy'
+import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { normalizeString } from '@utils/normalize-string'
-import { useCallback } from 'react'
 
 interface Props {
   playerContainerRef: React.RefObject<HTMLDivElement | null>
@@ -16,103 +16,43 @@ interface Props {
 export const Header = ({ playerContainerRef }: Props) => {
   const {
     isMinimized,
-    isDraggingPlayer,
+    isDragging,
     currentSong,
-    setType,
+
     type,
-    setSrc,
+
     canPlay,
     isPlaying,
     playerRef,
-    setDragOffset,
-    setIsDraggingPlayer,
-    versions,
-    versionNumber,
-    setVersionNumber,
   } = useMusicPlayerStore()
+  const { changeMediaType, changeMediaVersion, versions, selectedVersion } =
+    useMediaChange()
 
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      const target = e.target as HTMLElement
-      if (
-        target.closest('button') ||
-        target.closest('input') ||
-        target.closest('.controls-area')
-      ) {
-        return
-      }
-
-      const touch = e.touches[0]
-
-      const rect = playerContainerRef?.current?.getBoundingClientRect()
-
-      if (rect) {
-        setDragOffset({
-          x: touch.clientX - rect.left,
-          y: touch.clientY - rect.top,
-        })
-        setIsDraggingPlayer(true)
-      }
-    },
-    [setDragOffset, setIsDraggingPlayer]
-  )
   const handlePlay = (e: React.MouseEvent) => {
     e.stopPropagation()
     isPlaying && canPlay
       ? playerRef.current?.pause()
       : playerRef.current?.play()
   }
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (
-        target.closest('button') ||
-        target.closest('input') ||
-        target.closest('.controls-area')
-      ) {
-        return
-      }
 
-      const rect = playerContainerRef?.current?.getBoundingClientRect()
-
-      if (rect) {
-        setDragOffset({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        })
-        setIsDraggingPlayer(true)
-      }
-    },
-    [setDragOffset, setIsDraggingPlayer]
-  )
   if (!currentSong || !playerContainerRef) return
-  const handleChangeType = () => {
-    if (type === 'audio') {
-      setType('video')
-      setSrc(currentSong?.video_url)
-    } else {
-      setType('audio')
-      setSrc(currentSong.audio_url)
-    }
-  }
 
   return (
-    <div className="relative">
-      <header
-        className={`bg-Complementary relative flex w-full flex-row gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'h-28 p-4 md:rounded-b-xl md:p-6'} ${isDraggingPlayer ? 'pointer-events-none' : ''}`}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        onClick={(e) => e.stopPropagation()}
+
+      <div className="relative">
+        <header
+          className={`bg-Complementary relative flex w-full flex-row gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'h-28 p-4 md:rounded-b-xl md:p-6'} ${isDragging ? 'pointer-events-none' : ''}`}
       >
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <div
             className={`bg-Primary-800 ${isMinimized ? 'flex md:hidden' : 'hidden'} animate-spin-slow h-12 w-12 flex-shrink-0 overflow-hidden rounded-full`}
           >
-            {currentSong.image && (
-              <img
-                src={createImageUrlProxy(currentSong.image, '0', '70', 'webp')}
-                alt={currentSong.anime_title}
-                className="h-full w-full object-cover"
+            {currentSong.anime?.image && (
+              <Picture
+                image={currentSong.anime.image}
+                placeholder={currentSong.anime.image}
+                alt={currentSong.anime.title ?? 'Anime Image'}
+                styles="h-full w-full object-cover"
               />
             )}
           </div>
@@ -132,7 +72,7 @@ export const Header = ({ playerContainerRef }: Props) => {
               className={`text-enfasisColor line-clamp-1 ${isMinimized ? 'text-xs font-medium' : 'text-m'} leading-tight`}
             >
               <strong className="text-Primary-400 mx-1 text-xs">From</strong>
-              {currentSong.anime_title}
+              {currentSong?.anime?.title}
             </span>
           </div>
 
@@ -140,10 +80,7 @@ export const Header = ({ playerContainerRef }: Props) => {
             {isMinimized && (
               <div className="flex flex-col items-end gap-2">
                 <ClosePlayerButton className="hidden md:flex" />
-                <button
-                  className="text-sxx button-primary mt-6 h-min cursor-pointer rounded-sm p-1 md:mt-0 md:p-4"
-                  onClick={handleChangeType}
-                >
+                <button className="text-sxx button-primary mt-6 h-min cursor-pointer rounded-sm p-1 md:mt-0 md:p-4">
                   {type.toUpperCase()}
                 </button>
               </div>
@@ -160,7 +97,7 @@ export const Header = ({ playerContainerRef }: Props) => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        setType('audio')
+                        changeMediaType('audio')
                       }}
                       className={`relative z-10 flex-1 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                         type === 'audio'
@@ -173,8 +110,7 @@ export const Header = ({ playerContainerRef }: Props) => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        setType('video')
-                        setSrc(currentSong?.video_url)
+                        changeMediaType('video')
                       }}
                       className={`relative z-10 flex-1 rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                         type === 'video'
@@ -186,33 +122,30 @@ export const Header = ({ playerContainerRef }: Props) => {
                     </button>
                   </div>
                 </div>
-
                 {/* Mobile Type Toggle */}
-                <button
-                  className="text-sxx button-primary mt-6 h-min cursor-pointer rounded-sm p-1 md:mt-0 md:hidden md:p-4"
-                  onClick={handleChangeType}
-                >
+                <button className="text-sxx button-primary mt-6 h-min cursor-pointer rounded-sm p-1 md:mt-0 md:hidden md:p-4">
                   {type.toUpperCase()}
-                </button>
-
-                {/* Version Selector */}
+                </button>{' '}
                 {versions.length > 1 && (
                   <FilterDropdown
                     label="Version"
-                    values={[versionNumber.toString()]}
-                    onChange={(value) => setVersionNumber(parseInt(value[0]))}
+                    values={[selectedVersion.toString()]}
+                    onChange={(value) =>
+                      changeMediaVersion(Number.parseInt(value[0]))
+                    }
                     options={
                       versions.map((version) => ({
                         label: `V${version.version}`,
                         value: version.version.toString(),
                       })) ?? []
                     }
-                    onClear={() => setVersionNumber(1)}
+                    onClear={() => changeMediaVersion(selectedVersion)}
                     styles={`${isMinimized ? 'hidden' : 'flex'} md:flex min-w-[100px]`}
                     singleSelect
                     InputText={false}
                   />
                 )}
+                {/* Version Selector */}
               </div>
             )}
           </div>
@@ -235,7 +168,7 @@ export const Header = ({ playerContainerRef }: Props) => {
           <button
             onClick={() =>
               navigate(
-                `/music/${normalizeString(currentSong.song_title)}_${currentSong.theme_id}`
+                `/music/${normalizeString(currentSong.song_title ?? '')}_${currentSong.theme_id}`
               )
             }
             className="cursor-pointer p-1"
@@ -245,5 +178,6 @@ export const Header = ({ playerContainerRef }: Props) => {
         </MoreOptions>
       )}
     </div>
+
   )
 }
