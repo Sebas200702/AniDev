@@ -5,8 +5,8 @@
  * funciona correctamente antes de implementarlo en producción.
  */
 
-import { MetadataService } from '@shared/services/metadata-service'
 import { createContextLogger } from '@libs/pino'
+import { MetadataService } from '@shared/services/metadata-service'
 
 const logger = createContextLogger('MetadataServiceTest')
 
