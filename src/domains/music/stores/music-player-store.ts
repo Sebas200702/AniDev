@@ -1,170 +1,161 @@
-import type { AnimeSongWithImage } from '@music/types'
-import { type MediaPlayerInstance } from '@vidstack/react'
+import type {
+  AnimeSong,
+  AnimeSongResolution,
+  AnimeSongVersion,
+} from '@music/types'
+import type { MediaPlayerInstance } from '@vidstack/react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface MusicPlayerStore {
-  list: AnimeSongWithImage[]
+  /* --- DATA --- */
+  list: AnimeSong[]
+  currentSong: AnimeSong | null
   currentSongIndex: number
-  duration: number
-  volume: number
-  isControlsVisible: boolean
-  src: string
-  canPlay: boolean
-  versionNumber: number
-  versions: AnimeSongWithImage[]
-  setVersions: (versions: AnimeSongWithImage[]) => void
-  setVersionNumber: (versionNumber: number) => void
-  setCanPlay: (canPlay: boolean) => void
-  setIsControlsVisible: (isVisible: boolean) => void
-  setDuration: (duration: number) => void
-  setVolume: (volume: number) => void
-  setList: (list: AnimeSongWithImage[]) => void
+  selectedResolutionId: number
+  selectedVersion: number
+  versions: AnimeSongVersion[]
+  resolutions: AnimeSongResolution[]
+
+  /* --- PLAYER STATE --- */
   isPlaying: boolean
-  setIsPlaying: (isPlaying: boolean) => void
-  currentTime: number
-  playerRef: React.RefObject<MediaPlayerInstance | null>
-  setCurrentTime: (currentTime: number) => void
-  currentSong: AnimeSongWithImage | null
-  setCurrentSong: (currentSong: AnimeSongWithImage | null) => void
-  type: 'video' | 'audio'
-  setType: (type: 'video' | 'audio') => void
+  src: string | null
   isLoading: boolean
-  setIsLoading: (isLoading: boolean) => void
-  repeat: boolean
-  setRepeat: (repeat: boolean) => void
-  shuffle: boolean
-  setShuffle: (shuffle: boolean) => void
-  isMinimized: boolean
-  setIsMinimized: (isMinimized: boolean) => void
-  isDragging: boolean
-  setIsDragging: (isDragging: boolean) => void
-  error: string | null
-  setError: (error: string | null) => void
-  variants: AnimeSongWithImage[]
-  setVariants: (variants: AnimeSongWithImage[]) => void
-  setSrc: (src: string) => void
+  canPlay: boolean
+  volume: number
+  currentTime: number
   savedTime: number
-  setSavedTime: (savedTime: number) => void
-  isChangingFormat: boolean
-  setIsChangingFormat: (isChangingFormat: boolean) => void
-  currentTimeLocal: number
-  setCurrentTimeLocal: (currentTimeLocal: number) => void
-  durationLocal: number
-  setDurationLocal: (durationLocal: number) => void
-  isDraggingPlayer: boolean
-  setIsDraggingPlayer: (isDraggingPlayer: boolean) => void
-  dragOffset: { x: number; y: number }
-  setDragOffset: (dragOffset: { x: number; y: number }) => void
-  position: { x: number; y: number }
-  setPosition: (position: { x: number; y: number }) => void
+  duration: number
+  repeat: boolean
+  type: 'audio' | 'video'
+  error: string | null
+
+  /* --- UI --- */
+  isControlsVisible: boolean
+  isMinimized: boolean
   isHidden: boolean
-  setIsHidden: (isHidden: boolean) => void
+  position: { x: number; y: number }
+  isDragging: boolean
+  dragOffset: { x: number; y: number }
   isVolumeDragging: boolean
-  setIsVolumeDragging: (isVolumeDragging: boolean) => void
-  dragPosition: number
-  setDragPosition: (dragPosition: number) => void
-  setPlayerRef: (playerRef: React.RefObject<MediaPlayerInstance | null>) => void
-  setCurrentSongIndex: (currentSongIndex: number) => void
+
+  /* --- REFS --- */
+  playerRef: React.RefObject<MediaPlayerInstance | null>
+
+  /* --- ACTIONS --- */
+  setList: (list: AnimeSong[]) => void
+  setCurrentSong: (song: AnimeSong | null) => void
+  setCurrentSongIndex: (index: number) => void
+  setSelectedResolutionId: (id: number) => void
+  setSelectedVersion: (version: number) => void
+  setVersions: (versions: AnimeSongVersion[]) => void
+  setResolutions: (resolutions: AnimeSongResolution[]) => void
+  setIsPlaying: (v: boolean) => void
+  setIsLoading: (v: boolean) => void
+  setSrc: (v: string | null) => void
+  setCanPlay: (v: boolean) => void
+  setVolume: (v: number) => void
+  setCurrentTime: (v: number) => void
+  setSavedTime: (v: number) => void
+  setDuration: (v: number) => void
+  setRepeat: (v: boolean) => void
+
+  setType: (v: 'audio' | 'video') => void
+  setError: (v: string | null) => void
+  setIsControlsVisible: (v: boolean) => void
+  setIsMinimized: (v: boolean) => void
+  setIsHidden: (v: boolean) => void
+  setPosition: (pos: { x: number; y: number }) => void
+  setIsDragging: (v: boolean) => void
+  setDragOffset: (pos: { x: number; y: number }) => void
+  setIsVolumeDragging: (v: boolean) => void
+  setPlayerRef: (ref: React.RefObject<MediaPlayerInstance | null>) => void
 }
 
 export const useMusicPlayerStore = create<MusicPlayerStore>()(
   persist(
     (set) => ({
-      versionNumber: 1,
-      setVersionNumber: (versionNumber: number) => set({ versionNumber }),
-      versions: [],
-      setVersions: (versions: AnimeSongWithImage[]) => set({ versions }),
+      /* --- Default values --- */
       list: [],
-      duration: 0,
-      currentSongIndex: 0,
-      setCurrentSongIndex: (currentSongIndex: number) => {
-        set({ currentSongIndex })
-      },
-      volume: 1,
-      variants: [],
-      canPlay: false,
-      setCanPlay(canPlay) {
-        set({ canPlay })
-      },
-      src: '',
-      playerRef: {
-        current: null,
-      } as React.RefObject<MediaPlayerInstance | null>,
-      isControlsVisible: true,
-      setIsControlsVisible: (isVisible: boolean) =>
-        set({ isControlsVisible: isVisible }),
-      setVariants: (variants: AnimeSongWithImage[]) => set({ variants }),
-      setDuration: (duration: number) => set({ duration }),
-      setVolume: (volume: number) => set({ volume }),
-      type: 'audio',
-      setType: (type: 'video' | 'audio') => set({ type }),
-      setList: (list: AnimeSongWithImage[]) => set({ list }),
-      isPlaying: false,
-      setIsPlaying: (isPlaying: boolean) => set({ isPlaying }),
-      currentTime: 0,
-      setCurrentTime: (currentTime: number) => set({ currentTime }),
       currentSong: null,
-      setCurrentSong: (currentSong: AnimeSongWithImage | null) =>
-        set({ currentSong }),
-      isLoading: false,
-      setIsLoading: (isLoading: boolean) => set({ isLoading }),
-      repeat: false,
-      setRepeat: (repeat: boolean) => set({ repeat }),
-      shuffle: false,
-      setShuffle: (shuffle: boolean) => set({ shuffle }),
-      isMinimized: false,
-      setIsMinimized: (isMinimized: boolean) => set({ isMinimized }),
-      isDragging: false,
-      setIsDragging: (isDragging: boolean) => set({ isDragging }),
-      error: null,
-      setError: (error: string | null) => set({ error }),
-      setSrc(src: string) {
-        set({ src })
-      },
+      currentSongIndex: 0,
+      selectedResolutionId: 0,
+      selectedVersion: 1,
+      versions: [],
+      resolutions: [],
+
+      isPlaying: false,
+      src: null,
+      isLoading: true,
+      canPlay: false,
+      volume: 1,
+      currentTime: 0,
       savedTime: 0,
-      setSavedTime: (savedTime: number) => set({ savedTime }),
-      isChangingFormat: false,
-      setIsChangingFormat: (isChangingFormat: boolean) =>
-        set({ isChangingFormat }),
-      currentTimeLocal: 0,
-      setCurrentTimeLocal: (currentTimeLocal: number) =>
-        set({ currentTimeLocal }),
-      durationLocal: 0,
-      setDurationLocal: (durationLocal: number) => set({ durationLocal }),
-      isDraggingPlayer: false,
-      setIsDraggingPlayer: (isDraggingPlayer: boolean) =>
-        set({ isDraggingPlayer }),
-      dragOffset: { x: 0, y: 0 },
-      setDragOffset: (dragOffset: { x: number; y: number }) =>
-        set({ dragOffset }),
-      position: { x: 40, y: 160 },
-      setPosition: (position: { x: number; y: number }) => set({ position }),
+      duration: 0,
+      repeat: false,
+      type: 'audio',
+      error: null,
+
+      isControlsVisible: true,
       isHidden: false,
-      setIsHidden: (isHidden: boolean) => set({ isHidden }),
+      isMinimized: false,
+      position: { x: 40, y: 160 },
+      isDragging: false,
+      dragOffset: { x: 0, y: 0 },
       isVolumeDragging: false,
-      setIsVolumeDragging: (isVolumeDragging: boolean) =>
-        set({ isVolumeDragging }),
-      dragPosition: 0,
-      setDragPosition: (dragPosition: number) => set({ dragPosition }),
-      setPlayerRef(playerRef) {
-        set({ playerRef })
-      },
+
+      playerRef: { current: null },
+
+      /* --- Actions --- */
+      setList: (list) => set({ list }),
+      setCurrentSong: (song) => set({ currentSong: song }),
+      setCurrentSongIndex: (index) => set({ currentSongIndex: index }),
+      setSelectedResolutionId: (id) => set({ selectedResolutionId: id }),
+      setSelectedVersion: (version) => set({ selectedVersion: version }),
+      setVersions: (versions) => set({ versions }),
+      setResolutions: (resolutions) => set({ resolutions }),
+      
+      setIsPlaying: (v) => set({ isPlaying: v }),
+      setSrc: (v) => set({ src: v }),
+      setIsLoading: (v) => set({ isLoading: v }),
+      setCanPlay: (v) => set({ canPlay: v }),
+      setVolume: (v) => set({ volume: v }),
+      setCurrentTime: (v) => set({ currentTime: v }),
+      setSavedTime: (v) => set({ savedTime: v }),
+      setDuration: (v) => set({ duration: v }),
+      setRepeat: (v) => set({ repeat: v }),
+
+      setType: (v) => set({ type: v }),
+      setError: (v) => set({ error: v }),
+      setIsControlsVisible: (v) => set({ isControlsVisible: v }),
+      setIsMinimized: (v) => set({ isMinimized: v }),
+      setIsHidden: (v) => set({ isHidden: v }),
+      setPosition: (pos) => set({ position: pos }),
+      setIsDragging: (v) => set({ isDragging: v }),
+      setDragOffset: (pos) => set({ dragOffset: pos }),
+      setIsVolumeDragging: (v) => set({ isVolumeDragging: v }),
+      setPlayerRef: (ref) => set({ playerRef: ref }),
     }),
+
     {
       name: 'music-player-session',
       storage: createJSONStorage(() => sessionStorage),
-
       partialize: (state) => ({
+        /* Persist only what matters cross-session */
         volume: state.volume,
         repeat: state.repeat,
-        shuffle: state.shuffle,
+
         type: state.type,
         position: state.position,
         isMinimized: state.isMinimized,
+        isHidden: state.isHidden,
         currentSong: state.currentSong,
-        list: state.list,
+        currentSongIndex: state.currentSongIndex,
         savedTime: state.savedTime,
+        selectedVersion: state.selectedVersion,
+        selectedResolutionId: state.selectedResolutionId,
+        isPlaying: state.isPlaying,
+        list: state.list,
       }),
     }
   )
