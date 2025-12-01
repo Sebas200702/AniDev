@@ -1,6 +1,5 @@
 import type { AnimeCardInfo } from '@anime/types'
 
-
 export interface Session {
   name: string | null
   avatar: string | null
