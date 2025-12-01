@@ -1,7 +1,7 @@
 import { cacheRepository } from '@cache/repositories'
 import type { TtlValues } from '@cache/types'
-import { ensureRedisConnection } from '@libs/redis'
 import { createContextLogger } from '@libs/pino'
+import { ensureRedisConnection } from '@libs/redis'
 
 const logger = createContextLogger('CacheService')
 
@@ -56,7 +56,7 @@ export const CacheService = {
   generateKey(prefix: string, identifier: string): string {
     return `${prefix}:${identifier}`
   },
-    async withBufferCache(
+  async withBufferCache(
     key: string,
     fetchFunction: () => Promise<Buffer>,
     ttlSeconds: TtlValues
