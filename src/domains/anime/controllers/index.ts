@@ -1,5 +1,11 @@
 import { AnimeService } from '@anime/services'
-import type { Anime, AnimeBannerInfo, AnimeDetail, Formats, RandomAnime } from '@anime/types'
+import type {
+  Anime,
+  AnimeBannerInfo,
+  AnimeDetail,
+  Formats,
+  RandomAnime,
+} from '@anime/types'
 import { CacheService } from '@cache/services'
 import { getCachedOrFetch } from '@cache/utils'
 import { AppError } from '@shared/errors'
@@ -72,7 +78,9 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimeBanner(url: URL): Promise<ApiResponse<AnimeBannerInfo[] | null>> {
+  async handleGetAnimeBanner(
+    url: URL
+  ): Promise<ApiResponse<AnimeBannerInfo[] | null>> {
     const animeId = Number.parseInt(url.searchParams.get('anime_id') ?? '')
     const limitCount = Number.parseInt(
       url.searchParams.get('limit_count') ?? '8'
@@ -89,7 +97,7 @@ export const AnimeController = {
     return { data: result }
   },
 
-  async handleGetAnimeById(url: URL): Promise<ApiResponse<Anime| null>> {
+  async handleGetAnimeById(url: URL): Promise<ApiResponse<Anime | null>> {
     const id = url.searchParams.get('id')
     const parentalControlParam = url.searchParams.get('parentalControl')
     const parentalControl = parentalControlParam !== 'false'
@@ -107,7 +115,9 @@ export const AnimeController = {
     return { data: result }
   },
 
-  async handleGetAnimeRelations(url: URL): Promise<ApiResponse<AnimeDetail[] | null>> {
+  async handleGetAnimeRelations(
+    url: URL
+  ): Promise<ApiResponse<AnimeDetail[] | null>> {
     const cacheKey = CacheService.generateKey(
       'anime-relations',
       url.searchParams.toString()
@@ -130,7 +140,9 @@ export const AnimeController = {
     )
   },
 
-  async handleGetAnimeMetadata(url: URL): Promise<ApiResponse<MetadataResult | null>> {
+  async handleGetAnimeMetadata(
+    url: URL
+  ): Promise<ApiResponse<MetadataResult | null>> {
     const id = url.searchParams.get('id')
 
     if (!id) {
