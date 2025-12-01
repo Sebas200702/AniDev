@@ -1,8 +1,8 @@
-import { HomeSlotStrategy } from '@shared/utils/home-slot-strategy'
-import { HomeTitleGenerator } from '@shared/utils/home-title-generator'
 import { HomeUrlBuilder } from '@recommendations/utils/home-url-builder'
 import { TYPE_BANK } from '@shared/constants/home-constants'
 import type { HomeSection } from '@shared/types/home-types'
+import { HomeSlotStrategy } from '@shared/utils/home-slot-strategy'
+import { HomeTitleGenerator } from '@shared/utils/home-title-generator'
 
 export const HomeService = {
   // Generate personalized sections WITHOUT doing any caching
@@ -10,7 +10,6 @@ export const HomeService = {
     userProfile: any,
     calculatedAge: number
   ): Promise<HomeSection[]> => {
- 
     const selectedSlots = HomeSlotStrategy.selectSlotContent(
       userProfile.favorite_genres || [],
       userProfile
@@ -22,7 +21,6 @@ export const HomeService = {
       userProfile.favorite_genres || [],
       calculatedAge ?? 18
     )
-
 
     return selectedSlots.map((slot, index) => ({
       title: titles[index] || slot.defaultTitle,
