@@ -28,7 +28,7 @@ export type SearchQueryOptions = {
 
 export type SearchResultData =
   | import('@anime/types').AnimeDetail[]
-  | import('@music/types').AnimeSongWithImage[]
+  | import('@music/types').AnimeSong[]
   | import('@character/types').Character[]
   | null
 
