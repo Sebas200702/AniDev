@@ -23,16 +23,16 @@ export const RestorePlayerButton = () => {
         className={`bg-Complementary/60 absolute z-50 hidden min-w-72 translate-y-full gap-3 rounded-xl border border-gray-100/10 p-3 shadow-2xl backdrop-blur-sm transition-all duration-300 ease-out group-hover:flex`}
       >
         <Picture
-          placeholder={currentSong.placeholder}
+          placeholder={currentSong.anime?.image || ''}
           styles={`relative max-h-12 max-w-12 overflow-hidden rounded-full ${isPlaying ? 'animate-spin-slow' : ''}`}
-          alt={currentSong?.song_title}
-          image={currentSong.image}
+          alt={currentSong?.song_title || 'Anime Image'}
+          image={currentSong.anime?.image || ''}
         />
 
         <div className="flex flex-col gap-1">
           <p className="text-sm font-bold">{currentSong?.song_title}</p>
           <p className="text-enfasisColor/90 text-xs">
-            {currentSong?.anime_title}
+            {currentSong?.anime?.title}
           </p>
         </div>
       </div>
