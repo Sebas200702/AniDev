@@ -1,45 +1,34 @@
 import { navigate } from 'astro:transitions/client'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import { type AnimeSongWithImage } from '@music/types'
+import { type AnimeSong } from '@music/types'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { DinamicBanner } from '@shared/components/ui/dinamic-banner'
 import { useFetch } from '@shared/hooks/useFetch'
-import { getLatestSongs } from '@utils/music'
-import { shuffleArray } from '@utils/shuffle-array'
 import { Overlay } from 'domains/shared/components/layout/overlay'
-import { useEffect, useState } from 'react'
 
 export const MusicBanner = () => {
-  const [songs, setSongs] = useState<AnimeSongWithImage[]>([])
-  const [banners, setBanners] = useState<string[]>([])
-
   const { setCurrentSong, setList } = useMusicPlayerStore()
-  const { data, loading } = useFetch<AnimeSongWithImage[]>({
+  const { data: songs, loading } = useFetch<AnimeSong[]>({
     url: '/music?anime_status=Currently Airing&order_by=score desc&type_music=op',
   })
 
-  useEffect(() => {
-    if (!data) return
-    const songs = shuffleArray(getLatestSongs(data) as AnimeSongWithImage[])
-    const banners = shuffleArray(getLatestSongs(data, true) as string[])
-
-    setSongs(songs)
-    setBanners(banners)
-  }, [data])
-
-  if (!data || !songs || loading)
+  if (!songs || loading) {
     return (
       <>
         <Overlay className="to-Primary-950 via-Primary-950 absolute inset-0 z-10 bg-gradient-to-b via-[38dvh] md:via-[48dvh]" />
         <div className="bg-Primary-900 absolute flex aspect-[1080/600] h-[40dvh] w-full animate-pulse flex-col items-center justify-center gap-6 overflow-hidden text-left duration-300 md:h-[60dvh] md:px-20"></div>
       </>
     )
+  }
+
+  const banners = songs.map(
+    (song) => song.anime?.banner_image ?? song.anime?.image ?? ''
+  )
 
   const handleClick = () => {
     const newCurrentSong = songs[0]
     setCurrentSong(newCurrentSong)
     setList(songs)
-
     navigate(`/music/${newCurrentSong.song_title}_${newCurrentSong.theme_id}`)
   }
   return (
