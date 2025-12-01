@@ -1,5 +1,11 @@
 import { AnimeRepository } from '@anime/repositories'
-import type { Anime, AnimeBannerInfo, Formats, RandomAnime } from '@anime/types'
+import type {
+  Anime,
+  AnimeBannerInfo,
+  AnimeDetail,
+  Formats,
+  RandomAnime,
+} from '@anime/types'
 import { createContextLogger } from '@libs/pino'
 import { AppError, isAppError } from '@shared/errors'
 import type { ApiResponse } from '@shared/types/api-response'
@@ -186,10 +192,10 @@ export const AnimeService = {
    * @param animeId - The anime MAL ID
    * @returns List of related animes
    */
-  async getAnimeRelations(animeId: string): Promise<ApiResponse<any[]>> {
+  async getAnimeRelations(animeId: string): Promise<AnimeDetail[] | null> {
     try {
       const data = await AnimeRepository.getAnimeRelations(animeId)
-      return { data }
+      return data
     } catch (error) {
       logger.error('[AnimeService.getAnimeRelations] Error:', {
         error,
