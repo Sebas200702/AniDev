@@ -5,9 +5,10 @@ import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = redisConnection(async ({ request, cookies }) => {
   try {
-
-    const recommendations =
-      await recommendationsController.getRecommendations(request, cookies)
+    const recommendations = await recommendationsController.getRecommendations(
+      request,
+      cookies
+    )
 
     return ResponseBuilder.success(recommendations)
   } catch (error) {
