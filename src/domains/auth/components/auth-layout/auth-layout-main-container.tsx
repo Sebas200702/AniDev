@@ -9,6 +9,7 @@ export const MainContainer = () => {
     isSignUp,
     isLastStep,
     isFirstStep,
+    steps,
     nextStep,
     prevStep,
   } = useAuthFormState()
@@ -18,6 +19,7 @@ export const MainContainer = () => {
   return (
     <Main
       step={step}
+      steps={steps}
       currentStep={currentStep}
       onSubmit={handleSubmit}
       onNext={nextStep}
