@@ -6,7 +6,6 @@ export const saveProfile = async (
   profileData: any
 ): Promise<any> => {
   try {
-
     const mappedData: any = {}
 
     if (profileData.name) mappedData.name = profileData.name
@@ -29,7 +28,7 @@ export const saveProfile = async (
       mappedData.favorite_genres = profileData.favorite_genres
 
     const data = await UserRepository.upsertProfile(userId, mappedData)
-    return  data
+    return data
   } catch (error) {
     console.error('[UserService.saveProfile] Error:', error)
 
@@ -63,7 +62,7 @@ export const updateUserImages = async (
       bannerImage,
       name
     )
-    return  data
+    return data
   } catch (error) {
     console.error('[UserService.updateUserImages] Error:', error)
 
