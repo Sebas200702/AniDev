@@ -29,7 +29,7 @@ export const AnimeCarousel = ({
 }: AnimeCarouselProps) => {
   return (
     <section
-      className={`fade-out relative right-0 left-0 h-[70vh] md:h-[650px] xl:h-[90vh]`}
+      className={`fade-out relative right-0 left-0 h-[70vh] md:-mb-[20vh] -mb-[10vh] md:h-[650px] xl:h-[90vh]`}
       data-carousel="slide"
       style={{ position: 'sticky' }}
       aria-label="Carousel of Animes"
@@ -48,7 +48,7 @@ export const AnimeCarousel = ({
           ))}
         </ul>
       </div>
-      <nav className="absolute bottom-21 left-1/2 z-50 flex -translate-x-1/2 space-x-3 md:bottom-16">
+      <nav className="absolute bottom-21 left-1/2 z-50 flex -translate-x-1/2 space-x-3 md:bottom-32">
         {banners.map((anime, index) => (
           <Indicator
             key={anime.mal_id}
@@ -58,7 +58,7 @@ export const AnimeCarousel = ({
           />
         ))}
       </nav>
-      <div className="absolute bottom-12 z-40 hidden w-full flex-row justify-between p-4 md:end-20 md:top-40 md:flex md:w-auto md:justify-items-center md:gap-5 md:p-0">
+      <div className="absolute bottom-12 z-40 hidden w-full flex-row justify-between p-4 md:end-10 md:top-26 md:flex md:w-auto md:justify-items-center md:gap-5 md:p-0">
         <NexPrevBtnCarousel action={handlePrev} label="Previous" />
         <NexPrevBtnCarousel action={handleNext} label="Next" />
       </div>
