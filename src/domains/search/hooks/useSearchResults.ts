@@ -1,6 +1,6 @@
 import type { AnimeDetail } from '@anime/types'
 import type { Character } from '@character/types'
-import type { AnimeSongWithImage } from '@music/types'
+import type { AnimeSong } from '@music/types'
 import { toast } from '@pheralb/toast'
 import { SearchQueryService } from '@search/services/search-query-service'
 import type { AppliedFilters, SearchHistory, SearchType } from '@search/types'
@@ -41,7 +41,7 @@ export const useSearchResults = ({
   )
 
   const { data, loading, total, error } = useFetch<
-    AnimeDetail[] | AnimeSongWithImage[] | Character[]
+    AnimeDetail[] | AnimeSong[] | Character[]
   >({
     url,
     skip: skipFetch,
