@@ -24,7 +24,7 @@ interface MusicPlayerStore {
   canPlay: boolean
   volume: number
   currentTime: number
-  savedTime: number
+
   duration: number
   repeat: boolean
   type: 'audio' | 'video'
@@ -56,7 +56,7 @@ interface MusicPlayerStore {
   setCanPlay: (v: boolean) => void
   setVolume: (v: number) => void
   setCurrentTime: (v: number) => void
-  setSavedTime: (v: number) => void
+
   setDuration: (v: number) => void
   setRepeat: (v: boolean) => void
 
@@ -114,14 +114,14 @@ export const useMusicPlayerStore = create<MusicPlayerStore>()(
       setSelectedVersion: (version) => set({ selectedVersion: version }),
       setVersions: (versions) => set({ versions }),
       setResolutions: (resolutions) => set({ resolutions }),
-      
+
       setIsPlaying: (v) => set({ isPlaying: v }),
       setSrc: (v) => set({ src: v }),
       setIsLoading: (v) => set({ isLoading: v }),
       setCanPlay: (v) => set({ canPlay: v }),
       setVolume: (v) => set({ volume: v }),
       setCurrentTime: (v) => set({ currentTime: v }),
-      setSavedTime: (v) => set({ savedTime: v }),
+
       setDuration: (v) => set({ duration: v }),
       setRepeat: (v) => set({ repeat: v }),
 
@@ -151,7 +151,6 @@ export const useMusicPlayerStore = create<MusicPlayerStore>()(
         isHidden: state.isHidden,
         currentSong: state.currentSong,
         currentSongIndex: state.currentSongIndex,
-        savedTime: state.savedTime,
         selectedVersion: state.selectedVersion,
         selectedResolutionId: state.selectedResolutionId,
         isPlaying: state.isPlaying,
