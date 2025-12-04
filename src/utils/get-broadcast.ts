@@ -49,10 +49,10 @@ export function createBroadcastDate(
     throw new Error(`Día no válido: ${dayName}`)
   }
 
-  const [hours, minutes] = time.split(':').map((num) => parseInt(num, 10))
+  const [hours, minutes] = time.split(':').map((num) => Number.parseInt(num, 10))
   if (
-    isNaN(hours) ||
-    isNaN(minutes) ||
+    Number.isNaN(hours) ||
+    Number.isNaN(minutes) ||
     hours < 0 ||
     hours > 23 ||
     minutes < 0 ||
@@ -79,7 +79,7 @@ export function convertTimezone(
   targetTimezone: string | null = null
 ): ConvertedDateInfo {
   if (!(date instanceof Date)) {
-    throw new Error('El primer parámetro debe ser un objeto Date')
+    throw new TypeError('El primer parámetro debe ser un objeto Date')
   }
 
   const userTimezone =
@@ -136,17 +136,17 @@ export function convertTimezone(
     original: {
       timezone: originalTimezone,
       formatted:
-        originalTimezone !== 'Local'
-          ? formatInTimezone(date, originalTimezone)
-          : date.toLocaleString(),
+        originalTimezone === 'Local'
+          ? date.toLocaleString()
+          : formatInTimezone(date, originalTimezone),
       timeOnly:
-        originalTimezone !== 'Local'
-          ? getTimeOnly(date, originalTimezone)
-          : date.toLocaleTimeString('en-US', {
+        originalTimezone === 'Local'
+          ? date.toLocaleTimeString('en-US', {
               hour: '2-digit',
               minute: '2-digit',
               hour12: false,
-            }),
+            })
+          : getTimeOnly(date, originalTimezone),
       date: date.toLocaleDateString(),
       iso: date.toISOString(),
     },
