@@ -12,33 +12,22 @@ const getThemeIdFromPath = (): number | null => {
 
 export const useThemeId = () => {
   const [themeId, setThemeId] = useState<number | null>(getThemeIdFromPath)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (typeof globalThis === 'undefined') return
 
     const update = () => setThemeId(getThemeIdFromPath())
 
-    const updateDebounced = () => {
-      if (timeoutRef.current) globalThis.clearTimeout(timeoutRef.current)
-      timeoutRef.current = globalThis.setTimeout(update, 100)
-    }
+    globalThis.addEventListener('popstate', update)
+    document.addEventListener('astro:page-load', update)
+    document.addEventListener('astro:after-swap', update)
 
     update()
 
-    globalThis.addEventListener('popstate', updateDebounced)
-    document.addEventListener('astro:page-load', updateDebounced)
-    document.addEventListener('astro:after-swap', updateDebounced)
-
-    const observer = new MutationObserver(updateDebounced)
-    observer.observe(document, { subtree: true, childList: true })
-
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      globalThis.removeEventListener('popstate', updateDebounced)
-      document.removeEventListener('astro:page-load', updateDebounced)
-      document.removeEventListener('astro:after-swap', updateDebounced)
-      observer.disconnect()
+      globalThis.removeEventListener('popstate', update)
+      document.removeEventListener('astro:page-load', update)
+      document.removeEventListener('astro:after-swap', update)
     }
   }, [])
 
