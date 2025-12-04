@@ -32,7 +32,7 @@ export const CharacterAbout = ({ about }: Props) => {
                 value ? (
                   <li key={key}>
                     <span className="text-white capitalize">
-                      {key.replace(/_/g, ' ')}:
+                      {key.replaceAll('_', ' ')}:
                     </span>
                     {'  '}
                     {value}
