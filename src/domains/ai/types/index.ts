@@ -124,9 +124,9 @@ export interface BuildResponseOptions {
     | 'jikan'
     | null
   jikan?: JikanRecommendationsRaw | null
-  animeForJikan?: string | undefined
+  animeForJikan: string | undefined
   isFromFavorites?: boolean
-  favoriteTitle?: string | undefined
+  favoriteTitle: string | undefined
 }
 
 export interface GeneratePromptProps {
