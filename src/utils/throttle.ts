@@ -34,7 +34,7 @@ export function throttle<T extends (...args: any[]) => any>(
       }
       previous = now
       func(...args)
-    } else if (!timeout) {
+    } else {
       timeout = setTimeout(() => {
         previous = Date.now()
         timeout = null
