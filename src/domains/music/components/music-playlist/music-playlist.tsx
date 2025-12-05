@@ -1,12 +1,12 @@
 import { MusicDetailCard } from '@music/components/music-card/music-detail-card'
-import { useDragableList } from '@music/hooks/useDragableList'
+import { useDraggableList } from '@music/hooks/useDraggableList'
 import { usePlaylist } from '@music/hooks/usePlaylist'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 
 export const MusicPlayList = () => {
   const { upComingList } = usePlaylist()
   const { currentSong } = useMusicPlayerStore()
-  const { DragableList, DragableItem } = useDragableList()
+  const { DraggableList, DraggableItem } = useDraggableList()
 
   return (
     <section className="no-scrollbar bg-Complementary sticky top-30 h-full max-h-96 overflow-hidden overflow-y-scroll p-4 md:max-h-[700px] md:rounded-xl md:p-6">
@@ -32,15 +32,15 @@ export const MusicPlayList = () => {
               <div className="flex-1 bg-gray-600/30"></div>
             </div>
           </header>
-          <DragableList items={upComingList}>
+          <DraggableList items={upComingList}>
             <ul className="flex w-full flex-col gap-3">
               {upComingList.map((song) => (
-                <DragableItem key={song.theme_id} id={song.theme_id}>
+                <DraggableItem key={song.theme_id} id={song.theme_id}>
                   <MusicDetailCard song={song} />
-                </DragableItem>
+                </DraggableItem>
               ))}
             </ul>
-          </DragableList>
+          </DraggableList>
         </section>
       )}
     </section>
