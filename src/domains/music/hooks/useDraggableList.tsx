@@ -22,18 +22,18 @@ import { ListSortIcon } from '@shared/components/icons/music/list-sort-icon'
 import { useState } from 'react'
 import { usePlaylist } from './usePlaylist'
 
-interface DragableListProps {
+interface DraggableListProps {
   children: React.ReactNode
   items: AnimeSong[]
 }
 
-interface DragableItemProps {
+interface DraggableItemProps {
   children: React.ReactNode
   id: number
 }
 
-export const useDragableList = () => {
-  const DragableList = ({ children, items }: DragableListProps) => {
+export const useDraggableList = () => {
+  const DraggableList = ({ children, items }: DraggableListProps) => {
     const [activeId, setActiveId] = useState<string | number | null>(null)
     const { updateList } = usePlaylist()
     const sensors = useSensors(
@@ -85,7 +85,7 @@ export const useDragableList = () => {
     )
   }
 
-  const DragableItem = ({ id, children }: DragableItemProps) => {
+  const DraggableItem = ({ id, children }: DraggableItemProps) => {
     const { attributes, listeners, setNodeRef, transform, transition } =
       useSortable({ id })
 
@@ -111,5 +111,5 @@ export const useDragableList = () => {
     )
   }
 
-  return { DragableList, DragableItem }
+  return { DraggableList, DraggableItem }
 }
