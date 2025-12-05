@@ -23,7 +23,11 @@ export const usePlaylist = () => {
   const canShuffle = upComingList.length > 1
   const isRepeat = repeat
 
-  const addToPlaylist = (song: AnimeSong, position?: number , silent: boolean = false) => {
+  const addToPlaylist = (
+    song: AnimeSong,
+    position?: number,
+    silent: boolean = false
+  ) => {
     const newList = [...list]
     newList.splice(position ?? list.length, 0, song)
 
