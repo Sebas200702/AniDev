@@ -21,7 +21,7 @@ export const MusicDetailCard = ({
 }) => {
   const [heights, setHeights] = useState([0, 0, 0, 0])
   const { isPlaying, togglePlay, canPlay } = usePlayback()
-  const { isCurrentSong, isInplaylist } = usePlaylist()
+  const { isCurrentSong, isInPlaylist } = usePlaylist()
 
   const handleArtistClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -93,12 +93,11 @@ export const MusicDetailCard = ({
             <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
               {heights.map((height, index) => (
                 <div
-                  key={index}
+                  key={index +1}
                   className="bg-enfasisColor w-[3px] rounded-md transition-all duration-150 ease-out group-hover:opacity-0"
                   style={{ height: `${height}px` }}
                 />
               ))}
-
               <button
                 className="text-enfasisColor focus:ring-enfasisColor pointer-events-none absolute inset-0 z-20 mx-auto flex h-full w-full cursor-pointer items-center justify-center p-4 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-90 focus:ring-2 focus:outline-none disabled:pointer-events-none disabled:cursor-not-allowed"
                 onClick={togglePlay}
@@ -125,14 +124,14 @@ export const MusicDetailCard = ({
         )}
 
         <footer className="z-10 flex h-full w-full max-w-[65%] flex-col items-start justify-between px-4 py-2 md:justify-center md:gap-4 md:p-4">
-          <div className="flex w-full flex-col items-start space-x-1 truncate text-pretty ease-in-out select-none md:flex-row">
+          <div className="flex w-full flex-col  space-x-2 items-center truncate text-pretty ease-in-out select-none md:flex-row">
             <span className="text-m truncate text-white">
               {song.song_title}
             </span>
 
             {song.artist_name && (
-              <span className="text-sxx text-Primary-300 flex w-min flex-row items-end gap-1 truncate md:w-auto">
-                By
+              <span className="text-sxx text-Primary-300 flex w-min flex-row items-end gap-2  truncate md:w-auto">
+                By {' '}
                 <button
                   onClick={handleArtistClick}
                   onKeyDown={(e) =>
@@ -149,8 +148,8 @@ export const MusicDetailCard = ({
             )}
           </div>
           {song.anime?.title && (
-            <span className="text-sxx text-Primary-300 flex w-full flex-row items-end truncate">
-              From
+            <span className="text-sxx text-Primary-300 flex w-full flex-row items-end  gap-2truncate">
+              From{' '}
               <button
                 onClick={handleAnimeClick}
                 onKeyDown={(e) =>
@@ -178,7 +177,7 @@ export const MusicDetailCard = ({
             song={{
               ...song,
             }}
-            isInPlayList={isInplaylist(song)}
+            isInPlayList={isInPlaylist(song)}
             className="hover:text-enfasisColor group cursor-pointer rounded-md p-1 text-sm transition-all duration-300 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
             isCurrentSong={isCurrentSong(song)}
           />
