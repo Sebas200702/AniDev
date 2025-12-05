@@ -10,7 +10,7 @@ interface UseFetchMusicProps {
 
 export const useFetchMusic = ({ theme_id }: UseFetchMusicProps) => {
   const { setCurrentSong, currentSongIndex } = useMusicPlayerStore()
-  const { isInplaylist, addToPlaylist, list } = usePlaylist()
+  const { isInPlaylist, addToPlaylist, list } = usePlaylist()
 
   const { data, error, loading } = useFetch<AnimeSong>({
     url: `/music/getMusicInfo?theme_id=${theme_id}`,
@@ -20,9 +20,9 @@ export const useFetchMusic = ({ theme_id }: UseFetchMusicProps) => {
   useEffect(() => {
     if (!data || error || loading) return
 
-    const exists = isInplaylist(data)
+    const exists = isInPlaylist(data)
     if (!exists) {
-      addToPlaylist(data, currentSongIndex)
+      addToPlaylist(data, currentSongIndex, true)
     }
 
     const song = exists ? list[currentSongIndex] : data
