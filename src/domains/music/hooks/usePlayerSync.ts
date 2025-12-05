@@ -1,7 +1,7 @@
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import type { MediaPlayerInstance } from '@vidstack/react'
 import { throttle } from '@utils/throttle'
-
+import { savedTimeUtils } from '@music/utils/saved-time'
 import { type RefObject, useEffect, useMemo, useRef } from 'react'
 
 interface UsePlayBackProps {
@@ -28,6 +28,7 @@ export const usePlayerSync = ({
     selectedVersion,
     selectedResolutionId,
     currentSongIndex,
+    setPlayerRef,
   } = useMusicPlayerStore()
 
   const savedTimeRef = useRef(0)
@@ -38,6 +39,9 @@ export const usePlayerSync = ({
       }, 200),
     [setCurrentTime]
   )
+  useEffect(() => {
+    setPlayerRef(player)
+  }, [player])
 
   useEffect(() => {
     if (time <= 0) return
@@ -61,10 +65,7 @@ export const usePlayerSync = ({
   useEffect(() => {
     const handleBeforeUnload = () => {
       if (savedTimeRef.current > 0) {
-        localStorage.setItem(
-          'music-player-saved-time',
-          savedTimeRef.current.toString()
-        )
+        savedTimeUtils.setSavedTime(savedTimeRef.current)
       }
     }
 
@@ -78,14 +79,12 @@ export const usePlayerSync = ({
   }, [])
 
   useEffect(() => {
-    const saved = sessionStorage.getItem('music-player-saved-time')
-    if (saved && player?.current) {
-      const savedTime = Number.parseFloat(saved)
+    const savedTime = savedTimeUtils.getSavedTime()
+    if (savedTime && player?.current) {
       savedTimeRef.current = savedTime
       player.current.currentTime = savedTime
       setCurrentTime(savedTime)
-
-      sessionStorage.removeItem('music-player-saved-time')
+      savedTimeUtils.clearSavedTime()
     }
   }, [])
 
