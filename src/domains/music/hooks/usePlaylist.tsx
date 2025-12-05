@@ -23,11 +23,12 @@ export const usePlaylist = () => {
   const canShuffle = upComingList.length > 1
   const isRepeat = repeat
 
-  const addToPlaylist = (song: AnimeSong, position?: number) => {
+  const addToPlaylist = (song: AnimeSong, position?: number , silent: boolean = false) => {
     const newList = [...list]
     newList.splice(position ?? list.length, 0, song)
 
     setList(newList)
+    if (silent) return
 
     toast[ToastType.Info]({
       text: `${song.song_title} added to playlist.`,
@@ -84,7 +85,7 @@ export const usePlaylist = () => {
     setList([])
     setCurrentSong(null)
   }
-  const isInplaylist = (song: AnimeSong) => {
+  const isInPlaylist = (song: AnimeSong) => {
     return list.some((s) => s.theme_id === song.theme_id)
   }
   const isCurrentSong = (song: AnimeSong) => {
@@ -114,7 +115,7 @@ export const usePlaylist = () => {
     handleNextSong,
     handlePrevSong,
     clearPlaylist,
-    isInplaylist,
+    isInPlaylist,
     upComingList,
     list,
     updateList,
