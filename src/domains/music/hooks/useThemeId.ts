@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const getThemeIdFromPath = (): number | null => {
   if (typeof globalThis === 'undefined') return null
