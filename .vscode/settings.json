@@ -1,3 +1,7 @@
 {
-  "postman.settings.dotenv-detection-notification-visibility": false
+  "postman.settings.dotenv-detection-notification-visibility": false,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "sebas200702",
+    "projectKey": "Sebas200702_AniDev"
+  }
 }
