@@ -1,6 +1,7 @@
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { useEffect } from 'react'
-import { usePlaylist } from './usePlaylist'
+import { usePlaylist } from '@music/hooks/usePlaylist'
+import { savedTimeUtils } from '@music/utils/saved-time'
 export const usePlayback = () => {
   const {
     isPlaying,
@@ -9,7 +10,11 @@ export const usePlayback = () => {
     currentSong,
     duration,
     currentTime,
-    setSavedTime,
+    setCurrentTime,
+    repeat,
+    list,
+
+    playerRef,
   } = useMusicPlayerStore()
   const { handleNextSong } = usePlaylist()
 
@@ -19,10 +24,29 @@ export const usePlayback = () => {
 
   useEffect(() => {
     if (currentTime >= duration && duration > 0) {
-      setSavedTime(0)
-      handleNextSong()
+      if (repeat && list.length === 1) {
+        setCurrentTime(0)
+        savedTimeUtils.setSavedTime(0)
+        if (playerRef?.current) {
+          playerRef.current.currentTime = 0
+          playerRef.current.play?.()
+        }
+        setIsPlaying(true)
+      } else {
+        savedTimeUtils.setSavedTime(0)
+        handleNextSong()
+      }
     }
-  }, [currentTime])
+  }, [
+    currentTime,
+    duration,
+    repeat,
+    list.length,
+    setCurrentTime,
+    setIsPlaying,
+    handleNextSong,
+    playerRef,
+  ])
 
   return {
     togglePlay,
