@@ -7,6 +7,8 @@ import type { ApiResponse } from '@shared/types/api-response'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { AstroCookies } from 'astro'
 import type { RecommendationContext } from 'domains/ai/types'
+import { CacheService } from '@cache/services'
+import { getCachedOrFetch } from '@cache/utils'
 
 const logger = createLogger('RecommendationsController')
 
@@ -49,24 +51,46 @@ export const recommendationsController = {
       favoriteAnime: selectedFavoriteTitle,
     })
 
-    const recommendations =
-      await recommendationsService.generateRecommendations({
-        prompt,
-        jikanRecommendations,
-        context,
-      })
+    const cacheParams = {
+      userId: userInfo?.id,
+      contextType: context.type,
+      searchQuery: context.data.searchQuery,
+      currentAnime: context.data.currentAnime?.title,
+      mood: context.data.mood,
+      referenceAnime: context.data.referenceAnime,
+      season: context.data.season,
+      timeAvailable: context.data.timeAvailable,
+      preferredLength: context.data.preferredLength,
+      count: context.count,
+      focus: context.focus,
+      parentalControl: context.parentalControl,
+    }
 
-    if (!recommendations.data?.length) {
+    const cacheKey = CacheService.generateKey('recommendations', cacheParams)
+
+    const recommendations = await getCachedOrFetch(
+      cacheKey,
+      async () =>
+        await recommendationsService.generateRecommendations({
+          prompt,
+          jikanRecommendations,
+          context,
+        })
+    )
+
+    if (!recommendations.length) {
       logger.warn(
         '[RecommendationsController] Gemini vacío, usando fallback Jikan'
       )
-      return await recommendationsService.getRecommendations({
-        mal_ids: [],
-        minResults: context.count || 12,
-        parentalControl: context.parentalControl || false,
-      })
+      const fallbackRecommendations =
+        await recommendationsService.getRecommendations({
+          mal_ids: [],
+          minResults: context.count || 12,
+          parentalControl: context.parentalControl || false,
+        })
+      return { data: fallbackRecommendations }
     }
 
-    return recommendations
+    return { data: recommendations }
   },
 }
