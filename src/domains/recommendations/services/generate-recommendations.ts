@@ -5,8 +5,8 @@ import {
   functionTool,
 } from '@recommendations/types'
 import { AppError, isAppError } from '@shared/errors'
-import type { ApiResponse } from '@shared/types/api-response'
 import { getRecommendations } from './get-recommendations'
+import type { AnimeCardInfo } from '@anime/types'
 
 const logger = createContextLogger('RecommendationsService')
 
@@ -14,7 +14,7 @@ export const generateRecommendations = async ({
   context,
   prompt,
   jikanRecommendations,
-}: GenerateRecommendationsProps): Promise<ApiResponse<any[]>> => {
+}: GenerateRecommendationsProps): Promise<AnimeCardInfo[]> => {
   try {
     const response = await aiService.callFunction(
       prompt,
@@ -26,6 +26,7 @@ export const generateRecommendations = async ({
       response.response?.candidates?.[0]?.content?.parts?.find(
         (part) => part.functionCall
       )?.functionCall
+      
 
     if (!functionCall) {
       throw AppError.externalApi(
@@ -48,7 +49,7 @@ export const generateRecommendations = async ({
       })
     }
 
-    return await getRecommendations({
+    const recommendations = await getRecommendations({
       mal_ids: args.mal_ids,
       minResults: context.count ?? 24,
       currentAnimeId: context.data.currentAnime
@@ -57,6 +58,7 @@ export const generateRecommendations = async ({
       jikanRecommendations,
       parentalControl: context.parentalControl,
     })
+    return recommendations
   } catch (error) {
     logger.error('[RecommendationsService.generateRecommendations] Error:', {
       error,
