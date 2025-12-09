@@ -1,10 +1,42 @@
 import { AnimeGenres, AnimeTypes } from '@anime/types'
 import type { HomeSection } from '@shared/types/home-types'
 
-/**
- * Secciones estáticas que SIEMPRE estarán presentes en el home
- * Estas no se generan con IA, son fijas
- */
+export const POPULAR_STUDIOS = [
+  'MAPPA',
+  'Madhouse',
+  'Bones',
+  'Kyoto Animation',
+  'ufotable',
+  'A-1 Pictures',
+  'Wit Studio',
+  'Sunrise',
+  'Toei Animation',
+  'Production I.G',
+  'Studio Pierrot',
+]
+
+export const MOODS = [
+  'Exciting',
+  'Relaxing',
+  'Emotional',
+  'Dark',
+  'Wholesome',
+  'Mind-bending',
+]
+
+export const FOCUSES = [
+  'Story',
+  'Characters',
+  'Visuals',
+  'World-building',
+  'Action',
+  'Romance',
+]
+
+export const GENRE_BANK = Object.values(AnimeGenres)
+export const TYPE_BANK = Object.values(AnimeTypes)
+
+
 export const STATIC_SECTIONS: HomeSection[] = [
   {
     id: 'carousel',
@@ -108,20 +140,9 @@ export const STATIC_SECTIONS: HomeSection[] = [
   },
 ]
 
-/**
- * Configuración de cache para secciones del home
- */
+
 export const HOME_CACHE_CONFIG = {
   TTL_SECONDS: 3600, // 1 hora
   REDIS_KEY_PREFIX: 'home:sections:',
   MAX_DYNAMIC_SECTIONS: 8, // 3 banners + 2 collections + 3 sliders (Action, Comedy, Drama)
 }
-
-export const GENRE_BANK = Object.values(AnimeGenres)
-
-export const TYPE_BANK = [
-  AnimeTypes.MOVIE,
-  AnimeTypes.TV,
-  AnimeTypes.OVA,
-  AnimeTypes.ONA,
-]
