@@ -2,6 +2,7 @@ import { cacheRepository } from '@cache/repositories'
 import type { TtlValues } from '@cache/types'
 import { createContextLogger } from '@libs/pino'
 import { ensureRedisConnection } from '@libs/redis'
+import { createHash } from 'node:crypto'
 
 const logger = createContextLogger('CacheService')
 
@@ -53,8 +54,28 @@ export const CacheService = {
       return false
     }
   },
-  generateKey(prefix: string, identifier: string): string {
-    return `${prefix}:${identifier}`
+  generateKey(
+    prefix: string,
+    identifier: string | Record<string, any>
+  ): string {
+    if (typeof identifier === 'string') {
+      return `${prefix}:${identifier}`
+    }
+
+    // Sort keys to ensure deterministic hash
+    const ordered = Object.keys(identifier)
+      .sort((a, b) => a.localeCompare(b))
+      .reduce(
+        (obj, key) => {
+          obj[key] = identifier[key]
+          return obj
+        },
+        {} as Record<string, any>
+      )
+
+    const str = JSON.stringify(ordered)
+    const hash = createHash('sha256').update(str).digest('hex')
+    return `${prefix}:${hash}`
   },
   async withBufferCache(
     key: string,
