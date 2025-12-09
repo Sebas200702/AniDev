@@ -51,7 +51,7 @@ export const AnimeRepository = {
         p_parental_control: false,
       })
 
-      if (unrestricted) {
+      if (unrestricted && parentalControl === true) {
         throw AppError.permission(
           'Anime is restricted due to parental control settings'
         )
