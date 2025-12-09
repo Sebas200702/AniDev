@@ -16,7 +16,7 @@ export const HomeRepository = {
 
   setCachedSections: async (userId: string | null, sections: HomeSection[]) => {
     const key = HomeRepository.cacheKeyFor(userId)
-    return CacheService.set(key, sections, TtlValues.DAY)
+    return CacheService.set(key, sections, TtlValues.HOUR)
   },
 
   deleteCache: async (userId: string | null) => {
