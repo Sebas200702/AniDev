@@ -4,6 +4,7 @@ import { createContextLogger } from '@libs/pino'
 import { AppError } from '@shared/errors'
 import { ProxyService } from '@shared/services/proxy-service'
 import { imageProxyDeduplicator } from '@utils/request-deduplicator'
+import { getCachedOrFetch } from '@cache/utils'
 
 const logger = createContextLogger('ProxyController')
 
@@ -57,10 +58,9 @@ export const ProxyController = {
   ): Promise<{ buffer: Buffer; mimeType: string }> {
     const { imageUrl, width, quality, format } = this.validateParams(url)
 
-    const cacheKey = CacheService.generateKey(
-      'img-proxy',
-      `${imageUrl}:${width}:${quality}:${format}`
-    )
+    const cacheParams = { imageUrl, width, quality, format }
+
+    const cacheKey = CacheService.generateKey('img-proxy', cacheParams)
 
     const timeoutPromise = new Promise<never>((_, reject) =>
       setTimeout(() => reject(new Error('Proxy timeout')), 20000)
@@ -104,16 +104,9 @@ export const ProxyController = {
           format
         )
 
-        // Cache the result
-        // Note: Redis client handles Buffer serialization automatically
-        CacheService.set(cacheKey, result, TtlValues.DAY).catch((error) =>
-          logger.error(
-            `[ProxyController] Error caching key "${cacheKey}":`,
-            error
-          )
-        )
-
-        return result
+        return getCachedOrFetch(cacheKey, async () => result, {
+          ttl: TtlValues.DAY,
+        })
       }
     )
 
