@@ -1,11 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { navigate } from 'astro:transitions/client'
-import { toast } from '@pheralb/toast'
 import { BlockedContent } from '@shared/components/ui/blocked-content'
 import { useModal } from '@shared/hooks/useModal'
-import { ToastType } from '@shared/types'
-import { useGlobalUserPreferences } from '@user/stores/user-store'
 
 interface UseBlockedContentProps {
   error: Error | null
@@ -24,13 +21,14 @@ interface UseBlockedContentProps {
  * @param error - The error object returned from useFetch
  */
 export const useBlockedContent = ({ error }: UseBlockedContentProps) => {
-  const { setParentalControl } = useGlobalUserPreferences()
   const { openModal, closeModal, onClose } = useModal()
+  const actionTaken = useRef(false)
 
   useEffect(() => {
     // Check if the error is a permission error (blocked content)
     // We access 'type' which is added by AppError factory
     if (error && (error as any).type === 'permission') {
+      actionTaken.current = false
       openModal(BlockedContent, {
         message: error.message,
         onGoBack: handleGoBack,
@@ -39,24 +37,22 @@ export const useBlockedContent = ({ error }: UseBlockedContentProps) => {
       })
 
       onClose(() => {
-        navigate('/')
+        if (!actionTaken.current) {
+          navigate('/')
+        }
       })
     }
   }, [error])
 
   const handleGoBack = () => {
+    actionTaken.current = true
     navigate('/')
     closeModal()
   }
 
   const handleDisableParentalControl = () => {
-    setParentalControl(false)
-    localStorage.setItem('parental_control', JSON.stringify(false))
-
-    toast[ToastType.Success]({
-      text: 'Parental controls have been disabled',
-      delayDuration: 3000,
-    })
+    actionTaken.current = true
+    navigate('/profile/settings')
     closeModal()
   }
 }
