@@ -16,7 +16,6 @@ const { data } = await HomeController.getHomeFeed(userInfo?.id || null)
 <Layout>
   <HomeSectionsContainer
     initialSections={data}
-
     cacheMaxAgeHours={1}
     client:load
   />
