@@ -3,32 +3,11 @@ import { createContextLogger } from '@libs/pino'
 
 const logger = createContextLogger('HomeTitleGenerator')
 
-export const HomeTitleGenerator = {
-  /**
-   * Uses AI to generate creative titles
-   */
-  generateCreativeTitles: async (
-    slots: any[],
-    userGenres: string[],
-    age: number
-  ) => {
-    // Filter slots that need AI titles (have aiContext)
-    const slotsToName = slots
-      .map((s, i) => ({ ...s, originalIndex: i }))
-      .filter((s) => s.aiContext)
-
-    if (slotsToName.length === 0) return []
-
-    const sectionsDescription = slotsToName
-      .map((s, i) => {
-        const valuesText = s.values ? `(${s.values.join(', ')})` : ''
-        // Use filters to describe content if available
-        const filtersText = s.filters ? JSON.stringify(s.filters) : ''
-        return `${i + 1}. Content: ${s.value} ${valuesText} (Type: ${s.type}). Filters: ${filtersText}.\n   Context/Instruction: ${s.aiContext}`
-      })
-      .join('\n')
-
-    const prompt = `
+const buildPrompt = (
+  sectionsDescription: string,
+  userGenres: string[],
+  age: number
+) => `
     As an expert anime curator, create SHORT, EXCITING, and UNIQUE titles (2-4 words) for these home page sections.
 
     Target Audience: ${age} years old.
@@ -51,7 +30,33 @@ export const HomeTitleGenerator = {
     11. If the content is a specific Year (other than 2025), use nostalgic titles like "Classics of [Year]" or "[Year] Rewind".
 
     Return ONLY a JSON object: { "titles": ["Title 1", "Title 2", ...] }
-    `
+`
+
+export const HomeTitleGenerator = {
+  /**
+   * Uses AI to generate creative titles
+   */
+  generateCreativeTitles: async (
+    slots: any[],
+    userGenres: string[],
+    age: number
+  ) => {
+    // Filter slots that need AI titles (have aiContext)
+    const slotsToName = slots
+      .map((s, i) => ({ ...s, originalIndex: i }))
+      .filter((s) => s.aiContext)
+
+    if (slotsToName.length === 0) return []
+
+    const sectionsDescription = slotsToName
+      .map((s, i) => {
+        const valuesText = s.values ? `(${s.values.join(', ')})` : ''
+        const filtersText = s.filters ? JSON.stringify(s.filters) : ''
+        return `${i + 1}. Content: ${s.value} ${valuesText} (Type: ${s.type}). Filters: ${filtersText}.\n   Context/Instruction: ${s.aiContext}`
+      })
+      .join('\n')
+
+    const prompt = buildPrompt(sectionsDescription, userGenres, age)
 
     try {
       const response = await aiService.generateJSON<{ titles: string[] }>(
