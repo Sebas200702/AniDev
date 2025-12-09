@@ -26,7 +26,6 @@ export const generateRecommendations = async ({
       response.response?.candidates?.[0]?.content?.parts?.find(
         (part) => part.functionCall
       )?.functionCall
-      
 
     if (!functionCall) {
       throw AppError.externalApi(
@@ -52,9 +51,8 @@ export const generateRecommendations = async ({
     const recommendations = await getRecommendations({
       mal_ids: args.mal_ids,
       minResults: context.count ?? 24,
-      currentAnimeId: context.data.currentAnime
-        ? Number(context.data.currentAnime)
-        : undefined,
+      currentAnimeId: context.data.currentAnime?.mal_id ?? undefined,
+
       jikanRecommendations,
       parentalControl: context.parentalControl,
     })
