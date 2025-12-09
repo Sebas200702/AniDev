@@ -5,7 +5,6 @@ import { HomeSectionsContainer } from '@shared/components/home-sections-containe
 import { HomeController } from '@shared/controllers/home-controller'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 
-// Obtener información del usuario desde cookies
 const userInfo = await getSessionUserInfo({
   request: Astro.request,
   cookies: Astro.cookies,
