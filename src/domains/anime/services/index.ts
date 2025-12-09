@@ -194,8 +194,7 @@ export const AnimeService = {
    */
   async getAnimeRelations(animeId: string): Promise<AnimeDetail[] | null> {
     try {
-      const data = await AnimeRepository.getAnimeRelations(animeId)
-      return data
+      return await AnimeRepository.getAnimeRelations(animeId)
     } catch (error) {
       logger.error('[AnimeService.getAnimeRelations] Error:', {
         error,
