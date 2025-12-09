@@ -10,7 +10,7 @@ export const GET: APIRoute = rateLimit(
     try {
       const data = await AnimeController.handleGetAnimeRelations(url)
 
-      return ResponseBuilder.success({ data })
+      return ResponseBuilder.success(data)
     } catch (error) {
       return ResponseBuilder.fromError(
         error,
