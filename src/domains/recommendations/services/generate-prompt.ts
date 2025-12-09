@@ -160,11 +160,11 @@ ${favoriteAnime ? '- Treat as high-priority favorite' : ''}
 ## USER PROFILE
 ${userProfile.name} (${calculatedAge} y/o, ${userProfile.gender})
 - Level: ${userProfile.fanatic_level} | Watch frequency: ${userProfile.frequency_of_watch}
-- Favorite genres: ${userProfile.favorite_genres.join(', ')}
-- Favorite studios: ${userProfile.favorite_studios.join(', ')}
+- Favorite genres: ${userProfile.favorite_genres?.join(', ')}
+- Favorite studios: ${userProfile.favorite_studios?.join(', ')}
 - Preferred format: ${userProfile.preferred_format}
-- Watched: ${userProfile.watched_animes.slice(0, 6).join(', ')}${userProfile.watched_animes.length > 6 ? ` (+${userProfile.watched_animes.length - 6} more)` : ''}
-- Favorites: ${userProfile.favorite_animes.join(', ')}
+- Watched: ${userProfile.watched_animes?.slice(0, 6)?.join(', ')}${userProfile.watched_animes?.length > 6 ? ` (+${userProfile.watched_animes?.length - 6} more)` : ''}
+- Favorites: ${userProfile.favorite_animes?.join(', ')}
 ${context.data.currentAnime ? `- Currently watching: ${context.data.currentAnime}` : ''}
 
 ${contextInstructions}
@@ -193,7 +193,7 @@ ${jikanSection}
 4️⃣ Return the final ${recommendationCount} MAL_ID list.
 `
   } catch (error) {
-    logger.error('[RecommendationsService.generatePrompt] Error:', { error })
+    logger.error('[RecommendationsService.generatePrompt] Error:',  error )
     if (isAppError(error)) {
       throw error
     }
