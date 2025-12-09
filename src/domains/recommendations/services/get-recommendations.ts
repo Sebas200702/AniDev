@@ -77,7 +77,6 @@ export const getRecommendations = async ({
           return g.genres?.name ? [g.genres.name] : []
         }) || [],
     }))
-    console.log('Final recommendations:', transformed)
 
     return shuffleArray(transformed)
   } catch (error) {
