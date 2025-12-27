@@ -17,6 +17,7 @@ import { CustomControls } from 'domains/music/components/music-player/controls'
 import { CustomLayout } from 'domains/music/components/music-player/custom-layout'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import { DragHandle, DraggablePlayer } from '@music/hooks/useDragPlayer'
 export const MusicPlayer = () => {
   const {
     currentSong,
@@ -56,75 +57,79 @@ export const MusicPlayer = () => {
   if (!currentSong) return null
 
   return (
-    <AnimatePresence>
-      <motion.article
-        ref={playerContainerRef}
-        animate={{
-          opacity: isHidden ? 0 : 1,
-          y: isHidden ? 30 : 0,
-        }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`group flex rounded-xl ${
-          isMinimized
-            ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
-            : 'bg-Complementary/50 w-full flex-col-reverse'
-        } ${isDragging && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
-        style={
-          isMinimized
-            ? { bottom: `${position.y}px`, right: `${position.x}px` }
-            : {}
-        }
-      >
-        <Header playerContainerRef={playerContainerRef} />
-
-        <MediaPlayer
-          ref={player}
-          src={src ?? undefined}
-          aspectRatio={isMinimized ? 'auto' : 'video'}
-          autoPlay
-          viewType="video"
-          streamType="on-demand"
-          logLevel="error"
-          title={currentSong.song_title ?? 'Unknown Song'}
-          poster={createImageUrlProxy(
-            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? '',
-            isMinimized ? '300' : '1980',
-            '75',
-            'webp'
-          )}
-          className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
+    <DraggablePlayer>
+      <AnimatePresence>
+        <motion.article
+          ref={playerContainerRef}
+          animate={{
+            opacity: isHidden ? 0 : 1,
+            y: isHidden ? 30 : 0,
+          }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className={`group flex rounded-xl ${
+            isMinimized
+              ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
+              : 'bg-Complementary/50 w-full flex-col-reverse'
+          } ${isDragging && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
+          style={
+            isMinimized
+              ? { bottom: `${position.y}px`, right: `${position.x}px` }
+              : {}
+          }
         >
-          <MediaProvider
-            className={`${type === 'audio' && isMinimized ? 'mt-12 hidden md:flex' : 'aspect-video'}`}
+          <DragHandle>
+            <Header playerContainerRef={playerContainerRef} />
+          </DragHandle>
+
+          <MediaPlayer
+            ref={player}
+            src={src ?? undefined}
+            aspectRatio={isMinimized ? 'auto' : 'video'}
+            autoPlay
+            viewType="video"
+            streamType="on-demand"
+            logLevel="error"
+            title={currentSong.song_title ?? 'Unknown Song'}
+            poster={createImageUrlProxy(
+              currentSong.anime?.banner_image ?? currentSong.anime?.image ?? '',
+              isMinimized ? '300' : '1980',
+              '75',
+              'webp'
+            )}
+            className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
           >
-            {type === 'audio' && !isMinimized && (
-              <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
-            )}
-            {type === 'audio' && isMinimized && (
-              <div className="absolute h-full w-full">
-                <Cover />
-              </div>
-            )}
+            <MediaProvider
+              className={`${type === 'audio' && isMinimized ? 'mt-12 hidden md:flex' : 'aspect-video'}`}
+            >
+              {type === 'audio' && !isMinimized && (
+                <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
+              )}
+              {type === 'audio' && isMinimized && (
+                <div className="absolute h-full w-full">
+                  <Cover />
+                </div>
+              )}
 
-            <Poster className="vds-poster" />
+              <Poster className="vds-poster" />
 
-            {isMinimized && (
-              <div className="vds-buffering-indicator">
-                <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
-                  <Spinner.Track className="vds-buffering-track" />
-                  <Spinner.TrackFill className="vds-buffering-track-fill" />
-                </Spinner.Root>
-              </div>
+              {isMinimized && (
+                <div className="vds-buffering-indicator">
+                  <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
+                    <Spinner.Track className="vds-buffering-track" />
+                    <Spinner.TrackFill className="vds-buffering-track-fill" />
+                  </Spinner.Root>
+                </div>
+              )}
+            </MediaProvider>
+
+            {isMinimized ? (
+              <CustomControls volume={volume} muted={muted} />
+            ) : (
+              <CustomLayout />
             )}
-          </MediaProvider>
-
-          {isMinimized ? (
-            <CustomControls volume={volume} muted={muted} />
-          ) : (
-            <CustomLayout />
-          )}
-        </MediaPlayer>
-      </motion.article>
-    </AnimatePresence>
+          </MediaPlayer>
+        </motion.article>
+      </AnimatePresence>
+    </DraggablePlayer>
   )
 }
