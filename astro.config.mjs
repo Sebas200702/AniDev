@@ -32,5 +32,11 @@ export default defineConfig({
     ssr: {
       noExternal: ['@vidstack/react'],
     },
+    server: {
+      fs: {
+        // Modo estricto para prevenir path traversal
+        strict: true,
+      },
+    },
   },
 })
