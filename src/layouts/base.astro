@@ -6,8 +6,8 @@ import Footer from '@shared/components/layout/footer.astro'
 import { NavBar } from '@shared/components/layout/nav-bar/nav-bar'
 import { LoadWindowWidth } from '@shared/components/ui/load-window-width'
 import { ProgressBar } from '@shared/components/ui/progres-bar'
-import { MetadataService } from '@shared/services/metadata-service'
-import { baseTitle, baseUrl } from '@shared/utils/base-url'
+import { createMetadata } from '@shared/utils/create-metadata'
+import {  baseUrl } from '@shared/utils/base-url'
 import { LoadUserPrefences } from '@user/components/user-settings/load-user-preferences'
 import { AstroFont } from 'astro-font'
 import '@shared/styles/fade-out.css'
@@ -16,59 +16,19 @@ import { AsideNav } from '@shared/components/layout/aside'
 import { ModalContainer } from '@shared/components/modal/modal-container'
 import { CustomToaster } from '@shared/components/ui/custom-toaster'
 
-interface Props {
-  animeId?: number
-  title?: string
-  description?: string
-  image?: string
-  themeId?: string
-  characterId?: string
-  artistName?: string
-}
-
 const { animeId, title, description, image, themeId, characterId, artistName } =
   Astro.props
 
-let metaTitle = title || baseTitle
-let metaDesc =
-  description ||
-  'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.'
-let metaImage = image || `${baseUrl}/og-image.png`
+const { title : metaTitle, description: metaDesc, image: metaImage } = await createMetadata({
+  title,
+  description,
+  image,
+  themeId,
+  characterId,
+  artistName,
+  animeId,
+}) 
 
-if (animeId) {
-  const metadata = await MetadataService.getAnimeMetadata(animeId)
-  metaTitle = metadata.title
-  metaDesc = metadata.description
-  metaImage = metadata.image
-}
-
-if (themeId) {
-  const metadata = await MetadataService.getMusicMetadata(Number(themeId))
-  metaTitle = metadata.title
-  metaDesc = metadata.description
-  metaImage = metadata.image
-}
-
-if (characterId) {
-  const fullSlug = Astro.url.pathname.split('/').pop() || ''
-  const lastUnderscoreIndex = fullSlug.lastIndexOf('_')
-  const charId =
-    lastUnderscoreIndex === -1
-      ? Number(characterId)
-      : Number(fullSlug.slice(lastUnderscoreIndex + 1))
-
-  const metadata = await MetadataService.getCharacterMetadata(charId)
-  metaTitle = metadata.title
-  metaDesc = metadata.description
-  metaImage = metadata.image
-}
-
-if (artistName) {
-  const metadata = await MetadataService.getArtistMetadata(artistName)
-  metaTitle = metadata.title
-  metaDesc = metadata.description
-  metaImage = metadata.image
-}
 ---
 
 <html lang="en">
@@ -85,7 +45,6 @@ if (artistName) {
       content="MMmywKMxZRfBscGxXQPHrZB_8q2Gre3c8Lb4VglQ3Lw"
     />
 
-    <meta name="generator" content={Astro.generator} />
     <meta name="description" content={metaDesc} />
     <meta property="og:image" name="og:image" content={metaImage} />
     <meta property="og:title" content={metaTitle} />
