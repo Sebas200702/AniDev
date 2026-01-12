@@ -1,4 +1,4 @@
-import { Loader } from '@shared/components/loader'
+import { Loader } from '@shared/components/ui/loader'
 export const AnimeRelatedLoader = () => {
   return (
     <ul className="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
