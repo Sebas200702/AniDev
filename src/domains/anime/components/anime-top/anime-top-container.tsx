@@ -1,7 +1,7 @@
 import { AnimeTop } from '@anime/components/anime-top/anime-top'
 import { AnimeTopLoader } from '@anime/components/anime-top/anime-top-loader'
 import type { AnimeTopInfo } from '@anime/types'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
 
 export const AnimeTopContainer = () => {
