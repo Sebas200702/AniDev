@@ -1,4 +1,4 @@
-import { ErrorFallback } from '@shared/components/error-fallback'
+import { ErrorFallback } from '@shared/components/error/error-fallback'
 import { Component, type ReactNode } from 'react'
 
 interface Props {
