@@ -3,7 +3,7 @@ import { AnimeCharacterCard } from '@character/components/character-card/detail-
 import type { Character } from '@character/types'
 import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { languageOptions } from '@search/utils/constants'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 
 interface Props {
   language: string
