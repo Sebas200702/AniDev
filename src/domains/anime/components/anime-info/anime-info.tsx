@@ -7,7 +7,6 @@ import type { Anime } from '@anime/types'
 import { AddToListButton } from '@shared/components/buttons/add-to-list-button'
 import { ShareButton } from '@shared/components/buttons/share-button'
 import { WatchAnimeButton } from '@shared/components/buttons/watch-anime'
-import { baseUrl } from '@shared/utils/base-url'
 import { getAnimeType } from '@utils/getanime-type'
 import { normalizeRating } from '@utils/normalize-rating'
 import { normalizeString } from '@utils/normalize-string'
@@ -24,29 +23,26 @@ export const AnimeInfo = ({ animeData }: Props) => {
   const watchNowUrl = `/watch/${normalizeString(animeData.title)}_${animeData.mal_id}`
   const shareText = `Watch ${animeData.title} on AniDev`
 
+  const bannerImage =
+    animeData.banner_image ?? animeData.image_large_webp ?? `/placeholder.webp`
+
+  const image =
+    animeData.image_large_webp ?? animeData.image_webp ?? `/placeholder.webp`
   return (
     <InfoPageLayout
       banner={
         <AnimeBanner
-          banner_image={
-            animeData.banner_image ??
-            animeData.image_large_webp ??
-            `${baseUrl}/placeholder.webp`
-          }
-          image_large_webp={
-            animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
-          }
+          banner_image={bannerImage}
+          image_large_webp={image}
           title={animeData.title}
         />
       }
     >
       <Aside
         title={animeData.title}
-        posterImage={
-          animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
-        }
-        smallImage={animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`}
-        bannerImage={animeData.banner_image ?? `${baseUrl}/placeholder.webp`}
+        posterImage={image}
+        smallImage={animeData.image_small_webp ?? `/placeholder.webp`}
+        bannerImage={animeData.banner_image ?? `/placeholder.webp`}
       >
         <WatchAnimeButton url={watchNowUrl} title={animeData.title} />
         <AddToListButton
@@ -82,18 +78,10 @@ export const AnimeInfo = ({ animeData }: Props) => {
         <AnimeShowBoxContainer
           animeId={animeData.mal_id}
           trailer_url={animeData.trailer_url ?? ''}
-          banner_image={
-            animeData.banner_image ??
-            animeData.image_large_webp ??
-            `${baseUrl}/placeholder.webp`
-          }
-          image_large_webp={
-            animeData.image_large_webp ?? `${baseUrl}/placeholder.webp`
-          }
-          image={animeData.image_webp ?? `${baseUrl}/placeholder.webp`}
-          image_small_webp={
-            animeData.image_small_webp ?? `${baseUrl}/placeholder.webp`
-          }
+          banner_image={bannerImage}
+          image_large_webp={image}
+          image={image}
+          image_small_webp={animeData.image_small_webp ?? `/placeholder.webp`}
           title={animeData.title}
           synopsis={animeData.synopsis ?? 'No synopsis available'}
         />
