@@ -32,28 +32,26 @@ export const EpisodeController = {
     }
   },
 
-  validateEpisodeRequest(url: URL): { slug: string; episodeNumber: string } {
-    const slug = url.searchParams.get('slug')
+  validateEpisodeRequest(url: URL): { mal_id: string; episodeNumber: string } {
+    const mal_id = url.searchParams.get('mal_id')
     const ep = url.searchParams.get('ep')
 
-    if (!slug) {
-      throw AppError.validation('Missing slug parameter')
+    if (!mal_id) {
+      throw AppError.validation('Missing mal_id parameter')
     }
 
     if (!ep) {
       throw AppError.validation('Missing episode number')
     }
 
-    if (!slug.includes('_')) {
-      throw AppError.validation('Invalid slug format')
-    }
+   
 
-    return { slug, episodeNumber: ep }
+    return { mal_id, episodeNumber: ep }
   },
 
   async handleGetEpisode(url: URL): Promise<ApiResponse<AnimeEpisode>> {
-    const { slug, episodeNumber } = this.validateEpisodeRequest(url)
-    const episode = await EpisodeService.getEpisodeById(slug, episodeNumber)
+    const { mal_id, episodeNumber } = this.validateEpisodeRequest(url)
+    const episode = await EpisodeService.getEpisodeById(mal_id, episodeNumber)
     return {
       data: episode,
     }
