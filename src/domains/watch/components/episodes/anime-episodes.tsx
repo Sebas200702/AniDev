@@ -129,8 +129,8 @@ export const AnimeEpisodes = ({
           >
             <Picture
               styles="relative aspect-video h-full w-full object-cover object-center rounded-md overflow-hidden"
-              image={image_url || image_webp}
-              placeholder={image_url || image_webp}
+              image={image_url || image_webp || '/placeholder.webp'}
+              placeholder={image_url || image_webp || '/placeholder.webp'}
               alt={title ?? `Episodio ${episode_id}`}
             />
 
