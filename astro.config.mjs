@@ -1,5 +1,5 @@
-import react from '@astrojs/react'
 import node from '@astrojs/node'
+import react from '@astrojs/react'
 import sentry from '@sentry/astro'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
@@ -40,6 +40,6 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0'
-},
+    host: '0.0.0.0',
+  },
 })
