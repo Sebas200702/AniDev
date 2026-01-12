@@ -1,8 +1,8 @@
+import { createHash } from 'node:crypto'
 import { cacheRepository } from '@cache/repositories'
 import type { TtlValues } from '@cache/types'
 import { createContextLogger } from '@libs/pino'
 import { ensureRedisConnection } from '@libs/redis'
-import { createHash } from 'node:crypto'
 
 const logger = createContextLogger('CacheService')
 
