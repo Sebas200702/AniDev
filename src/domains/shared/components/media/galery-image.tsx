@@ -1,5 +1,5 @@
 import { ExpandIconV2 } from '@shared/components/icons/common/expand-icon'
-import { ImageViewer } from '@shared/components/media/image-viewer'
+import { ImageViewerContainer } from '@shared/components/media/image-viewer/image-viewer-container'
 import { useModal } from '@shared/hooks/useModal'
 import type { ImageType } from '@shared/types'
 import { Overlay } from 'domains/shared/components/layout/overlay'
@@ -36,7 +36,7 @@ export const GaleryImage = ({
   const handleOpenViewer = () => {
     if (!hasImages || disabled) return
 
-    openModal(ImageViewer, {
+    openModal(ImageViewerContainer, {
       imageList,
       initialIndex: validInitialIndex,
       onClose: closeModal,
