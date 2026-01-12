@@ -1,6 +1,6 @@
 import { AnimeCard } from '@anime/components/anime-card/anime-card'
 import type { AnimeCardInfo } from '@anime/types'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { MainInfo } from '@shared/components/layout/base/MainInfo'
 import { AnimeSimilarToLoader } from './anime-info-similar-to-loader'
 
