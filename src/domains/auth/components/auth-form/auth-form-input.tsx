@@ -1,4 +1,4 @@
-import { InputBase } from '@shared/components/input'
+import { InputBase } from '@shared/components/ui/input'
 import { InputType } from '@shared/types'
 
 import type { ReactNode } from 'react'
