@@ -1,7 +1,6 @@
-import { createAnimeImageList } from '@shared/utils/create-image-list'
-
 import { GaleryImage } from '@shared/components/media/galery-image'
 import { Picture } from '@shared/components/media/picture'
+import type { ImageType } from '@shared/types'
 import type { ReactNode } from 'react'
 
 interface Props {
@@ -19,11 +18,10 @@ export const Aside = ({
   children,
   bannerImage,
 }: Props) => {
-  const imageList = createAnimeImageList({
-    title: `${title} Image`,
-    posterImage: posterImage,
-    bannerImage,
-  })
+  const imageList: ImageType[] = [
+    { src: posterImage, alt: title, maxWidth: 800 },
+    ...(bannerImage ? [{ src: bannerImage, alt: title, maxWidth: 1200 }] : []),
+  ]
 
   return (
     <aside className="anime-aside top-28 z-50 flex h-min w-full flex-col gap-8 px-20 md:row-span-2 md:items-start md:px-0 xl:sticky">
