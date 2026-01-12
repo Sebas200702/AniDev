@@ -42,38 +42,12 @@ export const EpisodeService = {
    * Get episode by anime_id and episode_id
    */
   async getEpisodeById(
-    slugOrAnimeId: string,
-    episodeId?: string
+    mal_id: string,
+    episodeId: string
   ): Promise<AnimeEpisode> {
     try {
-      let animeId: string
-      let epId: string
-
-      // If episodeId is provided, slugOrAnimeId is already the anime ID
-      if (episodeId) {
-        animeId = slugOrAnimeId
-        epId = episodeId
-      } else {
-        // Otherwise, we need to parse the slug
-        // Slug format: "title_id"
-        const parts = slugOrAnimeId.split('_')
-        if (parts.length < 2) {
-          throw AppError.validation('Invalid slug format', {
-            slug: slugOrAnimeId,
-          })
-        }
-        // Use .at(-1) to get the last element (preferred over parts[parts.length - 1])
-        const lastPart = parts.at(-1)
-        if (!lastPart) {
-          throw AppError.validation('Invalid slug format', {
-            slug: slugOrAnimeId,
-          })
-        }
-        animeId = lastPart // Last part is the ID
-        epId = slugOrAnimeId // This shouldn't happen, but keep for compatibility
-      }
-
-      const data = await EpisodeRepository.getEpisodeById(animeId, epId)
+    
+      const data = await EpisodeRepository.getEpisodeById(mal_id, episodeId)
       return data
     } catch (error) {
       console.error('[EpisodeService.getEpisodeById] Error:', error)
@@ -82,7 +56,7 @@ export const EpisodeService = {
       }
 
       throw AppError.database('Failed to get episode by id', {
-        slugOrAnimeId,
+        mal_id,
         episodeId,
         originalError: error,
       })
