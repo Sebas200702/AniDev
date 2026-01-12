@@ -1,10 +1,16 @@
 ---
 import Layout from '@layouts/base.astro'
-import { WatchAnime } from 'domains/watch/components/watch-anime'
+import { WatchAnimeContainer } from 'domains/watch/components/watch-anime-container'
 const slug = Astro.params.slug ?? ''
+const segments = slug.split('_')
+const mal_id = segments.length > 1 ? parseInt(segments[1], 10) : null
+
+if (!mal_id || isNaN(mal_id)) {
+  return Astro.redirect('/404')
+}
 const currentEpisode = parseInt(Astro.url.searchParams.get('ep') ?? '1') || 1
 ---
 
 <Layout>
-  <WatchAnime client:load slug={slug} currentEpisode={currentEpisode} />
+  <WatchAnimeContainer client:load mal_id={mal_id} currentEpisode={currentEpisode} />
 </Layout>
