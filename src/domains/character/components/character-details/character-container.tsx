@@ -1,7 +1,7 @@
 import { CharacterInfo } from '@character/components/character-details/character'
 import { CharacterLoader } from '@character/components/character-details/character-loader'
 import type { CharacterDetails } from '@character/types'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
 import type { PersonAbout } from '@user/types'
 import { useEffect, useState } from 'react'
