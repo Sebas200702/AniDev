@@ -1,5 +1,5 @@
 import { AuthGoogleBtn } from '@auth/components/auth-button/auth-button-google'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { signIn } from 'auth-astro/client'
 import { useState } from 'react'
 
