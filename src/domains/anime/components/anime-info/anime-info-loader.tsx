@@ -1,4 +1,4 @@
-import { Loader } from '@shared/components/loader'
+import { Loader } from '@shared/components/ui/loader'
 export const AnimeLoader = () => {
   return (
     <div className="min-w-full">
