@@ -1,4 +1,4 @@
-import { Loader } from '@shared/components/loader'
+import { Loader } from '@shared/components/ui/loader'
 
 /**
  * LoadingCard component displays a placeholder card while loading anime results.
