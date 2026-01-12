@@ -1,4 +1,4 @@
-import { Loader } from '@shared/components/loader'
+import { Loader } from '@shared/components/ui/loader'
 export const AnimeMusicLoader = () => {
   return (
     <div className="z-10 flex flex-col gap-8 rounded-lg p-4 md:p-6">
