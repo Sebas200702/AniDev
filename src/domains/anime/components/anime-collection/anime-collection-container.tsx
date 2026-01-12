@@ -3,7 +3,7 @@ import { AnimeCollection } from '@anime/components/anime-collection/anime-collec
 import type { AnimeCollectionInfo } from '@anime/types'
 import { createDynamicUrl } from '@anime/utils/create-dynamic-url'
 import { useFetchWithCache } from '@cache/hooks/useFetchWithCache'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { useMemo } from 'react'
 
 interface Props {
