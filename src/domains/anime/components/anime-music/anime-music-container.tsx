@@ -1,5 +1,5 @@
 import type { AnimeSong } from '@music/types'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
 import { AnimeMusic } from './anime-music'
 import { AnimeMusicLoader } from './anime-music-loader'
