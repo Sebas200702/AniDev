@@ -1,7 +1,7 @@
 import { AnimeDetailCard } from '@anime/components/anime-card/anime-detail-card'
 import { AnimeRelatedLoader } from '@anime/components/anime-info/anime-info-related/anime-info-related-loader'
 import type { AnimeDetail } from '@anime/types'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 
 interface Props {
   related: AnimeDetail[]
