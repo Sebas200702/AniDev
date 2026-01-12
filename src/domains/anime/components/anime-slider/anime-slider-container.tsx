@@ -3,7 +3,7 @@ import { AnimeSliderLoader } from '@anime/components/anime-slider/anime-slider-l
 import type { AnimeCardInfo } from '@anime/types'
 import { createGroups } from '@anime/utils/create-groups'
 import { useFetchWithCache } from '@cache/hooks/useFetchWithCache'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { useHorizontalScroll } from '@shared/hooks/useHorizontalScroll'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
