@@ -87,7 +87,7 @@ export type FallbackReason =
 export interface ImageType {
   src: string
   alt: string
-  maxWidth?: string
+  maxWidth?: number
 }
 
 export const shortCuts = [
