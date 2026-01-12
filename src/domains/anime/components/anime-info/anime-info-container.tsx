@@ -1,7 +1,7 @@
 import { AnimeInfo } from '@anime/components/anime-info/anime-info'
 import { AnimeLoader } from '@anime/components/anime-info/anime-info-loader'
 import type { Anime } from '@anime/types'
-import { DataWrapper } from '@shared/components/data-wrapper'
+import { DataWrapper } from '@shared/components/error/data-wrapper'
 import { useFetch } from '@shared/hooks/useFetch'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
 
