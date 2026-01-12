@@ -93,7 +93,7 @@ export const MusicDetailCard = ({
             <div className="bg-Complementary/30 absolute inset-0 z-10 flex items-center justify-center gap-[3px]">
               {heights.map((height, index) => (
                 <div
-                  key={index +1}
+                  key={index + 1}
                   className="bg-enfasisColor w-[3px] rounded-md transition-all duration-150 ease-out group-hover:opacity-0"
                   style={{ height: `${height}px` }}
                 />
@@ -131,7 +131,7 @@ export const MusicDetailCard = ({
 
             {song.artist_name && (
               <span className="text-sxx text-Primary-300 flex w-min flex-row items-end gap-2  truncate md:w-auto">
-                By {' '}
+                By{' '}
                 <button
                   onClick={handleArtistClick}
                   onKeyDown={(e) =>

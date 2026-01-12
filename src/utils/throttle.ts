@@ -35,11 +35,12 @@ export function throttle<T extends (...args: any[]) => any>(
       previous = now
       func(...args)
     } else {
-      timeout = setTimeout(() => {
-        previous = Date.now()
-        timeout = null
-        func(...args)
-      }, remaining) ?? timeout
+      timeout =
+        setTimeout(() => {
+          previous = Date.now()
+          timeout = null
+          func(...args)
+        }, remaining) ?? timeout
     }
   }
 }

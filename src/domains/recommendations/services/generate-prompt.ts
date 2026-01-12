@@ -193,7 +193,7 @@ ${jikanSection}
 4️⃣ Return the final ${recommendationCount} MAL_ID list.
 `
   } catch (error) {
-    logger.error('[RecommendationsService.generatePrompt] Error:',  error )
+    logger.error('[RecommendationsService.generatePrompt] Error:', error)
     if (isAppError(error)) {
       throw error
     }

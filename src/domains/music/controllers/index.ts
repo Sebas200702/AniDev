@@ -69,7 +69,6 @@ export const MusicController = {
   },
 
   async handleGetAnimeMusic(url: URL): Promise<ApiResponse<AnimeSong[]>> {
-   
     const { filters } = this.parseSearchParams(url)
 
     const data = await MusicService.getMusicByAnimeId(filters)

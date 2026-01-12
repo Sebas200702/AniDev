@@ -1,3 +1,5 @@
+import { CacheService } from '@cache/services'
+import { getCachedOrFetch } from '@cache/utils'
 import { createLogger } from '@libs/logger'
 import { recommendationsService } from '@recommendations/services'
 import { buildContextFromUrl } from '@recommendations/utils/build-context'
@@ -7,8 +9,6 @@ import type { ApiResponse } from '@shared/types/api-response'
 import { getSessionUserInfo } from '@utils/get_session_user_info'
 import type { AstroCookies } from 'astro'
 import type { RecommendationContext } from 'domains/ai/types'
-import { CacheService } from '@cache/services'
-import { getCachedOrFetch } from '@cache/utils'
 
 const logger = createLogger('RecommendationsController')
 

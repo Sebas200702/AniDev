@@ -1,5 +1,5 @@
-import { baseTitle, baseUrl } from '@shared/utils/base-url'
 import { MetadataService } from '@shared/services/metadata-service'
+import { baseTitle, baseUrl } from '@shared/utils/base-url'
 
 interface Props {
   title?: string
@@ -23,7 +23,9 @@ interface ResolvedMetadata {
  * Prioridad:
  * artist > character > theme > anime > custom props > defaults
  */
-export const createMetadata = async (props: Props): Promise<ResolvedMetadata> => {
+export const createMetadata = async (
+  props: Props
+): Promise<ResolvedMetadata> => {
   const defaults: ResolvedMetadata = {
     title: props.title || baseTitle,
     description:
@@ -37,7 +39,7 @@ export const createMetadata = async (props: Props): Promise<ResolvedMetadata> =>
 
     return {
       ...defaults,
-      ...serviceMetadata, 
+      ...serviceMetadata,
     }
   } catch (error) {
     console.error('[createMetadata] Failed to resolve metadata:', error)
@@ -52,7 +54,6 @@ const resolveMetadataFromService = async (
   if (artistName) {
     return MetadataService.getArtistMetadata(artistName)
   }
-
 
   if (characterId) {
     const charId = resolveCharacterId(characterId, slug)
@@ -69,7 +70,6 @@ const resolveMetadataFromService = async (
 
   return {}
 }
-
 
 const resolveCharacterId = (characterId: string, slug?: string) => {
   if (!slug) return Number(characterId)

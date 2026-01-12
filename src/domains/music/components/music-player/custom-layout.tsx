@@ -14,7 +14,7 @@ export const CustomLayout = () => {
     useMediaChange()
   useEffect(() => {
     console.log('Current resolutions:', resolutions)
-  }, [ resolutions])
+  }, [resolutions])
 
   return (
     <DefaultVideoLayout

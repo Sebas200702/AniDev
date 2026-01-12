@@ -1,5 +1,6 @@
 import { Cover } from '@music/components/music-player/music-info/cover'
 import { Header } from '@music/components/music-player/music-info/header'
+import { DragHandle, DraggablePlayer } from '@music/hooks/useDragPlayer'
 import { useFetchMusic } from '@music/hooks/useFetchMusic'
 import { usePlayerBehavior } from '@music/hooks/usePlayerBehavior'
 import { usePlayerSync } from '@music/hooks/usePlayerSync'
@@ -17,7 +18,6 @@ import { CustomControls } from 'domains/music/components/music-player/controls'
 import { CustomLayout } from 'domains/music/components/music-player/custom-layout'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { DragHandle, DraggablePlayer } from '@music/hooks/useDragPlayer'
 export const MusicPlayer = () => {
   const {
     currentSong,

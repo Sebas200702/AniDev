@@ -40,7 +40,6 @@ export const useSearchBarLogic = () => {
 
   useAutoCloseModal(isModalOpen, closeModal, { debounceMs: 500 })
 
- 
   const { url, filtersToApply } = useSearchUrl(
     currentType,
     debouncedQuery,

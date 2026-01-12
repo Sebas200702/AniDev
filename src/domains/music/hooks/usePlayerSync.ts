@@ -1,7 +1,7 @@
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import type { MediaPlayerInstance } from '@vidstack/react'
-import { throttle } from '@utils/throttle'
 import { savedTimeUtils } from '@music/utils/saved-time'
+import { throttle } from '@utils/throttle'
+import type { MediaPlayerInstance } from '@vidstack/react'
 import { type RefObject, useEffect, useMemo, useRef } from 'react'
 
 interface UsePlayBackProps {

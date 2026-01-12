@@ -115,7 +115,9 @@ export const SearchResults = () => {
     if (!results) return null
 
     if (currentType === SearchType.MUSIC && isMusicData(results)) {
-      return results.map((song) => <MusicCard key={song.theme_id} song={song} />)
+      return results.map((song) => (
+        <MusicCard key={song.theme_id} song={song} />
+      ))
     }
 
     if (currentType === SearchType.CHARACTERS && isCharacterData(results)) {

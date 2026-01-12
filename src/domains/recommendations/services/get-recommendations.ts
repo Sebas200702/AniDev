@@ -1,3 +1,4 @@
+import type { AnimeCardInfo } from '@anime/types'
 import { createContextLogger } from '@libs/pino'
 import { recommendationsRepository } from '@recommendations/repositories'
 import type { FetchRecommendationProps } from '@recommendations/types'
@@ -8,7 +9,6 @@ import {
 import { AppError, isAppError } from '@shared/errors'
 import { shuffleArray } from '@utils/shuffle-array'
 import { getAlternativeFallback, getJikanFallback } from './fallbacks'
-import type { AnimeCardInfo } from '@anime/types'
 
 const logger = createContextLogger('RecommendationsService')
 

@@ -2,12 +2,12 @@ import { navigate } from 'astro:transitions/client'
 import { ClosePlayerButton } from '@music/components/music-player/button/close-player-button'
 import { useMediaChange } from '@music/hooks/useMediaChange'
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
+import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { ExpandIcon } from '@shared/components/icons/common/expand-icon'
 import { PauseIcon } from '@shared/components/icons/watch/pause-icon'
 import { PlayIcon } from '@shared/components/icons/watch/play-icon'
 import { Picture } from '@shared/components/media/picture'
 import { MoreOptions } from '@shared/components/ui/more-options'
-import { FilterDropdown } from '@search/components/search-filters/filter-dropdown'
 import { normalizeString } from '@utils/normalize-string'
 
 interface Props {
@@ -38,10 +38,9 @@ export const Header = ({ playerContainerRef }: Props) => {
   if (!currentSong || !playerContainerRef) return
 
   return (
-
-      <div className="relative">
-        <header
-          className={`bg-Complementary relative flex w-full flex-row gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'h-28 p-4 md:rounded-b-xl md:p-6'} ${isDragging ? 'pointer-events-none' : ''}`}
+    <div className="relative">
+      <header
+        className={`bg-Complementary relative flex w-full flex-row gap-2 ${isMinimized ? 'border-none p-2 md:border-b md:border-gray-100/10 md:p-4' : 'h-28 p-4 md:rounded-b-xl md:p-6'} ${isDragging ? 'pointer-events-none' : ''}`}
       >
         <div className="flex w-full flex-row items-center justify-between gap-2">
           <div
@@ -178,6 +177,5 @@ export const Header = ({ playerContainerRef }: Props) => {
         </MoreOptions>
       )}
     </div>
-
   )
 }

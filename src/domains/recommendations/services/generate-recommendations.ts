@@ -1,4 +1,5 @@
 import { aiService } from '@ai/services'
+import type { AnimeCardInfo } from '@anime/types'
 import { createContextLogger } from '@libs/pino'
 import {
   type GenerateRecommendationsProps,
@@ -6,7 +7,6 @@ import {
 } from '@recommendations/types'
 import { AppError, isAppError } from '@shared/errors'
 import { getRecommendations } from './get-recommendations'
-import type { AnimeCardInfo } from '@anime/types'
 
 const logger = createContextLogger('RecommendationsService')
 

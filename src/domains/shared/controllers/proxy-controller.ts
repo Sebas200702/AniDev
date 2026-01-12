@@ -1,10 +1,10 @@
 import { CacheService } from '@cache/services'
 import { TtlValues } from '@cache/types'
+import { getCachedOrFetch } from '@cache/utils'
 import { createContextLogger } from '@libs/pino'
 import { AppError } from '@shared/errors'
 import { ProxyService } from '@shared/services/proxy-service'
 import { imageProxyDeduplicator } from '@utils/request-deduplicator'
-import { getCachedOrFetch } from '@cache/utils'
 
 const logger = createContextLogger('ProxyController')
 

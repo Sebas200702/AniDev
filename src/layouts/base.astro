@@ -6,8 +6,8 @@ import Footer from '@shared/components/layout/footer.astro'
 import { NavBar } from '@shared/components/layout/nav-bar/nav-bar'
 import { LoadWindowWidth } from '@shared/components/ui/load-window-width'
 import { ProgressBar } from '@shared/components/ui/progres-bar'
+import { baseUrl } from '@shared/utils/base-url'
 import { createMetadata } from '@shared/utils/create-metadata'
-import {  baseUrl } from '@shared/utils/base-url'
 import { LoadUserPrefences } from '@user/components/user-settings/load-user-preferences'
 import { AstroFont } from 'astro-font'
 import '@shared/styles/fade-out.css'
@@ -19,7 +19,11 @@ import { CustomToaster } from '@shared/components/ui/custom-toaster'
 const { animeId, title, description, image, themeId, characterId, artistName } =
   Astro.props
 
-const { title : metaTitle, description: metaDesc, image: metaImage } = await createMetadata({
+const {
+  title: metaTitle,
+  description: metaDesc,
+  image: metaImage,
+} = await createMetadata({
   title,
   description,
   image,
@@ -27,8 +31,7 @@ const { title : metaTitle, description: metaDesc, image: metaImage } = await cre
   characterId,
   artistName,
   animeId,
-}) 
-
+})
 ---
 
 <html lang="en">

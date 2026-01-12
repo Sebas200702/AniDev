@@ -36,7 +36,6 @@ export const FOCUSES = [
 export const GENRE_BANK = Object.values(AnimeGenres)
 export const TYPE_BANK = Object.values(AnimeTypes)
 
-
 export const STATIC_SECTIONS: HomeSection[] = [
   {
     id: 'carousel',
@@ -139,7 +138,6 @@ export const STATIC_SECTIONS: HomeSection[] = [
     clientDirective: 'visible',
   },
 ]
-
 
 export const HOME_CACHE_CONFIG = {
   TTL_SECONDS: 3600, // 1 hora

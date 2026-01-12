@@ -33,7 +33,7 @@ const EmptyState = () => (
 )
 
 // Componente para errores
-const ErrorState = ({ error }: { error: Error| null }) => (
+const ErrorState = ({ error }: { error: Error | null }) => (
   <p className="text-lg text-red-500">
     Error fetching data: {error?.message || 'Unknown error'}
   </p>

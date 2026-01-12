@@ -49,7 +49,9 @@ export function createBroadcastDate(
     throw new Error(`Día no válido: ${dayName}`)
   }
 
-  const [hours, minutes] = time.split(':').map((num) => Number.parseInt(num, 10))
+  const [hours, minutes] = time
+    .split(':')
+    .map((num) => Number.parseInt(num, 10))
   if (
     Number.isNaN(hours) ||
     Number.isNaN(minutes) ||

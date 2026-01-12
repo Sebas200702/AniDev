@@ -3,7 +3,6 @@ import { MusicRepository } from '@music/repositories'
 import type { AnimeSong } from '@music/types'
 import { AppError, isAppError } from '@shared/errors'
 
-
 const logger = createContextLogger('MusicService')
 
 interface SearchMusicParams {

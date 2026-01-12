@@ -1,7 +1,7 @@
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import { useEffect } from 'react'
 import { usePlaylist } from '@music/hooks/usePlaylist'
+import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { savedTimeUtils } from '@music/utils/saved-time'
+import { useEffect } from 'react'
 export const usePlayback = () => {
   const {
     isPlaying,

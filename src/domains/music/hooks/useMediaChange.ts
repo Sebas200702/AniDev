@@ -18,8 +18,6 @@ export const useMediaChange = () => {
     versions,
   } = useMusicPlayerStore()
 
-
-
   const applyType = (
     mediaType: 'audio' | 'video',
     resolution?: AnimeSongResolution
@@ -58,7 +56,6 @@ export const useMediaChange = () => {
     setResolutions(newVersion.resolutions)
 
     setSelectedVersion(version)
-
 
     changeMediaResolution(firstRes.song_id!, newVersion)
   }
