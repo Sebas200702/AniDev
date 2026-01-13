@@ -61,7 +61,7 @@ export const usePlayerSync = ({
     savedTimeRef.current = 0
     setCurrentTime(0)
     player.current.currentTime = 0
-  }, [currentSongIndex, setCurrentTime , currentSong])
+  }, [currentSongIndex, setCurrentTime, currentSong])
 
   useEffect(() => {
     const handleBeforeUnload = () => {
