@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tailwind-animations';
 
 @theme {
   --color-Primary-950: #121212;
