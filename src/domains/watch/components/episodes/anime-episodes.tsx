@@ -1,6 +1,6 @@
-import type { AnimeEpisode } from "@watch/types"
 import { Picture } from '@shared/components/media/picture'
 import { Pagination } from '@watch/components/episodes/pagination'
+import type { AnimeEpisode } from '@watch/types'
 
 interface Props {
   episodes: AnimeEpisode[]
@@ -11,9 +11,7 @@ interface Props {
   page?: number
   totalPages: number
   handlePageChange: (page: number) => void
-  
 }
-
 
 export const AnimeEpisodes = ({
   slug,
@@ -24,7 +22,6 @@ export const AnimeEpisodes = ({
   totalPages,
   handlePageChange,
   page,
-
 }: Props) => {
   return (
     <section className="z-10 w-full p-2">
@@ -60,7 +57,9 @@ export const AnimeEpisodes = ({
           </a>
         ))}
       </ul>
-      <footer className={`w-full ${totalPages < 1 || episodes.length === 0 ? 'hidden' : ''}`}>
+      <footer
+        className={`w-full ${totalPages < 1 || episodes.length === 0 ? 'hidden' : ''}`}
+      >
         <Pagination
           totalPages={totalPages}
           initialPage={page ?? 1}
