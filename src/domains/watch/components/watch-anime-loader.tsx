@@ -2,7 +2,7 @@ import { Pagination } from '@watch/components/episodes/pagination'
 
 /**
  * Player Loader
- * 
+ *
  * Skeleton loader for the video player
  */
 const PlayerLoader = () => {
@@ -13,7 +13,7 @@ const PlayerLoader = () => {
 
 /**
  * Footer Loader
- * 
+ *
  * Skeleton loader for episode information footer
  */
 const FooterLoader = () => {
@@ -27,7 +27,7 @@ const FooterLoader = () => {
 
 /**
  * Episodes List Loader
- * 
+ *
  * Skeleton loader for episodes list with pagination
  */
 const EpisodesListLoader = ({
@@ -63,7 +63,7 @@ const EpisodesListLoader = ({
           </div>
 
           {/* Pagination */}
-          { (
+          {
             <div className="w-full">
               <Pagination
                 totalPages={totalPages}
@@ -71,7 +71,7 @@ const EpisodesListLoader = ({
                 onPageChange={handlePageChange}
               />
             </div>
-          )}
+          }
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@ const EpisodesListLoader = ({
 
 /**
  * Watch Anime Loader Component
- * 
+ *
  * Full page skeleton loader for the watch anime page
  * Matches the structure of WatchAnime component
  */
