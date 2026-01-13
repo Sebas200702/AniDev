@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "test": "vitest",
     "astro": "astro",
-    "format": "pnpm biome check --fix && prettier --write . "
+    "format": "pnpm biome check --fix && prettier --write . ",
+    "release": "standard-version"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -59,6 +60,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.12",
+    "standard-version": "^9.5.0",
     "terser": "^5.36.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.3"
