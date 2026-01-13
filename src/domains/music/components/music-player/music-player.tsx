@@ -16,7 +16,6 @@ import {
 import { MediaPlayer, MediaProvider, Poster } from '@vidstack/react'
 import { CustomControls } from 'domains/music/components/music-player/controls'
 import { CustomLayout } from 'domains/music/components/music-player/custom-layout'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 export const MusicPlayer = () => {
   const {
@@ -58,14 +57,9 @@ export const MusicPlayer = () => {
 
   return (
     <DraggablePlayer>
-      <AnimatePresence>
-        <motion.article
+      
+        <article
           ref={playerContainerRef}
-          animate={{
-            opacity: isHidden ? 0 : 1,
-            y: isHidden ? 30 : 0,
-          }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
           className={`group flex rounded-xl ${
             isMinimized
               ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
@@ -128,8 +122,8 @@ export const MusicPlayer = () => {
               <CustomLayout />
             )}
           </MediaPlayer>
-        </motion.article>
-      </AnimatePresence>
+        </article>
+    
     </DraggablePlayer>
   )
 }

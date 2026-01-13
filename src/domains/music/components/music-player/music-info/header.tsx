@@ -18,9 +18,7 @@ export const Header = ({ playerContainerRef }: Props) => {
     isMinimized,
     isDragging,
     currentSong,
-
     type,
-
     canPlay,
     isPlaying,
     playerRef,

@@ -44,9 +44,6 @@ importers:
       '@google/generative-ai':
         specifier: 0.24.1
         version: 0.24.1
-      '@justinribeiro/lite-youtube':
-        specifier: ^1.8.2
-        version: 1.8.2
       '@pheralb/toast':
         specifier: ^1.0.0
         version: 1.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -74,15 +71,6 @@ importers:
       auth-astro:
         specifier: 4.2.0
         version: 4.2.0(@auth/core@0.39.1)(astro@5.16.8(@types/node@25.0.5)(@vercel/functions@2.2.13)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.43.0)(terser@5.44.1)(typescript@5.8.3)(yaml@2.8.0))
-      cropperjs:
-        specifier: ^2.0.0
-        version: 2.0.0
-      framer-motion:
-        specifier: ^12.23.22
-        version: 12.23.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      media-icons:
-        specifier: ^1.1.5
-        version: 1.1.5
       next-auth:
         specifier: ^4.24.13
         version: 4.24.13(@auth/core@0.39.1)(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -399,39 +387,6 @@ packages:
   '@capsizecss/unpack@4.0.0':
     resolution: {integrity: sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA==}
     engines: {node: '>=18'}
-
-  '@cropper/element-canvas@2.0.0':
-    resolution: {integrity: sha512-GPtGJgSm92crJhhhwUsaMw3rz2KfJWWSz7kRAlufFEV/EHTP5+6r6/Z1BCGRna830i+Avqbm435XLOtA7PVJwA==}
-
-  '@cropper/element-crosshair@2.0.0':
-    resolution: {integrity: sha512-KfPfyrdeFvUC31Ws7ATtcalWWSaMtrC6bMoCipZhqbUOE7wZoL4ecDSL6BUOZxPa74awZUqfzirCDjHvheBfyw==}
-
-  '@cropper/element-grid@2.0.0':
-    resolution: {integrity: sha512-i78SQ0IJTLFveKX6P7svkfMYVdgHrQ8ZmmEw8keFy9n1ZVbK+SK0UHK5FNMRNI/gtVhKJOGEnK/zeyjUdj4Iyw==}
-
-  '@cropper/element-handle@2.0.0':
-    resolution: {integrity: sha512-ZJvW+0MkK9E8xYymGdoruaQn2kwjSHFpNSWinjyq6csuVQiCPxlX5ovAEDldmZ9MWePPtWEi3vLKQOo2Yb0T8g==}
-
-  '@cropper/element-image@2.0.0':
-    resolution: {integrity: sha512-9BxiTS/aHRmrjopaFQb9mQQXmx4ruhYHGkDZMVz24AXpMFjUY6OpqrWse/WjzD9tfhMFvEdu17b3VAekcAgpeg==}
-
-  '@cropper/element-selection@2.0.0':
-    resolution: {integrity: sha512-ensNnbIfJsJ8bhbJTH/RXtk2URFvTOO4TvfRk461n2FPEC588D7rwBmUJxQg74IiTi4y1JbCI+6j+4LyzYBLCQ==}
-
-  '@cropper/element-shade@2.0.0':
-    resolution: {integrity: sha512-jv/2bbNZnhU4W+T4G0c8ADocLIZvQFTXgCf2RFDNhI5UVxurzWBnDdb8Mx8LnVplnkTqO+xUmHZYve0CwgWo+Q==}
-
-  '@cropper/element-viewer@2.0.0':
-    resolution: {integrity: sha512-zY+3VRN5TvpM8twlphYtXw0tzJL2VgzeK7ufhL1BixVqOdRxwP13TprYIhqwGt9EW/SyJZUiaIu396T89kRX8A==}
-
-  '@cropper/element@2.0.0':
-    resolution: {integrity: sha512-lsthn0nQq73GExUE7Mg/ss6Q3RXADGDv055hxoLFwvl/wGHgy6ZkYlfLZ/VmgBHC6jDK5IgPBFnqrPqlXWSGBA==}
-
-  '@cropper/elements@2.0.0':
-    resolution: {integrity: sha512-PQkPo1nUjxLFUQuHYu+6atfHxpX9B41Xribao6wpvmvmNIFML6LQdNqqWYb6LyM7ujsu71CZdBiMT5oetjJVoQ==}
-
-  '@cropper/utils@2.0.0':
-    resolution: {integrity: sha512-cprLYr+7kK3faGgoOsTW9gIn5sefDr2KwOmgyjzIXk+8PLpW8FgFKEg5FoWfRD5zMAmkCBuX6rGKDK3VdUEGrg==}
 
   '@dnd-kit/accessibility@3.1.1':
     resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
@@ -1107,9 +1062,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@justinribeiro/lite-youtube@1.8.2':
-    resolution: {integrity: sha512-wayU5sYA/e5J/1j7zFk8Hoi72Hk67Axy7Za2OFRzsytd9gvtv7ZeWhmdi2lOGbnXwMZHkeMsqxRGFxH60lo5bg==}
 
   '@next/env@16.1.1':
     resolution: {integrity: sha512-3oxyM97Sr2PqiVyMyrZUtrtM3jqqFxOQJVuKclDsgj/L728iZt/GyslkN4NwarledZATCenbk4Offjk1hQmaAA==}
@@ -2343,9 +2295,6 @@ packages:
   cropperjs@1.6.2:
     resolution: {integrity: sha512-nhymn9GdnV3CqiEHJVai54TULFAE3VshJTXSqSJKa8yXAKyBKDWdhHarnlIPrshJ0WMFTGuFvG02YjLXfPiuOA==}
 
-  cropperjs@2.0.0:
-    resolution: {integrity: sha512-TO2j0Qre01kPHbow4FuTrbdEB4jTmGRySxW49jyEIqlJZuEBfrvCTT0vC3eRB2WBXudDfKi1Onako6DKWKxeAQ==}
-
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -2674,20 +2623,6 @@ packages:
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
-
-  framer-motion@12.23.22:
-    resolution: {integrity: sha512-ZgGvdxXCw55ZYvhoZChTlG6pUuehecgvEAJz0BHoC5pQKW1EC5xf1Mul1ej5+ai+pVY0pylyFfdl45qnM1/GsA==}
-    peerDependencies:
-      '@emotion/is-prop-valid': '*'
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@emotion/is-prop-valid':
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
 
   fresh@2.0.0:
     resolution: {integrity: sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==}
@@ -3206,10 +3141,6 @@ packages:
     resolution: {integrity: sha512-cyDNmuZvvO4H27rcBq2Eudxo9IZRDCOX/I7VEyqbxsEiD2Ei7UYUhG/Sc5fvMZjmathgz3fEK7iAKqvpY+Ux1w==}
     engines: {node: '>=16'}
 
-  media-icons@1.1.5:
-    resolution: {integrity: sha512-zu3CjKRs63ybLLWPomRRgTDyYiSrk2bRRgw97ZmN3FGXuo9qUUhBSfYwnjmvSdLG2JOJfAwzDz99bPATSY81DQ==}
-    engines: {node: '>=16'}
-
   meow@8.1.2:
     resolution: {integrity: sha512-r85E3NdZ+mpYk1C6RjPFEMSE+s1iZMuHtsHAqY0DT3jZczl0diWUZ8g6oU7h0M9cD2EL+PzaYghhCLzR0ZNn5Q==}
     engines: {node: '>=10'}
@@ -3346,12 +3277,6 @@ packages:
 
   module-details-from-path@1.0.4:
     resolution: {integrity: sha512-EGWKgxALGMgzvxYF1UyGTy0HXX/2vHLkw6+NvDKW2jypWbHpjQuj4UMcqQWXHERJhVGKikolT06G3bcKe4fi7w==}
-
-  motion-dom@12.23.21:
-    resolution: {integrity: sha512-5xDXx/AbhrfgsQmSE7YESMn4Dpo6x5/DTZ4Iyy4xqDvVHWvFVoV+V2Ri2S/ksx+D40wrZ7gPYiMWshkdoqNgNQ==}
-
-  motion-utils@12.23.6:
-    resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
 
   mrmime@2.0.1:
     resolution: {integrity: sha512-Y3wQdFg2Va6etvQ5I82yUhGdsKrcYox6p7FfL1LbK2J4V01F9TGlepTIhnK24t7koZibmg82KGglhA1XK5IsLQ==}
@@ -5168,72 +5093,6 @@ snapshots:
     dependencies:
       fontkitten: 1.0.0
 
-  '@cropper/element-canvas@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-crosshair@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-grid@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-handle@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-image@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/element-canvas': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-selection@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/element-canvas': 2.0.0
-      '@cropper/element-image': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-shade@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/element-canvas': 2.0.0
-      '@cropper/element-selection': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element-viewer@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/element-canvas': 2.0.0
-      '@cropper/element-image': 2.0.0
-      '@cropper/element-selection': 2.0.0
-      '@cropper/utils': 2.0.0
-
-  '@cropper/element@2.0.0':
-    dependencies:
-      '@cropper/utils': 2.0.0
-
-  '@cropper/elements@2.0.0':
-    dependencies:
-      '@cropper/element': 2.0.0
-      '@cropper/element-canvas': 2.0.0
-      '@cropper/element-crosshair': 2.0.0
-      '@cropper/element-grid': 2.0.0
-      '@cropper/element-handle': 2.0.0
-      '@cropper/element-image': 2.0.0
-      '@cropper/element-selection': 2.0.0
-      '@cropper/element-shade': 2.0.0
-      '@cropper/element-viewer': 2.0.0
-
-  '@cropper/utils@2.0.0': {}
-
   '@dnd-kit/accessibility@3.1.1(react@19.2.3)':
     dependencies:
       react: 19.2.3
@@ -5695,8 +5554,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@justinribeiro/lite-youtube@1.8.2': {}
 
   '@next/env@16.1.1': {}
 
@@ -7119,11 +6976,6 @@ snapshots:
 
   cropperjs@1.6.2: {}
 
-  cropperjs@2.0.0:
-    dependencies:
-      '@cropper/elements': 2.0.0
-      '@cropper/utils': 2.0.0
-
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -7442,15 +7294,6 @@ snapshots:
   forwarded-parse@2.1.2: {}
 
   fraction.js@4.3.7: {}
-
-  framer-motion@12.23.22(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
-    dependencies:
-      motion-dom: 12.23.21
-      motion-utils: 12.23.6
-      tslib: 2.8.1
-    optionalDependencies:
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
 
   fresh@2.0.0: {}
 
@@ -8041,8 +7884,6 @@ snapshots:
 
   media-captions@1.0.4: {}
 
-  media-icons@1.1.5: {}
-
   meow@8.1.2:
     dependencies:
       '@types/minimist': 1.2.5
@@ -8286,12 +8127,6 @@ snapshots:
   modify-values@1.0.1: {}
 
   module-details-from-path@1.0.4: {}
-
-  motion-dom@12.23.21:
-    dependencies:
-      motion-utils: 12.23.6
-
-  motion-utils@12.23.6: {}
 
   mrmime@2.0.1: {}
 
