@@ -1,24 +1,13 @@
 import type { ArtistInfo } from '@artist/types'
-import { ArtistInfoLoader } from '@music/components/music-player/artist-info/artist-info-loader'
-import { useMusicPlayerStore } from '@music/stores/music-player-store'
 import { Overlay } from '@shared/components/layout/overlay'
 import { Picture } from '@shared/components/media/picture'
-import { useFetch } from '@shared/hooks/useFetch'
 import { normalizeString } from '@utils/normalize-string'
 
-export const ArtistInfoComponent = () => {
-  const { currentSong } = useMusicPlayerStore()
-
-  const artistName = currentSong?.artist_name ?? ''
-  const { data: artist, loading } = useFetch<ArtistInfo>({
-    url: `/artist/getArtistInfo?artistName=${encodeURIComponent(artistName)}`,
-    skip: !artistName,
-  })
-
-  if (loading || !artist) {
-    return <ArtistInfoLoader />
-  }
-
+interface Props {
+  artist: ArtistInfo | null
+}
+export const ArtistInfoComponent = ({ artist }: Props) => {
+  if (!artist) return null
   return (
     <a
       title={`Info about ${artist.name}`}
