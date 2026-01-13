@@ -1,10 +1,9 @@
 import { useMusicPlayerStore } from '@music/stores/music-player-store'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 interface DraggablePlayerProps {
   children: ReactNode
-  className?: string
 }
 
 interface DragHandleProps {
@@ -12,62 +11,42 @@ interface DragHandleProps {
   className?: string
 }
 
-interface DragState {
-  isDragging: boolean
-  startX: number
-  startY: number
-  initialX: number
-  initialY: number
-}
-
-const DragContext = ({ children }: { children: ReactNode }) => {
-  const dragStateRef = useRef<DragState>({
-    isDragging: false,
-    startX: 0,
-    startY: 0,
-    initialX: 0,
-    initialY: 0,
-  })
-
-  return <>{children}</>
-}
-
-const DraggableContent = ({ children, className }: DraggablePlayerProps) => {
+const DraggableContent = ({ children }: DraggablePlayerProps) => {
   const { isMinimized, position } = useMusicPlayerStore()
   const [transform, setTransform] = useState({ x: 0, y: 0 })
 
-  const style = {
-    transform: `translate(${transform.x}px, ${transform.y}px)`,
-  }
-
-  // Exponer método para actualizar transform desde DragHandle
   useEffect(() => {
     const handleTransformUpdate = (event: CustomEvent) => {
       setTransform(event.detail)
     }
 
-    window.addEventListener('drag-transform-update' as any, handleTransformUpdate)
+    window.addEventListener(
+      'drag-transform-update' as any,
+      handleTransformUpdate
+    )
     return () => {
-      window.removeEventListener('drag-transform-update' as any, handleTransformUpdate)
+      window.removeEventListener(
+        'drag-transform-update' as any,
+        handleTransformUpdate
+      )
     }
   }, [])
 
-  return (
-    <div style={style} className={className}>
-      {children}
-    </div>
-  )
+  const style: CSSProperties = isMinimized
+    ? {
+        position: 'fixed',
+        bottom: `${position.y}px`,
+        right: `${position.x}px`,
+        transform: `translate(${transform.x}px, ${transform.y}px)`,
+        willChange: 'transform',
+      }
+    : {}
+
+  return <div style={style}>{children}</div>
 }
 
-export const DraggablePlayer = ({
-  children,
-  className,
-}: DraggablePlayerProps) => {
-  return (
-    <DragContext>
-      <DraggableContent className={className}>{children}</DraggableContent>
-    </DragContext>
-  )
+export const DraggablePlayer = ({ children }: DraggablePlayerProps) => {
+  return <DraggableContent>{children}</DraggableContent>
 }
 
 export const DragHandle = ({ children, className }: DragHandleProps) => {
