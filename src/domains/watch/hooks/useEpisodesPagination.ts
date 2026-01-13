@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const EPISODES_PER_PAGE = 12
 
@@ -10,7 +10,7 @@ interface UseEpisodesPaginationReturn {
 
 /**
  * Custom hook for managing episodes pagination
- * 
+ *
  * Features:
  * - Calculates initial page based on current episode
  * - Updates URL with page parameter
@@ -21,7 +21,7 @@ export const useEpisodesPagination = (
   currentEpisode?: number
 ): UseEpisodesPaginationReturn => {
   // Calculate initial page based on current episode
-  const initialPage = currentEpisode 
+  const initialPage = currentEpisode
     ? Math.ceil(currentEpisode / EPISODES_PER_PAGE)
     : 1
 
@@ -38,7 +38,7 @@ export const useEpisodesPagination = (
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page)
-    
+
     // Update URL with page parameter
     const searchParams = new URLSearchParams(window.location.search)
     searchParams.set('page', page.toString())
