@@ -8,7 +8,7 @@ export const Cover = () => {
 
   if (!isMinimized && type === 'audio') {
     return (
-      <div className="relative aspect-video h-full overflow-hidden">
+      <div className="absolute aspect-video h-full w-full overflow-hidden">
         <Picture
           image={
             currentSong.anime?.banner_image ?? currentSong.anime?.image ?? ''
@@ -25,7 +25,7 @@ export const Cover = () => {
 
   return (
     <div
-      className={`relative ${type === 'video' ? 'hidden' : ''} ${isMinimized ? 'hidden md:flex' : ''} h-full w-full items-center justify-center p-4`}
+      className={`absolute ${type === 'video' ? 'hidden' : ''} ${isMinimized ? 'hidden md:flex' : ''} h-full w-full items-center justify-center `}
       id="music-player-cover"
     >
       <div
