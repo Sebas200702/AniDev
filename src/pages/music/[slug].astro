@@ -1,6 +1,6 @@
 ---
 import Layout from '@layouts/base.astro'
-import { ArtistInfoComponent } from '@music/components/music-player/artist-info/artist-info'
+import {ArtistInfoContainer} from '@music/components/music-player/artist-info/artist-info-container'
 import { MusicPlayList } from '@music/components/music-playlist/music-playlist'
 
 const { slug } = Astro.params
@@ -23,6 +23,6 @@ const [_, theme_id] = slug?.split('_') ?? ['', '']
     </div>
 
     <MusicPlayList client:load />
-    <ArtistInfoComponent client:load />
+    <ArtistInfoContainer client:load />
   </section>
 </Layout>
