@@ -46,7 +46,6 @@ export const EpisodeService = {
     episodeId: string
   ): Promise<AnimeEpisode> {
     try {
-    
       const data = await EpisodeRepository.getEpisodeById(mal_id, episodeId)
       return data
     } catch (error) {
