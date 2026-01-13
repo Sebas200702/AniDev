@@ -73,7 +73,6 @@ export const Picture = ({
         ref={imageRef}
         onMouseDown={onMouseDown}
         draggable={draggable}
-        
       />
     </figure>
   )
