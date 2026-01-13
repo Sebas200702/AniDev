@@ -18,7 +18,7 @@ interface EpisodesListProps {
 
 /**
  * Episodes List View Component (Presentational)
- * 
+ *
  * Displays navigation buttons and episodes grid
  */
 export const EpisodesList = ({
