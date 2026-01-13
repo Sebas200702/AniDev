@@ -33,11 +33,12 @@ interface MusicPlayerStore {
   /* --- UI --- */
   isControlsVisible: boolean
   isMinimized: boolean
-  isHidden: boolean
+  isHidden: boolean 
   position: { x: number; y: number }
   isDragging: boolean
   dragOffset: { x: number; y: number }
   isVolumeDragging: boolean
+  shouldAnimateOnRestore?: boolean
 
   /* --- REFS --- */
   playerRef: React.RefObject<MediaPlayerInstance | null>
@@ -70,6 +71,7 @@ interface MusicPlayerStore {
   setDragOffset: (pos: { x: number; y: number }) => void
   setIsVolumeDragging: (v: boolean) => void
   setPlayerRef: (ref: React.RefObject<MediaPlayerInstance | null>) => void
+  setShouldAnimateOnRestore: (v: boolean) => void
 }
 
 export const useMusicPlayerStore = create<MusicPlayerStore>()(
@@ -97,13 +99,13 @@ export const useMusicPlayerStore = create<MusicPlayerStore>()(
       error: null,
 
       isControlsVisible: true,
-      isHidden: false,
+      isHidden: true,
       isMinimized: false,
       position: { x: 40, y: 160 },
       isDragging: false,
       dragOffset: { x: 0, y: 0 },
       isVolumeDragging: false,
-
+      shouldAnimateOnRestore: false,
       playerRef: { current: null },
 
       /* --- Actions --- */
@@ -135,6 +137,7 @@ export const useMusicPlayerStore = create<MusicPlayerStore>()(
       setDragOffset: (pos) => set({ dragOffset: pos }),
       setIsVolumeDragging: (v) => set({ isVolumeDragging: v }),
       setPlayerRef: (ref) => set({ playerRef: ref }),
+      setShouldAnimateOnRestore: (v) => set({ shouldAnimateOnRestore: v }),
     }),
 
     {
@@ -144,7 +147,6 @@ export const useMusicPlayerStore = create<MusicPlayerStore>()(
         /* Persist only what matters cross-session */
         volume: state.volume,
         repeat: state.repeat,
-
         type: state.type,
         position: state.position,
         isMinimized: state.isMinimized,

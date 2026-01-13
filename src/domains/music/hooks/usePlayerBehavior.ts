@@ -4,7 +4,13 @@ import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 export const usePlayerBehavior = (
   playerRef: React.RefObject<HTMLDivElement | null>
 ) => {
-  const { setIsMinimized, isMinimized, setIsHidden } = useMusicPlayerStore()
+  const {
+    setIsMinimized,
+    isMinimized,
+    setIsHidden,
+    shouldAnimateOnRestore,
+    setShouldAnimateOnRestore,
+  } = useMusicPlayerStore()
   const isTransitioningRef = useRef(false)
   const currentPathRef = useRef(globalThis.location.pathname)
 
@@ -23,6 +29,7 @@ export const usePlayerBehavior = (
         setIsHidden(false)
       }
     }
+    setShouldAnimateOnRestore(false)
   }, [setIsMinimized, isMinimized, setIsHidden])
 
   useLayoutEffect(() => {
@@ -126,5 +133,5 @@ export const usePlayerBehavior = (
         capture: true,
       })
     }
-  }, [isMinimized, setIsHidden, playerRef])
+  }, [isMinimized, setIsHidden, playerRef, shouldAnimateOnRestore])
 }

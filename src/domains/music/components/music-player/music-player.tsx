@@ -23,9 +23,9 @@ export const MusicPlayer = () => {
     isHidden,
     isMinimized,
     isDragging,
-    position,
     type,
     src,
+    shouldAnimateOnRestore,
   } = useMusicPlayerStore()
   const themeId = useThemeId()
 
@@ -57,73 +57,62 @@ export const MusicPlayer = () => {
 
   return (
     <DraggablePlayer>
-      
-        <article
-          ref={playerContainerRef}
-          className={`group flex rounded-xl ${
-            isMinimized
-              ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer fixed z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
-              : 'bg-Complementary/50 w-full flex-col-reverse'
-          } ${isDragging && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
-          style={
-            isMinimized
-              ? { bottom: `${position.y}px`, right: `${position.x}px` }
-              : {}
-          }
+      <article
+        ref={playerContainerRef}
+        className={`group flex rounded-xl ${shouldAnimateOnRestore ? isHidden ? 'animate-fade-out-down' : 'animate-fade-in-up' : 'hidden'} ${
+          isMinimized
+            ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
+            : 'bg-Complementary/50 w-full flex-col-reverse'
+        } ${isDragging && isMinimized ? 'music-player-dragging cursor-grabbing select-none' : ''} `}
+      >
+        <DragHandle>
+          <Header playerContainerRef={playerContainerRef} />
+        </DragHandle>
+
+        <MediaPlayer
+          ref={player}
+          src={src ?? undefined}
+          aspectRatio={isMinimized ? 'auto' : 'video'}
+          autoPlay
+          viewType="video"
+          streamType="on-demand"
+          logLevel="error"
+          title={currentSong.song_title ?? 'Unknown Song'}
+          poster={createImageUrlProxy(
+            currentSong.anime?.banner_image ?? currentSong.anime?.image ?? '',
+            isMinimized ? '600' : '1980',
+            '75',
+            'webp'
+          )}
+          className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
         >
-          <DragHandle>
-            <Header playerContainerRef={playerContainerRef} />
-          </DragHandle>
-
-          <MediaPlayer
-            ref={player}
-            src={src ?? undefined}
-            aspectRatio={isMinimized ? 'auto' : 'video'}
-            autoPlay
-            viewType="video"
-            streamType="on-demand"
-            logLevel="error"
-            title={currentSong.song_title ?? 'Unknown Song'}
-            poster={createImageUrlProxy(
-              currentSong.anime?.banner_image ?? currentSong.anime?.image ?? '',
-              isMinimized ? '300' : '1980',
-              '75',
-              'webp'
-            )}
-            className={`flex flex-col ${type === 'audio' && isMinimized && 'h-0 md:h-auto'} `}
+          <MediaProvider
+            className={`${type === 'audio' && isMinimized ? 'hidden py-6 md:flex' : 'aspect-video'} h-full w-full`}
           >
-            <MediaProvider
-              className={`${type === 'audio' && isMinimized ? 'mt-12 hidden md:flex' : 'aspect-video'}`}
-            >
-              {type === 'audio' && !isMinimized && (
-                <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
-              )}
-              {type === 'audio' && isMinimized && (
-                <div className="absolute h-full w-full">
-                  <Cover />
-                </div>
-              )}
-
-              <Poster className="vds-poster" />
-
-              {isMinimized && (
-                <div className="vds-buffering-indicator">
-                  <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
-                    <Spinner.Track className="vds-buffering-track" />
-                    <Spinner.TrackFill className="vds-buffering-track-fill" />
-                  </Spinner.Root>
-                </div>
-              )}
-            </MediaProvider>
-
-            {isMinimized ? (
-              <CustomControls volume={volume} muted={muted} />
-            ) : (
-              <CustomLayout />
+            {type === 'audio' && !isMinimized && (
+              <Poster className="absolute aspect-[16/9] h-full w-full object-cover object-center" />
             )}
-          </MediaPlayer>
-        </article>
-    
+            {type === 'audio' && isMinimized && <Cover />}
+
+            <Poster className="vds-poster" />
+
+            {isMinimized && (
+              <div className="vds-buffering-indicator">
+                <Spinner.Root className="vds-buffering-spinner text-enfasisColor">
+                  <Spinner.Track className="vds-buffering-track" />
+                  <Spinner.TrackFill className="vds-buffering-track-fill" />
+                </Spinner.Root>
+              </div>
+            )}
+          </MediaProvider>
+
+          {isMinimized ? (
+            <CustomControls volume={volume} muted={muted} />
+          ) : (
+            <CustomLayout />
+          )}
+        </MediaPlayer>
+      </article>
     </DraggablePlayer>
   )
 }
