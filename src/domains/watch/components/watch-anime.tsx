@@ -5,7 +5,7 @@ import { Footer } from 'domains/watch/components/footer'
 import { Player } from 'domains/watch/components/player'
 
 interface WatchAnimeProps {
-  animeData: Anime 
+  animeData: Anime
   episodeData?: AnimeEpisode | null
   currentEpisode: number
   slug: string
@@ -17,7 +17,7 @@ interface WatchAnimeProps {
 
 /**
  * Watch Anime View Component (Presentational)
- * 
+ *
  * Displays the anime player, episode info, and episodes list
  */
 export const WatchAnime = ({
@@ -30,8 +30,6 @@ export const WatchAnime = ({
   totalPages,
   onPageChange,
 }: WatchAnimeProps) => {
-
-
   return (
     <section className="mx-auto mt-20 flex h-min w-full flex-col justify-center gap-20 overflow-hidden p-4 md:px-20 xl:max-h-[calc(100dvh-80px)] xl:w-full xl:flex-row">
       <div className="mb-10 flex aspect-[16/9] w-full flex-col gap-5 md:relative md:mb-44 md:max-w-full xl:max-h-[calc(100dvh-80px)]">
