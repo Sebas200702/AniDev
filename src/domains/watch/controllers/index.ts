@@ -44,8 +44,6 @@ export const EpisodeController = {
       throw AppError.validation('Missing episode number')
     }
 
-   
-
     return { mal_id, episodeNumber: ep }
   },
 
