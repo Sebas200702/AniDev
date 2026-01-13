@@ -29,6 +29,7 @@ export const usePlayerSync = ({
     selectedResolutionId,
     currentSongIndex,
     setPlayerRef,
+    currentSong,
   } = useMusicPlayerStore()
 
   const savedTimeRef = useRef(0)
@@ -60,7 +61,7 @@ export const usePlayerSync = ({
     savedTimeRef.current = 0
     setCurrentTime(0)
     player.current.currentTime = 0
-  }, [currentSongIndex, setCurrentTime])
+  }, [currentSongIndex, setCurrentTime , currentSong])
 
   useEffect(() => {
     const handleBeforeUnload = () => {
