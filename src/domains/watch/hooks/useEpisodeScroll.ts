@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
 import type { AnimeEpisode } from '@watch/types'
+import { useEffect, useState } from 'react'
 
 /**
  * Custom hook for auto-scrolling to current episode
- * 
+ *
  * Automatically scrolls to the current episode when:
  * - Episodes data is loaded
  * - Current episode changes
@@ -31,7 +31,7 @@ export const useEpisodeScroll = (
         top: offsetTop,
         behavior: 'smooth',
       })
-      
+
       setShouldScroll(false)
     }
 
