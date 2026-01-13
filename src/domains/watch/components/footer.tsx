@@ -11,8 +11,6 @@ export const Footer = ({
   episode,
   episodeDescription,
 }: FooterProps) => {
-
-  
   return (
     <footer>
       <h3 className="h-auto p-4 text-xl font-bold text-white">
