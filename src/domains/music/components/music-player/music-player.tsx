@@ -52,6 +52,12 @@ export const MusicPlayer = () => {
     }
     loadCSS()
   }, [])
+  const getAnimationClass = () => {
+    if (shouldAnimateOnRestore && isHidden) return 'animate-fade-out-down'
+    if (shouldAnimateOnRestore && !isHidden) return 'animate-fade-in-up'
+    if (isMinimized) return 'hidden'
+    return ''
+  }
 
   if (!currentSong) return null
 
@@ -59,7 +65,7 @@ export const MusicPlayer = () => {
     <DraggablePlayer>
       <article
         ref={playerContainerRef}
-        className={`group flex rounded-xl ${shouldAnimateOnRestore ? isHidden ? 'animate-fade-out-down' : 'animate-fade-in-up' : 'hidden'} ${
+        className={`group flex rounded-xl ${getAnimationClass()} ${
           isMinimized
             ? 'from-Complementary/50 to-Complementary/80 animate-pulsePlayer z-50 w-full max-w-64 flex-col overflow-hidden border border-gray-100/20 bg-gradient-to-br shadow-lg backdrop-blur-sm sm:max-w-sm md:max-w-80'
             : 'bg-Complementary/50 w-full flex-col-reverse'
