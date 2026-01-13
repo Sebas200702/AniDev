@@ -1,13 +1,13 @@
-import { useFetch } from '@shared/hooks/useFetch'
-import { WatchAnime } from '@watch/components/watch-anime'
 import type { Anime } from '@anime/types'
-import type { AnimeEpisode } from '@watch/types'
 import { DataWrapper } from '@shared/components/error/data-wrapper'
+import { useFetch } from '@shared/hooks/useFetch'
 import { useGlobalUserPreferences } from '@user/stores/user-store'
-import { useEpisodesPagination } from '@watch/hooks/useEpisodesPagination'
+import { normalizeString } from '@utils/normalize-string'
+import { WatchAnime } from '@watch/components/watch-anime'
 import { useEpisodeData } from '@watch/hooks/useEpisodeData'
 import { useEpisodeScroll } from '@watch/hooks/useEpisodeScroll'
-import { normalizeString } from '@utils/normalize-string'
+import { useEpisodesPagination } from '@watch/hooks/useEpisodesPagination'
+import type { AnimeEpisode } from '@watch/types'
 import { WatchAnimeLoader } from './watch-anime-loader'
 
 interface WatchAnimeContainerProps {
@@ -17,10 +17,10 @@ interface WatchAnimeContainerProps {
 
 /**
  * Watch Anime Container Component
- * 
+ *
  * Manages all the logic and state for the watch page:
  * - Fetches anime data
- * - Fetches episode data  
+ * - Fetches episode data
  * - Manages episodes pagination with auto-scroll
  * - Passes all data to the presentational component
  */
@@ -42,9 +42,11 @@ export const WatchAnimeContainer = ({
   })
 
   // Fetch current episode data
-  const { data: episodeData, loading: episodeLoading } = useFetch<AnimeEpisode>({
-    url: `/episodes/getEpisode?mal_id=${mal_id}&episode=${currentEpisode}`,
-  })
+  const { data: episodeData, loading: episodeLoading } = useFetch<AnimeEpisode>(
+    {
+      url: `/episodes/getEpisode?mal_id=${mal_id}&episode=${currentEpisode}`,
+    }
+  )
 
   // Episodes pagination logic with current episode awareness
   const { currentPage, totalPages, handlePageChange } = useEpisodesPagination(
