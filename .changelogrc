@@ -1,0 +1,14 @@
+{
+  "types": [
+    { "type": "feat", "section": "🚀 New Features" },
+    { "type": "fix", "section": "🐞 Bug Fixes" },
+    { "type": "refactor", "section": "🛠️ Code Refactoring" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "style", "section": "🎨 Code Style Updates" },
+    { "type": "docs", "section": "📘 Documentation" },
+    { "type": "test", "section": "🧪 Tests" },
+    { "type": "build", "section": "🏗️ Build System" },
+    { "type": "ci", "section": "🔁 Continuous Integration" },
+    { "type": "chore", "section": "🧰 Maintenance Tasks" }
+  ]
+}
