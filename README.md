@@ -1,6 +1,6 @@
 # 🌸 AniDev
 
-AniDev is a modern anime streaming and exploration platform built with AstroJS and powered by Supabase. It offers dynamic experiences for discovering, searching, and enjoying top animes, all with smooth transitions and responsive design.
+AniDev is a modern anime streaming and exploration platform built with AstroJS. It offers dynamic experiences for discovering, searching, and enjoying top animes, all with smooth transitions and responsive design.
 
 ## 🚀 Key Features
 
