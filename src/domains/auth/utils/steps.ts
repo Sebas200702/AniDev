@@ -5,6 +5,11 @@ export const stepsSignUp: AuthStep[] = [
     title: 'Create your account',
     description: 'Create an account to continue',
     fields: [
+         {
+        name: 'user_name',
+        type: 'text',
+        placeholder: 'Username',
+      },
       {
         name: 'email',
         type: 'email',
@@ -15,11 +20,7 @@ export const stepsSignUp: AuthStep[] = [
         type: 'password',
         placeholder: 'Password',
       },
-      {
-        name: 'user_name',
-        type: 'text',
-        placeholder: 'Username',
-      },
+   
       {
         name: 'signup',
         type: 'button',
