@@ -8,7 +8,6 @@ interface Props {
   step: AuthStep
   onSubmit: (e: React.FormEvent) => void
   steps: AuthStep[]
-
   onNext: () => void
   onPrev: () => void
   isSignUp: boolean
