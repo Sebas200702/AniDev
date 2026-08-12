@@ -1,6 +1,8 @@
 import pino from 'pino'
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+// Compile-time constant from Astro: replaced with `false` in production builds,
+// so the pino-pretty transport is tree-shaken out of the serverless bundle.
+const isDevelopment = import.meta.env.DEV
 
 /**
  * Main Pino logger instance with environment-specific configuration.
