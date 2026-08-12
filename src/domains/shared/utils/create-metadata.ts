@@ -1,5 +1,5 @@
 import { MetadataService } from '@shared/services/metadata-service'
-import { baseTitle, baseUrl } from '@shared/utils/base-url'
+import { baseTitle } from '@shared/utils/base-url'
 
 interface Props {
   title?: string
@@ -31,7 +31,7 @@ export const createMetadata = async (
     description:
       props.description ||
       'AniDev is a modern anime streaming and exploration platform. It offers dynamic experiences for discovering, searching, and enjoying top animes.',
-    image: props.image || `${baseUrl}/og-image.png`,
+    image: props.image || '/og-image.png',
   }
 
   try {

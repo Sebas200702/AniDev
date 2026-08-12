@@ -11,9 +11,17 @@ const userInfo = await getSessionUserInfo({
 })
 
 const { data } = await HomeController.getHomeFeed(userInfo?.id || null)
+
+// Cache the SSR HTML at the edge for 5 minutes so crawlers and repeat
+// visitors get a fast response without re-running the AI/Jikan pipeline.
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, s-maxage=300, stale-while-revalidate=600'
+)
 ---
 
 <Layout>
+  <h1 class="sr-only">AniDev - Watch anime online free</h1>
   <HomeSectionsContainer
     initialSections={data}
     cacheMaxAgeHours={1}

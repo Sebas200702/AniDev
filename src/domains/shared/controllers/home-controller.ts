@@ -22,17 +22,38 @@ const DYNAMIC_SECTION_IDS = [
   'slider-4',
 ]
 
+// In-memory fallback cache: avoids slow AI/Jikan work on the SSR path even
+// when Redis is unavailable (e.g. serverless cold start without REDIS_* env).
+const memoryCache = new Map<
+  string,
+  { data: HomeSection[]; expiresAt: number }
+>()
+const MEMORY_TTL_MS = 10 * 60 * 1000 // 10 minutes
+
 export const HomeController = {
   // Public controller used by endpoints: handles cache and orchestration
   getHomeFeed: async (
     userId: string | null
   ): Promise<ApiResponse<HomeSection[]>> => {
+    const memoryKey = `home:${userId ?? 'guest'}`
+
+    // 0. Serve from in-memory cache first (fastest, works without Redis)
+    const memoryHit = memoryCache.get(memoryKey)
+    if (memoryHit && memoryHit.expiresAt > Date.now()) {
+      return { data: memoryHit.data }
+    }
+
     // 1. Try cache first
     const cached = await HomeRepository.getCachedSections(userId)
-    if (cached)
+    if (cached) {
+      memoryCache.set(memoryKey, {
+        data: cached,
+        expiresAt: Date.now() + MEMORY_TTL_MS,
+      })
       return {
         data: cached,
       }
+    }
 
     const { userProfile, calculatedAge } =
       await recommendationsService.getUserPreferences(userId)
@@ -57,7 +78,11 @@ export const HomeController = {
       }
     })
 
-    // 4. Cache and return
+    // 4. Cache (best-effort) and return
+    memoryCache.set(memoryKey, {
+      data: sections,
+      expiresAt: Date.now() + MEMORY_TTL_MS,
+    })
     await HomeRepository.setCachedSections(userId, sections)
     logger.info('Generated home feed via controller', { userId })
     return { data: sections }
@@ -65,6 +90,7 @@ export const HomeController = {
 
   invalidateCache: async (userId: string | null) => {
     await HomeRepository.deleteCache(userId)
+    memoryCache.delete(`home:${userId ?? 'guest'}`)
     logger.info('Home feed cache invalidated', { userId })
   },
 
