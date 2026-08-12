@@ -1,0 +1,107 @@
+---
+import '@shared/styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniDev OG Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900;1000&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #050507;
+    }
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- OG Canvas: 1200 x 630, poster-editorial. Real anime key-art is the hero. -->
+  <div id="og-canvas"
+       class="relative w-[1200px] h-[630px] bg-[#070709] overflow-hidden select-none">
+
+    <!-- HERO ART: full-bleed, real product key visual. Focal cluster kept on the right. -->
+    <img src="/sign-up.webp" alt="Colección de anime en AniDev"
+         class="absolute inset-0 h-full w-full object-cover"
+         style="object-position: 72% 42%;" />
+
+    <!-- Directional scrim: opaque dark for crisp type on the left, art breathes on the right. -->
+    <div class="absolute inset-0 pointer-events-none"
+         style="background: linear-gradient(100deg, #08090c 0%, #08090c 30%, rgba(8,9,12,0.94) 42%, rgba(8,9,12,0.62) 60%, rgba(8,9,12,0.12) 82%, rgba(8,9,12,0) 100%);"></div>
+    <!-- Grounding + top vignette so the art never fights the wordmark. -->
+    <div class="absolute inset-0 pointer-events-none"
+         style="background: linear-gradient(to top, rgba(5,5,8,0.72) 0%, rgba(5,5,8,0) 34%), linear-gradient(to bottom, rgba(5,5,8,0.55) 0%, rgba(5,5,8,0) 24%);"></div>
+    <!-- One restrained brand-blue lift anchored bottom-left, tying art to identity. -->
+    <div class="absolute inset-0 pointer-events-none"
+         style="background: radial-gradient(60% 90% at 8% 108%, rgba(0,102,255,0.20), transparent 60%);"></div>
+
+    <!-- CONTENT: anchored lower-left, deliberately asymmetric. -->
+    <div class="absolute inset-0 z-10 flex flex-col justify-between px-[76px] py-[64px]">
+
+      <!-- Brand lockup -->
+      <div class="flex items-center gap-3">
+        <svg viewBox="0 0 225 225" fill="none" class="h-[38px] w-[38px]">
+          <path d="M3.96 183.5C2.88 183.5 1.92 183.14 1.08 182.42C0.36 181.58 0 180.62 0 179.54C0 179.06 0.06 178.64 0.18 178.28L40.32 63.44C40.68 62.12 41.52 60.8 42.84 59.48C44.16 58.16 46.02 57.5 48.42 57.5H87.48C89.88 57.5 91.74 58.16 93.06 59.48C94.38 60.8 95.22 62.12 95.58 63.44L135.72 178.28C135.84 178.64 135.9 179.06 135.9 179.54C135.9 180.62 135.48 181.58 134.64 182.42C133.92 183.14 133.02 183.5 131.94 183.5H98.64C96.36 183.5 94.68 183.02 93.6 182.06C92.64 180.98 91.98 179.96 91.62 179L87.3 167.12H48.6L44.28 179C43.92 179.96 43.26 180.98 42.3 182.06C41.34 183.02 39.66 183.5 37.26 183.5H3.96ZM57.78 132.02H78.12L67.86 98.54L57.78 132.02Z" fill="#ffffff"/>
+          <path d="M111.573 182.5C106.893 182.5 103.293 181.24 100.773 178.72C98.2534 176.2 96.9934 172.6 96.9934 167.92V70.18C96.9934 65.5 98.2534 61.9 100.773 59.38C103.293 56.86 106.893 55.6 111.573 55.6H146.673C168.393 55.6 185.133 61.12 196.893 72.16C208.773 83.08 214.713 98.68 214.713 118.96C214.713 129.16 213.153 138.22 210.033 146.14C207.033 153.94 202.653 160.54 196.893 165.94C191.133 171.34 184.053 175.48 175.653 178.36C167.253 181.12 157.593 182.5 146.673 182.5H111.573ZM124.893 159.64H145.053C151.893 159.64 157.833 158.8 162.873 157.12C167.913 155.44 172.113 152.92 175.473 149.56C178.833 146.2 181.353 142 183.033 136.96C184.713 131.8 185.553 125.8 185.553 118.96C185.553 105.28 182.133 95.14 175.293 88.54C168.573 81.82 158.493 78.46 145.053 78.46H124.893V159.64Z" fill="#0066FF"/>
+        </svg>
+        <span class="text-[26px] font-extrabold tracking-tight leading-none text-white">
+          Ani<span class="text-[#0066FF]">Dev</span>
+        </span>
+      </div>
+
+      <!-- Headline block -->
+      <div class="max-w-[640px]">
+        <p class="mb-5 text-[13px] font-bold uppercase tracking-[0.22em] text-white/60">
+          Plataforma de anime y música
+        </p>
+        <h1 class="text-[62px] font-black leading-[1.02] tracking-[-0.03em] text-white"
+            style="text-shadow: 0 2px 20px rgba(0,0,0,0.5);">
+          Tu anime y su<br/>
+          banda sonora, en<br/>
+          un <span class="text-[#3B8CFF]">solo lugar</span>.
+        </h1>
+        <p class="mt-6 max-w-[540px] text-[19px] font-medium leading-snug text-white/70">
+          Miles de episodios en HD, openings y OST sin interrupciones. Gratis.
+        </p>
+
+        <!-- Editorial sign-off, not a SaaS button -->
+        <div class="mt-9 flex items-center gap-3">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-[#0066FF]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-3.5 w-3.5 translate-x-[1px] fill-white">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </span>
+          <span class="text-[20px] font-extrabold tracking-tight text-white">anidev.app</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Film grain: real posters have texture; clean renders read as AI. Very subtle. -->
+    <svg class="absolute inset-0 h-full w-full pointer-events-none mix-blend-soft-light" style="opacity:0.10;">
+      <filter id="og-grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter>
+      <rect width="100%" height="100%" filter="url(#og-grain)"/>
+    </svg>
+
+    <!-- Hairline inner frame for a crafted edge -->
+    <div class="absolute inset-0 pointer-events-none rounded-none ring-1 ring-inset ring-white/[0.06]"></div>
+
+  </div>
+
+</body>
+</html>
