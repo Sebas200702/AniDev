@@ -1,14 +1,16 @@
-import node from '@astrojs/node'
 import react from '@astrojs/react'
 import sentry from '@sentry/astro'
 import tailwindcss from '@tailwindcss/vite'
+import vercel from '@astrojs/vercel'
 import { defineConfig } from 'astro/config'
 import auth from 'auth-astro'
 
 export default defineConfig({
   output: 'server',
-  site: 'https://anidev.app',
-  adapter: node({ mode: 'standalone' }),
+  site: 'https://v1.anidev.app',
+  adapter: vercel({
+    imageService: true,
+  }),
   integrations: [
     react(),
     auth(),

@@ -25,12 +25,12 @@ export async function getRedisClient(): Promise<RedisClient> {
 
   try {
     if (!redisClient) {
+      const redisPassword = import.meta.env.REDIS_PASSWORD
       redisClient = createClient({
-        username: 'default',
-        password: import.meta.env.REDIS_PASSWORD,
+        ...(redisPassword ? { username: 'default', password: redisPassword } : {}),
         socket: {
-          host: 'redis-14957.crce181.sa-east-1-2.ec2.redns.redis-cloud.com',
-          port: 14957,
+          host: import.meta.env.REDIS_HOST || '127.0.0.1',
+          port: Number(import.meta.env.REDIS_PORT) || 6379,
           connectTimeout: 10000,
         },
       })
